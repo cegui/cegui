@@ -42,10 +42,17 @@ namespace CEGUI
 {
 
 struct ListViewItemRenderedString {
-    RenderedString d_string;
-    FormattedRenderedString* d_formattedString;
-    ListViewItemRenderedString(const RenderedString& string);
+    ListViewItemRenderedString();
+    ListViewItemRenderedString(const ListViewItemRenderedString&);
     ~ListViewItemRenderedString();
+
+    void setStringAndFromating(const RenderedString& string, HorizontalTextFormatting h_fmt);
+    FormattedRenderedString* getFormattedString();
+
+private:
+    RenderedString d_string;
+    HorizontalTextFormatting d_horzFormat;
+    FormattedRenderedString* d_formattedString;
 };
 
 /*!
@@ -60,7 +67,7 @@ struct ListViewItemRenderedString {
 */
 struct CEGUIEXPORT ListViewItemRenderingState
 {
-    std::shared_ptr<ListViewItemRenderedString> d_string;
+    ListViewItemRenderedString d_string;
     //! The name of the image that represents the icon
     String d_icon;
     Sizef d_size;
