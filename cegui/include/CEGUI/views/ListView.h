@@ -40,7 +40,8 @@
 namespace CEGUI
 {
 
-struct ListViewItemRenderedString {
+struct CEGUIEXPORT ListViewItemRenderedString
+{
     ListViewItemRenderedString();
     ListViewItemRenderedString(const ListViewItemRenderedString&);
     ~ListViewItemRenderedString();
