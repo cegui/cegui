@@ -55,7 +55,7 @@ ListboxTextItem::ListboxTextItem(const String& text, unsigned int item_id, void*
 	d_textCols(DefaultTextColour, DefaultTextColour, DefaultTextColour, DefaultTextColour),
 	d_font(nullptr),
     d_renderedStringValid(false),
-    d_textParsingEnabled(true)
+    d_renderedStringParser(&d_noTagsStringParser)
 {
 }
 
@@ -201,12 +201,8 @@ void ListboxTextItem::setText(const String& text)
 //----------------------------------------------------------------------------//
 void ListboxTextItem::parseTextString() const
 {
-    if (d_textParsingEnabled)
-        d_renderedString =
-            d_stringParser.parse(getTextVisual(), nullptr, &d_textCols);
-    else
-        d_renderedString =
-            d_noTagsStringParser.parse(getTextVisual(), nullptr, &d_textCols);
+    d_renderedString =
+        d_renderedStringParser->parse(getTextVisual(), nullptr, &d_textCols);
 
     d_renderedStringValid = true;
 }
@@ -214,14 +210,29 @@ void ListboxTextItem::parseTextString() const
 //----------------------------------------------------------------------------//
 void ListboxTextItem::setTextParsingEnabled(const bool enable)
 {
-    d_textParsingEnabled = enable;
+    if(enable)
+        d_renderedStringParser = &d_stringParser;
+    else
+        d_renderedStringParser = &d_noTagsStringParser;
+
     d_renderedStringValid = false;
 }
 
 //----------------------------------------------------------------------------//
 bool ListboxTextItem::isTextParsingEnabled() const
 {
-    return d_textParsingEnabled;
+    return d_renderedStringParser != &d_noTagsStringParser;
+}
+
+//----------------------------------------------------------------------------//
+void ListboxTextItem::setCustomRenderedStringParser(CEGUI::RenderedStringParser* parser)
+{
+    if(parser)
+        d_renderedStringParser = parser;
+    else
+        d_renderedStringParser = &d_noTagsStringParser;
+
+    d_renderedStringValid = false;
 }
 
 //----------------------------------------------------------------------------//
