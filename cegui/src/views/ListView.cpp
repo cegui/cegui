@@ -62,16 +62,77 @@ const String ListView::EventNamespace("ListView");
 const String ListView::WidgetTypeName("CEGUI/ListView");
 
 //----------------------------------------------------------------------------//
-ListViewItemRenderedString::ListViewItemRenderedString(const RenderedString& string)
+ListViewItemRenderedString::ListViewItemRenderedString() :
+    d_formattedString(nullptr)
 {
-    d_string = string;
-    d_formattedString = NULL;
+}
+
+ListViewItemRenderedString::ListViewItemRenderedString(const ListViewItemRenderedString& src) :
+    d_formattedString(nullptr)
+{
+    setStringAndFromating(src.d_string, src.d_horzFormat);
 }
 
 ListViewItemRenderedString::~ListViewItemRenderedString()
 {
     if (d_formattedString)
         delete d_formattedString;
+}
+
+void ListViewItemRenderedString::setStringAndFromating(const RenderedString& string, HorizontalTextFormatting h_fmt)
+{
+    d_horzFormat = h_fmt;
+    d_string = string;
+
+    assert(d_formattedString != nullptr);
+
+    switch(d_horzFormat)
+    {
+    case HorizontalTextFormatting::LeftAligned:
+        d_formattedString =
+            new LeftAlignedRenderedString(d_string);
+        break;
+
+    case HorizontalTextFormatting::RightAligned:
+        d_formattedString =
+            new RightAlignedRenderedString(d_string);
+        break;
+
+    case HorizontalTextFormatting::CentreAligned:
+        d_formattedString =
+            new CentredRenderedString(d_string);
+        break;
+
+    case HorizontalTextFormatting::Justified:
+        d_formattedString =
+            new JustifiedRenderedString(d_string);
+        break;
+
+    case HorizontalTextFormatting::WordWrapLeftAligned:
+        d_formattedString =
+            new RenderedStringWordWrapper<LeftAlignedRenderedString>(d_string);
+        break;
+
+    case HorizontalTextFormatting::WordWrapRightAligned:
+        d_formattedString =
+            new RenderedStringWordWrapper<RightAlignedRenderedString>(d_string);
+        break;
+
+    case HorizontalTextFormatting::WordWrapCentreAligned:
+        d_formattedString =
+            new RenderedStringWordWrapper<CentredRenderedString>(d_string);
+        break;
+
+    case HorizontalTextFormatting::WordWraperJustified:
+        d_formattedString =
+            new RenderedStringWordWrapper<JustifiedRenderedString>(d_string);
+        break;
+    }
+}
+
+FormattedRenderedString* ListViewItemRenderedString::getFormattedString()
+{
+    return d_formattedString;
 }
 
 //----------------------------------------------------------------------------//
@@ -233,70 +294,25 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index,
 {
     String text = d_itemModel->getData(index);
 
-    item.d_string.reset(new ListViewItemRenderedString(
-        getRenderedStringParser().parse(text, getFont(), &d_textColourRect) ));
-
-    switch(d_horzFormatting)
-    {
-    case HorizontalTextFormatting::LeftAligned:
-        item.d_string->d_formattedString =
-            new LeftAlignedRenderedString(item.d_string->d_string);
-        break;
-
-    case HorizontalTextFormatting::RightAligned:
-        item.d_string->d_formattedString =
-            new RightAlignedRenderedString(item.d_string->d_string);
-        break;
-
-    case HorizontalTextFormatting::CentreAligned:
-        item.d_string->d_formattedString =
-            new CentredRenderedString(item.d_string->d_string);
-        break;
-
-    case HorizontalTextFormatting::Justified:
-        item.d_string->d_formattedString =
-            new JustifiedRenderedString(item.d_string->d_string);
-        break;
-
-    case HorizontalTextFormatting::WordWrapLeftAligned:
-        item.d_string->d_formattedString =
-            new RenderedStringWordWrapper
-                <LeftAlignedRenderedString>(item.d_string->d_string);
-        break;
-
-    case HorizontalTextFormatting::WordWrapRightAligned:
-        item.d_string->d_formattedString =
-            new RenderedStringWordWrapper
-                <RightAlignedRenderedString>(item.d_string->d_string);
-        break;
-
-    case HorizontalTextFormatting::WordWrapCentreAligned:
-        item.d_string->d_formattedString =
-            new RenderedStringWordWrapper
-                <CentredRenderedString>(item.d_string->d_string);
-        break;
-
-    case HorizontalTextFormatting::WordWraperJustified:
-        item.d_string->d_formattedString =
-            new RenderedStringWordWrapper
-                <JustifiedRenderedString>(item.d_string->d_string);
-        break;
-    }
+    item.d_string.setStringAndFromating(
+        getRenderedStringParser().parse(text, getFont(), &d_textColourRect),
+        d_horzFormatting
+    );
 
     Sizef itemsAreaSize = getPixelSize();
     Scrollbar* const vertScrollbar = getVertScrollbar();
     if (vertScrollbar->isVisible())
         itemsAreaSize.d_width = itemsAreaSize.d_width - vertScrollbar->getPixelSize().d_width;
     itemsAreaSize.d_width -= 2;
-    item.d_string->d_formattedString->format(this, itemsAreaSize);
+    item.d_string.getFormattedString()->format(this, itemsAreaSize);
 
     item.d_index = index;
     item.d_text = text;
     item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);
 
     item.d_size = Sizef(
-        item.d_string->d_formattedString->getHorizontalExtent(this),
-        item.d_string->d_formattedString->getVerticalExtent(this));
+        item.d_string.getFormattedString()->getHorizontalExtent(this),
+        item.d_string.getFormattedString()->getVerticalExtent(this));
 
     max_width = std::max(item.d_size.d_width, max_width);
 
