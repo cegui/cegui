@@ -212,7 +212,7 @@ protected:
     mutable bool d_renderedStringValid;
     //! Parser used when parsing is off.  Basically just does linebreaks.
     static DefaultRenderedStringParser d_noTagsStringParser;
-    //! boolean that specifies whether text parsing is enabled for the item.
+    //! pointer to currently used render string parser.
     CEGUI::RenderedStringParser* d_renderedStringParser;
 };
 
