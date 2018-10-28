@@ -35,11 +35,14 @@ namespace CEGUI
 /*!
 \brief
     Specialisation of RenderTarget interface that should be used as the base
-    class for RenderTargets that are implemented using textures.
+    class for render-to-texture targets (RTT) - RenderTargets using textures.
 */
-class CEGUIEXPORT TextureTarget : public RenderTarget
+class CEGUIEXPORT TextureTarget : virtual public RenderTarget
 {
 public:
+    TextureTarget(bool addStencilBuffer) : d_usesStencil(addStencilBuffer) {}
+    virtual ~TextureTarget();
+
     /*!
     \brief
         Clear the surface of the underlying texture.
@@ -61,12 +64,12 @@ public:
         next set of incoming rendering operations.
 
     \note
-        The main purpose of this is to allow for the implemenatation to resize
+        The main purpose of this is to allow for the implementation to resize
         the underlying texture so that it can hold the imagery that will be
         drawn.
 
     \param sz
-        Size object describing the largest area that will be rendererd in the
+        Size object describing the largest area that will be rendered in the
         next batch of rendering operations.
 
     \exception InvalidRequestException
@@ -77,22 +80,16 @@ public:
 
     /*!
     \brief
-        Return whether rendering done on the target texture is inverted in
-        relation to regular textures.
-
-        This is intended to be used when generating geometry for rendering the
-        TextureTarget onto another surface.
-
-    \return
-        - true if the texture content should be considered as inverted
-        vertically in comparison with other regular textures.
-        - false if the texture content has the same orientation as regular
-        textures.
-        
-    \deprecated
-        This function is deprecated.
+        Return whether this TextureTarget has a stencil buffer attached or not.
+    \return 
+        - true if a stencil buffer is attached
+        - false if no stencil buffer is attached
     */
-    virtual bool isRenderingInverted() const = 0;
+    bool getUsesStencil() const;
+
+protected:
+    //! Determines if the instance has a stencil buffer attached or not
+    bool d_usesStencil;
 };
 
 } // End of  CEGUI namespace section

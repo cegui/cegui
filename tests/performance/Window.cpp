@@ -29,7 +29,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "CEGUI/Window.h"
-#include "CEGUI/Vector.h"
+#include "CEGUI/UVector.h"
 
 class DefaultWindowPerformanceTest : public PerformanceTest
 {

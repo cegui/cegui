@@ -92,28 +92,28 @@ namespace CEGUI
         \return
             The VerticalFormatting enum.
         */
-        VerticalFormatting getVerticalFormatting(const Window& wnd) const;
+        VerticalImageFormatting getVerticalFormatting(const Window& wnd) const;
 
         /*!
         \brief
-            Directly returns the vertical formatting which was set for the ImageryComponent.
+            Directly returns the vertical image formatting which was set for the ImageryComponent.
 
         \return
-            The VerticalFormatting enum.
+            The VerticalImageFormatting enum.
         */
-        VerticalFormatting getVerticalFormattingFromComponent() const;
+        VerticalImageFormatting getVerticalFormattingFromComponent() const;
 
         /*!
         \brief
-            Set the vertical formatting setting for this ImageryComponent.
+            Set the vertical image formatting setting for this ImageryComponent.
 
         \param fmt
-            One of the VerticalFormatting enumerated values.
+            One of the VerticalImageFormatting enumerated values.
 
         \return
             Nothing.
         */
-        void setVerticalFormatting(VerticalFormatting fmt);
+        void setVerticalFormatting(VerticalImageFormatting fmt);
 
         /*!
         \brief
@@ -207,7 +207,7 @@ namespace CEGUI
             Return the name of the property that will be used to determine the image for this ImageryComponent.
 
         \return
-            String object holding the name of a Propery.
+            String object holding the name of a Property.
         */
         const String& getImagePropertySource() const;
 
@@ -216,7 +216,7 @@ namespace CEGUI
             Set the name of the property that will be used to determine the image for this ImageryComponent.
 
         \param property
-            String object holding the name of a Propery.  The property should access a imageset & image specification.
+            String object holding the name of a Property.  The property should access a imageset & image specification.
 
         \return
             Nothing.
@@ -224,12 +224,14 @@ namespace CEGUI
         void setImagePropertySource(const String& property);
 
     protected:
-        // implemets abstract from base
-        void render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const;
+        void addImageRenderGeometryToWindow_impl(
+            Window& srcWindow, Rectf& destRect,
+            const CEGUI::ColourRect* modColours,
+            const Rectf* clipper, bool clipToDisplay) const override;
 
         const Image*         d_image;           //!< CEGUI::Image to be drawn by this image component.
         //! Vertical formatting to be applied when rendering the image component.
-        FormattingSetting<VerticalFormatting> d_vertFormatting;
+        FormattingSetting<VerticalImageFormatting> d_vertFormatting;
         //! Horizontal formatting to be applied when rendering the image component.
         FormattingSetting<HorizontalFormatting> d_horzFormatting;
         String  d_imagePropertyName;            //!< Name of the property to access to obtain the image to be used.

@@ -47,8 +47,7 @@ namespace CEGUI
 \brief
     Base-class for the assignable WindowRenderer object
 */
-class CEGUIEXPORT WindowRenderer :
-    public AllocatedObject<WindowRenderer>
+class CEGUIEXPORT WindowRenderer
 {
 public:
     /*************************************************************************
@@ -78,13 +77,13 @@ public:
     **************************************************************************/
     /*!
     \brief
-        Populate render cache.
+        Creates the render geometry.
 
         This method must be implemented by all window renderers and should
         perform the rendering operations needed for this widget.
         Normally using the Falagard API...
     */
-    virtual void render() = 0;
+    virtual void createRenderGeometry() = 0;
 
     /*!
     \brief
@@ -139,7 +138,7 @@ public:
         Perform any updates needed because the given font's render size has
         changed.
 
-    /note
+    \note
         This base implementation deals with updates needed for various
         definitions in the assigned widget look.  If you override, you should
         generally always call this base class implementation.
@@ -301,8 +300,7 @@ protected:
     //! type used for entries in the PropertyList.
     typedef std::pair<Property*, bool> PropertyEntry;
     //! type to use for the property list.
-    typedef std::vector<PropertyEntry
-        CEGUI_VECTOR_ALLOC(PropertyEntry)> PropertyList;
+    typedef std::vector<PropertyEntry> PropertyList;
     PropertyList d_properties;  //!< The list of properties that this windowrenderer will be handling.
 
     // Window is friend so it can manipulate our 'd_window' member directly.

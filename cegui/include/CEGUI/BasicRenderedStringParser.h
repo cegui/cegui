@@ -29,11 +29,11 @@
 
 #include "CEGUI/RenderedStringParser.h"
 
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/String.h"
 #include "CEGUI/falagard/Enums.h"
-#include <map>
+#include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -69,77 +69,26 @@ public:
     static const String FontTagName;
     static const String ImageTagName;
     static const String WindowTagName;
-    static const String VertAlignmentTagName;
+    static const String VertImageFormattingTagName;
+    static const String VertTextFormattingTagName;
     static const String PaddingTagName;
     static const String TopPaddingTagName;
     static const String BottomPaddingTagName;
     static const String LeftPaddingTagName;
     static const String RightPaddingTagName;
-    static const String AspectLockTagName;
     static const String ImageSizeTagName;
     static const String ImageWidthTagName;
     static const String ImageHeightTagName;
-    static const String TopAlignedValueName;
-    static const String BottomAlignedValueName;
-    static const String CentreAlignedValueName;
-    static const String StretchAlignedValueName;
 
     //! Constructor.
     BasicRenderedStringParser();
-    /*!
-    \brief
-        Initialising constructor.
-
-    \param initial_font
-        Reference to a String holding the name of the initial font to be used.
-
-    \param initial_colours
-        Reference to a ColourRect describing the initial colours to be used.
-    */
-    //!  \deprecated This constructor is deprecated and will be removed in the next major version */
-    BasicRenderedStringParser(const String& initial_font,
-                              const ColourRect& initial_colours);
     //! Destructor.
     virtual ~BasicRenderedStringParser();
-
-    /*!
-    \brief
-        set the initial font name to be used on subsequent calls to parse.
-
-    \param font_name
-        String object holding the name of the font.
-    */
-    //!  \deprecated This function is deprecated and will be removed in the next major version */
-    void setInitialFontName(const String& font_name);
-
-    /*!
-    \brief
-        Set the initial colours to be used on subsequent calls to parse.
-
-    \param colours
-        ColourRect object holding the colours.
-    */
-    //!  \deprecated This function is deprecated and will be removed in the next major version */
-    void setInitialColours(const ColourRect& colours);
-
-    /*!
-    \brief
-        Return the name of the initial font used in each parse.
-    */
-    //!  \deprecated This function is deprecated and will be removed in the next major version */
-    const String& getInitialFontName() const;
-
-    /*!
-    \brief
-        Return a ColourRect describing the initial colours used in each parse.
-    */
-    //!  \deprecated This function is deprecated and will be removed in the next major version */
-    const ColourRect& getInitialColours() const;
 
     // implement required interface from RenderedStringParser
     RenderedString parse(const String& input_string,
                          const Font* active_font,
-                         const ColourRect* active_colours);
+                         const ColourRect* active_colours) override;
 
 protected:
     //! append the text string \a text to the RenderedString \a rs.
@@ -159,33 +108,29 @@ protected:
     void handleFont(RenderedString& rs, const String& value);
     void handleImage(RenderedString& rs, const String& value);
     void handleWindow(RenderedString& rs, const String& value);
-    void handleVertAlignment(RenderedString& rs, const String& value);
+    void handleVertImageFormatting(RenderedString& rs, const String& value);
+    void handleVertTextFormatting(RenderedString& rs, const String& value);
     void handlePadding(RenderedString& rs, const String& value);
     void handleTopPadding(RenderedString& rs, const String& value);
     void handleBottomPadding(RenderedString& rs, const String& value);
     void handleLeftPadding(RenderedString& rs, const String& value);
     void handleRightPadding(RenderedString& rs, const String& value);
-    void handleAspectLock(RenderedString& rs, const String& value);
     void handleImageSize(RenderedString& rs, const String& value);
     void handleImageWidth(RenderedString& rs, const String& value);
     void handleImageHeight(RenderedString& rs, const String& value);
 
-    //!  \deprecated This variable is deprecated and will removed in the next major version */
-    String d_initialFontName;
-    //!  \deprecated This variable is deprecated and will removed in the next major version */
-    ColourRect d_initialColours;
     //! active padding values.
     Rectf d_padding;
     //! active colour values.
     ColourRect d_colours;
     //! active font.
     String d_fontName;
-    //! active vertical alignment
-    VerticalFormatting d_vertAlignment;
+    //! active vertical image formatting
+    VerticalImageFormatting d_vertImageFormatting = VerticalImageFormatting::BottomAligned;
+    //! active vertical image formatting
+    VerticalTextFormatting d_vertTextFormatting = VerticalTextFormatting::BottomAligned;
     //! active image size
     Sizef d_imageSize;
-    //! active 'aspect lock' state
-    bool d_aspectLock;
 
     //! true if handlers have been registered
     bool d_initialised;
@@ -193,7 +138,7 @@ protected:
     typedef void (BasicRenderedStringParser::*TagHandler)(RenderedString&,
                                                           const String&);
     //! definition of type used to despatch tag handler functions
-    typedef std::map<String, TagHandler, StringFastLessCompare> TagHandlerMap;
+    typedef std::unordered_map<String, TagHandler> TagHandlerMap;
     //! Collection to map tag names to their handler functions.
     TagHandlerMap d_tagHandlers;
 };

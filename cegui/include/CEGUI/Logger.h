@@ -31,10 +31,6 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
-#include <fstream>
-#include <sstream>
-#include <vector>
-#include <utility>
 #include "CEGUI/Singleton.h"
 
 
@@ -53,13 +49,13 @@ namespace CEGUI
 \brief
 	Enumeration of logging levels
 */
-enum LoggingLevel
+enum class LoggingLevel : int
 {
-	Errors,			//!< Only actual error conditions will be logged.
-    Warnings,       //!< Warnings will be logged as well.
-	Standard,		//!< Basic events will be logged (default level).
-	Informative,	//!< Useful tracing (object creations etc) information will be logged.
-	Insane			//!< Mostly everything gets logged (use for heavy tracing only, log WILL be big).
+	Error,          //!< Only actual error conditions will be logged.
+    Warning,        //!< LoggingLevel::Warning will be logged as well.
+	Standard,       //!< Basic events will be logged (default level).
+	Informative,    //!< Useful tracing (object creations etc) information will be logged.
+	Insane          //!< Mostly everything gets logged (use for heavy tracing only, log WILL be big).
 };
 
 /*!
@@ -70,8 +66,7 @@ enum LoggingLevel
     a object of that type before you create the CEGUI::System singleton.
 */
 class CEGUIEXPORT Logger :
-    public Singleton<Logger>,
-    public AllocatedObject<Logger>
+    public Singleton<Logger>
 {
 public:
 	/*!
@@ -122,7 +117,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void logEvent(const String& message, LoggingLevel level = Standard) = 0;
+	virtual void logEvent(const String& message, LoggingLevel level = LoggingLevel::Standard) = 0;
 
     /*!
     \brief
@@ -156,11 +151,11 @@ private:
 };
 
 /*************************************************************************
-	This macro is used for 'Insane' level logging so that those items are
+	This macro is used for 'LoggingLevel::Insane' level logging so that those items are
 	excluded from non-debug builds
 *************************************************************************/
 #if defined(DEBUG) || defined (_DEBUG)
-#	define CEGUI_LOGINSANE( message ) CEGUI::Logger::getSingleton().logEvent((message), CEGUI::Insane);
+#	define CEGUI_LOGINSANE( message ) CEGUI::Logger::getSingleton().logEvent((message), CEGUI::LoggingLevel::Insane);
 #else
 #	define CEGUI_LOGINSANE( message ) (void)0
 #endif

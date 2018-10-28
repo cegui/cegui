@@ -44,6 +44,7 @@ author:     Luca Ebach <bitbucket@lucebac.net>
 #include <GLFW/glfw3.h>
 
 static GLFWwindow* window;
+static CEGUI::InputAggregator* G_inputAggregator;
 
 CEGUI::MouseButton toCEGUIButton(int button)
 {
@@ -136,12 +137,12 @@ CEGUI::Key::Scan toCEGUIKey(int glfwKey)
 
 void charCallback(GLFWwindow*, unsigned int char_pressed)
 {
-    CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(char_pressed);
+    G_inputAggregator->injectChar(char_pressed);
 }
 
 void cursorPosCallback(GLFWwindow*, double x, double y)
 {
-    CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(x, y);
+    G_inputAggregator->injectMousePosition(x, y);
 }
 
 void keyCallback(GLFWwindow*, int key, int /*scan*/, int action, int /*mod*/)
@@ -149,11 +150,11 @@ void keyCallback(GLFWwindow*, int key, int /*scan*/, int action, int /*mod*/)
     CEGUI::Key::Scan cegui_key = toCEGUIKey(key);
     if (action == GLFW_PRESS)
     {
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(cegui_key);
+        G_inputAggregator->injectKeyDown(cegui_key);
     }
     else
     {
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp(cegui_key);
+        G_inputAggregator->injectKeyUp(cegui_key);
     }
 }
 
@@ -161,20 +162,20 @@ void mouseButtonCallback(GLFWwindow*, int button, int state, int /*mod*/)
 {
     if (state == GLFW_PRESS)
     {
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(toCEGUIButton(button));
+        G_inputAggregator->injectMouseButtonDown(toCEGUIButton(button));
     }
     else
     {
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(toCEGUIButton(button));
+        G_inputAggregator->injectMouseButtonUp(toCEGUIButton(button));
     }
 }
 
 void mouseWheelCallback(GLFWwindow*, double /*x*/, double y)
 {
     if (y < 0.f)
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(-1.f);
+        G_inputAggregator->injectMouseWheelChange(-1.f);
     else
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(+1.f);
+        G_inputAggregator->injectMouseWheelChange(+1.f);
 }
 
 void windowResizedCallback(GLFWwindow*, int width, int height)
@@ -242,10 +243,12 @@ void initCEGUI()
 
     // create renderer and enable extra states
     OpenGLRenderer& cegui_renderer = OpenGLRenderer::create(Sizef(800.f, 600.f));
-    cegui_renderer.enableExtraStateSettings(true);
 
     // create CEGUI system object
     CEGUI::System::create(cegui_renderer);
+
+    G_inputAggregator = new InputAggregator(&System::getSingletonPtr()->getDefaultGUIContext());
+    G_inputAggregator->initialise();
 
     // setup resource directories
     DefaultResourceProvider* rp = static_cast<DefaultResourceProvider*>(System::getSingleton().getResourceProvider());
@@ -275,7 +278,7 @@ void initCEGUI()
 
     // set default font and cursor image and tooltip type
     System::getSingleton().getDefaultGUIContext().setDefaultFont("DejaVuSans-10");
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    System::getSingleton().getDefaultGUIContext().getCursor().setDefaultImage("TaharezLook/MouseArrow");
     System::getSingleton().getDefaultGUIContext().setDefaultTooltipType("TaharezLook/Tooltip");
 }
 
@@ -351,7 +354,8 @@ int main()
         glfwPollEvents();
     }
 
-    // destroy system and renderer
+    delete G_inputAggregator;
+    G_inputAggregator = 0;
     System::destroy();
     OpenGLRenderer::destroy(*renderer);
     renderer = 0;

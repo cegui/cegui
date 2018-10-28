@@ -40,11 +40,11 @@ namespace CEGUI
 const float OpenGLFBOTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
-OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRendererBase& owner) :
-    OpenGLTextureTarget(owner)
+OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer) :
+    OpenGLTextureTarget(owner, addStencilBuffer)
 {
     if (!GLEW_EXT_framebuffer_object)
-        CEGUI_THROW(InvalidRequestException("Hardware does not support FBO"));
+        throw InvalidRequestException("Hardware does not support FBO");
 
     // no need to initialise d_previousFrameBuffer here, it will be
     // initialised in activate()
@@ -52,7 +52,7 @@ OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRendererBase& owner) :
     initialiseRenderTexture();
 
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
+    OpenGLFBOTextureTarget::declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//
@@ -146,7 +146,7 @@ void OpenGLFBOTextureTarget::initialiseRenderTexture()
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
                  static_cast<GLsizei>(DEFAULT_SIZE),
                  static_cast<GLsizei>(DEFAULT_SIZE),
-                 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+                 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
                               GL_TEXTURE_2D, d_texture, 0);
 
@@ -185,7 +185,7 @@ void OpenGLFBOTextureTarget::resizeRenderTexture()
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
                  static_cast<GLsizei>(sz.d_width),
                  static_cast<GLsizei>(sz.d_height),
-                 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+                 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     clear();
 
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size

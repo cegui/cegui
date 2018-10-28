@@ -274,7 +274,7 @@ RGB_Colour ColourPickerConversions::toRGB(const HSV_Colour& colour)
     float g = 0.0f;
     float b = 0.0f;
 
-    int i = (int)(colour.H * 6.0f);
+    int i = static_cast<int>(colour.H * 6.0f);
     float f = colour.H * 6 - i;
     float p = colour.V * (1 - colour.S);
     float q = colour.V * (1 - f * colour.S);
@@ -360,7 +360,7 @@ HSV_Colour ColourPickerConversions::toHSV(RGB_Colour colour)
         max_comp = g;
     }
 
-    float min_comp = ceguimin(ceguimin(r, g), b);
+    float min_comp = std::min(std::min(r, g), b);
     float h;
     float s;
     float v = max_comp;

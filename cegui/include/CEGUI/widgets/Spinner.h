@@ -54,7 +54,7 @@ namespace CEGUI
         \brief
             Enumerated type specifying possible input and/or display modes for the spinner.
         */
-        enum TextInputMode
+        enum class TextInputMode : int
         {
             FloatingPoint,  //!< Floating point decimal.
             Integer,        //!< Integer decimal.
@@ -130,7 +130,7 @@ namespace CEGUI
 	    \return
 		    Nothing
 	    */
-        void initialiseComponents(void);
+        void initialiseComponents(void) override;
 
 
         /*************************************************************************
@@ -321,9 +321,9 @@ namespace CEGUI
         /*************************************************************************
         	Overrides for Event handler methods
         *************************************************************************/
-        virtual	void onFontChanged(WindowEventArgs& e);
-        virtual void onTextChanged(WindowEventArgs& e);
-        virtual void onActivated(ActivationEventArgs& e);
+        void onFontChanged(WindowEventArgs& e) override;
+        void onTextChanged(WindowEventArgs& e) override;
+        void onActivated(ActivationEventArgs& e) override;
 
         /*************************************************************************
         	New Event handler methods
@@ -441,37 +441,37 @@ public:
     {
         if (str == "FloatingPoint")
         {
-            return Spinner::FloatingPoint;
+            return Spinner::TextInputMode::FloatingPoint;
         }
         else if (str == "Hexadecimal")
         {
-            return Spinner::Hexadecimal;
+            return Spinner::TextInputMode::Hexadecimal;
         }
         else if (str == "Octal")
         {
-            return Spinner::Octal;
+            return Spinner::TextInputMode::Octal;
         }
         else
         {
-            return Spinner::Integer;
+            return Spinner::TextInputMode::Integer;
         }
     }
 
     static string_return_type toString(pass_type val)
     {
-        if (val == Spinner::Octal)
+        if (val == Spinner::TextInputMode::Octal)
         {
             return "Octal";
         }
-        else if (val == Spinner::FloatingPoint)
+        else if (val == Spinner::TextInputMode::FloatingPoint)
         {
             return "FloatingPoint";
         }
-        else if (val == Spinner::Hexadecimal)
+        else if (val == Spinner::TextInputMode::Hexadecimal)
         {
             return "Hexadecimal";
         }
-        else if (val == Spinner::Integer)
+        else if (val == Spinner::TextInputMode::Integer)
         {
             return "Integer";
         }

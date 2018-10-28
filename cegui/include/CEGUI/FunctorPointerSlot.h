@@ -38,14 +38,14 @@ namespace CEGUI
     object pointer.
 */
 template<typename T>
-class FunctorPointerSlot : public SlotFunctorBase
+class FunctorPointerSlot : public SlotFunctorBase<EventArgs>
 {
 public:
     FunctorPointerSlot(T* functor) :
         d_functor(functor)
     {}
 
-    virtual bool operator()(const EventArgs& args)
+    bool operator()(const EventArgs& args) override
     {
         return (*d_functor)(args);
     }
