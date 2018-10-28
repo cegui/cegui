@@ -75,8 +75,7 @@ ListViewItemRenderedString::ListViewItemRenderedString(const ListViewItemRendere
 
 ListViewItemRenderedString::~ListViewItemRenderedString()
 {
-    if (d_formattedString)
-        delete d_formattedString;
+    delete d_formattedString;
 }
 
 void ListViewItemRenderedString::setStringAndFormatting(const RenderedString& string, HorizontalTextFormatting h_fmt)
@@ -84,7 +83,7 @@ void ListViewItemRenderedString::setStringAndFormatting(const RenderedString& st
     d_horzFormat = h_fmt;
     d_string = string;
 
-    assert(d_formattedString == nullptr);
+    delete d_formattedString;
 
     switch(d_horzFormat)
     {
