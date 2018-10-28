@@ -31,7 +31,6 @@
 
 #include "CEGUI/views/ItemView.h"
 #include <vector>
-#include <memory>
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
