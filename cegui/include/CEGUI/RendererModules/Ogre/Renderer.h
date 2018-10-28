@@ -277,8 +277,11 @@ public:
      http://www.ogre3d.org/forums/viewtopic.php?f=25&t=82911&sid=d2694a87677c7d3b56794aa555b438ee&start=25#p536494
 
     changed to use PsoCacheHelper
+
+    \param render_operation
+        The render operation to be executed
     */
-    void bindPSO();
+    void bindPSO(const Ogre::v1::RenderOperation render_operation);
 
     /*!
     Called from shader wrapper. Sets the current GPU programs

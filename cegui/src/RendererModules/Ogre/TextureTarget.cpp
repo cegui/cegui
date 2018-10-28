@@ -149,4 +149,10 @@ String OgreTextureTarget::generateTextureName()
 
 } // End of  CEGUI namespace section
 
+#ifdef __APPLE__
+
+template class CEGUI::OgreRenderTarget<CEGUI::RenderTarget>;
+template class CEGUI::OgreRenderTarget<CEGUI::TextureTarget>;
+
+#endif
 

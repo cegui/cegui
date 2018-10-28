@@ -34,9 +34,11 @@
 #include "CEGUI/BitmapImage.h"
 #include "CEGUI/FontSizeUnit.h"
 #include "CEGUI/FreeTypeFontGlyph.h"
+#include "CEGUI/FreeTypeFontLayer.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include FT_STROKER_H
 
 
 // Start of CEGUI namespace section
@@ -85,12 +87,8 @@ public:
             maintain the same physical size (which is calculated by using the
             native resolution setting).
     
-        \param native_horz_res
-            The horizontal native resolution value.  This is only significant when
-            auto scaling is enabled.
-    
-        \param native_vert_res
-            The vertical native resolution value.  This is only significant when
+        \param native_res
+            The native resolution value.  This is only significant when
             auto scaling is enabled.
     
         \param specific_line_spacing
@@ -101,6 +99,7 @@ public:
     FreeTypeFont(const String& font_name, const float size,
                  const FontSizeUnit sizeUnit,
                  const bool anti_aliased, const String& font_filename,
+                 FreeTypeFontLayerVector  fontLayers = FreeTypeFontLayerVector{FreeTypeFontLayer()},
                  const String& resource_group = "",
                  const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
                  const Sizef& native_res = Sizef(640.0f, 480.0f),
@@ -132,7 +131,7 @@ public:
     /*!
     \brief
         Sets the Font size unit of this font.
-    \param size
+    \param sizeUnit
         The font size unit.
     */
     void setSizeUnit(FontSizeUnit sizeUnit);
@@ -284,11 +283,15 @@ protected:
     void handleFontSizeOrFontUnitChange();
 
     //! Rasterises the glyph and adds it into a glyph atlas texture
-    void rasterise(FreeTypeFontGlyph* glyph) const;
+    void rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap,
+        int glyphLeft, int glyphTop, int glyphWidth, int glyphHeight,
+        unsigned int layer) const;
     
     //! Helper functions for rasterisation
     void addRasterisedGlyphToTextureAndSetupGlyphImage(
-        FreeTypeFontGlyph* glyph, Texture* texture, int glyphWidth, int glyphHeight,
+        FreeTypeFontGlyph* glyph, Texture* texture,
+        FT_Bitmap& glyphBitmap, int glyphLeft, int glyphTop,
+        int glyphWidth, int glyphHeight, unsigned int layer,
         const TextureGlyphLine& glyphTexLine) const;
 
     void findFittingSpotInGlyphTextureLines(int glyphWidth, int glyphHeight,
@@ -300,6 +303,11 @@ protected:
 
     void createGlyphAtlasTexture() const;
     static std::vector<argb_t> createGlyphTextureData(FT_Bitmap& glyph_bitmap);
+
+    //! Converts the FreeTypeLineCap to the assocated freetype library data type value
+    static FT_Stroker_LineCap getLineCap(FreeTypeLineCap line_cap);
+    //! Converts the FreeTypeLineLine to the assocated freetype library data type value
+    static FT_Stroker_LineJoin getLineJoin(FreeTypeLineJoin line_join);
 
     const FreeTypeFontGlyph* getPreparedGlyph(char32_t currentCodePoint) const override;
     void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;
@@ -313,13 +321,24 @@ protected:
 #ifdef CEGUI_USE_RAQM
     std::vector<GeometryBuffer*> layoutUsingRaqmAndCreateRenderGeometry(
         const String& text, const Rectf* clip_rect, const ColourRect& colours,
-        const float space_extra, ImageRenderSettings imgRenderSettings,
+        float space_extra, ImageRenderSettings imgRenderSettings,
+        DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
+
+    std::vector<GeometryBuffer*> layoutUsingRaqmAndCreateRenderGeometry(
+        const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
+        float space_extra, ImageRenderSettings imgRenderSettings,
         DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
 #endif
 
     std::vector<GeometryBuffer*> layoutUsingFreetypeAndCreateRenderGeometry(
         const String& text, const Rectf* clip_rect, const ColourRect& colours,
-        const float space_extra, ImageRenderSettings imgRenderSettings,
+        float space_extra, ImageRenderSettings imgRenderSettings,
+        glm::vec2& penPosition) const;
+
+
+    std::vector<GeometryBuffer*> layoutUsingFreetypeAndCreateRenderGeometry(
+        const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
+        float space_extra, ImageRenderSettings imgRenderSettings,
         glm::vec2& penPosition) const;
 
     //! If non-zero, the overridden line spacing that we're to report.
@@ -357,6 +376,9 @@ protected:
     mutable std::vector<argb_t> d_lastTextureBuffer;
     //! Contains information about the extents of each line of glyphs of the latest texture
     mutable std::vector<TextureGlyphLine> d_textureGlyphLines;
+
+    //! collection of outline image layers defined for this font.
+    mutable FreeTypeFontLayerVector d_fontLayers;
 };
 
 } // End of  CEGUI namespace section

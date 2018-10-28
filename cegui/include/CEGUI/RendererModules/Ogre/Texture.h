@@ -89,7 +89,7 @@ protected:
     //! destructor.
     virtual ~OgreTexture();
     //! construct an empty texture
-    void createEmptyOgreTexture();
+    void createEmptyOgreTexture(PixelFormat pixel_format);
     //! release the underlying Ogre texture.
     void freeOgreTexture();
     //! updates cached scale value used to map pixels to texture co-ords.

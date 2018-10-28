@@ -73,4 +73,9 @@ bool OpenGLViewportTarget::isImageryCache() const
 
 } // End of  CEGUI namespace section
 
+#ifdef __APPLE__
 
+template class CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>;
+template class CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>;
+
+#endif
