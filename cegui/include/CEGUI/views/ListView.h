@@ -46,7 +46,7 @@ struct ListViewItemRenderedString {
     ListViewItemRenderedString(const ListViewItemRenderedString&);
     ~ListViewItemRenderedString();
 
-    void setStringAndFromating(const RenderedString& string, HorizontalTextFormatting h_fmt);
+    void setStringAndFormatting(const RenderedString& string, HorizontalTextFormatting h_fmt);
     FormattedRenderedString* getFormattedString();
 
 private:

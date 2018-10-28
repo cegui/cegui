@@ -70,7 +70,7 @@ ListViewItemRenderedString::ListViewItemRenderedString() :
 ListViewItemRenderedString::ListViewItemRenderedString(const ListViewItemRenderedString& src) :
     d_formattedString(nullptr)
 {
-    setStringAndFromating(src.d_string, src.d_horzFormat);
+    setStringAndFormatting(src.d_string, src.d_horzFormat);
 }
 
 ListViewItemRenderedString::~ListViewItemRenderedString()
@@ -79,12 +79,12 @@ ListViewItemRenderedString::~ListViewItemRenderedString()
         delete d_formattedString;
 }
 
-void ListViewItemRenderedString::setStringAndFromating(const RenderedString& string, HorizontalTextFormatting h_fmt)
+void ListViewItemRenderedString::setStringAndFormatting(const RenderedString& string, HorizontalTextFormatting h_fmt)
 {
     d_horzFormat = h_fmt;
     d_string = string;
 
-    assert(d_formattedString != nullptr);
+    assert(d_formattedString == nullptr);
 
     switch(d_horzFormat)
     {
@@ -294,7 +294,7 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index,
 {
     String text = d_itemModel->getData(index);
 
-    item.d_string.setStringAndFromating(
+    item.d_string.setStringAndFormatting(
         getRenderedStringParser().parse(text, getFont(), &d_textColourRect),
         d_horzFormatting
     );
