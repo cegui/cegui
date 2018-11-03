@@ -123,7 +123,7 @@ void MouseCursor::setDefaultImage(const Image* image)
         return;
 
 	d_defaultCursorImage = image;
-    d_cachedGeometryValid = d_cursorImage != 0;
+    d_cachedGeometryValid = d_cachedGeometryValid && d_cursorImage != 0;
 
 	MouseCursorEventArgs args(this);
 	args.image = image;
