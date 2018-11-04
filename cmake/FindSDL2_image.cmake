@@ -33,7 +33,7 @@ FIND_PATH(SDL2IMAGE_H_PATH
   HINTS
   $ENV{SDL2IMAGEDIR}
   $ENV{SDL2DIR}
-  PATH_SUFFIXES include
+  PATH_SUFFIXES include include/SDL2
   PATHS
   ~/Library/Frameworks
   /Library/Frameworks

@@ -36,11 +36,14 @@
 #include "CEGUISamplesConfig.h"
 #ifdef CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE
 
-#include <OgreWindowEventUtilities.h>
 #include "CEGuiOgreBaseApplication.h"
 #include "SamplesFrameworkBase.h"
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
 #include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
+
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+#include <Bites/OgreBitesConfigDialog.h>
+#endif
 
 //----------------------------------------------------------------------------//
 CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
@@ -66,7 +69,11 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
     setupDefaultConfigIfNeeded();
 
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+    if (d_ogreRoot->showConfigDialog(OgreBites::getNativeConfigDialog()))
+#else
     if (d_ogreRoot->showConfigDialog())
+#endif
     {
         // initialise system according to user options.
         d_window = d_ogreRoot->initialise(true);
