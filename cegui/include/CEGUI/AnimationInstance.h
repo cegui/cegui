@@ -87,7 +87,7 @@ public:
     //! fired when animation instance unpauses
     static const String EventAnimationUnpaused;
 	//! fired when animation instance finishes
-	static const String EventAnimationFinished;
+    static const String EventAnimationFinished;
     //! fired when animation instance ends
     static const String EventAnimationEnded;
     //! fired when animation instance loops
