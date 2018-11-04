@@ -29,6 +29,7 @@
 #include "CEGUI/RendererModules/Ogre/TextureTarget.h"
 #include "CEGUI/RendererModules/Ogre/Texture.h"
 #include "CEGUI/RendererModules/Ogre/WindowTarget.h"
+#include "CEGUI/RendererModules/Ogre/OgreMacros.h"
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
@@ -60,6 +61,12 @@
 #ifdef CEGUI_USE_OGRE_HLMS
 #include <OgreHlmsManager.h>
 #include <OgreHlmsDatablock.h>
+#endif
+
+#if OGRE_VERSION > 0x11000
+#ifdef OGRE_BUILD_COMPONENT_RTSHADERSYSTEM
+#include <RTShaderSystem/OgreRTShaderConfig.h>
+#endif
 #endif
 
 // Start of CEGUI namespace section
@@ -785,7 +792,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     // Check if built with RT Shader System and if it is: Check if fixed function pipeline is enabled
     #else
         #if defined RTSHADER_SYSTEM_BUILD_CORE_SHADERS
-            bool isFixedFunctionEnabled = d_pimpl->d_renderSystem->getFixedPipelineEnabled();
+            bool isFixedFunctionEnabled = d_pimpl->d_renderSystem->getCapabilities()->hasCapability(Ogre::RSC_FIXED_FUNCTION);
         #else
             bool isFixedFunctionEnabled = true;
         #endif
@@ -913,7 +920,7 @@ void OgreRenderer::initialiseShaders()
         }
         else// If no shader was compatible
         {
-            d_pimpl->d_vertexShader.setNull();
+            OGRE_RESET(d_pimpl->d_vertexShader);
             CEGUI_THROW(RendererException(
                 "OgreRenderer::initialiseShaders: No supported syntax - "
                 "unable to compile '__cegui_internal_vs__'"));
@@ -964,8 +971,8 @@ void OgreRenderer::initialiseShaders()
         }
         else
         {
-            d_pimpl->d_vertexShader.setNull();
-            d_pimpl->d_pixelShader.setNull();
+            OGRE_RESET(d_pimpl->d_vertexShader);
+            OGRE_RESET(d_pimpl->d_pixelShader);
 
             CEGUI_THROW(RendererException(
                 "OgreRenderer::initialiseShaders: No supported syntax - "
@@ -996,10 +1003,10 @@ void OgreRenderer::cleanupShaders()
     if (d_pimpl->d_hlmsSamplerblock != NULL)
         hlmsManager->destroySamplerblock(d_pimpl->d_hlmsSamplerblock);
 #endif
-    d_pimpl->d_pixelShaderParameters.setNull();
-    d_pimpl->d_vertexShaderParameters.setNull();
-    d_pimpl->d_pixelShader.setNull();
-    d_pimpl->d_vertexShader.setNull();
+    OGRE_RESET(d_pimpl->d_pixelShaderParameters);
+    OGRE_RESET(d_pimpl->d_vertexShaderParameters);
+    OGRE_RESET(d_pimpl->d_pixelShader);
+    OGRE_RESET(d_pimpl->d_vertexShader);
 }
 
 //----------------------------------------------------------------------------//

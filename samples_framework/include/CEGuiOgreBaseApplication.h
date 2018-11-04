@@ -35,6 +35,12 @@
 #include <OIS.h>
 #include <OgreFrameListener.h>
 
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+#include <Bites/OgreWindowEventUtilities.h>
+#else
+#include <OgreWindowEventUtilities.h>
+#endif
+
 #include <OgreBuildSettings.h>
 #ifdef OGRE_STATIC_LIB
 #   ifdef OGRE_BUILD_RENDERSYSTEM_D3D9
@@ -156,7 +162,11 @@ protected:
 };
 
 //! window event listener class we use to hear abour window resizing
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+class WndEvtListener : public OgreBites::WindowEventListener
+#else
 class WndEvtListener : public Ogre::WindowEventListener
+#endif
 {
 public:
     WndEvtListener(OIS::Mouse* mouse);
