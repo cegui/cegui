@@ -225,7 +225,7 @@ void GUIContext::createDefaultTooltipWindowInstance() const
 
     if (d_defaultTooltipObject)
     {
-		d_defaultTooltipObject->setAutoWindow(true);
+        d_defaultTooltipObject->setAutoWindow(true);
         d_defaultTooltipObject->setWritingXMLAllowed(false);
         d_weCreatedTooltipObject = true;
     }
