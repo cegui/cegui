@@ -1496,7 +1496,7 @@ namespace CEGUI
     {
         if (d_widgetlook == 0)
         {
-            throwExceptionNotChildOfNode(d_widgetlook, StateImageryElement, d_stateimagery->getName(), WidgetLookElement);
+            throwExceptionNotChildOfNode(d_widgetlook, StateImageryElement, d_stateimagery ? d_stateimagery->getName() : "", WidgetLookElement);
         }
 
         if (d_stateimagery)
