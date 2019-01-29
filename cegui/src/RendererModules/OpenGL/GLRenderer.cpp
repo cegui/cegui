@@ -186,6 +186,7 @@ OpenGLRenderer::OpenGLRenderer(const Sizef& display_size,
     initialiseRendererIDString();
     initialiseGLExtensions();
     initialiseTextureTargetFactory(tt_type);
+    initialiseShaderWrappers();
 
     // we _really_ need separate rgb/alpha blend modes, if this support is not
     // available, add a note to the renderer ID string so that this fact is
