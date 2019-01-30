@@ -83,6 +83,9 @@ void CEGuiGLFWSharedBase::createGLFWWindow()
     glfwWindowHint(GLFW_ALPHA_BITS,    0);
     glfwWindowHint(GLFW_DEPTH_BITS,   24);
     glfwWindowHint(GLFW_STENCIL_BITS,  0);
+#if defined(_WIN32) || defined(__WIN32__)
+    glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_NATIVE_CONTEXT_API);
+#endif
     if (!(d_window = glfwCreateWindow(s_defaultWindowWidth,
             s_defaultWindowHeight, d_windowTitle, 0, 0)))
     {
