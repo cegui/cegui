@@ -61,6 +61,8 @@ public:
     String getText() const { return d_text; }
     void setText(const String& val) { d_text = val; }
 
+    virtual String getTooltipText() const { return {}; }
+
     String getIcon() const { return d_icon; }
     void setIcon(const String& icon) { d_icon = icon; }
 
@@ -398,7 +400,7 @@ String GenericItemModel<TGenericItem>::getData(const ModelIndex& model_index,
     GenericItem* item = static_cast<GenericItem*>(model_index.d_modelData);
     if (role == ItemDataRole::Text) return item->getText();
     if (role == ItemDataRole::Icon) return item->getIcon();
-    if (role == ItemDataRole::Tooltip) return "Tooltip for " + item->getText();
+    if (role == ItemDataRole::Tooltip) return item->getTooltipText();
 
     return "";
 }
