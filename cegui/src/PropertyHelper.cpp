@@ -221,7 +221,7 @@ PropertyHelper<float>::fromString(const String& str)
 {
     float val = 0.0f;
 
-    if (str.empty())
+    if (str.empty() || str == "-")
         return val;
 
     std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);
@@ -596,7 +596,7 @@ PropertyHelper<double>::fromString(const String& str)
 {
     double val = 0.0;
 
-    if (str.empty())
+    if (str.empty() || str == "-")
         return val;
 
     std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);
