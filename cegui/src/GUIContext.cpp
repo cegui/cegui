@@ -268,11 +268,14 @@ void GUIContext::drawWindowContentToTarget()
 //----------------------------------------------------------------------------//
 void GUIContext::renderWindowHierarchyToSurfaces()
 {
-    RenderingSurface& rs = d_rootWindow->getTargetRenderingSurface();
-    rs.clearGeometry();
+    RenderingSurface* rs = d_rootWindow->getTargetRenderingSurface();
+	if (!rs)
+		return;
 
-    if (rs.isRenderingWindow())
-        static_cast<RenderingWindow&>(rs).getOwner().clearGeometry();
+    rs->clearGeometry();
+
+    if (rs->isRenderingWindow())
+        static_cast<RenderingWindow*>(rs)->getOwner().clearGeometry();
 
     d_rootWindow->draw();
 }

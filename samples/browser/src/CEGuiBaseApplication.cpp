@@ -69,6 +69,7 @@ CEGuiBaseApplication::CEGuiBaseApplication() :
     d_renderer(nullptr),
     d_imageCodec(nullptr),
     d_resourceProvider(nullptr),
+	d_context(nullptr),
     d_logoGeometry(0),
     d_FPSGeometry(0),
     d_FPSElapsed(1.0f),
@@ -121,6 +122,9 @@ bool CEGuiBaseApplication::init(SampleBrowserBase* sampleApp,
     CEGUI::System::create(*d_renderer, d_resourceProvider, nullptr, d_imageCodec, nullptr,
                           "", logFile);
 
+    // create viewport-based CEGUI context for the main window
+	d_context = &CEGUI::System::getSingleton().createGUIContext(d_renderer->getDefaultRenderTarget());
+
     // initialise resource system
     initDataPathPrefix(dataPathPrefixOverride);
     initialiseResourceGroupDirectories();
@@ -147,11 +151,10 @@ bool CEGuiBaseApplication::init(SampleBrowserBase* sampleApp,
     updateLogoGeometryRotation();
 
     // clearing this queue actually makes sure it's created(!)
-    CEGUI::System::getSingleton().getDefaultGUIContext().clearGeometry(CEGUI::RenderQueueID::Overlay);
+	d_context->clearGeometry(CEGUI::RenderQueueID::Overlay);
 
     // subscribe handler to render overlay items
-    CEGUI::System::getSingleton().getDefaultGUIContext().
-        subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
+	d_context->subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
             CEGUI::Event::Subscriber(&CEGuiBaseApplication::sampleBrowserOverlayHandler,
                                      this));
 

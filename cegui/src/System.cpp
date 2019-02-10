@@ -215,10 +215,6 @@ System::System(Renderer& renderer,
     // create the core system singleton objects
     createSingletons();
 
-    // create the first GUIContext using the renderers default target,
-    // this will become the default GUIContext.
-    createGUIContext(d_renderer->getDefaultRenderTarget());
-
     // add the window factories for the core window types
     addStandardWindowFactories();
 
@@ -1000,13 +996,21 @@ void System::destroyRegexMatcher(RegexMatcher* rm) const
 }
 
 //----------------------------------------------------------------------------//
-GUIContext& System::getDefaultGUIContext() const
+void System::setDefaultFontName(const String& name)
 {
-    if (d_guiContexts.empty())
-        throw InvalidRequestException("Requesting the DefaultGUIContext, but no DefaultGUIContext is available. "
-        "The list of GUIContexts is empty.");
+	d_defaultFontName = name;
+}
 
-    return *d_guiContexts.front();
+//----------------------------------------------------------------------------//
+void System::setDefaultCursorName(const String& name)
+{
+	d_defaultCursorName = name;
+}
+
+//----------------------------------------------------------------------------//
+void System::setDefaultTooltipType(const String& tooltip_type)
+{
+	d_defaultTooltipType = tooltip_type;
 }
 
 //----------------------------------------------------------------------------//
@@ -1014,6 +1018,13 @@ GUIContext& System::createGUIContext(RenderTarget& rt)
 {
     GUIContext* c = new GUIContext(rt);
     d_guiContexts.push_back(c);
+
+	if (!d_defaultFontName.empty())
+		c->setDefaultFont(d_defaultFontName);
+	if (!d_defaultCursorName.empty())
+		c->getCursor().setDefaultImage(d_defaultCursorName);
+	if (!d_defaultTooltipType.empty())
+		c->setDefaultTooltipType(d_defaultTooltipType);
 
     return *c;
 }
