@@ -72,7 +72,7 @@ void OpenGLInfo::verForce(GLint verMajor_, GLint verMinor_)
 void OpenGLInfo::initTypeAndVer()
 {
 #if defined CEGUI_USE_EPOXY
-    d_type = epoxy_is_desktop_gl() ? TYPE_DESKTOP : TYPE_ES;
+    d_type = epoxy_is_desktop_gl() ? Type::TypeDesktop : Type::TypeEs;
     if (d_verMajorForce >= 0)
     {
         d_verMajor = d_verMajorForce;

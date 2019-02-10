@@ -200,22 +200,22 @@ CEGUI::MouseButton SDLtoCEGUIMouseButton(const Uint8& button)
     switch (button)
     {
     case SDL_BUTTON_LEFT:
-        return LeftButton;
+        return MouseButton::Left;
         
     case SDL_BUTTON_MIDDLE:
-        return MiddleButton;
+        return MouseButton::Middle;
 
     case SDL_BUTTON_RIGHT:
-        return RightButton;
+        return MouseButton::Right;
 
     case SDL_BUTTON_X1:
-        return X1Button;
+        return MouseButton::X1;
 
     case SDL_BUTTON_X2:
-        return X2Button;
+        return MouseButton::X2;
 
     default:
-        return NoButton;
+        return MouseButton::Invalid;
     }
 }
 
