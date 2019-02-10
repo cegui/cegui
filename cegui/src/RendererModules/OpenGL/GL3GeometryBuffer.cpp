@@ -204,6 +204,9 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes() const
             break;
         }
     }
+    
+    // this is also called when a layout is loaded in user code, so we should not keep the buffer bound (can cause misleading error messages like GL_OUT_OF_MEMORY with glDrawArrays)
+    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 
