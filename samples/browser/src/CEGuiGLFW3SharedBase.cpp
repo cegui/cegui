@@ -83,6 +83,10 @@ void CEGuiGLFWSharedBase::createGLFWWindow()
     glfwWindowHint(GLFW_ALPHA_BITS,    0);
     glfwWindowHint(GLFW_DEPTH_BITS,   24);
     glfwWindowHint(GLFW_STENCIL_BITS,  0);
+#ifdef DEBUG
+    // a debug OpenGL context may have additional error and performance issue reporting functionality
+    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
+#endif
     if (!(d_window = glfwCreateWindow(s_defaultWindowWidth,
             s_defaultWindowHeight, d_windowTitle, 0, 0)))
     {
