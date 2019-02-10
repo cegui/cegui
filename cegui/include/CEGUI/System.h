@@ -216,8 +216,6 @@ public:
     */
     Clipboard* getClipboard() const         {return d_clipboard;}
 
-    GUIContext& getDefaultGUIContext() const;
-
     /*!
     \brief
         Depending upon the internal state, for each GUIContext this may either
@@ -439,6 +437,33 @@ public:
     */
     static const String& getDefaultImageCodecName();
 
+	/*!
+	\brief
+	Set the default font to be used by all new GUIContext instances
+
+	\param name
+	String object containing the name of the font
+	*/
+	void setDefaultFontName(const String& name);
+
+	/*!
+	\brief
+	Set the default cursor to be used by all new GUIContext instances
+
+	\param name
+	String object containing the name of the cursor
+	*/
+	void setDefaultCursorName(const String& name);
+
+	/*!
+	\brief
+	Set the default tooltip type to be used by all new GUIContext instances
+
+	\param name
+	String object containing the type name of the tooltip
+	*/
+	void setDefaultTooltipType(const String& tooltip_type);
+
     /*!
     \brief
         Notification function to be called when the main display changes size.
@@ -649,6 +674,10 @@ protected:
     bool d_ourLogger;
     //! currently set global RenderedStringParser.
     RenderedStringParser* d_customRenderedStringParser;
+
+	String d_defaultFontName;
+	String d_defaultCursorName;
+	String d_defaultTooltipType;
 
     typedef std::vector<GUIContext*> GUIContextCollection;
     GUIContextCollection d_guiContexts;

@@ -123,8 +123,7 @@ bool SampleBrowser::initialise(const CEGUI::String& logFile,
         initialiseLoadScreenLayout();
         loadSamples();
 
-        d_systemInputAggregator = new InputAggregator(
-            &CEGUI::System::getSingletonPtr()->getDefaultGUIContext());
+        d_systemInputAggregator = new InputAggregator(d_baseApp->getMainWindowGUIContext());
         d_systemInputAggregator->initialise();
 
         return true;
@@ -152,14 +151,14 @@ void SampleBrowser::initialiseLoadScreenLayout()
     FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
 
-    CEGUI::System::getSingleton().getDefaultGUIContext().setDefaultFont(defaultFont);
+	d_baseApp->getMainWindowGUIContext()->setDefaultFont(defaultFont);
 
     SchemeManager::getSingleton().createFromFile("SampleBrowser.scheme");
 
     WindowManager& winMgr(WindowManager::getSingleton());
     Window* loadScreenRoot =
         winMgr.loadLayoutFromFile("SampleBrowserLoadScreen.layout");
-    System::getSingleton().getDefaultGUIContext().setRootWindow(loadScreenRoot);
+	d_baseApp->getMainWindowGUIContext()->setRootWindow(loadScreenRoot);
 
     d_loadingProgressBar = static_cast<CEGUI::ProgressBar*>(
         loadScreenRoot->getChild("LoadScreenProgressBar"));
@@ -285,9 +284,7 @@ void SampleBrowser::update(float passedTime)
     {
         init = updateInitialisationStep();
 
-        CEGUI::GUIContext& defaultGUIContext(
-            CEGUI::System::getSingleton().getDefaultGUIContext());
-        defaultGUIContext.injectTimePulse(passedTime);
+        d_baseApp->getMainWindowGUIContext()->injectTimePulse(passedTime);
     }
     else
     {
@@ -298,9 +295,7 @@ void SampleBrowser::update(float passedTime)
         {
             updateSamples(passedTime);
 
-            CEGUI::GUIContext& defaultGUIContext(
-                CEGUI::System::getSingleton().getDefaultGUIContext());
-            defaultGUIContext.injectTimePulse(passedTime);
+			d_baseApp->getMainWindowGUIContext()->injectTimePulse(passedTime);
         }
         else
         {
@@ -339,7 +334,7 @@ void SampleBrowser::renderGUIContexts()
         renderSampleGUIContexts();
 
         CEGUI::System& gui_system(CEGUI::System::getSingleton());
-        gui_system.getDefaultGUIContext().draw();
+		d_baseApp->getMainWindowGUIContext()->draw();
     }
     else
     {
@@ -371,8 +366,7 @@ void SampleBrowser::handleStartDisplaySample(CEGUI::Window* sampleWindow)
 
     //! We manually set the cursor to where it was in the overview
     sampleContext->getCursor().setPosition(
-        CEGUI::System::getSingleton().getDefaultGUIContext().getCursor().
-            getPosition());
+		d_baseApp->getMainWindowGUIContext()->getCursor().getPosition());
 
     d_selectedSampleData = correspondingSampleData;
 
@@ -393,7 +387,7 @@ void SampleBrowser::stopDisplaySample()
     sampleGUIContext->getRootWindow()->removeChild(d_sampleExitButton);
     d_selectedSampleData->setGUIContextRTT();
 
-    CEGUI::System::getSingleton().getDefaultGUIContext().getCursor().
+	d_baseApp->getMainWindowGUIContext()->getCursor().
         setPosition(sampleGUIContext->getCursor().getPosition());
 
     d_selectedSampleData = nullptr;
@@ -541,11 +535,11 @@ bool SampleBrowser::updateInitialisationStep()
 //----------------------------------------------------------------------------//
 void SampleBrowser::initialisationFinalisation()
 {
-    System::getSingleton().getDefaultGUIContext().getCursor().
+	d_baseApp->getMainWindowGUIContext()->getCursor().
         setDefaultImage("SampleBrowserSkin/MouseArrow");
     d_samplesWinMgr->setWindowRatio(d_appWindowWidth / static_cast<float>(d_appWindowHeight));
 
-    System::getSingleton().getDefaultGUIContext().setRootWindow(d_root);
+	d_baseApp->getMainWindowGUIContext()->setRootWindow(d_root);
 
     if (d_samples.size() > 0)
     {

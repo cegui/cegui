@@ -469,11 +469,11 @@ public:
     static const String TooltipNameSuffix;
 
     // XML element and attribute names that relate to Window.
-	static const String WindowXMLElementName;
+    static const String WindowXMLElementName;
     static const String AutoWindowXMLElementName;
     static const String UserStringXMLElementName;
-	static const String WindowTypeXMLAttributeName;
-	static const String WindowNameXMLAttributeName;
+    static const String WindowTypeXMLAttributeName;
+    static const String WindowNameXMLAttributeName;
     static const String AutoWindowNamePathXMLAttributeName;
     static const String UserStringNameXMLAttributeName;
     static const String UserStringValueXMLAttributeName;
@@ -965,8 +965,7 @@ public:
         Pointer to the Window object that currently has inputs captured, or NULL
         if no Window has captured input.
     */
-    Window* getCaptureWindow() const
-        {return getGUIContext().getInputCaptureWindow();}
+    Window* getCaptureWindow() const;
 
     /*!
     \brief
@@ -1408,7 +1407,7 @@ public:
         return the RenderingSurface that will be used by this window as the
         target for rendering.
     */
-    RenderingSurface& getTargetRenderingSurface() const;
+    RenderingSurface* getTargetRenderingSurface() const;
 
     /*!
     \brief
@@ -3390,6 +3389,9 @@ protected:
     */
     void setParent(Element* parent) override;
 
+    //! return the GUIContext this window is associated with.
+    GUIContext* getGUIContextPtr() const;
+
     /*!
     \brief
         Fires off a repeated cursor press event for this window.
@@ -3414,7 +3416,7 @@ protected:
         Function used in checking if a WindowRenderer is valid for this window.
 
     \param renderer
-    	Window renderer that will be checked (it can be null!)
+        Window renderer that will be checked (it can be null!)
 
     \return
         Returns true if the given WindowRenderer class name is valid for this window.
@@ -3730,7 +3732,7 @@ protected:
     //! true if use of parser other than d_defaultStringParser is enabled
     bool d_textParsingEnabled;
 
-	//! Margin, only used when the Window is inside LayoutContainer class
+    //! Margin, only used when the Window is inside LayoutContainer class
     UBox d_margin;
 
     //! User ID assigned to this Window

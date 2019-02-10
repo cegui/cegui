@@ -223,7 +223,10 @@ void MultiLineEditbox::configureScrollbars(void)
 {
     Scrollbar* const vertScrollbar = getVertScrollbar();
     Scrollbar* const horzScrollbar = getHorzScrollbar();
-    const float lspc = getFont()->getLineSpacing();
+	const Font* font = getFont();
+	if (!font)
+		return;
+    const float lspc = font->getLineSpacing();
 
     //
     // First show or hide the scroll bars as needed (or requested)
