@@ -97,7 +97,7 @@ void OpenGLGeometryBuffer::draw() const
 void OpenGLGeometryBuffer::setupVertexDataPointers() const
 {
     int dataOffset = 0;
-    GLsizei stride = getVertexAttributeElementCount() * sizeof(GL_FLOAT);
+    GLsizei stride = getVertexAttributeElementCount() * sizeof(GLfloat);
 
     const size_t attribute_count = d_vertexAttributes.size();
     for (size_t i = 0; i < attribute_count; ++i)

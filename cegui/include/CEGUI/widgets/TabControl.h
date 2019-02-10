@@ -225,6 +225,13 @@ public:
     Window*	getTabContents(unsigned int ID) const;
 
     /*!
+    \brief
+        Return the TabButton associated with this Window.
+    \exception	InvalidRequestException	thrown if content is not found.
+    */
+	TabButton* getButtonForTabContents(Window* wnd) const;
+    
+    /*!
 	\brief
 		Return whether the tab contents window is currently selected.
 
@@ -357,12 +364,6 @@ protected:
         Remove the TabButton for the specified child Window.
     */
     virtual void removeButtonForTabContent(Window* wnd);
-    /*!
-    \brief
-        Return the TabButton associated with this Window.
-    \exception	InvalidRequestException	thrown if content is not found.
-    */
-	TabButton* getButtonForTabContents(Window* wnd) const;
     /*!
     \brief
         Construct a button name to handle a window.

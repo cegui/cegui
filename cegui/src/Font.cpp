@@ -179,7 +179,7 @@ float Font::getTextAdvance(const String& text) const
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
     {
-        if (const FontGlyph* glyph = getGlyphForCodepoint(text[c]))
+        if (const FontGlyph* glyph = getPreparedGlyph(text[c]))
         {
             advance += glyph->getAdvance();
         }
@@ -189,7 +189,7 @@ String::codepoint_iterator currentCodePointIter(text.begin(), text.begin(), text
 while (!currentCodePointIter.isAtEnd())
 {
     char32_t currentCodePoint = *currentCodePointIter;
-    if (const FontGlyph* glyph = getGlyphForCodepoint(currentCodePoint))
+    if (const FontGlyph* glyph = getPreparedGlyph(currentCodePoint))
     {
         advance += glyph->getAdvance();
     }
