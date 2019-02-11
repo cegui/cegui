@@ -167,7 +167,7 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes() const
 
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
-    GLsizei stride = getVertexAttributeElementCount() * sizeof(GL_FLOAT);
+    GLsizei stride = getVertexAttributeElementCount() * sizeof(GLfloat);
     const CEGUI::OpenGLBaseShaderWrapper* gl3_shader_wrapper = static_cast<const CEGUI::OpenGLBaseShaderWrapper*>(d_renderMaterial->getShaderWrapper());
     //Update the vertex attrib pointers of the vertex array object depending on the saved attributes
     int dataOffset = 0;
@@ -204,6 +204,9 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes() const
             break;
         }
     }
+    
+    // this is also called when a layout is loaded in user code, so we should not keep the buffer bound (can cause misleading error messages like GL_OUT_OF_MEMORY with glDrawArrays)
+    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 
