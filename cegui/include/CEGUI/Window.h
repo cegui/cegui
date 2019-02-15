@@ -3325,6 +3325,10 @@ protected:
     */
     virtual void updateSelf(float elapsed);
 
+	//!!!DBG TMP!
+	void setUsingAutoRenderingSurfaceRecursive();
+	void releaseRenderingWindowRecursive();
+
     /*!
     \brief
         Perform the actual rendering for this Window.

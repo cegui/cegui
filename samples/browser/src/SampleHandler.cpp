@@ -91,7 +91,7 @@ CEGUI::Window* SampleHandler::getSampleWindow()
     return d_sampleWindow;
 }
 
-void SampleHandler::initialise(int width, int height)
+void SampleHandler::initialise(float width, float height)
 {
     initialiseSamplePreviewRenderTarget(width, height);
 
@@ -146,14 +146,17 @@ InputAggregator* SampleHandler::getInputAggregator()
 
 void SampleHandler::handleNewWindowSize(float width, float height)
 {
-    setTextureTargetImageArea(height, width);
+    setTextureTargetImageArea(width, height);
 
     CEGUI::Sizef windowSize(width, height);
     if(d_textureTarget)
     {
         d_textureTarget->declareRenderSize(windowSize);
 
-        d_sampleWindow->getRenderingSurface()->invalidate();
+        // FIXME getRenderingSurface without checking allowed to dereference nullptr.
+        //       Commenting this out works normally at first glance. Is really necessary?
+        //RenderingSurface* rs = d_sampleWindow->getTargetRenderingSurface(); //getRenderingSurface();
+        //if (rs) rs->invalidate();
     }
 }
 
@@ -172,7 +175,7 @@ void SampleHandler::clearRTTTexture()
     d_textureTarget->clear();
 }
 
-void SampleHandler::setTextureTargetImageArea(float height, float width)
+void SampleHandler::setTextureTargetImageArea(float width, float height)
 {
     if(d_textureTarget)
     {
@@ -221,13 +224,13 @@ void SampleHandler::initialiseInputAggregator()
     }
 }
 
-void SampleHandler::initialiseSamplePreviewRenderTarget(int width, int height)
+void SampleHandler::initialiseSamplePreviewRenderTarget(float width, float height)
 {
     CEGUI::System& system(System::getSingleton());
 
-    CEGUI::Sizef size(static_cast<float>(width), static_cast<float>(height));
+    CEGUI::Sizef size(width, height);
 
-    //! Creating a texcture target to render the GUIContext onto
+    //! Creating a texture target to render the GUIContext onto
     d_textureTarget = system.getRenderer()->createTextureTarget(false);
     d_guiContext = &system.createGUIContext(static_cast<RenderTarget&>(*d_textureTarget));
     d_textureTarget->declareRenderSize(size);
@@ -238,7 +241,7 @@ void SampleHandler::initialiseSamplePreviewRenderTarget(int width, int height)
     d_textureTargetImage->setTexture(&d_textureTarget->getTexture());
 
     //! Helper function to set the image's area
-    setTextureTargetImageArea(static_cast<float>(height), static_cast<float>(width));
+    setTextureTargetImageArea(width, height);
 }
 
 const Sample* SampleHandler::getSample() const
