@@ -172,7 +172,7 @@ public:
     \brief
     Function setting the application window's size
     */
-    void setApplicationWindowSize(int width, int height);
+    void setApplicationWindowSize(float width, float height);
 
     /*!
     \brief
@@ -190,8 +190,8 @@ protected:
 
     bool                    d_quitting;              //!< Bool defining if application should quit.
 
-    int                     d_appWindowWidth;            //!< Int defining the application window's width.
-    int                     d_appWindowHeight;           //!< Int defining the application window's height.
+    float                   d_appWindowWidth;            //!< The application window's width.
+    float                   d_appWindowHeight;           //!< The application window's height.
 };
 
 #endif  // end of guard _SampleBrowserBase_h_

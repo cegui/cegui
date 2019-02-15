@@ -108,8 +108,8 @@ SampleBrowserBase::SampleBrowserBase() :
         d_rendererSelector(nullptr),
         d_baseApp(nullptr),
         d_quitting(false),
-        d_appWindowWidth(0),
-        d_appWindowHeight(0)
+        d_appWindowWidth(0.f),
+        d_appWindowHeight(0.f)
 {}
 
 
@@ -340,7 +340,7 @@ bool SampleBrowserBase::isQuitting()
     return d_quitting;
 }
 
-void SampleBrowserBase::setApplicationWindowSize(int width, int height)
+void SampleBrowserBase::setApplicationWindowSize(float width, float height)
 {
     d_appWindowWidth = width;
     d_appWindowHeight = height;
