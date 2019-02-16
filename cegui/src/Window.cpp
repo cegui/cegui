@@ -1207,29 +1207,9 @@ void Window::queueGeometry(const RenderingContext& ctx)
 //----------------------------------------------------------------------------//
 void Window::setParent(Element* parent)
 {
+    GUIContext* oldContext = getGUIContextPtr();
     Element::setParent(parent);
-    syncTargetSurface();
-}
-
-//----------------------------------------------------------------------------//
-void Window::syncTargetSurface()
-{
-    // if we do not have a surface, xfer any surfaces from our children to
-    // whatever our target surface now is.
-    if (!d_surface)
-        transferChildSurfaces();
-    // else, since we have a surface, child surfaces stay with us.  Though we
-    // must now ensure /our/ surface is xferred if it is a RenderingWindow.
-    else if (d_surface->isRenderingWindow())
-    {
-        // target surface is eihter the parent's target, or the gui context.
-        RenderingSurface* tgt = d_parent ?
-            getParent()->getTargetRenderingSurface() : getGUIContextPtr();
-
-        // There may be no target if we are being destroyed / detached
-        if (tgt)
-            tgt->transferRenderingWindow(static_cast<RenderingWindow&>(*d_surface));
-    }
+    onTargetSurfaceChanged(oldContext, getGUIContextPtr());
 }
 
 //----------------------------------------------------------------------------//
@@ -3307,11 +3287,11 @@ bool Window::isUsingAutoRenderingSurface() const
     return d_autoRenderingWindow;
 }
 
+//----------------------------------------------------------------------------//
 bool Window::isAutoRenderingSurfaceStencilEnabled() const
 {
     return d_autoRenderingSurfaceStencilEnabled;
 }
-
 
 //----------------------------------------------------------------------------//
 void Window::setUsingAutoRenderingSurface(bool setting)
@@ -3334,95 +3314,95 @@ void Window::setUsingAutoRenderingSurface(bool setting)
     notifyScreenAreaChanged();
 }
 
+//----------------------------------------------------------------------------//
 void Window::setAutoRenderingSurfaceStencilEnabled(bool setting)
 {
-    if (d_autoRenderingSurfaceStencilEnabled != setting)
-    {
-        d_autoRenderingSurfaceStencilEnabled = setting;
+    if (d_autoRenderingSurfaceStencilEnabled == setting)
+        return;
 
-        if (!d_autoRenderingWindow)
-            return;
+    d_autoRenderingSurfaceStencilEnabled = setting;
 
-        // We need to recreate the auto rendering window since we just changed a crucial setting for it
-        releaseRenderingWindow();
-        allocateRenderingWindow(setting);
-        d_autoRenderingWindow = true;
+    if (!d_autoRenderingWindow)
+        return;
 
-        // while the actual area on screen may not have changed, the arrangement of
-        // surfaces and geometry did...
-        notifyScreenAreaChanged();
-    }
+    // We need to recreate the auto rendering window since we just changed a crucial setting for it
+    releaseRenderingWindow();
+    allocateRenderingWindow(setting);
+
+    // while the actual area on screen may not have changed, the arrangement of
+    // surfaces and geometry did...
+    notifyScreenAreaChanged();
 }
 
 //----------------------------------------------------------------------------//
 void Window::allocateRenderingWindow(bool addStencilBuffer)
 {
-    if (!d_autoRenderingWindow)
+    if (d_autoRenderingWindow && d_surface)
+        return;
+
+    d_autoRenderingWindow = true;
+
+    CEGUI::RenderingSurface* rs = getTargetRenderingSurface();
+    if (!rs)
     {
-        d_autoRenderingWindow = true;
-
-        CEGUI::RenderingSurface* rs = getTargetRenderingSurface();
-        if (!rs)
-        {
-            d_surface = nullptr;
-            return;
-        }
-
-        TextureTarget* const t =
-            System::getSingleton().getRenderer()->createTextureTarget(addStencilBuffer);
-
-        // TextureTargets may not be available, so check that first.
-        if (!t)
-        {
-            Logger::getSingleton().logEvent("Window::allocateRenderingWindow - "
-                "Failed to create a suitable TextureTarget for use by Window '"
-                + d_name + "'", LoggingLevel::Error);
-
-            d_surface = nullptr;
-            return;
-        }
-
-        d_surface = &rs->createRenderingWindow(*t);
-        transferChildSurfaces();
-
-        // set size and position of RenderingWindow
-        static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
-        static_cast<RenderingWindow*>(d_surface)->
-            setPosition(getUnclippedOuterRect().get().getPosition());
-
-        GUIContext* context = getGUIContextPtr();
-        if (context)
-            context->markAsDirty();
+        d_surface = nullptr;
+        return;
     }
+
+    TextureTarget* const t =
+        System::getSingleton().getRenderer()->createTextureTarget(addStencilBuffer);
+
+    // TextureTargets may not be available, so check that first.
+    if (!t)
+    {
+        Logger::getSingleton().logEvent("Window::allocateRenderingWindow - "
+            "Failed to create a suitable TextureTarget for use by Window '"
+            + d_name + "'", LoggingLevel::Error);
+
+        d_surface = nullptr;
+        return;
+    }
+
+    d_surface = &rs->createRenderingWindow(*t);
+    transferChildSurfaces();
+
+    // set size and position of RenderingWindow
+    static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
+    static_cast<RenderingWindow*>(d_surface)->
+        setPosition(getUnclippedOuterRect().get().getPosition());
+
+    GUIContext* context = getGUIContextPtr();
+    if (context)
+        context->markAsDirty();
 }
 
 //----------------------------------------------------------------------------//
 void Window::releaseRenderingWindow()
 {
-    if (d_autoRenderingWindow && d_surface)
-    {
-        RenderingWindow* const old_surface =
-            static_cast<RenderingWindow*>(d_surface);
-        d_autoRenderingWindow = false;
-        d_surface = nullptr;
-        // detach child surfaces prior to destroying the owning surface
-        transferChildSurfaces();
-        // destroy surface and texture target it used
-        TextureTarget* tt = &old_surface->getTextureTarget();
-        old_surface->getOwner().destroyRenderingWindow(*old_surface);
-        System::getSingleton().getRenderer()->destroyTextureTarget(tt);
+    if (!d_autoRenderingWindow || !d_surface)
+        return;
 
-        GUIContext* context = getGUIContextPtr();
-        if (context)
-            context->markAsDirty();
-    }
+    RenderingWindow* const old_surface =
+        static_cast<RenderingWindow*>(d_surface);
+    d_autoRenderingWindow = false;
+    d_surface = nullptr;
+    // detach child surfaces prior to destroying the owning surface
+    transferChildSurfaces();
+    // destroy surface and texture target it used
+    TextureTarget* tt = &old_surface->getTextureTarget();
+    old_surface->getOwner().destroyRenderingWindow(*old_surface);
+    System::getSingleton().getRenderer()->destroyTextureTarget(tt);
+
+    GUIContext* context = getGUIContextPtr();
+    if (context)
+        context->markAsDirty();
 }
 
 //----------------------------------------------------------------------------//
 void Window::transferChildSurfaces()
 {
-    RenderingSurface* s = getTargetRenderingSurface();
-    if (!s)
+    RenderingSurface* rs = getTargetRenderingSurface();
+    if (!rs)
         return;
 
     const size_t child_count = getChildCount();
@@ -3431,7 +3411,7 @@ void Window::transferChildSurfaces()
         Window* const c = getChildAtIdx(i);
 
         if (c->d_surface && c->d_surface->isRenderingWindow())
-            s->transferRenderingWindow(
+            rs->transferRenderingWindow(
                 *static_cast<RenderingWindow*>(c->d_surface));
         else
             c->transferChildSurfaces();
@@ -3938,48 +3918,74 @@ GUIContext& Window::getGUIContext() const
     return *context;
 }
 
-//!!!DBG TMP!
-void Window::setUsingAutoRenderingSurfaceRecursive()
-{
-    bool value = d_autoRenderingWindow;
-    d_autoRenderingWindow = false;
-    setUsingAutoRenderingSurface(value);
-    for (auto child : d_children)
-    {
-        Window* wnd = dynamic_cast<Window*>(child);
-        if (wnd) wnd->setUsingAutoRenderingSurfaceRecursive();
-    }
-}
-void Window::releaseRenderingWindowRecursive()
-{
-    for (auto child : d_children)
-    {
-        Window* wnd = dynamic_cast<Window*>(child);
-        if (wnd) wnd->releaseRenderingWindowRecursive();
-    }
-    releaseRenderingWindow();
-}
-
 //----------------------------------------------------------------------------//
 void Window::setGUIContext(GUIContext* context)
 {
     if (d_guiContext == context)
         return;
 
+    GUIContext* oldContext = d_guiContext;
     d_guiContext = context;
 
-    if (d_guiContext)
+    // TODO: store context recursively in children? Field exists anyway.
+
+    onTargetSurfaceChanged(oldContext, context);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onTargetSurfaceChanged(RenderingSurface* oldSurface, RenderingSurface* newSurface)
+{
+    if (!oldSurface)
     {
+        // allocate auto windows
+        // no auto windows must exist here
+        // skip non-auto explicit surfaces, their children must have windows created
+
         //!!!DBG TMP!
-        //setUsingAutoRenderingSurface(d_autoRenderingWindow);
-        setUsingAutoRenderingSurfaceRecursive();
+        setUsingAutoRenderingSurface(d_autoRenderingWindow);
+        for (auto child : d_children)
+        {
+            Window* wnd = dynamic_cast<Window*>(child);
+            if (wnd) wnd->onTargetSurfaceChanged(oldSurface, newSurface);
+        }
+    }
+    else if (!newSurface)
+    {
+        // destroy auto windows hosted by the context or its windows
+        // skip non-auto explicit surfaces
+
+        //!!!DBG TMP!
+        for (auto child : d_children)
+        {
+            Window* wnd = dynamic_cast<Window*>(child);
+            if (wnd) wnd->onTargetSurfaceChanged(oldSurface, newSurface);
+        }
+        releaseRenderingWindow();
     }
     else
     {
-        releaseRenderingWindowRecursive();
-    }
+        // transfer auto surfaces from one context to another
+        // skip non-auto explicit surfaces
 
-    syncTargetSurface();
+        //???vvvvvv is this exactly what it must be? vvvvvvv
+
+        // if we do not have a surface, xfer any surfaces from our children to
+        // whatever our target surface now is.
+        if (!d_surface)
+            transferChildSurfaces();
+        // else, since we have a surface, child surfaces stay with us.  Though we
+        // must now ensure /our/ surface is xferred if it is a RenderingWindow.
+        else if (d_surface->isRenderingWindow())
+        {
+            // target surface is eihter the parent's target, or the gui context.
+            RenderingSurface* tgt = d_parent ?
+                getParent()->getTargetRenderingSurface() : getGUIContextPtr();
+
+            // There may be no target if we are being destroyed / detached
+            if (tgt)
+                tgt->transferRenderingWindow(static_cast<RenderingWindow&>(*d_surface));
+        }
+    }
 }
 
 //----------------------------------------------------------------------------//
