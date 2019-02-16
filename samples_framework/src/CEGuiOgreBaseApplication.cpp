@@ -286,8 +286,8 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
         for(size_t i = 0; i < renderSystemCount; ++i)
         {
             Ogre::RenderSystem* currentRenderSys = renderSystems.at(i);
-            Ogre::ConfigOptionMap& configOptions = currentRenderSys->getConfigOptions();
-            Ogre::ConfigOptionMap::iterator foundConfigIter;
+            const Ogre::ConfigOptionMap& configOptions = currentRenderSys->getConfigOptions();
+            Ogre::ConfigOptionMap::const_iterator foundConfigIter;
 
             foundConfigIter = configOptions.find("Full Screen");
             if(foundConfigIter != configOptions.end())
@@ -296,8 +296,8 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
             foundConfigIter = configOptions.find("Video Mode");
             if(foundConfigIter != configOptions.end())
             {
-                Ogre::StringVector::iterator optionsIterCur = foundConfigIter->second.possibleValues.begin();
-                Ogre::StringVector::iterator optionsIterEnd = foundConfigIter->second.possibleValues.end();
+                Ogre::StringVector::const_iterator optionsIterCur = foundConfigIter->second.possibleValues.begin();
+                Ogre::StringVector::const_iterator optionsIterEnd = foundConfigIter->second.possibleValues.end();
                 while(optionsIterCur != optionsIterEnd)
                 {
                     if(optionsIterCur->compare("1280 x 768 @ 32-bit colour") == 0)
