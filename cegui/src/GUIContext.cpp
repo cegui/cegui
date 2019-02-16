@@ -108,10 +108,7 @@ void GUIContext::setRootWindow(Window* new_root)
     d_rootWindow = new_root;
 
     if (d_rootWindow)
-    {
         d_rootWindow->setGUIContext(this);
-        d_rootWindow->syncTargetSurface();
-    }
 
     onRootWindowChanged(args);
 }
@@ -572,9 +569,6 @@ void GUIContext::setRenderTarget(RenderTarget& target)
 
     RenderTarget* const old_target = d_target;
     d_target = &target;
-
-    if (d_rootWindow)
-        d_rootWindow->syncTargetSurface();
 
     d_areaChangedEventConnection.disconnect();
     d_areaChangedEventConnection = d_target->subscribeEvent(

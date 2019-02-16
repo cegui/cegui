@@ -2760,9 +2760,6 @@ public:
     //! function used internally.  Do not call this from client code.
     void setGUIContext(GUIContext* context);
 
-    //! ensure that the window will be rendered to the correct target surface.
-    void syncTargetSurface();
-
     /*!
     \brief
         Set whether this window is marked as an auto window.
@@ -2833,8 +2830,7 @@ public:
 
 protected:
     // friend classes for construction / initialisation purposes (for now)
-    friend class System;
-    friend class WindowManager;
+    friend class WindowManager; // FIXME for d_falagardType only
     friend class GUIContext;
 
     /*************************************************************************
@@ -3325,10 +3321,6 @@ protected:
     */
     virtual void updateSelf(float elapsed);
 
-	//!!!DBG TMP!
-	void setUsingAutoRenderingSurfaceRecursive();
-	void releaseRenderingWindowRecursive();
-
     /*!
     \brief
         Perform the actual rendering for this Window.
@@ -3393,9 +3385,6 @@ protected:
     */
     void setParent(Element* parent) override;
 
-    //! return the GUIContext this window is associated with.
-    GUIContext* getGUIContextPtr() const;
-
     /*!
     \brief
         Fires off a repeated cursor press event for this window.
@@ -3439,9 +3428,18 @@ protected:
     /*!
     \brief
         Recursively inform all children that the clipping has changed and screen rects
-        needs to be recached.
+        need to be recached.
     */
     void notifyClippingChanged(void);
+
+    /*!
+    \brief
+        Recursively updates all rendering surfaces and windows to work with a new host surface.
+    */
+    void onTargetSurfaceChanged(RenderingSurface* oldSurface, RenderingSurface* newSurface);
+
+    //! return the GUIContext this window is associated with.
+    GUIContext* getGUIContextPtr() const;
 
     //! helper to create and setup the auto RenderingWindow surface
     void allocateRenderingWindow(bool addStencilBuffer);
