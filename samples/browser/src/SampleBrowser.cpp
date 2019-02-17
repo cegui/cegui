@@ -356,10 +356,8 @@ void SampleBrowser::handleStartDisplaySample(CEGUI::Window* sampleWindow)
 {
     SampleHandler* correspondingSampleData = findSampleData(sampleWindow);
 
-    CEGUI::RenderTarget& defaultRenderTarget =
-        CEGUI::System::getSingleton().getRenderer()->getDefaultRenderTarget();
     CEGUI::GUIContext* sampleContext(correspondingSampleData->getGuiContext());
-    sampleContext->setRenderTarget(defaultRenderTarget);
+    sampleContext->setRenderTarget(d_baseApp->getMainWindowGUIContext()->getRenderTarget());
 
     //! We add the exit button to the sample
     sampleContext->getRootWindow()->addChild(d_sampleExitButton);
