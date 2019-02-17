@@ -85,7 +85,7 @@ public:
     /** Event fired when the default font changes.
      * Handlers are passed a const reference to a generic EventArgs struct.
      */
-	static const String EventDefaultFontChanged;
+    static const String EventDefaultFontChanged;
 
     GUIContext(RenderTarget& target);
     ~GUIContext();

@@ -205,11 +205,11 @@ protected:
     CEGUI::Renderer* d_renderer;
     //! ImageCodec to use.  Set in subclass constructor, may be 0.
     CEGUI::ImageCodec* d_imageCodec;
-	//! ResourceProvider to use.  Set in subclass constructor, may be 0.
-	CEGUI::ResourceProvider* d_resourceProvider;
-	//! GUI context of the main window
-	CEGUI::GUIContext* d_context;
-	//! GeometryBuffer used for drawing the spinning CEGUI logo
+    //! ResourceProvider to use.  Set in subclass constructor, may be 0.
+    CEGUI::ResourceProvider* d_resourceProvider;
+    //! GUI context of the main window
+    CEGUI::GUIContext* d_context;
+    //! GeometryBuffer used for drawing the spinning CEGUI logo
     std::vector<CEGUI::GeometryBuffer*> d_logoGeometry;
     //! GeometryBuffers used for drawing the FPS value.
     std::vector<CEGUI::GeometryBuffer*> d_FPSGeometry;

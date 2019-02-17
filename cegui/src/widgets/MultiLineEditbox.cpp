@@ -223,9 +223,9 @@ void MultiLineEditbox::configureScrollbars(void)
 {
     Scrollbar* const vertScrollbar = getVertScrollbar();
     Scrollbar* const horzScrollbar = getHorzScrollbar();
-	const Font* font = getFont();
-	if (!font)
-		return;
+    const Font* font = getFont();
+    if (!font)
+        return;
     const float lspc = font->getLineSpacing();
 
     //
