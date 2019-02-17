@@ -1207,9 +1207,8 @@ void Window::queueGeometry(const RenderingContext& ctx)
 //----------------------------------------------------------------------------//
 void Window::setParent(Element* parent)
 {
-    GUIContext* oldContext = getGUIContextPtr();
     Element::setParent(parent);
-    onTargetSurfaceChanged(oldContext, getGUIContextPtr());
+    onTargetSurfaceChanged(getTargetRenderingSurface());
 }
 
 //----------------------------------------------------------------------------//
@@ -1620,7 +1619,7 @@ void Window::update(float elapsed)
     // perform update for 'this' Window
     updateSelf(elapsed);
 
-    // update underlying RenderingWinodw if needed
+    // update underlying RenderingWindow if needed
     if (d_surface && d_surface->isRenderingWindow())
         static_cast<RenderingWindow*>(d_surface)->update(elapsed);
 
@@ -3405,16 +3404,15 @@ void Window::transferChildSurfaces()
     if (!rs)
         return;
 
-    const size_t child_count = getChildCount();
-    for (size_t i = 0; i < child_count; ++i)
+    for (auto child : d_children)
     {
-        Window* const c = getChildAtIdx(i);
+        Window* childWnd = static_cast<Window*>(child);
 
-        if (c->d_surface && c->d_surface->isRenderingWindow())
+        if (childWnd->d_surface && childWnd->d_surface->isRenderingWindow())
             rs->transferRenderingWindow(
-                *static_cast<RenderingWindow*>(c->d_surface));
+                *static_cast<RenderingWindow*>(childWnd->d_surface));
         else
-            c->transferChildSurfaces();
+            childWnd->transferChildSurfaces();
     }
 }
 
@@ -3924,66 +3922,72 @@ void Window::setGUIContext(GUIContext* context)
     if (d_guiContext == context)
         return;
 
-    GUIContext* oldContext = d_guiContext;
     d_guiContext = context;
 
     // TODO: store context recursively in children? Field exists anyway.
 
-    onTargetSurfaceChanged(oldContext, context);
+    onTargetSurfaceChanged(getTargetRenderingSurface());
 }
 
 //----------------------------------------------------------------------------//
-void Window::onTargetSurfaceChanged(RenderingSurface* oldSurface, RenderingSurface* newSurface)
+void Window::onTargetSurfaceChanged(RenderingSurface* newSurface)
 {
-    if (!oldSurface)
-    {
-        // allocate auto windows
-        // no auto windows must exist here
-        // skip non-auto explicit surfaces, their children must have windows created
+    // Surface was set manually, we don't control it
+    //???if (d_surface && !d_surface->isRenderingWindow())?
+    //???any window must be processed, even the one that was set externally?
+    if (d_surface && !d_autoRenderingWindow)
+        return;
 
-        //!!!DBG TMP!
-        setUsingAutoRenderingSurface(d_autoRenderingWindow);
-        for (auto child : d_children)
-        {
-            Window* wnd = dynamic_cast<Window*>(child);
-            if (wnd) wnd->onTargetSurfaceChanged(oldSurface, newSurface);
-        }
-    }
-    else if (!newSurface)
+    if (d_autoRenderingWindow)
     {
-        // destroy auto windows hosted by the context or its windows
-        // skip non-auto explicit surfaces
-
-        //!!!DBG TMP!
-        for (auto child : d_children)
+        // We use our own auto-window and must update its state
+        if (!d_surface)
         {
-            Window* wnd = dynamic_cast<Window*>(child);
-            if (wnd) wnd->onTargetSurfaceChanged(oldSurface, newSurface);
+            if (newSurface)
+            {
+                allocateRenderingWindow(d_autoRenderingSurfaceStencilEnabled);
+
+                // Propagate our auto-window as a new host surface for our children
+                for (auto child : d_children)
+                {
+                    Window* childWnd = static_cast<Window*>(child);
+                    if (childWnd)
+                        childWnd->onTargetSurfaceChanged(d_surface);
+                }
+            }
         }
-        releaseRenderingWindow();
+        else if (!newSurface)
+        {
+            if (d_surface)
+            {
+                // We are about to destroy our auto-window, so enforce children that use it
+                // as a host surface to destroy their windows first.
+                for (auto child : d_children)
+                {
+                    Window* childWnd = static_cast<Window*>(child);
+                    if (childWnd)
+                        childWnd->onTargetSurfaceChanged(nullptr);
+                }
+
+                releaseRenderingWindow();
+            }
+        }
+        else if (newSurface != d_surface)
+        {
+            // Since we have a surface, child surfaces stay with us.  Though we
+            // must now ensure /our/ surface is transferred.
+            newSurface->transferRenderingWindow(static_cast<RenderingWindow&>(*d_surface));
+        }
     }
     else
     {
-        // transfer auto surfaces from one context to another
-        // skip non-auto explicit surfaces
-
-        //???vvvvvv is this exactly what it must be? vvvvvvv
-
-        // if we do not have a surface, xfer any surfaces from our children to
+        // If we do not have a surface, transfer any surfaces from our children to
         // whatever our target surface now is.
-        if (!d_surface)
-            transferChildSurfaces();
-        // else, since we have a surface, child surfaces stay with us.  Though we
-        // must now ensure /our/ surface is xferred if it is a RenderingWindow.
-        else if (d_surface->isRenderingWindow())
+        for (auto child : d_children)
         {
-            // target surface is eihter the parent's target, or the gui context.
-            RenderingSurface* tgt = d_parent ?
-                getParent()->getTargetRenderingSurface() : getGUIContextPtr();
-
-            // There may be no target if we are being destroyed / detached
-            if (tgt)
-                tgt->transferRenderingWindow(static_cast<RenderingWindow&>(*d_surface));
+            Window* childWnd = static_cast<Window*>(child);
+            if (childWnd)
+                childWnd->onTargetSurfaceChanged(newSurface);
         }
     }
 }
