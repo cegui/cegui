@@ -3436,7 +3436,7 @@ protected:
     \brief
         Recursively updates all rendering surfaces and windows to work with a new host surface.
     */
-    void onTargetSurfaceChanged(RenderingSurface* oldSurface, RenderingSurface* newSurface);
+    void onTargetSurfaceChanged(RenderingSurface* newSurface);
 
     //! return the GUIContext this window is associated with.
     GUIContext* getGUIContextPtr() const;
