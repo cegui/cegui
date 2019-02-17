@@ -266,8 +266,8 @@ void GUIContext::drawWindowContentToTarget()
 void GUIContext::renderWindowHierarchyToSurfaces()
 {
     RenderingSurface* rs = d_rootWindow->getTargetRenderingSurface();
-	if (!rs)
-		return;
+    if (!rs)
+        return;
 
     rs->clearGeometry();
 

@@ -1,8 +1,8 @@
 /***********************************************************************
-	created:	20/2/2004
-	author:		Paul D Turner
+    created:    20/2/2004
+    author:        Paul D Turner
 
-	purpose:	Defines interface for main GUI system class
+    purpose:    Defines interface for main GUI system class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
@@ -45,9 +45,9 @@
 #endif
 
 #if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4275)
-#	pragma warning(disable : 4251)
+#    pragma warning(push)
+#    pragma warning(disable : 4275)
+#    pragma warning(disable : 4251)
 #endif
 
 
@@ -56,23 +56,23 @@ namespace CEGUI
 {
 /*!
 \brief
-	The System class is the CEGUI class that provides access to all other elements in this system.
+    The System class is the CEGUI class that provides access to all other elements in this system.
 
-	This object must be created by the client application.  The System object requires that you pass it
-	an initialised Renderer object which it can use to interface to whatever rendering system will be
-	used to display the GUI imagery.
+    This object must be created by the client application.  The System object requires that you pass it
+    an initialised Renderer object which it can use to interface to whatever rendering system will be
+    used to display the GUI imagery.
 */
 class CEGUIEXPORT System :
     public Singleton<System>,
     public EventSet
 {
 public:
-	static const String EventNamespace;				//!< Namespace for global events
+    static const String EventNamespace;                //!< Namespace for global events
 
-	/*************************************************************************
-		Constants
-	*************************************************************************/
-	// event names
+    /*************************************************************************
+        Constants
+    *************************************************************************/
+    // event names
     /** Event fired for display size changes (as notified by client code).
      * Handlers are passed a const DisplayEventArgs reference with
      * DisplayEventArgs::size set to the pixel size that was notifiied to the
@@ -84,9 +84,9 @@ public:
      */
     static const String EventRenderedStringParserChanged;
 
-	/*************************************************************************
-		Construction and Destruction
-	*************************************************************************/
+    /*************************************************************************
+        Construction and Destruction
+    *************************************************************************/
     /*!
     \brief
         Create the System object and return a reference to it.
@@ -181,34 +181,34 @@ public:
     */
     static const String& getVerboseVersion();
 
-	/*!
-	\brief
-		Return a pointer to the Renderer object being used by the system
+    /*!
+    \brief
+        Return a pointer to the Renderer object being used by the system
 
-	\return
-		Pointer to the Renderer object used by the system.
-	*/
-	Renderer*	getRenderer(void) const			{return d_renderer;}
-
-
-	/*!
-	\brief
-		Return singleton System object
-
-	\return
-		Singleton System object
-	*/
-	static	System&	getSingleton(void);
+    \return
+        Pointer to the Renderer object used by the system.
+    */
+    Renderer*    getRenderer(void) const            {return d_renderer;}
 
 
-	/*!
-	\brief
-		Return pointer to singleton System object
+    /*!
+    \brief
+        Return singleton System object
 
-	\return
-		Pointer to singleton System object
-	*/
-	static	System*	getSingletonPtr(void);
+    \return
+        Singleton System object
+    */
+    static    System&    getSingleton(void);
+
+
+    /*!
+    \brief
+        Return pointer to singleton System object
+
+    \return
+        Pointer to singleton System object
+    */
+    static    System*    getSingletonPtr(void);
 
     /*!
     \brief
@@ -236,12 +236,12 @@ public:
 
     /*!
     \brief
-		Return a pointer to the ScriptModule being used for scripting within the GUI system.
+        Return a pointer to the ScriptModule being used for scripting within the GUI system.
 
-	\return
-		Pointer to a ScriptModule based object.
-	*/
-	ScriptModule*	getScriptingModule(void) const;
+    \return
+        Pointer to a ScriptModule based object.
+    */
+    ScriptModule*    getScriptingModule(void) const;
 
     /*!
     \brief
@@ -255,40 +255,40 @@ public:
     */
     void setScriptingModule(ScriptModule* scriptModule);
 
-	/*!
-	\brief
-		Return a pointer to the ResourceProvider being used within the GUI system.
+    /*!
+    \brief
+        Return a pointer to the ResourceProvider being used within the GUI system.
 
-	\return
-		Pointer to a ResourceProvider based object.
-	*/
-	ResourceProvider* getResourceProvider(void) const;
+    \return
+        Pointer to a ResourceProvider based object.
+    */
+    ResourceProvider* getResourceProvider(void) const;
 
-	/*!
-	\brief
-		Execute a script file if possible.
+    /*!
+    \brief
+        Execute a script file if possible.
 
-	\param filename
-		String object holding the filename of the script file that is to be executed
+    \param filename
+        String object holding the filename of the script file that is to be executed
 
-	\param resourceGroup
-		Resource group identifier to be passed to the ResourceProvider when loading the script file.
-	*/
-	void	executeScriptFile(const String& filename, const String& resourceGroup = "") const;
+    \param resourceGroup
+        Resource group identifier to be passed to the ResourceProvider when loading the script file.
+    */
+    void    executeScriptFile(const String& filename, const String& resourceGroup = "") const;
 
 
-	/*!
-	\brief
-		Execute a scripted global function if possible.  The function should not take any parameters and should return an integer.
+    /*!
+    \brief
+        Execute a scripted global function if possible.  The function should not take any parameters and should return an integer.
 
-	\param function_name
-		String object holding the name of the function, in the global script environment, that
-		is to be executed.
+    \param function_name
+        String object holding the name of the function, in the global script environment, that
+        is to be executed.
 
-	\return
-		The integer value returned from the script function.
-	*/
-	int		executeScriptGlobal(const String& function_name) const;
+    \return
+        The integer value returned from the script function.
+    */
+    int        executeScriptGlobal(const String& function_name) const;
 
 
     /*!
@@ -437,32 +437,32 @@ public:
     */
     static const String& getDefaultImageCodecName();
 
-	/*!
-	\brief
-	Set the default font to be used by all new GUIContext instances
+    /*!
+    \brief
+    Set the default font to be used by all new GUIContext instances
 
-	\param name
-	String object containing the name of the font
-	*/
-	void setDefaultFontName(const String& name);
+    \param name
+    String object containing the name of the font
+    */
+    void setDefaultFontName(const String& name);
 
-	/*!
-	\brief
-	Set the default cursor to be used by all new GUIContext instances
+    /*!
+    \brief
+    Set the default cursor to be used by all new GUIContext instances
 
-	\param name
-	String object containing the name of the cursor
-	*/
-	void setDefaultCursorName(const String& name);
+    \param name
+    String object containing the name of the cursor
+    */
+    void setDefaultCursorName(const String& name);
 
-	/*!
-	\brief
-	Set the default tooltip type to be used by all new GUIContext instances
+    /*!
+    \brief
+    Set the default tooltip type to be used by all new GUIContext instances
 
-	\param name
-	String object containing the type name of the tooltip
-	*/
-	void setDefaultTooltipType(const String& tooltip_type);
+    \param name
+    String object containing the type name of the tooltip
+    */
+    void setDefaultTooltipType(const String& tooltip_type);
 
     /*!
     \brief
@@ -573,9 +573,9 @@ private:
     System& operator=(const System& obj);
 
 protected:
-	/*************************************************************************
-		Implementation Functions
-	*************************************************************************/
+    /*************************************************************************
+        Implementation Functions
+    *************************************************************************/
     /*!
     \brief
         Construct a new System object
@@ -641,18 +641,18 @@ protected:
     void invalidateAllWindows();
 
     /*************************************************************************
-		Implementation Data
-	*************************************************************************/
-	Renderer*	d_renderer;			//!< Holds the pointer to the Renderer object given to us in the constructor
+        Implementation Data
+    *************************************************************************/
+    Renderer*    d_renderer;            //!< Holds the pointer to the Renderer object given to us in the constructor
     ResourceProvider* d_resourceProvider;      //!< Holds the pointer to the ResourceProvider object given to us by the renderer or the System constructor.
-	bool d_ourResourceProvider;
+    bool d_ourResourceProvider;
 
     Clipboard* d_clipboard;         //!< Internal clipboard with optional sync with native clipboard
     NativeClipboardProvider* d_nativeClipboardProvider; //!< the default native clipboard provider (only on Win32 for now)
 
-	// scripting
-	ScriptModule*	d_scriptModule;			//!< Points to the scripting support module.
-	String			d_termScriptName;		//!< Name of the script to run upon system shutdown.
+    // scripting
+    ScriptModule*    d_scriptModule;            //!< Points to the scripting support module.
+    String            d_termScriptName;        //!< Name of the script to run upon system shutdown.
 
     XMLParser*  d_xmlParser;        //!< XMLParser object we use to process xml files.
     bool        d_ourXmlParser;     //!< true when we created the xml parser.
@@ -675,9 +675,9 @@ protected:
     //! currently set global RenderedStringParser.
     RenderedStringParser* d_customRenderedStringParser;
 
-	String d_defaultFontName;
-	String d_defaultCursorName;
-	String d_defaultTooltipType;
+    String d_defaultFontName;
+    String d_defaultCursorName;
+    String d_defaultTooltipType;
 
     typedef std::vector<GUIContext*> GUIContextCollection;
     GUIContextCollection d_guiContexts;
@@ -693,7 +693,7 @@ protected:
 
 
 #if defined(_MSC_VER)
-#	pragma warning(pop)
+#    pragma warning(pop)
 #endif
 
-#endif	// end of guard _CEGUISystem_h_
+#endif    // end of guard _CEGUISystem_h_
