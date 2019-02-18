@@ -388,8 +388,7 @@ void CEGuiBaseApplication::updateLogoGeometry()
     if (!d_context)
         return;
 
-    const Sizef& rtSize = d_context->getSurfaceSize();
-    const CEGUI::Rectf scrn(0.f, 0.f, rtSize.d_width, rtSize.d_height);
+    const CEGUI::Rectf scrn(d_context->getRenderTarget().getArea());
     const glm::vec3 position(10.0f, scrn.getSize().d_height - 89.0f, 0.0f);
 
     const size_t bufferCount = d_logoGeometry.size();
@@ -406,8 +405,7 @@ void CEGuiBaseApplication::updateFPSGeometry()
     if (!d_context)
         return;
 
-    const Sizef& rtSize = d_context->getSurfaceSize();
-    const CEGUI::Rectf scrn(0.f, 0.f, rtSize.d_width, rtSize.d_height);
+    const CEGUI::Rectf scrn(d_context->getRenderTarget().getArea());
     const glm::vec3 position(scrn.getSize().d_width - 120.0f, 0.0f, 0.0f);
 
     const size_t bufferCount = d_FPSGeometry.size();
