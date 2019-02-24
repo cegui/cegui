@@ -29,7 +29,7 @@ purpose:	This codec provide FreeImage based image loading
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodecModules/FreeImage/ImageCodec.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 
 #include <FreeImage.h>
 
@@ -38,7 +38,7 @@ namespace
     void FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *message)
     {
         CEGUI::Logger::getSingleton().logEvent(
-            CEGUI::String("FreeImage error (") + FreeImage_GetFormatFromFIF(fif) + "): " + message, CEGUI::Errors);
+            CEGUI::String("FreeImage error (") + FreeImage_GetFormatFromFIF(fif) + "): " + message, CEGUI::LoggingLevel::Error);
     }
 
 }
@@ -82,11 +82,11 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
     FIBITMAP *img = 0;
     Texture *retval = 0;
 
-    CEGUI_TRY
+    try
     {
-        mem = FreeImage_OpenMemory(static_cast<BYTE*>(const_cast<uint8*>(data.getDataPtr())), len);
+        mem = FreeImage_OpenMemory(static_cast<BYTE*>(const_cast<std::uint8_t*>(data.getDataPtr())), len);
         if (mem == 0)
-            CEGUI_THROW(MemoryException("Unable to open memory stream, FreeImage_OpenMemory failed"));
+            throw MemoryException("Unable to open memory stream, FreeImage_OpenMemory failed");
 
         FREE_IMAGE_FORMAT fif = FreeImage_GetFileTypeFromMemory(mem, len);
 
@@ -105,11 +105,11 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
             img = FreeImage_LoadFromMemory(fif, mem, 0);
 
         if (img == 0)
-            CEGUI_THROW(GenericException("Unable to load image, FreeImage_LoadFromMemory failed"));
+            throw GenericException("Unable to load image, FreeImage_LoadFromMemory failed");
 
         FIBITMAP *newImg = FreeImage_ConvertTo32Bits(img);
         if (newImg == 0)
-            CEGUI_THROW(GenericException("Unable to convert image, FreeImage_ConvertTo32Bits failed"));
+            throw GenericException("Unable to convert image, FreeImage_ConvertTo32Bits failed");
         FreeImage_Unload(img);
         img = newImg;
         newImg = 0;
@@ -129,10 +129,10 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
         // BLUE_MASK	0x00FF0000
         // ALPHA_MASK	0xFF000000
 
-        uint pitch = FreeImage_GetPitch(img);
-        uint height = FreeImage_GetHeight(img);
-        uint width = FreeImage_GetWidth(img);
-        uint8 *rawBuf = new uint8[width * height << 2];
+        unsigned int pitch = FreeImage_GetPitch(img);
+        unsigned int height = FreeImage_GetHeight(img);
+        unsigned int width = FreeImage_GetWidth(img);
+        std::uint8_t *rawBuf = new std::uint8_t[width * height << 2];
 
         // convert the bitmap to raw bits (top-left pixel first) 
         FreeImage_ConvertToRawBits(rawBuf, img, pitch, 32,
@@ -141,28 +141,28 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
         // We need to convert pixel format a little
         // NB: little endian only - I think(!)
 #if FREEIMAGE_COLORORDER == FREEIMAGE_COLORORDER_BGR
-        for (uint i = 0; i < height; ++i)
+        for (unsigned int i = 0; i < height; ++i)
         {
-            for (uint j = 0; j < width; ++j)
+            for (unsigned int j = 0; j < width; ++j)
             {
-                uint p = *(((uint*)(rawBuf + i * pitch)) + j);
-                uint r = (p >> 16) & 0x000000FF;
-                uint b = (p << 16) & 0x00FF0000;
+                unsigned int p = *(((unsigned int*)(rawBuf + i * pitch)) + j);
+                unsigned int r = (p >> 16) & 0x000000FF;
+                unsigned int b = (p << 16) & 0x00FF0000;
                 p &= 0xFF00FF00;
                 p |= r | b;
                 // write the adjusted pixel back
-                *(((uint*)(rawBuf + i * pitch)) + j) = p;
+                *(((unsigned int*)(rawBuf + i * pitch)) + j) = p;
             }
         }
 #endif
         FreeImage_Unload(img);
         img = 0;
 
-        result->loadFromMemory(rawBuf, Sizef(width, height), Texture::PF_RGBA);
+        result->loadFromMemory(rawBuf, Sizef(width, height), Texture::PixelFormat::Rgba);
         delete [] rawBuf;
         retval = result;
     }
-    CEGUI_CATCH(Exception&)
+    catch (Exception&)
     {
     }
 

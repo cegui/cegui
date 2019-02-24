@@ -30,23 +30,23 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
-// forward refs
-class EventArgs;
-
 /*!
 \brief
     Defines abstract interface which will be used when constructing various
     functor objects that bind slots to signals (or in CEGUI terms, handlers to
     events).
+
+\tparam TArgs
+    The type of the argument this functor takes
 */
+template<typename TArg>
 class SlotFunctorBase
 {
 public:
-    virtual ~SlotFunctorBase() {};
-    virtual bool operator()(const EventArgs& args) = 0;
-};
+    virtual ~SlotFunctorBase() {}
 
+    virtual bool operator()(const TArg& arg) = 0;
+};
 
 } // End of  CEGUI namespace section
 

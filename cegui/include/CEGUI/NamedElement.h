@@ -144,8 +144,8 @@ public:
         when you have no other option available. If you decide to use it anyway,
         make sure the window hierarchy from the entry point is small.
 
-    \param ID
-        uint ID code to look for.
+    \param name
+        Name of the child to look for.
 
     \return
        - true if at least one child window was found with the name \a name
@@ -210,7 +210,7 @@ public:
 
 protected:
     //! \copydoc Element::addChild_impl
-    virtual void addChild_impl(Element* element);
+    void addChild_impl(Element* element) override;
 
     /*!
     \brief Retrieves a child at \a name_path or 0 if none such exists

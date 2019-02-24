@@ -30,8 +30,12 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/EventArgs.h"
-#include "CEGUI/Vector.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
+
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -50,15 +54,18 @@ public:
 
 /*!
 \brief
-    Defines interface to some surface that can be rendered to.  Concrete
-    instances of objects that implement the RenderTarget interface are
-    normally created via the Renderer object.
+    Defines a virtual RenderTarget class serving different render target classes
+    as base. Concrete instances of objects that implement the RenderTarget interface are
+    normally created via the Renderer object. This class should be inherited
+    only using virtual inheritance.
 */
 class CEGUIEXPORT RenderTarget :
-    public EventSet,
-    public AllocatedObject<RenderTarget>
+    public EventSet
 {
 public:
+    RenderTarget();
+    virtual ~RenderTarget();
+
     //! Namespace for global events
     static const String EventNamespace;
 
@@ -77,7 +84,7 @@ public:
         GeometryBuffer object holding the geometry that should be drawn to the
         RenderTarget.
     */
-    virtual void draw(const GeometryBuffer& buffer) = 0;
+    virtual void draw(const GeometryBuffer& buffer);
 
     /*!
     \brief
@@ -88,7 +95,7 @@ public:
         RenderQueue object holding the geometry that should be drawn to the
         RenderTarget.
     */
-    virtual void draw(const RenderQueue& queue) = 0;
+    virtual void draw(const RenderQueue& queue);
 
     /*!
     \brief
@@ -109,7 +116,7 @@ public:
         May be thrown if the RenderTarget does not support setting or changing
         its area, or if the area change can not be satisfied for some reason.
     */
-    virtual void setArea(const Rectf& area) = 0;
+    virtual void setArea(const Rectf& area);
 
     /*!
     \brief
@@ -118,7 +125,7 @@ public:
     \return
         Rect object describing the currently defined area for this RenderTarget.
     */
-    virtual const Rectf& getArea() const = 0;
+    const Rectf& getArea() const;
 
     /*!
     \brief
@@ -140,22 +147,22 @@ public:
         Activate the render target and put it in a state ready to be drawn to.
 
     \note
-        You MUST call this before doing any rendering - if you do not call this,
+        This must be called before doing any rendering - if it is not called,
         in the unlikely event that your application actually works, it will
         likely stop working in some future version.
     */
-    virtual void activate() = 0;
+    virtual void activate();
 
     /*!
     \brief
         Deactivate the render target after having completed rendering.
 
     \note
-        You MUST call this after you finish rendering to the target - if you do
-        not call this, in the unlikely event that your application actually
+        This must be called after you have finished rendering to a target -
+        if it is not called, in the unlikely event that your application actually
         works, it will likely stop working in some future version.
     */
-    virtual void deactivate() = 0;
+    virtual void deactivate();
 
     /*!
     \brief
@@ -163,9 +170,103 @@ public:
         Resulting point is local to GeometryBuffer \a buff.
     */
     virtual void unprojectPoint(const GeometryBuffer& buff,
-                                const Vector2f& p_in, Vector2f& p_out) const = 0;
+                                const glm::vec2& p_in, glm::vec2& p_out) const = 0;
+
+    /*!
+    \brief
+        Returns a reference to the Renderer that is the owner/creator of this RenderTarget instance.
+
+    \return
+        A reference to the Renderer that is the owner/creator of this RenderTarget instance.
+    */
+    virtual Renderer& getOwner() = 0;
+
+    /*!
+    \brief
+        Returns the current count of activations for this RenderTarget
+
+    \return
+        The current count of activations.
+    */
+    unsigned int getActivationCounter() const;
+
+    /*!
+    \brief
+        Creates a view projection matrix for the OpenGL graphics library (Depth Range from -1 to 1) based
+        on this RenderTarget's current settings.
+
+    \return
+        A freshly created OpenGL view projection matrix for this RenderTarget.
+    */
+    glm::mat4 createViewProjMatrixForOpenGL() const;
+
+    /*!
+    \brief
+        Creates a view projection matrix for the Direct3D graphics library (Depth Range from 0 to 1) based
+        on this RenderTarget's current settings.
+
+    \return
+        A freshly created Direct3D view projection matrix for this RenderTarget.
+    */
+    glm::mat4 createViewProjMatrixForDirect3D() const;
+
+    /*!
+    \brief
+        Updates the view projection matrix of this Rendertarget.
+    */
+    void updateMatrix(const glm::mat4& matrix) const;
+    
+    /*!
+    \brief
+        Returns the vertical FOV angle of the perspective projection.
+    \return
+        The vertical FOV angle of the perspective projection. Value in Radians.
+    */
+    float getFovY() const;
+
+    /*!
+    \brief
+        Sets the vertical FOV angle of the perspective projection.
+    \param fovY
+        The vertical FOV angle of the perspective projection. Value in Radians.
+    */
+    void setFovY(const float fovY);
+
+protected:
+    /*!
+    \brief
+        The current number of activation of this RenderTarget. This is increased on every call to activate() and
+        will in turn be used to remove the most common redundant matrix updates of GeometryBuffers.
+    */
+    mutable unsigned int d_activationCounter;
+
+    //! holds defined area for the RenderTarget
+    Rectf d_area;
+
+    //! Determines if the matrix is up to date
+    mutable bool d_matrixValid;
+    //! The view projection matrix
+    mutable glm::mat4 d_matrix;
+
+    //! tracks viewing distance (this is set up at the same time as d_matrix)
+    mutable float d_viewDistance;
+
+    /*!
+    \brief
+        The vertical FOV (field of view) angle for the perspective projection. Value in Radians.
+        This effect of this value will not visible in the projection, unless a window is rotated around the X or Y axis.
+    */
+    float d_fovY;
+
+    //! The tangent of the y-axis FOV half-angle; used to calculate viewing distance.
+    float d_fovY_halftan;
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
+
 
 #endif  // end of guard _CEGUIRenderTarget_h_
