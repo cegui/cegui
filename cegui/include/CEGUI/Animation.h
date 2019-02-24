@@ -193,6 +193,7 @@ public:
         - Pause
         - Unpause
         - TogglePause
+        - Finish
 
         eventName is the name of the event we want to subscribe to
     */

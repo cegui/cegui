@@ -222,10 +222,10 @@ void GUIContext::createDefaultTooltipWindowInstance() const
     d_defaultTooltipObject = dynamic_cast<Tooltip*>(
         winmgr.createWindow(d_defaultTooltipType,
                             "CEGUI::System::default__auto_tooltip__"));
-    d_defaultTooltipObject->setAutoWindow(true);
 
     if (d_defaultTooltipObject)
     {
+        d_defaultTooltipObject->setAutoWindow(true);
         d_defaultTooltipObject->setWritingXMLAllowed(false);
         d_weCreatedTooltipObject = true;
     }
