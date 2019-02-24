@@ -34,8 +34,7 @@
 namespace CEGUI
 {
 //! Specifies interface for classes that parse text into RenderedString objects.
-class CEGUIEXPORT RenderedStringParser :
-    public AllocatedObject<RenderedStringParser>
+class CEGUIEXPORT RenderedStringParser
 {
 public:
     /*!
@@ -57,6 +56,9 @@ public:
     virtual RenderedString parse(const String& input_string,
                                  const Font* initial_font,
                                  const ColourRect* initial_colours) = 0;
+
+    virtual ~RenderedStringParser()
+    {}
 };
 
 } // End of  CEGUI namespace section

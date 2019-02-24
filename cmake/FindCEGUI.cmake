@@ -371,7 +371,7 @@ endmacro()
 #########################################################
 
 
-set(CEGUI_VERSION_MAJOR_DEFAULT "0")
+set(CEGUI_VERSION_MAJOR_DEFAULT "9999")
 
 # Register var to check change on base
 set(CEGUI_RESET_VARS CEGUI_CONFIG_INCLUDE_DIR CEGUI_INCLUDE_DIR CEGUI_LIBRARY_REL CEGUI_LIBRARY_DBG)

@@ -35,6 +35,15 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/timer.hpp>
 
+
+namespace std
+{
+ostream& operator<< (ostream& os, const CEGUI::Spinner::TextInputMode& value)
+{
+    return os << static_cast<int>(value);
+}
+}
+
 /*
  * Used to bring some Spinners up for testing
  *
@@ -69,7 +78,7 @@ BOOST_AUTO_TEST_CASE(Defaults)
     BOOST_CHECK_EQUAL(d_defaultSpinner->getMinimumValue(), -32768);
     BOOST_CHECK_EQUAL(d_defaultSpinner->getMaximumValue(), 32767);
 
-    BOOST_CHECK_EQUAL(d_defaultSpinner->getTextInputMode(), CEGUI::Spinner::Integer);
+    BOOST_CHECK_EQUAL(d_defaultSpinner->getTextInputMode(), CEGUI::Spinner::TextInputMode::Integer);
 }
 
 BOOST_AUTO_TEST_CASE(MinMax)

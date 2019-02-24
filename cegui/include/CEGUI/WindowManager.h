@@ -58,8 +58,7 @@ namespace CEGUI
 	used to access those Window objects by name.
 */
 class CEGUIEXPORT WindowManager : public Singleton<WindowManager>,
-                                  public EventSet,
-                                  public AllocatedObject<WindowManager>
+                                  public EventSet
 {
 public:
     /*************************************************************************
@@ -200,7 +199,7 @@ public:
     \return
         Pointer to the root Window object defined in the layout.
     */
-    Window* loadLayoutFromContainer(const RawDataContainer& source, PropertyCallback* callback = 0, void* userdata = 0);
+    Window* loadLayoutFromContainer(const RawDataContainer& source, PropertyCallback* callback = nullptr, void* userdata = nullptr);
 
 	/*!
 	\brief
@@ -226,7 +225,7 @@ public:
 	\exception FileIOException			thrown if something goes wrong while processing the file \a filename.
 	\exception InvalidRequestException	thrown if \a filename appears to be invalid.
 	*/
-	Window*	loadLayoutFromFile(const String& filename, const String& resourceGroup = "", PropertyCallback* callback = 0, void* userdata = 0);
+	Window*	loadLayoutFromFile(const String& filename, const String& resourceGroup = "", PropertyCallback* callback = nullptr, void* userdata = nullptr);
 
     /*!
     \brief
@@ -246,7 +245,7 @@ public:
     \return
         Pointer to the root Window object defined in the layout.
     */
-    Window* loadLayoutFromString(const String& source, PropertyCallback* callback = 0, void* userdata = 0);
+    Window* loadLayoutFromString(const String& source, PropertyCallback* callback = nullptr, void* userdata = nullptr);
 
     /*!
     \brief
@@ -406,17 +405,16 @@ private:
     /*************************************************************************
 		Implementation Data
 	*************************************************************************/
-    typedef std::vector<Window*
-        CEGUI_VECTOR_ALLOC(Window*)> WindowVector; //!< Type to use for a collection of Window pointers.
+    typedef std::vector<Window*> WindowVector; //!< Type to use for a collection of Window pointers.
 
     //! collection of created windows.
 	WindowVector d_windowRegistry;
     WindowVector d_deathrow; //!< Collection of 'destroyed' windows.
 
-    unsigned long   d_uid_counter;  //!< Counter used to generate unique window names.
+    std::uint32_t d_uid_counter;  //!< Counter used to generate unique window names.
     static String d_defaultResourceGroup;   //!< holds default resource group
     //! count of times WM is locked against new window creation.
-    uint    d_lockCount;
+    unsigned int    d_lockCount;
 
 public:
 	/*************************************************************************

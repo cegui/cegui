@@ -42,9 +42,9 @@ public:
     {
         return PropertyHelper<float>::fromString(str);
     }
-    static unsigned int stringToUint(const String& str)
+    static std::uint32_t stringToUint32(const String& str)
     {
-        return PropertyHelper<uint>::fromString(str);
+        return PropertyHelper<std::uint32_t>::fromString(str);
     }
     static bool stringToBool(const String& str)
     {
@@ -131,9 +131,9 @@ public:
     {
         return PropertyHelper<float>::toString(val);
     }
-    static String uintToString(unsigned int val)
+    static String uint32ToString(std::uint32_t val)
     {
-        return PropertyHelper<uint>::toString(val);
+        return PropertyHelper<std::uint32_t>::toString(val);
     }
     static String boolToString(bool val)
     {
@@ -377,21 +377,19 @@ namespace pyplusplus
         typedef ::CEGUI::Rect<CEGUI::UDim> URect;
         typedef ::CEGUI::Size<CEGUI::UDim> USize;
 
-        typedef std::vector<CEGUI::ListboxItem*
-            CEGUI_VECTOR_ALLOC(CEGUI::ListboxItem*)> ListBoxItemPtrVector;
+        typedef std::vector<CEGUI::ListboxItem*> ListBoxItemPtrVector;
         // typedef std::vector<CEGUI::Scheme::AliasMapping> AliasMappingVector;
-        typedef std::vector<CEGUI::PropertyInitialiser
-            CEGUI_VECTOR_ALLOC(CEGUI::PropertyInitialiser)> PropertyInitialiserVector;
+        typedef std::vector<CEGUI::PropertyInitialiser> PropertyInitialiserVector;
         // typedef std::vector<CEGUI::Scheme::FalagardMapping> FalagardMappingVector;
         // typedef std::vector<CEGUI::Scheme::LoadableUIElement> LoadableUIElementVector;
         // typedef std::vector<CEGUI::Scheme::UIElementFactory> UIElementFactoryVector;
         // typedef std::vector<CEGUI::Scheme::UIModule> UIModuleVector;
 
-        typedef std::vector<CEGUI::TextComponent* CEGUI_VECTOR_ALLOC(CEGUI::TextComponent*)> TextComponentVector;
-        typedef std::vector<CEGUI::ImageryComponent* CEGUI_VECTOR_ALLOC(CEGUI::ImageryComponent*)> ImageryComponentVector;
-        typedef std::vector<CEGUI::FrameComponent* CEGUI_VECTOR_ALLOC(CEGUI::FrameComponent*)> FrameComponentVector;
-        typedef std::vector<CEGUI::LayerSpecification* CEGUI_VECTOR_ALLOC(CEGUI::LayerSpecification*)> LayerSpecificationVector;
-        typedef std::vector<CEGUI::SectionSpecification* CEGUI_VECTOR_ALLOC(CEGUI::SectionSpecification*)> SectionSpecificationVector;
+        typedef std::vector<CEGUI::TextComponent*> TextComponentVector;
+        typedef std::vector<CEGUI::ImageryComponent*> ImageryComponentVector;
+        typedef std::vector<CEGUI::FrameComponent*> FrameComponentVector;
+        typedef std::vector<CEGUI::LayerSpecification*> LayerSpecificationVector;
+        typedef std::vector<CEGUI::SectionSpecification*> SectionSpecificationVector;
 
         typedef ::CEGUI::Event::Connection Connection;
         typedef ::CEGUI::Event::Subscriber Subscriber;
@@ -412,10 +410,8 @@ namespace pyplusplus
         typedef std::pair<CEGUI::String, CEGUI::String> StdPairCEGUIStringString;
         typedef std::pair<CEGUI::Image*, CEGUI::ImageFactory*> StdPairCEGUIImageImageFactory;
 
-        typedef std::map<std::string, std::string
-            CEGUI_MAP_ALLOC(std::string, std::string)> StringMap;
-        typedef std::vector<std::string
-            CEGUI_VECTOR_ALLOC(std::string)> StringVector;
+        typedef std::map<std::string, std::string> StringMap;
+        typedef std::vector<std::string> StringVector;
 
         typedef CEGUI::Singleton<CEGUI::AnimationManager> SingletonAnimationManager;
         typedef CEGUI::Singleton<CEGUI::Logger> SingletonLogger;
@@ -432,57 +428,35 @@ namespace pyplusplus
         typedef CEGUI::Singleton<CEGUI::WindowRendererManager> SingletonWindowRendererManager;
 
         typedef unsigned int Group;
-        typedef std::map<CEGUI::String, CEGUI::String, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::String)> ResourceGroupMap;
+        typedef std::map<CEGUI::String, CEGUI::String, CEGUI::StringFastLessCompare> ResourceGroupMap;
         typedef CEGUI::RefCounted<CEGUI::BoundSlot> Connection;
         typedef CEGUI::SubscriberSlot Subscriber;
-        typedef std::multimap<Group, Connection
-            CEGUI_MULTIMAP_ALLOC(Group, Connection)> SlotContainer;
-        typedef std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::String)>  EventMap;
-        typedef std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Font*)> FontRegistry;
+        typedef std::multimap<Group, Connection> SlotContainer;
+        typedef std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare>  EventMap;
+        typedef std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare> FontRegistry;
         typedef std::pair<CEGUI::Window*, bool> WindowStackEntry;
-        typedef std::vector<WindowStackEntry
-            CEGUI_VECTOR_ALLOC(WindowStackEntry)> WindowStack;
-        typedef std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Property*)> PropertyRegistry;
-        typedef std::map<CEGUI::String, CEGUI::String, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::String)> UserStringMap;
+        typedef std::vector<WindowStackEntry> WindowStack;
+        typedef std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare> PropertyRegistry;
+        typedef std::map<CEGUI::String, CEGUI::String, CEGUI::StringFastLessCompare> UserStringMap;
         typedef std::set<CEGUI::String, CEGUI::StringFastLessCompare> StringSet;
-        typedef std::vector<CEGUI::String
-            CEGUI_VECTOR_ALLOC(CEGUI::String)> TargetTypeStack;     //!< Type used to implement stack of target type names.
-        typedef std::map<CEGUI::String, CEGUI::Window*, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Window*)> WindowRegistry; //!< Type used to implement registry of Window objects
-        typedef std::vector<CEGUI::Window*
-            CEGUI_VECTOR_ALLOC(CEGUI::Window*)>    WindowVector;   //!< Type to use for a collection of Window pointers.
-        typedef std::vector<CEGUI::Property*
-            CEGUI_VECTOR_ALLOC(CEGUI::Property*)> PropertyList;
-        typedef std::map<CEGUI::String, CEGUI::WindowRendererFactory*, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::WindowRendererFactory*)> WR_Registry;
-        typedef std::map<CEGUI::String, CEGUI::String, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::String)> AttributeMap;
+        typedef std::vector<CEGUI::String> TargetTypeStack;     //!< Type used to implement stack of target type names.
+        typedef std::map<CEGUI::String, CEGUI::Window*, CEGUI::StringFastLessCompare> WindowRegistry; //!< Type used to implement registry of Window objects
+        typedef std::vector<CEGUI::Window*>    WindowVector;   //!< Type to use for a collection of Window pointers.
+        typedef std::vector<CEGUI::Property*> PropertyList;
+        typedef std::map<CEGUI::String, CEGUI::WindowRendererFactory*, CEGUI::StringFastLessCompare> WR_Registry;
+        typedef std::map<CEGUI::String, CEGUI::String, CEGUI::StringFastLessCompare> AttributeMap;
 
 
-        typedef std::map<CEGUI::String, CEGUI::EventLinkDefinition*, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::EventLinkDefinition*)> EventLinkDefinitionMap;
-        typedef std::map<CEGUI::String, CEGUI::ImagerySection*, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::ImagerySection*)> ImagerySectionMap;
-        typedef std::map<CEGUI::String, CEGUI::NamedArea*, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::NamedArea*)> NamedAreaMap;
-        typedef std::map<CEGUI::String, CEGUI::PropertyDefinitionBase*, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::PropertyDefinitionBase*)> PropertyDefinitionBaseMap;
-        typedef std::map<CEGUI::String, CEGUI::PropertyInitialiser*, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::PropertyInitialiser*)> PropertyInitialiserMap;
-        typedef std::map<CEGUI::String, CEGUI::StateImagery*, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::StateImagery*)> StateImageryMap;
-        typedef std::map<CEGUI::String, CEGUI::WidgetComponent*, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::WidgetComponent*)> WidgetComponentMap;
-        typedef std::map<CEGUI::String, CEGUI::WidgetLookFeel*, CEGUI::StringFastLessCompare
-            CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::WidgetLookFeel*)> WidgetLookFeelMap;
+        typedef std::map<CEGUI::String, CEGUI::EventLinkDefinition*, CEGUI::StringFastLessCompare> EventLinkDefinitionMap;
+        typedef std::map<CEGUI::String, CEGUI::ImagerySection*, CEGUI::StringFastLessCompare> ImagerySectionMap;
+        typedef std::map<CEGUI::String, CEGUI::NamedArea*, CEGUI::StringFastLessCompare> NamedAreaMap;
+        typedef std::map<CEGUI::String, CEGUI::PropertyDefinitionBase*, CEGUI::StringFastLessCompare> PropertyDefinitionBaseMap;
+        typedef std::map<CEGUI::String, CEGUI::PropertyInitialiser*, CEGUI::StringFastLessCompare> PropertyInitialiserMap;
+        typedef std::map<CEGUI::String, CEGUI::StateImagery*, CEGUI::StringFastLessCompare> StateImageryMap;
+        typedef std::map<CEGUI::String, CEGUI::WidgetComponent*, CEGUI::StringFastLessCompare> WidgetComponentMap;
+        typedef std::map<CEGUI::String, CEGUI::WidgetLookFeel*, CEGUI::StringFastLessCompare> WidgetLookFeelMap;
 
-        typedef CEGUI::ConstVectorIterator<std::vector<CEGUI::PropertyInitialiser
-           CEGUI_VECTOR_ALLOC(CEGUI::PropertyInitialiser)> > PropertyInitialiserVectorIterator;
+        typedef CEGUI::ConstVectorIterator<std::vector<CEGUI::PropertyInitialiser> > PropertyInitialiserVectorIterator;
 
         typedef CEGUI::TypedProperty<float> TypedPropertyFloat;
         typedef CEGUI::FalagardPropertyBase<float> FalagardPropertyBaseFloat;
@@ -621,31 +595,31 @@ namespace python_CEGUI
             sizeof( ::std::pair<CEGUI::Image*, CEGUI::ImageFactory*> );
 
             // seems that doing an sizeof ( ::CEGUI::EventSet::Iterator ); doesn't expose the class :(
-            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare   CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Property*) > > );
-            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Scheme*, CEGUI::StringFastLessCompare     CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Scheme*) > > );
-            //sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Window*, CEGUI::StringFastLessCompare     CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Window*) > > );
-            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::Window*  CEGUI_VECTOR_ALLOC(Window*)> >);
-            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::StringFastLessCompare CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping) > > );
-            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare      CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Event*) > > );
-            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack) > > );
-            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::WindowFactory*, CEGUI::StringFastLessCompare CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::WindowFactory*) > > );
-            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare       CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Font*) > > );
-            sizeof( CEGUI::ConstVectorIterator<std::multiset<CEGUI::LayerSpecification, std::less<CEGUI::LayerSpecification>  CEGUI_VECTOR_ALLOC(CEGUI::LayerSpecification) > > );
-            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::ImageryComponent  CEGUI_VECTOR_ALLOC(CEGUI::ImageryComponent) > > );
-            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::EventAction  CEGUI_VECTOR_ALLOC(CEGUI::EventAction) > > );
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare > > );
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Scheme*, CEGUI::StringFastLessCompare > > );
+            //sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Window*, CEGUI::StringFastLessCompare > > );
+            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::Window*>);
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::StringFastLessCompare > > );
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare > > );
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare > > );
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::WindowFactory*, CEGUI::StringFastLessCompare > > );
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare > > );
+            sizeof( CEGUI::ConstVectorIterator<std::multiset<CEGUI::LayerSpecification, std::less<CEGUI::LayerSpecification> > > );
+            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::ImageryComponent > > );
+            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::EventAction > > );
             sizeof( CEGUI::ConstVectorIterator<std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > > );
-            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::FrameComponent  CEGUI_VECTOR_ALLOC(CEGUI::FrameComponent) > > );
+            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::FrameComponent > > );
             sizeof( CEGUI::ConstVectorIterator<CEGUI::NamedDefinitionCollator<CEGUI::String, const CEGUI::PropertyInitialiser*> > );
             sizeof( CEGUI::ConstVectorIterator<CEGUI::NamedDefinitionCollator<CEGUI::String, CEGUI::PropertyDefinitionBase*> > );
-            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::ImagerySection, CEGUI::StringFastLessCompare  CEGUI_MAP_ALLOC(const CEGUI::String, CEGUI::ImagerySection) > > );
-            //sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::PropertyInitialiser  CEGUI_VECTOR_ALLOC(CEGUI::PropertyInitialiser) > > );
-            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::NamedArea, CEGUI::StringFastLessCompare  CEGUI_MAP_ALLOC(const CEGUI::String, CEGUI::NamedArea) > > );
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::ImagerySection, CEGUI::StringFastLessCompare > > );
+            //sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::PropertyInitialiser > );
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::NamedArea, CEGUI::StringFastLessCompare > > );
             sizeof( CEGUI::ConstVectorIterator<CEGUI::NamedDefinitionCollator<CEGUI::String, const CEGUI::WidgetComponent*> > );
-            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::WidgetLookFeel, CEGUI::StringFastLessCompare  CEGUI_MAP_ALLOC(const CEGUI::String, CEGUI::WidgetLookFeel) > > );
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::WidgetLookFeel, CEGUI::StringFastLessCompare > > );
             sizeof( CEGUI::ConstVectorIterator<CEGUI::NamedDefinitionCollator<CEGUI::String, const CEGUI::EventLinkDefinition*> > );
-            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::StateImagery, CEGUI::StringFastLessCompare  CEGUI_MAP_ALLOC(const CEGUI::String, CEGUI::StateImagery) > > );
-            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::SectionSpecification  CEGUI_VECTOR_ALLOC(CEGUI::SectionSpecification) > > );
-            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::TextComponent  CEGUI_VECTOR_ALLOC(CEGUI::TextComponent) > > );
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::StateImagery, CEGUI::StringFastLessCompare > > );
+            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::SectionSpecification > > );
+            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::TextComponent > > );
 
             sizeof( CEGUI::TypedProperty<float> );
             sizeof( CEGUI::FalagardPropertyBase<float> );

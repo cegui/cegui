@@ -29,7 +29,7 @@
  ***************************************************************************/
 #include "CEGUI/ImageCodecModules/TGA/ImageCodec.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 #	define TGA_RGB		 2		// This tells us it's a normal RGB (really BGR) file
 #	define TGA_A		 3		// This tells us it's a ALPHA file
 #	define TGA_RLE		10		// This tells us that the targa is Run-Length Encoded (RLE)
@@ -55,7 +55,7 @@ Texture* TGAImageCodec::load(const RawDataContainer& data, Texture* result)
     }
     else 
     {
-        Texture::PixelFormat fmt = (img->channels == 3) ? Texture::PF_RGB : Texture::PF_RGBA;
+        Texture::PixelFormat fmt = (img->channels == 3) ? Texture::PixelFormat::Rgb : Texture::PixelFormat::Rgba;
         result->loadFromMemory(img->data, Sizef(static_cast<float>(img->sizeX), static_cast<float>(img->sizeY)), fmt);
         if (img->data)
         {
@@ -83,7 +83,7 @@ void TGAImageCodec::flipVertImageTGA(ImageTGA* img)
 
 		for (int colBit = 0; colBit < pitch; ++colBit)
 		{
-			uchar tmp = img->data[dstOffest + colBit];
+			std::uint8_t tmp = img->data[dstOffest + colBit];
 			img->data[dstOffest + colBit] = img->data[srcOffset + colBit];
 			img->data[srcOffset + colBit] = tmp;
 		}
@@ -105,7 +105,7 @@ void TGAImageCodec::flipHorzImageTGA(ImageTGA* img)
 		{
             for (int c = 0; c < img->channels; ++c)
             {
-                const uchar tmp = img->data[dstOffest + c];
+                const std::uint8_t tmp = img->data[dstOffest + c];
                 img->data[dstOffest + c] = img->data[srcOffset + c];
                 img->data[srcOffset + c] = tmp;
             }

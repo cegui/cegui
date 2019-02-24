@@ -27,7 +27,7 @@
 #include "CEGUI/RendererModules/Irrlicht/ImageCodec.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/RendererModules/Irrlicht/MemoryFile.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -54,8 +54,8 @@ Texture* IrrlichtImageCodec::load(const RawDataContainer& data, Texture* result)
     video::IImage* image = d_driver.createImageFromFile(&imf);
 
     if (!image)
-        CEGUI_THROW(FileIOException(
-            "Irrlicht failed to create irr::video::IImage from file data."));
+        throw FileIOException(
+            "Irrlicht failed to create irr::video::IImage from file data.");
 
     // get format of image
     Texture::PixelFormat format;
@@ -63,34 +63,34 @@ Texture* IrrlichtImageCodec::load(const RawDataContainer& data, Texture* result)
     switch (image->getColorFormat())
     {
         case video::ECF_A8R8G8B8:
-            format = Texture::PF_RGBA;
+            format = Texture::PixelFormat::Rgba;
             components = 4;
             break;
 
         case video::ECF_R8G8B8:
-            format = Texture::PF_RGB;
+            format = Texture::PixelFormat::Rgb;
             components = 3;
             break;
 
         default:
             image->drop();
-            CEGUI_THROW(FileIOException(
-                "File data was of an unsupported format."));
+            throw FileIOException(
+                "File data was of an unsupported format.");
     }
 
     const core::dimension2d<s32> sz(image->getDimension());
-    uchar* dat = static_cast<uchar*>(image->lock());
-    const uchar* const image_data = dat;
+    std::uint8_t* dat = static_cast<std::uint8_t*>(image->lock());
+    const std::uint8_t* const image_data = dat;
 
     // ONLY for RGBA, switch R and B components
     // (we should probably check the R and B masks and decide based on those)
-    if (format == Texture::PF_RGBA)
+    if (format == Texture::PixelFormat::Rgba)
     {
         for (s32 j = 0; j < sz.Height; ++j)
         {
             for (s32 i = 0; i < sz.Width; ++i)
             {
-                const uchar tmp = dat[i * components + 0];
+                const std::unint8_t tmp = dat[i * components + 0];
                 dat[i * components + 0] = dat[i * components + 2];
                 dat[i * components + 2] = tmp;
             }
@@ -100,18 +100,18 @@ Texture* IrrlichtImageCodec::load(const RawDataContainer& data, Texture* result)
     }
 
     // load the resulting image into the texture
-    CEGUI_TRY
+    try
     {
         result->loadFromMemory(image_data, Sizef(static_cast<float>(sz.Width),
                                                   static_cast<float>(sz.Height)),
                                format);
     }
-    CEGUI_CATCH (...)
+    catch  (...)
     {
         // cleanup when there's an exception
         image->unlock();
         image->drop();
-        CEGUI_RETHROW;
+        throw;
     }
 
     // cleanup.
