@@ -58,6 +58,8 @@
 #include "CEGUI/RegexMatcher.h"
 #ifdef CEGUI_HAS_PCRE_REGEX
 #   include "CEGUI/PCRERegexMatcher.h"
+#elif (__cplusplus >= 201103L) || (_MSC_VER >= 1600)
+#   include "CEGUI/StdRegexMatcher.h"
 #endif
 #include <ctime>
 #include <clocale>
@@ -961,6 +963,8 @@ RegexMatcher* System::createRegexMatcher() const
 {
 #ifdef CEGUI_HAS_PCRE_REGEX
     return CEGUI_NEW_AO PCRERegexMatcher();
+#elif (__cplusplus >= 201103L) || (_MSC_VER >= 1600)
+    return CEGUI_NEW_AO StdRegexMatcher();
 #else
     return 0;
 #endif
