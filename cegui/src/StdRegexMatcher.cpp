@@ -1,9 +1,9 @@
 /***********************************************************************
-    created:    Mon Jul 27 2009
-    author:     Paul D Turner <paul@cegui.org.uk>
+    created:    Sun Feb 24 2019
+    author:     Metora Wang
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2019 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
