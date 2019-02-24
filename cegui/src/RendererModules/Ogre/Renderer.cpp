@@ -63,7 +63,7 @@
 #include <OgreHlmsDatablock.h>
 #endif
 
-#if OGRE_VERSION > 0x11000
+#if OGRE_VERSION > 0x10B00
 #ifdef OGRE_BUILD_COMPONENT_RTSHADERSYSTEM
 #include <RTShaderSystem/OgreRTShaderConfig.h>
 #endif

@@ -196,7 +196,7 @@ void OpenGLWGLPBTextureTarget::initialisePBuffer()
 
     d_context= wglCreateContext(d_hdc);
 
-    if (!d_hdc)
+    if (!d_context)
         CEGUI_THROW(RendererException(
             "pbuffer creation failure, wglCreateContext() call failed."));
 

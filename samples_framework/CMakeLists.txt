@@ -105,6 +105,9 @@ if (CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiOgreBaseApplication.cpp
     )
+    if(EXISTS ${OGRE_CONFIG_DIR}/plugins.cfg)
+        file(COPY ${OGRE_CONFIG_DIR}/plugins.cfg DESTINATION ${CMAKE_BINARY_DIR}/bin)
+    endif()
 endif()
 
 if (CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE)
