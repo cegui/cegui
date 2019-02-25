@@ -27,8 +27,6 @@
 #include "CEGUI/StdRegexMatcher.h"
 #include "CEGUI/Exceptions.h"
 
-#if (__cplusplus >= 201103L) || (_MSC_VER >= 1600)
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -75,5 +73,3 @@ RegexMatcher::MatchState StdRegexMatcher::getMatchStateOfString(const String& st
 
 //----------------------------------------------------------------------------//
 } // End of  CEGUI namespace section
-
-#endif
