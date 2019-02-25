@@ -30,7 +30,6 @@
 #include "CEGUI/RendererModules/Direct3D9/Renderer.h"
 #include "../../RenderTarget.h"
 #include "../../Rect.h"
-#include <d3dx9.h>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -75,7 +74,7 @@ protected:
     //! holds defined area for the RenderTarget
     Rectf d_area;
     //! projection / view matrix cache
-    mutable D3DXMATRIX d_matrix;
+    mutable D3DMATRIX d_matrix;
     //! true when d_matrix is valid and up to date
     mutable bool d_matrixValid;
     //! tracks viewing distance (this is set up at the same time as d_matrix)
