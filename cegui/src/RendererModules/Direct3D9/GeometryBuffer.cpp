@@ -29,6 +29,12 @@
 #include "CEGUI/RenderEffect.h"
 #include "CEGUI/Vertex.h"
 #include <d3d9.h>
+#ifdef _WIN32_WINNT_WIN8
+#include <DirectXMath.h>
+using namespace DirectX;
+#else
+#include <d3dx9.h>
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -226,6 +232,14 @@ void Direct3D9GeometryBuffer::performBatchManagement()
 //----------------------------------------------------------------------------//
 void Direct3D9GeometryBuffer::updateMatrix() const
 {
+#ifdef DIRECTX_MATH_VERSION
+    const XMVECTOR p = { d_pivot.d_x, d_pivot.d_y, d_pivot.d_z };
+    const XMVECTOR t = { d_translation.d_x, d_translation.d_y, d_translation.d_z };
+    const XMVECTOR r = { d_rotation.d_x, d_rotation.d_y, d_rotation.d_z, d_rotation.d_w };
+
+    XMMATRIX m = XMMatrixTransformation(g_XMOne, g_XMIdentityR3, g_XMOne, p, r, t);
+    XMStoreFloat4x4((XMFLOAT4X4*)&d_matrix, m);
+#else
     const D3DXVECTOR3 p(d_pivot.d_x, d_pivot.d_y, d_pivot.d_z);
     const D3DXVECTOR3 t(d_translation.d_x, d_translation.d_y, d_translation.d_z);
 
@@ -236,12 +250,12 @@ void Direct3D9GeometryBuffer::updateMatrix() const
     r.w = d_rotation.d_w;
 
     D3DXMatrixTransformation(&d_matrix, 0, 0, 0, &p, &r, &t);
-
+#endif
     d_matrixValid = true;
 }
 
 //----------------------------------------------------------------------------//
-const D3DXMATRIX* Direct3D9GeometryBuffer::getMatrix() const
+const D3DMATRIX* Direct3D9GeometryBuffer::getMatrix() const
 {
     if (!d_matrixValid)
         updateMatrix();

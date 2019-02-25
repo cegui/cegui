@@ -31,7 +31,6 @@
 #include "CEGUI/RendererModules/Direct3D9/Renderer.h"
 #include "../../Rect.h"
 #include "../../Quaternion.h"
-#include <d3dx9.h>
 #include <utility>
 #include <vector>
 
@@ -56,7 +55,7 @@ public:
     Direct3D9GeometryBuffer(Direct3D9Renderer& owner, LPDIRECT3DDEVICE9 device);
 
     //! return pointer to D3DXMATRIX used as world transform.
-    const D3DXMATRIX* getMatrix() const;
+    const D3DMATRIX* getMatrix() const;
 
     // implementation of abstract members from GeometryBuffer
     void draw() const;
@@ -128,7 +127,7 @@ protected:
     //! The D3D Device
     LPDIRECT3DDEVICE9 d_device;
     //! model matrix cache
-    mutable D3DXMATRIX d_matrix;
+    mutable D3DMATRIX d_matrix;
     //! true when d_matrix is valid and up to date
     mutable bool d_matrixValid;
 };
