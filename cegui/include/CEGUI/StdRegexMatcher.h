@@ -31,8 +31,11 @@
 #include "CEGUI/String.h"
 
 #if (__cplusplus >= 201103L) || (_MSC_VER >= 1600)
-
 #include <regex>
+#else
+#include <tr1/regex>
+namespace std { using namespace tr1; }
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -60,7 +63,5 @@ private:
 };
 
 } // End of  CEGUI namespace section
-
-#endif
 
 #endif  // end of guard _CEGUIStdRegexMatcher_h_
