@@ -32,8 +32,10 @@
 #ifdef _WIN32_WINNT_WIN8
 #include <DirectXMath.h>
 using namespace DirectX;
+CEGUI_STATIC_ASSERT(sizeof(D3DMATRIX) == sizeof(XMFLOAT4X4));
 #else
 #include <d3dx9.h>
+CEGUI_STATIC_ASSERT(sizeof(D3DMATRIX) == sizeof(D3DXMATRIX));
 #endif
 
 // Start of CEGUI namespace section
@@ -191,13 +193,13 @@ Texture* Direct3D9GeometryBuffer::getActiveTexture() const
 //----------------------------------------------------------------------------//
 uint Direct3D9GeometryBuffer::getVertexCount() const
 {
-    return d_vertices.size();
+    return static_cast<uint>(d_vertices.size());
 }
 
 //----------------------------------------------------------------------------//
 uint Direct3D9GeometryBuffer::getBatchCount() const
 {
-    return d_batches.size();
+    return static_cast<uint>(d_batches.size());
 }
 
 //----------------------------------------------------------------------------//
@@ -238,7 +240,7 @@ void Direct3D9GeometryBuffer::updateMatrix() const
     const XMVECTOR r = { d_rotation.d_x, d_rotation.d_y, d_rotation.d_z, d_rotation.d_w };
 
     XMMATRIX m = XMMatrixTransformation(g_XMOne, g_XMIdentityR3, g_XMOne, p, r, t);
-    XMStoreFloat4x4((XMFLOAT4X4*)&d_matrix, m);
+    XMStoreFloat4x4(reinterpret_cast<XMFLOAT4X4*>(&d_matrix), m);
 #else
     const D3DXVECTOR3 p(d_pivot.d_x, d_pivot.d_y, d_pivot.d_z);
     const D3DXVECTOR3 t(d_translation.d_x, d_translation.d_y, d_translation.d_z);
@@ -249,7 +251,7 @@ void Direct3D9GeometryBuffer::updateMatrix() const
     r.z = d_rotation.d_z;
     r.w = d_rotation.d_w;
 
-    D3DXMatrixTransformation(&d_matrix, 0, 0, 0, &p, &r, &t);
+    D3DXMatrixTransformation(static_cast<D3DXMATRIX*>(&d_matrix), 0, 0, 0, &p, &r, &t);
 #endif
     d_matrixValid = true;
 }
