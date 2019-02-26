@@ -40,12 +40,31 @@ class CEGUIEXPORT StdAllocator
 public:
 	static inline void* allocateBytes(size_t count)
 	{
-        return malloc(count);
+		void* ptr = malloc(count);
+#if defined(CEGUI_CUSTOM_ALLOCATORS_USAGE)
+		if (ptr == NULL)
+			return NULL;
+		getAllocationSize(count);
+#endif
+		return ptr;
 	}
 
 	static inline void deallocateBytes(void* ptr)
 	{
-        free(ptr);
+#if defined(CEGUI_CUSTOM_ALLOCATORS_USAGE)
+		if (ptr == NULL)
+			return;
+		size_t count = 0;
+#if defined(_MSC_VER)
+		count = _msize(ptr);
+#elif defined(__linux__)
+		count = malloc_usable_size(ptr);
+#elif defined(__APPLE__)
+		count = malloc_size(ptr);
+#endif
+		getAllocationSize((size_t)0 - count);
+#endif
+		free(ptr);
 	}
 
     // !!! IF YOU GET AN ERROR HERE:
@@ -57,6 +76,23 @@ public:
 	static inline size_t getMaxAllocationSize()
 	{
 		return std::numeric_limits<size_t>::max();
+	}
+
+	static inline size_t getAllocationSize(size_t adjust = 0)
+	{
+		static size_t allocationSize = 0;
+		if (adjust == 0)
+			return allocationSize;
+#if defined(CEGUI_CUSTOM_ALLOCATORS_USAGE)
+#if defined(_M_IX86)
+		_InterlockedExchangeAdd(reinterpret_cast<long*>(&allocationSize), adjust);
+#elif defined(_M_AMD64)
+		_InterlockedExchangeAdd64(reinterpret_cast<long long*>(&allocationSize), adjust);
+#elif defined(__GNUC__)
+		__sync_add_and_fetch(&allocationSize, adjust);
+#endif
+#endif
+		return allocationSize;
 	}
 };
 

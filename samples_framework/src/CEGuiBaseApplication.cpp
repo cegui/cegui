@@ -329,11 +329,16 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
                 return;
 
             // update FPS imagery
-            char fps_textbuff[16];
-            sprintf(fps_textbuff , "FPS: %d", d_FPSValue);
+            char fps_textbuff[64];
+            int offset = sprintf(fps_textbuff , "FPS: %d ", d_FPSValue);
+#if defined(CEGUI_CUSTOM_ALLOCATORS_USAGE)
+            sprintf(fps_textbuff + offset, "MEM: %dM",
+                    static_cast<int>(CEGUI::StdAllocator::getAllocationSize()) / 1048576);
+#endif
+            float width = fnt->getTextExtent(fps_textbuff);
 
             d_FPSGeometry->reset();
-            fnt->drawText(*d_FPSGeometry, fps_textbuff, CEGUI::Vector2f(0, 0), 0,
+            fnt->drawText(*d_FPSGeometry, fps_textbuff, CEGUI::Vector2f(-width, 0), 0,
                         CEGUI::Colour(0xFFFFFFFF));
         }
 
@@ -374,7 +379,7 @@ void CEGuiBaseApplication::positionFPS()
 
     d_FPSGeometry->setClippingRegion(scrn);
     d_FPSGeometry->setTranslation(
-        CEGUI::Vector3f(scrn.getSize().d_width - 120.0f, 0.0f, 0.0f));
+        CEGUI::Vector3f(scrn.getSize().d_width, 0.0f, 0.0f));
 }
 
 
