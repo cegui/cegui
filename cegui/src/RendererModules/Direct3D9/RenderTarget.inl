@@ -31,8 +31,10 @@
 #ifdef _WIN32_WINNT_WIN8
 #include <DirectXMath.h>
 using namespace DirectX;
+CEGUI_STATIC_ASSERT(sizeof(D3DMATRIX) == sizeof(XMFLOAT4X4));
 #else
 #include <d3dx9.h>
+CEGUI_STATIC_ASSERT(sizeof(D3DMATRIX) == sizeof(D3DXMATRIX));
 #endif
 
 // Start of CEGUI namespace section
@@ -123,9 +125,9 @@ void Direct3D9RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     float viewportHeight = static_cast<float>(vp.Height);
     float viewportMinZ = vp.MinZ;
     float viewportMaxZ = vp.MaxZ;
-    XMMATRIX projection = XMLoadFloat4x4((XMFLOAT4X4*)&d_matrix);
+    XMMATRIX projection = XMLoadFloat4x4(reinterpret_cast<const XMFLOAT4X4*>(&d_matrix));
     XMMATRIX view = XMMatrixIdentity();
-    XMMATRIX world = XMLoadFloat4x4((XMFLOAT4X4*)gb.getMatrix());
+    XMMATRIX world = XMLoadFloat4x4(reinterpret_cast<const XMFLOAT4X4*>(gb.getMatrix()));
     XMFLOAT4 in_vec;
 #else
     D3DXVECTOR3 in_vec;
@@ -154,15 +156,15 @@ void Direct3D9RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     D3DXVECTOR3 p3;
     in_vec.x = 0;
     in_vec.y = 0;
-    D3DXVec3Project(&p1, &in_vec, &vp, &d_matrix, 0, gb.getMatrix()); 
+    D3DXVec3Project(&p1, &in_vec, &vp, static_cast<const D3DXMATRIX*>(&d_matrix), 0, static_cast<const D3DXMATRIX*>(gb.getMatrix()));
 
     in_vec.x = 1;
     in_vec.y = 0;
-    D3DXVec3Project(&p2, &in_vec, &vp, &d_matrix, 0, gb.getMatrix()); 
+    D3DXVec3Project(&p2, &in_vec, &vp, static_cast<const D3DXMATRIX*>(&d_matrix), 0, static_cast<const D3DXMATRIX*>(gb.getMatrix()));
 
     in_vec.x = 0;
     in_vec.y = 1;
-    D3DXVec3Project(&p3, &in_vec, &vp, &d_matrix, 0, gb.getMatrix()); 
+    D3DXVec3Project(&p3, &in_vec, &vp, static_cast<const D3DXMATRIX*>(&d_matrix), 0, static_cast<const D3DXMATRIX*>(gb.getMatrix()));
 #endif
 
     // create plane from projected points
@@ -181,7 +183,7 @@ void Direct3D9RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     XMVECTOR t1 = XMVector3Unproject(XMLoadFloat4(&in_vec), viewportX, viewportY, viewportWidth, viewportHeight, vp.MinZ, vp.MaxZ, projection, view, world);
 #else
     D3DXVECTOR3 t1;
-    D3DXVec3Unproject(&t1, &in_vec, &vp, &d_matrix, 0, gb.getMatrix()); 
+    D3DXVec3Unproject(&t1, &in_vec, &vp, static_cast<const D3DXMATRIX*>(&d_matrix), 0, static_cast<const D3DXMATRIX*>(gb.getMatrix()));
 #endif
 
     in_vec.x = p_in.d_x;
@@ -191,7 +193,7 @@ void Direct3D9RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     XMVECTOR t2 = XMVector3Unproject(XMLoadFloat4(&in_vec), viewportX, viewportY, viewportWidth, viewportHeight, vp.MinZ, vp.MaxZ, projection, view, world);
 #else
     D3DXVECTOR3 t2;
-    D3DXVec3Unproject(&t2, &in_vec, &vp, &d_matrix, 0, gb.getMatrix()); 
+    D3DXVec3Unproject(&t2, &in_vec, &vp, static_cast<const D3DXMATRIX*>(&d_matrix), 0, static_cast<const D3DXMATRIX*>(gb.getMatrix()));
 #endif
 
     // get intersection of ray and plane
@@ -230,15 +232,15 @@ void Direct3D9RenderTarget<T>::updateMatrix() const
             XMMatrixPerspectiveFovRH(fov, aspect,
                                      d_viewDistance * 0.5f,
                                      d_viewDistance * 2.0f));
-    XMStoreFloat4x4((XMFLOAT4X4*)&d_matrix, m);
+    XMStoreFloat4x4(reinterpret_cast<XMFLOAT4X4*>(&d_matrix), m);
 #else
     D3DXVECTOR3 eye(midx, midy, -d_viewDistance);
     D3DXVECTOR3 at(midx, midy, 1);
     D3DXVECTOR3 up(0, -1, 0);
 
     D3DXMATRIX tmp;
-    D3DXMatrixMultiply(&d_matrix,
-        D3DXMatrixLookAtRH(&d_matrix, &eye, &at, &up),
+    D3DXMatrixMultiply(static_cast<D3DXMATRIX*>(&d_matrix),
+        D3DXMatrixLookAtRH(static_cast<D3DXMATRIX*>(&d_matrix), &eye, &at, &up),
         D3DXMatrixPerspectiveFovRH(&tmp, fov, aspect,
                                    d_viewDistance * 0.5f,
                                    d_viewDistance * 2.0f));
