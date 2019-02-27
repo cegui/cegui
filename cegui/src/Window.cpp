@@ -2473,7 +2473,7 @@ void Window::onCaptureLost(WindowEventArgs& e)
 
     // handle restore of previous capture window as required.
     if (d_restoreOldCapture && (d_oldCapture != nullptr)) {
-        d_oldCapture->onCaptureLost(e);
+        d_oldCapture->onCaptureGained(e);
         d_oldCapture = nullptr;
     }
 
