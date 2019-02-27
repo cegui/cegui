@@ -37,7 +37,11 @@ namespace CEGUI
 // amount of bits in a uint
 #define BITS_PER_UINT   (sizeof (uint) * 8)
 // must be a power of two
+#if defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
 #define GLYPHS_PER_PAGE 256
+#else
+#define GLYPHS_PER_PAGE 1
+#endif
 
 //----------------------------------------------------------------------------//
 const argb_t Font::DefaultColour = 0xFFFFFFFF;
@@ -75,12 +79,8 @@ Font::~Font()
 {
     if (d_glyphPageLoaded)
     {
-#if defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
         const uint old_size = (((d_maxCodepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE)
             + BITS_PER_UINT - 1) / BITS_PER_UINT;
-#else
-        const uint old_size = (d_maxCodepoint + BITS_PER_UINT - 1) / BITS_PER_UINT;
-#endif
         #ifndef CEGUI_CUSTOM_ALLOCATORS
             CEGUI_UNUSED(old_size);
         #endif
@@ -134,12 +134,8 @@ void Font::setMaxCodepoint(utf32 codepoint)
 {
     if (d_glyphPageLoaded)
     {
-#if defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
         const uint old_size = (((d_maxCodepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE)
             + BITS_PER_UINT - 1) / BITS_PER_UINT;
-#else
-        const uint old_size = (d_maxCodepoint + BITS_PER_UINT - 1) / BITS_PER_UINT;
-#endif
         #ifndef CEGUI_CUSTOM_ALLOCATORS
             CEGUI_UNUSED(old_size);
         #endif
@@ -148,11 +144,7 @@ void Font::setMaxCodepoint(utf32 codepoint)
 
     d_maxCodepoint = codepoint;
 
-#if defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
     const uint npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
-#else
-    const uint npages = codepoint;
-#endif
     const uint size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
 
     d_glyphPageLoaded = CEGUI_NEW_ARRAY_PT(uint, size, Font);
@@ -170,21 +162,13 @@ const FontGlyph* Font::getGlyphData(utf32 codepoint) const
     if (d_glyphPageLoaded)
     {
         // Check if glyph page has been rasterised
-#if defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
         uint page = codepoint / GLYPHS_PER_PAGE;
-#else
-        uint page = codepoint;
-#endif
         uint mask = 1 << (page & (BITS_PER_UINT - 1));
         if (!(d_glyphPageLoaded[page / BITS_PER_UINT] & mask))
         {
             d_glyphPageLoaded[page / BITS_PER_UINT] |= mask;
-#if defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
             rasterise(codepoint & ~(GLYPHS_PER_PAGE - 1),
                       codepoint | (GLYPHS_PER_PAGE - 1));
-#else
-            rasterise(codepoint, codepoint);
-#endif
         }
     }
 
