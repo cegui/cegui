@@ -91,6 +91,13 @@ FreeTypeFont::FreeTypeFont(const String& font_name, const float point_size,
     d_antiAliased(anti_aliased),
     d_fontFace(0)
 {
+#if !defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
+    d_temp_x = 0;
+    d_temp_y = 0;
+    d_temp_yb = 0;
+    d_temp_texture = 0;
+    d_temp_mem_buffer = 0;
+#endif
     if (!ft_usage_count++)
         FT_Init_FreeType(&ft_lib);
 
@@ -201,19 +208,47 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
         if (!texsize)
             break;
 
-        const String texture_name(d_name + "_auto_glyph_images_" +
-                                   PropertyHelper<int>::toString(s->first));
-        Texture& texture = System::getSingleton().getRenderer()->createTexture(
-            texture_name, Sizef(static_cast<float>(texsize), static_cast<float>(texsize)));
-        d_glyphTextures.push_back(&texture);
+        Texture* texture = 0;
+        argb_t* mem_buffer = 0;
+#if !defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
+        texture = d_temp_texture;
+        mem_buffer = d_temp_mem_buffer;
+#endif
+        if (texture == 0)
+        {
+            const String texture_name(d_name + "_auto_glyph_images_" +
+                                       PropertyHelper<int>::toString(s->first));
+            Texture& new_texture = System::getSingleton().getRenderer()->createTexture(
+                texture_name, Sizef(static_cast<float>(texsize), static_cast<float>(texsize)));
+            d_glyphTextures.push_back(&new_texture);
 
-        // Create a memory buffer where we will render our glyphs
-        argb_t* mem_buffer = CEGUI_NEW_ARRAY_PT(argb_t, texsize * texsize, BufferAllocator);
-        memset(mem_buffer, 0, texsize * texsize * sizeof(argb_t));
+            texture = &new_texture;
+
+            // Create a memory buffer where we will render our glyphs
+            if (mem_buffer == 0)
+            {
+                mem_buffer = CEGUI_NEW_ARRAY_PT(argb_t, texsize * texsize, BufferAllocator);
+            }
+            // There was strange glyph at new font when use temporary
+            memset(mem_buffer, 0, texsize * texsize * sizeof(argb_t));
+
+#if !defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
+            d_temp_x = INTER_GLYPH_PAD_SPACE;
+            d_temp_y = INTER_GLYPH_PAD_SPACE;
+            d_temp_yb = INTER_GLYPH_PAD_SPACE;
+            d_temp_texture = texture;
+            d_temp_mem_buffer = mem_buffer;
+#endif
+        }
 
         // Go ahead, line by line, top-left to bottom-right
         uint x = INTER_GLYPH_PAD_SPACE, y = INTER_GLYPH_PAD_SPACE;
         uint yb = INTER_GLYPH_PAD_SPACE;
+#if !defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
+        x = d_temp_x;
+        y = d_temp_y;
+        yb = d_temp_yb;
+#endif
 
         // Set to true when we finish rendering all glyphs we were asked to
         bool finished = false;
@@ -271,7 +306,12 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     // Check if glyph bottom margine does not exceed texture size
                     uint y_bot = y + glyph_h;
                     if (y_bot > texsize)
+                    {
+#if !defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
+                        d_temp_texture = 0;
+#endif
                         break;
+                    }
 
                     // Copy rendered glyph to memory buffer in RGBA format
                     drawGlyphToBuffer(mem_buffer + (y * texsize) + x, texsize);
@@ -313,11 +353,21 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
             if (!forward)
                 if ((s == d_cp_map.begin()) || (--s == d_cp_map.begin()))
                     break;
+#if !defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
+            if (finished)
+                break;
+#endif
         }
 
         // Copy our memory buffer into the texture and free it
         texture.loadFromMemory(mem_buffer, Sizef(static_cast<float>(texsize), static_cast<float>(texsize)), Texture::PF_RGBA);
+#if !defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
+        d_temp_x = x;
+        d_temp_y = y;
+        d_temp_yb = yb;
+#else
         CEGUI_DELETE_ARRAY_PT(mem_buffer, argb_t, texsize * texsize, BufferAllocator);
+#endif
 
         if (finished)
             break;
@@ -387,6 +437,12 @@ void FreeTypeFont::free()
     FT_Done_Face(d_fontFace);
     d_fontFace = 0;
     System::getSingleton().getResourceProvider()->unloadRawDataContainer(d_fontData);
+
+#if !defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
+    CEGUI_DELETE_ARRAY_PT(d_temp_mem_buffer, argb_t, CEGUI_HAS_FREETYPE_TEXSIZE * CEGUI_HAS_FREETYPE_TEXSIZE, BufferAllocator);
+    d_temp_texture = 0;
+    d_temp_mem_buffer = 0;
+#endif
 }
 
 //----------------------------------------------------------------------------//
