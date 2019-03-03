@@ -65,8 +65,10 @@ GUIContext::GUIContext(RenderTarget& target) :
             WindowManager::EventWindowDestroyed,
             Event::Subscriber(&GUIContext::windowDestroyedHandler, this))),
     d_semanticEventHandlers(),
-    d_windowNavigator(nullptr)
+    d_windowNavigator(nullptr),
+    d_cursor(*this)
 {
+    d_cursor.resetPositionToDefault();
     resetWindowContainingCursor();
     initializeSemanticEventHandlers();
 }
@@ -294,7 +296,7 @@ const Cursor& GUIContext::getCursor() const
 bool GUIContext::areaChangedHandler(const EventArgs&)
 {
     d_surfaceSize = d_target->getArea().getSize();
-    d_cursor.notifyDisplaySizeChanged(d_surfaceSize);
+    d_cursor.notifyTargetSizeChanged(d_surfaceSize);
 
     if (d_rootWindow)
         updateRootWindowAreaRects();

@@ -1315,9 +1315,15 @@ void Window::onZChange_impl(void)
 const Image* Window::getCursor(bool useDefault) const
 {
     if (d_cursor)
+    {
         return d_cursor;
-    else
-        return useDefault ? getGUIContext().getCursor().getDefaultImage() : 0;
+    }
+    else if (useDefault)
+    {
+        GUIContext* ctx = getGUIContextPtr();
+        return ctx ? ctx->getCursor().getDefaultImage() : nullptr;
+    }
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------//
