@@ -49,6 +49,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class GUIContext;
+
 //!	Class that provides cursor support.
 class CEGUIEXPORT Cursor : public EventSet
 {
@@ -77,7 +79,7 @@ public:
 	\brief
         Constructor for Cursor objects
 	*/
-	Cursor(void);
+	Cursor(GUIContext& context);
 
 
 	/*!
@@ -215,6 +217,14 @@ public:
 	*/
 	void	setUnifiedConstraintArea(const URect* area);
 
+	/*!
+	\brief
+        Set the cursor to the default position
+
+	\return
+		Nothing.
+	*/
+	void	resetPositionToDefault();
 
 	/*!
 	\brief
@@ -307,16 +317,15 @@ public:
 
     /*!
     \brief
-        Function used to notify the Cursor of changes in the display size.
+        Function used to notify the Cursor of changes in the render target size.
 
-        You normally would not call this directly; rather you would call the
-        function System::notifyDisplaySizeChanged and that will then call this
-        function for you.
+        You normally would not call this directly, it is called from the GUIContext
+        owning the cursor.
 
     \param new_size
         Size object describing the new display size in pixels.
     */
-    void notifyDisplaySizeChanged(const Sizef& new_size);
+    void notifyTargetSizeChanged(const Sizef& new_size);
 
     /*!
     \brief
@@ -416,6 +425,8 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
+    //! Owning context
+    GUIContext& d_context;
     //! Image that is currently set as the cursor.
 	const Image* d_indicatorImage;
     //! Image that will be used as the default image for this cursor.
