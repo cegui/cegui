@@ -79,7 +79,7 @@ public:
 	\brief
         Constructor for Cursor objects
 	*/
-	Cursor(GUIContext& context);
+	Cursor(const GUIContext& context);
 
 
 	/*!
@@ -426,7 +426,7 @@ private:
 		Implementation Data
 	*************************************************************************/
     //! Owning context
-    GUIContext& d_context;
+    const GUIContext& d_context;
     //! Image that is currently set as the cursor.
 	const Image* d_indicatorImage;
     //! Image that will be used as the default image for this cursor.
