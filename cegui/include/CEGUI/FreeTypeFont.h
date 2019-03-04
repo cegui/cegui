@@ -179,13 +179,13 @@ protected:
         CEGUI_VECTOR_ALLOC(BasicImage*)> ImageVector;
     //! collection of images defined for this font.
     mutable ImageVector d_glyphImages;
-#if !defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
+#if defined(CEGUI_HAS_FREETYPE_TEMPORARY_BUFFER)
     //! Use temporary coordinate
     mutable uint d_temp_x, d_temp_y, d_temp_yb;
     //! Use temporary Texture
     mutable Texture* d_temp_texture;
     //! Use temporary buffer
-    mutable uchar* d_temp_mem_buffer;
+    mutable argb_t* d_temp_mem_buffer;
 #endif
 };
 
