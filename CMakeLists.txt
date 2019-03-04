@@ -207,6 +207,7 @@ endif()
 
 option( CEGUI_FONT_USE_GLYPH_PAGE_LOAD "Specifies whether to let fonts use glyph page load" TRUE )
 option( CEGUI_HAS_FREETYPE "Specifies whether to include Freetype font support" ${FREETYPE_FOUND} )
+option( CEGUI_HAS_FREETYPE_TEMPORARY_BUFFER "Specifies whether to let Freetype font use temporary buffer." FALSE )
 option( CEGUI_HAS_PCRE_REGEX "Specifies whether to include PCRE regexp matching for editbox string validation" ${PCRE_FOUND} )
 option( CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER "Specifies whether to build the minizip based resource provider" ${MINIZIP_FOUND} )
 option( CEGUI_HAS_DEFAULT_LOGGER "Specifies whether to build the DefaultLogger implementation" TRUE)
