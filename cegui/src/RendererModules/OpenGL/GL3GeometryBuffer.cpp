@@ -167,7 +167,7 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes() const
 
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
-    GLsizei stride = getVertexAttributeElementCount() * sizeof(GL_FLOAT);
+    GLsizei stride = getVertexAttributeElementCount() * sizeof(GLfloat);
     const CEGUI::OpenGLBaseShaderWrapper* gl3_shader_wrapper = static_cast<const CEGUI::OpenGLBaseShaderWrapper*>(d_renderMaterial->getShaderWrapper());
     //Update the vertex attrib pointers of the vertex array object depending on the saved attributes
     int dataOffset = 0;

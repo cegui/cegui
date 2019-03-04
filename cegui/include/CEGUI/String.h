@@ -811,7 +811,7 @@ public:
         d_string.assign(utf8String);
         for(size_t i = 1; i < count; ++i)
         {
-            utf8String.append(utf8String);
+            d_string.append(utf8String);
         }
 
         return *this;

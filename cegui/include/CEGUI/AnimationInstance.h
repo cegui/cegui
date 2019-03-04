@@ -85,6 +85,8 @@ public:
     static const String EventAnimationPaused;
     //! fired when animation instance unpauses
     static const String EventAnimationUnpaused;
+    //! fired when animation instance finishes
+    static const String EventAnimationFinished;
     //! fired when animation instance ends
     static const String EventAnimationEnded;
     //! fired when animation instance loops
@@ -283,6 +285,12 @@ public:
 
     /*!
     \brief
+       Finishes and stops the animation
+    */
+    void finish();
+
+    /*!
+    \brief
         Returns true if this animation instance is currently unpaused,
         if it is stepping forward.
     */
@@ -345,6 +353,12 @@ public:
 
     /*!
     \brief
+        handler that finishes the animation instance
+    */
+    bool handleFinish(const CEGUI::EventArgs& e);
+
+    /*!
+    \brief
         Internal method, saves given property (called before it's affected)
     */
     void savePropertyValue(const String& propertyName);
@@ -396,6 +410,8 @@ private:
     void onAnimationPaused();
     //! this is called when animation unpauses
     void onAnimationUnpaused();
+    //! this is called when animation finishes
+    void onAnimationFinished();
 
     //! this is called when animation ends
     void onAnimationEnded();
