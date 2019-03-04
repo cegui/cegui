@@ -56,7 +56,7 @@ const String Cursor::EventDefaultImageChanged("DefaultImageChanged");
 /*************************************************************************
 	constructor
 *************************************************************************/
-Cursor::Cursor(GUIContext& context) :
+Cursor::Cursor(const GUIContext& context) :
     d_context(context),
     d_indicatorImage(nullptr),
     d_defaultIndicatorImage(nullptr),
