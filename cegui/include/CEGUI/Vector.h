@@ -57,8 +57,10 @@ public:
     typedef T value_type;
 
     inline Vector2()
+        :d_x(T())
+        ,d_y(T())
     {}
-    
+
     inline Vector2(const T x, const T y):
         d_x(x),
         d_y(y)

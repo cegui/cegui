@@ -158,4 +158,10 @@ String OgreTextureTarget::generateTextureName()
 //----------------------------------------------------------------------------//
 // Implementation of template base class
 #include "./RenderTarget.inl"
+#ifdef __APPLE__
+
+template class CEGUI::OgreRenderTarget<CEGUI::RenderTarget>;
+template class CEGUI::OgreRenderTarget<CEGUI::TextureTarget>;
+
+#endif
 

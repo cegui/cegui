@@ -75,4 +75,9 @@ bool OpenGLViewportTarget::isImageryCache() const
 // Implementation of base class
 #include "./RenderTarget.inl"
 
+#ifdef __APPLE__
 
+template class CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>;
+template class CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>;
+
+#endif

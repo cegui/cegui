@@ -46,7 +46,7 @@ struct SampleAnimationSetupFixture
         {
             d_zeroDuration = CEGUI::AnimationManager::getSingleton().createAnimation("ZeroLength");
             d_zeroDuration->setDuration(0.0f);
-            CEGUI::Affector* affector = d_zeroDuration->createAffector("Alpha", "float");
+            d_zeroDuration->createAffector("Alpha", "float");
         }
     }
 

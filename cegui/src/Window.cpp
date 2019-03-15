@@ -78,6 +78,7 @@ const String Window::IDPropertyName("ID");
 const String Window::InheritsAlphaPropertyName("InheritsAlpha");
 const String Window::MouseCursorImagePropertyName("MouseCursorImage");
 const String Window::VisiblePropertyName("Visible");
+const String Window::ActivePropertyName("Active");
 const String Window::RestoreOldCapturePropertyName("RestoreOldCapture");
 const String Window::TextPropertyName("Text");
 const String Window::ZOrderingEnabledPropertyName("ZOrderingEnabled");
@@ -740,6 +741,18 @@ void Window::setVisible(bool setting)
     d_visible ? onShown(args) : onHidden(args);
 
     getGUIContext().updateWindowContainingMouse();
+}
+
+//----------------------------------------------------------------------------//
+void Window::setActive(bool setting)
+{
+  if (isActive() == setting)
+    return;
+
+  if (setting)
+    activate();
+  else
+    deactivate();
 }
 
 //----------------------------------------------------------------------------//
@@ -1406,6 +1419,11 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
+        ActivePropertyName, "Property to get/set the 'active' setting for the Window. Value is either \"true\" or \"false\".",
+        &Window::setActive, &Window::isActive, false 
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
         RestoreOldCapturePropertyName, "Property to get/set the 'restore old capture' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setRestoreOldCapture, &Window::restoresOldCapture, false
     );
@@ -2048,6 +2066,30 @@ void Window::writeXMLToStream(XMLSerializer& xml_stream) const
     }
     // write out properties.
     writePropertiesXML(xml_stream);
+    // user strings
+    const String UserStringXMLElementName("UserString");
+    for (UserStringMap::const_iterator iter = d_userStrings.begin(); iter != d_userStrings.end(); ++iter)
+    {
+        const String& name = iter->first;
+        // ignore auto props
+        if (name.rfind("_auto_prop__") != CEGUI::String::npos)
+        {
+            continue;
+        }
+        xml_stream.openTag(UserStringXMLElementName)
+            .attribute(Property::NameXMLAttributeName, name);
+        // Detect whether it is a long property or not
+        const String& value = iter->second;
+        if (value.find((String::value_type)'\n') != String::npos)
+        {
+            xml_stream.text(value);
+        }
+        else
+        {
+            xml_stream.attribute(Property::ValueXMLAttributeName, iter->second);
+        }
+        xml_stream.closeTag();
+    }
     // write out attached child windows.
     writeChildWindowsXML(xml_stream);
     // now ouput closing Window tag
@@ -2250,7 +2292,7 @@ void Window::onSized(ElementEventArgs& e)
     // screen area changes when we're resized.
     // NB: Called non-recursive since the performChildWindowLayout call should
     // have dealt more selectively with child Window cases.
-    notifyScreenAreaChanged(false);
+    notifyScreenAreaChanged(true);
     performChildWindowLayout(true, true);
 
     invalidate();

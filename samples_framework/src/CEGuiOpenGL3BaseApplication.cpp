@@ -49,15 +49,25 @@ CEGuiOpenGL3BaseApplication::CEGuiOpenGL3BaseApplication()
 //----------------------------------------------------------------------------//
 void CEGuiOpenGL3BaseApplication::setGLFWWindowCreationHints()
 {
-#if GLFW_VERSION_MAJOR >= 3
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#else // GLFW_VERSION_MAJOR <= 2
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
-    glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#endif
+    #if GLFW_VERSION_MAJOR >= 3
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        #if (      (GLFW_VERSION_MAJOR >= 4) \
+             ||    ((GLFW_VERSION_MAJOR == 3)  &&  (GLFW_VERSION_MINOR >= 2)))
+            #if CEGUI_SAMPLES_DESKTOP_OPENGL_CONTEXT_CREATION_API == CEGUI_SAMPLES_OPENGL_CONTEXT_CREATION_API_EGL
+                glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API);
+            #elif CEGUI_SAMPLES_DESKTOP_OPENGL_CONTEXT_CREATION_API == CEGUI_SAMPLES_OPENGL_CONTEXT_CREATION_API_NATIVE
+                glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_NATIVE_CONTEXT_API);
+            #else
+                #error Invalid "CEGUI_SAMPLES_DESKTOP_OPENGL_CONTEXT_CREATION_API"
+            #endif
+        #endif
+    #else // GLFW_VERSION_MAJOR <= 2
+        glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
+        glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
+        glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    #endif
 }
 
 //----------------------------------------------------------------------------//

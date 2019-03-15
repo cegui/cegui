@@ -142,11 +142,11 @@ endif()
 # Find the release and debug libraries.
 find_library(OGRE_LIB NAMES ${OGRE_LIBRARY_NAMES}
              PATHS ${OGRE_PREFIX_PATH}
-             PATH_SUFFIXES Release lib/Release)
+             PATH_SUFFIXES Release lib/Release release lib/release)
              
 find_library(OGRE_LIB_DBG NAMES ${OGRE_LIBRARY_NAMES}_d
              PATHS ${OGRE_PREFIX_PATH}
-             PATH_SUFFIXES Debug lib/Debug)
+             PATH_SUFFIXES Debug lib/Debug debug lib/debug)
 
 if (NOT OGRE_LIB AND OGRE_LIB_DBG)
     set(OGRE_LIB OGRE_LIB_DBG)

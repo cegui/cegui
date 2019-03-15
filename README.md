@@ -24,7 +24,7 @@ We are happiest with **clean pull requests** containing conscise commits with **
 Here is an explanation on how to fork from our repository, commit changes to your fork, and create a pull request targeting the right branch:
 https://confluence.atlassian.com/display/BITBUCKET/Fork+a+Repo,+Compare+Code,+and+Create+a+Pull+Request
 
-Please also keep in mind to target the right repository. We prefer to target the ABI compatible branch if possible. Otherwise the API compatible ones. For information about ABI/API compatibility, please read this page: https://techbase.kde.org/Policies/Binary_Compatibility_Issues_With_C++
+Please also keep in mind to target the right repository. We prefer to target the ABI compatible branch if possible. Otherwise the API compatible ones. For information about ABI/API compatibility, please read this page: https://community.kde.org/Policies/Binary_Compatibility_Issues_With_C%2B%2B
 
 If in doubt which branch to target, please contact us!
 

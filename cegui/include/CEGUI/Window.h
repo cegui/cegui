@@ -173,6 +173,8 @@ public:
     static const String MouseCursorImagePropertyName;
     //! Name of property to access for the the 'visible state' setting for the Window.
     static const String VisiblePropertyName;
+    //! Name of property to access for the the 'active state' setting for the Window.
+    static const String ActivePropertyName;
     //! Name of property to access for the 'restore old capture' setting for the Window.
     static const String RestoreOldCapturePropertyName;
     //! Name of property to access for the text / caption for the Window.
@@ -1603,6 +1605,26 @@ public:
         Nothing
     */
     void hide(void)     {setVisible(false);}
+
+    /*!
+    \brief
+        Set whether the Window is active or inactive.
+
+    \param setting
+        - true to make the Window active.
+        - false to make the Window inactive (deactivate).
+
+    \note
+        Activating the window will call to move the window to the front if the 
+        window is not already active.  The window must be already visible in 
+        order to activate it otherwise it will have no effect.  
+        When deactivating, all active children will also be deactivated.
+
+    \return
+        Nothing
+    */
+
+    void setActive(bool setting);
 
     /*!
     \brief

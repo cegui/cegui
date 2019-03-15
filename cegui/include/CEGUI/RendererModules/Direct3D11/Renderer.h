@@ -59,9 +59,14 @@ struct ID3D11ShaderResourceView;//D3DXEffect11 in dependences
 struct D3DXMATRIX;
 
 #include <d3d11.h>
-#include <d3dx11.h>
-#include <d3dx10.h>
 
+// Unfortunately, MinGW-w64 doesn't have <d3dx10.h> or <d3dx11.h>
+#ifdef __MINGW32__
+    #include <d3dx9.h>
+#else
+    #include <d3dx11.h>
+    #include <d3dx10.h>
+#endif
 
 struct IDevice11//little structure that keeps both device, in order to reduce copy & paste around module
 {

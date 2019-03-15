@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/RendererModules/Ogre/GeometryBuffer.h"
 #include "CEGUI/RendererModules/Ogre/Texture.h"
+#include "CEGUI/RendererModules/Ogre/OgreMacros.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/RenderEffect.h"
 
@@ -38,6 +39,8 @@
 #include <OgreRenderTarget.h>
 #include <OgreViewport.h>
 #endif
+
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -132,7 +135,7 @@ static void cleanupRenderOp(
 {
     OGRE_DELETE rop.vertexData;
     rop.vertexData = 0;
-    vb.setNull();
+    OGRE_RESET(vb);
 }
 
 //----------------------------------------------------------------------------//

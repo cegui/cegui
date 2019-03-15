@@ -105,6 +105,9 @@ if (CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiOgreBaseApplication.cpp
     )
+    if(EXISTS ${OGRE_CONFIG_DIR}/plugins.cfg)
+        file(COPY ${OGRE_CONFIG_DIR}/plugins.cfg DESTINATION ${CMAKE_BINARY_DIR}/bin)
+    endif()
 endif()
 
 if (CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE)
@@ -254,31 +257,33 @@ endif()
 #                           INSTALLATION
 ###########################################################################
 install(TARGETS ${CEGUI_TARGET_NAME}
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-    ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-    BUNDLE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+    RUNTIME DESTINATION bin COMPONENT cegui_samples
+    LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_samples
+    ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_samples
+    BUNDLE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_samples
 )
 
 if (CEGUI_BUILD_STATIC_CONFIGURATION)
     install(TARGETS ${CEGUI_TARGET_NAME}_Static
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-        ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-        BUNDLE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+        RUNTIME DESTINATION bin COMPONENT cegui_samples
+        LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_samples
+        ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_samples
+        BUNDLE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_samples
 )
 endif()
 
 if (CEGUI_SAMPLES_RENDERER_OPENGL_ACTIVE)
     if (CEGUI_USE_EPOXY)
-        cegui_add_dependency(${CEGUI_TARGET_NAME} EPOXY)
+        cegui_add_dependency(${CEGUI_TARGET_NAME} EPOXY PRIVATE TRUE)
     elseif (CEGUI_USE_GLEW)
-        cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
+        cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL PRIVATE TRUE)
     endif ()
     if (CEGUI_USE_GLFW_VER STREQUAL "3")
-        cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW3)
+        cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW3 PRIVATE TRUE)
+        cegui_add_dependency(${CEGUI_TARGET_NAME} GLEW PRIVATE TRUE)
     else () # CEGUI_USE_GLFW_VER STREQUAL "2"
-        cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
+        cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW PRIVATE TRUE)
+        cegui_add_dependency(${CEGUI_TARGET_NAME} GLEW PRIVATE TRUE)
     endif ()
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGL_RENDERER_LIBNAME})
 endif()
@@ -300,10 +305,12 @@ if (CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE)
        endif()
     endif()
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OGRE_RENDERER_LIBNAME} ${CEGUI_OGRE_SAMPLES_EXTRALIBS})
+    cegui_add_dependency(${CEGUI_TARGET_NAME} OGRE PRIVATE TRUE)
 endif()
 
 if (CEGUI_SAMPLES_RENDERER_IRRLICHT_ACTIVE)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_IRRLICHT_RENDERER_LIBNAME})
+    cegui_add_dependency(${CEGUI_TARGET_NAME} IRRLICHT PRIVATE TRUE)
 endif()
 
 if (CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D10_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE)
@@ -330,7 +337,7 @@ if (CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D10
     if (CEGUI_SAMPLES_RENDERER_DIRECT3D11_ACTIVE)
         cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D11_RENDERER_LIBNAME})
         if (MINGW)
-            cegui_target_link_libraries(${CEGUI_TARGET_NAME} d3xd11_43)
+            cegui_target_link_libraries(${CEGUI_TARGET_NAME} d3dx11_43)
         else ()
             cegui_target_link_libraries(${CEGUI_TARGET_NAME} d3d11)
         endif()
@@ -339,12 +346,12 @@ if (CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D10
 endif()
 
 if (CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} DIRECTFB)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} DIRECTFB PRIVATE TRUE)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECTFB_RENDERER_LIBNAME})
 endif()
 
 if (CEGUI_SAMPLES_USE_GTK2)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} GTK2)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} GTK2 PRIVATE TRUE)
 endif()
 
 if (APPLE)

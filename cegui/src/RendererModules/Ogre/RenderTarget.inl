@@ -151,6 +151,7 @@ void OgreRenderTarget<T>::activate()
 
     d_owner.setProjectionMatrix(d_matrix);
     d_owner.setViewMatrix(Ogre::Matrix4::IDENTITY);
+    d_owner.initialiseRenderStateSettings();
 }
 
 //----------------------------------------------------------------------------//
