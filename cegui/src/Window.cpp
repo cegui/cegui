@@ -2718,6 +2718,11 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onCursorActivate(CursorInputEventArgs& e)
 {
+    // perform tooltip control
+    Tooltip* const tip = getTooltip();
+    if (tip && !isAncestor(tip))
+        tip->setTargetWindow(this); // target window was set to null in onCursorPressHold()
+
     // reset auto-repeat state
     if (d_autoRepeat && d_repeatPointerSource != CursorInputSource::NotSpecified)
     {
