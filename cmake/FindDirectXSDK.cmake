@@ -8,7 +8,11 @@ include(FindPackageHandleStandardArgs)
 if (MINGW)
 
     set (DIRECTXSDK_FOUND TRUE)
-    set (DIRECTXSDK_MAX_D3D 11)
+    if( CEGUI_MINGW_W64_FOUND AND (CEGUI_MINGW_W64_VER VERSION_LESS 4) )
+        set( DIRECTXSDK_MAX_D3D 10 )
+    else()
+        set (DIRECTXSDK_MAX_D3D 11)
+    endif()
 
 else ()
 

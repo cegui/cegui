@@ -40,6 +40,8 @@ BoolArray2D::BoolArray2D() :
 
 //------------------------------------------------------------------------------//
 BoolArray2D::BoolArray2D(int width, int height) :
+    d_width(0),
+    d_height(0),
     d_content(0)
 {
     resetSize(width, height);

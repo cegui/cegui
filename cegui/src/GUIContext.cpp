@@ -50,8 +50,9 @@ struct MouseClickTracker :
 {
     MouseClickTracker() :
         d_click_count(0),
-        d_click_area(0, 0, 0, 0)
-    {}
+        d_click_area(0, 0, 0, 0),
+        d_target_window(0)
+        {}
 
     //! Timer used to track clicks for this button.
     SimpleTimer d_timer;
@@ -221,10 +222,10 @@ void GUIContext::createDefaultTooltipWindowInstance() const
     d_defaultTooltipObject = dynamic_cast<Tooltip*>(
         winmgr.createWindow(d_defaultTooltipType,
                             "CEGUI::System::default__auto_tooltip__"));
-    d_defaultTooltipObject->setAutoWindow(true);
 
     if (d_defaultTooltipObject)
     {
+        d_defaultTooltipObject->setAutoWindow(true);
         d_defaultTooltipObject->setWritingXMLAllowed(false);
         d_weCreatedTooltipObject = true;
     }

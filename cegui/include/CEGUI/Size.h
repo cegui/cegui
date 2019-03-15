@@ -69,7 +69,9 @@ class Size:
 public:
     typedef T value_type;
 
-    inline Size()
+    inline Size() :    
+        d_width(TypeSensitiveZero<T>()),
+        d_height(TypeSensitiveZero<T>())
     {}
 
     inline Size(const T width, const T height):
@@ -193,7 +195,7 @@ public:
     //! \brief finger saving alias for Size(0, 1)
     inline static Size one_height()
     {
-        return Size(TypeSensitiveOne<T>(), TypeSensitiveZero<T>());
+        return Size(TypeSensitiveZero<T>(), TypeSensitiveOne<T>());
     }
 
     T d_width;

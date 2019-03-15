@@ -102,17 +102,9 @@ public:
         xml_stream.closeTag();
     }
 
-    //------------------------------------------------------------------------//
-    virtual void writeXMLTagToStream(XMLSerializer& /*xml_stream*/) const
-    {
-        // This does nothing and needs to be specialised or overridden
-    }
+    virtual void writeXMLTagToStream(XMLSerializer& /*xml_stream*/) const;
 
-    //------------------------------------------------------------------------//
-    virtual void writeXMLAttributesToStream(XMLSerializer& /*xml_stream*/) const
-    {
-        // This does nothing and needs to be specialised or overridden
-    }
+    virtual void writeXMLAttributesToStream(XMLSerializer& /*xml_stream*/) const;
 
     //------------------------------------------------------------------------//
     bool operator==(const FormattingSetting<T>& rhs) const
@@ -131,6 +123,18 @@ protected:
     T d_value;
     String d_propertySource;
 };
+
+template<typename T>
+void FormattingSetting<T>::writeXMLTagToStream(XMLSerializer& /*xml_stream*/) const
+{
+    // This does nothing and needs to be specialised or overridden
+}
+
+template<typename T>
+void FormattingSetting<T>::writeXMLAttributesToStream(XMLSerializer& /*xml_stream*/) const
+{
+    // This does nothing and needs to be specialised or overridden
+}
 
 template<> void CEGUIEXPORT FormattingSetting<VerticalFormatting>::writeXMLTagToStream(
                                             XMLSerializer& xml_stream) const;

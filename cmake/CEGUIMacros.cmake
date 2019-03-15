@@ -170,16 +170,25 @@ macro (cegui_add_dependency _TARGET_NAME _DEP_NAME)
     if (${_DEP_NAME}_DEFINITIONS)
         set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS} )
     endif()
+    if (${_DEP_NAME}_COMPILE_FLAGS)
+        set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_FLAGS ${${_DEP_NAME}_COMPILE_FLAGS} )
+    endif()
 
     if (CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
         if (${_DEP_NAME}_DEFINITIONS_STATIC)
             set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS_STATIC} )
+        endif()
+        if (${_DEP_NAME}_COMPILE_FLAGS_STATIC)
+            set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_FLAGS ${${_DEP_NAME}_COMPILE_FLAGS_STATIC} )
         endif()
 
         cegui_add_dependency_static_libs(${_TARGET_NAME} ${_DEP_NAME})
     else()
         if (${_DEP_NAME}_DEFINITIONS_DYNAMIC)
             set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS_DYNAMIC} )
+        endif()
+        if (${_DEP_NAME}_COMPILE_FLAGS_DYNAMIC)
+            set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_FLAGS ${${_DEP_NAME}_COMPILE_FLAGS_DYNAMIC} )
         endif()
 
         cegui_add_dependency_dynamic_libs(${_TARGET_NAME} ${_DEP_NAME})
@@ -300,23 +309,23 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
         endif()
 
         install(TARGETS ${_LIB_NAME}
-            RUNTIME DESTINATION bin
-            LIBRARY DESTINATION ${_CEGUI_LIB_DEST}
-            ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+          RUNTIME DESTINATION bin COMPONENT cegui_bin
+          LIBRARY DESTINATION ${_CEGUI_LIB_DEST} COMPONENT cegui_lib
+          ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
         )
 
         if (CEGUI_BUILD_STATIC_CONFIGURATION)
             install(TARGETS ${_LIB_NAME}_Static
-                RUNTIME DESTINATION bin
-                LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-                ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+              RUNTIME DESTINATION bin COMPONENT cegui_bin
+              LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib
+              ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
             )
         endif()
     endif()
 
     if (${_INSTALL_HEADERS})
         string (REPLACE "cegui/src/" "" _REL_HEADER_DIR ${_REL_SRC_DIR})
-        install(FILES ${${_HEADER_FILES_VAR}} DESTINATION "${CEGUI_INCLUDE_INSTALL_DIR}/CEGUI/${_REL_HEADER_DIR}")
+        install(FILES ${${_HEADER_FILES_VAR}} DESTINATION "${CEGUI_INCLUDE_INSTALL_DIR}/CEGUI/${_REL_HEADER_DIR}" COMPONENT cegui_devel)
     endif()
 endmacro()
 
@@ -417,16 +426,16 @@ macro (cegui_add_sample _NAME)
 
     # Setup custom install location
     install(TARGETS ${CEGUI_TARGET_NAME}
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR}
-        ARCHIVE DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR}
+      RUNTIME DESTINATION bin COMPONENT cegui_samples
+      LIBRARY DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR} COMPONENT cegui_samples
+      ARCHIVE DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR} COMPONENT cegui_samples
     )
 
     if (CEGUI_BUILD_STATIC_CONFIGURATION)
         install(TARGETS ${CEGUI_TARGET_NAME}_Static
-            RUNTIME DESTINATION bin
-            LIBRARY DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR}
-            ARCHIVE DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR}
+          RUNTIME DESTINATION bin COMPONENT cegui_samples
+          LIBRARY DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR} COMPONENT cegui_samples
+          ARCHIVE DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR} COMPONENT cegui_samples
         )
     endif()
 
@@ -450,11 +459,12 @@ endmacro()
 macro( cegui_add_python_module PYTHON_MODULE_NAME SOURCE_DIR EXTRA_LIBS )
     file( GLOB ${PYTHON_MODULE_NAME}_SOURCE_FILES ${SOURCE_DIR}/*.cpp )
 
-    include_directories(BEFORE ${SOURCE_DIR})
+    include_directories(BEFORE SYSTEM ${SOURCE_DIR})
 
     add_library(${PYTHON_MODULE_NAME} MODULE ${${PYTHON_MODULE_NAME}_SOURCE_FILES})
     target_link_libraries(${PYTHON_MODULE_NAME} ${CEGUI_BASE_LIBNAME} ${Boost_PYTHON_LIBRARY} ${PYTHON_LIBRARIES} ${EXTRA_LIBS} )
     set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES PREFIX "")
+    target_compile_definitions(${PYTHON_MODULE_NAME} PRIVATE CEGUI_DONT_USE_GLEW_LOCALLY=1) 
 
     if (WIN32)
         set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES SUFFIX ".pyd")
@@ -470,7 +480,7 @@ macro( cegui_add_python_module PYTHON_MODULE_NAME SOURCE_DIR EXTRA_LIBS )
         set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
     endif()
 
-    install(TARGETS ${PYTHON_MODULE_NAME} LIBRARY DESTINATION "${CEGUI_PYTHON_INSTALL_DIR}")
+    install(TARGETS ${PYTHON_MODULE_NAME} LIBRARY DESTINATION "${CEGUI_PYTHON_INSTALL_DIR}" COMPONENT cegui_python)
 endmacro()
 
 #
@@ -481,7 +491,7 @@ macro (cegui_add_test_executable _NAME)
 
     cegui_gather_files()
 
-    include_directories(${Boost_INCLUDE_DIR})
+    include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 
     ###########################################################################
     #                     Statically Linked Executable
@@ -555,16 +565,16 @@ macro (cegui_add_test_executable _NAME)
     #                           INSTALLATION
     ###########################################################################
     install(TARGETS ${CEGUI_TARGET_NAME}
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-        ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+      RUNTIME DESTINATION bin COMPONENT cegui_bin
+      LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib
+      ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
     )
 
     if (CEGUI_BUILD_STATIC_CONFIGURATION)
         install(TARGETS ${CEGUI_TARGET_NAME}_Static
-            RUNTIME DESTINATION bin
-            LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-            ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+          RUNTIME DESTINATION bin COMPONENT cegui_bin
+          LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib 
+          ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
     )
     endif()
 
@@ -701,6 +711,58 @@ macro(cegui_defaultmodule_sanity_test _DEFAULTVAR _MODNAME _BUILDVAR)
     if (${_DEFAULTVAR} STREQUAL "${_MODNAME}")
         if (NOT ${_BUILDVAR})
             message(SEND_ERROR "${_DEFAULTVAR} is set to ${_MODNAME} but this module is not going to be built (see ${_BUILDVAR})")
+        endif()
+    endif()
+endmacro()
+
+set( _TMP_C_PLUS_PLUS_SRC_FILE_NAME "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/src.cxx" )
+
+macro( cegui_check_mingw )
+    set( CEGUI_MINGW_W64_FOUND FALSE )
+    if( MINGW )
+        if( CMAKE_CROSSCOMPILING )
+            file( WRITE "${_TMP_C_PLUS_PLUS_SRC_FILE_NAME}" "
+                #include <windef.h>
+                #ifndef __MINGW64_VERSION_MAJOR
+                    #error \"The compiler isn't MinGW-w64.\"
+                #endif
+                __MINGW64_VERSION_MAJOR.__MINGW64_VERSION_MINOR" )
+            execute_process(
+                COMMAND /usr/bin/env bash -c -o pipefail "''${CMAKE_CXX_COMPILER} -E ${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${CMAKE_BUILD_TYPE}} \"${_TMP_C_PLUS_PLUS_SRC_FILE_NAME}\" | tail -1''"
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                RESULT_VARIABLE _FIND_MINGW_W64_VER__RUN_RESULT
+                OUTPUT_VARIABLE _FIND_MINGW_W64_VER__RESULT
+                TIMEOUT 60 )
+            if( _FIND_MINGW_W64_VER__RUN_RESULT EQUAL 0 )
+                 set( CEGUI_MINGW_W64_FOUND TRUE )
+            endif()
+        else()
+            file( WRITE "${_TMP_C_PLUS_PLUS_SRC_FILE_NAME}" "
+                #include <windef.h>
+                #ifndef __MINGW64_VERSION_MAJOR
+                    #error \"The compiler isn't MinGW-w64.\"
+                #endif
+                #include <iostream>
+                int main()
+                {
+                    std::cout << __MINGW64_VERSION_MAJOR << \".\" << __MINGW64_VERSION_MINOR << std::flush;
+                }" )
+            try_run( _FIND_MINGW_W64_VER__RUN_RESULT
+                     _FIND_MINGW_W64_VER__BUILD_RESULT
+                     "${PROJECT_BINARY_DIR}"
+                     "${_TMP_C_PLUS_PLUS_SRC_FILE_NAME}"
+                     RUN_OUTPUT_VARIABLE _FIND_MINGW_W64_VER__RESULT )
+            if( _FIND_MINGW_W64_VER__BUILD_RESULT AND (_FIND_MINGW_W64_VER__RUN_RESULT EQUAL 0) )
+                set( CEGUI_MINGW_W64_FOUND TRUE )
+            endif()
+        endif()
+        if( CEGUI_MINGW_W64_FOUND )
+            string( REPLACE " " "" CEGUI_MINGW_W64_VER "${_FIND_MINGW_W64_VER__RESULT}" )
+            if( CEGUI_MINGW_W64_VER VERSION_LESS 3.1 )
+                message( WARNING "If you use MinGW-w64, only version 3.1 and up is officially supported. Note: that's MinGW-w64's version, *not* GCC's version!" )
+            endif()
+        else()
+            message( WARNING "If you use MinGW, only the MinGW-w64 flavour (version 3.1 and up) is officially supported. Note: that's MinGW-w64's version, *not* GCC's version! " )
         endif()
     endif()
 endmacro()

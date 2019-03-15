@@ -85,7 +85,7 @@ void RenderedStringComponent::setTopPadding(const float padding)
 //----------------------------------------------------------------------------//
 void RenderedStringComponent::setBottomPadding(const float padding)
 {
-    d_padding.d_max.d_x = padding;
+    d_padding.d_max.d_y = padding;
 }
 
 //----------------------------------------------------------------------------//

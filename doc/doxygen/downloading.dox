@@ -35,8 +35,7 @@ package containing the source code for the dependency libraries that CEGUI uses.
 For more information about this, including build information, please refer to
 @ref building_deps
 
-The current package is available here:
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2 Dependencies/0.8.x/cegui-deps-0.8.x-src.zip/download">cegui-deps-0.8.x-src.zip</a>
+The current package is available <a href="https://bitbucket.org/cegui/cegui-dependencies/get/v0-8.zip">here</a>
 
 <br>
 @section dl_hg Mercurial Source Code Repository

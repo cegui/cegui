@@ -21,7 +21,7 @@ The following is a list of all libraries that CEGUI can make use of:
 @subsection dependencies_rendering Rendering
 - OpenGL loading libraries:
   - GLEW (http://glew.sourceforge.net/)
-  - Epoxy (https://github.com/yaronct/libepoxy), major version 1.
+  - Epoxy (https://github.com/yaronct/libepoxy)
   - Either GLEW or Epoxy is required for the desktop OpenGL 3.2 renderer module.
   - Epoxy is required for the OpenGL ES 2.0 renderer module.
   - GLEW is required for the old desktop OpenGL 1.2 renderer module.
@@ -50,8 +50,10 @@ The following is a list of all libraries that CEGUI can make use of:
     - Required for xerces-c based XMLParser module.
 - LibXml2 (http://www.xmlsoft.org/)
     - Required for libxml2 based XMLParser module.
-- TinyXML (http://sourceforge.net/projects/tinyxml/)
-    - Required for tinyxml based XMLParser module.
+- TinyXML (http://www.grinninglizard.com/tinyxml/)
+    - Required for TinyXML based XMLParser module.
+- TinyXML2 (http://www.grinninglizard.com/tinyxml2/index.html)
+    - Required for TinyXML2 based XMLParser module.
 - RapidXML (http://rapidxml.sourceforge.net/)
     - Required for RapidXML based XMLParser module.
 

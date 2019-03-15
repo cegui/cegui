@@ -36,11 +36,14 @@
 #include "CEGUISamplesConfig.h"
 #ifdef CEGUI_SAMPLES_RENDERER_OGRE_ACTIVE
 
-#include <OgreWindowEventUtilities.h>
 #include "CEGuiOgreBaseApplication.h"
 #include "SamplesFrameworkBase.h"
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
 #include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
+
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+#include <Bites/OgreBitesConfigDialog.h>
+#endif
 
 //----------------------------------------------------------------------------//
 CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
@@ -66,7 +69,11 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
     setupDefaultConfigIfNeeded();
 
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+    if (d_ogreRoot->showConfigDialog(OgreBites::getNativeConfigDialog()))
+#else
     if (d_ogreRoot->showConfigDialog())
+#endif
     {
         // initialise system according to user options.
         d_window = d_ogreRoot->initialise(true);
@@ -139,14 +146,6 @@ bool CEGuiOgreBaseApplication::init(SamplesFrameworkBase* sampleApp,
         return false;
 
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-
-    // start rendering via Ogre3D engine.
-    CEGUI_TRY
-    {
-        d_ogreRoot->startRendering();
-    }
-    CEGUI_CATCH(...)
-    {}
 
     return true;
 }
@@ -261,6 +260,18 @@ bool CEGuiOgreBaseApplication::isInitialised()
 }
 
 //----------------------------------------------------------------------------//
+void CEGuiOgreBaseApplication::run()
+{
+    // start rendering via Ogre3D engine.
+    CEGUI_TRY
+    {
+        d_ogreRoot->startRendering();
+    }
+    CEGUI_CATCH(...)
+    {}
+}
+
+//----------------------------------------------------------------------------//
 void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
 {
     // Check if the config exists
@@ -341,13 +352,16 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp
     windowHndStr << (unsigned int)windowHnd;
     paramList.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
 
-#if OGRE_PLATFORM != OGRE_PLATFORM_ANDROID && OGRE_PLATFORM != OGRE_PLATFORM_WINRT && OGRE_PLATFORM != OGRE_PLATFORM_LINUX && defined (DEBUG)
-    paramList.insert(std::make_pair("x11_keyboard_grab", "false"));
-    paramList.insert(std::make_pair("x11_mouse_grab", "false"));
-    paramList.insert(std::make_pair("x11_mouse_hide", "false"));
-    paramList.insert(std::make_pair("w32_mouse", "DISCL_FOREGROUND"));
-    paramList.insert(std::make_pair("w32_mouse", "DISCL_NONEXCLUSIVE"));
-#endif
+    #ifndef NDEBUG
+        #if OGRE_PLATFORM == OGRE_PLATFORM_LINUX
+            paramList.insert(std::make_pair("x11_keyboard_grab", "false"));
+            paramList.insert(std::make_pair("x11_mouse_grab", "false"));
+            paramList.insert(std::make_pair("x11_mouse_hide", "false"));
+        #elif OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+            paramList.insert(std::make_pair("w32_mouse", "DISCL_FOREGROUND"));
+            paramList.insert(std::make_pair("w32_mouse", "DISCL_NONEXCLUSIVE"));
+        #endif
+    #endif
 
     // create input system
     d_inputManager = OIS::InputManager::createInputSystem(paramList);

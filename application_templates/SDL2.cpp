@@ -216,7 +216,7 @@ CEGUI::MouseButton SDLtoCEGUIMouseButton(const Uint8& button)
     }
 }
 
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     using namespace CEGUI;
 

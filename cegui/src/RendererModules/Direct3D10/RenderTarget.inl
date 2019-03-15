@@ -28,14 +28,12 @@
 #include "CEGUI/RendererModules/Direct3D10/GeometryBuffer.h"
 #include "CEGUI/RenderQueue.h"
 
-
-/* Unfortunately, MinGW-w64 doesn't have <d3dx10.h>. Instead we use
-   <d3d10.h> + <d3dx9.h>, which is almost similar. However, "D3DXVec3Project" is
-   declared in <d3dx9.h> a bit different than in <d3dx10.h>. We can't just
-   declare it with the right prototype, because it's already declared (in
-   <d3dx9.h>, which we still need), with the wrong prototype. So we use a nasty
-   trick of casting the function pointer to the right prototype in order to use
-   it. Same for "D3DXVec3Unproject". */
+/* Unfortunately, MinGW-w64 doesn't have <d3dx10.h>. Instead we use <d3dx9.h>,
+   which is almost similar. However, "D3DXVec3Project" is declared in <d3dx9.h>
+   a bit different than in <d3dx10.h>. We can't just declare it with the right prototype,
+   because it's already declared (in <d3dx9.h>, which we still need), with the wrong
+   prototype. So we use a nasty trick of casting the function pointer to the
+   right prototype in order to use it. Same for "D3DXVec3Unproject". */
 #ifdef __MINGW32__
 extern "C" typedef D3DXVECTOR3* WINAPI D3DXVec3Project_func (D3DXVECTOR3 *pOut, CONST D3DXVECTOR3 *pV, CONST D3D10_VIEWPORT *pViewport, CONST D3DXMATRIX *pProjection, CONST D3DXMATRIX *pView, CONST D3DXMATRIX *pWorld);
 #define D3DXVec3Project (reinterpret_cast<D3DXVec3Project_func*>(D3DXVec3Project))

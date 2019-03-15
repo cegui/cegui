@@ -375,13 +375,17 @@ HSV_Colour ColourPickerConversions::toHSV(RGB_Colour colour)
     else
     {
         if (maxCompRed)
+        {
             h = (g - b) / diff + (g < b ? 6.0f : 0.0f);
-
-        if (maxCompGreen)
+        }
+        else if (maxCompGreen)
+        {
             h = (b - r) / diff + 2.0f;
-
+        }
         else
+        {
             h = (r - g) / diff + 4.0f;
+        }
 
         h /= 6.0f;
     }
