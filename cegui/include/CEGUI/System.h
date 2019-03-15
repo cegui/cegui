@@ -218,8 +218,8 @@ public:
 
     GUIContext& getDefaultGUIContext() const;
 
-	typedef std::vector<GUIContext*> GUIContextCollection;
-	GUIContextCollection& getGUIContexts()         {return d_guiContexts;};
+    typedef std::vector<GUIContext*> GUIContextCollection;
+    GUIContextCollection& getGUIContexts()         {return d_guiContexts;}
 
     /*!
     \brief

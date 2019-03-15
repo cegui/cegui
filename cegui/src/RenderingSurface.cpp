@@ -106,8 +106,8 @@ void RenderingSurface::clearGeometry()
 void RenderingSurface::draw()
 {
     d_target->activate();
-	Renderer& owner = d_target->getOwner();
-	owner.uploadBuffers(*this);
+    Renderer& owner = d_target->getOwner();
+    owner.uploadBuffers(*this);
 
     drawContent();
 

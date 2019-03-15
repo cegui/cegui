@@ -147,7 +147,7 @@ void OpenGL3GeometryBuffer::reset()
 void OpenGL3GeometryBuffer::initialiseVertexBuffers()
 {
 #ifdef CEGUI_OPENGL_BIG_BUFFER
-	// nothing - only append on draw
+    // nothing - only append on draw
 #else
     if (OpenGLInfo::getSingleton().isVaoSupported())
     {
@@ -177,7 +177,7 @@ void OpenGL3GeometryBuffer::initialiseVertexBuffers()
 void OpenGL3GeometryBuffer::finaliseVertexAttributes() const
 {
 #ifdef CEGUI_OPENGL_BIG_BUFFER
-	// nothing
+    // nothing
 #else
     //On OpenGL desktop versions we want to bind both of the following calls, otherwise vbos are enough as the following calls
     //only affect the vbo (which may be tied to a vao)

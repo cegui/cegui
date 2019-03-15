@@ -49,12 +49,8 @@
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
-// Start of CEGUI namespace section
-namespace CEGUI
-{
-
 // The function must be a C method with the same calling convention as the GL API functions, here this is done using the APIENTRY function prefix
-static void APIENTRY Opengl_Callback_Function( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam )
+static void APIENTRY OpenGlDebugCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam )
 {
     std::string str_type;
     switch(type)
@@ -107,6 +103,10 @@ static void APIENTRY Opengl_Callback_Function( GLenum source, GLenum type, GLuin
     }
 #endif
 }
+
+// Start of CEGUI namespace section
+namespace CEGUI
+{
 
 //----------------------------------------------------------------------------//
 // template specialised class that does the real work for us
@@ -243,7 +243,7 @@ void OpenGL3Renderer::init()
         glEnable(GL_DEBUG_OUTPUT);
         // GL_DEBUG_OUTPUT_SYNCHRONOUS guarantees that the callback is called by the same thread as the OpenGL api-call that invoked the callback
         glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-        glDebugMessageCallback(Opengl_Callback_Function, nullptr);
+        glDebugMessageCallback(OpenGlDebugCallback, nullptr);
         // we want to receive all possible callback messages
         glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
     }
@@ -435,35 +435,35 @@ RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultSh
 void OpenGL3Renderer::uploadBuffers(RenderingSurface& surface)
 {
 #ifdef CEGUI_OPENGL_BIG_BUFFER
-    vertex_data_solid.clear();
-    vertex_data_textured.clear();
+    d_vertex_data_solid.clear();
+    d_vertex_data_textured.clear();
 
     for(auto &queue : surface.getRenderQueueList())
     {
-        collectBuffers(queue.second.getBuffers(), vertex_data_solid, vertex_data_textured);
+        addGeometry(queue.second.getBuffers());
     }
 
 
-    uploadVertexData(vertex_data_solid, d_verticesSolidVBO, d_verticesSolidVBOSize);
-    uploadVertexData(vertex_data_textured, d_verticesTexturedVBO, d_verticesTexturedVBOSize);
+    uploadVertexData(d_vertex_data_solid, d_verticesSolidVBO, d_verticesSolidVBOSize);
+    uploadVertexData(d_vertex_data_textured, d_verticesTexturedVBO, d_verticesTexturedVBOSize);
 
 #endif
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Renderer::uploadBuffers(std::vector<GeometryBuffer*>& buffers)
+void OpenGL3Renderer::uploadBuffers(const std::vector<GeometryBuffer*>& buffers)
 {
     // keep the vertex vector reserved memory so it is not constantly recreated
-    vertex_data_solid.clear();
-    vertex_data_textured.clear();
+    d_vertex_data_solid.clear();
+    d_vertex_data_textured.clear();
 
-    collectBuffers(buffers, vertex_data_solid, vertex_data_textured);
-    uploadVertexData(vertex_data_solid, d_verticesSolidVBO, d_verticesSolidVBOSize);
-    uploadVertexData(vertex_data_textured, d_verticesTexturedVBO, d_verticesTexturedVBOSize);
+    addGeometry(buffers);
+    uploadVertexData(d_vertex_data_solid, d_verticesSolidVBO, d_verticesSolidVBOSize);
+    uploadVertexData(d_vertex_data_textured, d_verticesTexturedVBO, d_verticesTexturedVBOSize);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Renderer::collectBuffers(std::vector<GeometryBuffer*>& buffers, std::vector<float>& vertex_data_solid, std::vector<float>& vertex_data_textured)
+void OpenGL3Renderer::addGeometry(const std::vector<GeometryBuffer*>& buffers)
 {
     for(auto buffer : buffers)
     {
@@ -476,14 +476,14 @@ void OpenGL3Renderer::collectBuffers(std::vector<GeometryBuffer*>& buffers, std:
         auto element_count = gl3buffer->getVertexAttributeElementCount();
         if(element_count == 9)
         {
-            gl3buffer->d_verticesVBOPosition = vertex_data_textured.size() / element_count;
-            std::copy(data.begin(), data.end(), std::back_inserter(vertex_data_textured));
+            gl3buffer->d_verticesVBOPosition = d_vertex_data_textured.size() / element_count;
+            std::copy(data.begin(), data.end(), std::back_inserter(d_vertex_data_textured));
 
         }
         else
         {
-            gl3buffer->d_verticesVBOPosition = vertex_data_solid.size() / element_count;
-            std::copy(data.begin(), data.end(), std::back_inserter(vertex_data_solid));
+            gl3buffer->d_verticesVBOPosition = d_vertex_data_solid.size() / element_count;
+            std::copy(data.begin(), data.end(), std::back_inserter(d_vertex_data_solid));
         }
     }
 }

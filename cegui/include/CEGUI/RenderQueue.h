@@ -101,7 +101,7 @@ public:
 
     //! Type to use for the GeometryBuffer collection.
     typedef std::vector<GeometryBuffer*> BufferList;
-	BufferList& getBuffers()         {return d_buffers;};
+    BufferList& getBuffers()         {return d_buffers;}
 
 private:
 

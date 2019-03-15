@@ -502,9 +502,9 @@ public:
     */
     void updateTextureCoordinates(const Texture* texture, const float scaleFactor);
 
-	//! type of container used to store the geometry's vertex data
-	typedef std::vector<float>  VertexData;
-	const VertexData& getVertexData() const         {return d_vertexData;};
+    //! type of container used to store the geometry's vertex data
+    typedef std::vector<float>  VertexData;
+    const VertexData& getVertexData() const         {return d_vertexData;}
 
 protected:  
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
