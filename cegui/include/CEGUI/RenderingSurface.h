@@ -355,7 +355,7 @@ public:
 
 	//! collection type for the queues
 	typedef std::map<RenderQueueID, RenderQueue> RenderQueueList;
-	RenderQueueList& getRenderQueueList()         {return d_queues;};
+	RenderQueueList& getRenderQueueList()         {return d_queues;}
 
 protected:
     /** draw the surface content. Default impl draws the render queues.

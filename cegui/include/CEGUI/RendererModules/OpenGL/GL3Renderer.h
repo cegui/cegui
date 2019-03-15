@@ -189,7 +189,7 @@ public:
 protected:
     //! Overrides
     void uploadBuffers(RenderingSurface& surface) override;
-    void uploadBuffers(std::vector<GeometryBuffer*>& buffers) override;
+    void uploadBuffers(const std::vector<GeometryBuffer*>& buffers) override;
     OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial) override;
     TextureTarget* createTextureTarget_impl(bool addStencilBuffer) override;
     //! creates a texture of GL3Texture type
@@ -239,7 +239,7 @@ private:
     //! restores all relevant OpenGL States CEGUI touches to their default value
     void restoreChangedStatesToDefaults(bool isAfterRendering);
 
-    void collectBuffers(std::vector<GeometryBuffer*>& buffers, std::vector<float>& vertex_data_solid, std::vector<float>& vertex_data_textured);
+    void addGeometry(const std::vector<GeometryBuffer*>& buffers);
     void uploadVertexData(std::vector<float>& vertex_data, GLuint vbo_id, GLuint& vbo_max_size);
 
     //! Wrapper of the OpenGL shader we will use for textured geometry
@@ -254,8 +254,8 @@ private:
     //! pointer to a helper that creates TextureTargets supported by the system.
     OGLTextureTargetFactory* d_textureTargetFactory;
 
-    std::vector<float> vertex_data_solid;
-    std::vector<float> vertex_data_textured;
+    std::vector<float> d_vertex_data_solid;
+    std::vector<float> d_vertex_data_textured;
 };
 
 }
