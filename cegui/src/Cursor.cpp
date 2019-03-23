@@ -124,7 +124,7 @@ void Cursor::setDefaultImage(const Image* image)
     if(d_indicatorImage == d_defaultIndicatorImage)
     {
         auto* window = System::getSingleton().getDefaultGUIContext().getWindowContainingCursor();
-        if(!window || window->getCursor() == d_defaultIndicatorImage)
+        if(!window || !window->getCursor(false))
         {
             setImage(image);
         }
