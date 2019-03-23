@@ -29,6 +29,8 @@
 #include "CEGUI/Cursor.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/System.h"
+#include "CEGUI/GUIContext.h"
+#include "CEGUI/Window.h"
 #include "CEGUI/Renderer.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
@@ -118,6 +120,16 @@ void Cursor::setDefaultImage(const Image* image)
     if (image == d_defaultIndicatorImage)
         return;
 
+    // update the current image if it is the default image
+    if(d_indicatorImage == d_defaultIndicatorImage)
+    {
+        auto* window = System::getSingleton().getDefaultGUIContext().getWindowContainingCursor();
+        if(!window || window->getCursor() == d_defaultIndicatorImage)
+        {
+            setImage(image);
+        }
+    }
+    
     d_defaultIndicatorImage = image;
     d_cachedGeometryValid = d_indicatorImage != nullptr;
 
