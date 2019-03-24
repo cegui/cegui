@@ -37,12 +37,14 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const float IrrlichtTextureTarget::DEFAULT_SIZE = 128.0f;
-uint IrrlichtTextureTarget::s_textureNumber = 0;
+std::uint32_t IrrlichtTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 IrrlichtTextureTarget::IrrlichtTextureTarget(IrrlichtRenderer& owner,
-                                             irr::video::IVideoDriver& driver) :
-    IrrlichtRenderTarget<TextureTarget>(owner, driver),
+                                             irr::video::IVideoDriver& driver,
+                                             bool addStencilBuffer) :
+    IrrlichtRenderTarget(owner, driver),
+    TextureTarget(addStencilBuffer),
     d_texture(0),
     d_CEGUITexture(static_cast<IrrlichtTexture*>(
         &d_owner.createTexture(generateTextureName())))
@@ -132,12 +134,6 @@ void IrrlichtTextureTarget::declareRenderSize(const Sizef& sz)
 }
 
 //----------------------------------------------------------------------------//
-bool IrrlichtTextureTarget::isRenderingInverted() const
-{
-    return false;
-}
-
-//----------------------------------------------------------------------------//
 void IrrlichtTextureTarget::cleanupTargetTexture()
 {
     if (d_texture)
@@ -152,7 +148,7 @@ void IrrlichtTextureTarget::cleanupTargetTexture()
 String IrrlichtTextureTarget::generateTextureName()
 {
     String tmp("_irr_tt_tex_");
-    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+    tmp.append(PropertyHelper<std::uint32_t>::toString(s_textureNumber++));
 
     return tmp;
 }
@@ -161,9 +157,6 @@ String IrrlichtTextureTarget::generateTextureName()
 
 } // End of  CEGUI namespace section
 
-//----------------------------------------------------------------------------//
-// Implementation of template base class
-#include "./RenderTarget.inl"
 #ifdef __APPLE__
 
 template class CEGUI::IrrlichtRenderTarget<CEGUI::RenderTarget>;

@@ -32,7 +32,7 @@ namespace CEGUI
 {
 IrrlichtMemoryFile::IrrlichtMemoryFile(const String& filename,
                                        const unsigned char* memory,
-                                       uint32 size) :
+                                       std::uint32_t size) :
     d_filename(filename.c_str()),
     d_buffer(memory),
     d_size(size),
@@ -53,7 +53,7 @@ std::size_t IrrlichtMemoryFile::read(void* buffer, std::size_t sizeToRead)
 
 bool IrrlichtMemoryFile::seek(long finalPos, bool relativeMovement)
 {
-    uint32 targetPosition = relativeMovement ? d_position : 0;
+    std::uint32_t targetPosition = relativeMovement ? d_position : 0;
     targetPosition += finalPos;
 
     if (targetPosition > d_size)

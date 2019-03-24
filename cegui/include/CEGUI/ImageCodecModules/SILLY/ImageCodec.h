@@ -55,7 +55,7 @@ public:
     SILLYImageCodec();
     ~SILLYImageCodec();
 
-    Texture* load(const RawDataContainer& data, Texture* result);
+    Texture* load(const RawDataContainer& data, Texture* result) override;
 };    
 
 } // End of CEGUI namespace section 

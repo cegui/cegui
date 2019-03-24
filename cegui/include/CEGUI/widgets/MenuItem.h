@@ -68,10 +68,12 @@ public:
     *************************************************************************/
     /*!
     \brief
-        return true if user is hovering over this widget (or it's pushed and user is not over it for highlight)
+        return true if user is hovering over this widget (or it's pushed and
+        user is not over it for highlight)
 
     \return
-        true if the user is hovering or if the button is pushed and the mouse is not over the button.  Otherwise return false.
+        true if the user is hovering or if the button is pushed and the cursor
+        is not over the button. Otherwise return false.
     */
     bool    isHovering(void) const
     {
@@ -84,7 +86,8 @@ public:
         Return true if the button widget is in the pushed state.
 
     \return
-        true if the button-type widget is pushed, false if the widget is not pushed.
+        true if the button-type widget is pushed, false if the widget is not
+        pushed.
     */
     bool    isPushed(void) const
     {
@@ -112,7 +115,8 @@ public:
 
     /*!
     \brief
-        Returns true if the menu item popup is closed or opened automatically if hovering with the mouse.
+        Returns true if the menu item popup is closed or opened automatically
+        if hovering with the cursor.
     */
     bool    hasAutoPopup(void) const
     {
@@ -121,7 +125,8 @@ public:
 
     /*!
     \brief
-        Returns the time, which has to elapse before the popup window is opened/closed if the hovering state changes.
+        Returns the time, which has to elapse before the popup window is
+        opened/closed if the hovering state changes.
     */
     float    getAutoPopupTimeout(void) const
     {
@@ -130,7 +135,8 @@ public:
 
     /*!
     \brief
-        Sets the time, which has to elapse before the popup window is opened/closed if the hovering state changes.
+        Sets the time, which has to elapse before the popup window is
+        opened/closed if the hovering state changes.
     */
     void    setAutoPopupTimeout(float time)
     {
@@ -142,29 +148,12 @@ public:
         Get the PopupMenu that is currently attached to this MenuItem.
 
     \return
-        A pointer to the currently attached PopupMenu.  Null is there is no PopupMenu attached.
+        A pointer to the currently attached PopupMenu.
+        Null is there is no PopupMenu attached.
     */
     PopupMenu*  getPopupMenu(void) const
     {
         return d_popup;
-    }
-
-    /*!
-    \brief
-        Returns the current offset for popup placement.
-    */
-    const UVector2& getPopupOffset(void) const
-    {
-        return d_popupOffset;
-    }
-
-    /*!
-    \brief
-        sets the current offset for popup placement.
-    */
-    void setPopupOffset(const UVector2& popupOffset)
-    {
-        d_popupOffset = popupOffset;
     }
 
     /*************************************************************************
@@ -226,6 +215,36 @@ public:
         starts the opening timer for the popup, which will open it if the timer is enabled.
     */
     void    startPopupOpening(void);
+
+    /*!
+    \brief
+       Computes the offset at which a popup menu will appear. Returns false if
+       the popup menu should not be moved from its current position.
+       
+       The default impl will try to avoid having the popup menu clipped.
+
+    \param offset
+       This is (potentially) the output value of the function.
+       
+    \return
+       true if an offset was computed and stored at "offset", false if not.
+    */
+    virtual bool computePopupOffset(UVector2 & offset) const;
+    
+    /*!
+     \brief
+       Computes the box within which we attempt to place the popup menu.
+       This is used in default impl of computePopupOffset.
+       It should be in absolute coordinates.
+
+     \return
+       In the default impl, it's just the size of the root container.
+       In some applications you may wish to confine the popup menu to a smaller
+       area, or make MenuItem search its ancestors for a scrollable pane and
+       use the bounds of that, etc.
+    */
+    virtual Rectf popupBoundingBox() const;
+
     /*************************************************************************
         Construction and Destruction
     *************************************************************************/
@@ -257,13 +276,13 @@ protected:
     /*************************************************************************
         Overridden event handlers
     *************************************************************************/
-    virtual void    onMouseMove(MouseEventArgs& e);
-    virtual void    onMouseButtonDown(MouseEventArgs& e);
-    virtual void    onMouseButtonUp(MouseEventArgs& e);
-    virtual void    onCaptureLost(WindowEventArgs& e);
-    virtual void    onMouseLeaves(MouseEventArgs& e);
-    virtual void    onTextChanged(WindowEventArgs& e);
-    virtual void    updateSelf(float elapsed);
+    void    onCursorMove(CursorInputEventArgs& e) override;
+    void    onCursorPressHold(CursorInputEventArgs& e) override;
+    void    onCursorActivate(CursorInputEventArgs& e) override;
+    void    onCaptureLost(WindowEventArgs& e) override;
+    void    onCursorLeaves(CursorInputEventArgs& e) override;
+    void    onTextChanged(WindowEventArgs& e) override;
+    void    updateSelf(float elapsed) override;
 
 
     /*************************************************************************
@@ -271,20 +290,20 @@ protected:
     *************************************************************************/
     /*!
     \brief
-        Update the internal state of the widget with the mouse at the given position.
+        Update the internal state of the widget with the cursor at the given position.
 
-    \param mouse_pos
-        Point object describing, in screen pixel co-ordinates, the location of the mouse cursor.
+    \param cursor_pos
+        Point object describing, in screen pixel co-ordinates, the location of the cursor.
 
     \return
         Nothing
     */
-    void    updateInternalState(const Vector2f& mouse_pos);
+    void    updateInternalState(const glm::vec2& cursor_pos);
 
 
     /*!
     \brief
-        Recursive function that closes all popups down the hierarcy starting with this one.
+        Recursive function that closes all popups down the hierarchy starting with this one.
 
     \return
         Nothing.
@@ -312,14 +331,12 @@ protected:
     bool d_opened;          //!< true when the menu item's popup menu is in its opened state.
     bool d_popupClosing;    //!< true when the d_popupTimerTimeElapsed timer is running to close the popup (another menu item of our container is hovered)
     bool d_popupOpening;    //!< true when the d_popupTimerTimeElapsed timer is running to open the popup (the menu item is hovered)
-    float d_autoPopupTimeout; //!< the time in seconds, to wait before opening / closing the popup if the mouse is over the item / over another item in our container
+    float d_autoPopupTimeout; //!< the time in seconds, to wait before opening / closing the popup if the cursor is over the item / over another item in our container
     float d_autoPopupTimeElapsed;  //!< the current time, which is already elapsed if the timer is running (d_popupClosing or d_popupOpening is true)
 
     PopupMenu*  d_popup;    //!< PopupMenu that this item displays when activated.
 
     bool d_popupWasClosed;  //!< Used internally to determine if a popup was just closed on a Clicked event
-
-    UVector2 d_popupOffset; //!< current offset for popup placement.
 
 private:
 
@@ -331,7 +348,7 @@ private:
     /*!
     \copydoc Window::addChild_impl
     */
-    virtual void addChild_impl(Element* element);
+    void addChild_impl(Element* element) override;
 };
 
 } // End of  CEGUI namespace section

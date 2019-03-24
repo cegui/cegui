@@ -40,7 +40,7 @@ OpenGLInfo OpenGLInfo::s_instance;
 
 //----------------------------------------------------------------------------//
 OpenGLInfo::OpenGLInfo() :
-    d_type(TYPE_NONE),
+    d_type(Type::Uninitialised),
     d_verMajor(-1),
     d_verMinor(-1),
     d_verMajorForce(-1),
@@ -72,7 +72,7 @@ void OpenGLInfo::verForce(GLint verMajor_, GLint verMinor_)
 void OpenGLInfo::initTypeAndVer()
 {
 #if defined CEGUI_USE_EPOXY
-    d_type = epoxy_is_desktop_gl() ? TYPE_DESKTOP : TYPE_ES;
+    d_type = epoxy_is_desktop_gl() ? Type::TypeDesktop : Type::TypeEs;
     if (d_verMajorForce >= 0)
     {
         d_verMajor = d_verMajorForce;
@@ -84,17 +84,17 @@ void OpenGLInfo::initTypeAndVer()
         if (!ver)
         {
             if (isUsingDesktopOpengl())
-                CEGUI_THROW(RendererException
-                  ("Failed to obtain desktop OpenGL version."));
+                throw RendererException
+                        ("Failed to obtain desktop OpenGL version.");
             else
-                CEGUI_THROW(RendererException
-                  ("Failed to obtain OpenGL ES version."));
+                throw RendererException
+                        ("Failed to obtain OpenGL ES version.");
         }
         d_verMajor = ver / 10;
         d_verMinor = ver % 10;
     }
 #elif defined CEGUI_USE_GLEW
-    d_type = TYPE_DESKTOP;
+    d_type = Type::TypeDesktop;
     glGetError ();
     d_verMajor = d_verMinor = -1;
 #endif

@@ -25,7 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -67,23 +67,23 @@ BOOST_AUTO_TEST_CASE(AspectRatio)
     CEGUI::Sizef a;
 
     a = CEGUI::Sizef(1, 1);
-    a.scaleToAspect(CEGUI::AM_IGNORE, 100.0f);
+    a.scaleToAspect(CEGUI::AspectMode::Ignore, 100.0f);
     BOOST_CHECK_EQUAL(a, CEGUI::Sizef(1, 1));
 
     a = CEGUI::Sizef(1, 1);
-    a.scaleToAspect(CEGUI::AM_SHRINK, 1.0f / 2.0f);
+    a.scaleToAspect(CEGUI::AspectMode::Shrink, 1.0f / 2.0f);
     BOOST_CHECK_EQUAL(a, CEGUI::Sizef(0.5f, 1.0f));
 
     a = CEGUI::Sizef(1, 1);
-    a.scaleToAspect(CEGUI::AM_EXPAND, 1.0f / 2.0f);
+    a.scaleToAspect(CEGUI::AspectMode::Expand, 1.0f / 2.0f);
     BOOST_CHECK_EQUAL(a, CEGUI::Sizef(1.0f, 2.0f));
 
     a = CEGUI::Sizef(1, 1);
-    a.scaleToAspect(CEGUI::AM_SHRINK, 2.0f / 1.0f);
+    a.scaleToAspect(CEGUI::AspectMode::Shrink, 2.0f / 1.0f);
     BOOST_CHECK_EQUAL(a, CEGUI::Sizef(1.0f, 0.5f));
 
     a = CEGUI::Sizef(1, 1);
-    a.scaleToAspect(CEGUI::AM_EXPAND, 2.0f / 1.0f);
+    a.scaleToAspect(CEGUI::AspectMode::Expand, 2.0f / 1.0f);
     BOOST_CHECK_EQUAL(a, CEGUI::Sizef(2.0f, 1.0f));
 }
 

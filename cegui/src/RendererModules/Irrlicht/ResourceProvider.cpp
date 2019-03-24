@@ -62,7 +62,7 @@ void IrrlichtResourceProvider::loadRawDataContainer(const String& filename,
     {
         String sMsg("Filename supplied for loading must be valid");
         sMsg += " [" + final_filename + "]";
-        CEGUI_THROW(InvalidRequestException(sMsg));
+        throw InvalidRequestException(sMsg);
     }
 
     input_size = f->getSize();

@@ -38,14 +38,14 @@ namespace CEGUI
     object reference.
 */
 template<typename T>
-class FunctorReferenceSlot : public SlotFunctorBase
+class FunctorReferenceSlot : public SlotFunctorBase<EventArgs>
 {
 public:
     FunctorReferenceSlot(T& functor) :
         d_functor(functor)
     {}
 
-    virtual bool operator()(const EventArgs& args)
+    bool operator()(const EventArgs& args) override
     {
         return d_functor(args);
     }

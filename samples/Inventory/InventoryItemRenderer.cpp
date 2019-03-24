@@ -42,7 +42,7 @@ InventoryItemRenderer::InventoryItemRenderer(const String& type) :
 }
 
 //------------------------------------------------------------------------------//
-void InventoryItemRenderer::render()
+void InventoryItemRenderer::createRenderGeometry()
 {
     const WidgetLookFeel& wlf = getLookNFeel();
 

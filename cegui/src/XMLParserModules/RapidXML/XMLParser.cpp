@@ -88,9 +88,9 @@ RapidXMLDocument::RapidXMLDocument(XMLHandler& handler,
     {
         // error detected, cleanup out buffers
         delete[] buf;
-        CEGUI_THROW(FileIOException("an error occurred while "
+        throw FileIOException("an error occurred while "
                               "parsing the XML data - check it for "
-                              "potential errors!."));
+                              "potential errors!.");
     }
 
     rapidxml::xml_node<>* currElement = doc.first_node();
@@ -123,14 +123,12 @@ void RapidXMLDocument::processElement(const rapidxml::xml_node<>* element)
 
     while (currAttr)
     {
-        attrs.add(reinterpret_cast<encoded_char*>(currAttr->name()),
-                  reinterpret_cast<encoded_char*>(currAttr->value()));
+        attrs.add(currAttr->name(), currAttr->value());
         currAttr = currAttr->next_attribute();
     }
 
     // start element
-    d_handler->elementStart(reinterpret_cast<encoded_char*>(element->name()),
-                            attrs);
+    d_handler->elementStart(element->name(), attrs);
 
     // do children
     rapidxml::xml_node<>* childNode = element->first_node();
@@ -145,8 +143,7 @@ void RapidXMLDocument::processElement(const rapidxml::xml_node<>* element)
 
         case rapidxml::node_data:
             if (childNode->value() != '\0')
-                d_handler->text(
-                    reinterpret_cast<encoded_char*>(childNode->value()));
+                d_handler->text(childNode->value());
 
             break;
 
@@ -158,7 +155,7 @@ void RapidXMLDocument::processElement(const rapidxml::xml_node<>* element)
 
 
     // end element
-    d_handler->elementEnd(reinterpret_cast<encoded_char*>(element->name()));
+    d_handler->elementEnd(element->name());
 }
 
 //----------------------------------------------------------------------------//
@@ -177,7 +174,8 @@ RapidXMLParser::~RapidXMLParser(void)
 //----------------------------------------------------------------------------//
 void RapidXMLParser::parseXML(XMLHandler& handler,
                               const RawDataContainer& source,
-                              const String& schemaName)
+                              const String& schemaName,
+							  bool /*allowXmlValidation*/)
 {
     RapidXMLDocument doc(handler, source, schemaName);
 }

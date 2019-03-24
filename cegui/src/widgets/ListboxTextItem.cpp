@@ -32,6 +32,7 @@
 #include "CEGUI/Window.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/GeometryBuffer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -49,12 +50,12 @@ const Colour	ListboxTextItem::DefaultTextColour		= 0xFFFFFFFF;
 /*************************************************************************
 	Constructor
 *************************************************************************/
-ListboxTextItem::ListboxTextItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete) :
+ListboxTextItem::ListboxTextItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete) :
 	ListboxItem(text, item_id, item_data, disabled, auto_delete),
 	d_textCols(DefaultTextColour, DefaultTextColour, DefaultTextColour, DefaultTextColour),
-	d_font(0),
+	d_font(nullptr),
     d_renderedStringValid(false),
-    d_textParsingEnabled(true)
+    d_renderedStringParser(&d_noTagsStringParser)
 {
 }
 
@@ -76,7 +77,7 @@ const Font* ListboxTextItem::getFont(void) const
 	}
     // no owner, so the default font is ambiguous (it could be of any context)
     else
-        return 0;  
+        return nullptr;  
 }
 
 
@@ -124,38 +125,52 @@ Sizef ListboxTextItem::getPixelSize(void) const
     return sz;
 }
 
-
-/*************************************************************************
-	Draw the list box item in its current state.
-*************************************************************************/
-void ListboxTextItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
-                           float alpha, const Rectf* clipper) const
+std::vector<GeometryBuffer*> ListboxTextItem::createRenderGeometry(
+    const Rectf& targetRect,
+    float alpha, const Rectf* clipper) const
 {
-    if (d_selected && d_selectBrush != 0)
-        d_selectBrush->render(buffer, targetRect, clipper,
-                            getModulateAlphaColourRect(d_selectCols, alpha));
+    std::vector<GeometryBuffer*> geomBuffers;
+
+    if (d_selected && d_selectBrush != nullptr)
+    {
+        ImageRenderSettings imgRenderSettings(
+            targetRect, clipper, true,
+            d_selectCols, alpha);
+
+        std::vector<GeometryBuffer*> brushGeomBuffers =
+            d_selectBrush->createRenderGeometry(imgRenderSettings);
+
+        geomBuffers.insert(geomBuffers.end(), brushGeomBuffers.begin(),
+            brushGeomBuffers.end());
+    }
 
     const Font* font = getFont();
 
     if (!font)
-        return;
+        return geomBuffers;
 
-    Vector2f draw_pos(targetRect.getPosition());
+    glm::vec2 draw_pos(targetRect.getPosition());
 
-    draw_pos.d_y += CoordConverter::alignToPixels(
+    draw_pos.y += CoordConverter::alignToPixels(
         (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
 
     if (!d_renderedStringValid)
         parseTextString();
 
-    const ColourRect final_colours(
-        getModulateAlphaColourRect(ColourRect(0xFFFFFFFF), alpha));
+    const ColourRect final_colours(ColourRect(0xFFFFFFFF));
 
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
-        d_renderedString.draw(d_owner, i, buffer, draw_pos, &final_colours, clipper, 0.0f);
-        draw_pos.d_y += d_renderedString.getPixelSize(d_owner, i).d_height;
+        std::vector<GeometryBuffer*> stringGeomBuffers = d_renderedString.createRenderGeometry(
+            d_owner, i, draw_pos, &final_colours, clipper, 0.0f);
+
+        geomBuffers.insert(geomBuffers.end(), stringGeomBuffers.begin(),
+            stringGeomBuffers.end());
+
+        draw_pos.y += d_renderedString.getPixelSize(d_owner, i).d_height;
     }
+
+    return geomBuffers;
 }
 
 
@@ -186,12 +201,8 @@ void ListboxTextItem::setText(const String& text)
 //----------------------------------------------------------------------------//
 void ListboxTextItem::parseTextString() const
 {
-    if (d_textParsingEnabled)
-        d_renderedString =
-            d_stringParser.parse(getTextVisual(), 0, &d_textCols);
-    else
-        d_renderedString =
-            d_noTagsStringParser.parse(getTextVisual(), 0, &d_textCols);
+    d_renderedString =
+        d_renderedStringParser->parse(getTextVisual(), nullptr, &d_textCols);
 
     d_renderedStringValid = true;
 }
@@ -199,14 +210,29 @@ void ListboxTextItem::parseTextString() const
 //----------------------------------------------------------------------------//
 void ListboxTextItem::setTextParsingEnabled(const bool enable)
 {
-    d_textParsingEnabled = enable;
+    if(enable)
+        d_renderedStringParser = &d_stringParser;
+    else
+        d_renderedStringParser = &d_noTagsStringParser;
+
     d_renderedStringValid = false;
 }
 
 //----------------------------------------------------------------------------//
 bool ListboxTextItem::isTextParsingEnabled() const
 {
-    return d_textParsingEnabled;
+    return d_renderedStringParser != &d_noTagsStringParser;
+}
+
+//----------------------------------------------------------------------------//
+void ListboxTextItem::setCustomRenderedStringParser(CEGUI::RenderedStringParser* parser)
+{
+    if(parser)
+        d_renderedStringParser = parser;
+    else
+        d_renderedStringParser = &d_noTagsStringParser;
+
+    d_renderedStringValid = false;
 }
 
 //----------------------------------------------------------------------------//

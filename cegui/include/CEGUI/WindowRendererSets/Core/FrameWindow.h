@@ -69,8 +69,8 @@ namespace CEGUI
         */
         FalagardFrameWindow(const String& type);
 
-        void render();
-        Rectf getUnclippedInnerRect(void) const;
+        void createRenderGeometry() override;
+        Rectf getUnclippedInnerRect(void) const override;
     };
 
 } // End of  CEGUI namespace section

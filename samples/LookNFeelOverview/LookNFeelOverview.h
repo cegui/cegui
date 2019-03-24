@@ -27,25 +27,29 @@ author:     Lukas E Meindl
 #ifndef _LookNFeelOverview_Demo_
 #define _LookNFeelOverview_Demo_
 
-#include "SampleBase.h"
+#include "Sample.h"
 #include "CEGUI/ForwardRefs.h"
 
 // Sample class
-class LookNFeelOverviewDemo : public Sample
+class LookNFeelOverviewSample : public Sample
 {
 public:
+    LookNFeelOverviewSample();
+    virtual ~LookNFeelOverviewSample() {}
+    
+
     // method to initialse the samples windows and events.
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
+    bool initialise(CEGUI::GUIContext* guiContext) override;
 
     // method to perform any required cleanup operations.
-    virtual void deinitialise();
+    void deinitialise() override;
 
 protected:
     bool handleSkinSelectionAccepted(const CEGUI::EventArgs& args);
 
     // We store some items for comparison
-    CEGUI::ListboxTextItem* d_taharezLookListboxItem;
-    CEGUI::ListboxTextItem* d_vanillaLookListboxItem;
+    CEGUI::StandardItem* d_taharezLookListboxItem;
+    CEGUI::StandardItem* d_vanillaLookListboxItem;
 
     // We want to change the default font later so we store some fonts in variables
     CEGUI::Font* d_fontForTaharez;
