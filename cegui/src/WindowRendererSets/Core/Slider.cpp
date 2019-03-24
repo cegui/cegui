@@ -55,15 +55,16 @@ namespace CEGUI
         false);
     }
 
-    void FalagardSlider::render()
+    void FalagardSlider::createRenderGeometry()
     {
         const StateImagery* imagery;
 
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
-        // peform the rendering operation.
+        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" 
+            : (d_window->isFocused() ? "EnabledFocused" : "Enabled"));
+        // perform the rendering operation.
         imagery->render(*d_window);
     }
 
@@ -74,7 +75,7 @@ namespace CEGUI
 
     void FalagardSlider::updateThumb(void)
     {
-        Slider* w = (Slider*)d_window;
+        Slider* w = static_cast<Slider*>(d_window);
         // get area the thumb is supposed to use as it's area.
         const WidgetLookFeel& wlf = getLookNFeel();
         Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
@@ -136,7 +137,7 @@ namespace CEGUI
 
     float FalagardSlider::getValueFromThumb(void) const
     {
-        Slider* w = (Slider*)d_window;
+        Slider* w = static_cast<Slider*>(d_window);
         // get area the thumb is supposed to use as it's area.
         const WidgetLookFeel& wlf = getLookNFeel();
         const Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
@@ -167,18 +168,18 @@ namespace CEGUI
         }
     }
 
-    float FalagardSlider::getAdjustDirectionFromPoint(const Vector2f& pt) const
+    float FalagardSlider::getAdjustDirectionFromPoint(const glm::vec2& pt) const
     {
-        Slider* w = (Slider*)d_window;
+        Slider* w = static_cast<Slider*>(d_window);
         const Rectf absrect(w->getThumb()->getUnclippedOuterRect().get());
 
-        if ((d_vertical && (pt.d_y < absrect.top())) ||
-            (!d_vertical && (pt.d_x > absrect.right())))
+        if ((d_vertical && (pt.y < absrect.top())) ||
+            (!d_vertical && (pt.x > absrect.right())))
         {
             return d_reversed ? -1.0f : 1.0f;
         }
-        else if ((d_vertical && (pt.d_y > absrect.bottom())) ||
-            (!d_vertical && (pt.d_x < absrect.left())))
+        else if ((d_vertical && (pt.y > absrect.bottom())) ||
+            (!d_vertical && (pt.x < absrect.left())))
         {
             return d_reversed ? 1.0f : -1.0f;
         }

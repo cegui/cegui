@@ -286,10 +286,10 @@ void register_OpenGLRenderer_class(){
         *\n", bp::no_init );
         bp::scope OpenGLRenderer_scope( OpenGLRenderer_exposer );
         bp::enum_< CEGUI::OpenGLRenderer::TextureTargetType>("TextureTargetType")
-            .value("TTT_AUTO", CEGUI::OpenGLRenderer::TTT_AUTO)
-            .value("TTT_FBO", CEGUI::OpenGLRenderer::TTT_FBO)
-            .value("TTT_PBUFFER", CEGUI::OpenGLRenderer::TTT_PBUFFER)
-            .value("TTT_NONE", CEGUI::OpenGLRenderer::TTT_NONE)
+            .value("TextureTargetType::AUTO", CEGUI::OpenGLRenderer::TextureTargetType::AUTO)
+            .value("TextureTargetType::FBO", CEGUI::OpenGLRenderer::TextureTargetType::FBO)
+            .value("TextureTargetType::PBUFFER", CEGUI::OpenGLRenderer::TextureTargetType::PBUFFER)
+            .value("TextureTargetType::NONE", CEGUI::OpenGLRenderer::TextureTargetType::NONE)
             .export_values()
             ;
         OpenGLRenderer_exposer.def( bp::init< CEGUI::OpenGLRenderer::TextureTargetType >(( bp::arg("tt_type") ), "*!\n\
@@ -329,7 +329,7 @@ void register_OpenGLRenderer_class(){
             OpenGLRenderer_exposer.def( 
                 "bootstrapSystem"
                 , bootstrapSystem_function_type( &::CEGUI::OpenGLRenderer::bootstrapSystem )
-                , ( bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TTT_AUTO, bp::arg("abi")=(int const)(208) )
+                , ( bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TextureTargetType::AUTO, bp::arg("abi")=(int const)(208) )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
@@ -340,7 +340,7 @@ void register_OpenGLRenderer_class(){
             OpenGLRenderer_exposer.def( 
                 "bootstrapSystem"
                 , bootstrapSystem_function_type( &::CEGUI::OpenGLRenderer::bootstrapSystem )
-                , ( bp::arg("display_size"), bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TTT_AUTO, bp::arg("abi")=(int const)(208) )
+                , ( bp::arg("display_size"), bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TextureTargetType::AUTO, bp::arg("abi")=(int const)(208) )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
@@ -361,7 +361,7 @@ void register_OpenGLRenderer_class(){
             OpenGLRenderer_exposer.def( 
                 "create"
                 , create_function_type( &::CEGUI::OpenGLRenderer::create )
-                , ( bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TTT_AUTO, bp::arg("abi")=(int const)(208) )
+                , ( bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TextureTargetType::AUTO, bp::arg("abi")=(int const)(208) )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
@@ -383,7 +383,7 @@ void register_OpenGLRenderer_class(){
             OpenGLRenderer_exposer.def( 
                 "create"
                 , create_function_type( &::CEGUI::OpenGLRenderer::create )
-                , ( bp::arg("display_size"), bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TTT_AUTO, bp::arg("abi")=(int const)(208) )
+                , ( bp::arg("display_size"), bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TextureTargetType::AUTO, bp::arg("abi")=(int const)(208) )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }

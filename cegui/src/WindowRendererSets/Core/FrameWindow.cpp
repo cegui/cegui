@@ -40,9 +40,9 @@ namespace CEGUI
     {
     }
 
-    void FalagardFrameWindow::render()
+    void FalagardFrameWindow::createRenderGeometry()
     {
-        FrameWindow* w = (FrameWindow*)d_window;
+        FrameWindow* w = static_cast<FrameWindow*>(d_window);
         // do not render anything for the rolled-up state.
         if (w->isRolledup())
             return;
@@ -54,14 +54,14 @@ namespace CEGUI
 
         const StateImagery* imagery;
 
-        CEGUI_TRY
+        try
         {
             // get WidgetLookFeel for the assigned look.
             const WidgetLookFeel& wlf = getLookNFeel();
             // try and get imagery for our current state
             imagery = &wlf.getStateImagery(stateName);
         }
-        CEGUI_CATCH (UnknownObjectException&)
+        catch (UnknownObjectException&)
         {
             // log error so we know imagery is missing, and then quit.
             return;
@@ -73,13 +73,18 @@ namespace CEGUI
 
     Rectf FalagardFrameWindow::getUnclippedInnerRect(void) const
     {
-        FrameWindow* w = (FrameWindow*)d_window;
+        FrameWindow* w = static_cast<FrameWindow*>(d_window);
         if (w->isRolledup())
             return Rectf(0, 0, 0, 0);
 
         // build name of area to fetch
         String areaName("Client");
-        areaName += w->isTitleBarEnabled() ? "WithTitle" : "NoTitle";
+
+        if (w->isChild(FrameWindow::TitlebarName))
+            areaName += w->isTitleBarEnabled() ? "WithTitle" : "NoTitle";
+        else
+            areaName += "NoTitle";
+
         areaName += w->isFrameEnabled() ? "WithFrame" : "NoFrame";
 
         // get WidgetLookFeel for the assigned look.

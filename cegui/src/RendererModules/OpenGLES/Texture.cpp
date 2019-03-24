@@ -41,7 +41,7 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name) :
     d_owner(owner),
     d_name(name)
 {
-    initPixelFormatFields(PF_RGBA);
+    initPixelFormatFields(PixelFormat::Rgba);
     generateOpenGLESTexture();
 }
 
@@ -55,7 +55,7 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name,
     d_owner(owner),
     d_name(name)
 {
-    initPixelFormatFields(PF_RGBA);
+    initPixelFormatFields(PixelFormat::Rgba);
     generateOpenGLESTexture();
     loadFromFile(filename, resourceGroup);
 }
@@ -69,7 +69,7 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name,
     d_owner(owner),
     d_name(name)
 {
-    initPixelFormatFields(PF_RGBA);
+    initPixelFormatFields(PixelFormat::Rgba);
     generateOpenGLESTexture();
     setTextureSize(size);
 }
@@ -84,7 +84,7 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name,
     d_owner(owner),
     d_name(name)
 {
-    initPixelFormatFields(PF_RGBA);
+    initPixelFormatFields(PixelFormat::Rgba);
     updateCachedScaleValues();
 }
 
@@ -113,7 +113,7 @@ const Sizef& OpenGLESTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& OpenGLESTexture::getTexelScaling() const
+const glm::vec2& OpenGLESTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -136,9 +136,9 @@ void OpenGLESTexture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System (needed to access ImageCodec)
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             "CEGUI::System object has not been created: "
-            "unable to access ImageCodec."));
+            "unable to access ImageCodec.");
 
     Texture* res = sys->getImageCodec().load(texFile, this);
 
@@ -148,9 +148,9 @@ void OpenGLESTexture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             sys->getImageCodec().getIdentifierString() +
-            " failed to load image '" + filename + "'."));
+            " failed to load image '" + filename + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -159,8 +159,8 @@ void OpenGLESTexture::loadFromMemory(const void* buffer,
                                      PixelFormat pixel_format)
 {
     if (!isPixelFormatSupported(pixel_format))
-        CEGUI_THROW(InvalidRequestException(
-            "Data was supplied in an unsupported pixel format."));
+        throw InvalidRequestException(
+            "Data was supplied in an unsupported pixel format.");
     
     initPixelFormatFields(pixel_format);
     setTextureSize_impl(buffer_size);
@@ -169,7 +169,7 @@ void OpenGLESTexture::loadFromMemory(const void* buffer,
     d_dataSize = buffer_size;
     updateCachedScaleValues();
 
-    blitFromMemory(buffer, Rectf(Vector2f(0, 0), buffer_size));
+    blitFromMemory(buffer, Rectf(glm::vec2(0, 0), buffer_size));
 }
 
 //----------------------------------------------------------------------------//
@@ -239,13 +239,13 @@ void OpenGLESTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 void OpenGLESTexture::blitToMemory(void* targetData)
 {
     // TODO:
-    CEGUI_THROW(RendererException("unimplemented!"));
+    throw RendererException("unimplemented!");
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLESTexture::setTextureSize(const Sizef& sz)
 {
-    initPixelFormatFields(PF_RGBA);
+    initPixelFormatFields(PixelFormat::Rgba);
 
     setTextureSize_impl(sz);
 
@@ -262,7 +262,7 @@ void OpenGLESTexture::setTextureSize_impl(const Sizef& sz)
     // make sure size is within boundaries
     GLfloat maxSize = static_cast<GLfloat>(d_owner.getMaxTextureSize());
     if ((size.d_width > maxSize) || (size.d_height > maxSize))
-        CEGUI_THROW(RendererException("size too big"));
+        throw RendererException("size too big");
 
     // save old texture binding
     GLuint old_tex;
@@ -294,13 +294,13 @@ void OpenGLESTexture::setTextureSize_impl(const Sizef& sz)
 //----------------------------------------------------------------------------//
 void OpenGLESTexture::grabTexture()
 {
-    CEGUI_THROW(RendererException("unimplemented!"));
+    throw RendererException("unimplemented!");
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLESTexture::restoreTexture()
 {
-    CEGUI_THROW(RendererException("unimplemented!"));
+    throw RendererException("unimplemented!");
 }
 
 //----------------------------------------------------------------------------//
@@ -385,10 +385,10 @@ bool OpenGLESTexture::isPixelFormatSupported(const PixelFormat fmt) const
 {
     switch (fmt)
     {
-    case PF_RGBA:
-    case PF_RGB:
-    case PF_RGBA_4444:
-    case PF_RGB_565:
+    case PixelFormat::Rgba:
+    case PixelFormat::Rgb:
+    case PixelFormat::Rgba4444:
+    case PixelFormat::Rgb565:
         return true;
 
     case PF_PVRTC4:
@@ -407,22 +407,22 @@ void OpenGLESTexture::initPixelFormatFields(const PixelFormat fmt)
 
     switch (fmt)
     {
-    case PF_RGBA:
+    case PixelFormat::Rgba:
         d_format = GL_RGBA;
         d_subpixelFormat = GL_UNSIGNED_BYTE;
         break;
 
-    case PF_RGB:
+    case PixelFormat::Rgb:
         d_format = GL_RGB;
         d_subpixelFormat = GL_UNSIGNED_BYTE;
         break;
 
-    case PF_RGB_565:
+    case PixelFormat::Rgb565:
         d_format = GL_RGB;
         d_subpixelFormat = GL_UNSIGNED_SHORT_5_6_5;
         break;
 
-    case PF_RGBA_4444:
+    case PixelFormat::Rgba4444:
         d_format = GL_RGBA;
         d_subpixelFormat = GL_UNSIGNED_SHORT_4_4_4_4;
         break;

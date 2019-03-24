@@ -30,6 +30,7 @@
 #include "../../Texture.h"
 #include "CEGUI/RendererModules/Ogre/Renderer.h"
 #include <OgreTexture.h>
+#include <OgreSharedPtr.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -50,7 +51,7 @@ public:
     const String& getName() const;
     const Sizef& getSize() const;
     const Sizef& getOriginalDataSize() const;
-    const Vector2f& getTexelScaling() const;
+    const glm::vec2& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
     void loadFromMemory(const void* buffer, const Sizef& buffer_size,
                         PixelFormat pixel_format);
@@ -95,7 +96,7 @@ protected:
     void updateCachedScaleValues();
 
     //! Counter used to provide unique texture names.
-    static uint32 d_textureNumber;
+    static std::uint32_t d_textureNumber;
     //!< The underlying Ogre texture.
     Ogre::TexturePtr d_texture;
     //! specifies whether d_texture was created externally (not owned by us).
@@ -105,7 +106,7 @@ protected:
     //! original pixel of size data loaded into texture
     Sizef d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2f d_texelScaling;
+    glm::vec2 d_texelScaling;
     //! Name this texture was created with.
     const String d_name;
 };

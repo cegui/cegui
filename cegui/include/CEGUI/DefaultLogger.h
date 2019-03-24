@@ -30,6 +30,9 @@
 #define _CEGUIDefaultLogger_h_
 
 #include "CEGUI/Logger.h"
+#include <vector>
+#include <fstream>
+#include <sstream>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -53,8 +56,8 @@ public:
     ~DefaultLogger(void);
 
     // overridden from Logger
-    void logEvent(const String& message, LoggingLevel level = Standard);
-    void setLogFilename(const String& filename, bool append = false);
+    void logEvent(const String& message, LoggingLevel level = LoggingLevel::Standard) override;
+    void setLogFilename(const String& filename, bool append = false) override;
 
 protected:
     //! Stream used to implement the logger
@@ -63,11 +66,10 @@ protected:
     std::ostringstream d_workstream;
 
     typedef std::pair<String, LoggingLevel> CacheItem;
-    typedef std::vector<CacheItem
-        CEGUI_VECTOR_ALLOC(CacheItem)> Cache;
+    typedef std::vector<CacheItem> Cache;
     //! Used to cache log entries before log file is created. 
     Cache d_cache;
-    //! true while log entries are beign cached (prior to logfile creation)
+    //! true while log entries are being cached (prior to logfile creation)
     bool d_caching;
 };
 

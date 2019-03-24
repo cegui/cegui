@@ -35,6 +35,7 @@
 #include "CEGUI/PropertySet.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/EventArgs.h"
+#include "CEGUI/DefaultParagraphDirection.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -43,163 +44,6 @@
 
 namespace CEGUI
 {
-
-/*!
-\brief Enumerated type used when specifying horizontal alignments for Element
-
-\see VerticalAlignment
- */
-enum HorizontalAlignment
-{
-    /**
-     * Element's position specifies an offset of it's left edge from the left
-     * edge of it's parent.
-     */
-    HA_LEFT,
-    /**
-     * Element's position specifies an offset of it's horizontal centre from the
-     * horizontal centre of it's parent.
-     */
-    HA_CENTRE,
-    /**
-     * Element's position specifies an offset of it's right edge from the right
-     * edge of it's parent.
-     */
-    HA_RIGHT
-};
-
-template<>
-class PropertyHelper<HorizontalAlignment>
-{
-public:
-    typedef HorizontalAlignment return_type;
-    typedef return_type safe_method_return_type;
-    typedef HorizontalAlignment pass_type;
-    typedef String string_return_type;
-
-    static const String& getDataTypeName()
-    {
-        static String type("HorizontalAlignment");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        if (str == "Centre")
-        {
-            return HA_CENTRE;
-        }
-        else if (str == "Right")
-        {
-            return HA_RIGHT;
-        }
-        else
-        {
-            return HA_LEFT;
-        }
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        if (val == HA_CENTRE)
-        {
-            return "Centre";
-        }
-        else if (val == HA_RIGHT)
-        {
-            return "Right";
-        }
-        else if (val == HA_LEFT)
-        {
-            return "Left";
-        }
-        else
-        {
-            assert(false && "Invalid horizontal alignment");
-            return "Centre";
-        }
-    }
-};
-
-/*!
-\brief Enumerated type used when specifying vertical alignments for Element
-
-\see HorizontalAlignment
- */
-enum VerticalAlignment
-{
-    /**
-     * Element's position specifies an offset of it's top edge from the top edge
-     * of it's parent.
-     */
-    VA_TOP,
-    /**
-     * Element's position specifies an offset of it's vertical centre from the
-     * vertical centre of it's parent.
-     */
-    VA_CENTRE,
-    /**
-     * Element's position specifies an offset of it's bottom edge from the
-     * bottom edge of it's parent.
-     */
-    VA_BOTTOM
-};
-
-template<>
-class PropertyHelper<CEGUI::VerticalAlignment>
-{
-public:
-    typedef VerticalAlignment return_type;
-    typedef return_type safe_method_return_type;
-    typedef VerticalAlignment pass_type;
-    typedef String string_return_type;
-
-    static const String& getDataTypeName()
-    {
-        static String type("VerticalAlignment");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-      if (str == "Centre")
-      {
-          return VA_CENTRE;
-      }
-      else if (str == "Bottom")
-      {
-          return VA_BOTTOM;
-      }
-      else
-      {
-          return VA_TOP;
-      }
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        if (val == VA_CENTRE)
-        {
-            return "Centre";
-        }
-        else if (val == VA_BOTTOM)
-        {
-            return "Bottom";
-        }
-        else if (val == VA_TOP)
-        {
-            return "Top";
-        }
-        else
-        {
-            assert(false && "Invalid vertical alignment");
-            return "Centre";
-        }
-    }
-};
-
 /*!
 \brief
     EventArgs based class that is used for objects passed to handlers triggered
@@ -241,8 +85,7 @@ class directly. You most likely want to use CEGUI::Window.
 */
 class CEGUIEXPORT Element :
     public PropertySet,
-    public EventSet,
-    public AllocatedObject<Element>
+    public EventSet
 {
 public:
     //! Namespace for global events
@@ -311,6 +154,12 @@ public:
     static const String EventIsSizeAdjustedToContentChanged;
 
     /*!
+    \brief
+        Fired when the "DefaultParagraphDirection" changes.
+    */
+    static const String EventDefaultParagraphDirectionChanged;
+
+    /*!
     \brief A tiny wrapper to hide some of the dirty work of rect caching
 
     This is used internally by CEGUI::Element and other classes, it is passed
@@ -364,7 +213,7 @@ public:
                 return get();
             }
 
-            return CEGUI_CALL_MEMBER_FN(*d_element, d_generator)(skipAllPixelAlignment);
+            return ((*d_element).*d_generator)(skipAllPixelAlignment);
         }
 
         /*!
@@ -387,7 +236,7 @@ public:
         {
             // false, since when we are caching we don't want to skip anything, we want everything to act
             // exactly as it was setup
-            d_cachedData = CEGUI_CALL_MEMBER_FN(*d_element, d_generator)(false);
+            d_cachedData = (*d_element.*d_generator)(false);
 
             d_cacheValid = true;
         }
@@ -782,7 +631,7 @@ public:
         16.0f / 9.0.f, ...
 
     \note
-        This is ignored if AspectMode is AM_IGNORE.
+        This is ignored if AspectMode is IGNORE.
 
     \see Element::setAspectMode
     */
@@ -839,9 +688,9 @@ public:
         Return the element's absolute (or screen, depending on the type of the element) position in pixels.
 
     \return
-        Vector2f object describing this element's absolute position in pixels.
+        glm::vec2 object describing this element's absolute position in pixels.
     */
-    inline const Vector2f& getPixelPosition() const
+    inline glm::vec2 getPixelPosition() const
     {
         return getUnclippedOuterRect().get().d_min;
     }
@@ -891,18 +740,18 @@ public:
         CEGUI used Euler angles previously. While these are easy to use and seem
         intuitive they cause Gimbal locks when animating and are overall the worse
         solution than using Quaternions. You can still use Euler angles, see
-        the CEGUI::Quaternion class for more info about that.
+        the glm::quat class for more info about that.
 
     \see Element::getRotation
     */
-    void setRotation(const Quaternion& rotation);
+    void setRotation(const glm::quat& rotation);
 
     /*!
     \brief retrieves rotation of this widget
 
     \see Element::setRotation
     */
-    inline const Quaternion& getRotation() const
+    inline const glm::quat& getRotation() const
     {
         return d_rotation;
     }
@@ -1480,7 +1329,7 @@ public:
         Note that in this implementation the width and height are treated
         independently of each other.
 
-        If "getAspectMode() != AM_IGNORE", this method respects the aspect ratio
+        If "getAspectMode() != IGNORE", this method respects the aspect ratio
         using the following logic:
             - If only "isWidthAdjustedToContent()" is true, compute the height
               from the width and the aspect ratio.
@@ -1608,6 +1457,12 @@ public:
     \see contentFitsForSpecifiedElementSize_tryByResizing
     */
     virtual bool contentFits() const;
+
+    //! Gets the default paragraph direction for the displayed text of this Element.
+    DefaultParagraphDirection getDefaultParagraphDirection() const;
+
+    //! Sets the default paragraph direction for the displayed text of this Element.
+    void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);
 
 protected:
     /*!
@@ -1837,8 +1692,7 @@ protected:
         Implementation Data
     *************************************************************************/
     //! definition of type used for the list of attached child elements.
-    typedef std::vector<Element*
-        CEGUI_VECTOR_ALLOC(Element*)> ChildList;
+    typedef std::vector<Element*> ChildList;
 
     //! The list of child element objects attached to this.
     ChildList d_children;
@@ -1896,7 +1750,7 @@ protected:
     //! Current constrained pixel size of the element.
     Sizef d_pixelSize;
     //! Rotation of this element (relative to the parent)
-    Quaternion d_rotation;
+    glm::quat d_rotation;
     //! Pivot point (the point around which the widget is rotated).
     UVector3 d_pivot;
 
@@ -1905,6 +1759,13 @@ protected:
     //! inner area rect in screen pixels
     CachedRectf d_unclippedInnerRect;
 
+    
+    /*!
+    \brief
+        Default direction of the paragraph, relevant for bidirectional text.
+    \see DefaultParagraphDirection
+    */
+    DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
 private:
     /*************************************************************************
         May not copy or assign Element objects

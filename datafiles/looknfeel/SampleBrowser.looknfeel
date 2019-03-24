@@ -120,7 +120,6 @@
         <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting"/>
         <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting"/>
 
-        <Property name="WantsMultiClickEvents" value="false" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -336,8 +335,8 @@
                 <KeyFrame position="0" sourceProperty="ForegroundFadeColours" />
                 <KeyFrame position="0.28" value="tl:00000000 tr:00000000 bl:00000000 br:00000000" progression="quadratic decelerating" />
             </Affector>
-            <Subscription event="MouseLeavesArea" action="Stop" />
-            <Subscription event="MouseEntersArea" action="Start" />
+            <Subscription event="CursorLeavesArea" action="Stop" />
+            <Subscription event="CursorEntersArea" action="Start" />
         </AnimationDefinition>
 
         <AnimationDefinition name="SamplePreviewFadeOut" duration="0.39" replayMode="once" autoStart="false">
@@ -345,8 +344,8 @@
                 <KeyFrame position="0" sourceProperty="ForegroundFadeColours" />
                 <KeyFrame position="0.39" value="tl:CC000000 tr:CC000000 bl:CC000000 br:CC000000" progression="quadratic decelerating" />
             </Affector>
-            <Subscription event="MouseEntersArea" action="Stop" />
-            <Subscription event="MouseLeavesArea" action="Start" />
+            <Subscription event="CursorEntersArea" action="Stop" />
+            <Subscription event="CursorLeavesArea" action="Start" />
         </AnimationDefinition>
     </WidgetLook>
 
@@ -481,7 +480,7 @@
         <NamedArea name="ClientNoTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
                 <Dim type="RightEdge" ><UnifiedDim scale="1" type="RightEdge" /></Dim>
                 <Dim type="BottomEdge" ><UnifiedDim scale="1" type="BottomEdge" /></Dim>
             </Area>
@@ -894,7 +893,6 @@
 -->
     <WidgetLook name="SampleBrowserSkin/VerticalScrollbar">
         <Property name="VerticalScrollbar" value="true" />
-        <Property name="WantsMultiClickEvents" value="false" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
@@ -961,7 +959,6 @@
 -->
     <WidgetLook name="SampleBrowserSkin/HorizontalScrollbar">
         <Property name="VerticalScrollbar" value="false" />
-        <Property name="WantsMultiClickEvents" value="false" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>

@@ -136,9 +136,9 @@ void FormattingSetting<T>::writeXMLAttributesToStream(XMLSerializer& /*xml_strea
     // This does nothing and needs to be specialised or overridden
 }
 
-template<> void CEGUIEXPORT FormattingSetting<VerticalFormatting>::writeXMLTagToStream(
+template<> void CEGUIEXPORT FormattingSetting<VerticalImageFormatting>::writeXMLTagToStream(
                                             XMLSerializer& xml_stream) const;
-template<> void CEGUIEXPORT FormattingSetting<VerticalFormatting>::writeXMLAttributesToStream(
+template<> void CEGUIEXPORT FormattingSetting<VerticalImageFormatting>::writeXMLAttributesToStream(
                                             XMLSerializer& xml_stream) const;
 template<> void CEGUIEXPORT FormattingSetting<HorizontalFormatting>::writeXMLTagToStream(
                                             XMLSerializer& xml_stream) const;
