@@ -1,7 +1,7 @@
 ################################################################################
 # Top-level CMakeLists.txt file for Crazy Eddie's GUI System
 ################################################################################
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.1)
 if (POLICY CMP0017)
     cmake_policy(SET CMP0017 OLD)
 endif()
@@ -208,6 +208,7 @@ endif()
 
 option( CEGUI_HAS_FREETYPE "Specifies whether to include Freetype font support" ${FREETYPE_FOUND} )
 option( CEGUI_HAS_PCRE_REGEX "Specifies whether to include PCRE regexp matching for editbox string validation" ${PCRE_FOUND} )
+option( CEGUI_HAS_STD11_REGEX "Specifies whether to include C++11 Regular expressions library for editbox string validation" FALSE )
 option( CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER "Specifies whether to build the minizip based resource provider" ${MINIZIP_FOUND} )
 option( CEGUI_HAS_DEFAULT_LOGGER "Specifies whether to build the DefaultLogger implementation" TRUE)
 
