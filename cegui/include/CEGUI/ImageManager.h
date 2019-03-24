@@ -192,7 +192,7 @@ public:
     //! container type used to hold the images.
     typedef std::map<String, ImagePair,
                      StringFastLessCompare
-                     CEGUI_MAP_ALLOC(String, Image*)> ImageMap;
+                     CEGUI_MAP_ALLOC(String, ImagePair)> ImageMap;
 
     //! ConstBaseIterator type definition.
     typedef ConstMapIterator<ImageMap> ImageIterator;
