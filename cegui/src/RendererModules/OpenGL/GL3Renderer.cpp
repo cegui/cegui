@@ -49,6 +49,7 @@
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
+#ifdef GLEW_VERSION_4_3
 // The function must be a C method with the same calling convention as the GL API functions, here this is done using the APIENTRY function prefix
 static void APIENTRY OpenGlDebugCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam )
 {
@@ -96,13 +97,14 @@ static void APIENTRY OpenGlDebugCallback( GLenum source, GLenum type, GLuint id,
 
     printf("GL Callback : %s\ntype: %s\nid %d\nseverity: %s", message, str_type.c_str(), id, str_severity.c_str());
 
-#ifdef DEBUG
+#   ifdef DEBUG
     if(severity == GL_DEBUG_SEVERITY_HIGH)
     {
         abort();
     }
-#endif
+#   endif
 }
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -236,8 +238,9 @@ void OpenGL3Renderer::init()
         throw RendererException("Only version 2 and up of OpenGL ES is "
                                 "supported by this type of renderer.");
     initialiseRendererIDString();
-
+   
 #ifdef DEBUG
+#   ifdef GLEW_VERSION_4_3
     if(OpenGLInfo::getSingleton().verAtLeast(4, 3))
     {
         glEnable(GL_DEBUG_OUTPUT);
@@ -247,6 +250,7 @@ void OpenGL3Renderer::init()
         // we want to receive all possible callback messages
         glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
     }
+#   endif
 #endif
 
     d_openGLStateChanger = new OpenGL3StateChangeWrapper();
