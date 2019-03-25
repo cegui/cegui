@@ -119,7 +119,7 @@ void Cursor::setDefaultImage(const Image* image)
         return;
 
     d_defaultIndicatorImage = image;
-    d_cachedGeometryValid = d_indicatorImage != nullptr;
+    d_cachedGeometryValid = false;
 
 	CursorEventArgs args(this);
 	args.d_image = image;
