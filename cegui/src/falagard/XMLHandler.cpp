@@ -1500,7 +1500,7 @@ namespace CEGUI
     {
         if (d_widgetlook == nullptr)
         {
-            throwExceptionNotChildOfNode(d_widgetlook, StateImageryElement, d_stateimagery->getName(), WidgetLookElement);
+            throwExceptionNotChildOfNode(d_widgetlook, StateImageryElement, d_stateimagery ? d_stateimagery->getName() : "", WidgetLookElement);
         }
 
         if (d_stateimagery)

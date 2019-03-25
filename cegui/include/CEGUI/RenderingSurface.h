@@ -195,7 +195,7 @@ public:
         a RenderingSurface.
     */
     void addGeometryBuffer(const RenderQueueID queue,
-                           const GeometryBuffer& geometry_buffer);
+                           GeometryBuffer& geometry_buffer);
 
     /*!
     \brief
@@ -353,6 +353,10 @@ public:
     const RenderTarget& getRenderTarget() const;
     RenderTarget& getRenderTarget();
 
+	//! collection type for the queues
+	typedef std::map<RenderQueueID, RenderQueue> RenderQueueList;
+	RenderQueueList& getRenderQueueList()         {return d_queues;}
+
 protected:
     /** draw the surface content. Default impl draws the render queues.
      * NB: Called between RenderTarget activate and deactivate calls.
@@ -368,8 +372,6 @@ protected:
     //! attach ReneringWindow from this RenderingSurface
     void attachWindow(RenderingWindow& w);
 
-    //! collection type for the queues
-    typedef std::map<RenderQueueID, RenderQueue> RenderQueueList;
     //! collection type for created RenderingWindow objects
     typedef std::vector<RenderingWindow*> RenderingWindowList;
     //! the collection of RenderQueue objects.
