@@ -56,6 +56,8 @@ setting CMake options and regenerating, rather than editing directly.
 //////////////////////////////////////////////////////////////////////////
 // if this is defined, allocation can be customised
 #cmakedefine CEGUI_CUSTOM_ALLOCATORS
+// if this is defined, allocations will calculate memory usage
+#cmakedefine CEGUI_CUSTOM_ALLOCATORS_USAGE
 // if this is defined, allocations will pass debug info to allocators
 #cmakedefine CEGUI_CUSTOM_ALLOCATORS_DEBUG
 // the file that contains allocators and allocation config
@@ -145,6 +147,9 @@ setting CMake options and regenerating, rather than editing directly.
 // comment the following line.  (Attempts to set validation string will throw).
 //////////////////////////////////////////////////////////////////////////
 #cmakedefine CEGUI_HAS_PCRE_REGEX
+
+// Uncomment this to use C++11 Regular expressions library.
+#cmakedefine CEGUI_HAS_STD11_REGEX
 
 //////////////////////////////////////////////////////////////////////////
 // The following controls whether the default logger be (possibly) used.

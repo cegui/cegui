@@ -317,7 +317,7 @@ if (CEGUI_SAMPLES_RENDERER_DIRECT3D9_ACTIVE OR CEGUI_SAMPLES_RENDERER_DIRECT3D10
 
     if (MINGW)
         cegui_target_link_libraries(${CEGUI_TARGET_NAME} dxerr9 dinput8 dxguid)
-    else ()
+    elseif (DIRECTXSDK_FOUND)
         cegui_target_link_libraries(${CEGUI_TARGET_NAME} dxerr)
     endif()
 
