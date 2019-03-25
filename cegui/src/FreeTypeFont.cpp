@@ -224,11 +224,9 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
         {
             const String texture_name(d_name + "_auto_glyph_images_" +
                                        PropertyHelper<int>::toString(s->first));
-            Texture& new_texture = System::getSingleton().getRenderer()->createTexture(
+            texture = &System::getSingleton().getRenderer()->createTexture(
                 texture_name, Sizef(static_cast<float>(texsize), static_cast<float>(texsize)));
-            d_glyphTextures.push_back(&new_texture);
-
-            texture = &new_texture;
+            d_glyphTextures.push_back(texture);
 
             // Create a memory buffer where we will render our glyphs
             if (mem_buffer == 0)
