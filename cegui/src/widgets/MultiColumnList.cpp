@@ -2456,7 +2456,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
     }
 
     // write out SortColumnID property, if any(!)
-    if(columnCount)
+    if(columnCount != 0)
     {
 		try
 		{
