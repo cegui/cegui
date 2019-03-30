@@ -1569,7 +1569,7 @@ bool MultiColumnList::clearAllSelections_impl(void)
 			ListboxItem* item = d_grid[i][j];
 
 			// if slot has an item, and item is selected
-			if (item == nullptr && item->isSelected())
+			if (item != nullptr && item->isSelected())
 			{
 				// clear selection state and set modified flag
 				item->setSelected(false);

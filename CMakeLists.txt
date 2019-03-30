@@ -1,7 +1,7 @@
 ################################################################################
 # Top-level CMakeLists.txt file for Crazy Eddie's GUI System
 ################################################################################
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 if (POLICY CMP0017)
     cmake_policy(SET CMP0017 OLD)
 endif()
@@ -118,7 +118,23 @@ find_package(SFML 2.3 COMPONENTS ${CEGUI_SFML_COMPONENTS})
 
 find_package(DirectXSDK)
 find_package(Irrlicht)
-find_package(Ogre)
+
+find_package(OGRE)
+if(NOT ${OGRE_FOUND})
+    find_package(Ogre)
+endif()
+if(${OGRE_FOUND})
+    if (${OGRE_VERSION} VERSION_GREATER 1.11)
+        set(CMAKE_CXX_STANDARD 11)
+        set(CMAKE_CXX_STANDARD_REQUIRED ON)
+        set(CMAKE_CXX_EXTENSIONS OFF)
+
+        set(CEGUI_FOUND_OGRE_VERSION_MAJOR ${OGRE_VERSION_MAJOR})
+        set(CEGUI_FOUND_OGRE_VERSION_MINOR ${OGRE_VERSION_MINOR})
+        set(CEGUI_FOUND_OGRE_VERSION_PATCH ${OGRE_VERSION_PATCH})
+    endif()
+endif()
+
 find_package(OIS)
 find_package(DirectFB)
 find_package(OpenGLES)
@@ -201,6 +217,7 @@ set( CEGUI_STRING_CLASS 2 CACHE INT "CEGUI offers three CEGUI::String class conf
 
 option( CEGUI_HAS_FREETYPE "Specifies whether to include Freetype font support" ${FREETYPE_FOUND} )
 option( CEGUI_HAS_PCRE_REGEX "Specifies whether to include PCRE regexp matching for editbox string validation" ${PCRE_FOUND} )
+option( CEGUI_HAS_STD11_REGEX "Specifies whether to include C++11 Regular expressions library for editbox string validation" FALSE )
 option( CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER "Specifies whether to build the minizip based resource provider" ${MINIZIP_FOUND} )
 option( CEGUI_HAS_DEFAULT_LOGGER "Specifies whether to build the DefaultLogger implementation" TRUE)
 
