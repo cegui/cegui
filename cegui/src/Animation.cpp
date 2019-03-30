@@ -249,6 +249,11 @@ void Animation::autoSubscribe(AnimationInstance* instance)
             connection = eventSender->subscribeEvent(e,
                          CEGUI::Event::Subscriber(&AnimationInstance::handleTogglePause, instance));
         }
+        else if (a == "Finish")
+        {
+            connection = eventSender->subscribeEvent(e,
+                         CEGUI::Event::Subscriber(&AnimationInstance::handleFinish, instance));
+        }
         else
         {
             throw InvalidRequestException(
