@@ -98,14 +98,26 @@ bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     const float qw = window.getSize().d_width / (ds_xPivotCount - 1);
     const float qh = window.getSize().d_height / (ds_yPivotCount - 1);
     const float tcx = qw * tex.getTexelScaling().x;
-    const float tcy =
-        (isTexCoordSysFlipped ? -qh : qh) *
-            tex.getTexelScaling().y;
+    const float tcy = qh * tex.getTexelScaling().y;
 
     const glm::vec3 windowPosition = glm::vec3(window.getPosition(), 0);
 
     for (size_t y = 0; y < ds_yPivotCount - 1; ++y)
     {
+    	float uvTop;
+		float uvBot;
+		if(isTexCoordSysFlipped)
+		{
+			const size_t rev_y = (ds_yPivotCount - 2) - y;
+			uvTop = (rev_y + 1) * tcy;
+			uvBot = rev_y * tcy;
+		}
+		else
+		{
+			uvTop = y * tcy;
+			uvBot = (y + 1) * tcy;
+		}
+        
         for (size_t x = 0; x < ds_xPivotCount - 1; ++x)
         {
             // index of the first vertex of the quad we will construct with
@@ -117,34 +129,34 @@ bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
             // vertex 0 - top left
             d_vertices[idx + 0].d_position   = glm::vec3(d_pivots[x][y], 0) - windowPosition;
             d_vertices[idx + 0].d_colour = colour;
-            d_vertices[idx + 0].d_texCoords = glm::vec2(x * tcx, y * tcy);
+            d_vertices[idx + 0].d_texCoords = glm::vec2(x * tcx, uvTop);
 
             // vertex 1 - bottom left
             d_vertices[idx + 1].d_position   = glm::vec3(d_pivots[x][y + 1], 0) - windowPosition;
             d_vertices[idx + 1].d_colour = colour;
-            d_vertices[idx + 1].d_texCoords = glm::vec2(x * tcx, (y + 1) * tcy);
+            d_vertices[idx + 1].d_texCoords = glm::vec2(x * tcx, uvBot);
 
             // vertex 2 - bottom right
             d_vertices[idx + 2].d_position   = glm::vec3(d_pivots[x + 1][y + 1], 0) - windowPosition;
             d_vertices[idx + 2].d_colour = colour;
-            d_vertices[idx + 2].d_texCoords = glm::vec2((x + 1) * tcx, (y + 1) * tcy);
+            d_vertices[idx + 2].d_texCoords = glm::vec2((x + 1) * tcx, uvBot);
 
             // second triangle
 
             // vertex 3 - bottom right
             d_vertices[idx + 3].d_position   = glm::vec3(d_pivots[x + 1][y + 1], 0) - windowPosition;
             d_vertices[idx + 3].d_colour = colour;
-            d_vertices[idx + 3].d_texCoords = glm::vec2((x + 1) * tcx, (y + 1) * tcy);
+            d_vertices[idx + 3].d_texCoords = glm::vec2((x + 1) * tcx, uvBot);
 
             // vertex 4 - top right
             d_vertices[idx + 4].d_position   = glm::vec3(d_pivots[x + 1][y], 0) - windowPosition;
             d_vertices[idx + 4].d_colour = colour;
-            d_vertices[idx + 4].d_texCoords = glm::vec2((x + 1) * tcx, y * tcy);
+            d_vertices[idx + 4].d_texCoords = glm::vec2((x + 1) * tcx, uvTop);
 
             // vertex 5 - top left
             d_vertices[idx + 5].d_position   = glm::vec3(d_pivots[x][y], 0) - windowPosition;
             d_vertices[idx + 5].d_colour = colour;
-            d_vertices[idx + 5].d_texCoords = glm::vec2(x * tcx, y * tcy);
+            d_vertices[idx + 5].d_texCoords = glm::vec2(x * tcx, uvTop);
         }
     }
 
@@ -261,12 +273,24 @@ bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     const float qw = window.getSize().d_width / tess_x;
     const float qh = window.getSize().d_height / tess_y;
     const float tcx = qw * tex.getTexelScaling().x;
-    const float tcy =
-        (isTexCoordSysFlipped ? -qh : qh) *
-            tex.getTexelScaling().y;
+    const float tcy = qh * tex.getTexelScaling().y;
 
     for (int j = 0; j < tess_y; ++j)
     {
+		float uvTop;
+		float uvBot;
+		if(isTexCoordSysFlipped)
+		{
+			const int rev_j = (static_cast<int>(tess_y) - 1) - j;
+			uvTop = (rev_j + 1) * tcy;
+			uvBot = rev_j * tcy;
+		}
+		else
+		{
+			uvTop = j * tcy;
+			uvBot = (j + 1) * tcy;
+		}
+
         for (int i = 0; i < tess_x; ++i)
         {
             int idx = static_cast<int>( (j * tess_x + i) * 6 );
@@ -284,32 +308,32 @@ bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
             // vertex 0
             vb[idx + 0].d_position   = glm::vec3(i * qw - top_adj, j * qh - lef_adj, 0.0f);
             vb[idx + 0].d_colour = colour;
-            vb[idx + 0].d_texCoords = glm::vec2(i * tcx, j*tcy);
+            vb[idx + 0].d_texCoords = glm::vec2(i * tcx, uvTop);
 
             // vertex 1
             vb[idx + 1].d_position   = glm::vec3(i * qw - bot_adj, j * qh + qh - lef_adj, 0.0f);
             vb[idx + 1].d_colour = colour;
-            vb[idx + 1].d_texCoords = glm::vec2(i*tcx, j*tcy+tcy);
+            vb[idx + 1].d_texCoords = glm::vec2(i*tcx, uvBot);
 
             // vertex 2
             vb[idx + 2].d_position   = glm::vec3(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
             vb[idx + 2].d_colour = colour;
-            vb[idx + 2].d_texCoords = glm::vec2(i*tcx+tcx, j*tcy+tcy);
+            vb[idx + 2].d_texCoords = glm::vec2(i*tcx+tcx, uvBot);
 
             // vertex 3
             vb[idx + 3].d_position   = glm::vec3(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
             vb[idx + 3].d_colour = colour;
-            vb[idx + 3].d_texCoords = glm::vec2(i*tcx+tcx, j*tcy+tcy);
+            vb[idx + 3].d_texCoords = glm::vec2(i*tcx+tcx, uvBot);
 
             // vertex 4
             vb[idx + 4].d_position   = glm::vec3(i * qw + qw - top_adj, j * qh - rig_adj, 0.0f);
             vb[idx + 4].d_colour = colour;
-            vb[idx + 4].d_texCoords = glm::vec2(i*tcx+tcx, j*tcy);
+            vb[idx + 4].d_texCoords = glm::vec2(i*tcx+tcx, uvTop);
 
             // vertex 5
             vb[idx + 5].d_position   = glm::vec3(i * qw - top_adj, j * qh - lef_adj, 0.0f);
             vb[idx + 5].d_colour = colour;
-            vb[idx + 5].d_texCoords = glm::vec2(i * tcx, j*tcy);
+            vb[idx + 5].d_texCoords = glm::vec2(i * tcx, uvTop);
         }
     }
 
