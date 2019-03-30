@@ -163,6 +163,13 @@ void ItemView::addItemViewProperties()
         &ItemView::setSelectionBrushImage, &ItemView::getSelectionBrushImage, nullptr
         )
 
+    CEGUI_DEFINE_PROPERTY(ItemView, ColourRect,
+        "SelectionColour",
+        "Property to get/set the selection color for the item view. "
+        "Value should be a \"ColourRect\".",
+        &ItemView::setSelectionColourRect, &ItemView::getSelectionColourRect, DefaultSelectionColour
+        )
+
     CEGUI_DEFINE_PROPERTY(ItemView, ScrollbarDisplayMode,
         "VertScrollbarDisplayMode",
         "Property to get/set the display mode of the vertical scroll bar of the "

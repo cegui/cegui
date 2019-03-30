@@ -86,6 +86,10 @@ void CEGuiGLFWSharedBase::createGLFWWindow()
 #if defined(_WIN32) || defined(__WIN32__)
     glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_NATIVE_CONTEXT_API);
 #endif
+#ifdef DEBUG
+    // a debug OpenGL context may have additional error and performance issue reporting functionality
+    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
+#endif
     if (!(d_window = glfwCreateWindow(s_defaultWindowWidth,
             s_defaultWindowHeight, d_windowTitle, 0, 0)))
     {
@@ -118,6 +122,10 @@ void CEGuiGLFWSharedBase::glfwWindowCloseCallback(GLFWwindow* /*window*/)
 //----------------------------------------------------------------------------//
 void CEGuiGLFWSharedBase::glfwWindowResizeCallback(GLFWwindow* /*window*/, int width, int height)
 {
+    // when a window is minimized we can get a 0 width and height. (only tested with Windows 7)
+    if(width == 0 && height == 0)
+        return;
+
     // We cache this in order to minimise calls to notifyDisplaySizeChanged,
     // which happens in the main loop whenever d_windowSized is set to true.
     d_windowSized = true;

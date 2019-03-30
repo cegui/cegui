@@ -39,11 +39,72 @@
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/Window.h"
 #include "CEGUI/RendererModules/OpenGL/GL3StateChangeWrapper.h"
 #include "CEGUI/RenderMaterial.h"
 #include "CEGUI/RendererModules/OpenGL/GLBaseShaderWrapper.h"
 
 #include <algorithm>
+#include <iterator>
+
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
+#ifdef GLEW_VERSION_4_3
+// The function must be a C method with the same calling convention as the GL API functions, here this is done using the APIENTRY function prefix
+static void APIENTRY OpenGlDebugCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam )
+{
+    std::string str_type;
+    switch(type)
+    {
+    case GL_DEBUG_TYPE_ERROR:
+        str_type = "ERROR";
+        break;
+    case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+        str_type = "DEPRECATED_BEHAVIOR";
+        break;
+    case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+        str_type = "UNDEFINED_BEHAVIOR";
+        break;
+    case GL_DEBUG_TYPE_PORTABILITY:
+        str_type = "PORTABILITY";
+        break;
+    case GL_DEBUG_TYPE_PERFORMANCE:
+        str_type = "PERFORMANCE";
+        break;
+    case GL_DEBUG_TYPE_OTHER:
+        str_type = "OTHER";
+        break;
+    default:
+        str_type = "UNKNOWN";
+        break;
+    }
+
+    std::string str_severity;
+    switch(severity)
+    {
+    case GL_DEBUG_SEVERITY_LOW:
+        str_severity = "low";
+        break;
+    case GL_DEBUG_SEVERITY_MEDIUM:
+        str_severity = "medium";
+        break;
+    case GL_DEBUG_SEVERITY_HIGH:
+        str_severity = "high";
+        break;
+    default:
+        break;
+    }
+
+    printf("GL Callback : %s\ntype: %s\nid %d\nseverity: %s", message, str_type.c_str(), id, str_severity.c_str());
+
+#   ifdef DEBUG
+    if(severity == GL_DEBUG_SEVERITY_HIGH)
+    {
+        abort();
+    }
+#   endif
+}
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -137,6 +198,14 @@ void OpenGL3Renderer::destroy(OpenGL3Renderer& renderer)
 OpenGL3Renderer::OpenGL3Renderer() :
     OpenGLRendererBase(true),
     d_shaderWrapperTextured(nullptr),
+#ifdef CEGUI_OPENGL_BIG_BUFFER
+    d_verticesTexturedVAO(0),
+    d_verticesSolidVAO(0),
+    d_verticesSolidVBO(0),
+    d_verticesTexturedVBO(0),
+    d_verticesSolidVBOSize(0),
+    d_verticesTexturedVBOSize(0),
+#endif
     d_openGLStateChanger(nullptr),
     d_shaderManager(nullptr)
 {
@@ -147,6 +216,14 @@ OpenGL3Renderer::OpenGL3Renderer() :
 OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
     OpenGLRendererBase(display_size, true),
     d_shaderWrapperTextured(nullptr),
+#ifdef CEGUI_OPENGL_BIG_BUFFER
+    d_verticesTexturedVAO(0),
+    d_verticesSolidVAO(0),
+    d_verticesSolidVBO(0),
+    d_verticesTexturedVBO(0),
+    d_verticesSolidVBOSize(0),
+    d_verticesTexturedVBOSize(0),
+#endif
     d_openGLStateChanger(nullptr),
     d_shaderManager(nullptr)
 {
@@ -161,14 +238,40 @@ void OpenGL3Renderer::init()
         throw RendererException("Only version 2 and up of OpenGL ES is "
                                 "supported by this type of renderer.");
     initialiseRendererIDString();
+   
+#ifdef DEBUG
+#   ifdef GLEW_VERSION_4_3
+    if(OpenGLInfo::getSingleton().verAtLeast(4, 3))
+    {
+        glEnable(GL_DEBUG_OUTPUT);
+        // GL_DEBUG_OUTPUT_SYNCHRONOUS guarantees that the callback is called by the same thread as the OpenGL api-call that invoked the callback
+        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+        glDebugMessageCallback(OpenGlDebugCallback, nullptr);
+        // we want to receive all possible callback messages
+        glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+    }
+#   endif
+#endif
+
     d_openGLStateChanger = new OpenGL3StateChangeWrapper();
     initialiseTextureTargetFactory();
     initialiseOpenGLShaders();
+
+#ifdef CEGUI_OPENGL_BIG_BUFFER
+    initialiseStandardTexturedVAO();
+    initialiseStandardColouredVAO();
+#endif
 }
 
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::~OpenGL3Renderer()
 {
+#ifdef CEGUI_OPENGL_BIG_BUFFER
+    glDeleteVertexArrays(1, &d_verticesTexturedVAO);
+    glDeleteBuffers(1, &d_verticesSolidVBO);
+    glDeleteBuffers(1, &d_verticesTexturedVBO);
+#endif
+
     delete d_textureTargetFactory;
     delete d_openGLStateChanger;
     delete d_shaderManager;
@@ -223,6 +326,8 @@ void OpenGL3Renderer::endRendering()
 {
     if (d_isStateResettingEnabled)
         restoreChangedStatesToDefaults(true);
+
+    d_openGLStateChanger->bindVertexArray(0);
 }
 
 //----------------------------------------------------------------------------//
@@ -331,6 +436,84 @@ RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultSh
 }
 
 //----------------------------------------------------------------------------//
+void OpenGL3Renderer::uploadBuffers(RenderingSurface& surface)
+{
+#ifdef CEGUI_OPENGL_BIG_BUFFER
+    d_vertex_data_solid.clear();
+    d_vertex_data_textured.clear();
+
+    for(auto &queue : surface.getRenderQueueList())
+    {
+        addGeometry(queue.second.getBuffers());
+    }
+
+
+    uploadVertexData(d_vertex_data_solid, d_verticesSolidVBO, d_verticesSolidVBOSize);
+    uploadVertexData(d_vertex_data_textured, d_verticesTexturedVBO, d_verticesTexturedVBOSize);
+
+#endif
+}
+
+//----------------------------------------------------------------------------//
+void OpenGL3Renderer::uploadBuffers(const std::vector<GeometryBuffer*>& buffers)
+{
+    // keep the vertex vector reserved memory so it is not constantly recreated
+    d_vertex_data_solid.clear();
+    d_vertex_data_textured.clear();
+
+    addGeometry(buffers);
+    uploadVertexData(d_vertex_data_solid, d_verticesSolidVBO, d_verticesSolidVBOSize);
+    uploadVertexData(d_vertex_data_textured, d_verticesTexturedVBO, d_verticesTexturedVBOSize);
+}
+
+//----------------------------------------------------------------------------//
+void OpenGL3Renderer::addGeometry(const std::vector<GeometryBuffer*>& buffers)
+{
+    for(auto buffer : buffers)
+    {
+        auto gl3buffer = static_cast<OpenGL3GeometryBuffer*>(buffer);
+        auto& data = gl3buffer->getVertexData();
+        if(data.empty())
+        {
+            continue;
+        }
+        auto element_count = gl3buffer->getVertexAttributeElementCount();
+        if(element_count == 9)
+        {
+            gl3buffer->d_verticesVBOPosition = d_vertex_data_textured.size() / element_count;
+            std::copy(data.begin(), data.end(), std::back_inserter(d_vertex_data_textured));
+
+        }
+        else
+        {
+            gl3buffer->d_verticesVBOPosition = d_vertex_data_solid.size() / element_count;
+            std::copy(data.begin(), data.end(), std::back_inserter(d_vertex_data_solid));
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
+void OpenGL3Renderer::uploadVertexData(std::vector<float>& vertex_data, GLuint vbo_id, GLuint &vbo_max_size)
+{
+    if(vertex_data.empty())
+    {
+        return;
+    }
+
+    d_openGLStateChanger->bindBuffer(GL_ARRAY_BUFFER, vbo_id);
+    // need a bigger buffer
+    if(vertex_data.size() * sizeof(float) > vbo_max_size)
+    {
+        glBufferData(GL_ARRAY_BUFFER, vertex_data.size() * sizeof(float), &vertex_data[0], GL_DYNAMIC_DRAW);
+        vbo_max_size = vertex_data.size() * sizeof(float);
+    }
+    else
+    {
+        glBufferSubData(GL_ARRAY_BUFFER, 0, vertex_data.size() * sizeof(float), &vertex_data[0]);
+    }
+}
+
+//----------------------------------------------------------------------------//
 void OpenGL3Renderer::initialiseStandardTexturedShaderWrapper()
 {
     OpenGLBaseShader* shader_standard_textured =  d_shaderManager->getShader(OpenGLBaseShaderID::StandardTextured);
@@ -357,6 +540,78 @@ void OpenGL3Renderer::initialiseStandardColouredShaderWrapper()
 
     d_shaderWrapperSolid->addAttributeVariable("inPosition");
     d_shaderWrapperSolid->addAttributeVariable("inColour");
+}
+
+
+//----------------------------------------------------------------------------//
+// mostly a copy of OpenGL3GeometryBuffer::finaliseVertexAttributes()
+void OpenGL3Renderer::initialiseStandardTexturedVAO()
+{
+#ifdef CEGUI_OPENGL_BIG_BUFFER
+    glGenBuffers(1, &d_verticesTexturedVBO);
+    d_openGLStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesTexturedVBO);
+    glBufferData(GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
+    d_openGLStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+    glGenVertexArrays(1, &d_verticesTexturedVAO);
+    d_openGLStateChanger->bindVertexArray(d_verticesTexturedVAO);
+
+    d_openGLStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesTexturedVBO);
+
+    GLsizei stride = (3 + 4 + 2) * sizeof(GLfloat);
+    //Update the vertex attrib pointers of the vertex array object depending on the saved attributes
+    int dataOffset = 0;
+
+    GLint shader_pos_loc = d_shaderWrapperTextured->getAttributeLocation("inPosition");
+    glEnableVertexAttribArray(shader_pos_loc);
+    glVertexAttribPointer(shader_pos_loc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GLfloat)));
+    dataOffset += 3;
+
+    GLint shader_colour_loc = d_shaderWrapperTextured->getAttributeLocation("inColour");
+    glEnableVertexAttribArray(shader_colour_loc);
+    glVertexAttribPointer(shader_colour_loc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GLfloat)));
+    dataOffset += 4;
+
+    GLint texture_coord_loc = d_shaderWrapperTextured->getAttributeLocation("inTexCoord");
+    glEnableVertexAttribArray(texture_coord_loc);
+    glVertexAttribPointer(texture_coord_loc, 2, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GLfloat)));
+    dataOffset += 2;
+
+    d_openGLStateChanger->bindVertexArray(0);
+    d_openGLStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
+#endif
+}
+
+//----------------------------------------------------------------------------//
+// mostly a copy of OpenGL3GeometryBuffer::finaliseVertexAttributes()
+void OpenGL3Renderer::initialiseStandardColouredVAO()
+{
+#ifdef CEGUI_OPENGL_BIG_BUFFER
+    glGenVertexArrays(1, &d_verticesSolidVAO);
+    d_openGLStateChanger->bindVertexArray(d_verticesSolidVAO);
+
+    glGenBuffers(1, &d_verticesSolidVBO);
+    d_openGLStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesSolidVBO);
+    glBufferData(GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
+
+    GLsizei stride = (3 + 4) * sizeof(GLfloat);
+    //Update the vertex attrib pointers of the vertex array object depending on the saved attributes
+    int dataOffset = 0;
+
+    GLint shader_pos_loc = d_shaderWrapperSolid->getAttributeLocation("inPosition");
+    glEnableVertexAttribArray(shader_pos_loc);
+    glVertexAttribPointer(shader_pos_loc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GLfloat)));
+    dataOffset += 3;
+
+    GLint shader_colour_loc = d_shaderWrapperSolid->getAttributeLocation("inColour");
+    glEnableVertexAttribArray(shader_colour_loc);
+    glVertexAttribPointer(shader_colour_loc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GLfloat)));
+    dataOffset += 4;
+
+    d_openGLStateChanger->bindVertexArray(0);
+    d_openGLStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
+#endif
 }
 
 //----------------------------------------------------------------------------//

@@ -55,8 +55,10 @@
 #include "CEGUI/RegexMatcher.h"
 #include "CEGUI/SharedStringStream.h"
 #include "CEGUI/svg/SVGDataManager.h"
-#ifdef CEGUI_HAS_PCRE_REGEX
+#if defined(CEGUI_HAS_PCRE_REGEX)
 #   include "CEGUI/PCRERegexMatcher.h"
+#elif defined(CEGUI_HAS_STD11_REGEX)
+#   include "CEGUI/StdRegexMatcher.h"
 #endif
 #if defined(__WIN32__) || defined(_WIN32)
 #	include "CEGUI/Win32ClipboardProvider.h"
@@ -986,8 +988,10 @@ void System::invalidateAllWindows()
 //----------------------------------------------------------------------------//
 RegexMatcher* System::createRegexMatcher() const
 {
-#ifdef CEGUI_HAS_PCRE_REGEX
+#if defined(CEGUI_HAS_PCRE_REGEX)
     return new PCRERegexMatcher();
+#elif defined(CEGUI_HAS_STD11_REGEX)
+    return CEGUI_NEW_AO StdRegexMatcher();
 #else
     return 0;
 #endif
