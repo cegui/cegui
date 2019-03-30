@@ -104,19 +104,19 @@ bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
 
     for (size_t y = 0; y < ds_yPivotCount - 1; ++y)
     {
-    	float uvTop;
-		float uvBot;
-		if(isTexCoordSysFlipped)
-		{
-			const size_t rev_y = (ds_yPivotCount - 2) - y;
-			uvTop = (rev_y + 1) * tcy;
-			uvBot = rev_y * tcy;
-		}
-		else
-		{
-			uvTop = y * tcy;
-			uvBot = (y + 1) * tcy;
-		}
+        float uvTop;
+        float uvBot;
+        if(isTexCoordSysFlipped)
+        {
+            const size_t rev_y = (ds_yPivotCount - 2) - y;
+            uvTop = (rev_y + 1) * tcy;
+            uvBot = rev_y * tcy;
+        }
+        else
+        {
+            uvTop = y * tcy;
+            uvBot = (y + 1) * tcy;
+        }
         
         for (size_t x = 0; x < ds_xPivotCount - 1; ++x)
         {
@@ -277,19 +277,19 @@ bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
 
     for (int j = 0; j < tess_y; ++j)
     {
-		float uvTop;
-		float uvBot;
-		if(isTexCoordSysFlipped)
-		{
-			const int rev_j = (static_cast<int>(tess_y) - 1) - j;
-			uvTop = (rev_j + 1) * tcy;
-			uvBot = rev_j * tcy;
-		}
-		else
-		{
-			uvTop = j * tcy;
-			uvBot = (j + 1) * tcy;
-		}
+        float uvTop;
+        float uvBot;
+        if(isTexCoordSysFlipped)
+        {
+            const int rev_j = (static_cast<int>(tess_y) - 1) - j;
+            uvTop = (rev_j + 1) * tcy;
+            uvBot = rev_j * tcy;
+        }
+        else
+        {
+            uvTop = j * tcy;
+            uvBot = (j + 1) * tcy;
+        }
 
         for (int i = 0; i < tess_x; ++i)
         {
