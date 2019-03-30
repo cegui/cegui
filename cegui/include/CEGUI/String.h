@@ -811,7 +811,7 @@ public:
         d_string.assign(utf8String);
         for(size_t i = 1; i < count; ++i)
         {
-            utf8String.append(utf8String);
+            d_string.append(utf8String);
         }
 
         return *this;
@@ -4531,7 +4531,7 @@ public:
     \brief
         The iterator class for iteration of code points in an UTF-8 String. 
     */
-    class codepoint_iterator : public std::iterator<std::bidirectional_iterator_tag, char32_t>
+    class CEGUIEXPORT codepoint_iterator : public std::iterator<std::bidirectional_iterator_tag, char32_t>
     {
     public:
         codepoint_iterator() {}
