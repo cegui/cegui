@@ -1,9 +1,9 @@
 /***********************************************************************
-    created:    Sun Feb 19 2006
-    author:     Paul D Turner <paul@cegui.org.uk>
+    created:    Sun Feb 24 2019
+    author:     Metora Wang
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2019 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,69 +24,52 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/RendererModules/Irrlicht/MemoryFile.h"
-#include <memory.h>
+#include "CEGUI/StdRegexMatcher.h"
+#include "CEGUI/Exceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-IrrlichtMemoryFile::IrrlichtMemoryFile(const String& filename,
-                                       const unsigned char* memory,
-                                       std::uint32_t size) :
-    d_filename(filename.c_str()),
-    d_buffer(memory),
-    d_size(size),
-    d_position(0)
+//----------------------------------------------------------------------------//
+StdRegexMatcher::StdRegexMatcher()
 {
 }
 
-std::size_t IrrlichtMemoryFile::read(void* buffer, std::size_t sizeToRead)
+//----------------------------------------------------------------------------//
+StdRegexMatcher::~StdRegexMatcher()
 {
-    std::size_t realReadSize =
-    ((d_position + sizeToRead) > d_size) ? d_size - d_position : sizeToRead;
-
-    memcpy(buffer, d_buffer + d_position, realReadSize);
-    d_position += realReadSize;
-
-    return realReadSize;
 }
 
-bool IrrlichtMemoryFile::seek(long finalPos, bool relativeMovement)
+//----------------------------------------------------------------------------//
+void StdRegexMatcher::setRegexString(const String& regex)
 {
-    std::uint32_t targetPosition = relativeMovement ? d_position : 0;
-    targetPosition += finalPos;
+    d_regex = std::regex(std::string(regex.c_str()));
+    d_string = regex;
+}
 
-    if (targetPosition > d_size)
-    {
+//----------------------------------------------------------------------------//
+const String& StdRegexMatcher::getRegexString() const
+{
+    return d_string;
+}
+
+//----------------------------------------------------------------------------//
+bool StdRegexMatcher::matchRegex(const String& str) const
+{
+    std::smatch smatch;
+    std::string temp = str.c_str();
+    if (std::regex_match(temp, smatch, d_regex) == false)
         return false;
-    }
-    else
-    {
-        d_position = targetPosition;
-        return true;
-    }
+    return smatch.empty() == false;
 }
 
-long IrrlichtMemoryFile::getSize() const
+//----------------------------------------------------------------------------//
+RegexMatcher::MatchState StdRegexMatcher::getMatchStateOfString(const String& str) const
 {
-    return d_size;
+    if (matchRegex(str))
+        return MS_VALID;
+    return MS_INVALID;
 }
 
-long IrrlichtMemoryFile::getPos() const
-{
-    return d_position;
-}
-
-#if CEGUI_IRR_SDK_VERSION >= 16
-const irr::io::path& IrrlichtMemoryFile::getFileName() const
-{
-    return d_filename;
-}
-#else
-const irr::c8* IrrlichtMemoryFile::getFileName() const
-{
-    return d_filename.c_str();
-}
-#endif
-
+//----------------------------------------------------------------------------//
 } // End of  CEGUI namespace section

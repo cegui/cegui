@@ -1,9 +1,9 @@
 /***********************************************************************
-    created:    Sun Feb 19 2006
-    author:     Paul D Turner <paul@cegui.org.uk>
+    created:    Sun Feb 24 2019
+    author:     Metora Wang
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2019 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,55 +24,44 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIIrrlichtMemoryFile_h_
-#define _CEGUIIrrlichtMemoryFile_h_
+#ifndef _CEGUIStdRegexMatcher_h_
+#define _CEGUIStdRegexMatcher_h_
 
-#ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "CEGUI/RegexMatcher.h"
+#include "CEGUI/String.h"
+
+#if (__cplusplus >= 201103L) || (_MSC_VER >= 1600)
+#include <regex>
+#else
+#include <tr1/regex>
+namespace std { using namespace tr1; }
 #endif
-
-#include "../../Base.h"
-#include "../../String.h"
-#include <irrlicht.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*!
-\brief
-    Class to wrap a file access interface around a memory buffer to enable us to
-    pass data that has been loaded via the CEGUI::ResourceProvider to irrlicht,
-    via it's IReadFile based interfaces.
-*/
-class IrrlichtMemoryFile : public irr::io::IReadFile
+//! Implementation of RegexMatcher using std::regex
+class StdRegexMatcher : public RegexMatcher
 {
 public:
-    IrrlichtMemoryFile(const String& filename, const unsigned char* memory,
-                       std::uint32_t size);
-    virtual ~IrrlichtMemoryFile() {};
+    //! Constructor.
+    StdRegexMatcher();
+    //! Destructor.
+    ~StdRegexMatcher();
 
-    // implement required interface from IReadFile
-    std::size_t read(void* buffer, std::size_t sizeToRead);
-    long getSize() const;
-    long getPos() const;
-    bool seek(long finalPos, bool relativeMovement = false);
-#if CEGUI_IRR_SDK_VERSION >= 16
-    const irr::io::path& getFileName() const;
-#else
-    const irr::c8* getFileName() const;
-#endif
+    // implement required interface
+    void setRegexString(const String& regex);
+    const String& getRegexString() const;
+    bool matchRegex(const String& str) const;
+    MatchState getMatchStateOfString(const String& str) const;
 
-protected:
-#if CEGUI_IRR_SDK_VERSION >= 16
-    irr::io::path d_filename;
-#else
-    String d_filename;
-#endif
-    const unsigned char* d_buffer;
-    std::uint32_t d_size;
-    std::uint32_t d_position;
+private:
+    //! Copy of the regex string assigned.
+    String d_string;
+    //! Pointer to std::regex compiled RegEx.
+    std::regex d_regex;
 };
 
 } // End of  CEGUI namespace section
 
-#endif  // end of guard _CEGUIIrrlichtMemoryFile_h_
+#endif  // end of guard _CEGUIStdRegexMatcher_h_

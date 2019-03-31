@@ -1729,13 +1729,18 @@ protected:
 
     friend class MultiColumnListWindowRenderer;
 
-
+protected:
+    /*************************************************************************
+        Implementation Functions
+    *************************************************************************/
+    void    handleSelection(const glm::vec2& position, bool cumulative, bool range);
+    
 private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
 	void	addMultiColumnListProperties(void);
-    void    handleSelection(const glm::vec2& position, bool cumulative, bool range);
+
 };
 
 

@@ -107,6 +107,13 @@ public:
 
     /*!
     \brief
+        When true semantic actions will be registered on key up
+        otherwise semantic actions are handled on key down.
+    */
+    bool getHandleOnKeyUp() const     { return d_handleInKeyUp; }
+
+    /*!
+    \brief
         Set whether automatic mouse button click and multi-click (i.e.
         double-click and treble-click) event generation will occur.
 
