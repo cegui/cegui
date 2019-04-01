@@ -139,7 +139,8 @@ protected:
     /*************************************************************************
         Implementation Data
     *************************************************************************/
-    typedef std::multimap<Window*, Event::Connection>  ConnectionTracker;
+    typedef std::multimap<Window*, Event::Connection, std::less<Window*>
+        CEGUI_MULTIMAP_ALLOC(Window*, Event::Connection)> ConnectionTracker;
     //! Tracks event connections we make.
     ConnectionTracker d_eventConnections;
     

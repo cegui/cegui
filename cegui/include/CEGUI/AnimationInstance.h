@@ -451,7 +451,7 @@ private:
     //! true if auto stepping is enabled
     bool d_autoSteppingEnabled;
 
-    typedef std::map<String, String, std::less<String>
+    typedef std::map<String, String, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, String)> PropertyValueMap;
     /** cached saved values, used for relative application method
      *  and keyframe property source, see Affector and KeyFrame classes

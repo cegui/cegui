@@ -113,7 +113,8 @@ protected:
     */
     String getFinalFilename(const String& filename, const String& resourceGroup) const;
 
-    typedef std::map<String, String, StringFastLessCompare> ResourceGroupMap;
+    typedef std::map<String, String, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, String)> ResourceGroupMap;
     ResourceGroupMap    d_resourceGroups;
 };
 
