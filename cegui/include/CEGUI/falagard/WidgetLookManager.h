@@ -303,7 +303,7 @@ namespace CEGUI
         //! Typedef for a map of Strings to WidgetLookFeel objects
         // \deprecated  Will use the correct allocator in the next version and will
         // be renamed to "WidgetLookMap"
-        typedef std::map<String, WidgetLookFeel, StringFastLessCompare> WidgetLookList;
+        typedef std::map<String, WidgetLookFeel, StringFastLessCompare CEGUI_MAP_ALLOC(String, WidgetLookFeel)> WidgetLookList;
 
         //! List of WidgetLookFeels added to this Manager
         WidgetLookList  d_widgetLooks;  

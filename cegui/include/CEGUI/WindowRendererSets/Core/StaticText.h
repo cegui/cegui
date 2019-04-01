@@ -320,7 +320,7 @@ namespace CEGUI
         //! Class that renders RenderedString with some formatting.
         mutable FormattedRenderedString* d_formattedRenderedString;
 
-        typedef std::vector<Event::Connection> ConnectionList;
+        typedef std::vector<Event::Connection CEGUI_VECTOR_ALLOC(Event::Connection)> ConnectionList;
         ConnectionList  d_connections;
 
         /*!

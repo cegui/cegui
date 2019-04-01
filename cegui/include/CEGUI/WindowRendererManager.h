@@ -121,7 +121,8 @@ private:
     /*************************************************************************
         Implementation data
     *************************************************************************/
-    typedef std::map<String, WindowRendererFactory*, StringFastLessCompare> WR_Registry;
+    typedef std::map<String, WindowRendererFactory*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, WindowRendererFactory*)> WR_Registry;
     WR_Registry d_wrReg;
 
     //! Container type to hold WindowRenderFacory objects that we created.

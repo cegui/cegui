@@ -289,7 +289,7 @@ private:
     //! list of affectors defined in this animation
     AffectorList d_affectors;
 
-    typedef std::multimap<String, String, std::less<String>
+    typedef std::multimap<String, String, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, String)> SubscriptionMap;
     /** holds pairs of 2 strings, the left string is the Event that we will
      * subscribe to, the right string is the action that will be invoked to the

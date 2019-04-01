@@ -743,8 +743,8 @@ private:
     typedef std::vector<String
         CEGUI_VECTOR_ALLOC(String)> AnimationList;
     //! The type is deprecated, as it will be changed to have the correct CEGUI allocator used starting in the next version
-    typedef std::multimap<Window*, AnimationInstance*
-        /*CEGUI_MULTIMAP_ALLOC(Window*, AnimationInstance*)*/> AnimationInstanceMap;
+    typedef std::multimap<Window*, AnimationInstance*, std::less<Window*>
+        CEGUI_MULTIMAP_ALLOC(Window*, AnimationInstance*)> AnimationInstanceMap;
 
     //! \deprecated The type is deprecated, as it will be changed to a map in the next CEGUI version, in accordance with the existing StateImagery/ImagerySection/NamedArea container types
     typedef std::vector<EventLinkDefinition
