@@ -293,6 +293,7 @@ bool CEGuiBaseApplication::sampleBrowserOverlayHandler(const CEGUI::EventArgs& a
         return false;
 
     // draw the logo
+    d_renderer->uploadBuffers(d_logoGeometry);
     const size_t logo_buffer_count = d_logoGeometry.size();
     for (size_t i = 0; i < logo_buffer_count; ++i)
     {
@@ -300,6 +301,7 @@ bool CEGuiBaseApplication::sampleBrowserOverlayHandler(const CEGUI::EventArgs& a
     }
 
     // draw FPS value
+    d_renderer->uploadBuffers(d_FPSGeometry);
     const size_t fps_buffer_count = d_FPSGeometry.size();
     for (size_t i = 0; i < fps_buffer_count; ++i)
         d_FPSGeometry.at(i)->draw();
@@ -314,6 +316,7 @@ bool CEGuiBaseApplication::sampleOverlayHandler(const CEGUI::EventArgs& args)
         return false;
 
     // Draw FPS value
+    d_renderer->uploadBuffers(d_FPSGeometry);
     const size_t bufferCount = d_FPSGeometry.size();
     for (size_t i = 0; i < bufferCount; ++i)
         d_FPSGeometry.at(i)->draw();

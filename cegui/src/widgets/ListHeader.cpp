@@ -165,7 +165,12 @@ ListHeaderSegment& ListHeader::getSortSegment(void) const
 *************************************************************************/
 unsigned int ListHeader::getSortSegmentID(void) const
 {
-	return getSortSegment().getID();
+    if(!d_sortSegment)
+    {
+        return 0;
+    }
+
+    return d_sortSegment->getID();
 }
 
 /*************************************************************************

@@ -15,13 +15,7 @@ set(OIS_PREFIX_PATH
 
 find_path(OIS_H_PATH NAMES OIS.h
           PATHS ${OIS_PREFIX_PATH} 
-          PATH_SUFFIXES OIS include includes)
-        
-if(NOT OIS_H_PATH)
-    find_path(OIS_H_PATH NAMES OIS.h
-              PATHS ${OIS_PREFIX_PATH} 
-              PATH_SUFFIXES OIS include include/OIS)
-endif()
+          PATH_SUFFIXES ois OIS include includes include/ois include/OIS)
         
 find_library(OIS_LIB NAMES OIS libOIS
              PATHS ${OIS_PREFIX_PATH}
