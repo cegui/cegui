@@ -174,8 +174,22 @@ public:
                                  const bool force = false) override;
     RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const override;
 
+#ifdef CEGUI_OPENGL_BIG_BUFFER
+    //! OpenGL vao used for the vertices
+    GLuint d_verticesSolidVAO;
+    GLuint d_verticesTexturedVAO;
+    //! OpenGL vbo containing all vertex data
+    GLuint d_verticesSolidVBO;
+    GLuint d_verticesTexturedVBO;
+    //! Size of the vertex data buffer that is currently in use
+    GLuint d_verticesSolidVBOSize;
+    GLuint d_verticesTexturedVBOSize;
+#endif
+
 protected:
     //! Overrides
+    void uploadBuffers(RenderingSurface& surface) override;
+    void uploadBuffers(const std::vector<GeometryBuffer*>& buffers) override;
     OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial) override;
     TextureTarget* createTextureTarget_impl(bool addStencilBuffer) override;
     //! creates a texture of GL3Texture type
@@ -200,13 +214,15 @@ protected:
     
     void init();
 
-
     //! Initialises the ShaderManager and the required OpenGL shaders
     void initialiseOpenGLShaders();
     //! Initialises the OpenGL ShaderWrapper for textured objects
     void initialiseStandardTexturedShaderWrapper();
     //! Initialises the OpenGL ShaderWrapper for coloured objects
     void initialiseStandardColouredShaderWrapper();
+
+    void initialiseStandardTexturedVAO();
+    void initialiseStandardColouredVAO();
 
 
 protected:
@@ -223,6 +239,9 @@ private:
     //! restores all relevant OpenGL States CEGUI touches to their default value
     void restoreChangedStatesToDefaults(bool isAfterRendering);
 
+    void addGeometry(const std::vector<GeometryBuffer*>& buffers);
+    void uploadVertexData(std::vector<float>& vertex_data, GLuint vbo_id, GLuint& vbo_max_size);
+
     //! Wrapper of the OpenGL shader we will use for textured geometry
     OpenGLBaseShaderWrapper* d_shaderWrapperTextured;
     //! Wrapper of the OpenGL shader we will use for solid geometry
@@ -234,6 +253,9 @@ private:
     OpenGLBaseShaderManager* d_shaderManager;
     //! pointer to a helper that creates TextureTargets supported by the system.
     OGLTextureTargetFactory* d_textureTargetFactory;
+
+    std::vector<float> d_vertex_data_solid;
+    std::vector<float> d_vertex_data_textured;
 };
 
 }

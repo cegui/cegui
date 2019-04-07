@@ -47,7 +47,7 @@ void RenderQueue::addGeometryBuffers(const std::vector<GeometryBuffer*>& geometr
 }
 
 //----------------------------------------------------------------------------//
-void RenderQueue::addGeometryBuffer(const GeometryBuffer& geometry_buffer)
+void RenderQueue::addGeometryBuffer(GeometryBuffer& geometry_buffer)
 {
     d_buffers.push_back(&geometry_buffer);
 }

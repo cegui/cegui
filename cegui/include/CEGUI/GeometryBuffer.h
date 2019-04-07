@@ -502,6 +502,9 @@ public:
     */
     void updateTextureCoordinates(const Texture* texture, const float scaleFactor);
 
+    //! type of container used to store the geometry's vertex data
+    typedef std::vector<float>  VertexData;
+    const VertexData& getVertexData() const         {return d_vertexData;}
 
 protected:  
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
@@ -509,8 +512,7 @@ protected:
     //! Reference to the RenderMaterial used for this GeometryBuffer
     RefCounted<RenderMaterial>  d_renderMaterial;
 
-    //! type of container used to store the geometry's vertex data
-    typedef std::vector<float>  VertexData;
+
     //! The container in which the vertex data is stored.
     VertexData                  d_vertexData;
     //! The vertex count which is determined based on the used vertex layout

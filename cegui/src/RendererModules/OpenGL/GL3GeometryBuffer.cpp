@@ -48,7 +48,10 @@ namespace CEGUI
 OpenGL3GeometryBuffer::OpenGL3GeometryBuffer(OpenGL3Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial) :
     OpenGLGeometryBufferBase(owner, renderMaterial),
     d_glStateChanger(owner.getOpenGLStateChanger()),
-    d_bufferSize(0)
+#ifndef CEGUI_OPENGL_BIG_BUFFER
+    d_bufferSize(0),
+#endif
+    d_verticesVBOPosition(0)
 {
     initialiseVertexBuffers();
 }
@@ -93,8 +96,19 @@ void OpenGL3GeometryBuffer::draw() const
 
     if (OpenGLInfo::getSingleton().isVaoSupported())
     {
+#ifdef CEGUI_OPENGL_BIG_BUFFER
+        if(getVertexAttributeElementCount() == 9) // todo: d_renderMaterial->d_type?
+        {
+            d_glStateChanger->bindVertexArray(static_cast<OpenGL3Renderer&>(d_owner).d_verticesTexturedVAO);
+        }
+        else
+        {
+            d_glStateChanger->bindVertexArray(static_cast<OpenGL3Renderer&>(d_owner).d_verticesSolidVAO);
+        }
+#else
         // Bind our vao
         d_glStateChanger->bindVertexArray(d_verticesVAO);
+#endif
     }
     else
     {
@@ -132,6 +146,9 @@ void OpenGL3GeometryBuffer::reset()
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::initialiseVertexBuffers()
 {
+#ifdef CEGUI_OPENGL_BIG_BUFFER
+    // nothing - only append on draw
+#else
     if (OpenGLInfo::getSingleton().isVaoSupported())
     {
         glGenVertexArrays(1, &d_verticesVAO);
@@ -151,13 +168,17 @@ void OpenGL3GeometryBuffer::initialiseVertexBuffers()
     }
 
     // Unbind array and element array buffers
-    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);    
+    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
+#endif
 }
 
 
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::finaliseVertexAttributes() const
 {
+#ifdef CEGUI_OPENGL_BIG_BUFFER
+    // nothing
+#else
     //On OpenGL desktop versions we want to bind both of the following calls, otherwise vbos are enough as the following calls
     //only affect the vbo (which may be tied to a vao)
     if (OpenGLInfo::getSingleton().isVaoSupported())
@@ -204,23 +225,27 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes() const
             break;
         }
     }
-    
+
     // this is also called when a layout is loaded in user code, so we should not keep the buffer bound (can cause misleading error messages like GL_OUT_OF_MEMORY with glDrawArrays)
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
+#endif
 }
 
 
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::deinitialiseOpenGLBuffers()
 {
+#ifndef CEGUI_OPENGL_BIG_BUFFER
     if (OpenGLInfo::getSingleton().isVaoSupported())
         glDeleteVertexArrays(1, &d_verticesVAO);
     glDeleteBuffers(1, &d_verticesVBO);
+#endif
 }
 
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 {
+#ifndef CEGUI_OPENGL_BIG_BUFFER
     bool needNewBuffer = false;
     size_t vertexCount = d_vertexData.size();
 
@@ -248,6 +273,7 @@ void OpenGL3GeometryBuffer::updateOpenGLBuffers()
     {
         glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, vertexData);
     }
+#endif
 }
 
 //----------------------------------------------------------------------------//
@@ -266,7 +292,7 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
         d_glStateChanger->disable(GL_CULL_FACE);
         d_glStateChanger->disable(GL_STENCIL_TEST);
 
-        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount);
+        glDrawArrays(GL_TRIANGLES, d_verticesVBOPosition, d_vertexCount);
     }
     else if(d_polygonFillRule == PolygonFillRule::EvenOdd)
     {
@@ -281,13 +307,13 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
         glClear(GL_STENCIL_BUFFER_BIT);
         glStencilFunc(GL_ALWAYS, 0x00, 0xFF);
         glStencilOp(GL_INVERT, GL_KEEP, GL_INVERT);
-        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount - d_postStencilVertexCount);
+        glDrawArrays(GL_TRIANGLES, d_verticesVBOPosition, d_vertexCount - d_postStencilVertexCount);
 
         unsigned int postStencilStart = d_vertexCount - d_postStencilVertexCount;
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
         glStencilMask(0x00);
         glStencilFunc(GL_EQUAL, 0xFF, 0xFF);
-        glDrawArrays(GL_TRIANGLES, postStencilStart, d_postStencilVertexCount);
+        glDrawArrays(GL_TRIANGLES, d_verticesVBOPosition + postStencilStart, d_postStencilVertexCount);
     }
     else if(d_polygonFillRule == PolygonFillRule::NonZero)
     {
@@ -309,11 +335,11 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
 
         glCullFace(GL_FRONT);
         glStencilOp(GL_KEEP, GL_KEEP, GL_INCR_WRAP);
-        glDrawArrays(GL_TRIANGLES, vertex_pos, solid_fill_count);
+        glDrawArrays(GL_TRIANGLES, d_verticesVBOPosition + vertex_pos, solid_fill_count);
 
         glCullFace(GL_BACK);
         glStencilOp(GL_KEEP, GL_KEEP, GL_DECR_WRAP);
-        glDrawArrays(GL_TRIANGLES, vertex_pos, solid_fill_count);
+        glDrawArrays(GL_TRIANGLES, d_verticesVBOPosition + vertex_pos, solid_fill_count);
 
         vertex_pos += solid_fill_count;
 
@@ -326,7 +352,7 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
         if(d_postStencilVertexCount != 0)
         {
             glStencilFunc(GL_NOTEQUAL, 0x00, 0xFF);
-            glDrawArrays(GL_TRIANGLES, d_vertexCount - d_postStencilVertexCount, d_postStencilVertexCount);
+            glDrawArrays(GL_TRIANGLES, d_verticesVBOPosition + d_vertexCount - d_postStencilVertexCount, d_postStencilVertexCount);
         }
     }
 }

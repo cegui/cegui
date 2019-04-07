@@ -37,6 +37,7 @@
 #include <glm/glm.hpp>
 
 #include <set>
+#include <vector>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -421,7 +422,11 @@ public:
         the Buffer was not rendered for exactly the amount of maximum countable times, and is updated again exactly at
         the same count)
     */
-    void invalidateGeomBufferMatrices(const CEGUI::RenderTarget* renderTarget);
+    virtual void invalidateGeomBufferMatrices(const CEGUI::RenderTarget* renderTarget);
+
+
+    virtual void uploadBuffers(RenderingSurface& surface) {}
+    virtual void uploadBuffers(const std::vector<GeometryBuffer*>& buffers) {}
 
     /*!
     \brief
@@ -430,7 +435,7 @@ public:
     \param renderTarget
         The active RenderTarget.
     */
-    void setActiveRenderTarget(RenderTarget* renderTarget);
+    virtual void setActiveRenderTarget(RenderTarget* renderTarget);
         
     /*!
     \brief
