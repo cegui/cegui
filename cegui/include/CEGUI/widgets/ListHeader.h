@@ -255,13 +255,11 @@ public:
 	ListHeaderSegment&	getSortSegment(void) const;
 	/*!
 	\brief
-		Return the ListHeaderSegment ID that is marked as being the 'sort key' segment.  There must be at least one segment
-		to successfully call this method.
+		Return the ListHeaderSegment ID that is marked as being the 'sort key' segment.  There should be at least one segment.
 
 	\return
 		unsigned int which is the sort-key segment ID.
 
-	\exception	InvalidRequestException		thrown if no segments are attached to the ListHeader.
 	*/
 	unsigned int	getSortSegmentID(void) const;
 

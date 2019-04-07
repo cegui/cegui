@@ -27,6 +27,7 @@
 #include "CEGUI/RenderingSurface.h"
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/RenderingWindow.h"
+#include "CEGUI/Renderer.h"
 #include <algorithm>
 
 // Start of CEGUI namespace section
@@ -74,7 +75,7 @@ void RenderingSurface::addGeometryBuffers(const RenderQueueID queue,
 
 //----------------------------------------------------------------------------//
 void RenderingSurface::addGeometryBuffer(const RenderQueueID queue,
-     const GeometryBuffer& geometry_buffer)
+     GeometryBuffer& geometry_buffer)
 {
     d_queues[queue].addGeometryBuffer(geometry_buffer);
 }
@@ -105,6 +106,8 @@ void RenderingSurface::clearGeometry()
 void RenderingSurface::draw()
 {
     d_target->activate();
+    Renderer& owner = d_target->getOwner();
+    owner.uploadBuffers(*this);
 
     drawContent();
 
