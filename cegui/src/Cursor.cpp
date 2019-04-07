@@ -149,6 +149,7 @@ void Cursor::draw()
     if (!d_cachedGeometryValid)
         cacheGeometry();
 
+    System::getSingleton().getRenderer()->uploadBuffers(d_geometryBuffers);
     const size_t geom_buffer_count = d_geometryBuffers.size();
     for (size_t i = 0; i < geom_buffer_count; ++i)
         d_geometryBuffers[i]->draw();

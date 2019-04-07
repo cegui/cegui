@@ -150,6 +150,9 @@ setting CMake options and regenerating, rather than editing directly.
 //////////////////////////////////////////////////////////////////////////
 #cmakedefine CEGUI_HAS_PCRE_REGEX
 
+// Uncomment this to use C++11 Regular expressions library.
+#cmakedefine CEGUI_HAS_STD11_REGEX
+
 //////////////////////////////////////////////////////////////////////////
 // The following controls whether the default logger be (possibly) used.
 // If you want to build CEGUI so that it does not use the default logger,
