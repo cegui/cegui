@@ -144,6 +144,12 @@ public:
     */
     void registerSampleOverlayHandler(CEGUI::GUIContext* gui_context);
 
+    /*!
+     \brief
+        Return the main window GUI context
+    */
+    CEGUI::GUIContext* getMainWindowGUIContext() const { return d_context; }
+
     //! The abstract function for running the application.
     virtual void run() {}
 
@@ -201,6 +207,8 @@ protected:
     CEGUI::ImageCodec* d_imageCodec;
     //! ResourceProvider to use.  Set in subclass constructor, may be 0.
     CEGUI::ResourceProvider* d_resourceProvider;
+    //! GUI context of the main window
+    CEGUI::GUIContext* d_context;
     //! GeometryBuffer used for drawing the spinning CEGUI logo
     std::vector<CEGUI::GeometryBuffer*> d_logoGeometry;
     //! GeometryBuffers used for drawing the FPS value.

@@ -47,7 +47,7 @@ public:
     SampleHandler(Sample* instance);
     virtual ~SampleHandler();
 
-    virtual void initialise(int width, int height);
+    virtual void initialise(float width, float height);
 
     virtual void deinitialise();
 
@@ -55,7 +55,7 @@ public:
     virtual CEGUI::InputAggregator* getInputAggregator();
     virtual void handleNewWindowSize(float width, float height);
 
-    void setTextureTargetImageArea(float height, float width);
+    void setTextureTargetImageArea(float width, float height);
     virtual CEGUI::Image& getRTTImage();
 
     virtual void setGUIContextRTT();
@@ -94,7 +94,7 @@ protected:
     CEGUI::BitmapImage*     d_textureTargetImage;
 
 private:
-    void initialiseSamplePreviewRenderTarget(int width, int height);
+    void initialiseSamplePreviewRenderTarget(float width, float height);
     void initialiseSample();
     void initialiseInputAggregator();
 };
