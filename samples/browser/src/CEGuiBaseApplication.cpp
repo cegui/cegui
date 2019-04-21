@@ -165,9 +165,9 @@ bool CEGuiBaseApplication::init(SampleBrowserBase* sampleApp,
         this));
 
     const Sizef& targetSize = d_context->getSurfaceSize();
-	const int width = static_cast<int>(targetSize.d_width);
-	const int height = static_cast<int>(targetSize.d_height);
-	d_sampleApp->setApplicationWindowSize(width, height);
+    const int width = static_cast<int>(targetSize.d_width);
+    const int height = static_cast<int>(targetSize.d_height);
+    d_sampleApp->setApplicationWindowSize(width, height);
 
     return true;
 }
@@ -437,9 +437,9 @@ bool CEGuiBaseApplication::resizeHandler(const CEGUI::EventArgs& /*args*/)
         return true;
 
     const Sizef& rtSize = d_context->getSurfaceSize();
-	const int width = static_cast<int>(rtSize.d_width);
-	const int height = static_cast<int>(rtSize.d_height);
-	d_sampleApp->handleNewWindowSize(width, height);
+    const int width = static_cast<int>(rtSize.d_width);
+    const int height = static_cast<int>(rtSize.d_height);
+    d_sampleApp->handleNewWindowSize(width, height);
 
     updateLogoGeometry();
     updateFPSGeometry();
