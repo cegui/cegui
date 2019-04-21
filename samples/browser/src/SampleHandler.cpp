@@ -158,10 +158,8 @@ void SampleHandler::handleNewWindowSize(int width, int height)
         CEGUI::Sizef windowSize(widthF, heightF);
         d_textureTarget->declareRenderSize(windowSize);
 
-        // FIXME getRenderingSurface without checking allowed to dereference nullptr.
-        //       Commenting this out works normally at first glance. Is really necessary?
-        //RenderingSurface* rs = d_sampleWindow->getTargetRenderingSurface(); //getRenderingSurface();
-        //if (rs) rs->invalidate();
+        RenderingSurface* rs = d_sampleWindow->getRenderingSurface();
+        if (rs) rs->invalidate();
     }
 }
 
