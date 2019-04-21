@@ -88,7 +88,7 @@ public:
     \brief
     Update function for window size changes
     */
-    virtual void handleNewWindowSize(float width, float height) = 0;
+    virtual void handleNewWindowSize(int width, int height) = 0;
 
     void renderSingleFrame(float elapsed);
 
@@ -172,7 +172,7 @@ public:
     \brief
     Function setting the application window's size
     */
-    void setApplicationWindowSize(float width, float height);
+    void setApplicationWindowSize(int width, int height);
 
     /*!
     \brief
@@ -186,12 +186,12 @@ protected:
         Data fields
     *************************************************************************/
     CEGuiRendererSelector*  d_rendererSelector;     //!< Points to the renderer selector object.
-    CEGuiBaseApplication*   d_baseApp;            //!< Pointer to the base application object.
+    CEGuiBaseApplication*   d_baseApp;              //!< Pointer to the base application object.
 
-    bool                    d_quitting;              //!< Bool defining if application should quit.
+    bool                    d_quitting;             //!< Bool defining if application should quit.
 
-    float                   d_appWindowWidth;            //!< The application window's width.
-    float                   d_appWindowHeight;           //!< The application window's height.
+	int                     d_appWindowWidth = 0;   //!< The application window's width.
+	int                     d_appWindowHeight = 0;  //!< The application window's height.
 };
 
 #endif  // end of guard _SampleBrowserBase_h_

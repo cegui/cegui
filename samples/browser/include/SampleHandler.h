@@ -47,13 +47,13 @@ public:
     SampleHandler(Sample* instance);
     virtual ~SampleHandler();
 
-    virtual void initialise(float width, float height);
+    virtual void initialise(int width, int height);
 
     virtual void deinitialise();
 
     virtual CEGUI::GUIContext*  getGuiContext();
     virtual CEGUI::InputAggregator* getInputAggregator();
-    virtual void handleNewWindowSize(float width, float height);
+    virtual void handleNewWindowSize(int width, int height);
 
     void setTextureTargetImageArea(float width, float height);
     virtual CEGUI::Image& getRTTImage();
