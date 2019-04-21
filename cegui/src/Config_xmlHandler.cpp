@@ -340,24 +340,21 @@ void Config_xmlHandler::loadAutoResources() const
 void Config_xmlHandler::initialiseDefaultFont() const
 {
     if (!d_defaultFont.empty())
-        System::getSingleton().getDefaultGUIContext().
-            setDefaultFont(d_defaultFont);
+        System::getSingleton().setDefaultFontName(d_defaultFont);
 }
 
 //----------------------------------------------------------------------------//
 void Config_xmlHandler::initialiseDefaultCursor() const
 {
     if (!d_defaultPointerImage.empty())
-        System::getSingleton().getDefaultGUIContext().getCursor().
-            setDefaultImage(d_defaultPointerImage);
+        System::getSingleton().setDefaultCursorName(d_defaultPointerImage);
 }
 
 //----------------------------------------------------------------------------//
 void Config_xmlHandler::initialiseDefaulTooltip() const
 {
     if (!d_defaultTooltipType.empty())
-        System::getSingleton().getDefaultGUIContext().
-            setDefaultTooltipType(d_defaultTooltipType);
+        System::getSingleton().setDefaultTooltipType(d_defaultTooltipType);
 }
 
 //----------------------------------------------------------------------------//

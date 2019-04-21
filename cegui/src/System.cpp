@@ -1,8 +1,8 @@
 /***********************************************************************
-	created:	20/2/2004
-	author:		Paul D Turner
+    created:    20/2/2004
+    author:        Paul D Turner
 
-	purpose:	Implementation of main system object
+    purpose:    Implementation of main system object
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
@@ -61,7 +61,7 @@
 #   include "CEGUI/StdRegexMatcher.h"
 #endif
 #if defined(__WIN32__) || defined(_WIN32)
-#	include "CEGUI/Win32ClipboardProvider.h"
+#    include "CEGUI/Win32ClipboardProvider.h"
 #endif
 #include <ctime>
 #include <clocale>
@@ -89,10 +89,10 @@ namespace CEGUI
 const String System::EventNamespace("System");
 
 /*************************************************************************
-	Static Data Definitions
+    Static Data Definitions
 *************************************************************************/
 // singleton instance pointer
-template<> System* Singleton<System>::ms_Singleton	= nullptr;
+template<> System* Singleton<System>::ms_Singleton    = nullptr;
 // instance of class that can convert string encodings
 #if defined(__WIN32__) || defined(_WIN32)
 const Win32StringTranscoder System::d_stringTranscoder;
@@ -217,10 +217,6 @@ System::System(Renderer& renderer,
     // create the core system singleton objects
     createSingletons();
 
-    // create the first GUIContext using the renderers default target,
-    // this will become the default GUIContext.
-    createGUIContext(d_renderer->getDefaultRenderTarget());
-
     // add the window factories for the core window types
     addStandardWindowFactories();
 
@@ -248,22 +244,22 @@ System::System(Renderer& renderer,
 
 
 /*************************************************************************
-	Destructor
+    Destructor
 *************************************************************************/
 System::~System(void)
 {
-	Logger::getSingleton().logEvent("---- Beginning CEGUI System destruction ----");
+    Logger::getSingleton().logEvent("---- Beginning CEGUI System destruction ----");
 
-	// execute shut-down script
-	if (!d_termScriptName.empty())
-	{
-		try
-		{
-			executeScriptFile(d_termScriptName);
-		}
-		catch (...) {}  // catch all exceptions and continue system shutdown
+    // execute shut-down script
+    if (!d_termScriptName.empty())
+    {
+        try
+        {
+            executeScriptFile(d_termScriptName);
+        }
+        catch (...) {}  // catch all exceptions and continue system shutdown
 
-	}
+    }
 
     if (d_nativeClipboardProvider != nullptr)
         delete d_nativeClipboardProvider;
@@ -274,24 +270,24 @@ System::~System(void)
     cleanupXMLParser();
 
     //
-	// perform cleanup in correct sequence
-	//
+    // perform cleanup in correct sequence
+    //
     // ensure no windows get created during destruction.  NB: I'm allowing the
     // potential exception to escape here so as to make it obvious that client
     // code should really be adjusted to not create windows during cleanup.
     WindowManager::getSingleton().lock();
-	// destroy windows so it's safe to destroy factories
+    // destroy windows so it's safe to destroy factories
     WindowManager::getSingleton().destroyAllWindows();
     WindowManager::getSingleton().cleanDeadPool();
 
     // remove factories so it's safe to unload GUI modules
-	WindowFactoryManager::getSingleton().removeAllFactories();
+    WindowFactoryManager::getSingleton().removeAllFactories();
 
     // Cleanup script module bindings
     if (d_scriptModule)
         d_scriptModule->destroyBindings();
 
-	// cleanup singletons
+    // cleanup singletons
     destroySingletons();
 
     // delete all the GUIContexts
@@ -307,8 +303,8 @@ System::~System(void)
         delete d_resourceProvider;
 
     String addressStr = SharedStringstream::GetPointerAddressAsString(this);
-	Logger::getSingleton().logEvent("CEGUI::System singleton destroyed. " + addressStr);
-	Logger::getSingleton().logEvent("---- CEGUI System destruction completed ----");
+    Logger::getSingleton().logEvent("CEGUI::System singleton destroyed. " + addressStr);
+    Logger::getSingleton().logEvent("---- CEGUI System destruction completed ----");
 
 #ifdef CEGUI_HAS_DEFAULT_LOGGER
     // delete the Logger object only if we created it.
@@ -452,12 +448,12 @@ void System::renderAllGUIContextsOnTarget(Renderer* /*contained_in*/)
 }
 
 /*************************************************************************
-	Return a pointer to the ScriptModule being used for scripting within
-	the GUI system.
+    Return a pointer to the ScriptModule being used for scripting within
+    the GUI system.
 *************************************************************************/
 ScriptModule* System::getScriptingModule(void) const
 {
-	return d_scriptModule;
+    return d_scriptModule;
 }
 
 /*************************************************************************
@@ -483,75 +479,75 @@ void System::setScriptingModule(ScriptModule* scriptModule)
 }
 
 /*************************************************************************
-	Return a pointer to the ResourceProvider being used for within the GUI
+    Return a pointer to the ResourceProvider being used for within the GUI
     system.
 *************************************************************************/
 ResourceProvider* System::getResourceProvider(void) const
 {
-	return d_resourceProvider;
+    return d_resourceProvider;
 }
 
 /*************************************************************************
-	Execute a script file if possible.
+    Execute a script file if possible.
 *************************************************************************/
 void System::executeScriptFile(const String& filename, const String& resourceGroup) const
 {
-	if (d_scriptModule)
-	{
-		try
-		{
-			d_scriptModule->executeScriptFile(filename, resourceGroup);
-		}
+    if (d_scriptModule)
+    {
+        try
+        {
+            d_scriptModule->executeScriptFile(filename, resourceGroup);
+        }
         // Forward script exceptions with line number and file info
         catch (ScriptException&)
         {
             throw;
         }
-		catch (...)
-		{
-			throw GenericException(
+        catch (...)
+        {
+            throw GenericException(
                 "An exception was thrown during the execution of the script file.");
-		}
+        }
 
-	}
-	else
-	{
-		Logger::getSingleton().logEvent("System::executeScriptFile - the script named '" + filename +"' could not be executed as no ScriptModule is available.", LoggingLevel::Error);
-	}
+    }
+    else
+    {
+        Logger::getSingleton().logEvent("System::executeScriptFile - the script named '" + filename +"' could not be executed as no ScriptModule is available.", LoggingLevel::Error);
+    }
 
 }
 
 
 /*************************************************************************
-	Execute a scripted global function if possible.  The function should
-	not take any parameters and should return an integer.
+    Execute a scripted global function if possible.  The function should
+    not take any parameters and should return an integer.
 *************************************************************************/
-int	System::executeScriptGlobal(const String& function_name) const
+int    System::executeScriptGlobal(const String& function_name) const
 {
-	if (d_scriptModule)
-	{
-		try
-		{
-			return d_scriptModule->executeScriptGlobal(function_name);
-		}
+    if (d_scriptModule)
+    {
+        try
+        {
+            return d_scriptModule->executeScriptGlobal(function_name);
+        }
         // Forward script exceptions with line number and file info
         catch (ScriptException&)
         {
             throw;
         }
-		catch (...)
-		{
-			throw GenericException(
+        catch (...)
+        {
+            throw GenericException(
                 "An exception was thrown during execution of the scripted function.");
-		}
+        }
 
-	}
-	else
-	{
-		Logger::getSingleton().logEvent("System::executeScriptGlobal - the global script function named '" + function_name +"' could not be executed as no ScriptModule is available.", LoggingLevel::Error);
-	}
+    }
+    else
+    {
+        Logger::getSingleton().logEvent("System::executeScriptGlobal - the global script function named '" + function_name +"' could not be executed as no ScriptModule is available.", LoggingLevel::Error);
+    }
 
-	return 0;
+    return 0;
 }
 
 
@@ -586,7 +582,7 @@ void System::executeScriptString(const String& str) const
 }
 
 /*************************************************************************
-	Method to inject time pulses into the system.
+    Method to inject time pulses into the system.
 *************************************************************************/
 bool System::injectTimePulse(float timeElapsed)
 {
@@ -594,19 +590,19 @@ bool System::injectTimePulse(float timeElapsed)
     return true;
 }
 
-System&	System::getSingleton(void)
+System&    System::getSingleton(void)
 {
-	return Singleton<System>::getSingleton();
+    return Singleton<System>::getSingleton();
 }
 
 
-System*	System::getSingletonPtr(void)
+System*    System::getSingletonPtr(void)
 {
-	return Singleton<System>::getSingletonPtr();
+    return Singleton<System>::getSingletonPtr();
 }
 
 /*************************************************************************
-	Handler method for display size change notifications
+    Handler method for display size change notifications
 *************************************************************************/
 void System::notifyDisplaySizeChanged(const Sizef& new_size)
 {
@@ -740,7 +736,7 @@ void System::setupXMLParser()
         d_xmlParser = createParser();
         // make sure we know to cleanup afterwards.
         d_ourXmlParser = true;
-		d_xmlParser->initialise();
+        d_xmlParser->initialise();
 #endif
     }
     // parser object already set, just initialise it.
@@ -1004,13 +1000,21 @@ void System::destroyRegexMatcher(RegexMatcher* rm) const
 }
 
 //----------------------------------------------------------------------------//
-GUIContext& System::getDefaultGUIContext() const
+void System::setDefaultFontName(const String& name)
 {
-    if (d_guiContexts.empty())
-        throw InvalidRequestException("Requesting the DefaultGUIContext, but no DefaultGUIContext is available. "
-        "The list of GUIContexts is empty.");
+    d_defaultFontName = name;
+}
 
-    return *d_guiContexts.front();
+//----------------------------------------------------------------------------//
+void System::setDefaultCursorName(const String& name)
+{
+    d_defaultCursorName = name;
+}
+
+//----------------------------------------------------------------------------//
+void System::setDefaultTooltipType(const String& tooltip_type)
+{
+    d_defaultTooltipType = tooltip_type;
 }
 
 //----------------------------------------------------------------------------//
@@ -1018,6 +1022,13 @@ GUIContext& System::createGUIContext(RenderTarget& rt)
 {
     GUIContext* c = new GUIContext(rt);
     d_guiContexts.push_back(c);
+
+    if (!d_defaultFontName.empty())
+        c->setDefaultFont(d_defaultFontName);
+    if (!d_defaultCursorName.empty())
+        c->getCursor().setDefaultImage(d_defaultCursorName);
+    if (!d_defaultTooltipType.empty())
+        c->setDefaultTooltipType(d_defaultTooltipType);
 
     return *c;
 }

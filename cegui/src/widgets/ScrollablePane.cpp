@@ -245,7 +245,7 @@ void ScrollablePane::initialiseComponents(void)
     // do a bit of initialisation
     horzScrollbar->setAlwaysOnTop(true);
     vertScrollbar->setAlwaysOnTop(true);
-    container->setCursor(getCursor());
+    container->setCursor(getCursor()); // FIXME: call _after_ attaching to a context!
 
     // subscribe to events we need to hear about
     vertScrollbar->subscribeEvent(
