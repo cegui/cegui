@@ -190,8 +190,8 @@ protected:
 
     bool                    d_quitting;             //!< Bool defining if application should quit.
 
-	int                     d_appWindowWidth = 0;   //!< The application window's width.
-	int                     d_appWindowHeight = 0;  //!< The application window's height.
+    int                     d_appWindowWidth = 0;   //!< The application window's width.
+    int                     d_appWindowHeight = 0;  //!< The application window's height.
 };
 
 #endif  // end of guard _SampleBrowserBase_h_
