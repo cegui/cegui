@@ -91,10 +91,12 @@ CEGUI::Window* SampleHandler::getSampleWindow()
     return d_sampleWindow;
 }
 
-void SampleHandler::initialise(float width, float height)
+void SampleHandler::initialise(int width, int height)
 {
-    initialiseSamplePreviewRenderTarget(width, height);
+	const float widthF = static_cast<float>(width);
+	const float heightF = static_cast<float>(height);
 
+	initialiseSamplePreviewRenderTarget(widthF, heightF);
 
     initialiseInputAggregator();
 
@@ -144,14 +146,17 @@ InputAggregator* SampleHandler::getInputAggregator()
     return d_inputAggregator;
 }
 
-void SampleHandler::handleNewWindowSize(float width, float height)
+void SampleHandler::handleNewWindowSize(int width, int height)
 {
-    setTextureTargetImageArea(width, height);
+	const float widthF = static_cast<float>(width);
+	const float heightF = static_cast<float>(height);
 
-    CEGUI::Sizef windowSize(width, height);
+	setTextureTargetImageArea(widthF, heightF);
+
     if(d_textureTarget)
     {
-        d_textureTarget->declareRenderSize(windowSize);
+		CEGUI::Sizef windowSize(widthF, heightF);
+		d_textureTarget->declareRenderSize(windowSize);
 
         // FIXME getRenderingSurface without checking allowed to dereference nullptr.
         //       Commenting this out works normally at first glance. Is really necessary?

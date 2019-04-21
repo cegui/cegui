@@ -308,7 +308,7 @@ void SampleBrowser::update(float passedTime)
 }
 
 //----------------------------------------------------------------------------//
-void SampleBrowser::handleNewWindowSize(float width, float height)
+void SampleBrowser::handleNewWindowSize(int width, int height)
 {
     d_appWindowWidth = width;
     d_appWindowHeight = height;
@@ -323,7 +323,7 @@ void SampleBrowser::handleNewWindowSize(float width, float height)
     }
 
     if (d_samplesWinMgr)
-        d_samplesWinMgr->setWindowRatio(width / height);
+        d_samplesWinMgr->setWindowRatio(width / static_cast<float>(height));
 }
 
 //----------------------------------------------------------------------------//
