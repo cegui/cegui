@@ -102,16 +102,16 @@ namespace CEGUI
         glm::vec2 tmpPos(cursor_pos.x + cursor_size.d_width, cursor_pos.y + cursor_size.d_height);
         tipRect.setPosition(tmpPos);
 
-        // if tooltip would be off the right of the screen,
+        // if the tooltip would be off more at the right side of the screen,
         // reposition to the other side of the cursor.
-        if (screen.right() < tipRect.right())
+        if (screen.right() - tipRect.right() < tipRect.left() - tipRect.getWidth())
         {
             tmpPos.x = cursor_pos.x - tipRect.getWidth() - 5;
         }
 
-        // if tooltip would be off the bottom of the screen,
+        // if the tooltip would be off more at the bottom side of the screen,
         // reposition to the other side of the cursor.
-        if (screen.bottom() < tipRect.bottom())
+        if (screen.bottom() - tipRect.bottom() < tipRect.top() - tipRect.getHeight())
         {
             tmpPos.y = cursor_pos.y - tipRect.getHeight() - 5;
         }
