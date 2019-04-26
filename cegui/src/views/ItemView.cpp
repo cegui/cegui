@@ -765,6 +765,19 @@ void ItemView::onParentSized(ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+// Context might change, we should update contents if it is valid
+void ItemView::onTargetSurfaceChanged(RenderingSurface* newSurface)
+{
+    Window::onTargetSurfaceChanged(newSurface);
+    if (getGUIContextPtr())
+    {
+        performChildWindowLayout();
+        updateScrollbars();
+        resizeToContent(); // call invalidateView(false) instead?
+    }
+}
+
+//----------------------------------------------------------------------------//
 bool ItemView::handleSelection(const glm::vec2& position, bool should_select,
     bool is_cumulative, bool is_range)
 {
