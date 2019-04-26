@@ -80,13 +80,17 @@ namespace CEGUI
 
     void Tooltip::positionSelf(void)
     {
+        GUIContext* context = getGUIContextPtr();
+        if (!context)
+            return;
+
         // no recursion allowed for this function!
         if (d_inPositionSelf)
             return;
 
         d_inPositionSelf = true;
 
-        const Cursor& indicator = getGUIContext().getCursor();
+        const Cursor& indicator = context->getCursor();
         const Rectf screen(glm::vec2(0, 0), getRootContainerSize());
         Rectf tipRect(getUnclippedOuterRect().get());
         const Image* cursor_image = indicator.getImage();
@@ -286,9 +290,9 @@ namespace CEGUI
     }
 
     bool Tooltip::validateWindowRenderer(const WindowRenderer* renderer) const
-	{
-		return dynamic_cast<const TooltipWindowRenderer*>(renderer) != nullptr;
-	}
+    {
+        return dynamic_cast<const TooltipWindowRenderer*>(renderer) != nullptr;
+    }
 
     void Tooltip::updateSelf(float elapsed)
     {
