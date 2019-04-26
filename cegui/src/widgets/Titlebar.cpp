@@ -105,19 +105,20 @@ const glm::vec2& Titlebar::getDragPoint() const
 *************************************************************************/
 void Titlebar::onCursorMove(CursorInputEventArgs& e)
 {
-	// Base class processing.
-	Window::onCursorMove(e);
+    // Base class processing.
+    Window::onCursorMove(e);
 
-	if (d_dragging && (d_parent != nullptr))
-	{
-        // calculate amount that window has been moved
-        const glm::vec2 delta(CoordConverter::screenToWindow(*this, e.position) - d_dragPoint);
+    if (d_dragging && (d_parent != nullptr))
+    {
+        // move the window.  *** Again: Titlebar objects should only be attached to FrameWindow derived classes. ***
+        if (auto frameWnd = dynamic_cast<FrameWindow*>(d_parent))
+        {
+            const glm::vec2 delta(CoordConverter::screenToWindow(*this, e.position) - d_dragPoint);
+            frameWnd->offsetPixelPosition(delta);
+        }
 
-		// move the window.  *** Again: Titlebar objects should only be attached to FrameWindow derived classes. ***
-		static_cast<FrameWindow*>(d_parent)->offsetPixelPosition(delta);
-
-		++e.handled;
-	}
+        ++e.handled;
+    }
 }
 
 
@@ -192,13 +193,9 @@ void Titlebar::onSemanticInputEvent(SemanticEventArgs& e)
 
     if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == CursorInputSource::Left)
     {
-
-        // if we do not have a parent window, then obviously nothing should happen.
-        if (d_parent)
-        {
-            // we should only ever be attached to a FrameWindow (or derived) class
-            static_cast<FrameWindow*>(d_parent)->toggleRollup();
-        }
+        // Our parent must be a FrameWindow or subclass for rolling up to work
+        if (auto frameWnd = dynamic_cast<FrameWindow*>(d_parent))
+            frameWnd->toggleRollup();
 
         ++e.handled;
     }

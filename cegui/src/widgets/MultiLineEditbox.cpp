@@ -414,6 +414,9 @@ size_t MultiLineEditbox::getNextTokenLength(const String& text, size_t start_idx
 
 size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
+	if (d_lines.empty())
+		return 0;
+
 	//
 	// calculate final window position to be checked
 	//
@@ -1172,6 +1175,9 @@ void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
 void MultiLineEditbox::handleSelectAllText(SemanticEventArgs& e)
 {
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
+    if (d_lines.size() <= caretLine)
+        return;
+
     size_t lineStart = d_lines[caretLine].d_startIdx;
 
     // find end of last paragraph
