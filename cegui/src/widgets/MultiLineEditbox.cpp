@@ -933,6 +933,20 @@ bool MultiLineEditbox::validateWindowRenderer(const WindowRenderer* renderer) co
 }
 
 
+// Context might change, we should update contents if it is valid
+void MultiLineEditbox::onTargetSurfaceChanged(RenderingSurface* newSurface)
+{
+    EditboxBase::onTargetSurfaceChanged(newSurface);
+    if (getGUIContextPtr())
+    {
+        formatText(true);
+        performChildWindowLayout();
+        setCaretIndex(getCaretIndex());
+        //ensureCaretIsVisible();
+    }
+}
+
+
 void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
 	invalidate();
