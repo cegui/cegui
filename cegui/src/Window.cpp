@@ -44,6 +44,7 @@
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/RenderingWindow.h"
+#include "CEGUI/RenderTarget.h"
 #include "CEGUI/GlobalEventSet.h"
 #include "CEGUI/SharedStringStream.h"
 #if defined (CEGUI_USE_FRIBIDI)
@@ -1934,12 +1935,12 @@ void Window::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSi
         //if (moved || sized)
         // FIXME: This is potentially wasteful to update every time
         context->updateWindowContainingCursor();
-
-        // update geometry position and clipping if nothing from above appears to
-        // have done so already (NB: may be occasionally wasteful, but fixes bugs!)
-        if (!d_unclippedOuterRect.isCacheValid())
-            updateGeometryRenderSettings();
     }
+
+    // update geometry position and clipping if nothing from above appears to
+    // have done so already (NB: may be occasionally wasteful, but fixes bugs!)
+    if (!d_unclippedOuterRect.isCacheValid())
+        updateGeometryRenderSettings();
 }
 
 //----------------------------------------------------------------------------//
@@ -4002,18 +4003,23 @@ void Window::onTargetSurfaceChanged(RenderingSurface* newSurface)
 }
 
 //----------------------------------------------------------------------------//
-const Sizef& Window::getRootContainerSize() const
+Sizef Window::getRootContainerSize() const
 {
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    auto root = getRootWindow();
+    if (root)
     {
-        return context->getSurfaceSize();
+        GUIContext* context = root->getGUIContextPtr();
+        if (context)
+        {
+            return context->getSurfaceSize();
+        }
+        else if (root->getRenderingSurface())
+        {
+            return root->getRenderingSurface()->getRenderTarget().getArea().getSize();
+        }
     }
-    else
-    {
-        static const Sizef default(0.f, 0.f);
-        return default;
-    }
+
+    return Sizef(0.f, 0.f);
 }
 
 //----------------------------------------------------------------------------//

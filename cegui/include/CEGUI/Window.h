@@ -2782,7 +2782,7 @@ public:
     bool isPointerContainedInArea() const;
 
     // overridden from Element
-    const Sizef& getRootContainerSize() const override;
+    Sizef getRootContainerSize() const override;
 
     /*!
     \brief
