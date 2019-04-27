@@ -1106,7 +1106,7 @@ public:
     The value is significant and is used to size and position the root if
     it is using scale UDim component in position and/or size.
     */
-    virtual const Sizef& getRootContainerSize() const;
+    virtual Sizef getRootContainerSize() const;
 
     /*!
     \brief
