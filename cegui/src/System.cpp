@@ -987,9 +987,9 @@ RegexMatcher* System::createRegexMatcher() const
 #if defined(CEGUI_HAS_PCRE_REGEX)
     return new PCRERegexMatcher();
 #elif defined(CEGUI_HAS_STD11_REGEX)
-    return CEGUI_NEW_AO StdRegexMatcher();
+    return new StdRegexMatcher();
 #else
-    return 0;
+    return nullptr;
 #endif
 }
 
