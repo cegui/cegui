@@ -47,13 +47,13 @@ public:
     //! Constructor.
     StdRegexMatcher();
     //! Destructor.
-    ~StdRegexMatcher();
+    virtual ~StdRegexMatcher() override;
 
     // implement required interface
-    void setRegexString(const String& regex);
-    const String& getRegexString() const;
+    virtual void setRegexString(const String& regex) override;
+    virtual const String& getRegexString() const override;
     bool matchRegex(const String& str) const;
-    MatchState getMatchStateOfString(const String& str) const;
+    virtual MatchState getMatchStateOfString(const String& str) const override;
 
 private:
     //! Copy of the regex string assigned.
