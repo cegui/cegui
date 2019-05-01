@@ -66,7 +66,7 @@ public:
 
     void update(float passedTime) override;
 
-    void handleNewWindowSize(float width, float height) override;
+    void handleNewWindowSize(int width, int height) override;
 
     void renderGUIContexts() override;
 

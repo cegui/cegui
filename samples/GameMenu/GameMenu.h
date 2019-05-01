@@ -111,7 +111,6 @@ protected:
     static const float s_loginDisplayStartDelay;
 
 
-    CEGUI::GUIContext* d_guiContext;
     CEGUI::Window* d_root;
 
     float d_timeSinceStart;

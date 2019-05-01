@@ -869,7 +869,7 @@ void FalagardStaticText::updateFormatting() const
         {
             d_actualHorzFormatting = isWordWrapOn() ? HorizontalTextFormatting::WordWrapCentreAligned : HorizontalTextFormatting::CentreAligned;
             setupStringFormatter();
-            d_formattedRenderedString->format(getWindow(), getTextRenderArea().getSize());
+            d_formattedRenderedString->format(getWindow(), getTextRenderAreaWithoutUpdate().getSize());
         }
         if (getWindow()->isHeightAdjustedToContent()    &&
             (getNumOfTextLinesToShow().isAuto()  ||

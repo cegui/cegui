@@ -67,7 +67,7 @@ void HorizontalLayoutContainer::layout()
         const UVector2 offset = getOffsetForWindow(window);
         const UVector2 boundingSize = getBoundingSizeForWindow(window);
 
-        // full child window width, including margins
+        // full child window height, including margins
         const UDim& childHeight = boundingSize.d_y;
 
         if (CoordConverter::asAbsolute(layoutHeight, absHeight) <

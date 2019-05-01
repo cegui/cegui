@@ -260,6 +260,9 @@ void LayoutContainer::onParentSized(ElementEventArgs& e)
     // force update of child positioning.
     notifyScreenAreaChanged(true);
     performChildWindowLayout(true, true);
+
+    // It is possible that children didn't change, but we must re-layout them
+    markNeedsLayouting();
 }
 
 //----------------------------------------------------------------------------//

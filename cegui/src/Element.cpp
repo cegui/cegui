@@ -325,7 +325,7 @@ Sizef Element::getParentPixelSize(bool skipAllPixelAlignment) const
 }
 
 //----------------------------------------------------------------------------//
-const Sizef& Element::getRootContainerSize() const
+Sizef Element::getRootContainerSize() const
 {
     return System::getSingleton().getRenderer()->getDisplaySize();
 }

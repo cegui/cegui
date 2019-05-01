@@ -93,8 +93,10 @@ CEGUI::Window* SampleHandler::getSampleWindow()
 
 void SampleHandler::initialise(int width, int height)
 {
-    initialiseSamplePreviewRenderTarget(width, height);
+    const float widthF = static_cast<float>(width);
+    const float heightF = static_cast<float>(height);
 
+    initialiseSamplePreviewRenderTarget(widthF, heightF);
 
     initialiseInputAggregator();
 
@@ -144,16 +146,20 @@ InputAggregator* SampleHandler::getInputAggregator()
     return d_inputAggregator;
 }
 
-void SampleHandler::handleNewWindowSize(float width, float height)
+void SampleHandler::handleNewWindowSize(int width, int height)
 {
-    setTextureTargetImageArea(height, width);
+    const float widthF = static_cast<float>(width);
+    const float heightF = static_cast<float>(height);
 
-    CEGUI::Sizef windowSize(width, height);
+    setTextureTargetImageArea(widthF, heightF);
+
     if(d_textureTarget)
     {
+        CEGUI::Sizef windowSize(widthF, heightF);
         d_textureTarget->declareRenderSize(windowSize);
 
-        d_sampleWindow->getRenderingSurface()->invalidate();
+        RenderingSurface* rs = d_sampleWindow->getRenderingSurface();
+        if (rs) rs->invalidate();
     }
 }
 
@@ -172,7 +178,7 @@ void SampleHandler::clearRTTTexture()
     d_textureTarget->clear();
 }
 
-void SampleHandler::setTextureTargetImageArea(float height, float width)
+void SampleHandler::setTextureTargetImageArea(float width, float height)
 {
     if(d_textureTarget)
     {
@@ -221,13 +227,13 @@ void SampleHandler::initialiseInputAggregator()
     }
 }
 
-void SampleHandler::initialiseSamplePreviewRenderTarget(int width, int height)
+void SampleHandler::initialiseSamplePreviewRenderTarget(float width, float height)
 {
     CEGUI::System& system(System::getSingleton());
 
-    CEGUI::Sizef size(static_cast<float>(width), static_cast<float>(height));
+    CEGUI::Sizef size(width, height);
 
-    //! Creating a texcture target to render the GUIContext onto
+    //! Creating a texture target to render the GUIContext onto
     d_textureTarget = system.getRenderer()->createTextureTarget(false);
     d_guiContext = &system.createGUIContext(static_cast<RenderTarget&>(*d_textureTarget));
     d_textureTarget->declareRenderSize(size);
@@ -238,7 +244,7 @@ void SampleHandler::initialiseSamplePreviewRenderTarget(int width, int height)
     d_textureTargetImage->setTexture(&d_textureTarget->getTexture());
 
     //! Helper function to set the image's area
-    setTextureTargetImageArea(static_cast<float>(height), static_cast<float>(width));
+    setTextureTargetImageArea(width, height);
 }
 
 const Sample* SampleHandler::getSample() const
