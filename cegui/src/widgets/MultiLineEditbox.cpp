@@ -223,7 +223,10 @@ void MultiLineEditbox::configureScrollbars(void)
 {
     Scrollbar* const vertScrollbar = getVertScrollbar();
     Scrollbar* const horzScrollbar = getHorzScrollbar();
-    const float lspc = getFont()->getLineSpacing();
+    const Font* font = getFont();
+    if (!font)
+        return;
+    const float lspc = font->getLineSpacing();
 
     //
     // First show or hide the scroll bars as needed (or requested)
@@ -411,6 +414,9 @@ size_t MultiLineEditbox::getNextTokenLength(const String& text, size_t start_idx
 
 size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
+	if (d_lines.empty())
+		return 0;
+
 	//
 	// calculate final window position to be checked
 	//
@@ -930,6 +936,20 @@ bool MultiLineEditbox::validateWindowRenderer(const WindowRenderer* renderer) co
 }
 
 
+// Context might change, we should update contents if it is valid
+void MultiLineEditbox::onTargetSurfaceChanged(RenderingSurface* newSurface)
+{
+    EditboxBase::onTargetSurfaceChanged(newSurface);
+    if (getGUIContextPtr())
+    {
+        formatText(true);
+        performChildWindowLayout();
+        setCaretIndex(getCaretIndex());
+        //ensureCaretIsVisible();
+    }
+}
+
+
 void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
 	invalidate();
@@ -1155,6 +1175,9 @@ void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
 void MultiLineEditbox::handleSelectAllText(SemanticEventArgs& e)
 {
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
+    if (d_lines.size() <= caretLine)
+        return;
+
     size_t lineStart = d_lines[caretLine].d_startIdx;
 
     // find end of last paragraph

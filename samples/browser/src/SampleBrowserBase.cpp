@@ -107,9 +107,7 @@
 SampleBrowserBase::SampleBrowserBase() :
         d_rendererSelector(nullptr),
         d_baseApp(nullptr),
-        d_quitting(false),
-        d_appWindowWidth(0),
-        d_appWindowHeight(0)
+        d_quitting(false)
 {}
 
 

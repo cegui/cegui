@@ -44,6 +44,10 @@ if (NOT CEGUI_HAS_PCRE_REGEX)
     list (REMOVE_ITEM CORE_SOURCE_FILES PCRERegexMatcher.cpp)
 endif()
 
+if (NOT CEGUI_HAS_STD11_REGEX)
+    list (REMOVE_ITEM CORE_SOURCE_FILES StdRegexMatcher.cpp)
+endif()
+
 if (NOT CEGUI_USE_FRIBIDI)
     list (REMOVE_ITEM CORE_SOURCE_FILES FribidiVisualMapping.cpp)
 endif()

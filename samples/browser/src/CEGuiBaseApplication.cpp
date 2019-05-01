@@ -69,6 +69,7 @@ CEGuiBaseApplication::CEGuiBaseApplication() :
     d_renderer(nullptr),
     d_imageCodec(nullptr),
     d_resourceProvider(nullptr),
+    d_context(nullptr),
     d_logoGeometry(0),
     d_FPSGeometry(0),
     d_FPSElapsed(1.0f),
@@ -121,6 +122,9 @@ bool CEGuiBaseApplication::init(SampleBrowserBase* sampleApp,
     CEGUI::System::create(*d_renderer, d_resourceProvider, nullptr, d_imageCodec, nullptr,
                           "", logFile);
 
+    // create viewport-based CEGUI context for the main window
+    d_context = &CEGUI::System::getSingleton().createGUIContext(d_renderer->getDefaultRenderTarget());
+
     // initialise resource system
     initDataPathPrefix(dataPathPrefixOverride);
     initialiseResourceGroupDirectories();
@@ -147,11 +151,10 @@ bool CEGuiBaseApplication::init(SampleBrowserBase* sampleApp,
     updateLogoGeometryRotation();
 
     // clearing this queue actually makes sure it's created(!)
-    CEGUI::System::getSingleton().getDefaultGUIContext().clearGeometry(CEGUI::RenderQueueID::Overlay);
+    d_context->clearGeometry(CEGUI::RenderQueueID::Overlay);
 
     // subscribe handler to render overlay items
-    CEGUI::System::getSingleton().getDefaultGUIContext().
-        subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
+    d_context->subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
             CEGUI::Event::Subscriber(&CEGuiBaseApplication::sampleBrowserOverlayHandler,
                                      this));
 
@@ -161,10 +164,10 @@ bool CEGuiBaseApplication::init(SampleBrowserBase* sampleApp,
         CEGUI::Event::Subscriber(&CEGuiBaseApplication::resizeHandler,
         this));
 
-    const CEGUI::Rectf& area(CEGUI::System::getSingleton().getRenderer()->
-                             getDefaultRenderTarget().getArea());
-    d_sampleApp->setApplicationWindowSize(static_cast<int>(area.getWidth()),
-                                          static_cast<int>(area.getHeight()));
+    const Sizef& targetSize = d_context->getSurfaceSize();
+    const int width = static_cast<int>(targetSize.d_width);
+    const int height = static_cast<int>(targetSize.d_height);
+    d_sampleApp->setApplicationWindowSize(width, height);
 
     return true;
 }
@@ -293,6 +296,7 @@ bool CEGuiBaseApplication::sampleBrowserOverlayHandler(const CEGUI::EventArgs& a
         return false;
 
     // draw the logo
+    d_renderer->uploadBuffers(d_logoGeometry);
     const size_t logo_buffer_count = d_logoGeometry.size();
     for (size_t i = 0; i < logo_buffer_count; ++i)
     {
@@ -300,6 +304,7 @@ bool CEGuiBaseApplication::sampleBrowserOverlayHandler(const CEGUI::EventArgs& a
     }
 
     // draw FPS value
+    d_renderer->uploadBuffers(d_FPSGeometry);
     const size_t fps_buffer_count = d_FPSGeometry.size();
     for (size_t i = 0; i < fps_buffer_count; ++i)
         d_FPSGeometry.at(i)->draw();
@@ -314,6 +319,7 @@ bool CEGuiBaseApplication::sampleOverlayHandler(const CEGUI::EventArgs& args)
         return false;
 
     // Draw FPS value
+    d_renderer->uploadBuffers(d_FPSGeometry);
     const size_t bufferCount = d_FPSGeometry.size();
     for (size_t i = 0; i < bufferCount; ++i)
         d_FPSGeometry.at(i)->draw();
@@ -384,7 +390,10 @@ void CEGuiBaseApplication::updateLogo(const float elapsed)
 //----------------------------------------------------------------------------//
 void CEGuiBaseApplication::updateLogoGeometry()
 {
-    const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
+    if (!d_context)
+        return;
+
+    const CEGUI::Rectf scrn(d_context->getRenderTarget().getArea());
     const glm::vec3 position(10.0f, scrn.getSize().d_height - 89.0f, 0.0f);
 
     const size_t bufferCount = d_logoGeometry.size();
@@ -398,7 +407,10 @@ void CEGuiBaseApplication::updateLogoGeometry()
 //----------------------------------------------------------------------------//
 void CEGuiBaseApplication::updateFPSGeometry()
 {
-    const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
+    if (!d_context)
+        return;
+
+    const CEGUI::Rectf scrn(d_context->getRenderTarget().getArea());
     const glm::vec3 position(scrn.getSize().d_width - 120.0f, 0.0f, 0.0f);
 
     const size_t bufferCount = d_FPSGeometry.size();
@@ -421,9 +433,13 @@ bool CEGuiBaseApplication::resizeHandler(const CEGUI::EventArgs& /*args*/)
 
     d_FPSValue = 0;
 
-    const CEGUI::Rectf& area(CEGUI::System::getSingleton().getRenderer()->
-                             getDefaultRenderTarget().getArea());
-    d_sampleApp->handleNewWindowSize(area.getWidth(), area.getHeight());
+    if (!d_context)
+        return true;
+
+    const Sizef& rtSize = d_context->getSurfaceSize();
+    const int width = static_cast<int>(rtSize.d_width);
+    const int height = static_cast<int>(rtSize.d_height);
+    d_sampleApp->handleNewWindowSize(width, height);
 
     updateLogoGeometry();
     updateFPSGeometry();

@@ -122,6 +122,10 @@ void CEGuiGLFWSharedBase::glfwWindowCloseCallback(GLFWwindow* /*window*/)
 //----------------------------------------------------------------------------//
 void CEGuiGLFWSharedBase::glfwWindowResizeCallback(GLFWwindow* /*window*/, int width, int height)
 {
+    // when a window is minimized we can get a 0 width and height. (only tested with Windows 7)
+    if(width == 0 && height == 0)
+        return;
+
     // We cache this in order to minimise calls to notifyDisplaySizeChanged,
     // which happens in the main loop whenever d_windowSized is set to true.
     d_windowSized = true;

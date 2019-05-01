@@ -80,13 +80,17 @@ namespace CEGUI
 
     void Tooltip::positionSelf(void)
     {
+        GUIContext* context = getGUIContextPtr();
+        if (!context)
+            return;
+
         // no recursion allowed for this function!
         if (d_inPositionSelf)
             return;
 
         d_inPositionSelf = true;
 
-        const Cursor& indicator = getGUIContext().getCursor();
+        const Cursor& indicator = context->getCursor();
         const Rectf screen(glm::vec2(0, 0), getRootContainerSize());
         Rectf tipRect(getUnclippedOuterRect().get());
         const Image* cursor_image = indicator.getImage();
@@ -102,16 +106,16 @@ namespace CEGUI
         glm::vec2 tmpPos(cursor_pos.x + cursor_size.d_width, cursor_pos.y + cursor_size.d_height);
         tipRect.setPosition(tmpPos);
 
-        // if tooltip would be off the right of the screen,
+        // if the tooltip would be off more at the right side of the screen,
         // reposition to the other side of the cursor.
-        if (screen.right() < tipRect.right())
+        if (screen.right() - tipRect.right() < tipRect.left() - tipRect.getWidth())
         {
             tmpPos.x = cursor_pos.x - tipRect.getWidth() - 5;
         }
 
-        // if tooltip would be off the bottom of the screen,
+        // if the tooltip would be off more at the bottom side of the screen,
         // reposition to the other side of the cursor.
-        if (screen.bottom() < tipRect.bottom())
+        if (screen.bottom() - tipRect.bottom() < tipRect.top() - tipRect.getHeight())
         {
             tmpPos.y = cursor_pos.y - tipRect.getHeight() - 5;
         }
@@ -286,9 +290,9 @@ namespace CEGUI
     }
 
     bool Tooltip::validateWindowRenderer(const WindowRenderer* renderer) const
-	{
-		return dynamic_cast<const TooltipWindowRenderer*>(renderer) != nullptr;
-	}
+    {
+        return dynamic_cast<const TooltipWindowRenderer*>(renderer) != nullptr;
+    }
 
     void Tooltip::updateSelf(float elapsed)
     {

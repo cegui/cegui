@@ -65,8 +65,10 @@ GUIContext::GUIContext(RenderTarget& target) :
             WindowManager::EventWindowDestroyed,
             Event::Subscriber(&GUIContext::windowDestroyedHandler, this))),
     d_semanticEventHandlers(),
-    d_windowNavigator(nullptr)
+    d_windowNavigator(nullptr),
+    d_cursor(*this)
 {
+    d_cursor.resetPositionToDefault();
     resetWindowContainingCursor();
     initializeSemanticEventHandlers();
 }
@@ -108,10 +110,7 @@ void GUIContext::setRootWindow(Window* new_root)
     d_rootWindow = new_root;
 
     if (d_rootWindow)
-    {
         d_rootWindow->setGUIContext(this);
-        d_rootWindow->syncTargetSurface();
-    }
 
     onRootWindowChanged(args);
 }
@@ -268,11 +267,14 @@ void GUIContext::drawWindowContentToTarget()
 //----------------------------------------------------------------------------//
 void GUIContext::renderWindowHierarchyToSurfaces()
 {
-    RenderingSurface& rs = d_rootWindow->getTargetRenderingSurface();
-    rs.clearGeometry();
+    RenderingSurface* rs = d_rootWindow->getTargetRenderingSurface();
+    if (!rs)
+        return;
 
-    if (rs.isRenderingWindow())
-        static_cast<RenderingWindow&>(rs).getOwner().clearGeometry();
+    rs->clearGeometry();
+
+    if (rs->isRenderingWindow())
+        static_cast<RenderingWindow*>(rs)->getOwner().clearGeometry();
 
     d_rootWindow->draw();
 }
@@ -294,7 +296,7 @@ const Cursor& GUIContext::getCursor() const
 bool GUIContext::areaChangedHandler(const EventArgs&)
 {
     d_surfaceSize = d_target->getArea().getSize();
-    d_cursor.notifyDisplaySizeChanged(d_surfaceSize);
+    d_cursor.notifyTargetSizeChanged(d_surfaceSize);
 
     if (d_rootWindow)
         updateRootWindowAreaRects();
@@ -569,9 +571,6 @@ void GUIContext::setRenderTarget(RenderTarget& target)
 
     RenderTarget* const old_target = d_target;
     d_target = &target;
-
-    if (d_rootWindow)
-        d_rootWindow->syncTargetSurface();
 
     d_areaChangedEventConnection.disconnect();
     d_areaChangedEventConnection = d_target->subscribeEvent(

@@ -188,6 +188,9 @@ RenderingSurface& RenderingWindow::getOwner()
 //----------------------------------------------------------------------------//
 void RenderingWindow::setOwner(RenderingSurface& owner)
 {
+    if (&owner == this)
+        throw InvalidRequestException("RenderingWindow can't own itself!");
+
     d_owner = &owner;
 }
 

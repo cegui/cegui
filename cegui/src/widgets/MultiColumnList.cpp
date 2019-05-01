@@ -2433,7 +2433,8 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
     int propCnt = Window::writePropertiesXML(xml_stream);
 
     // create an dump <ColumnHeader> elements
-    for (unsigned int i = 0; i < getColumnCount(); ++i)
+    unsigned int columnCount = getColumnCount();
+    for (unsigned int i = 0; i < columnCount; ++i)
     {
         ListHeaderSegment& seg = getHeaderSegmentForColumn(i);
 
@@ -2455,6 +2456,8 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
     }
 
     // write out SortColumnID property, if any(!)
+    if(columnCount != 0)
+    {
 		try
 		{
 			std::uint32_t sortColumnID = getColumnWithID(getSortColumn());
@@ -2473,7 +2476,8 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
 			// This catches error(s) from the MultiLineColumnList for example
 			Logger::getSingleton().logEvent("MultiColumnList::writePropertiesXML - invalid sort column requested. Continuing...", LoggingLevel::Error);
 		}
-
+    }
+	
     return propCnt;
 }
 

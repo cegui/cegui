@@ -1,9 +1,9 @@
 /***********************************************************************
-    created:    Fri Jan 9 2009
-    author:     Paul D Turner
+    created:    Sun Feb 24 2019
+    author:     Metora Wang
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2019 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,49 +24,62 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/RenderQueue.h"
-#include "CEGUI/GeometryBuffer.h"
-#include <algorithm>
+#include "CEGUI/StdRegexMatcher.h"
+#include "CEGUI/Exceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-void RenderQueue::draw() const
+StdRegexMatcher::StdRegexMatcher()
 {
-    // draw the buffers
-    BufferList::const_iterator i = d_buffers.begin();
-    for ( ; i != d_buffers.end(); ++i)
-        (*i)->draw();
 }
 
 //----------------------------------------------------------------------------//
-void RenderQueue::addGeometryBuffers(const std::vector<GeometryBuffer*>& geometry_buffers)
+StdRegexMatcher::~StdRegexMatcher()
 {
-    d_buffers.insert(d_buffers.end(), geometry_buffers.begin(), geometry_buffers.end());
 }
 
 //----------------------------------------------------------------------------//
-void RenderQueue::addGeometryBuffer(GeometryBuffer& geometry_buffer)
+void StdRegexMatcher::setRegexString(const String& regex)
 {
-    d_buffers.push_back(&geometry_buffer);
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8
+    const std::string& regex8bit = regex.getString();
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    std::string regex8bit = String::convertUtf32ToUtf8(regex.getString());
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII
+    const std::string& regex8bit = regex;
+#endif
+    d_regex = std::regex(regex8bit);
+    d_string = regex;
 }
 
 //----------------------------------------------------------------------------//
-void RenderQueue::removeGeometryBuffer(const GeometryBuffer& geometry_buffer)
+const String& StdRegexMatcher::getRegexString() const
 {
-    BufferList::iterator i = std::find(d_buffers.begin(), d_buffers.end(),
-                                       &geometry_buffer);
-    if (i != d_buffers.end())
-        d_buffers.erase(i);
+    return d_string;
 }
 
 //----------------------------------------------------------------------------//
-void RenderQueue::reset()
+bool StdRegexMatcher::matchRegex(const String& str) const
 {
-    d_buffers.clear();
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8
+    const std::string& str8bit = str.getString();
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    std::string str8bit = String::convertUtf32ToUtf8(str.getString());
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII
+    const std::string& str8bit = str;
+#endif
+    std::smatch smatch;
+    return std::regex_match(str8bit, smatch, d_regex) && !smatch.empty();
 }
 
 //----------------------------------------------------------------------------//
+RegexMatcher::MatchState StdRegexMatcher::getMatchStateOfString(const String& str) const
+{
+    // There is no partial regex matching in std yet
+    return matchRegex(str) ? MatchState::Valid : MatchState::Invalid;
+}
 
+//----------------------------------------------------------------------------//
 } // End of  CEGUI namespace section
