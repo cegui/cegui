@@ -68,7 +68,7 @@ public:
         GLint d_x, d_y;
         GLsizei d_width, d_height;
     };
-    struct BindBufferParams
+    struct OPENGL_GUIRENDERER_API BindBufferParams
     {
         BindBufferParams();
         void reset();
