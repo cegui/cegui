@@ -425,8 +425,8 @@ public:
     virtual void invalidateGeomBufferMatrices(const CEGUI::RenderTarget* renderTarget);
 
 
-    virtual void uploadBuffers(RenderingSurface& surface) {}
-    virtual void uploadBuffers(const std::vector<GeometryBuffer*>& buffers) {}
+    virtual void uploadBuffers(RenderingSurface& /*surface*/) {}
+    virtual void uploadBuffers(const std::vector<GeometryBuffer*>& /*buffers*/) {}
 
     /*!
     \brief
