@@ -106,7 +106,7 @@ find_package(DirectXSDK)
 find_package(D3DX11Effects)
 find_package(Irrlicht)
 
-find_package(OGRE)
+find_package(OGRE CONFIG)
 if(NOT ${OGRE_FOUND})
     find_package(Ogre)
 endif()
