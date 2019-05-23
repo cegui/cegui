@@ -157,7 +157,6 @@ void OgreGeometryBuffer::draw() const
 
         // draw the geometry
         d_renderSystem._render(d_renderOp);
-
     }
 
     // clean up RenderEffect
