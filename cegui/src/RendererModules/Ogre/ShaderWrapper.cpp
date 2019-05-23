@@ -27,6 +27,7 @@
 
 #include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
 #include "CEGUI/RendererModules/Ogre/Texture.h"
+#include "CEGUI/RendererModules/Ogre/OgreMacros.h"
 #include "CEGUI/ShaderParameterBindings.h"
 #include "CEGUI/Exceptions.h"
 
@@ -83,10 +84,10 @@ OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
 //----------------------------------------------------------------------------//
 OgreShaderWrapper::~OgreShaderWrapper()
 {
-    d_pixelParameters.setNull();
-    d_vertexParameters.setNull();
-    d_vertexShader.setNull();
-    d_pixelShader.setNull();
+    OGRE_RESET(d_pixelParameters);
+    OGRE_RESET(d_vertexParameters);
+    OGRE_RESET(d_vertexShader);
+    OGRE_RESET(d_pixelShader);
 }
 
 //----------------------------------------------------------------------------//
@@ -147,7 +148,7 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 
             Ogre::TexturePtr actual_texture = texture->getOgreTexture();
 
-            if (actual_texture.isNull())
+            if (OGRE_ISNULL(actual_texture))
             {
                 throw RendererException("Ogre texture ptr is empty");
             }

@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/RendererModules/Ogre/OgreMacros.h"
 
 #include <OgreArchiveManager.h>
 #include <OgreResourceGroupManager.h>
@@ -64,7 +65,7 @@ void OgreResourceProvider::loadRawDataContainer(const String& filename,
         openResource(String::convertUtf32ToUtf8(filename.getString()).c_str(), String::convertUtf32ToUtf8(orpGroup.getString()).c_str());
 #endif
 
-    if (input.isNull())
+    if (OGRE_ISNULL(input))
         throw InvalidRequestException(
             "Unable to open resource file '" + filename +
             "' in resource group '" + orpGroup + "'.");
