@@ -33,6 +33,14 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
+RenderedStringComponent* RenderedStringComponent::split(
+  const Window* ref_wnd, float split_point, bool first_component)
+{
+    bool was_word_split = false;
+    return split(ref_wnd, split_point, first_component, was_word_split);
+}
+
+//----------------------------------------------------------------------------//
 RenderedStringComponent::RenderedStringComponent() :
     d_padding(0, 0, 0, 0),
     d_verticalFormatting(VF_BOTTOM_ALIGNED),
