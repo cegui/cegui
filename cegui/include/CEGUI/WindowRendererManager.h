@@ -121,7 +121,6 @@ private:
         Implementation data
     *************************************************************************/
     typedef std::unordered_map<String, WindowRendererFactory*> WR_Registry;
-        CEGUI_MAP_ALLOC(String, WindowRendererFactory*)> WR_Registry;
     WR_Registry d_wrReg;
 
     //! Container type to hold WindowRenderFacory objects that we created.
