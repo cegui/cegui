@@ -114,7 +114,6 @@ protected:
     String getFinalFilename(const String& filename, const String& resourceGroup) const;
 
     typedef std::unordered_map<String, String> ResourceGroupMap;
-        CEGUI_MAP_ALLOC(String, String)> ResourceGroupMap;
     ResourceGroupMap    d_resourceGroups;
 };
 

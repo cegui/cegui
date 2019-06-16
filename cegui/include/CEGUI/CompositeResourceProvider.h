@@ -117,7 +117,6 @@ public:
          const String& resource_group) override;
 protected:
   typedef std::unordered_map<String, ResourceProvider*> Providermap;
-    CEGUI_MAP_ALLOC(String, ResourceProvider*)> Providermap;
   Providermap  d_providerlist;
 public:
   typedef ConstMapIterator<Providermap> ProviderIterator;

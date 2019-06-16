@@ -190,8 +190,7 @@ protected:
     // if true, we will relayout before rendering of this window starts
     bool d_needsLayouting;
 
-    typedef std::multimap<Window*, Event::Connection, std::less<Window*>
-        CEGUI_MULTIMAP_ALLOC(Window*, Event::Connection)> ConnectionTracker;
+    typedef std::multimap<Window*, Event::Connection>  ConnectionTracker;
     //! Tracks event connections we make.
     ConnectionTracker d_eventConnections;
     

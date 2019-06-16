@@ -139,7 +139,6 @@ protected:
                                                           const String&);
     //! definition of type used to despatch tag handler functions
     typedef std::unordered_map<String, TagHandler> TagHandlerMap;
-        CEGUI_MAP_ALLOC(String, TagHandler)> TagHandlerMap;
     //! Collection to map tag names to their handler functions.
     TagHandlerMap d_tagHandlers;
 };

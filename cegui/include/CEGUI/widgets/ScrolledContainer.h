@@ -187,8 +187,7 @@ protected:
     void onParentSized(ElementEventArgs& e) override;
 
     //! type definition for collection used to track event connections.
-    typedef std::multimap<Window*, Event::Connection, std::less<Window*>
-        CEGUI_MULTIMAP_ALLOC(Window*, Event::Connection)> ConnectionTracker;
+    typedef std::multimap<Window*, Event::Connection>  ConnectionTracker;
     //! Tracks event connections we make.
     ConnectionTracker d_eventConnections;
     //! Holds extents of the content pane.

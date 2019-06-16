@@ -234,7 +234,6 @@ namespace CEGUI
 
     protected:
         typedef std::unordered_map<String, String> AttributeMap;
-            CEGUI_MAP_ALLOC(String, String)> AttributeMap;
         AttributeMap    d_attrs;
     };
 
