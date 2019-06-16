@@ -464,7 +464,8 @@ protected:
     TabPanePosition d_tabPanePos;   //!< The position of the tab pane
     float       d_btGrabPos;        //!< The position on the button tab where user grabbed
     //! Container used to track event subscriptions to added tab windows.
-    std::map<Window*, Event::ScopedConnection> d_eventConnections;
+    std::map<Window*, Event::ScopedConnection, std::less<Window*>
+        CEGUI_MAP_ALLOC(Window*, Event::ScopedConnection)> d_eventConnections;
     /*************************************************************************
     Abstract Implementation Functions (must be provided by derived class)
     *************************************************************************/

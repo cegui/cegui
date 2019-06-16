@@ -38,6 +38,10 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+#if defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
+#else
+#define GLYPHS_PER_PAGE 1
+#endif
 const argb_t Font::DefaultColour = 0xFFFFFFFF;
 String Font::d_defaultResourceGroup;
 

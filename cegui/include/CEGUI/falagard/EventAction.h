@@ -65,7 +65,8 @@ protected:
 
     String makeConnectionKeyName(const Window& widget) const;
 
-    typedef std::multimap<String, Event::ScopedConnection> ConnectionMap;
+    typedef std::multimap<String, Event::ScopedConnection, StringFastLessCompare
+        CEGUI_MULTIMAP_ALLOC(String, Event::ScopedConnection)> ConnectionMap;
     mutable ConnectionMap d_connections;
 };
 

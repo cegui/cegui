@@ -141,6 +141,12 @@ setting CMake options and regenerating, rather than editing directly.
 //////////////////////////////////////////////////////////////////////////
 #cmakedefine CEGUI_HAS_FREETYPE
 
+// Uncomment this to let Freetype font use temporary buffer.
+#cmakedefine CEGUI_HAS_FREETYPE_TEMPORARY_BUFFER
+
+// Uncomment this to let fonts use glyph page load.
+#cmakedefine CEGUI_FONT_USE_GLYPH_PAGE_LOAD
+
 //////////////////////////////////////////////////////////////////////////
 // PCRE library
 // CEGUI uses the pcre library for it's regular expression based string
