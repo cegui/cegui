@@ -690,6 +690,21 @@ public:
 
     /*!
     \brief
+        returns an index of the specified child window. Index is based on the
+        order in which the children were added and is stable.
+
+    \param wnd
+        A window whose index must be calculated.
+
+    \return
+        Returns a zero-based index of the window \a wnd. Any value that is not
+        less than the value returned by getChildCount() must be treated as invalid.
+        It means that the given window is not our child.
+    */
+    size_t getChildIdx(Window* wnd) const;
+
+    /*!
+    \brief
         return the attached child window that the given name path references.
 
         A name path is a string that describes a path down the window

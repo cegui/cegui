@@ -102,6 +102,8 @@ void GUIContext::setRootWindow(Window* new_root)
     if (d_rootWindow == new_root)
         return;
 
+    setInputCaptureWindow(nullptr);
+
     if (d_rootWindow)
         d_rootWindow->setGUIContext(nullptr);
 
