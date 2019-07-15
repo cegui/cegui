@@ -86,8 +86,6 @@ The following is a list of all libraries that CEGUI can make use of:
     - Required for OpenGL support in samples.
     - For desktop OpenGL rendering, either version 2 or 3 is required.
     - For OpenGL ES 2.0 rendering, version 3 is required.
-- OIS (http://sourceforge.net/projects/wgois/)
-    - Required for Ogre support in samples
 - GTK2 (http://www.gtk.org/)
     - Required to enable the GTK2 based renderer selector used in the samples.
 
