@@ -64,9 +64,7 @@
 #endif
 
 #if OGRE_VERSION > 0x10B00
-#ifdef OGRE_BUILD_COMPONENT_RTSHADERSYSTEM
 #include <RTShaderSystem/OgreRTShaderConfig.h>
-#endif
 #endif
 
 // Start of CEGUI namespace section
@@ -239,7 +237,7 @@ private:
 
 } S_frameListener;
 
-#endif    
+#endif
 //----------------------------------------------------------------------------//
 //! container type used to hold TextureTargets we create.
 typedef std::vector<TextureTarget*> TextureTargetList;
@@ -633,7 +631,7 @@ void OgreRenderer::destroyAllTextures()
 Texture& OgreRenderer::getTexture(const String& name) const
 {
     TextureMap::const_iterator i = d_pimpl->d_textures.find(name);
-    
+
     if (i == d_pimpl->d_textures.end())
         CEGUI_THROW(UnknownObjectException("Texture does not exist: " + name));
 
@@ -650,7 +648,7 @@ bool OgreRenderer::isTextureDefined(const String& name) const
 void OgreRenderer::beginRendering()
 {
     #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
-        if ( !d_pimpl->d_previousVP ) 
+        if ( !d_pimpl->d_previousVP )
         {
             d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
             if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
@@ -670,7 +668,7 @@ void OgreRenderer::endRendering()
         d_pimpl->d_renderSystem->_endFrame();
 
     #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
-        if ( d_pimpl->d_previousVP ) 
+        if ( d_pimpl->d_previousVP )
         {
             d_pimpl->d_renderSystem->_setViewport(d_pimpl->d_previousVP);
 
@@ -684,7 +682,7 @@ void OgreRenderer::endRendering()
             d_pimpl->d_previousVP = 0;
             d_pimpl->d_previousProjMatrix = Ogre::Matrix4::IDENTITY;
         }
-    #endif    
+    #endif
 }
 
 //----------------------------------------------------------------------------//
@@ -744,7 +742,7 @@ OgreRenderer::~OgreRenderer()
 {
 #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     d_pimpl->d_ogreRoot->removeFrameListener(&S_frameListener);
-#endif    
+#endif
 
     cleanupShaders();
 
@@ -911,7 +909,7 @@ void OgreRenderer::initialiseShaders()
         if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("vs_4_0"))
         {
             d_pimpl->d_vertexShader->setParameter("target", "vs_4_0");
-            d_pimpl->d_vertexShader->setSource(S_hlsl_vs_source);    
+            d_pimpl->d_vertexShader->setSource(S_hlsl_vs_source);
         }
         else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("vs_2_0"))
         {
@@ -960,7 +958,7 @@ void OgreRenderer::initialiseShaders()
         d_pimpl->d_pixelShader->setSource(S_hlsl_d3d11_ps_source);
 #else
         if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("ps_4_0"))
-        {    
+        {
             d_pimpl->d_pixelShader->setParameter("target", "ps_4_0");
             d_pimpl->d_pixelShader->setSource(S_hlsl_ps_source);
         }
@@ -1158,7 +1156,7 @@ void OgreRenderer::updateShaderParams() const
         if(d_pimpl->d_useGLSLCore)
         {
             d_pimpl->d_vertexShaderParameters->
-                setNamedConstant("modelViewPerspMatrix", getWorldViewProjMatrix());    
+                setNamedConstant("modelViewPerspMatrix", getWorldViewProjMatrix());
 
             d_pimpl->d_renderSystem->
                 bindGpuProgramParameters(Ogre::GPT_VERTEX_PROGRAM,
@@ -1321,6 +1319,6 @@ bool OgreGUIFrameListener::frameRenderingQueued(const Ogre::FrameEvent&)
 
     return true;
 }
-#endif    
+#endif
 
 } // End of  CEGUI namespace section

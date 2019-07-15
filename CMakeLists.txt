@@ -122,7 +122,9 @@ if(${OGRE_FOUND})
     endif()
 endif()
 
-find_package(OIS)
+if (${OGRE_VERSION} VERSION_LESS 1.10)
+	find_package(OIS)
+endif()
 find_package(DirectFB)
 find_package(OpenGLES)
 find_package(Epoxy)
@@ -338,7 +340,7 @@ set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${CEGUI_EXTRA_FLAGS
 # Here we check if Ogre is built to use boost, and if yes, if the necessary dependencies are available and found by CEGUI
 set (CEGUI_OGRE_DEPS_AVAILABLE FALSE)
 set (CEGUI_OGRE_SAMPLES_EXTRALIBS)
-if (CEGUI_BUILD_RENDERER_OGRE AND OIS_FOUND)
+if (CEGUI_BUILD_RENDERER_OGRE)
     if (NOT Boost_VERSION LESS 105000 AND "${OGRE_THREAD_PROVIDER}" STREQUAL "1") #Check additionally if we use boost as thread provider at all
         if (Boost_SYSTEM_FOUND)
             set (CEGUI_OGRE_SAMPLES_EXTRALIBS ${Boost_SYSTEM_LIBRARY})
@@ -364,7 +366,7 @@ set (CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECTFB})
 
 # Ogre and OpenGL have dependencies for the sample browser, if these are not available then the SampleBrowser won't support the respective Renderers and the option to choose them won't show up
 if (CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_DEPS_AVAILABLE)
-    if (NOT OIS_FOUND)
+    if (${OGRE_VERSION} VERSION_LESS 1.10 AND NOT OIS_FOUND)
         message(STATUS "Info: The OgreRenderer is disabled in the SampleBrowser because of missing dependencies (OIS not found). Please add the dependencies and run 'Configure' in CMake again, in case you want to run the SampleBrowser using OgreRenderer.")
     else()
         message(STATUS "Info: The OgreRenderer is disabled in the SampleBrowser because of missing dependencies (boost libraries). Please add the dependencies and run 'Configure' in CMake again, in case you want to run the SampleBrowser using OgreRenderer.")

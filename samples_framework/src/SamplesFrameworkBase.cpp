@@ -234,8 +234,10 @@ bool SamplesFrameworkBase::initialise
         case OgreGuiRendererType:
             {
                 CEGuiOgreBaseApplication* ogreBaseApp = new CEGuiOgreBaseApplication();
+#if (OGRE_VERSION < ((1 << 16) | (10 << 8) | 0))
                 if(!ogreBaseApp->isInitialised())
                     return false;
+#endif
 
                 d_baseApp = ogreBaseApp;
             }
