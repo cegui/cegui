@@ -148,7 +148,7 @@ public:
         that is smaller than given position, given position is
         automatically decremented
     */
-    void moveChildToIndex(Window* wnd, size_t position);
+    void moveChildToIndex(size_t indexFrom, size_t indexTo);
 
     /*!
     \brief
@@ -157,7 +157,16 @@ public:
         that is smaller than given position, given position is
         automatically decremented
     */
-    void moveChildToIndex(const String& wnd, size_t position);
+    void moveChildToIndex(Window* wnd, size_t index);
+
+    /*!
+    \brief
+        Moves a window that is already a child of the layout container
+        to given position (if the window is currently in a position
+        that is smaller than given position, given position is
+        automatically decremented
+    */
+    void moveChildToIndex(const String& wnd, size_t index);
 
     /*!
     \brief
