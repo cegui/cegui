@@ -109,6 +109,9 @@ void GUIContext::setRootWindow(Window* new_root)
     if (d_rootWindow)
         d_rootWindow->setGUIContext(nullptr);
 
+    // Remember previous root for the event
+    WindowEventArgs args(d_rootWindow);
+
     d_rootWindow = new_root;
 
     if (d_rootWindow)
@@ -119,7 +122,6 @@ void GUIContext::setRootWindow(Window* new_root)
 
     markAsDirty();
 
-    WindowEventArgs args(d_rootWindow);
     fireEvent(EventRootWindowChanged, args);
 }
 
