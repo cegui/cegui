@@ -133,48 +133,51 @@ void LayoutContainer::swapChildren(size_t index1, size_t index2)
 }
 
 //----------------------------------------------------------------------------//
-void LayoutContainer::moveChildToIndex(Window* wnd, size_t position)
+void LayoutContainer::moveChildToIndex(size_t indexFrom, size_t indexTo)
 {
-    if (!isChild(wnd))
-        return;
+    indexTo = std::min(indexTo, d_children.size() - 1);
 
-    position = std::min(position, d_children.size() - 1);
-
-    const size_t oldPosition = getChildIndex(wnd);
-
-    if (oldPosition == position || oldPosition >= d_children.size())
+    if (indexFrom == indexTo || indexFrom >= d_children.size())
     {
         return;
     }
 
     // we get the iterator of the old position
     ChildList::iterator it = d_children.begin();
-    std::advance(it, oldPosition);
+    std::advance(it, indexFrom);
 
-    // we are the window from it's old position
+    auto child = *it;
+
+    // erase the child from it's old position
     d_children.erase(it);
 
     // if the window comes before the point we want to insert to,
     // we have to decrement the position
-    if (oldPosition < position)
+    if (indexFrom < indexTo)
     {
-        --position;
+        --indexTo;
     }
 
     // find iterator of the new position
     it = d_children.begin();
-    std::advance(it, position);
+    std::advance(it, indexTo);
     // and insert the window there
-    d_children.insert(it, wnd);
+    d_children.insert(it, child);
 
     WindowEventArgs args(this);
     onChildOrderChanged(args);
 }
 
 //----------------------------------------------------------------------------//
-void LayoutContainer::moveChildToIndex(const String& wnd, size_t position)
+void LayoutContainer::moveChildToIndex(Window* wnd, size_t index)
 {
-    moveChildToIndex(getChild(wnd), position);
+    moveChildToIndex(getChildIndex(wnd), index);
+}
+
+//----------------------------------------------------------------------------//
+void LayoutContainer::moveChildToIndex(const String& wnd, size_t index)
+{
+    moveChildToIndex(getChild(wnd), index);
 }
 
 //----------------------------------------------------------------------------//
