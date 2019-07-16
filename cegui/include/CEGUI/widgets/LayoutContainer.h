@@ -107,6 +107,12 @@ public:
 
     /*!
     \brief
+        Returns an actual layout child count not including auxiliary items
+    */
+    virtual size_t getActualChildCount() const;
+
+    /*!
+    \brief
         Gets the position of given child window
     */
     size_t getChildIndexByName(const String& wnd) const;

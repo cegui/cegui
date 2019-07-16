@@ -91,6 +91,12 @@ void LayoutContainer::layoutIfNecessary()
 }
 
 //----------------------------------------------------------------------------//
+size_t LayoutContainer::getActualChildCount() const
+{
+    return getChildCount();
+}
+
+//----------------------------------------------------------------------------//
 size_t LayoutContainer::getChildIndexByName(const String& wnd) const
 {
     return getChildIndex(getChild(wnd));
@@ -135,7 +141,7 @@ void LayoutContainer::swapChildren(size_t index1, size_t index2)
 //----------------------------------------------------------------------------//
 void LayoutContainer::moveChildToIndex(size_t indexFrom, size_t indexTo)
 {
-    indexTo = std::min(indexTo, d_children.size() - 1);
+    indexTo = std::min(indexTo, d_children.size());
 
     if (indexFrom == indexTo || indexFrom >= d_children.size())
     {
