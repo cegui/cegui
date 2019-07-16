@@ -59,6 +59,9 @@ public:
     //! Namespace for global events
     static const String EventNamespace;
 
+    //! fired when child windows get rearranged
+    static const String EventChildOrderChanged;
+
     /*!
     \brief
         Constructor for Window base class
@@ -100,7 +103,84 @@ public:
         (re)layouts all windows inside this layout container if it was marked
         necessary
     */
-    virtual void layoutIfNecessary();
+    void layoutIfNecessary();
+
+    /*!
+    \brief
+        Gets the position of given child window
+    */
+    size_t getChildIndexByName(const String& wnd) const;
+
+    /*!
+    \brief
+        Swaps positions of given windows
+    */
+    void swapChildren(Window* wnd1, Window* wnd2);
+
+    /*!
+    \brief
+        Swaps positions of given windows
+    */
+    void swapChildren(const String& wnd1, Window* wnd2);
+
+    /*!
+    \brief
+        Swaps positions of given windows
+    */
+    void swapChildren(Window* wnd1, const String& wnd2);
+
+    /*!
+    \brief
+        Swaps positions of given windows
+    */
+    void swapChildren(const String& wnd1, const String& wnd2);
+
+    /*!
+    \brief
+        Swaps child windows at given positions
+    */
+    void swapChildren(size_t index1, size_t index2);
+
+    /*!
+    \brief
+        Moves a window that is already a child of the layout container
+        to given position (if the window is currently in a position
+        that is smaller than given position, given position is
+        automatically decremented
+    */
+    void moveChildToIndex(Window* wnd, size_t position);
+
+    /*!
+    \brief
+        Moves a window that is already a child of the layout container
+        to given position (if the window is currently in a position
+        that is smaller than given position, given position is
+        automatically decremented
+    */
+    void moveChildToIndex(const String& wnd, size_t position);
+
+    /*!
+    \brief
+        Moves a window forward or backward, depending on delta
+        (-1 moves it backward one step, 1 moves it forward one step)
+
+    \param delta
+        The amount of steps the window will be moved
+        (old position + delta = new position)
+    */
+    void moveChild(Window* window, int delta = 1);
+
+    /*!
+    \brief
+        Adds a window to given position
+    */
+    void addChildToIndex(Window* window, size_t position);
+
+    /*!
+    \brief
+        Removes a window from given position
+    */
+    void removeChildFromIndex(size_t position);
 
     /// @copydoc Window::update
     void update(float elapsed) override;
@@ -181,6 +261,16 @@ protected:
 
     // overridden from parent class
     void onParentSized(ElementEventArgs& e) override;
+
+    /*!
+    \brief
+        Handler called when children of this window gets rearranged in any way
+
+    \param e
+        WindowEventArgs object whose 'window' field is set this layout
+        container.
+    */
+    virtual void onChildOrderChanged(WindowEventArgs& e);
 
     /*************************************************************************
         Implementation Data

@@ -29,7 +29,7 @@
 #ifndef _CEGUIVerticalLayoutContainer_h_
 #define _CEGUIVerticalLayoutContainer_h_
 
-#include "./SequentialLayoutContainer.h"
+#include "./LayoutContainer.h"
 #include "../WindowFactory.h"
 
 // Start of CEGUI namespace section
@@ -39,7 +39,7 @@ namespace CEGUI
 \brief
     A Layout Container window layouting it's children vertically
 */
-class CEGUIEXPORT VerticalLayoutContainer : public SequentialLayoutContainer
+class CEGUIEXPORT VerticalLayoutContainer : public LayoutContainer
 {
 public:
     /*************************************************************************
@@ -61,10 +61,10 @@ public:
     \brief
         Destructor for GUISheet windows.
     */
-    virtual ~VerticalLayoutContainer(void);
+    virtual ~VerticalLayoutContainer(void) override;
 
     //! @copydoc LayoutContainer::layout
-    void layout() override;
+    virtual void layout() override;
 };
 
 } // End of  CEGUI namespace section
