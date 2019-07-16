@@ -171,9 +171,9 @@ public:
 
     /*!
     \brief
-        Returns an actual layout child count not including dummy placeholders
+        Returns an actual layout child count not including auxiliary items (dummy placeholders)
     */
-    size_t getActualChildCount() const;
+    virtual size_t getActualChildCount() const override;
 
     /*!
     \brief
