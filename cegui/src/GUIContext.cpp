@@ -103,18 +103,24 @@ void GUIContext::setRootWindow(Window* new_root)
         return;
 
     setInputCaptureWindow(nullptr);
+    setModalWindow(nullptr);
+    updateWindowContainingCursor();
 
     if (d_rootWindow)
         d_rootWindow->setGUIContext(nullptr);
 
-    WindowEventArgs args(d_rootWindow);
-
     d_rootWindow = new_root;
 
     if (d_rootWindow)
+    {
         d_rootWindow->setGUIContext(this);
+        updateRootWindowAreaRects();
+    }
 
-    onRootWindowChanged(args);
+    markAsDirty();
+
+    WindowEventArgs args(d_rootWindow);
+    fireEvent(EventRootWindowChanged, args);
 }
 
 //----------------------------------------------------------------------------//
@@ -331,17 +337,6 @@ bool GUIContext::windowDestroyedHandler(const EventArgs& args)
     }
 
     return true;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::onRootWindowChanged(WindowEventArgs& args)
-{
-    if (d_rootWindow)
-        updateRootWindowAreaRects();
-
-    markAsDirty();
-
-    fireEvent(EventRootWindowChanged, args);
 }
 
 //----------------------------------------------------------------------------//

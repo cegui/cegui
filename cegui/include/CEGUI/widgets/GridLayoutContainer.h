@@ -88,9 +88,6 @@ public:
     //! Namespace for global events
     static const String EventNamespace;
 
-    //! fired when child windows get rearranged
-    static const String EventChildOrderChanged;
-
     /*************************************************************************
         Construction and Destruction
     *************************************************************************/
@@ -104,18 +101,25 @@ public:
     \brief
         Destructor for GUISheet windows.
     */
-    virtual ~GridLayoutContainer(void);
+    virtual ~GridLayoutContainer(void) override;
 
     /*!
     \brief
         Sets grid's dimensions.
     */
     void setGridDimensions(size_t width, size_t height);
+
     /*!
     \brief
-        Sets grid's dimensions.
+        Sets grid width.
     */
-    void setGrid(const Sizef &size);
+    void setGridWidth(size_t width);
+
+    /*!
+    \brief
+        Sets grid height.
+    */
+    void setGridHeight(size_t height);
 
     /*!
     \brief
@@ -128,13 +132,6 @@ public:
         Retrieves grid height, the amount of rows in the grid
     */
     size_t getGridHeight() const;
-
-    /*!
-    \brief
-        Retrieves grid width, the amount of cells in one row
-    */
-    Sizef getGrid() const;
-
 
     /*!
     \brief
@@ -174,6 +171,18 @@ public:
 
     /*!
     \brief
+        Returns an actual layout child count not including dummy placeholders
+    */
+    size_t getActualChildCount() const;
+
+    /*!
+    \brief
+        Returns minimal size in cells enough to keep all real children
+    */
+    void getMinimalSizeInCells(size_t& width, size_t& height) const;
+
+    /*!
+    \brief
         Add the specified Window to specified grid position as a child of
         this Grid Layout Container.  If the Window \a window is already
         attached to a Window, it is detached before being added to this Window.
@@ -189,13 +198,13 @@ public:
     \see
         Window::addChild
     */
-    void addChildToPosition(Window* window, size_t gridX, size_t gridY);
+    void addChildToCell(Window* window, size_t gridX, size_t gridY);
 
     /*!
     \brief
         Retrieves child window that is currently at given grid position
     */
-    Window* getChildAtPosition(size_t gridX, size_t gridY);
+    Window* getChildAtCell(size_t gridX, size_t gridY) const;
 
     /*!
     \brief
@@ -204,75 +213,36 @@ public:
     \see
         Window::removeChild
     */
-    void removeChildFromPosition(size_t gridX, size_t gridY);
-
-    /*!
-    \brief
-        Swaps positions of 2 windows given by their index
-
-    \par
-        For advanced users only!
-    */
-    virtual void swapChildPositions(size_t wnd1, size_t wnd2);
+    void removeChildFromCell(size_t gridX, size_t gridY);
 
     /*!
     \brief
         Swaps positions of 2 windows given by grid positions
     */
-    void swapChildPositions(size_t gridX1, size_t gridY1,
-                                  size_t gridX2, size_t gridY2);
-
-    /*!
-    \brief
-        Swaps positions of given windows
-    */
-    void swapChildren(Window* wnd1, Window* wnd2);
-
-    /*!
-    \brief
-        Swaps positions of given windows
-    */
-    void swapChildren(Window* wnd1, const String& wnd2);
-
-    /*!
-    \brief
-        Swaps positions of given windows
-    */
-    void swapChildren(const String& wnd1, Window* wnd2);
+    void swapChildCells(size_t gridX1, size_t gridY1,
+                        size_t gridX2, size_t gridY2);
 
     /*!
     \brief
         Moves given child window to given grid position
     */
-    void moveChildToPosition(Window* wnd, size_t gridX, size_t gridY);
+    void moveChildToCell(Window* wnd, size_t gridX, size_t gridY);
 
     /*!
     \brief
         Moves named child window to given grid position
     */
-    void moveChildToPosition(const String& wnd,
-                                   size_t gridX, size_t gridY);
+    void moveChildToCell(const String& wnd, size_t gridX, size_t gridY);
 
     //! @copydoc LayoutContainer::layout
-    void layout() override;
-
-protected:
-    /*!
-    \brief
-        Handler called when children of this window gets rearranged in any way
-
-    \param e
-        WindowEventArgs object whose 'window' field is set this layout
-        container.
-    */
-    virtual void onChildOrderChanged(WindowEventArgs& e);
+    virtual void layout() override;
 
     //! converts from grid cell position to idx
-    size_t mapFromGridToIdx(size_t gridX, size_t gridY,
-                            size_t gridWidth, size_t gridHeight) const;
+    size_t mapCellToIndex(size_t gridX, size_t gridY) const;
     //! converts from idx to grid cell position
-    void mapFromIdxToGrid(size_t idx, size_t& gridX, size_t& gridY,
-                          size_t gridWidth, size_t gridHeight) const;
+    void mapIndexToCell(size_t idx, size_t& gridX, size_t& gridY) const;
+
+protected:
 
     /** calculates grid cell offset
      * (relative to position of this layout container)

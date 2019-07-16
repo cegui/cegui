@@ -42,7 +42,7 @@ const String HorizontalLayoutContainer::WidgetTypeName("HorizontalLayoutContaine
 *************************************************************************/
 HorizontalLayoutContainer::HorizontalLayoutContainer(const String& type,
                                                      const String& name) :
-        SequentialLayoutContainer(type, name)
+    LayoutContainer(type, name)
 {}
 
 //----------------------------------------------------------------------------//
