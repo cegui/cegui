@@ -141,7 +141,7 @@ void LayoutContainer::swapChildren(size_t index1, size_t index2)
 //----------------------------------------------------------------------------//
 void LayoutContainer::moveChildToIndex(size_t indexFrom, size_t indexTo)
 {
-    indexTo = std::min(indexTo, d_children.size());
+    indexTo = std::max(static_cast<size_t>(0), std::min(indexTo, d_children.size()));
 
     if (indexFrom == indexTo || indexFrom >= d_children.size())
     {
@@ -190,14 +190,7 @@ void LayoutContainer::moveChildToIndex(const String& wnd, size_t index)
 void LayoutContainer::moveChild(Window* window, int delta)
 {
     const size_t oldPosition = getChildIndex(window);
-    if (oldPosition >= d_children.size()) return;
-
-    int newPosition = oldPosition + delta;
-    newPosition = std::max(newPosition, 0);
-    // this is handled by moveChildToIndex itself
-    //newPosition = std::min(newPosition, (int)(d_children.size() - 1));
-
-    moveChildToIndex(window, newPosition);
+    moveChildToIndex(oldPosition, oldPosition + delta);
 }
 
 //----------------------------------------------------------------------------//
