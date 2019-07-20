@@ -251,20 +251,81 @@ void GridLayoutContainer::getMinimalSizeInCells(size_t& width, size_t& height) c
 {
     width = 0;
     height = 0;
-    for (size_t y = height; y < d_gridHeight; ++y)
+    for (size_t y = 0; y < d_gridHeight; ++y)
     {
-        for (size_t x = width; x < d_gridWidth; ++x)
+        for (size_t x = 0; x < d_gridWidth; ++x)
         {
-            Window* child = getChildAtCell(x, y);
-            if (!isDummy(static_cast<Window*>(child)))
+            if (x >= width || y >= height)
             {
-                if (x >= width)
-                    width = x + 1;
-                if (y >= height)
-                    height = y + 1;
+                Window* child = getChildAtCell(x, y);
+                if (!isDummy(child))
+                {
+                    if (x >= width)
+                        width = x + 1;
+                    if (y >= height)
+                        height = y + 1;
+                }
             }
         }
     }
+}
+
+//----------------------------------------------------------------------------//
+size_t GridLayoutContainer::getFirstFreeIndex(size_t start) const
+{
+    for (size_t i = start; i < d_children.size(); ++i)
+        if (isDummy(static_cast<Window*>(getChildAtIdx(i))))
+            return i;
+
+    return std::numeric_limits<size_t>().max();
+}
+
+//----------------------------------------------------------------------------//
+size_t GridLayoutContainer::getLastBusyIndex() const
+{
+    bool found = false;
+    size_t lastIdx = 0;
+    for (size_t i = 0; i < d_children.size(); ++i)
+    {
+        if (!isDummy(static_cast<Window*>(getChildAtIdx(i))))
+        {
+            lastIdx = i;
+            found = true;
+        }
+    }
+
+    return found ? lastIdx : std::numeric_limits<size_t>().max();
+}
+
+//----------------------------------------------------------------------------//
+size_t GridLayoutContainer::getFirstFreeAutoPositioningIndex(size_t start) const
+{
+    for (size_t i = start; i < d_children.size(); ++i)
+    {
+        const size_t realIndex = translateAPToGridIdx(i);
+        if (isDummy(static_cast<Window*>(getChildAtIdx(realIndex))))
+            return i;
+    }
+
+    return std::numeric_limits<size_t>().max();
+}
+
+//----------------------------------------------------------------------------//
+size_t GridLayoutContainer::getLastBusyAutoPositioningIndex() const
+{
+    bool found = false;
+    size_t lastIdx = 0;
+    for (size_t i = 0; i < d_children.size(); ++i)
+    {
+        const size_t realIndex = translateAPToGridIdx(i);
+        if (!isDummy(static_cast<Window*>(getChildAtIdx(realIndex))))
+        {
+            lastIdx = i;
+            found = true;
+        }
+    }
+
+    return found ? lastIdx : std::numeric_limits<size_t>().max();
 }
 
 //----------------------------------------------------------------------------//
@@ -429,13 +490,8 @@ USize GridLayoutContainer::getGridSize(const std::vector<UDim>& colSizes,
 //----------------------------------------------------------------------------//
 size_t GridLayoutContainer::translateAPToGridIdx(size_t APIdx) const
 {
-    // todo: more auto positioning variants? will someone use them?
-
-    if (d_autoPositioning == AutoPositioning::Disabled)
-    {
-        assert(0);
-    }
-    else if (d_autoPositioning == AutoPositioning::LeftToRight)
+    if (d_autoPositioning == AutoPositioning::Disabled ||
+        d_autoPositioning == AutoPositioning::LeftToRight)
     {
         // this is the same positioning as implementation
         return APIdx;
@@ -443,33 +499,12 @@ size_t GridLayoutContainer::translateAPToGridIdx(size_t APIdx) const
     else if (d_autoPositioning == AutoPositioning::TopToBottom)
     {
         // we want
+        // 0 2 4
         // 1 3 5
-        // 2 4 6
 
         size_t x = 0;
         size_t y = 0;
-        bool done = false;
-
-        for (x = 0; x < d_gridWidth; ++x)
-        {
-            for (y = 0; y < d_gridHeight; ++y)
-            {
-                if (APIdx == 0)
-                {
-                    done = true;
-                    break;
-                }
-
-                --APIdx;
-            }
-
-            if (done)
-            {
-                break;
-            }
-        }
-
-        assert(APIdx == 0);
+        indexToCell(APIdx, y, x, d_gridHeight, d_gridWidth);
         return mapCellToIndex(x, y);
     }
 
