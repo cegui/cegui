@@ -58,7 +58,7 @@ public:
     const D3DMATRIX* getMatrix() const;
 
     // implementation of abstract members from GeometryBuffer
-    void draw() const;
+    void draw(uint32 drawModeMask = DrawModeMaskAll) const;
     void setTranslation(const Vector3f& t);
     void setRotation(const Quaternion& r);
     void setPivot(const Vector3f& p);

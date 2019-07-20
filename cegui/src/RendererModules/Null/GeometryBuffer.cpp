@@ -50,8 +50,10 @@ NullGeometryBuffer::~NullGeometryBuffer()
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::draw() const
+void NullGeometryBuffer::draw(uint32 drawModeMask) const
 {
+    CEGUI_UNUSED(drawModeMask);
+    
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
     for (int pass = 0; pass < pass_count; ++pass)
     {

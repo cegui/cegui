@@ -57,16 +57,16 @@ IrrlichtRenderTarget<T>::~IrrlichtRenderTarget()
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void IrrlichtRenderTarget<T>::draw(const GeometryBuffer& buffer)
+void IrrlichtRenderTarget<T>::draw(const GeometryBuffer& buffer, uint32 drawModeMask)
 {
-    buffer.draw();
+    buffer.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void IrrlichtRenderTarget<T>::draw(const RenderQueue& queue)
+void IrrlichtRenderTarget<T>::draw(const RenderQueue& queue, uint32 drawModeMask)
 {
-    queue.draw();
+    queue.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//

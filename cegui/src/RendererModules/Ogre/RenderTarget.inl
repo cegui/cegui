@@ -70,16 +70,16 @@ OgreRenderTarget<T>::~OgreRenderTarget()
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void OgreRenderTarget<T>::draw(const GeometryBuffer& buffer)
+void OgreRenderTarget<T>::draw(const GeometryBuffer& buffer, uint32 drawModeMask)
 {
-    buffer.draw();
+    buffer.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void OgreRenderTarget<T>::draw(const RenderQueue& queue)
+void OgreRenderTarget<T>::draw(const RenderQueue& queue, uint32 drawModeMask)
 {
-    queue.draw();
+    queue.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//

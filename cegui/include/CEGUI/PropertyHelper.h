@@ -38,10 +38,10 @@
 #include "CEGUI/UDim.h"
 #include "CEGUI/Rect.h"
 
-
 #include <cstdio>
 
 #include <sstream>
+
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
