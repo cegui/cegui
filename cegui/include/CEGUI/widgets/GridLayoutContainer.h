@@ -183,6 +183,36 @@ public:
 
     /*!
     \brief
+        Returns the first free index in a grid or an invalid index (>= child count).
+        Index returned is a regular grid index (row-major).
+    */
+    size_t getFirstFreeIndex(size_t start = 0) const;
+
+    /*!
+    \brief
+        Returns the last busy index in a grid or an invalid index (>= child count).
+        Index returned is a regular grid index (row-major).
+    */
+    size_t getLastBusyIndex() const;
+
+    /*!
+    \brief
+        Returns the first free index in a grid or an invalid index (>= child count).
+        Takes auto positioning mode into account. Row/column-majority is also determined
+        by an auto positioning mode. Intended to be used with setNextAutoPositioningIdx().
+    */
+    size_t getFirstFreeAutoPositioningIndex(size_t start = 0) const;
+
+    /*!
+    \brief
+        Returns the last busy index in a grid or an invalid index (>= child count).
+        Takes auto positioning mode into account. Row/column-majority is also determined
+        by an auto positioning mode. Intended to be used with setNextAutoPositioningIdx().
+    */
+    size_t getLastBusyAutoPositioningIndex() const;
+
+    /*!
+    \brief
         Add the specified Window to specified grid position as a child of
         this Grid Layout Container.  If the Window \a window is already
         attached to a Window, it is detached before being added to this Window.
