@@ -7,6 +7,6 @@ if (CEGUI_BUILD_LUA_MODULE)
 endif()
 
 if (CEGUI_BUILD_PYTHON_MODULES)
-    add_subdirectory(Python/bindings)
+    #add_subdirectory(Python/bindings)
+    add_subdirectory(SWIG)
 endif()
-
