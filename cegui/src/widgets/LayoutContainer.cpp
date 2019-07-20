@@ -54,9 +54,9 @@ LayoutContainer::LayoutContainer(const String& type, const String& name):
     // layout should take the whole window by default I think
     setSize(USize(cegui_reldim(1), cegui_reldim(1)));
 
-    subscribeEvent(Window::EventChildAdded,
+    EventSet::subscribeEvent(Window::EventChildAdded,
                    Event::Subscriber(&LayoutContainer::handleChildAdded, this));
-    subscribeEvent(Window::EventChildRemoved,
+    EventSet::subscribeEvent(Window::EventChildRemoved,
                    Event::Subscriber(&LayoutContainer::handleChildRemoved, this));
 }
 
@@ -155,9 +155,9 @@ void LayoutContainer::addChild_impl(Element* element)
     Window* wnd = dynamic_cast<Window*>(element);
     
     if (!wnd)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "LayoutContainer can only have Elements of type Window added as "
-            "children (Window path: " + getNamePath() + ")."));
+            "children (Window path: " + getNamePath() + ").");
     
     Window::addChild_impl(wnd);
 
@@ -260,6 +260,9 @@ void LayoutContainer::onParentSized(ElementEventArgs& e)
     // force update of child positioning.
     notifyScreenAreaChanged(true);
     performChildWindowLayout(true, true);
+
+    // It is possible that children didn't change, but we must re-layout them
+    markNeedsLayouting();
 }
 
 //----------------------------------------------------------------------------//

@@ -25,21 +25,22 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RenderEffectManager.h"
+#include "CEGUI/SharedStringStream.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //---------------------------------------------------------------------------//
 template<>
-RenderEffectManager* Singleton<RenderEffectManager>::ms_Singleton = 0;
+RenderEffectManager* Singleton<RenderEffectManager>::ms_Singleton = nullptr;
 
 //---------------------------------------------------------------------------//
 RenderEffectManager::RenderEffectManager()
 {
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-        "CEGUI::RenderEffectManager singleton created " + String(addr_buff));
+        "CEGUI::RenderEffectManager Singleton created. (" + addressStr + ")");
 }
 
 //---------------------------------------------------------------------------//
@@ -53,10 +54,10 @@ RenderEffectManager::~RenderEffectManager()
     while (!d_effectRegistry.empty())
         removeEffect(d_effectRegistry.begin()->first);
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
+
     Logger::getSingleton().logEvent(
-        "CEGUI::RenderEffectManager singleton destroyed " + String(addr_buff));
+        "CEGUI::RenderEffectManager singleton destroyed (" + addressStr + ")");
 }
 
 //---------------------------------------------------------------------------//
@@ -71,7 +72,7 @@ void RenderEffectManager::removeEffect(const String& name)
     Logger::getSingleton().logEvent(
         "Unregistered RenderEffect named '" + name + "'");
 
-    CEGUI_DELETE_AO i->second;
+    delete i->second;
 	d_effectRegistry.erase(name);
 }
 
@@ -88,18 +89,18 @@ RenderEffect& RenderEffectManager::create(const String& name, Window* window)
 
     // throw if no factory exists for this type
     if (i == d_effectRegistry.end())
-        CEGUI_THROW(UnknownObjectException(
-            "No RenderEffect has been registered with the name '" + name + "'"));
+        throw UnknownObjectException(
+            "No RenderEffect has been registered with the name '" + name + "'");
 
     RenderEffect& effect = i->second->create(window);
 
     // here we keep track of the factory used to create the effect object.
     d_effects[&effect] = i->second;
 
-    char addr_buff[32];
-    sprintf(addr_buff, "%p", static_cast<void*>(&effect));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(&effect);
+
     Logger::getSingleton().logEvent("RenderEffectManager::create: Created "
-        "instance of effect '" + name + "' at " + String(addr_buff));
+        "instance of effect '" + name + "' at (" + addressStr + ")");
 
     return effect;
 }
@@ -111,13 +112,12 @@ void RenderEffectManager::destroy(RenderEffect& effect)
 
     // We will only destroy effects that we created (and throw otherwise)
     if (i == d_effects.end())
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "The given RenderEffect was not created by the "
-            "RenderEffectManager - perhaps you created it directly?"));
+            "RenderEffectManager - perhaps you created it directly?");
 
     // Get string of object address before we delete it.
-    char addr_buff[32];
-    sprintf(addr_buff, "%p", static_cast<void*>(&effect));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(&effect);
 
     // use the same factory to delete the RenderEffect as what created it
     i->second->destroy(effect);
@@ -126,7 +126,7 @@ void RenderEffectManager::destroy(RenderEffect& effect)
     d_effects.erase(i);
 
     Logger::getSingleton().logEvent("RenderEffectManager::destroy: Destroyed "
-        "RenderEffect object at " + String(addr_buff));
+        "RenderEffect object at (" + addressStr + ")");
 }
 
 //---------------------------------------------------------------------------//

@@ -45,7 +45,7 @@ namespace CEGUI
 
     Rectf FalagardScrollablePane::getViewableArea(void) const
     {
-        ScrollablePane* w = (ScrollablePane*)d_window;
+        ScrollablePane* w = static_cast<ScrollablePane*>(d_window);
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         bool v_visible = w->getVertScrollbar()->isVisible();
@@ -66,7 +66,7 @@ namespace CEGUI
             }
             area_name += "Scroll";
 
-            if (wlf.isNamedAreaDefined(area_name))
+            if (wlf.isNamedAreaPresent(area_name))
             {
                 return wlf.getNamedArea(area_name).getArea().getPixelRect(*w);
             }
@@ -76,7 +76,7 @@ namespace CEGUI
         return wlf.getNamedArea("ViewableArea").getArea().getPixelRect(*w);
     }
 
-    void FalagardScrollablePane::render()
+    void FalagardScrollablePane::createRenderGeometry()
     {
         const StateImagery* imagery;
 

@@ -44,7 +44,7 @@ namespace CEGUI
     {
     }
 
-    void TinyXML2Parser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& /*schemaName*/)
+    void TinyXML2Parser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& /*schemaName*/, bool /*allowXmlValidation*/)
     {
         // Parse the document
         tinyxml2::XMLDocument doc;
@@ -54,8 +54,8 @@ namespace CEGUI
         // Check if any actual error occurred
         if (Result != tinyxml2::XML_SUCCESS)
         {
-            CEGUI_THROW(FileIOException("TinyXML2Parser: an error occurred while "
-                "parsing the XML document '...' - check it for potential errors!"));
+            throw FileIOException("TinyXML2Parser: an error occurred while "
+                "parsing the XML document '...' - check it for potential errors!");
         }
 
         // Parse root element recursively
@@ -72,11 +72,11 @@ namespace CEGUI
         const tinyxml2::XMLAttribute *currAttr = element->FirstAttribute();
         while (currAttr)
         {
-            attrs.add(reinterpret_cast<const encoded_char*>(currAttr->Name()), reinterpret_cast<const encoded_char*>(currAttr->Value()));
+            attrs.add(currAttr->Name(), currAttr->Value());
             currAttr = currAttr->Next();
         }
 
-        handler.elementStart(reinterpret_cast<const encoded_char*>(element->Value()), attrs);
+        handler.elementStart(element->Value(), attrs);
 
         const tinyxml2::XMLNode* pChildNode = element->FirstChild();
         while (pChildNode)
@@ -85,7 +85,7 @@ namespace CEGUI
             {
                 const char* pValue = pChildNode->ToText()->Value();
                 if (pValue && *pValue)
-                    handler.text(reinterpret_cast<const encoded_char*>(pValue));
+                    handler.text(pValue);
             }
             else if (pChildNode->ToElement())
                 processElement(handler, pChildNode->ToElement());
@@ -95,7 +95,7 @@ namespace CEGUI
             pChildNode = pChildNode->NextSibling();
         }
 
-        handler.elementEnd(reinterpret_cast<const encoded_char*>(element->Value()));
+        handler.elementEnd(element->Value());
     }
     
     bool TinyXML2Parser::initialiseImpl(void)

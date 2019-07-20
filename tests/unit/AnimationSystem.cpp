@@ -65,7 +65,7 @@ BOOST_FIXTURE_TEST_SUITE(AnimationSystem, SampleAnimationSetupFixture)
 BOOST_AUTO_TEST_CASE(SkipFirstStep)
 {
     CEGUI::AnimationInstance* instance = CEGUI::AnimationManager::getSingleton().instantiateAnimation(d_zeroToOne);
-    d_zeroToOne->setReplayMode(CEGUI::Animation::RM_Once);
+    d_zeroToOne->setReplayMode(CEGUI::Animation::ReplayMode::PlayOnce);
 
     instance->start(true);
     BOOST_CHECK_CLOSE(instance->getPosition(), 0.0f, 0.0001f);
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(SkipFirstStep)
 BOOST_AUTO_TEST_CASE(PlayOnceReplayMode)
 {
     CEGUI::AnimationInstance* instance = CEGUI::AnimationManager::getSingleton().instantiateAnimation(d_zeroToOne);
-    d_zeroToOne->setReplayMode(CEGUI::Animation::RM_Once);
+    d_zeroToOne->setReplayMode(CEGUI::Animation::ReplayMode::PlayOnce);
 
     instance->start(false);
     BOOST_CHECK_SMALL(instance->getPosition(), 0.0001f);
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(PlayOnceReplayMode)
 BOOST_AUTO_TEST_CASE(PlayLoopReplayMode)
 {
     CEGUI::AnimationInstance* instance = CEGUI::AnimationManager::getSingleton().instantiateAnimation(d_zeroToOne);
-    d_zeroToOne->setReplayMode(CEGUI::Animation::RM_Loop);
+    d_zeroToOne->setReplayMode(CEGUI::Animation::ReplayMode::Loop);
 
     instance->start(false);
     BOOST_CHECK_SMALL(instance->getPosition(), 0.0001f);
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(PlayLoopReplayMode)
 BOOST_AUTO_TEST_CASE(PlayBounceReplayMode)
 {
     CEGUI::AnimationInstance* instance = CEGUI::AnimationManager::getSingleton().instantiateAnimation(d_zeroToOne);
-    d_zeroToOne->setReplayMode(CEGUI::Animation::RM_Bounce);
+    d_zeroToOne->setReplayMode(CEGUI::Animation::ReplayMode::Bounce);
 
     instance->start(false);
     BOOST_CHECK_SMALL(instance->getPosition(), 0.0001f);
@@ -140,7 +140,7 @@ BOOST_AUTO_TEST_CASE(ZeroDurationReplayModes)
 {
     {
         CEGUI::AnimationInstance* instance = CEGUI::AnimationManager::getSingleton().instantiateAnimation(d_zeroDuration);
-        d_zeroDuration->setReplayMode(CEGUI::Animation::RM_Once);
+        d_zeroDuration->setReplayMode(CEGUI::Animation::ReplayMode::PlayOnce);
 
         instance->start(false);
         BOOST_CHECK_SMALL(instance->getPosition(), 0.0001f);
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(ZeroDurationReplayModes)
     }
     {
         CEGUI::AnimationInstance* instance = CEGUI::AnimationManager::getSingleton().instantiateAnimation(d_zeroDuration);
-        d_zeroDuration->setReplayMode(CEGUI::Animation::RM_Loop);
+        d_zeroDuration->setReplayMode(CEGUI::Animation::ReplayMode::Loop);
 
         instance->start(false);
         BOOST_CHECK_SMALL(instance->getPosition(), 0.0001f);
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE(ZeroDurationReplayModes)
     }
     {
         CEGUI::AnimationInstance* instance = CEGUI::AnimationManager::getSingleton().instantiateAnimation(d_zeroDuration);
-        d_zeroDuration->setReplayMode(CEGUI::Animation::RM_Bounce);
+        d_zeroDuration->setReplayMode(CEGUI::Animation::ReplayMode::Bounce);
 
         instance->start(false);
         BOOST_CHECK_SMALL(instance->getPosition(), 0.0001f);

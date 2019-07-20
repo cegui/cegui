@@ -52,24 +52,24 @@ namespace CEGUI
 \todo
     moveKeyFrame, this will be vital for any animation editing tools
 */
-class CEGUIEXPORT Affector : public AllocatedObject<Affector>
+class CEGUIEXPORT Affector
 {
 public:
     //! enumerates the possible methods of application
-    enum ApplicationMethod
+    enum class ApplicationMethod : int
     {
         //! applies values as absolutes
-        AM_Absolute,
+        ApplyAbsolute,
 
         /** saves a base value after the animation is started and applies
          * relatively to that
          */
-        AM_Relative,
+        ApplyRelative,
 
         /** saves a base value after the animation is started and applies
          * by multiplying this base value with key frame floats
          */
-        AM_RelativeMultiply
+        ApplyRelativeMultiply
     };
 
     /** internal constructor, please construct Affectors via
@@ -84,7 +84,7 @@ public:
     \brief
     	Retrieves the parent animation of this keyframe
     */
-    inline Animation* getParent() const
+    Animation* getParent() const
     {
     	return d_parent;
     }
@@ -168,7 +168,7 @@ public:
         the KeyFrame
     */
     KeyFrame* createKeyFrame(float position, const String& value,
-                             KeyFrame::Progression progression = KeyFrame::P_Linear,
+                             KeyFrame::Progression progression = KeyFrame::Progression::Linear,
                              const String& sourceProperty = "");
 
     /*!
@@ -257,8 +257,7 @@ private:
     //! curently used interpolator (has to be set for the Affector to work!)
     Interpolator* d_interpolator;
 
-    typedef std::map<float, KeyFrame*, std::less<float>
-        CEGUI_MAP_ALLOC(float, KeyFrame*)> KeyFrameMap;
+    typedef std::map<float, KeyFrame*, std::less<float> > KeyFrameMap;
     /** keyframes of this affector (if there are no keyframes, this affector
      * won't do anything!)
      */

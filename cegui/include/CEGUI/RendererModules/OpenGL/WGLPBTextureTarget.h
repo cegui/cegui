@@ -27,12 +27,12 @@
 #ifndef _CEGUIOpenGLWGLPBTextureTarget_h_
 #define _CEGUIOpenGLWGLPBTextureTarget_h_
 
-//#include <windows.h>
-#include "CEGUI/RendererModules/OpenGL/GL.h"
-#include <GL/wglew.h>
-
 #include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
-#include "../../Rect.h"
+#include "CEGUI/RendererModules/OpenGL/GL.h"
+#include "../../Rectf.h"
+
+#include <windows.h>
+#include <GL/wglew.h>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -52,18 +52,18 @@ class OpenGLTexture;
 class OPENGL_GUIRENDERER_API OpenGLWGLPBTextureTarget : public OpenGLTextureTarget
 {
 public:
-    OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner);
+    OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer);
     virtual ~OpenGLWGLPBTextureTarget();
 
     // overrides from OpenGLRenderTarget
-    void activate();
-    void deactivate();
+    void activate() override;
+    void deactivate() override;
     // implementation of TextureTarget interface
-    void clear();
-    void declareRenderSize(const Sizef& sz);
+    void clear() override;
+    void declareRenderSize(const Sizef& sz) override;
     // specialise functions from OpenGLTextureTarget
-    void grabTexture();
-    void restoreTexture();
+    void grabTexture() override;
+    void restoreTexture() override;
 
 protected:
     //! default size of created texture objects

@@ -26,19 +26,14 @@
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "CEGUI/widgets/PushButton.h"
 #include "CEGUI/widgets/Editbox.h"
 
-#include "CEGUI/MouseCursor.h"
 #include "CEGUI/WindowManager.h"
-#include "CEGUI/Exceptions.h"
-#include "CEGUI/CoordConverter.h"
 
 #include "CEGUI/CommonDialogs/ColourPicker/ColourPicker.h"
 #include "CEGUI/CommonDialogs/ColourPicker/Conversions.h"
 
 #include "CEGUI/TextureTarget.h"
-#include "CEGUI/Texture.h"
 #include "CEGUI/PropertyHelper.h"
 
 namespace CEGUI
@@ -60,7 +55,7 @@ std::map<Window*, int> ColourPicker::s_colourPickerWindows;
 ColourPicker::ColourPicker(const String& type, const String& name)
     : Window(type, name),
       d_shareColourPickerControlsWindow(false),
-      d_colourPickerControlsWindow(0)
+      d_colourPickerControlsWindow(nullptr)
 {
 }
 
@@ -76,7 +71,7 @@ void ColourPicker::initialiseComponents(void)
     Window* colourRect = getColourRect();
 
     // bind handler to close button 'Click' event
-    colourRect->subscribeEvent(Window::EventMouseClick,
+    colourRect->subscribeEvent(Window::EventCursorActivate,
         Event::Subscriber(&ColourPicker::colourRect_ColourRectClickedHandler,
                           this));
 
@@ -196,7 +191,7 @@ void ColourPicker::onColourRectClicked(WindowEventArgs& e)
 {
     if (d_colourPickerControlsWindow)
     {
-        if (d_colourPickerControlsWindow->getParent() == 0)
+        if (d_colourPickerControlsWindow->getParent() == nullptr)
         {
             getGUIContext().getRootWindow()->
                 addChild(d_colourPickerControlsWindow);
@@ -209,12 +204,12 @@ void ColourPicker::onColourRectClicked(WindowEventArgs& e)
         }
         else
         {
-            if (d_colourPickerControlsWindow->getParent() != 0)
+            if (d_colourPickerControlsWindow->getParent() != nullptr)
             {
                 d_colourPickerControlsWindow->getParent()->
                 removeChild(d_colourPickerControlsWindow);
 
-                d_colourPickerControlsWindow->setCallingColourPicker(0);
+                d_colourPickerControlsWindow->setCallingColourPicker(nullptr);
                 fireEvent(EventClosedPicker, e, EventNamespace);
             }
         }

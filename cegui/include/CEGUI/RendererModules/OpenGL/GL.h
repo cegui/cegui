@@ -29,6 +29,8 @@
 
 #include "CEGUI/Config.h"
 
+#define CEGUI_OPENGL_BIG_BUFFER
+
 #if defined CEGUI_USE_EPOXY
 
 #include <epoxy/gl.h>
@@ -83,11 +85,11 @@ public:
     \brief
         Type of the OpenGL (desktop or ES) context
     */
-    enum Type
+    enum class Type : int
     {
-        TYPE_NONE, /*!< Not initalized yet */
-        TYPE_DESKTOP, /*!< Desktop OpenGL */
-        TYPE_ES /*!< OpenGL ES */
+        Uninitialised, /*!< Not initalized yet */
+        TypeDesktop, /*!< Desktop OpenGL */
+        TypeEs /*!< OpenGL ES */
     };
 
     static OpenGLInfo& getSingleton() { return s_instance; }
@@ -111,13 +113,13 @@ public:
     \brief
         Returns true if using Desktop OpenGL.
     */
-    bool isUsingDesktopOpengl() const { return type() == TYPE_DESKTOP; }
+    bool isUsingDesktopOpengl() const { return type() == Type::TypeDesktop; }
     
     /*!
     \brief
         Returns true if using OpenGL ES.
     */
-    bool isUsingOpenglEs() const { return type() == TYPE_ES; }
+    bool isUsingOpenglEs() const { return type() == Type::TypeEs; }
 
     /*!
     \brief

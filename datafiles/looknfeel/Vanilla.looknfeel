@@ -192,7 +192,6 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="PushedImage"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="VerticalFormatting" name="VertImageFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzImageFormatting"/>
-        <Property name="WantsMultiClickEvents" value="false"/>
         <Property name="Size" value="{{0, 96}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
@@ -614,7 +613,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="SelectedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF607FFF" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
-        <Property name="MouseCursorImage" value="Vanilla-Images/Caret" />
+        <Property name="CursorImage" value="Vanilla-Images/Caret" />
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
@@ -711,7 +710,7 @@
     </WidgetLook>
     <WidgetLook name="Vanilla/VerticalScrollbarThumb">
         <Property name="VertFree" value="true"/>
-        <Property name="MouseInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="thumb">
             <ImageryComponent>
@@ -753,7 +752,7 @@
     </WidgetLook>
     <WidgetLook name="Vanilla/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="true"/>
-        <Property name="MouseInputPropagationEnabled" value="true"/>
+        <Property name="CursorInputPropagationEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="thumb">
             <ImageryComponent>
@@ -1365,80 +1364,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    <WidgetLook name="Vanilla/Listbox">
-        <Property name="ForceVertScrollbar" value="true"/>
-        <Property name="Size" value="{{0, 256}, {0, 256}}" />
-        <NamedArea name="ItemRenderingArea">
-            <Area>
-                <Dim type="LeftEdge">
-                    <ImageDim name="Vanilla-Images/FrameLeft" dimension="Width"/>
-                </Dim>
-                <Dim type="TopEdge">
-                    <ImageDim name="Vanilla-Images/FrameTop" dimension="Height"/>
-                </Dim>
-                <Dim type="RightEdge">
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="RightEdge"/>
-                        <ImageDim name="Vanilla-Images/FrameRight" dimension="Width"/>
-                    </OperatorDim>
-                </Dim>
-                <Dim type="BottomEdge">
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="BottomEdge"/>
-                        <ImageDim name="Vanilla-Images/FrameBottom" dimension="Height"/>
-                    </OperatorDim>
-                </Dim>
-            </Area>
-        </NamedArea>
-        <Child nameSuffix="__auto_hscrollbar__" type="Vanilla/HorizontalScrollbar">
-            <Area>
-                <Dim type="LeftEdge">
-                    <AbsoluteDim value="5"/>
-                </Dim>
-                <Dim type="TopEdge">
-                    <AbsoluteDim value="-5"/>
-                </Dim>
-                <Dim type="Width">
-                    <UnifiedDim scale="1" type="Width" offset="-25"/>
-                </Dim>
-                <Dim type="Height">
-                    <AbsoluteDim value="20"/>
-                </Dim>
-            </Area>
-            <VertAlignment type="BottomAligned"/>
-        </Child>
-        <Child nameSuffix="__auto_vscrollbar__" type="Vanilla/VerticalScrollbar">
-            <Area>
-                <Dim type="LeftEdge">
-                    <AbsoluteDim value="-5"/>
-                </Dim>
-                <Dim type="TopEdge">
-                    <AbsoluteDim value="5"/>
-                </Dim>
-                <Dim type="Width">
-                    <AbsoluteDim value="20"/>
-                </Dim>
-                <Dim type="Height">
-                    <UnifiedDim scale="1" type="Height" offset="-10"/>
-                </Dim>
-            </Area>
-            <HorzAlignment type="RightAligned"/>
-        </Child>
-        <StateImagery name="Enabled">
-            <Layer>
-                <Section section="Frame" look="Vanilla/Shared">
-                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
-                </Section>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="Disabled">
-            <Layer>
-                <Section section="Frame" look="Vanilla/Shared">
-                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
-                </Section>
-            </Layer>
-        </StateImagery>
-    </WidgetLook>
+
     <WidgetLook name="Vanilla/MultiLineEditbox">
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="NormalTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="SelectedTextColour"/>
@@ -1683,8 +1609,9 @@
         <StateImagery name="Disabled"/>
     </WidgetLook>
     <WidgetLook name="Vanilla/ComboDropList">
-        <Property name="ForceVertScrollbar" value="true"/>
+        <Property name="VertScrollbarDisplayMode" value="Shown"/>
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
+        <Property name="SelectionBrushImage" value="Vanilla-Images/GenericBrush"/>
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -2222,7 +2149,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <WidgetLook name="Vanilla/Tooltip">
     <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="TextArea">
@@ -2291,16 +2218,16 @@
                 <Section section="label" />
             </Layer>
         </StateImagery>
-        
+
         <AnimationDefinition name="FadeIn" duration="0.33" replayMode="once">
             <Affector property="Alpha" interpolator="float">
                 <KeyFrame position="0" sourceProperty="Alpha" />
                 <KeyFrame position="0.33" value="1" progression="linear" />
             </Affector>
-            
+
             <Subscription event="TooltipActive" action="Start" />
         </AnimationDefinition>
-        
+
         <AnimationDefinition name="FadeOut" duration="0.33" replayMode="once">
             <Affector property="Alpha" interpolator="float">
                 <KeyFrame position="0" sourceProperty="Alpha" />
@@ -2310,8 +2237,84 @@
                 <KeyFrame position="0" sourceProperty="Visible" />
                 <KeyFrame position="0.33" value="false" progression="discrete" />
             </Affector>
-            
+
             <Subscription event="TooltipInactive" action="Start" />
         </AnimationDefinition>
+    </WidgetLook>
+
+    <WidgetLook name="Vanilla/ListView">
+        <Property name="VertScrollbarDisplayMode" value="Shown"/>
+        <Property name="SelectionBrushImage" value="Vanilla-Images/GenericBrush"/>
+        <Property name="Size" value="{{1, 0}, {1, 0}}" />
+        <NamedArea name="ItemRenderingArea">
+            <Area>
+                <Dim type="LeftEdge">
+                    <ImageDim name="Vanilla-Images/FrameLeft" dimension="Width"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <ImageDim name="Vanilla-Images/FrameTop" dimension="Height"/>
+                </Dim>
+                <Dim type="RightEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge"/>
+                        <ImageDim name="Vanilla-Images/FrameRight" dimension="Width"/>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge"/>
+                        <ImageDim name="Vanilla-Images/FrameBottom" dimension="Height"/>
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <Child nameSuffix="__auto_hscrollbar__" type="Vanilla/HorizontalScrollbar">
+            <Area>
+                <Dim type="LeftEdge">
+                    <AbsoluteDim value="5"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <AbsoluteDim value="-5"/>
+                </Dim>
+                <Dim type="Width">
+                    <UnifiedDim scale="1" type="Width" offset="-25"/>
+                </Dim>
+                <Dim type="Height">
+                    <AbsoluteDim value="20"/>
+                </Dim>
+            </Area>
+            <VertAlignment type="BottomAligned"/>
+        </Child>
+        <Child nameSuffix="__auto_vscrollbar__" type="Vanilla/VerticalScrollbar">
+            <Area>
+                <Dim type="LeftEdge">
+                    <AbsoluteDim value="-5"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <AbsoluteDim value="5"/>
+                </Dim>
+                <Dim type="Width">
+                    <AbsoluteDim value="20"/>
+                </Dim>
+                <Dim type="Height">
+                    <UnifiedDim scale="1" type="Height" offset="-10"/>
+                </Dim>
+            </Area>
+            <HorzAlignment type="RightAligned"/>
+        </Child>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="Frame" look="Vanilla/Shared">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="Frame" look="Vanilla/Shared">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
     </WidgetLook>
 </Falagard>

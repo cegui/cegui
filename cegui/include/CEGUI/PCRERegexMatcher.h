@@ -53,9 +53,9 @@ public:
     ~PCRERegexMatcher();
 
     // implement required interface
-    void setRegexString(const String& regex);
-    const String& getRegexString() const;
-    MatchState getMatchStateOfString(const String& str) const;
+    void setRegexString(const String& regex) override;
+    const String& getRegexString() const override;
+    MatchState getMatchStateOfString(const String& str) const override;
 
 private:
     //! free the compiled PCRE regex, if any.
