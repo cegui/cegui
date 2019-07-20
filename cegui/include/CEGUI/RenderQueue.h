@@ -59,7 +59,7 @@ public:
         The GeometryBuffer objects remain in the queue after drawing has taken
         place.
     */
-    void draw() const;
+    void draw(uint32 drawModeMask = DrawModeMaskAll) const;
 
     /*!
     \brief

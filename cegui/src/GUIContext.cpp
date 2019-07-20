@@ -94,6 +94,7 @@ GUIContext::GUIContext(RenderTarget& target) :
     d_modalWindow(0),
     d_captureWindow(0),
     d_mouseClickTrackers(new MouseClickTracker[MouseButtonCount]),
+    d_lastDrawModeMask(0),
     d_areaChangedEventConnection(
         target.subscribeEvent(
             RenderTarget::EventAreaChanged,
@@ -280,27 +281,37 @@ bool GUIContext::isDirty() const
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::draw()
+void GUIContext::draw(uint32 drawModeMask)
 {
+    // Dirtify if the last draw call had a different drawModeMask than this one
+    if(d_lastDrawModeMask != drawModeMask)
+    {
+        d_isDirty = true;
+        d_lastDrawModeMask = drawModeMask;
+    }
+    
+
     if (d_isDirty)
-        drawWindowContentToTarget();
+        drawWindowContentToTarget(drawModeMask);
 
-    RenderingSurface::draw();
+    RenderingSurface::draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::drawContent()
+void GUIContext::drawContent(uint32 drawModeMask)
 {
-    RenderingSurface::drawContent();
+    RenderingSurface::drawContent(drawModeMask);
 
-    d_mouseCursor.draw();
+    if(drawModeMask & DrawModeFlagMouseCursor)
+    {
+        d_mouseCursor.draw();
+    }
 }
-
 //----------------------------------------------------------------------------//
-void GUIContext::drawWindowContentToTarget()
+void GUIContext::drawWindowContentToTarget(uint32 drawModeMask)
 {
     if (d_rootWindow)
-        renderWindowHierarchyToSurfaces();
+        renderWindowHierarchyToSurfaces(drawModeMask);
     else
         clearGeometry();
 
@@ -308,7 +319,7 @@ void GUIContext::drawWindowContentToTarget()
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::renderWindowHierarchyToSurfaces()
+void GUIContext::renderWindowHierarchyToSurfaces(uint32 drawModeMask)
 {
     RenderingSurface& rs = d_rootWindow->getTargetRenderingSurface();
     rs.clearGeometry();
@@ -316,7 +327,7 @@ void GUIContext::renderWindowHierarchyToSurfaces()
     if (rs.isRenderingWindow())
         static_cast<RenderingWindow&>(rs).getOwner().clearGeometry();
 
-    d_rootWindow->render();
+    d_rootWindow->render(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//

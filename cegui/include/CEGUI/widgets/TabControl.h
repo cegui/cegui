@@ -344,7 +344,7 @@ protected:
     \return
         Nothing
     */
-    virtual	void	drawSelf(const RenderingContext&) { /* do nothing; rendering handled by children */ }
+    virtual	void	drawSelf(const RenderingContext&, uint32) { /* do nothing; rendering handled by children */ }
 
     /*!
     \brief

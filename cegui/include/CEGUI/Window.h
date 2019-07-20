@@ -33,18 +33,15 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/NamedElement.h"
 #include "CEGUI/Vector.h"
-#include "CEGUI/Quaternion.h"
 #include "CEGUI/Rect.h"
 #include "CEGUI/Size.h"
 #include "CEGUI/EventSet.h"
-#include "CEGUI/PropertySet.h"
 #include "CEGUI/TplWindowProperty.h"
 #include "CEGUI/System.h"
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/UDim.h"
 #include "CEGUI/WindowRenderer.h"
-#include "CEGUI/TextUtils.h"
 #include "CEGUI/BasicRenderedStringParser.h"
 #include "CEGUI/DefaultRenderedStringParser.h"
 #include <vector>
@@ -215,6 +212,8 @@ public:
     static const String MouseInputPropagationEnabledPropertyName;
     //! Name of property to access whether the system considers this window to be an automatically created sub-component window.
     static const String AutoWindowPropertyName;
+    //! Name of property to access the DrawMode that is set for this Window, which decides in what draw call it will or will not be drawn.
+    static const String DrawModeMaskPropertyName;
 
     /*************************************************************************
         Event name constants
@@ -2353,10 +2352,15 @@ public:
         Causes the Window object to render itself and all of it's attached
         children
 
+    \param drawModeMask
+        Only if the specified draw mode mask matches any of the bit-flags active
+        in the drawModeMask of this Window, the Window will be rendered as part
+        of this call.
+
     \return
         Nothing
     */
-    void render();
+    void render(uint32 drawModeMask = DrawModeMaskAll);
 
     /*!
     \brief
@@ -2823,8 +2827,45 @@ public:
     */
     bool isMouseContainedInArea() const;
 
+    /*!
+    \brief
+        Sets the DrawMode bitmask for this Window.
+
+        The DrawMode of this Window specifies when the Window should be
+        drawn. The bitmask of this window is checked against the mask supplied
+        in the draw call in that case.
+    \param drawMode
+        The drawMode bitmask to be set for this Window.
+    */
+    void setDrawModeMask(uint32 drawMode);
+
+    /*!
+    \brief
+        Gets the DrawMode bitmask of this Window.
+
+        The DrawMode of this Window specifies when the Window should be
+        drawn. The bitmask of this window is checked against the mask supplied
+        in the draw call in that case.
+    \return
+        The drawMode bitmask that is set for this Window.
+    */
+    uint32 getDrawModeMask() const;
+
     // overridden from Element
     const Sizef& getRootContainerSize() const;
+ 
+    /*!
+    \brief
+        Checks if the "DrawMode" property of this window is compatible with
+        the drawMode bitmask that is supplied-
+
+    \param drawMode
+        The "DrawMode" bitmask to check this window's bitmask against.
+
+    \return
+        True if a bitwise and between the masks return non-zero.
+    */
+    bool checkIfDrawMaskAllowsDrawing(uint32 drawModeMask) const;
 
     float getContentWidth() const;
     float getContentHeight() const;
@@ -3391,7 +3432,7 @@ protected:
     \return
         Nothing
     */
-    virtual void drawSelf(const RenderingContext& ctx);
+    virtual void drawSelf(const RenderingContext& ctx, uint32 drawModeMask);
 
     /*!
     \brief
@@ -3403,7 +3444,7 @@ protected:
         easier to override drawSelf without needing to duplicate large sections
         of the code from the default implementation.
     */
-    void bufferGeometry(const RenderingContext& ctx);
+    void bufferGeometry(const RenderingContext& ctx, uint32 drawModeMask);
 
     /*!
     \brief
@@ -3826,6 +3867,13 @@ protected:
 
     //! true when mouse is contained within this Window's area.
     bool d_containsMouse;
+
+    /*!
+        Contains the draw mode mask, for this window, specifying 
+        a the bit flags that determine if the Window will be drawn or not 
+        in the draw calls, depending on the bitmask passed to the calls.
+    */
+    uint32 d_drawModeMask;
 
 private:
     /*************************************************************************

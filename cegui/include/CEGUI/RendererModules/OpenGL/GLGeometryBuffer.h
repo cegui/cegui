@@ -52,7 +52,7 @@ public:
     OpenGLGeometryBuffer(OpenGLRenderer& owner);
 
     // implementation/overrides of members from GeometryBuffer
-    void draw() const;
+    void draw(uint32 drawModeMask = DrawModeMaskAll) const;
 };
 
 } // End of  CEGUI namespace section

@@ -113,7 +113,7 @@ protected:
     	Overridden from Window.
     *************************************************************************/
     virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
-    virtual void drawSelf(const RenderingContext&) {}
+    virtual void drawSelf(const RenderingContext&, uint32) {}
 
     /*************************************************************************
     	Data fields

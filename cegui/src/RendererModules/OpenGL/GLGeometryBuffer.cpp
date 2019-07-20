@@ -44,7 +44,7 @@ OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGLRenderer& owner) :
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::draw() const
+void OpenGLGeometryBuffer::draw(uint32 drawModeMask) const
 {
     CEGUI::Rectf viewPort = d_owner->getActiveViewPort();
 

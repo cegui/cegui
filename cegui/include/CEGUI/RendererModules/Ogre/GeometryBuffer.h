@@ -66,7 +66,7 @@ public:
     const Ogre::Matrix4& getMatrix() const;
 
     // implement CEGUI::GeometryBuffer interface.
-    virtual void draw() const;
+    virtual void draw(uint32 drawModeMask = DrawModeMaskAll) const;
     virtual void setTranslation(const Vector3f& v);
     virtual void setRotation(const Quaternion& r);
     virtual void setPivot(const Vector3f& p);

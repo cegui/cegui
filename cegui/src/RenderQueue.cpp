@@ -32,12 +32,12 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-void RenderQueue::draw() const
+void RenderQueue::draw(uint32 drawModeMask) const
 {
     // draw the buffers
     BufferList::const_iterator i = d_buffers.begin();
     for ( ; i != d_buffers.end(); ++i)
-        (*i)->draw();
+        (*i)->draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//

@@ -279,7 +279,7 @@ public:
     void unprojectPoint(const Vector2f& p_in, Vector2f& p_out);
 
     // overrides from base
-    void draw();
+    void draw(uint32 drawModeMask = DrawModeMaskAll);
     void invalidate();
     bool isRenderingWindow() const;
 

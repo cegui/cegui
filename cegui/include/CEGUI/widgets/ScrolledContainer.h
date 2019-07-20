@@ -175,7 +175,7 @@ protected:
     bool handleChildMoved(const EventArgs& e);
 
     // overridden from Window.
-    void drawSelf(const RenderingContext&) {};
+    void drawSelf(const RenderingContext&, uint32) {};
     Rectf getInnerRectClipper_impl() const;
 
     void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing=false, bool fireEvents=true,

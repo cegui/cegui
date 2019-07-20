@@ -35,7 +35,6 @@
 #include "CEGUI/Rect.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/InputEvent.h"
-#include "CEGUI/UDim.h"
 
 
 #if defined(_MSC_VER)
@@ -158,7 +157,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	draw(void) const;
+    void	draw(uint32 drawModeMask = DrawModeMaskAll) const;
 
 
 	/*!

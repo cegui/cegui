@@ -51,8 +51,8 @@ public:
     virtual ~OpenGLRenderTarget();
 
     // implement parts of RenderTarget interface
-    void draw(const GeometryBuffer& buffer);
-    void draw(const RenderQueue& queue);
+    void draw(const GeometryBuffer& buffer, uint32 drawModeMask);
+    void draw(const RenderQueue& queue, uint32 drawModeMask);
     void setArea(const Rectf& area);
     const Rectf& getArea() const;
     void activate();

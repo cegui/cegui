@@ -65,7 +65,7 @@ OpenGL3GeometryBuffer::~OpenGL3GeometryBuffer()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3GeometryBuffer::draw() const
+void OpenGL3GeometryBuffer::draw(uint32 drawModeMask) const
 {
     CEGUI::Rectf viewPort = d_owner->getActiveViewPort();
 
