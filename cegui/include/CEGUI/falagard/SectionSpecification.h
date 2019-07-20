@@ -44,8 +44,7 @@ namespace CEGUI
         This class enables sections to be easily re-used, by different states and/or layers, by allowing
         sections to be specified by name rather than having mutiple copies of the same thing all over the place.
     */
-    class CEGUIEXPORT SectionSpecification :
-        public AllocatedObject<SectionSpecification>
+    class CEGUIEXPORT SectionSpecification
     {
     public:
         SectionSpecification();
@@ -130,7 +129,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const ColourRect* modcols = 0, const Rectf* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const ColourRect* modcols = nullptr, const Rectf* clipper = nullptr, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -145,7 +144,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols = 0, const Rectf* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols = nullptr, const Rectf* clipper = nullptr, bool clipToDisplay = false) const;
 
         /*!
         \brief

@@ -53,7 +53,7 @@ namespace CEGUI
         false);
     }
 
-    void FalagardProgressBar::render()
+    void FalagardProgressBar::createRenderGeometry()
     {
         const StateImagery* imagery;
 
@@ -73,7 +73,7 @@ namespace CEGUI
         // calculate a clipper according to the current progress.
         Rectf progressClipper(progressRect);
 
-        ProgressBar* w = (ProgressBar*)d_window;
+        ProgressBar* w = static_cast<ProgressBar*>(d_window);
         if (d_vertical)
         {
             float height = CoordConverter::alignToPixels(progressClipper.getHeight() * w->getProgress());
@@ -102,7 +102,7 @@ namespace CEGUI
         }
 
         // peform the rendering operation.
-        imagery->render(*d_window, progressRect, 0, &progressClipper);
+        imagery->render(*d_window, progressRect, nullptr, &progressClipper);
     }
 
     bool FalagardProgressBar::isVertical() const

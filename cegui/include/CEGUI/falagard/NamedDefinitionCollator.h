@@ -80,7 +80,7 @@ public:
 
 protected:
     typedef std::pair<K, V> Entry;
-    typedef std::vector<Entry CEGUI_VECTOR_ALLOC(Entry)> ValueArray;
+    typedef std::vector<Entry> ValueArray;
 
     struct pred
     {

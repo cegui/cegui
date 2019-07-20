@@ -42,13 +42,14 @@ namespace CEGUI
     \brief
         Class that encapsulates a single layer of imagery.
     */
-    class CEGUIEXPORT LayerSpecification :
-        public AllocatedObject<LayerSpecification>
+    class CEGUIEXPORT LayerSpecification
     {
     public:
         //! The container type for SectionSpecifications
-        typedef std::vector<SectionSpecification*
-            CEGUI_VECTOR_ALLOC(SectionSpecification*)> SectionSpecificationPointerList;
+        typedef std::vector<SectionSpecification> SectionSpecificationList;
+
+        //! The container type for pointers to SectionSpecifications
+        typedef std::vector<SectionSpecification*> SectionSpecificationPointerList;
 
 
         /*!
@@ -59,7 +60,7 @@ namespace CEGUI
             Specifies the priority of the layer.  Layers with higher priorities will be drawn on top
             of layers with lower priorities.
         */
-        LayerSpecification(uint priority = 0);
+        LayerSpecification(unsigned int priority = 0);
 
         /*!
         \brief
@@ -71,7 +72,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const ColourRect* modcols = 0, const Rectf* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const ColourRect* modcols = nullptr, const Rectf* clipper = nullptr, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -86,7 +87,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols = 0, const Rectf* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols = nullptr, const Rectf* clipper = nullptr, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -116,17 +117,17 @@ namespace CEGUI
             Return the priority of this layer.
 
         \return
-            uint value descibing the priority of this LayerSpecification.
+            unsigned int value descibing the priority of this LayerSpecification.
         */
-        uint getLayerPriority() const;
+        unsigned int getLayerPriority() const;
         /*!
         \brief
             Sets the priority of this layer.
 
         \return
-            uint value descibing the priority of this LayerSpecification.
+            unsigned int value descibing the priority of this LayerSpecification.
         */
-        void setLayerPriority(uint priority);
+        void setLayerPriority(unsigned int priority);
 
         /*!
         \brief
@@ -140,6 +141,15 @@ namespace CEGUI
             Nothing.
         */
         void writeXMLToStream(XMLSerializer& xml_stream) const;
+
+         /*!
+        \brief
+            Returns a reference to the vector of SectionSpecifications that are currently added to this LayerSpecification.
+
+         \return
+            A const reference to the vector SectionSpecifications that are currently added to this LayerSpecification
+        */
+        const SectionSpecificationList& getSectionSpecifications() const;  
 
         /*!
         \brief
@@ -157,17 +167,10 @@ namespace CEGUI
         bool operator< (const LayerSpecification& otherLayerSpec) const;
 
     private:
-        //! \deprecated This type will be made public in the next version and be renamed to SectionSpecificationList.
-        typedef std::vector<SectionSpecification
-            CEGUI_VECTOR_ALLOC(SectionSpecification)> SectionList;
-
-        SectionList d_sections;         //!< Collection of SectionSpecification objects descibing the sections to be drawn for this layer.
-        uint        d_layerPriority;    //!< Priority of the layer.
-    public:
-        //! \deprecated This type will be removed in the next version and replaced by a const list in the getSectionSpecifications function.
-        typedef ConstVectorIterator<SectionList> SectionIterator;
-        //! \deprecated This function will be replaced by the getSectionSpecifications function in the next version. For editing getSectionSpecificationPointers can be used.
-        SectionIterator getSectionIterator() const;
+        //! Collection of SectionSpecification instances
+        SectionSpecificationList    d_sections;
+        //! Priority of the layer
+        unsigned int                        d_layerPriority;
     };
 
 } // End of  CEGUI namespace section

@@ -42,6 +42,7 @@
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/DynamicModule.h"
+#include "CEGUI/SharedStringStream.h"
 
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
@@ -85,10 +86,9 @@ Scheme::~Scheme(void)
 {
     unloadResources();
 
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
     Logger::getSingleton().logEvent("GUI scheme '" + d_name + "' has been "
-        "unloaded (object destructor). " + addr_buff, Informative);
+        "unloaded (object destructor). " + addressStr, LoggingLevel::Informative);
 }
 
 
@@ -97,7 +97,7 @@ Scheme::~Scheme(void)
 *************************************************************************/
 void Scheme::loadResources(void)
 {
-    Logger::getSingleton().logEvent("---- Begining resource loading for GUI scheme '" + d_name + "' ----", Informative);
+    Logger::getSingleton().logEvent("---- Beginning resource loading for GUI scheme '" + d_name + "' ----", LoggingLevel::Informative);
 
     // load all resources specified for this scheme.
     loadXMLImagesets();
@@ -109,7 +109,7 @@ void Scheme::loadResources(void)
     loadFactoryAliases();
     loadFalagardMappings();
 
-    Logger::getSingleton().logEvent("---- Resource loading for GUI scheme '" + d_name + "' completed ----", Informative);
+    Logger::getSingleton().logEvent("---- Resource loading for GUI scheme '" + d_name + "' completed ----", LoggingLevel::Informative);
 }
 
 
@@ -118,7 +118,7 @@ void Scheme::loadResources(void)
 *************************************************************************/
 void Scheme::unloadResources(void)
 {
-    Logger::getSingleton().logEvent("---- Begining resource cleanup for GUI scheme '" + d_name + "' ----", Informative);
+    Logger::getSingleton().logEvent("---- Beginning resource cleanup for GUI scheme '" + d_name + "' ----", LoggingLevel::Informative);
 
     // unload all resources specified for this scheme.
     //unloadFonts(); FIXME: Prevent unloading of cross-used fonts
@@ -130,7 +130,7 @@ void Scheme::unloadResources(void)
     unloadFalagardMappings();
     unloadLookNFeels();
 
-    Logger::getSingleton().logEvent("---- Resource cleanup for GUI scheme '" + d_name + "' completed ----", Informative);
+    Logger::getSingleton().logEvent("---- Resource cleanup for GUI scheme '" + d_name + "' completed ----", LoggingLevel::Informative);
 }
 
 
@@ -186,7 +186,7 @@ void Scheme::loadImageFileImagesets()
 
         // see if image is present, and create it if not.
         if (!imgr.isDefined((*pos).name))
-            imgr.addFromImageFile((*pos).name, (*pos).filename, (*pos).resourceGroup);
+            imgr.addBitmapImageFromFile((*pos).name, (*pos).filename, (*pos).resourceGroup);
     }
 }
 
@@ -197,34 +197,13 @@ void Scheme::loadFonts()
 {
     FontManager& fntmgr = FontManager::getSingleton();
 
-    // check fonts
-    for (LoadableUIElementList::iterator pos = d_fonts.begin();
-        pos != d_fonts.end(); ++pos)
+    // load Fonts
+    // A font file may contain multiple fonts so we cannot check if any of them are
+    // already loaded upfront, so we just load then as usual
+    for (LoadableUIElementList::iterator pos = d_fontFiles.begin();
+        pos != d_fontFiles.end(); ++pos)
     {
-        // skip if a font with this name is already loaded
-        if (!(*pos).name.empty() && fntmgr.isDefined((*pos).name))
-            continue;
-
-        // create font using specified xml file.
-        Font& font = fntmgr.createFromFile((*pos).filename, (*pos).resourceGroup);
-        const String realname(font.getName());
-
-        // if name was not in scheme, set it now and proceed to next font
-        if ((*pos).name.empty())
-        {
-            (*pos).name = realname;
-            continue;
-        }
-
-        // confirm the font loaded has same name specified in scheme
-        if (realname != (*pos).name)
-        {
-            fntmgr.destroy(font);
-            CEGUI_THROW(InvalidRequestException(
-                "The Font created by file '" + (*pos).filename +
-                "' is named '" + realname + "', not '" + (*pos).name +
-                "' as required by Scheme '" + d_name + "'."));
-        }
+        fntmgr.createFromFile((*pos).filename, (*pos).resourceGroup);
     }
 }
 
@@ -233,7 +212,7 @@ void Scheme::loadFonts()
 *************************************************************************/
 void Scheme::loadLookNFeels()
 {
-    WidgetLookManager& wlfMgr   = WidgetLookManager::getSingleton();
+    WidgetLookManager& wlfMgr = WidgetLookManager::getSingleton();
 
     // load look'n'feels
     // (we can't actually check these, at the moment, so we just re-parse data;
@@ -259,7 +238,7 @@ void Scheme::loadWindowFactories()
 #if !defined(CEGUI_STATIC)
             // load dynamic module as required
             if (!(*cmod).dynamicModule)
-                (*cmod).dynamicModule = CEGUI_NEW_AO DynamicModule((*cmod).name);
+                (*cmod).dynamicModule = new DynamicModule((*cmod).name);
 
             FactoryModule& (*getWindowFactoryModuleFunc)() =
                 reinterpret_cast<FactoryModule&(*)()>(
@@ -267,10 +246,10 @@ void Scheme::loadWindowFactories()
                         getSymbolAddress("getWindowFactoryModule"));
 
             if (!getWindowFactoryModuleFunc)
-                CEGUI_THROW(InvalidRequestException(
+                throw InvalidRequestException(
                     "Required function export "
                     "'FactoryModule& ""getWindowFactoryModule()' "
-                    "was not found in module '" + (*cmod).name + "'."));
+                    "was not found in module '" + (*cmod).name + "'.");
 
             // get the WindowRendererModule object for this module.
             (*cmod).factoryModule = &getWindowFactoryModuleFunc();
@@ -313,17 +292,17 @@ void Scheme::loadWindowRendererFactories()
 #if !defined(CEGUI_STATIC)
             // load dynamic module as required
             if (!(*cmod).dynamicModule)
-                (*cmod).dynamicModule = CEGUI_NEW_AO DynamicModule((*cmod).name);
+                (*cmod).dynamicModule = new DynamicModule((*cmod).name);
 
             FactoryModule& (*getWRFactoryModuleFunc)() =
                 reinterpret_cast<FactoryModule&(*)()>((*cmod).dynamicModule->
                     getSymbolAddress("getWindowRendererFactoryModule"));
 
             if (!getWRFactoryModuleFunc)
-                CEGUI_THROW(InvalidRequestException(
+                throw InvalidRequestException(
                     "Required function export "
                     "'FactoryModule& getWindowRendererFactoryModule()' "
-                    "was not found in module '" + (*cmod).name + "'."));
+                    "was not found in module '" + (*cmod).name + "'.");
 
             // get the WindowRendererModule object for this module.
             (*cmod).factoryModule = &getWRFactoryModuleFunc();
@@ -468,8 +447,8 @@ void Scheme::unloadFonts()
     FontManager& fontManager = FontManager::getSingleton();
 
     // unload all loaded fonts
-    for (LoadableUIElementList::iterator iter = d_fonts.begin();
-        iter != d_fonts.end(); ++iter)
+    for (LoadableUIElementList::iterator iter = d_fontFiles.begin();
+        iter != d_fontFiles.end(); ++iter)
     {
         if (!(*iter).name.empty())
             fontManager.destroy((*iter).name);
@@ -516,11 +495,11 @@ void Scheme::unloadWindowFactories()
         // unload dynamic module as required
         if ((*cmod).dynamicModule)
         {
-            CEGUI_DELETE_AO (*cmod).dynamicModule;
-            (*cmod).dynamicModule = 0;
+            delete (*cmod).dynamicModule;
+            (*cmod).dynamicModule = nullptr;
         }
 
-        (*cmod).factoryModule = 0;
+        (*cmod).factoryModule = nullptr;
     }
 }
 
@@ -554,11 +533,11 @@ void Scheme::unloadWindowRendererFactories()
         // unload dynamic module as required
         if ((*cmod).dynamicModule)
         {
-            CEGUI_DELETE_AO (*cmod).dynamicModule;
-            (*cmod).dynamicModule = 0;
+            delete (*cmod).dynamicModule;
+            (*cmod).dynamicModule = nullptr;
         }
 
-        (*cmod).factoryModule = 0;
+        (*cmod).factoryModule = nullptr;
     }
 }
 
@@ -664,8 +643,8 @@ bool Scheme::areFontsLoaded() const
     FontManager& fntmgr = FontManager::getSingleton();
 
     // check fonts
-    for (LoadableUIElementList::const_iterator pos = d_fonts.begin();
-        pos != d_fonts.end(); ++pos)
+    for (LoadableUIElementList::const_iterator pos = d_fontFiles.begin();
+        pos != d_fontFiles.end(); ++pos)
     {
         if ((*pos).name.empty() || !fntmgr.isDefined((*pos).name))
             return false;
@@ -832,7 +811,7 @@ Scheme::LoadableUIElementIterator Scheme::getImageFileImagesets() const
 
 Scheme::LoadableUIElementIterator Scheme::getFonts() const
 {
-    return LoadableUIElementIterator(d_fonts.begin(), d_fonts.end());
+    return LoadableUIElementIterator(d_fontFiles.begin(), d_fontFiles.end());
 }
 
 

@@ -50,9 +50,9 @@ class Delay : public CEGUI::Property
 {
 public:    
     Delay() : Property("Delay", "Property to get/set the current delay used by the timer. Value is a float.", "0.000000") {}
-    CEGUI::String get(const CEGUI::PropertyReceiver* receiver) const;
-    void set(CEGUI::PropertyReceiver* receiver, const CEGUI::String& value);
-    CEGUI::Property* clone() const;
+    CEGUI::String get(const CEGUI::PropertyReceiver* receiver) const override;
+    void set(CEGUI::PropertyReceiver* receiver, const CEGUI::String& value) override;
+    CEGUI::Property* clone() const override;
 };
   
 }
@@ -118,7 +118,7 @@ public:
     float getDelay() const;
 
 protected:
-    virtual void updateSelf(float elapsed);
+    void updateSelf(float elapsed) override;
     
 private:
     static TimerProperties::Delay d_delayProperty;
@@ -132,9 +132,9 @@ class TimerFactory : public CEGUI::WindowFactory
 {
 public:
     TimerFactory() : CEGUI::WindowFactory(Timer::WidgetTypeName) {}
-    CEGUI::Window* createWindow(const CEGUI::String& name)
+    CEGUI::Window* createWindow(const CEGUI::String& name) override
     { return new Timer(d_type, name); }
-    void destroyWindow(CEGUI::Window* window)
+    void destroyWindow(CEGUI::Window* window) override
     { delete window;}
 };
 

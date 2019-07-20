@@ -44,8 +44,7 @@ namespace CEGUI
 {
 
 class CEGUIEXPORT AnimationManager :
-    public Singleton<AnimationManager>,
-    public AllocatedObject<AnimationManager>
+    public Singleton<AnimationManager>
 {
 public:
     //! Name of the schema used for loading animation xml files.
@@ -300,24 +299,20 @@ public:
     }
 
 private:
-    typedef std::map<String, Interpolator*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, Interpolator*)> InterpolatorMap;
+    typedef std::map<String, Interpolator*, std::less<String> > InterpolatorMap;
     String generateUniqueAnimationName();
     
     //! stores available interpolators
     InterpolatorMap d_interpolators;
-    typedef std::vector<Interpolator*
-        CEGUI_VECTOR_ALLOC(Interpolator*)> BasicInterpolatorList;
+    typedef std::vector<Interpolator*> BasicInterpolatorList;
     //! stores interpolators that are inbuilt in CEGUI
     BasicInterpolatorList d_basicInterpolators;
-
-    typedef std::map<String, Animation*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, Animation*)> AnimationMap;
+    
+    typedef std::map<String, Animation*> AnimationMap;
     //! all defined animations
     AnimationMap d_animations;
 
-    typedef std::multimap<Animation*, AnimationInstance*, std::less<Animation*>
-        CEGUI_MULTIMAP_ALLOC(Animation*, AnimationInstance*)> AnimationInstanceMap;
+    typedef std::multimap<Animation*, AnimationInstance*, std::less<Animation*> > AnimationInstanceMap;
     //! all instances of animations
     AnimationInstanceMap d_animationInstances;
     //! Default resource group used when loading animation xml files.
@@ -325,7 +320,7 @@ private:
     //! Base name to use for generated window names.
     static const String GeneratedAnimationNameBase;
     //! Counter used to generate unique animation names.
-    unsigned long d_uid_counter;
+    std::uint32_t d_uid_counter;
 };
 
 } // End of  CEGUI namespace section
