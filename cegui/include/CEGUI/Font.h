@@ -75,7 +75,7 @@ public:
         is used whenever a unicode code point can not be rendered because it is not
         present in the Font or otherwise unsupported.
     */
-    static const char32_t UnicodeReplacementCharacter = 0xFFFD;
+    static const char32_t UnicodeReplacementCharacter;
 
     //! Destructor.
     virtual ~Font();
