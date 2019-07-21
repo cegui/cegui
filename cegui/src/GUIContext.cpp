@@ -304,7 +304,7 @@ void GUIContext::drawContent(uint32 drawModeMask)
 
     if(drawModeMask & DrawModeFlagMouseCursor)
     {
-        d_mouseCursor.draw();
+        d_mouseCursor.draw(DrawModeFlagMouseCursor);
     }
 }
 //----------------------------------------------------------------------------//
