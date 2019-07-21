@@ -6,7 +6,7 @@
 				colour values within the system
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,18 +31,20 @@
 #define _CEGUIColour_h_
 
 #include "CEGUI/Base.h"
+#include <istream>
+#include <ostream>
+#include <iomanip>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-typedef uint32 argb_t;    //!< 32 bit ARGB representation of a colour.
+typedef std::uint32_t argb_t;    //!< 32 bit ARGB representation of a colour.
 
 /*!
 \brief
 	Class representing colour values within the system.
 */
-class CEGUIEXPORT Colour : 
-    public AllocatedObject<Colour>
+class CEGUIEXPORT Colour
 {
 public:
 	/*************************************************************************
@@ -278,10 +280,52 @@ public:
         return !(*this == rhs);
     }
 
+    /*!
+    \brief Writes a Colour to a stream
+    */
+    inline friend std::ostream& operator << (std::ostream& s, const Colour& val)
+    {
+        s.fill('0');
+        s.width(8);
+        s << std::hex;
+        s << val.getARGB();
+
+        // Reset sticky manipulators
+        s << std::dec;
+        // Reset to default fill character
+        s.fill(s.widen(' '));
+
+        return s;
+    }
+
+    /*!
+    \brief Extracts a Colour from a stream
+    */
+    inline friend std::istream& operator >> (std::istream& inStream, Colour& val)
+    {
+        argb_t value = 0xFF000000;
+        inStream >> std::hex >> value;
+        val.setARGB(value);
+        inStream >> std::dec;
+        return inStream;
+    }
+
 	//
 	// Conversion operators
 	//
 	operator argb_t() const		{return getARGB();}
+
+    static argb_t calculateArgb(std::uint8_t alpha, std::uint8_t red,
+        std::uint8_t green, std::uint8_t blue)
+    {
+        return (
+            static_cast<argb_t>(alpha) << 24 |
+            static_cast<argb_t>(red) << 16 |
+            static_cast<argb_t>(green) << 8 |
+            static_cast<argb_t>(blue)
+            );
+    }
+
 
 private:
 	/*************************************************************************

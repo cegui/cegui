@@ -84,7 +84,7 @@ public:
         -  0 to indicate slider should not be moved.
         - +1 to indicate slider should be moved to a higher setting.
     */
-    virtual float   getAdjustDirectionFromPoint(const Vector2f& pt) const  = 0;
+    virtual float   getAdjustDirectionFromPoint(const glm::vec2& pt) const  = 0;
 };
 
 
@@ -188,7 +188,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual	void	initialiseComponents(void);
+    void initialiseComponents(void) override;
 
 
 	/*!
@@ -284,7 +284,7 @@ protected:
 		-  0 to indicate slider should not be moved.
 		- +1 to indicate slider should be moved to a higher setting.
 	*/
-	virtual float	getAdjustDirectionFromPoint(const Vector2f& pt) const;
+    virtual float	getAdjustDirectionFromPoint(const glm::vec2& pt) const;
 
 
     /*!
@@ -340,7 +340,7 @@ protected:
 	bool	handleThumbTrackEnded(const EventArgs& e);
 
     // validate window renderer
-	virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
 
 	/*************************************************************************
@@ -370,8 +370,8 @@ protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual	void	onMouseWheel(MouseEventArgs& e);
+    void    onCursorPressHold(CursorInputEventArgs& e) override;
+    void    onScroll(CursorInputEventArgs& e) override;
 
 
 	/*************************************************************************

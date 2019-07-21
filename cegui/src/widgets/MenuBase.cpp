@@ -48,9 +48,10 @@ const String MenuBase::EventPopupClosed("PopupClosed");
 MenuBase::MenuBase(const String& type, const String& name)
     : ItemListBase(type, name),
       d_itemSpacing(0.0f),
-      d_popupItem(0),
+      d_popupItem(nullptr),
       d_allowMultiplePopups(false),
-      d_autoCloseNestedPopups(false)
+      d_autoCloseNestedPopups(false),
+      d_menubarDirection(MenubarDirection::Down)
 {
     // add properties for MenuBase class
     addMenuBaseProperties();
@@ -71,11 +72,11 @@ void MenuBase::changePopupMenuItem(MenuItem* item)
     if (!d_allowMultiplePopups && d_popupItem == item)
         return;
 
-    if (!d_allowMultiplePopups && d_popupItem != 0)
+    if (!d_allowMultiplePopups && d_popupItem != nullptr)
     {
         WindowEventArgs we(d_popupItem->getPopupMenu());
         d_popupItem->closePopupMenu(false);
-        d_popupItem = 0;
+        d_popupItem = nullptr;
         onPopupClosed(we);
     }
 
@@ -131,6 +132,11 @@ void MenuBase::addMenuBaseProperties(void)
         "AutoCloseNestedPopups", "Property to set if the menu should close all its open child popups, when it gets hidden. Value is either \"true\" or \"false\".",
         &MenuBase::setAutoCloseNestedPopups, &MenuBase::getAutoCloseNestedPopups, false
     );
+
+    CEGUI_DEFINE_PROPERTY(MenuBase, MenubarDirection,
+        "MenubarDirection", "Property to get/set the direction in which child popups should open, or the manner in which this direction is determined. Value is either \"Down\", or \"Up\".",
+        &MenuBase::setMenubarDirection, &MenuBase::getMenubarDirection, MenubarDirection::Down
+    );
 }
 
 
@@ -160,7 +166,7 @@ void MenuBase::onChildRemoved(ElementEventArgs& e)
 {
     // if the removed window was our tracked popup item, zero ptr to it.
     if (static_cast<Window*>(e.element) == d_popupItem)
-        d_popupItem = 0;
+        d_popupItem = nullptr;
 
     // base class version
     ItemListBase::onChildRemoved(e);
@@ -171,7 +177,7 @@ void MenuBase::onHidden(WindowEventArgs&)
     if (!getAutoCloseNestedPopups())
         return;
 
-    changePopupMenuItem(0);
+    changePopupMenuItem(nullptr);
 
     if (d_allowMultiplePopups)
     {

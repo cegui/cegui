@@ -38,9 +38,9 @@ namespace CEGUI
     {
     }
 
-    void FalagardButton::render()
+    void FalagardButton::createRenderGeometry()
     {
-        ButtonBase* w = (ButtonBase*)d_window;
+        ButtonBase* w = static_cast<ButtonBase*>(d_window);
         const WidgetLookFeel& wlf = getLookNFeel();
 
         bool norm = false;
@@ -58,6 +58,10 @@ namespace CEGUI
 		{
 		    state = "Hover";
 		}
+        else if (w->isFocused())
+        {
+            state = "Focused";
+        }
 		else
 		{
 		    state = "Normal";

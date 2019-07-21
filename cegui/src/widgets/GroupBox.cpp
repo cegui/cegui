@@ -43,7 +43,7 @@ GroupBox::GroupBox(const String& type, const String& name) :
 {
     // When clicked, don't rise. Required because a Groupbox does not have an
     // actual parent child relation with the widgets which appear inside it.
-    d_riseOnClick = false;
+    d_riseOnPointerActivation = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -52,9 +52,9 @@ void GroupBox::addChild_impl(Element* element)
     Window* wnd = dynamic_cast<Window*>(element);
     
     if (!wnd)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "GroupBox can only have Elements of type Window added as children "
-            "(Window path: " + getNamePath() + ")."));
+            "(Window path: " + getNamePath() + ").");
 
     if (wnd->isAutoWindow())
         Window::addChild_impl(wnd);

@@ -63,9 +63,9 @@ protected:
     void eraseItemFromContentMap(const InventoryItem& item);
 
     // base class overrides
-    void onDragDropItemDropped(DragDropEventArgs &e);
-    void populateGeometryBuffer();
-    Rectf gridBasePixelRect() const;
+    void onDragDropItemDropped(DragDropEventArgs &e) override;
+    void populateGeometryBuffer() override;
+    Rectf gridBasePixelRect() const override;
 };
 
 } // End of  CEGUI namespace section
