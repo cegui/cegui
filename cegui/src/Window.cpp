@@ -404,6 +404,19 @@ bool Window::isChildRecursive(unsigned int ID) const
 }
 
 //----------------------------------------------------------------------------//
+size_t Window::getChildIdx(Window* wnd) const
+{
+    const size_t child_count = getChildCount();
+
+    for (size_t i = 0; i < child_count; ++i)
+        if (getChildAtIdx(i) == wnd)
+            return i;
+
+    // Any value >= getChildCount() must be treated as invalid
+    return std::numeric_limits<size_t>().max();
+}
+
+//----------------------------------------------------------------------------//
 Window* Window::getChild(unsigned int ID) const
 {
     const size_t child_count = getChildCount();

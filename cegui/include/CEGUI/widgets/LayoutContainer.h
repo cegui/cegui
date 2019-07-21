@@ -109,8 +109,6 @@ public:
 
     void notifyScreenAreaChanged(bool recursive) override;
 
-    size_t getIdxOfChild(Window* wnd) const;
-
 protected:
     /// @copydoc Window::getUnclippedInnerRect_impl
     Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const override;
