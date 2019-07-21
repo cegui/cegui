@@ -62,6 +62,8 @@ GLES2GeometryBuffer::~GLES2GeometryBuffer()
 //----------------------------------------------------------------------------//
 void GLES2GeometryBuffer::draw() const
 {
+    CEGUI_UNUSED(drawModeMask);
+    
     if(d_vertexData.empty())
         return;
 
