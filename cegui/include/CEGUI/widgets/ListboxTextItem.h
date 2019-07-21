@@ -55,7 +55,7 @@ public:
 	\brief
 		base class constructor
 	*/
-	ListboxTextItem(const String& text, uint item_id = 0, void* item_data = 0, bool disabled = false, bool auto_delete = true);
+	ListboxTextItem(const String& text, unsigned int item_id = 0, void* item_data = nullptr, bool disabled = false, bool auto_delete = true);
 
 
 	/*!
@@ -173,24 +173,28 @@ public:
         BasicRenderedStringParser or not.
 
     \param enable
-        - true if the ListboxTextItem text will be parsed.
+        - true if the ListboxTextItem text will be parsed with default
+          BasicRenderedStringParser.
         - false if the ListboxTextItem text will be used verbatim.
+
+    \note For enable parsing with custom parser use setCustomRenderedStringParser.
     */
     void setTextParsingEnabled(const bool enable);
 
     //! return whether text parsing is enabled for this ListboxTextItem.
     bool isTextParsingEnabled() const;
 
+    //! Set a custom RenderedStringParser (and enable text parsing), or 0 to disable text parsing
+    void setCustomRenderedStringParser(CEGUI::RenderedStringParser* parser);
+
     // base class overrides
-    void setText(const String& text);
-    bool handleFontRenderSizeChange(const Font* const font);
+    void setText(const String& text) override;
+    bool handleFontRenderSizeChange(const Font* const font) override;
 
 
-	/*************************************************************************
-		Required implementations of pure virtuals from the base class.
-	*************************************************************************/
-    Sizef getPixelSize(void) const;
-    void draw(GeometryBuffer& buffer, const Rectf& targetRect, float alpha, const Rectf* clipper) const;
+    Sizef getPixelSize(void) const override;
+    std::vector<GeometryBuffer*> createRenderGeometry(
+        const Rectf& targetRect, float alpha, const Rectf* clipper) const override;
 
 protected:
     void parseTextString() const;
@@ -208,8 +212,8 @@ protected:
     mutable bool d_renderedStringValid;
     //! Parser used when parsing is off.  Basically just does linebreaks.
     static DefaultRenderedStringParser d_noTagsStringParser;
-    //! boolean that specifies whether text parsing is enabled for the item.
-    bool d_textParsingEnabled;
+    //! pointer to currently used render string parser.
+    CEGUI::RenderedStringParser* d_renderedStringParser;
 };
 
 } // End of  CEGUI namespace section

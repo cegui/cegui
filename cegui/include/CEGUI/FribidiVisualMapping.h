@@ -37,9 +37,9 @@ class FribidiVisualMapping : public BidiVisualMapping
 {
 public:
     // implement required interface.
-    BidiCharType getBidiCharType(const utf32 char_to_check) const;
+    BidiCharType getBidiCharType(const char32_t char_to_check) const override;
     bool reorderFromLogicalToVisual(const String& logical, String& visual,
-                                    StrIndexList& l2v, StrIndexList& v2l) const;
+                                    StrIndexList& l2v, StrIndexList& v2l) const override;
 };
 
 } // End of  CEGUI namespace section

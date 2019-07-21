@@ -34,20 +34,14 @@
 #   if defined(_MSC_VER)
 #       pragma warning(disable : 4552)  // warning: operator has no effect; expected operator with side-effect
 #   endif
-#   define WIN32_LEAN_AND_MEAN
-#   include <windows.h>
 #   define DYNLIB_LOAD( a ) LoadLibrary( (a).c_str() )
 #   define DYNLIB_GETSYM( a, b ) GetProcAddress( a, (b).c_str() )
 #   define DYNLIB_UNLOAD( a ) !FreeLibrary( a )
-    typedef HMODULE DYNLIB_HANDLE;
-#endif
-
-#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__) || defined(__CYGWIN__)
+#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__) || defined(__CYGWIN__)
 #   include "dlfcn.h"
 #   define DYNLIB_LOAD( a ) dlopen( (a).c_str(), RTLD_LAZY )
 #   define DYNLIB_GETSYM( a, b ) dlsym( a, (b).c_str() )
 #   define DYNLIB_UNLOAD( a ) dlclose( a )
-    typedef void* DYNLIB_HANDLE;
 #endif
 
 // setup default-default path
@@ -58,12 +52,11 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-struct DynamicModule::Impl :
-    public AllocatedObject<DynamicModule::Impl>
+struct DynamicModule::Impl
 {
     Impl(const String& name) :
         d_moduleName(name),
-        d_handle(0)
+        d_handle(nullptr)
     {}
 
     ~Impl()
@@ -138,12 +131,12 @@ static String getFailureString()
     if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
                       FORMAT_MESSAGE_FROM_SYSTEM | 
                       FORMAT_MESSAGE_IGNORE_INSERTS,
-                      0,
+                      nullptr,
                       GetLastError(),
                       MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
                       reinterpret_cast<LPTSTR>(&msgBuffer),
                       0,
-                      0))
+                      nullptr))
     {
         retMsg = reinterpret_cast<LPTSTR>(msgBuffer);
         LocalFree(msgBuffer);
@@ -161,14 +154,17 @@ static String getFailureString()
 //----------------------------------------------------------------------------//
 static DYNLIB_HANDLE DynLibLoad(const String& name)
 {
-    DYNLIB_HANDLE handle = 0;
+    DYNLIB_HANDLE handle = nullptr;
 
     // prefer whatever location is set in CEGUI_MODULE_DIR environment var
     const String envModuleDir(getModuleDirEnvVar());
 
     if (!envModuleDir.empty())
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         handle = DYNLIB_LOAD(envModuleDir + '/' + name);
-
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+        handle = DYNLIB_LOAD( String::convertUtf32ToUtf8((envModuleDir + '/' + name).getString()) );
+#endif
     #ifdef __APPLE__
     if (!handle)
         // on apple, look in the app bundle frameworks directory
@@ -177,20 +173,30 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
 
     if (!handle)
         // try loading without any explicit location (i.e. use OS search path)
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         handle = DYNLIB_LOAD(name);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+        handle = DYNLIB_LOAD( String::convertUtf32ToUtf8(name.getString()) );
+#endif
 
     // finally, try using the compiled-in module directory
     #if defined(CEGUI_MODULE_DIR)
     if (!handle)
+        #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         handle = DYNLIB_LOAD(CEGUI_MODULE_DIR + name);
+        #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+        handle = DYNLIB_LOAD( String::convertUtf32ToUtf8((CEGUI_MODULE_DIR + name).getString()) );
+        #endif
     #endif
+
+
 
     return handle;
 }
 
 //----------------------------------------------------------------------------//
 DynamicModule::DynamicModule(const String& name) :
-    d_pimpl(CEGUI_NEW_AO Impl(name))
+    d_pimpl(new Impl(name))
 {
 	if (name.empty())
 		return;
@@ -220,14 +226,14 @@ DynamicModule::DynamicModule(const String& name) :
 
     // check for library load failure
     if (!d_pimpl->d_handle)
-        CEGUI_THROW(GenericException("Failed to load module '" +
-            d_pimpl->d_moduleName + "': " + getFailureString()));
+        throw GenericException("Failed to load module '" +
+            d_pimpl->d_moduleName + "': " + getFailureString());
 }
 
 //----------------------------------------------------------------------------//
 DynamicModule::~DynamicModule()
 {
-    CEGUI_DELETE_AO d_pimpl;
+    delete d_pimpl;
 }
 
 //----------------------------------------------------------------------------//
@@ -237,9 +243,13 @@ const String& DynamicModule::getModuleName() const
 }
 
 //----------------------------------------------------------------------------//
-void* DynamicModule::getSymbolAddress(const String& symbol) const
+ModuleFuncHandle DynamicModule::getSymbolAddress(const String& symbol) const
 {
-    return (void*)DYNLIB_GETSYM(d_pimpl->d_handle, symbol);
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+    return DYNLIB_GETSYM(d_pimpl->d_handle, symbol);
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    return DYNLIB_GETSYM(d_pimpl->d_handle, String::convertUtf32ToUtf8(symbol.getString()));
+#endif
 }
 
 //----------------------------------------------------------------------------//

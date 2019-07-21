@@ -3,7 +3,7 @@ created:    11/8/2012
 author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
-*   Copyright (C) 2004 - 2012 Paul D Turner & Thce CEGUI Development Team
+*   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
 *
 *   Permission is hereby granted, free of charge, to any person obtaining
 *   a copy of this software and associated documentation files (the
@@ -37,7 +37,7 @@ using namespace CEGUI;
 
 struct GamePlate
 {
-    GamePlate(HUDDemo* hudDemo);
+    GamePlate(RestaurantGameSample* RestaurantGameSample);
     ~GamePlate();
 
     void update(float timeSinceLastUpdate);
@@ -48,17 +48,17 @@ struct GamePlate
     bool d_isDestroyed;
 };
 
-GamePlate::GamePlate(HUDDemo* hudDemo)
+GamePlate::GamePlate(RestaurantGameSample* RestaurantGameSample)
     : d_isDestroyed(false)
 {
-    d_window = hudDemo->spawnPlate();
+    d_window = RestaurantGameSample->spawnPlate();
 
     int randumNumber = rand() % 2;
     d_isComingFromRight = (randumNumber == 0 ? false : true);
 
     if(d_isComingFromRight)
     {
-        d_window->setHorizontalAlignment(HA_RIGHT);
+        d_window->setHorizontalAlignment(HorizontalAlignment::Right);
         d_window->setPosition(d_window->getPosition() + CEGUI::UVector2(cegui_reldim(0.2f), cegui_absdim(0.0f)));
     }
     else
@@ -102,67 +102,89 @@ int GamePlate::getPoints()
 
     CEGUI::String objectImage = window->getProperty("Image");
 
-    if(objectImage.compare(HUDDemo::s_imageNameBread) == 0)
+    if(objectImage.compare(RestaurantGameSample::s_imageNameBread) == 0)
         return 2;
-    else if(objectImage.compare(HUDDemo::s_imageNamePoo) == 0)
+    else if(objectImage.compare(RestaurantGameSample::s_imageNamePoo) == 0)
         return -6;
-    else if(objectImage.compare(HUDDemo::s_imageNameSteak) == 0)
+    else if(objectImage.compare(RestaurantGameSample::s_imageNameSteak) == 0)
         return -13;
-    else if(objectImage.compare(HUDDemo::s_imageNamePrizza) == 0)
+    else if(objectImage.compare(RestaurantGameSample::s_imageNamePrizza) == 0)
         return 3;
-    else if(objectImage.compare(HUDDemo::s_imageNameVegPeople) == 0)
+    else if(objectImage.compare(RestaurantGameSample::s_imageNameVegPeople) == 0)
         return 1;
-    else if(objectImage.compare(HUDDemo::s_imageNameVegFruits) == 0)
+    else if(objectImage.compare(RestaurantGameSample::s_imageNameVegFruits) == 0)
         return 88;
 
     return 0;
 }
 
-const CEGUI::String HUDDemo::s_imageNamePlate = "HUDDemo/Plate";
-const CEGUI::String HUDDemo::s_imageNameBread = "HUDDemo/Bread";
-const CEGUI::String HUDDemo::s_imageNamePoo = "HUDDemo/Poo";
-const CEGUI::String HUDDemo::s_imageNamePrizza = "HUDDemo/Prizza";
-const CEGUI::String HUDDemo::s_imageNameSteak = "HUDDemo/Steak";
-const CEGUI::String HUDDemo::s_imageNameVegPeople = "HUDDemo/VegetablePeople";
-const CEGUI::String HUDDemo::s_imageNameVegFruits = "HUDDemo/VegetablesAndFruits";
+const CEGUI::String RestaurantGameSample::s_imageNamePlate = "RestaurantGameSample/Plate";
+const CEGUI::String RestaurantGameSample::s_imageNameBread = "RestaurantGameSample/Bread";
+const CEGUI::String RestaurantGameSample::s_imageNamePoo = "RestaurantGameSample/Poo";
+const CEGUI::String RestaurantGameSample::s_imageNamePrizza = "RestaurantGameSample/Prizza";
+const CEGUI::String RestaurantGameSample::s_imageNameSteak = "RestaurantGameSample/Steak";
+const CEGUI::String RestaurantGameSample::s_imageNameVegPeople = "RestaurantGameSample/VegetablePeople";
+const CEGUI::String RestaurantGameSample::s_imageNameVegFruits = "RestaurantGameSample/VegetablesAndFruits";
 
-bool HUDDemo::initialise(CEGUI::GUIContext* guiContext)
+RestaurantGameSample::RestaurantGameSample() :
+    Sample(99)
+{
+    Sample::d_name = "RestaurantGameSample";
+    Sample::d_credits = "Lukas \"Ident\" Meindl, graphics: Charles \"Syg\" Mattei";
+    Sample::d_description =
+        "The RestaurantGame presents a game that uses a head-up display. This shows that CEGUI has "
+        "full capabilities for rendering HUD's for first person shooters or other any other types of games. "
+        "The interface consists of a health bar, lives, switchable weapons and power-ups. "
+        "The game itself consists of moving dishes that have to be clicked on to receive points. "
+        "When clicked, the points appear in red or green text as a pop-up text that moves "
+        "upwards and vanishes after some seconds.";
+    Sample::d_summary =
+        "The HUD consists of basic \"Generic/Label\" and \"Generic/Image\" windows to display its elements. "
+        "For some windows event handlers are registered to react to user interaction. "
+        "A CEGUI/Progressbar with custom skinning was made for this demo to display the life bar. "
+        "For the pop-up points a window with animations directly defined in the look n' feel file "
+        "was made. The animations are triggered by firing events and when the pop-up animation is "
+        "over the event handler will react to this and subsequently the window will be "
+        "deleted as defined in the C++ code.";
+}
+
+bool RestaurantGameSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
     d_usedFiles = CEGUI::String(__FILE__);
     d_guiContext = guiContext;
 
-    SchemeManager::getSingleton().createFromFile("HUDDemo.scheme");
+    SchemeManager::getSingleton().createFromFile("RestaurantGameSample.scheme");
     SchemeManager::getSingleton().createFromFile("Generic.scheme");
 
     FontManager::getSingleton().createFromFile("DejaVuSans-14.font");
 
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
-    // Load the HUDDemo Layout
-    d_rootIngame = winMgr.loadLayoutFromFile("HUDDemoIngame.layout");
-    d_rootGameOver = winMgr.loadLayoutFromFile("HUDDemoGameOver.layout");
-    d_root = winMgr.createWindow("DefaultWindow", "HUDDemoRoot");
+    // Load the RestaurantGameSample Layout
+    d_rootIngame = winMgr.loadLayoutFromFile("RestaurantGameSampleIngame.layout");
+    d_rootGameOver = winMgr.loadLayoutFromFile("RestaurantGameSampleGameOver.layout");
+    d_root = winMgr.createWindow("DefaultWindow", "RestaurantGameSampleRoot");
     d_root->addChild(d_rootIngame);
     d_guiContext->setRootWindow(d_root);
 
-    if(!ImageManager::getSingleton().isDefined("HUDDemoGameOver"))
-        ImageManager::getSingleton().addFromImageFile("HUDDemoGameOver", "HUDDemoGameOver.png");
-    d_rootGameOver->getChild("GameOverImage")->setProperty("Image", "HUDDemoGameOver");
+    if(!ImageManager::getSingleton().isDefined("RestaurantGameSampleGameOver"))
+        ImageManager::getSingleton().addBitmapImageFromFile("RestaurantGameSampleGameOver", "RestaurantGameSampleGameOver.png");
+    d_rootGameOver->getChild("GameOverImage")->setProperty("Image", "RestaurantGameSampleGameOver");
 
-    setupMouseCursor();
+    setupCursor();
 
-    srand(static_cast<unsigned int >(time(0)));
+    srand(static_cast<unsigned int >(time(nullptr)));
 
     d_lifeBar = static_cast<CEGUI::ProgressBar*>(d_rootIngame->getChild("TopBar/LifeBar"));
 
     initGame();
 
-    d_rootIngame->getChild("BotBar/WeaponBGImage/LeftArrowArea")->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&HUDDemo::handleWeaponLeftArrowClicked, this));
-    d_rootIngame->getChild("BotBar/WeaponBGImage/RightArrowArea")->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&HUDDemo::handleWeaponRightArrowClicked, this));
-   
-    d_rootGameOver->getChild("ButtonRestart")->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&HUDDemo::handleRestartButtonClicked, this));
-  
+    d_rootIngame->getChild("BotBar/WeaponBGImage/LeftArrowArea")->subscribeEvent(CEGUI::Window::EventCursorActivate, Event::Subscriber(&RestaurantGameSample::handleWeaponLeftArrowClicked, this));
+    d_rootIngame->getChild("BotBar/WeaponBGImage/RightArrowArea")->subscribeEvent(CEGUI::Window::EventCursorActivate, Event::Subscriber(&RestaurantGameSample::handleWeaponRightArrowClicked, this));
+
+    d_rootGameOver->getChild("ButtonRestart")->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&RestaurantGameSample::handleRestartButtonClicked, this));
+
 
     return true;
 }
@@ -170,7 +192,7 @@ bool HUDDemo::initialise(CEGUI::GUIContext* guiContext)
 /*************************************************************************
 Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void HUDDemo::deinitialise()
+void RestaurantGameSample::deinitialise()
 {
     while(!d_gamePlates.empty())
     {
@@ -182,18 +204,18 @@ void HUDDemo::deinitialise()
 }
 
 
-void HUDDemo::onEnteringSample()
+void RestaurantGameSample::onEnteringSample()
 {
     initGame();
 }
 
-void HUDDemo::update(float timeSinceLastUpdate)
+void RestaurantGameSample::update(float timeSinceLastUpdate)
 {
     static float timeSinceLastSpawn(0.0f);
 
     timeSinceLastSpawn += timeSinceLastUpdate;
 
-    updateMouseCursor();
+    updateCursor();
 
 
     if(timeSinceLastSpawn> 1.2f)
@@ -209,56 +231,56 @@ void HUDDemo::update(float timeSinceLastUpdate)
     d_guiContext->markAsDirty();
 }
 
-void HUDDemo::setupMouseCursor()
+void RestaurantGameSample::setupCursor()
 {
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
-    d_mouseCursorWnd = winMgr.createWindow("Generic/Image");
-    d_mouseCursorWnd->setProperty("Image", "HUDDemo/Spoon");
-    d_mouseCursorWnd->setAspectMode(CEGUI::AM_EXPAND);
-    d_mouseCursorWnd->setAspectRatio(1.f);
-    d_mouseCursorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.1f)));
-    d_mouseCursorWnd->setAlwaysOnTop(true);
-    d_mouseCursorWnd->setMousePassThroughEnabled(true);
-    d_rootIngame->addChild(d_mouseCursorWnd);
+    d_cursorWnd = winMgr.createWindow("Generic/Image");
+    d_cursorWnd->setProperty("Image", "RestaurantGameSample/Spoon");
+    d_cursorWnd->setAspectMode(AspectMode::Expand);
+    d_cursorWnd->setAspectRatio(1.0f);
+    d_cursorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.1f)));
+    d_cursorWnd->setAlwaysOnTop(true);
+    d_cursorWnd->setCursorPassThroughEnabled(true);
+    d_rootIngame->addChild(d_cursorWnd);
 }
 
-void HUDDemo::updateMouseCursor()
+void RestaurantGameSample::updateCursor()
 {
-    CEGUI::Vector2f position = d_guiContext->getMouseCursor().getPosition();
+    glm::vec2 position = d_guiContext->getCursor().getPosition();
 
     // We want to position the image-window right top of the actual
     // cursor point so we add its height
-    float absHeight = d_mouseCursorWnd->getPixelSize().d_height;
-    position.d_y -= absHeight;
+    float absHeight = d_cursorWnd->getPixelSize().d_height;
+    position.y -= absHeight;
 
-    d_mouseCursorWnd->setPosition(
+    d_cursorWnd->setPosition(
         CEGUI::UVector2(
-        cegui_absdim(position.d_x - 5.0f), cegui_absdim(position.d_y + 5.0f))
+        cegui_absdim(position.x - 5.0f), cegui_absdim(position.y + 5.0f))
         );
 }
 
 
-CEGUI::Window* HUDDemo::spawnPlate()
+CEGUI::Window* RestaurantGameSample::spawnPlate()
 {
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
     CEGUI::Window* plateRoot = winMgr.createWindow("DefaultWindow");
     plateRoot->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.16f)));
-    plateRoot->setAspectMode(CEGUI::AM_EXPAND);
+    plateRoot->setAspectMode(CEGUI::AspectMode::Expand);
     plateRoot->setAspectRatio(1.0f);
     plateRoot->setRiseOnClickEnabled(false);
     plateRoot->setPixelAligned(false);
-    plateRoot->subscribeEvent(CEGUI::Window::EventMouseButtonDown, Event::Subscriber(&HUDDemo::handlePlateWindowClicked, this));
+    plateRoot->subscribeEvent(CEGUI::Window::EventCursorActivate, Event::Subscriber(&RestaurantGameSample::handlePlateWindowActivated, this));
     d_rootIngame->addChild(plateRoot);
 
     CEGUI::Window* plateImgWnd = winMgr.createWindow("Generic/Image", "ImageWindowPlate");
     plateImgWnd->setProperty("Image", s_imageNamePlate);
     plateImgWnd->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_absdim(0.0f)));
     plateImgWnd->setAspectRatio(3.308f);
-    plateImgWnd->setAspectMode(CEGUI::AM_EXPAND);
-    plateImgWnd->setVerticalAlignment(CEGUI::VA_BOTTOM);
-    plateImgWnd->setMousePassThroughEnabled(true);
+    plateImgWnd->setAspectMode(CEGUI::AspectMode::Expand);
+    plateImgWnd->setVerticalAlignment(CEGUI::VerticalAlignment::Bottom);
+    plateImgWnd->setCursorPassThroughEnabled(true);
     plateImgWnd->setPixelAligned(false);
     plateRoot->addChild(plateImgWnd);
 
@@ -268,9 +290,9 @@ CEGUI::Window* HUDDemo::spawnPlate()
     plateTopping->setProperty("Image", image);
     plateTopping->setSize(CEGUI::USize(cegui_reldim(0.88f), cegui_absdim(0.0f)));
     plateTopping->setAspectRatio(1.0f);
-    plateTopping->setAspectMode(CEGUI::AM_EXPAND);
-    plateTopping->setHorizontalAlignment(CEGUI::HA_CENTRE);
-    plateTopping->setMousePassThroughEnabled(true);
+    plateTopping->setAspectMode(CEGUI::AspectMode::Expand);
+    plateTopping->setHorizontalAlignment(CEGUI::HorizontalAlignment::Centre);
+    plateTopping->setCursorPassThroughEnabled(true);
     plateTopping->setPixelAligned(false);
     plateRoot->addChild(plateTopping);
 
@@ -283,7 +305,7 @@ CEGUI::Window* HUDDemo::spawnPlate()
     return plateRoot;
 }
 
-const CEGUI::String& HUDDemo::getRandomGameImage()
+const CEGUI::String& RestaurantGameSample::getRandomGameImage()
 {
     int randumNumber = rand() % 100;
 
@@ -304,7 +326,7 @@ const CEGUI::String& HUDDemo::getRandomGameImage()
 }
 
 
-void HUDDemo::updatePlates(float timeSinceLastUpdate)
+void RestaurantGameSample::updatePlates(float timeSinceLastUpdate)
 {
     unsigned int vectorSize = d_gamePlates.size();
 
@@ -325,22 +347,21 @@ void HUDDemo::updatePlates(float timeSinceLastUpdate)
     }
 }
 
-void HUDDemo::updateScoreWindow()
+void RestaurantGameSample::updateScoreWindow()
 {
     CEGUI::Window* scoreWnd = d_rootIngame->getChild("TopBar/ScoreBGImage/Score");
-    scoreWnd->setText(CEGUI::PropertyHelper<int>::toString(d_score));
+    scoreWnd->setText(CEGUI::PropertyHelper<std::int32_t>::toString(d_score));
 }
 
-bool HUDDemo::handlePlateWindowClicked(const CEGUI::EventArgs& args)
+bool RestaurantGameSample::handlePlateWindowActivated(const CEGUI::EventArgs& args)
 {
-    const CEGUI::MouseEventArgs& mouseArgs = static_cast<const CEGUI::MouseEventArgs&>(args);
-
+    const CEGUI::CursorInputEventArgs& cursor_args = static_cast<const CEGUI::CursorInputEventArgs&>(args);
 
     for(unsigned int i = 0; i < d_gamePlates.size(); ++i)
     {
         GamePlate* gamePlate = d_gamePlates[i];
 
-        if(gamePlate->d_window == mouseArgs.window)
+        if(gamePlate->d_window == cursor_args.window)
         {
             int points = gamePlate->getPoints();
             d_score += points;
@@ -362,23 +383,23 @@ bool HUDDemo::handlePlateWindowClicked(const CEGUI::EventArgs& args)
             }
 
             gamePlate->d_isDestroyed = true;
-            createScorePopup(mouseArgs.position, points);
+            createScorePopup(cursor_args.position, points);
         }
     }
 
     return false;
 }
 
-void HUDDemo::createScorePopup(const CEGUI::Vector2<float>& mousePos, int points)
+void RestaurantGameSample::createScorePopup(const glm::vec2& cursor_pos, std::int32_t points)
 {
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
-    CEGUI::Window* popupWindow = winMgr.createWindow("HUDDemo/PopupLabel");
+    CEGUI::Window* popupWindow = winMgr.createWindow("RestaurantGameSample/PopupLabel");
     d_rootIngame->addChild(popupWindow);
-    popupWindow->setPosition(CEGUI::UVector2(cegui_absdim(mousePos.d_x), cegui_absdim(mousePos.d_y)));
-    popupWindow->setText(CEGUI::PropertyHelper<int>::toString(points));
+    popupWindow->setPosition(CEGUI::UVector2(cegui_absdim(cursor_pos.x), cegui_absdim(cursor_pos.y)));
+    popupWindow->setText(CEGUI::PropertyHelper<std::int32_t>::toString(points));
     popupWindow->setRiseOnClickEnabled(false);
-    popupWindow->subscribeEvent(AnimationInstance::EventAnimationEnded, Event::Subscriber(&HUDDemo::handleScorePopupAnimationEnded, this));
+    popupWindow->subscribeEvent(AnimationInstance::EventAnimationEnded, Event::Subscriber(&RestaurantGameSample::handleScorePopupAnimationEnded, this));
     popupWindow->setPixelAligned(false);
     popupWindow->setFont("DejaVuSans-14");
 
@@ -396,7 +417,7 @@ void HUDDemo::createScorePopup(const CEGUI::Vector2<float>& mousePos, int points
     popupWindow->fireEvent("StartAnimation", args);
 }
 
-bool HUDDemo::handleScorePopupAnimationEnded(const CEGUI::EventArgs& args)
+bool RestaurantGameSample::handleScorePopupAnimationEnded(const CEGUI::EventArgs& args)
 {
     const CEGUI::AnimationEventArgs& animArgs = static_cast<const CEGUI::AnimationEventArgs&>(args);
 
@@ -406,7 +427,7 @@ bool HUDDemo::handleScorePopupAnimationEnded(const CEGUI::EventArgs& args)
     return false;
 }
 
-void HUDDemo::delayDestroyWindows()
+void RestaurantGameSample::delayDestroyWindows()
 {
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
@@ -420,13 +441,13 @@ void HUDDemo::delayDestroyWindows()
 }
 
 
-void HUDDemo::handleLivesChanged()
+void RestaurantGameSample::handleLivesChanged()
 {
     bool life1Visible = (d_lives >= 1);
     bool life2Visible = (d_lives >= 2);
     bool life3Visible = (d_lives >= 3);
 
-    
+
     d_rootIngame->getChild("TopBar/Life1")->setAlpha( life1Visible ? 1.0f : 0.5f );
     d_rootIngame->getChild("TopBar/Life2")->setAlpha( life2Visible ? 1.0f : 0.5f );
     d_rootIngame->getChild("TopBar/Life3")->setAlpha( life3Visible ? 1.0f : 0.5f );
@@ -434,11 +455,11 @@ void HUDDemo::handleLivesChanged()
     if(d_lives <= 0)
     {
         d_root->addChild(d_rootGameOver);
-        d_rootGameOver->addChild(d_mouseCursorWnd);
+        d_rootGameOver->addChild(d_cursorWnd);
     }
 }
 
-void HUDDemo::initGame()
+void RestaurantGameSample::initGame()
 {
     d_lives = 3;
     handleLivesChanged();
@@ -451,7 +472,7 @@ void HUDDemo::initGame()
     d_lifeBar->setProgress(1.0f);
 }
 
-void HUDDemo::selectedWeapon(SelectedWeapon weapon)
+void RestaurantGameSample::selectedWeapon(SelectedWeapon weapon)
 {
     d_selectedWeapon = weapon;
 
@@ -462,7 +483,7 @@ void HUDDemo::selectedWeapon(SelectedWeapon weapon)
         d_rootIngame->getChild("BotBar/WeaponKnife")->setAlpha(0.5f);
         d_rootIngame->getChild("BotBar/WeaponFork")->setAlpha(0.5f);
         d_rootIngame->getChild("BotBar/WeaponBGImage/WeaponLabel")->setText("Le Spoon");
-        
+
         break;
     case SW_Fork:
         d_rootIngame->getChild("BotBar/WeaponSpoon")->setAlpha(0.5f);
@@ -481,7 +502,7 @@ void HUDDemo::selectedWeapon(SelectedWeapon weapon)
     }
 }
 
-bool HUDDemo::handleWeaponRightArrowClicked(const CEGUI::EventArgs&)
+bool RestaurantGameSample::handleWeaponRightArrowClicked(const CEGUI::EventArgs&)
 {
     int weaponIndex = static_cast<int>(d_selectedWeapon);
     weaponIndex = (weaponIndex - 1) % 3;
@@ -492,29 +513,20 @@ bool HUDDemo::handleWeaponRightArrowClicked(const CEGUI::EventArgs&)
     return false;
 }
 
-bool HUDDemo::handleRestartButtonClicked(const CEGUI::EventArgs&)
+bool RestaurantGameSample::handleRestartButtonClicked(const CEGUI::EventArgs&)
 {
     d_root->removeChild(d_rootGameOver);
-    d_rootIngame->addChild(d_mouseCursorWnd);
+    d_rootIngame->addChild(d_cursorWnd);
 
     initGame();
 
     return false;
 }
 
-bool HUDDemo::handleWeaponLeftArrowClicked(const CEGUI::EventArgs&)
+bool RestaurantGameSample::handleWeaponLeftArrowClicked(const CEGUI::EventArgs&)
 {
     int weaponIndex = static_cast<int>(d_selectedWeapon);
     selectedWeapon( static_cast<SelectedWeapon>(++weaponIndex % 3) );
 
     return false;
-}
-
-/*************************************************************************
-Define the module function that returns an instance of the sample
-*************************************************************************/
-extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
-{
-    static HUDDemo sample;
-    return sample;
 }

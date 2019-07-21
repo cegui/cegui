@@ -38,7 +38,7 @@ namespace CEGUI
     member function.
 */
 template<typename T>
-class MemberFunctionSlot : public SlotFunctorBase
+class MemberFunctionSlot : public SlotFunctorBase<EventArgs>
 {
 public:
     //! Member function slot type.
@@ -49,7 +49,7 @@ public:
         d_object(obj)
     {}
 
-    virtual bool operator()(const EventArgs& args)
+    bool operator()(const EventArgs& args) override
     {
         return (d_object->*d_function)(args);
     }
@@ -69,7 +69,7 @@ private:
     handled.
 */
 template<typename T>
-class MemberFunctionSlotVoid : public SlotFunctorBase
+class MemberFunctionSlotVoid : public SlotFunctorBase<EventArgs>
 {
 public:
     //! Member function slot type.
@@ -80,7 +80,7 @@ public:
         d_object(obj)
     {}
 
-    virtual bool operator()(const EventArgs& args)
+    bool operator()(const EventArgs& args) override
     {
         (d_object->*d_function)(args);
 
@@ -98,7 +98,7 @@ private:
     member function. This variant ignores passed EventArgs.
 */
 template<typename T>
-class MemberFunctionSlotNoArgs : public SlotFunctorBase
+class MemberFunctionSlotNoArgs : public SlotFunctorBase<EventArgs>
 {
 public:
     //! Member function slot type.
@@ -109,7 +109,7 @@ public:
         d_object(obj)
     {}
 
-    virtual bool operator()(const EventArgs& /*args*/)
+    bool operator()(const EventArgs& /*args*/) override
     {
         return (d_object->*d_function)();
     }
@@ -130,7 +130,7 @@ private:
     handled.
 */
 template<typename T>
-class MemberFunctionSlotVoidNoArgs : public SlotFunctorBase
+class MemberFunctionSlotVoidNoArgs : public SlotFunctorBase<EventArgs>
 {
 public:
     //! Member function slot type.
@@ -141,7 +141,7 @@ public:
         d_object(obj)
     {}
 
-    virtual bool operator()(const EventArgs& /*args*/)
+    bool operator()(const EventArgs& /*args*/) override
     {
         (d_object->*d_function)();
 

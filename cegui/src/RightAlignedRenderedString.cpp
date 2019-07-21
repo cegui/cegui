@@ -26,7 +26,6 @@
  ***************************************************************************/
 #include "CEGUI/RightAlignedRenderedString.h"
 #include "CEGUI/RenderedString.h"
-#include "CEGUI/Vector.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -50,21 +49,30 @@ void RightAlignedRenderedString::format(const Window* ref_wnd,
 }
 
 //----------------------------------------------------------------------------//
-void RightAlignedRenderedString::draw(const Window* ref_wnd,
-                                      GeometryBuffer& buffer,
-                                      const Vector2f& position,
-                                      const ColourRect* mod_colours,
-                                      const Rectf* clip_rect) const
+std::vector<GeometryBuffer*> RightAlignedRenderedString::createRenderGeometry(
+    const Window* ref_wnd,
+    const glm::vec2& position,
+    const ColourRect* mod_colours,
+    const Rectf* clip_rect) const
 {
-    Vector2f draw_pos;
-    draw_pos.d_y = position.d_y;
+    glm::vec2 draw_pos;
+    draw_pos.y = position.y;
+    std::vector<GeometryBuffer*> geomBuffers;
 
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        draw_pos.d_x = position.d_x + d_offsets[i];
-        d_renderedString->draw(ref_wnd, i, buffer, draw_pos, mod_colours, clip_rect, 0.0f);
-        draw_pos.d_y += d_renderedString->getPixelSize(ref_wnd, i).d_height;
+        draw_pos.x = position.x + d_offsets[i];
+
+        std::vector<GeometryBuffer*> currentRenderGeometry = 
+            d_renderedString->createRenderGeometry(ref_wnd, i, draw_pos, mod_colours, clip_rect, 0.0f);
+
+        geomBuffers.insert(geomBuffers.end(), currentRenderGeometry.begin(),
+            currentRenderGeometry.end());
+
+        draw_pos.y += d_renderedString->getPixelSize(ref_wnd, i).d_height;
     }
+
+    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//
