@@ -257,8 +257,8 @@ void GridLayoutContainer::swapChildPositions(size_t gridX1, size_t gridY1,
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::swapChildren(Window* wnd1, Window* wnd2)
 {
-    swapChildPositions(getIdxOfChild(wnd1),
-                       getIdxOfChild(wnd2));
+    swapChildPositions(getChildIdx(wnd1),
+                       getChildIdx(wnd2));
 }
 
 //----------------------------------------------------------------------------//
@@ -595,7 +595,7 @@ void GridLayoutContainer::removeChild_impl(Element* element)
         Window* dummy = createDummy();
         addChild(dummy);
 
-        const size_t i = getIdxOfChild(wnd);
+        const size_t i = getChildIdx(wnd);
         std::swap(d_children[i], d_children[d_children.size() - 1]);
     }
 
