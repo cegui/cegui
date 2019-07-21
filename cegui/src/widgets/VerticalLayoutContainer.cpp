@@ -42,7 +42,7 @@ const String VerticalLayoutContainer::WidgetTypeName("VerticalLayoutContainer");
 *************************************************************************/
 VerticalLayoutContainer::VerticalLayoutContainer(const String& type,
                                                  const String& name) :
-        SequentialLayoutContainer(type, name)
+    LayoutContainer(type, name)
 {}
 
 //----------------------------------------------------------------------------//
