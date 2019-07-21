@@ -703,7 +703,7 @@ public:
         less than the value returned by getChildCount() must be treated as invalid.
         It means that the given window is not our child.
     */
-    size_t getChildIdx(Window* wnd) const;
+    size_t getChildIndex(Window* wnd) const;
 
     /*!
     \brief

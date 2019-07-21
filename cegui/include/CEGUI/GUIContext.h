@@ -251,7 +251,6 @@ protected:
     void resetWindowContainingCursor();
 
     // event trigger functions.
-    virtual void onRootWindowChanged(WindowEventArgs& args);
     virtual void onRenderTargetChanged(GUIContextRenderTargetEventArgs& args);
     virtual void onDefaultFontChanged(EventArgs& args);
 

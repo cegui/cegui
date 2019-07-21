@@ -404,7 +404,7 @@ bool Window::isChildRecursive(unsigned int ID) const
 }
 
 //----------------------------------------------------------------------------//
-size_t Window::getChildIdx(Window* wnd) const
+size_t Window::getChildIndex(Window* wnd) const
 {
     const size_t child_count = getChildCount();
 
