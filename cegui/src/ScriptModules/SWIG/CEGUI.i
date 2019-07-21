@@ -16,6 +16,13 @@ using namespace CEGUI;
 %template(CEGUISingleton_AnimationManager) CEGUI::Singleton<CEGUI::AnimationManager>;
 %template(CEGUISingleton_GlobalEventSet) CEGUI::Singleton<CEGUI::GlobalEventSet>;
 %template(CEGUISingleton_System) CEGUI::Singleton<CEGUI::System>;
+%template(CEGUISingleton_Logger) CEGUI::Singleton<CEGUI::Logger>;
+%template(CEGUISingleton_RenderEffectManager) CEGUI::Singleton<CEGUI::RenderEffectManager>;
+%template(CEGUISingleton_SchemeManager) CEGUI::Singleton<CEGUI::SchemeManager>;
+%template(CEGUISingleton_WindowFactoryManager) CEGUI::Singleton<CEGUI::WindowFactoryManager>;
+%template(CEGUISingleton_WindowRendererManager) CEGUI::Singleton<CEGUI::WindowRendererManager>;
+%template(CEGUISingleton_WidgetLookManager) CEGUI::Singleton<CEGUI::WidgetLookManager>;
+%template(CEGUISingleton_FontManager) CEGUI::Singleton<CEGUI::FontManager>;
 
 
 %ignore CEGUI::ImageManager::getIterator;
@@ -56,18 +63,29 @@ using namespace CEGUI;
 %include "CEGUI/PropertyHelper.h"
 %include "CEGUI/PropertySet.h"
 
+// xml
+%include "CEGUI/XMLHandler.h"
+%include "CEGUI/ChainedXMLHandler.h"
+%include "CEGUI/XMLAttributes.h"
+%include "CEGUI/XMLParser.h"
+%include "CEGUI/XMLSerializer.h"
+
 // element and window
 %include "CEGUI/Element.h"
 %include "CEGUI/NamedElement.h"
 %include "CEGUI/Window.h"
 
-// some base classes
+// some base classes (must be before derived classes)
 %include "CEGUI/Image.h"
 %include "CEGUI/FormattedRenderedString.h"
 %include "CEGUI/InputEventReceiver.h"
 %include "CEGUI/Logger.h"
 %include "CEGUI/RenderedStringParser.h"
 %include "CEGUI/RenderingSurface.h"
+%include "CEGUI/ResourceEventSet.h"
+%include "CEGUI/RenderedStringComponent.h"
+%include "CEGUI/ResourceProvider.h"
+%include "CEGUI/InjectedInputReceiver.h"
 
 // other clases
 %include "CEGUI/Affector.h"
@@ -92,6 +110,8 @@ using namespace CEGUI;
 %include "CEGUI/FactoryModule.h"
 %include "CEGUI/FactoryRegisterer.h"
 %include "CEGUI/FontGlyph.h"
+%include "CEGUI/Font.h"
+%include "CEGUI/FontManager.h"
 %include "CEGUI/GeometryBuffer.h"
 %include "CEGUI/GlobalEventSet.h"
 %include "CEGUI/GUIContext.h"
@@ -137,23 +157,71 @@ using namespace CEGUI;
 %include "CEGUI/WindowFactoryManager.h"
 %include "CEGUI/WindowManager.h"
 %include "CEGUI/WindowRendererManager.h"
-%include "CEGUI/XMLAttributes.h"
-%include "CEGUI/XMLHandler.h"
-%include "CEGUI/XMLParser.h"
-%include "CEGUI/XMLSerializer.h"
+%include "CEGUI/WindowRenderer.h"
 
-// views, falagard and widgets
-%include "CEGUI/views/All.h"
-%include "CEGUI/falagard/WidgetLookManager.h"
-%include "CEGUI/widgets/All.h"
-
-/*
-%include "CEGUI/Font.h"
-%include "CEGUI/FontManager.h"
-%include "CEGUI/Exceptions.h"
 %include "CEGUI/TplInterpolators.h"
 %include "CEGUI/TplWindowFactory.h"
 %include "CEGUI/TplWindowRendererFactory.h"
 %include "CEGUI/TplWindowFactoryRegisterer.h"
 %include "CEGUI/TplWRFactoryRegisterer.h"
-*/
+
+// views
+%include "CEGUI/views/GenericItemModel.h"
+%template(CEGUIGenericItemModel_StandardItem)CEGUI::GenericItemModel< CEGUI::StandardItem >;
+%include "CEGUI/views/StandardItemModel.h"
+
+%include "CEGUI/views/ItemModel.h"
+%include "CEGUI/views/ItemView.h"
+%include "CEGUI/views/ListView.h"
+%include "CEGUI/views/StandardItemModel.h"
+%include "CEGUI/views/TreeView.h"
+
+// falagard
+%include "CEGUI/falagard/WidgetLookManager.h"
+%include "CEGUI/falagard/WidgetLookFeel.h"
+
+// widgets
+%include "CEGUI/widgets/EditboxBase.h"
+%include "CEGUI/widgets/ButtonBase.h"
+%include "CEGUI/widgets/ItemListBase.h"
+%include "CEGUI/widgets/MenuBase.h"
+%include "CEGUI/widgets/ListWidget.h"
+
+%include "CEGUI/widgets/LayoutContainer.h"
+%include "CEGUI/widgets/SequentialLayoutContainer.h"
+%include "CEGUI/widgets/GridLayoutContainer.h"
+%include "CEGUI/widgets/HorizontalLayoutContainer.h"
+%include "CEGUI/widgets/VerticalLayoutContainer.h"
+
+%include "CEGUI/widgets/PushButton.h"
+%include "CEGUI/widgets/ToggleButton.h"
+%include "CEGUI/widgets/RadioButton.h"
+%include "CEGUI/widgets/Editbox.h"
+%include "CEGUI/widgets/DefaultWindow.h"
+%include "CEGUI/widgets/FrameWindow.h"
+
+%include "CEGUI/widgets/Combobox.h"
+%include "CEGUI/widgets/ComboDropList.h"
+%include "CEGUI/widgets/DragContainer.h"
+%include "CEGUI/widgets/GroupBox.h"
+%include "CEGUI/widgets/ItemEntry.h"
+%include "CEGUI/widgets/ListboxItem.h"
+%include "CEGUI/widgets/ListboxTextItem.h"
+%include "CEGUI/widgets/ListHeader.h"
+%include "CEGUI/widgets/Menubar.h"
+%include "CEGUI/widgets/MenuItem.h"
+%include "CEGUI/widgets/MultiColumnList.h"
+%include "CEGUI/widgets/MultiLineEditbox.h"
+%include "CEGUI/widgets/PopupMenu.h"
+%include "CEGUI/widgets/ProgressBar.h"
+%include "CEGUI/widgets/ScrollablePane.h"
+%include "CEGUI/widgets/Scrollbar.h"
+%include "CEGUI/widgets/ScrolledContainer.h"
+%include "CEGUI/widgets/Slider.h"
+%include "CEGUI/widgets/Spinner.h"
+%include "CEGUI/widgets/TabButton.h"
+%include "CEGUI/widgets/TabControl.h"
+%include "CEGUI/widgets/Thumb.h"
+%include "CEGUI/widgets/Titlebar.h"
+%include "CEGUI/widgets/Tooltip.h"
+%include "CEGUI/widgets/TreeWidget.h"
