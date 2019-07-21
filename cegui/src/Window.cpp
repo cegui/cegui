@@ -315,7 +315,9 @@ Window::Window(const String& type, const String& name):
     d_fontRenderSizeChangeConnection(
         GlobalEventSet::getSingleton().subscribeEvent(
             "Font/RenderSizeChanged",
-            Event::Subscriber(&Window::handleFontRenderSizeChange, this)))
+            Event::Subscriber(&Window::handleFontRenderSizeChange, this))),
+
+    d_drawModeMask(DrawModeFlagWindowRegular)
 {
     // add properties
     addWindowProperties();
