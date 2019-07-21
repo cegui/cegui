@@ -2849,7 +2849,7 @@ public:
     \return
         The drawMode bitmask that is set for this Window.
     */
-    uint32 getDrawModeMask() const;
+    std::uint32_t getDrawModeMask() const;
 
     /*!
     \brief
@@ -3863,7 +3863,7 @@ protected:
         a the bit flags that determine if the Window will be drawn or not 
         in the draw calls, depending on the bitmask passed to the calls.
     */
-    uint32 d_drawModeMask;
+    std::uint32_t d_drawModeMask;
 
 
 private:

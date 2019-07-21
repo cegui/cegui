@@ -295,7 +295,7 @@ protected:
     Window* d_captureWindow;
 
     //! The draw mode mask that was used in the last draw call 
-    uint32 d_lastDrawModeMask;
+    std::uint32_t d_lastDrawModeMask;
 
     CursorsState d_cursorsState;
 

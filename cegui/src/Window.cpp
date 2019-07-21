@@ -33,6 +33,7 @@
 #include "CEGUI/FontManager.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Cursor.h"
+#include "CEGUI/CoordConverter.h"
 #include "CEGUI/WindowRendererManager.h"
 #include "CEGUI/WindowFactoryManager.h"
 #include "CEGUI/widgets/Tooltip.h"
@@ -1567,7 +1568,7 @@ void Window::addWindowProperties(void)
         &Window::setAutoWindow, &Window::isAutoWindow, false
     );
 
-    CEGUI_DEFINE_PROPERTY(Window, uint32,
+    CEGUI_DEFINE_PROPERTY(Window, std::uint32_t,
         DrawModeMaskPropertyName, "Property to get/set a bitmask that specifies whether the window should be "
         "drawn or not be drawn in a draw call. The draw call may have its own bitmask specified otherwise "
         "a bitmask with all bits at 1 is taken. The bitmask of the draw call and the Window are compared "
@@ -4229,7 +4230,7 @@ void Window::setDrawModeMask(std::uint32_t drawModeMask)
 }
 
 //----------------------------------------------------------------------------//
-uint32 Window::getDrawModeMask() const
+std::uint32_t Window::getDrawModeMask() const
 {
     return d_drawModeMask;
 }

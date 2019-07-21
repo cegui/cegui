@@ -81,15 +81,17 @@ void RenderTarget::deactivate()
 }
 
 //----------------------------------------------------------------------------//
-void RenderTarget::draw(const GeometryBuffer& buffer)
+void RenderTarget::draw(const GeometryBuffer& buffer,
+    std::uint32_t drawModeMask)
 {
-    buffer.draw();
+    buffer.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
-void RenderTarget::draw(const RenderQueue& queue)
+void RenderTarget::draw(const RenderQueue& queue,
+    std::uint32_t drawModeMask)
 {
-    queue.draw();
+    queue.draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
