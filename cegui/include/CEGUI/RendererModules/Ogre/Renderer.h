@@ -83,7 +83,8 @@ namespace v1
 class HardwareVertexBufferSharedPtr;
 }
 #else
-class HardwareVertexBufferSharedPtr;
+class HardwareVertexBuffer;
+typedef SharedPtr<HardwareVertexBuffer> HardwareVertexBufferSharedPtr;
 #endif //CEGUI_USE_OGRE_HLMS
 #endif
 class Matrix4;
@@ -288,7 +289,7 @@ public:
     */
     void setGPUPrograms(const Ogre::HighLevelGpuProgramPtr &vs,
         const Ogre::HighLevelGpuProgramPtr &ps);
-    
+
 #endif //CEGUI_USE_OGRE_HLMS
 
     /*!
@@ -334,7 +335,7 @@ public:
     /*!
     \brief
         Sets all the required render states needed for CEGUI rendering.
-    
+
         This is a low-level function intended for certain advanced concepts; in
         general it will not be required to call this function directly, since it
         is called automatically by the system when rendering is done.
@@ -346,7 +347,7 @@ public:
     /*!
         \brief
         Sets all the required render states needed for CEGUI rendering.
-        
+
         This is a low-level function intended for certain advanced concepts; in
         general it will not be required to call this function directly, since it
         is called automatically by the system when rendering is done.
@@ -368,19 +369,19 @@ public:
     //! \brief Sets the correct BlendMode for rendering a GeometryBuffer
     void bindBlendMode(BlendMode blend);
 
-    
+
     /*!
-    \brief 
+    \brief
         Initialises the states for rendering textured geometry
     */
     void initialiseTextureStates();
 
 #ifdef CEGUI_USE_OGRE_HLMS
     /*!
-    \brief 
+    \brief
     Returns a vertex buffer larger than size if any exist
 
-    This function also cleans the pool and discards large buffers that 
+    This function also cleans the pool and discards large buffers that
     aren't used
     */
     Ogre::v1::HardwareVertexBufferSharedPtr getVertexBuffer(size_t min_size);
@@ -389,10 +390,10 @@ public:
     void returnVertexBuffer(Ogre::v1::HardwareVertexBufferSharedPtr buffer);
 #else
     /*!
-    \brief 
+    \brief
         Returns a vertex buffer larger than size if any exist
 
-        This function also cleans the pool and discards large buffers that 
+        This function also cleans the pool and discards large buffers that
         aren't used
     */
     Ogre::HardwareVertexBufferSharedPtr getVertexBuffer(size_t min_size);
@@ -400,7 +401,7 @@ public:
     //! \brief Puts a vertex buffer back in to the pool
     void returnVertexBuffer(Ogre::HardwareVertexBufferSharedPtr buffer);
 #endif //CEGUI_USE_OGRE_HLMS
-    
+
     //! \brief Clears vertex buffer pool
     void clearVertexBufferPool();
 
