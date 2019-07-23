@@ -65,6 +65,9 @@ void HorizontalLayoutContainer::layout()
         Window* window = static_cast<Window*>(*it);
 
         const UVector2 offset = getOffsetForWindow(window);
+        window->setPosition(offset + UVector2(leftOffset, UDim(0, 0)));
+        
+        // setPosition triggered child pixel size recalculation, now we can get bounds
         const UVector2 boundingSize = getBoundingSizeForWindow(window);
 
         // full child window height, including margins
@@ -76,7 +79,6 @@ void HorizontalLayoutContainer::layout()
             layoutHeight = childHeight;
         }
 
-        window->setPosition(offset + UVector2(leftOffset, UDim(0, 0)));
         leftOffset += boundingSize.d_x;
     }
 
