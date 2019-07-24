@@ -56,6 +56,9 @@ ScrollablePaneSample::ScrollablePaneSample()
     Sample::d_summary =
         "The background window is of target type \"CEGUI/ScrollablePane\". "
         "The WindowsLook skin is used for all the windows.";
+
+	//!!!DBG TMP!
+	Sample::d_priority = 1000;
 }
 
 bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
@@ -109,19 +112,39 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     // create a scrollable pane for our Sample content
     d_pane = static_cast<ScrollablePane*>(d_wm->createWindow("WindowsLook/ScrollablePane"));
-    d_pane->setArea(URect(UDim(0,0),bar_bottom,UDim(1,0),UDim(1,0)));
+    d_pane->setArea(URect(UDim(0,0),bar_bottom,UDim(0.75,0),UDim(1,0)));
     // this scrollable pane will be a kind of virtual desktop in the sense that it's bigger than
-    // the screen. 3000 x 3000 pixels
-    d_pane->setContentPaneAutoSized(false);
-    d_pane->setContentPaneArea(CEGUI::Rectf(0, 0, 5000, 5000));
+    // the screen.
+    
+	//d_pane->setContentPaneAutoSized(false);
+    d_pane->setContentPaneArea(CEGUI::URect(UDim(0,0), UDim(0,0), UDim(0,5000), UDim(0,5000)));
     d_root->addChild(d_pane);
 
     // add a dialog to this pane so we have something to drag around :)
     Window* dlg = d_wm->createWindow("WindowsLook/FrameWindow");
-    dlg->setMinSize(USize(UDim(0,250),UDim(0,100)));
-    dlg->setSize(USize(UDim(0,250),UDim(0,100)));
-    dlg->setText("Drag me around");
+    //dlg->setMinSize(USize(UDim(0,250),UDim(0,100)));
+	//dlg->setSize(USize(UDim(0,250),UDim(0,100)));
+	dlg->setSize(USize(UDim(0.2f,0),UDim(0.2f,0)));
+	dlg->setText("Drag me around");
     d_pane->addChild(dlg);
+
+	// Create another scrollable pane with vertical-only scrolling
+	auto pane = static_cast<ScrollablePane*>(d_wm->createWindow("WindowsLook/ScrollablePane"));
+	pane->setArea(URect(UDim(0.75,0),bar_bottom,UDim(1,0),UDim(1,0)));
+	pane->DBG_setAutoHeight();
+
+	//???or set size?
+	pane->setContentPaneArea(CEGUI::URect(UDim(0,0), UDim(0,0), UDim(1,0), UDim(0,0)));
+	d_root->addChild(pane);
+
+	for (int i = 0; i < 5; ++i)
+	{
+		dlg = d_wm->createWindow("WindowsLook/FrameWindow");
+		dlg->setPosition(UVector2(UDim(0, 0), UDim(0.25f * i, 0)));
+		dlg->setSize(USize(UDim(2.0f, 0), UDim(0.25f, 0)));
+		dlg->setText("Drag me around 2");
+		pane->addChild(dlg);
+	}
 
     return true;
 }
@@ -179,7 +202,7 @@ bool ScrollablePaneSample::SampleNewDialog(const CEGUI::EventArgs&)
     Window* dlg = d_wm->createWindow("WindowsLook/FrameWindow");
     dlg->setMinSize(USize(UDim(0,200),UDim(0,100)));
     dlg->setSize(USize(UDim(0,200),UDim(0,100)));
-    dlg->setText("Drag me around too!");
+	dlg->setText("Drag me around too!");
 
     // URGENT FIXME!
     //Vector2f center = CoordConverter::windowToScreen(*d_root, uni_center);

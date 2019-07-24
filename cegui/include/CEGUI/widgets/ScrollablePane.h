@@ -209,7 +209,7 @@ public:
         - false to indicate the content pane will not automatically resize
           itself.
     */
-    bool isContentPaneAutoSized(void) const;
+    //bool isContentPaneAutoSized(void) const;
 
     /*!
     \brief
@@ -230,7 +230,8 @@ public:
     \return 
         Nothing.
     */
-    void setContentPaneAutoSized(bool setting);
+    //void setContentPaneAutoSized(bool setting);
+	void DBG_setAutoHeight();
 
     /*!
     \brief
@@ -240,7 +241,7 @@ public:
         Rect object that details the current pixel extents of the content
         pane attached to this ScrollablePane.
     */
-    const Rectf& getContentPaneArea(void) const;
+    Rectf getContentPaneArea(void) const;
 
     /*!
     \brief
@@ -257,7 +258,7 @@ public:
     \return
         Nothing.
     */
-    void setContentPaneArea(const Rectf& area);
+    void setContentPaneArea(const URect& area);
 
     /*!
     \brief

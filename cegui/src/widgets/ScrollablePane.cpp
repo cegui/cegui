@@ -122,7 +122,7 @@ void ScrollablePane::setShowHorzScrollbar(bool setting)
         onHorzScrollbarModeChanged(args);
     }
 }
-
+/*
 //----------------------------------------------------------------------------//
 bool ScrollablePane::isContentPaneAutoSized(void) const
 {
@@ -134,17 +134,23 @@ void ScrollablePane::setContentPaneAutoSized(bool setting)
 {
     getScrolledContainer()->setContentPaneAutoSized(setting);
 }
+*/
+void ScrollablePane::DBG_setAutoHeight()
+{
+	getScrolledContainer()->setAutoCalculateWidth(false);
+	getScrolledContainer()->setAutoCalculateHeight(true);
+}
 
 //----------------------------------------------------------------------------//
-const Rectf& ScrollablePane::getContentPaneArea(void) const
+Rectf ScrollablePane::getContentPaneArea(void) const
 {
     return getScrolledContainer()->getContentArea();
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::setContentPaneArea(const Rectf& area)
+void ScrollablePane::setContentPaneArea(const URect& area)
 {
-    getScrolledContainer()->setContentArea(area);
+    getScrolledContainer()->setArea(area);
 }
 
 //----------------------------------------------------------------------------//
@@ -237,8 +243,7 @@ void ScrollablePane::initialiseComponents(void)
     
     // ban properties forwarded from here
     container->banPropertyFromXML(Window::CursorInputPropagationEnabledPropertyName);
-    container->banPropertyFromXML("ContentArea");
-    container->banPropertyFromXML("ContentPaneAutoSized");
+    //container->banPropertyFromXML("ContentPaneAutoSized");
     horzScrollbar->banPropertyFromXML(Window::AlwaysOnTopPropertyName);
     vertScrollbar->banPropertyFromXML(Window::AlwaysOnTopPropertyName);
 
@@ -317,15 +322,15 @@ void ScrollablePane::configureScrollbars(void)
 //----------------------------------------------------------------------------//
 bool ScrollablePane::isHorzScrollbarNeeded(void) const
 {
-    return ((fabs(d_contentRect.getWidth()) > getViewableArea().getWidth()) ||
-            d_forceHorzScroll);
+    return d_forceHorzScroll ||
+		(fabs(d_contentRect.getWidth()) > getViewableArea().getWidth());
 }
 
 //----------------------------------------------------------------------------//
 bool ScrollablePane::isVertScrollbarNeeded(void) const
 {
-    return ((fabs(d_contentRect.getHeight()) > getViewableArea().getHeight()) ||
-            d_forceVertScroll);
+    return d_forceVertScroll ||
+		(fabs(d_contentRect.getHeight()) > getViewableArea().getHeight());
 }
 
 //----------------------------------------------------------------------------//
@@ -349,7 +354,7 @@ void ScrollablePane::updateContainerPosition(void)
 //----------------------------------------------------------------------------//
 bool ScrollablePane::validateWindowRenderer(const WindowRenderer* renderer) const
 {
-	return dynamic_cast<const ScrollablePaneWindowRenderer*>(renderer) != nullptr;
+    return dynamic_cast<const ScrollablePaneWindowRenderer*>(renderer) != nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -561,6 +566,7 @@ void ScrollablePane::addScrollablePaneProperties(void)
         &ScrollablePane::setVerticalScrollPosition, &ScrollablePane::getVerticalScrollPosition, 0.0f /* TODO: Inconsistency */
     );
 
+	/*
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
         "ContentPaneAutoSized", "Property to get/set the setting which controls whether the content pane will auto-size itself.  Value is either \"true\" or \"false\".",
         &ScrollablePane::setContentPaneAutoSized, &ScrollablePane::isContentPaneAutoSized, true
@@ -568,8 +574,9 @@ void ScrollablePane::addScrollablePaneProperties(void)
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, Rectf,
         "ContentArea", "Property to get/set the current content area rectangle of the content pane.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
-        &ScrollablePane::setContentPaneArea, &ScrollablePane::getContentPaneArea, Rectf::zero() /* TODO: Inconsistency */
+        &ScrollablePane::setContentPaneArea, &ScrollablePane::getContentPaneArea, Rectf::zero()
     );
+	*/
 }
 
 //----------------------------------------------------------------------------//
@@ -620,7 +627,7 @@ NamedElement* ScrollablePane::getChildByNamePath_impl(const String& name_path) c
     //
     if (name_path.substr(0, 7) == "__auto_")
         return Window::getChildByNamePath_impl(name_path);
-	else
+    else
         return Window::getChildByNamePath_impl(ScrolledContainerName + '/' + name_path);
 }
 //----------------------------------------------------------------------------//

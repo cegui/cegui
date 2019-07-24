@@ -26,7 +26,6 @@
  ***************************************************************************/
 #include "CEGUI/widgets/ScrolledContainer.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/RenderingSurface.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -45,10 +44,9 @@ const String ScrolledContainer::EventAutoSizeSettingChanged("AutoSizeSettingChan
 //----------------------------------------------------------------------------//
 ScrolledContainer::ScrolledContainer(const String& type, const String& name) :
     Window(type, name),
-    d_contentArea(0, 0, 0, 0),
-    d_autosizePane(true),
-
-    d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&ScrolledContainer::getClientChildContentArea_impl))
+    d_autoWidth(true),
+	d_autoHeight(true),
+	d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&ScrolledContainer::getClientChildContentArea_impl))
 {
     addScrolledContainerProperties();
     setCursorInputPropagationEnabled(true);
@@ -61,43 +59,47 @@ ScrolledContainer::~ScrolledContainer(void)
 }
 
 //----------------------------------------------------------------------------//
-bool ScrolledContainer::isContentPaneAutoSized(void) const
+bool ScrolledContainer::isWidthAutoCalculated(void) const
 {
-    return d_autosizePane;
+	return d_autoWidth;
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::setContentPaneAutoSized(bool setting)
+bool ScrolledContainer::isHeightAutoCalculated(void) const
 {
-    if (d_autosizePane != setting)
-    {
-        d_autosizePane = setting;
-
-        // Fire events
-        WindowEventArgs args1(this);
-        onAutoSizeSettingChanged(args1);
-    }
+	return d_autoHeight;
 }
 
 //----------------------------------------------------------------------------//
-const Rectf& ScrolledContainer::getContentArea(void) const
+void ScrolledContainer::setAutoCalculateWidth(bool setting)
 {
-    return d_contentArea;
+	if (d_autoWidth == setting)
+		return;
+
+	d_autoWidth = setting;
+
+	// Fire events
+	WindowEventArgs args(this);
+	onAutoSizeSettingChanged(args);
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::setContentArea(const Rectf& area)
+void ScrolledContainer::setAutoCalculateHeight(bool setting)
 {
-    if (!d_autosizePane)
-    {
-        d_contentArea = area;
-        setSize(USize(cegui_absdim(d_contentArea.getWidth()), cegui_absdim(d_contentArea.getHeight())));
+	if (d_autoHeight == setting)
+		return;
 
-        // Fire event
-        WindowEventArgs args(this);
-        onContentChanged(args);
-   }
+	d_autoHeight = setting;
 
+	// Fire events
+	WindowEventArgs args(this);
+	onAutoSizeSettingChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+Rectf ScrolledContainer::getContentArea(void) const
+{
+    return Rectf(d_contentOffset, d_pixelSize);
 }
 
 //----------------------------------------------------------------------------//
@@ -129,17 +131,23 @@ Rectf ScrolledContainer::getChildExtentsArea(void) const
     if (childCount == 0)
         return extents;
 
-    for (size_t i = 0; i < childCount; ++i)
-    {
-        const Window* const wnd = getChildAtIdx(i);
-        Rectf area(
-            CoordConverter::asAbsolute(wnd->getPosition(), d_pixelSize),
-            wnd->getPixelSize());
+	Sizef baseSize = d_pixelSize;
+	if (d_autoWidth)
+		baseSize.d_width = getParentPixelSize().d_width;
+	if (d_autoHeight)
+		baseSize.d_height = getParentPixelSize().d_height;
 
-        if (wnd->getHorizontalAlignment() == HorizontalAlignment::Centre)
-            area.setPosition(area.getPosition() - glm::vec2(area.getWidth() * 0.5f - d_pixelSize.d_width * 0.5f, 0.0f));
-        if (wnd->getVerticalAlignment() == VerticalAlignment::Centre)
-            area.setPosition(area.getPosition() - glm::vec2(0.0f, area.getHeight() * 0.5f - d_pixelSize.d_height * 0.5f));
+	for (size_t i = 0; i < childCount; ++i)
+    {
+        const Window* const child = getChildAtIdx(i);
+        Rectf area(
+            CoordConverter::asAbsolute(child->getPosition(), baseSize),
+			child->getPixelSize());
+
+        if (child->getHorizontalAlignment() == HorizontalAlignment::Centre)
+            area.setPosition(area.getPosition() - glm::vec2(area.getWidth() * 0.5f - baseSize.d_width * 0.5f, 0.0f));
+        if (child->getVerticalAlignment() == VerticalAlignment::Centre)
+            area.setPosition(area.getPosition() - glm::vec2(0.0f, area.getHeight() * 0.5f - baseSize.d_height * 0.5f));
 
         if (area.d_min.x < extents.d_min.x)
             extents.d_min.x = area.d_min.x;
@@ -160,10 +168,20 @@ Rectf ScrolledContainer::getChildExtentsArea(void) const
 //----------------------------------------------------------------------------//
 void ScrolledContainer::onContentChanged(WindowEventArgs& e)
 {
-    if (d_autosizePane)
+    if (d_autoWidth || d_autoHeight)
     {
-        d_contentArea = getChildExtentsArea();
-    }
+        const Rectf extents = getChildExtentsArea();
+
+		USize size = getSize();
+		if (d_autoWidth)
+			size.d_width = cegui_absdim(extents.getWidth());
+		if (d_autoHeight)
+			size.d_height = cegui_absdim(extents.getHeight());
+
+		setSize(size);
+
+		d_contentOffset = extents.d_min;
+	}
 
     fireEvent(EventContentChanged, e, EventNamespace);
 }
@@ -171,13 +189,9 @@ void ScrolledContainer::onContentChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void ScrolledContainer::onAutoSizeSettingChanged(WindowEventArgs& e)
 {
-    if (d_autosizePane)
-        for (const Element* child : d_children)
-            makeSureChildUsesAbsoluteArea(child);
-
     fireEvent(EventAutoSizeSettingChanged, e, EventNamespace);
 
-    if (d_autosizePane)
+    if (d_autoWidth || d_autoHeight)
     {
         WindowEventArgs args(this);
         onContentChanged(args);
@@ -185,23 +199,8 @@ void ScrolledContainer::onAutoSizeSettingChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool ScrolledContainer::handleChildSized(const EventArgs& e)
+bool ScrolledContainer::handleChildAreaChanged(const EventArgs& e)
 {
-    if (d_autosizePane)
-        makeSureChildUsesAbsoluteArea(static_cast<const ElementEventArgs&>(e).element);
-
-    // Fire event that notifies that a child's area has changed.
-    WindowEventArgs args(this);
-    onContentChanged(args);
-    return true;
-}
-
-//----------------------------------------------------------------------------//
-bool ScrolledContainer::handleChildMoved(const EventArgs& e)
-{
-    if (d_autosizePane)
-        makeSureChildUsesAbsoluteArea(static_cast<const ElementEventArgs&>(e).element);
-
     // Fire event that notifies that a child's area has changed.
     WindowEventArgs args(this);
     onContentChanged(args);
@@ -211,9 +210,32 @@ bool ScrolledContainer::handleChildMoved(const EventArgs& e)
 //----------------------------------------------------------------------------//
 Rectf ScrolledContainer::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
 {
-    return d_parent ?
-        (skipAllPixelAlignment ? d_parent->getUnclippedInnerRect().getFresh(true) : d_parent->getUnclippedInnerRect().get()) :
-        Window::getUnclippedInnerRect_impl(skipAllPixelAlignment);
+	// When container size doesn't depend on child extents, child areas are relative
+	// to the container itself. This allows for example to fill the whole container.
+	// Autosized dimensions are calculated relative to container's parent instead.
+	// This allows child items to scale with a viewport and make a single scrollbar pane.
+
+	if (!d_parent || (!d_autoWidth && !d_autoHeight))
+		return Window::getUnclippedInnerRect_impl(skipAllPixelAlignment);
+
+    const auto& parentRect =
+        (skipAllPixelAlignment ? d_parent->getUnclippedInnerRect().getFresh(true) : d_parent->getUnclippedInnerRect().get());
+
+	if (d_autoWidth && d_autoHeight)
+		return parentRect;
+
+	Rectf result = Window::getUnclippedInnerRect_impl(skipAllPixelAlignment);
+	if (d_autoWidth)
+	{
+		result.d_min.x = parentRect.d_min.x;
+		result.d_max.x = parentRect.d_max.x;
+	}
+	else if (d_autoHeight)
+	{
+		result.d_min.y = parentRect.d_min.y;
+		result.d_max.y = parentRect.d_max.y;
+	}
+	return result;
 }
 
 //----------------------------------------------------------------------------//
@@ -258,16 +280,16 @@ void ScrolledContainer::onChildAdded(ElementEventArgs& e)
 {
     Window::onChildAdded(e);
 
-    if (d_autosizePane)
-        makeSureChildUsesAbsoluteArea(e.element);
+    //if (d_autosizePane)
+    //    makeSureChildUsesAbsoluteArea(e.element);
 
     // subscribe to some events on this child
     d_eventConnections.insert(std::make_pair(static_cast<Window*>(e.element),
         static_cast<Window*>(e.element)->subscribeEvent(Window::EventSized,
-            Event::Subscriber(&ScrolledContainer::handleChildSized, this))));
+            Event::Subscriber(&ScrolledContainer::handleChildAreaChanged, this))));
     d_eventConnections.insert(std::make_pair(static_cast<Window*>(e.element),
         static_cast<Window*>(e.element)->subscribeEvent(Window::EventMoved,
-            Event::Subscriber(&ScrolledContainer::handleChildMoved, this))));
+            Event::Subscriber(&ScrolledContainer::handleChildAreaChanged, this))));
 
     // force window to update what it thinks it's screen / pixel areas are.
     static_cast<Window*>(e.element)->notifyScreenAreaChanged(false);
@@ -313,34 +335,27 @@ void ScrolledContainer::addScrolledContainerProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
 
-    CEGUI_DEFINE_PROPERTY(ScrolledContainer, bool,
-        "ContentPaneAutoSized", "Property to get/set the setting which controls whether the content pane will auto-size itself."
-        "  Value is either \"true\" or \"false\".",
-        &ScrolledContainer::setContentPaneAutoSized, &ScrolledContainer::isContentPaneAutoSized, true
-    );
+	//???setAdjustWidthToContent?
+	CEGUI_DEFINE_PROPERTY(ScrolledContainer, bool,
+		"AutoWidth", "Determines whether the content pane will auto-calculate its width from content."
+		"  Value is either \"true\" or \"false\".",
+		&ScrolledContainer::setAutoCalculateWidth, &ScrolledContainer::isWidthAutoCalculated, true
+	);
 
-    CEGUI_DEFINE_PROPERTY(ScrolledContainer, Rectf,
-        "ContentArea", "Property to get/set the current content area rectangle of the content pane."
-        "  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
-        &ScrolledContainer::setContentArea, &ScrolledContainer::getContentArea, Rectf::zero()
-    );
+	//???setAdjustHeightToContent?
+	CEGUI_DEFINE_PROPERTY(ScrolledContainer, bool,
+		"AutoHeight", "Determines whether the content pane will auto-calculate its height from content."
+		"  Value is either \"true\" or \"false\".",
+		&ScrolledContainer::setAutoCalculateHeight, &ScrolledContainer::isHeightAutoCalculated, true
+	);
 
+	/*
     CEGUI_DEFINE_PROPERTY(ScrolledContainer, Rectf,
         "ChildExtentsArea", "Property to get the current content extents rectangle."
         "  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
         nullptr, &ScrolledContainer::getChildExtentsArea, Rectf::zero()
     );
-}
-
-//----------------------------------------------------------------------------//
-void ScrolledContainer::makeSureChildUsesAbsoluteArea(const Element* child) const
-{
-    if (!child->getArea().isAbsolute())
-        throw InvalidRequestException(
-          "A relative component in a child's area is taken relative to the size of content area, not the size of the "
-          "scrollable pane. Therefore, when a child uses a non-absolute area (i.e. which has any unified dimension "
-          "with a non-zero relative component) while auto-size is set to \"true\", this creates a circular dependency "
-          "and is therefore not allowed.");
+	*/
 }
 
 //----------------------------------------------------------------------------//
