@@ -118,7 +118,9 @@ protected:
     typedef std::multimap<Window*, Event::Connection>  ConnectionTracker;
     //! Tracks event connections we make.
     ConnectionTracker d_eventConnections;
-	
+
+	// This offset helps to handle negative child coords in an auto-sized content area.
+	// It is intentionally not exposed to user. Use positive coords when possible.
 	glm::vec2 d_contentOffset;
 
     CachedRectf d_clientChildContentArea;
