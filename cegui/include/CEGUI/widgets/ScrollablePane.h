@@ -130,13 +130,23 @@ public:
 
     /*!
     \brief
-        Return the current content pane area for the ScrollablePane.
+        Return the current content pane area in pixels.
 
     \return
         Rect object that details the current pixel extents of the content
         pane attached to this ScrollablePane.
     */
-    Rectf getContentPaneArea(void) const;
+    Rectf getContentPixelRect(void) const;
+
+    /*!
+    \brief
+        Return the current content pane area for the ScrollablePane.
+
+    \return
+        Rect object that details the current area of the content
+        pane attached to this ScrollablePane.
+    */
+	const URect& getContentArea(void) const;
 
     /*!
     \brief
@@ -150,7 +160,7 @@ public:
         Rect object that details the pixel extents to use for the content
         pane attached to this ScrollablePane.
     */
-    void setContentPaneArea(const URect& area);
+    void setContentArea(const URect& area);
 
     /*!
     \brief
