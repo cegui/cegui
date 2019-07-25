@@ -67,13 +67,17 @@ void ScrolledContainer::adjustSizeToContent()
 
 	USize size = getSize();
 	if (isWidthAdjustedToContent())
+	{
+		d_contentOffset.x = extents.d_min.x;
 		size.d_width = cegui_absdim(extents.getWidth());
+	}
 	if (isHeightAdjustedToContent())
+	{
+		d_contentOffset.y = extents.d_min.y;
 		size.d_height = cegui_absdim(extents.getHeight());
+	}
 
 	setSize(size, false);
-
-	d_contentOffset = extents.d_min;
 }
 
 //----------------------------------------------------------------------------//

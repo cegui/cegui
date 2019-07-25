@@ -110,7 +110,7 @@ public:
     ScrollablePane(const String& type, const String& name);
 
     //! Destructor for the ScrollablePane base class.
-    ~ScrollablePane(void);
+    ~ScrollablePane(void) override;
 
     int writeChildWindowsXML(XMLSerializer& xml_stream) const override;
 
@@ -140,27 +140,27 @@ public:
 
     /*!
     \brief
-        Return the current content pane area for the ScrollablePane.
+        Return the current content pane size for the ScrollablePane.
 
     \return
-        Rect object that details the current area of the content
+        USize object that details the current size of the content
         pane attached to this ScrollablePane.
     */
-	const URect& getContentArea(void) const;
+	USize getContentSize(void) const;
 
     /*!
     \brief
-        Set the current content pane area for the ScrollablePane.
+        Set the current content pane size for the ScrollablePane.
 
     \note
-        If the ScrollablePane is configured to auto-size the content pane
-        this call will have no effect.
+        If pane width and/or height are set to be adjusted to content,
+		this operation will not affect them.
 
-    \param area
-        Rect object that details the pixel extents to use for the content
+    \param size
+        USize object that details the size to use for the content
         pane attached to this ScrollablePane.
     */
-    void setContentArea(const URect& area);
+    void setContentSize(const USize& size);
 
     /*!
     \brief
