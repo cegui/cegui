@@ -60,16 +60,14 @@ public:
 \brief
     Base class for the ScrollablePane widget.
 
-    The ScrollablePane widget allows child windows to be attached which cover an
-    area larger than the ScrollablePane itself and these child windows can be
-    scrolled into view using the scrollbars of the scrollable pane.
+    The ScrollablePane widget offers a content area that may (and typically will)
+	be bigger than the widget itself. Content area then can be scrolled inside a
+	widget, which effectively becomes a viewport. Child windows can be added to
+	the content area as to any other window.
 
-    Note: A relative component in a child's area is taken relative to the size
-    of content area, not the size of the scrollable pane. Therefore, when a
-    child uses a non-absolute area (i.e. which has any unified dimension with a
-    non-zero relative component) while auto-size is set to "true", this creates
-    a circular dependency and is therefore not allowed.
-    in future versions of CEGUI.
+	The widget supports absolute and relative sizing of child widgets as long as
+	autosizing of the content area through "AdjustWidthToContent" and
+	"AdjustHeightToContent" properties.
 */
 class CEGUIEXPORT ScrollablePane : public Window
 {
@@ -96,12 +94,6 @@ public:
      * bar mode has been changed.
      */
     static const String EventHorzScrollbarModeChanged;
-    /** Event fired when the auto size setting for the pane is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the ScrollablePane whose auto size
-     * setting has been changed.
-     */
-    static const String EventAutoSizeSettingChanged;
     /** Event fired when the pane gets scrolled.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the ScrollablePane that has been scrolled.
@@ -138,6 +130,40 @@ public:
 
     /*!
     \brief
+        Return the current content pane area for the ScrollablePane.
+
+    \return
+        Rect object that details the current pixel extents of the content
+        pane attached to this ScrollablePane.
+    */
+    Rectf getContentPaneArea(void) const;
+
+    /*!
+    \brief
+        Set the current content pane area for the ScrollablePane.
+
+    \note
+        If the ScrollablePane is configured to auto-size the content pane
+        this call will have no effect.
+
+    \param area
+        Rect object that details the pixel extents to use for the content
+        pane attached to this ScrollablePane.
+    */
+    void setContentPaneArea(const URect& area);
+
+    /*!
+    \brief
+        Return a Rect that described the pane's viewable area, relative
+        to this Window, in pixels.
+
+    \return
+        Rect object describing the ScrollablePane's viewable area.
+    */
+    Rectf getViewableArea(void) const;
+
+    /*!
+    \brief
         Return whether the vertical scroll bar is always shown.
 
     \return
@@ -149,13 +175,6 @@ public:
     /*!
     \brief
         Set whether the vertical scroll bar should always be shown.
-
-        Note: If the content pane is set to be auto-sized, and not both
-        (horizontal and vertical) scrollbars are set to be always visible, and
-        any of the children's size is not set to be an absolute dimension (i.e.
-        its relative component is non-zero), this creates a circular dependency
-        which may lead to a crash. Please don't use such a combination. It'll
-        probably not be allowed in future versions of CEGUI.
 
     \param setting
         - true if the vertical scroll bar should be shown even when it is not
@@ -182,13 +201,6 @@ public:
     \brief
         Set whether the horizontal scroll bar should always be shown.
 
-        Note: If the content pane is set to be auto-sized, and not both
-        (horizontal and vertical) scrollbars are set to be always visible, and
-        any of the children's size is not set to be an absolute dimension (i.e.
-        its relative component is non-zero), this creates a circular dependency
-        which may lead to a crash. Please don't use such a combination. It'll
-        probably not be allowed in future versions of CEGUI.
-
     \param setting
         - true if the horizontal scroll bar should be shown even when it is not
           required.
@@ -199,66 +211,6 @@ public:
         Nothing.
     */
     void setShowHorzScrollbar(bool setting);
-
-    /*!
-    \brief
-        Return whether the content pane is auto sized.
-
-    \return
-        - true to indicate the content pane will automatically resize itself.
-        - false to indicate the content pane will not automatically resize
-          itself.
-    */
-    //bool isContentPaneAutoSized(void) const;
-
-    /*!
-    \brief
-        Set whether the content pane should be auto-sized.
-
-        Note: A relative component in a child's area is taken relative to the
-        size of content area, not the size of the scrollable pane. Therefore,
-        when a child uses a non-absolute area (i.e. which has any unified
-        dimension with a non-zero relative component) while auto-size is set to
-        "true", this creates a circular dependency and is therefore not allowed.
-        probably not be allowed in future versions of CEGUI.
-
-    \param setting
-        - true to indicate the content pane should automatically resize itself.
-        - false to indicate the content pane should not automatically resize
-          itself.
-
-    \return 
-        Nothing.
-    */
-    //void setContentPaneAutoSized(bool setting);
-	void DBG_setAutoHeight();
-
-    /*!
-    \brief
-        Return the current content pane area for the ScrollablePane.
-
-    \return
-        Rect object that details the current pixel extents of the content
-        pane attached to this ScrollablePane.
-    */
-    Rectf getContentPaneArea(void) const;
-
-    /*!
-    \brief
-        Set the current content pane area for the ScrollablePane.
-
-    \note
-        If the ScrollablePane is configured to auto-size the content pane
-        this call will have no effect.
-
-    \param area
-        Rect object that details the pixel extents to use for the content
-        pane attached to this ScrollablePane.
-
-    \return
-        Nothing.
-    */
-    void setContentPaneArea(const URect& area);
 
     /*!
     \brief
@@ -408,16 +360,6 @@ public:
 
     /*!
     \brief
-        Return a Rect that described the pane's viewable area, relative
-        to this Window, in pixels.
-
-    \return
-        Rect object describing the ScrollablePane's viewable area.
-    */
-    Rectf getViewableArea(void) const;
-
-    /*!
-    \brief
         Return a pointer to the vertical scrollbar component widget for this
         ScrollablePane.
 
@@ -495,7 +437,6 @@ protected:
     */
     ScrolledContainer* getScrolledContainer() const;
 
-    // validate window renderer
     bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
     /*************************************************************************
@@ -542,19 +483,6 @@ protected:
 
     /*!
     \brief
-        Notification method called whenever the setting that controls whether
-        the content pane is automatically sized is changed.
-
-    \param e
-        WindowEventArgs object.
-
-    \return
-        Nothing.
-    */
-    virtual void onAutoSizeSettingChanged(WindowEventArgs& e);
-
-    /*!
-    \brief
         Notification method called whenever the content pane is scrolled via
         changes in the scrollbar positions.
 
@@ -596,6 +524,8 @@ protected:
     
     void onSized_impl(ElementEventArgs& e) override;
     void onScroll(CursorInputEventArgs& e) override;
+	void onIsSizeAdjustedToContentChanged(ElementEventArgs& e) override;
+	void adjustSizeToContent() override {}
 
     //! \copydoc Window::getChildByNamePath_impl
     NamedElement* getChildByNamePath_impl(const String& name_path) const override;
