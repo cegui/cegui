@@ -40,7 +40,6 @@ const String ScrollablePane::EventNamespace("ScrollablePane");
 const String ScrollablePane::EventContentPaneChanged("ContentPaneChanged");
 const String ScrollablePane::EventVertScrollbarModeChanged("VertScrollbarModeChanged");
 const String ScrollablePane::EventHorzScrollbarModeChanged("HorzScrollbarModeChanged");
-const String ScrollablePane::EventAutoSizeSettingChanged("AutoSizeSettingChanged");
 const String ScrollablePane::EventContentPaneScrolled("ContentPaneScrolled");
 const String ScrollablePane::VertScrollbarName( "__auto_vscrollbar__" );
 const String ScrollablePane::HorzScrollbarName( "__auto_hscrollbar__" );
@@ -70,6 +69,11 @@ ScrollablePane::ScrollablePane(const String& type, const String& name) :
             ScrolledContainer::WidgetTypeName,
             ScrolledContainerName));
     container->setAutoWindow(true);
+
+	// Size adjustment flags are synchronized with ones of the container.
+	// ScrollablePane's own values have no meaning, at least for now.
+	d_isWidthAdjustedToContent = container->isWidthAdjustedToContent();
+	d_isHeightAdjustedToContent = container->isHeightAdjustedToContent();
 
     // add scrolled container widget as child
     addChild(container);
@@ -121,24 +125,6 @@ void ScrollablePane::setShowHorzScrollbar(bool setting)
         WindowEventArgs args(this);
         onHorzScrollbarModeChanged(args);
     }
-}
-/*
-//----------------------------------------------------------------------------//
-bool ScrollablePane::isContentPaneAutoSized(void) const
-{
-    return getScrolledContainer()->isContentPaneAutoSized();
-}
-
-//----------------------------------------------------------------------------//
-void ScrollablePane::setContentPaneAutoSized(bool setting)
-{
-    getScrolledContainer()->setContentPaneAutoSized(setting);
-}
-*/
-void ScrollablePane::DBG_setAutoHeight()
-{
-	getScrolledContainer()->setAdjustWidthToContent(false);
-	getScrolledContainer()->setAdjustHeightToContent(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -243,8 +229,9 @@ void ScrollablePane::initialiseComponents(void)
     
     // ban properties forwarded from here
     container->banPropertyFromXML(Window::CursorInputPropagationEnabledPropertyName);
-    //container->banPropertyFromXML("ContentPaneAutoSized");
-    horzScrollbar->banPropertyFromXML(Window::AlwaysOnTopPropertyName);
+	container->banPropertyFromXML("AdjustWidthToContent");
+	container->banPropertyFromXML("AdjustHeightToContent");
+	horzScrollbar->banPropertyFromXML(Window::AlwaysOnTopPropertyName);
     vertScrollbar->banPropertyFromXML(Window::AlwaysOnTopPropertyName);
 
     // do a bit of initialisation
@@ -376,12 +363,6 @@ void ScrollablePane::onHorzScrollbarModeChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onAutoSizeSettingChanged(WindowEventArgs& e)
-{
-    fireEvent(EventAutoSizeSettingChanged, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
 void ScrollablePane::onContentPaneScrolled(WindowEventArgs& e)
 {
     updateContainerPosition();
@@ -433,9 +414,14 @@ bool ScrollablePane::handleContentAreaChange(const EventArgs&)
 //----------------------------------------------------------------------------//
 bool ScrollablePane::handleAutoSizePaneChanged(const EventArgs&)
 {
-    // just forward event to client.
+	// sync properties with ones of the container
+	auto container = getScrolledContainer();
+	d_isWidthAdjustedToContent = container->isWidthAdjustedToContent();
+	d_isHeightAdjustedToContent = container->isHeightAdjustedToContent();
+	
+	// forward event to client.
     WindowEventArgs args(this);
-    fireEvent(EventAutoSizeSettingChanged, args, EventNamespace);
+    fireEvent(EventIsSizeAdjustedToContentChanged, args, EventNamespace);
     return args.handled > 0;
 }
 
@@ -520,6 +506,18 @@ void ScrollablePane::onScroll(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+void ScrollablePane::onIsSizeAdjustedToContentChanged(ElementEventArgs& e)
+{
+	auto container = getScrolledContainer();
+	if (container)
+	{
+		container->setAdjustWidthToContent(d_isWidthAdjustedToContent);
+		container->setAdjustHeightToContent(d_isHeightAdjustedToContent);
+	}
+	Window::onIsSizeAdjustedToContentChanged(e);
+}
+
+//----------------------------------------------------------------------------//
 void ScrollablePane::addScrollablePaneProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
@@ -567,15 +565,14 @@ void ScrollablePane::addScrollablePaneProperties(void)
     );
 
 	/*
-    CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
-        "ContentPaneAutoSized", "Property to get/set the setting which controls whether the content pane will auto-size itself.  Value is either \"true\" or \"false\".",
-        &ScrollablePane::setContentPaneAutoSized, &ScrollablePane::isContentPaneAutoSized, true
-    );
-
     CEGUI_DEFINE_PROPERTY(ScrollablePane, Rectf,
         "ContentArea", "Property to get/set the current content area rectangle of the content pane.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
         &ScrollablePane::setContentPaneArea, &ScrollablePane::getContentPaneArea, Rectf::zero()
     );
+	CEGUI_DEFINE_PROPERTY(Element, URect,
+	"Area", "Property to get/set the unified area rectangle. Value is a \"URect\".",
+	&Element::setArea, &Element::getArea, URect(UDim(0, 0), UDim(0, 0), UDim(0, 0), UDim(0, 0))
+	);
 	*/
 }
 
