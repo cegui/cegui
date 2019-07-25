@@ -57,30 +57,12 @@ public:
      * window has changed.
      */
     static const String EventContentChanged;
-    /** Event fired when the autosize setting changes.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the ScrolledContainer whose auto size
-     * setting has been changed.
-     */
-    static const String EventAutoSizeSettingChanged;
 
     //! Constructor for ScrolledContainer objects.
     ScrolledContainer(const String& type, const String& name);
 
     //! Destructor for ScrolledContainer objects.
     ~ScrolledContainer(void) override;
-
-	//! Return whether the content pane width is auto-calculated.
-	bool isWidthAutoCalculated(void) const;
-
-	//! Return whether the content pane height is auto-calculated.
-	bool isHeightAutoCalculated(void) const;
-
-	//! Set whether the content pane width should be auto-calculated.
-	void setAutoCalculateWidth(bool setting);
-
-	//! Set whether the content pane height should be auto-calculated.
-	void setAutoCalculateHeight(bool setting);
 
     /*!
     \brief
@@ -103,7 +85,9 @@ public:
     */
     Rectf getChildExtentsArea(void) const;
 
-    const CachedRectf& getClientChildContentArea() const override;
+	virtual void adjustSizeToContent() override;
+	
+	const CachedRectf& getClientChildContentArea() const override;
     const CachedRectf& getNonClientChildContentArea() const override;
 
     void notifyScreenAreaChanged(bool recursive) override;
@@ -116,10 +100,6 @@ protected:
     
     //! Notification method called whenever the content size may have changed.
     virtual void onContentChanged(WindowEventArgs& e);
-
-    //! Notification method called whenever the setting that controls whether
-	//! the content pane is automatically sized is changed.
-    virtual void onAutoSizeSettingChanged(WindowEventArgs& e);
 
     //! handles notifications about child windows being moved or sized.
     bool handleChildAreaChanged(const EventArgs& e);
@@ -140,15 +120,8 @@ protected:
     ConnectionTracker d_eventConnections;
 	
 	glm::vec2 d_contentOffset;
-	
-	//! true if the pane auto-sizes itself from content
-	bool d_autoWidth;
-	bool d_autoHeight;
 
     CachedRectf d_clientChildContentArea;
-
-private:
-    void addScrolledContainerProperties(void);
 };
 
 } // End of  CEGUI namespace section

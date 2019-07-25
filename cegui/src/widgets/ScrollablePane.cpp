@@ -137,8 +137,8 @@ void ScrollablePane::setContentPaneAutoSized(bool setting)
 */
 void ScrollablePane::DBG_setAutoHeight()
 {
-	getScrolledContainer()->setAutoCalculateWidth(false);
-	getScrolledContainer()->setAutoCalculateHeight(true);
+	getScrolledContainer()->setAdjustWidthToContent(false);
+	getScrolledContainer()->setAdjustHeightToContent(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -266,7 +266,7 @@ void ScrollablePane::initialiseComponents(void)
             Event::Subscriber(&ScrollablePane::handleContentAreaChange, this));
 
     d_autoSizeChangedConn = container->subscribeEvent(
-            ScrolledContainer::EventAutoSizeSettingChanged,
+            ScrolledContainer::EventIsSizeAdjustedToContentChanged,
             Event::Subscriber(&ScrollablePane::handleAutoSizePaneChanged, this));
     
     // finalise setup
