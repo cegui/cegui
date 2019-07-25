@@ -182,7 +182,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     // In a real scenario you probably should use a VerticalLayoutContainer instead.
     Window* verticalListParent = pane;
 
-    const bool useLayout = false;
+    constexpr bool useLayout = false;
     if (useLayout)
     {
         verticalListParent = d_wm->createWindow("VerticalLayoutContainer");

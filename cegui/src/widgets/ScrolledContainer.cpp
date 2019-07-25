@@ -271,9 +271,13 @@ void ScrolledContainer::onParentSized(ElementEventArgs& e)
 {
     Window::onParentSized(e);
 
-    // perform notification.
-    WindowEventArgs args(this);
-    onContentChanged(args);
+	// Autosized dimension has absolute size and therefore isn't resized with the
+	// parent, but children are based on the viewport, so notify them anyway.
+	if (isSizeAdjustedToContent())
+	{
+		ElementEventArgs args(this);
+		onSized(args);
+	}
 }
 
 //----------------------------------------------------------------------------//
