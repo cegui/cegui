@@ -77,7 +77,7 @@ void ScrolledContainer::adjustSizeToContent()
 }
 
 //----------------------------------------------------------------------------//
-Rectf ScrolledContainer::getContentArea(void) const
+Rectf ScrolledContainer::getContentPixelRect(void) const
 {
     return Rectf(d_contentOffset, d_pixelSize);
 }

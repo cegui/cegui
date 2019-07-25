@@ -128,13 +128,19 @@ void ScrollablePane::setShowHorzScrollbar(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-Rectf ScrollablePane::getContentPaneArea(void) const
+Rectf ScrollablePane::getContentPixelRect(void) const
 {
-    return getScrolledContainer()->getContentArea();
+    return getScrolledContainer()->getContentPixelRect();
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::setContentPaneArea(const URect& area)
+const URect& ScrollablePane::getContentArea(void) const
+{
+	return getScrolledContainer()->getArea();
+}
+
+//----------------------------------------------------------------------------//
+void ScrollablePane::setContentArea(const URect& area)
 {
     getScrolledContainer()->setArea(area);
 }
@@ -381,14 +387,14 @@ bool ScrollablePane::handleScrollChange(const EventArgs&)
 bool ScrollablePane::handleContentAreaChange(const EventArgs&)
 {
     // get updated extents of the content
-    const Rectf contentArea(getScrolledContainer()->getContentArea());
+    const Rectf contentRect(getScrolledContainer()->getContentPixelRect());
     
     // calculate any change on the top and left edges.
-    const float xChange = contentArea.d_min.x - d_contentRect.d_min.x;
-    const float yChange = contentArea.d_min.y - d_contentRect.d_min.y;
+    const float xChange = contentRect.d_min.x - d_contentRect.d_min.x;
+    const float yChange = contentRect.d_min.y - d_contentRect.d_min.y;
     
     // store new content extents information
-    d_contentRect = contentArea;
+    d_contentRect = contentRect;
     
     configureScrollbars();
     
@@ -564,16 +570,10 @@ void ScrollablePane::addScrollablePaneProperties(void)
         &ScrollablePane::setVerticalScrollPosition, &ScrollablePane::getVerticalScrollPosition, 0.0f /* TODO: Inconsistency */
     );
 
-	/*
-    CEGUI_DEFINE_PROPERTY(ScrollablePane, Rectf,
-        "ContentArea", "Property to get/set the current content area rectangle of the content pane.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
-        &ScrollablePane::setContentPaneArea, &ScrollablePane::getContentPaneArea, Rectf::zero()
-    );
-	CEGUI_DEFINE_PROPERTY(Element, URect,
-	"Area", "Property to get/set the unified area rectangle. Value is a \"URect\".",
-	&Element::setArea, &Element::getArea, URect(UDim(0, 0), UDim(0, 0), UDim(0, 0), UDim(0, 0))
+	CEGUI_DEFINE_PROPERTY(ScrollablePane, URect,
+		"ContentArea", "Property to get/set the current content area rectangle of the content pane.",
+		&ScrollablePane::setContentArea, &ScrollablePane::getContentArea, URect(UDim(0, 0), UDim(0, 0), UDim(0, 0), UDim(0, 0))
 	);
-	*/
 }
 
 //----------------------------------------------------------------------------//

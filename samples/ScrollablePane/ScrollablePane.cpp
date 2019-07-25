@@ -122,7 +122,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 	// Disable autosizing. Windows will be sized relative to the content pane area.
 	d_pane->setAdjustWidthToContent(false);
 	d_pane->setAdjustHeightToContent(false);
-	d_pane->setContentPaneArea(CEGUI::URect(UDim(0,0), UDim(0,0), UDim(0,5000), UDim(0,5000)));
+	d_pane->setContentArea(CEGUI::URect(UDim(0,0), UDim(0,0), UDim(0,5000), UDim(0,5000)));
 	firstPanel->addChild(d_pane);
 
     // add a dialog to the first pane so we have something to drag around :)
@@ -151,7 +151,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 	// ScrollablePane viewport and not against the whole content area height.
 	pane->setAdjustWidthToContent(false);
 	pane->setAdjustHeightToContent(true);
-	pane->setContentPaneArea(CEGUI::URect(UDim(0,0), UDim(0,0), UDim(1,0), UDim(0,0)));
+	pane->setContentArea(CEGUI::URect(UDim(0,0), UDim(0,0), UDim(1,0), UDim(0,0)));
 	secondPanel->addChild(pane);
 
 	// Add some windows one below other. This is done this way for demonstration purpose.

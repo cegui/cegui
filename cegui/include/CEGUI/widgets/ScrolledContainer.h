@@ -72,7 +72,7 @@ public:
         Rect object that details the current pixel extents of the content
         pane represented by this ScrolledContainer.
     */
-    Rectf getContentArea(void) const;
+    Rectf getContentPixelRect(void) const;
 
     /*!
     \brief
