@@ -56,7 +56,7 @@ ScrollablePane::ScrollablePane(const String& type, const String& name) :
     Window(type, name),
     d_forceVertScroll(false),
     d_forceHorzScroll(false),
-    d_swipeScroll(false),
+    d_swipeScrollingEnabled(false),
     d_contentRect(0.f, 0.f, 0.f, 0.f),
     d_vertStep(0.1f),
     d_vertOverlap(0.01f),
@@ -148,15 +148,15 @@ void ScrollablePane::setShowHorzScrollbar(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-bool ScrollablePane::isSwipeScrollEnabled() const
+bool ScrollablePane::isSwipeScrollingEnabled() const
 {
-    return d_swipeScroll;
+    return d_swipeScrollingEnabled;
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::setSwipeScrollEnabled(bool setting)
+void ScrollablePane::setSwipeScrollingEnabled(bool setting)
 {
-    d_swipeScroll = setting;
+    d_swipeScrollingEnabled = setting;
 }
 
 //----------------------------------------------------------------------------//
@@ -357,13 +357,13 @@ void ScrollablePane::scrollContentPane(float dx, float dy, ScrollablePane::Scrol
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
-    if (vertScrollbar->isEffectiveVisible() &&
+    if (dy != 0.f && vertScrollbar->isEffectiveVisible() &&
         (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
     {
         vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + dy);
     }
 
-    if (horzScrollbar->isEffectiveVisible() &&
+    if (dx != 0.f && horzScrollbar->isEffectiveVisible() &&
         (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
     {
         horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + dx);
@@ -591,14 +591,15 @@ void ScrollablePane::addScrollablePaneProperties(void)
     const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, USize,
-        "ContentSize", "Property to get/set the content pane area size. Auto-sized width and/or height are ignored.",
+        "ContentSize", "Property to get/set the content pane area size. Will not set dimensions that are "
+        "adjusted to the content.",
         &ScrollablePane::setContentSize, &ScrollablePane::getContentSize, USize(UDim(0, 0), UDim(0, 0))
     );
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
-        "SwipeScroll", "Whether scrolling by swipe in a widget area is enabled. "
+        "SwipeScrolling", "Whether scrolling by swipe in a widget area is enabled. "
         "Value is either \"true\" or \"false\".",
-        &ScrollablePane::setSwipeScrollEnabled, &ScrollablePane::isSwipeScrollEnabled, false
+        &ScrollablePane::setSwipeScrollingEnabled, &ScrollablePane::isSwipeScrollingEnabled, false
     );
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
@@ -730,7 +731,7 @@ void ScrollablePane::onCursorPressHold(CursorInputEventArgs& e)
 {
     Window::onCursorPressHold(e);
 
-    if (d_swipeScroll && e.source == CursorInputSource::Left)
+    if (d_swipeScrollingEnabled && e.source == CursorInputSource::Left)
     {
         // we want all cursor inputs from now on
         if (captureInput())

@@ -115,7 +115,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     d_pane = static_cast<ScrollablePane*>(d_wm->createWindow("WindowsLook/ScrollablePane"));
     d_pane->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
-    d_pane->setSwipeScrollEnabled(true);
+    d_pane->setSwipeScrollingEnabled(true);
    
     // Disable autosizing. Windows will be sized relative to the content pane area.
     d_pane->setAdjustWidthToContent(false);
@@ -141,7 +141,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     auto pane = static_cast<ScrollablePane*>(d_wm->createWindow("WindowsLook/ScrollablePane"));
     pane->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
-    pane->setSwipeScrollEnabled(true);
+    pane->setSwipeScrollingEnabled(true);
 
     // Enable autosizing. Windows will be sized relative to the viewable area.
     pane->setAdjustWidthToContent(true);
@@ -168,7 +168,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     pane = static_cast<ScrollablePane*>(d_wm->createWindow("WindowsLook/ScrollablePane"));
     pane->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
-    pane->setSwipeScrollEnabled(true);
+    pane->setSwipeScrollingEnabled(true);
 
     // Enable height adjustment only. Since the height of the content area now depends
     // on areas of children, that areas' relative part will be evaluated against a
