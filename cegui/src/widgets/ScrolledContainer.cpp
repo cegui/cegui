@@ -38,18 +38,17 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 const String ScrolledContainer::WidgetTypeName("ScrolledContainer");
 const String ScrolledContainer::EventNamespace("ScrolledContainer");
-const String ScrolledContainer::EventContentChanged("ContentChanged");
 
 //----------------------------------------------------------------------------//
 ScrolledContainer::ScrolledContainer(const String& type, const String& name) :
     Window(type, name),
-	d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&ScrolledContainer::getClientChildContentArea_impl))
+    d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&ScrolledContainer::getClientChildContentArea_impl))
 {
     setCursorInputPropagationEnabled(true);
 
-	d_isWidthAdjustedToContent = true;
-	d_isHeightAdjustedToContent = true;
-	setSize(USize::zero());
+    d_isWidthAdjustedToContent = true;
+    d_isHeightAdjustedToContent = true;
+    setSize(USize::zero());
 }
 
 //----------------------------------------------------------------------------//
@@ -60,24 +59,24 @@ ScrolledContainer::~ScrolledContainer(void)
 //----------------------------------------------------------------------------//
 void ScrolledContainer::adjustSizeToContent()
 {
-	if (!isSizeAdjustedToContent())
-		return;
+    if (!isSizeAdjustedToContent())
+        return;
 
-	const Rectf extents = getChildExtentsArea();
+    const Rectf extents = getChildExtentsArea();
 
-	USize size = getSize();
-	if (isWidthAdjustedToContent())
-	{
-		d_contentOffset.x = extents.d_min.x;
-		size.d_width = cegui_absdim(extents.getWidth());
-	}
-	if (isHeightAdjustedToContent())
-	{
-		d_contentOffset.y = extents.d_min.y;
-		size.d_height = cegui_absdim(extents.getHeight());
-	}
+    USize size = getSize();
+    if (isWidthAdjustedToContent())
+    {
+        d_contentOffset.x = extents.d_min.x;
+        size.d_width = cegui_absdim(extents.getWidth());
+    }
+    if (isHeightAdjustedToContent())
+    {
+        d_contentOffset.y = extents.d_min.y;
+        size.d_height = cegui_absdim(extents.getHeight());
+    }
 
-	setSize(size, false);
+    setSize(size, false);
 }
 
 //----------------------------------------------------------------------------//
@@ -107,18 +106,20 @@ Rectf ScrolledContainer::getChildExtentsArea(void) const
     if (childCount == 0)
         return extents;
 
-	Sizef baseSize = d_pixelSize;
-	if (isWidthAdjustedToContent())
-		baseSize.d_width = getParentPixelSize().d_width;
-	if (isHeightAdjustedToContent())
-		baseSize.d_height = getParentPixelSize().d_height;
+    Sizef baseSize = d_pixelSize;
 
-	for (size_t i = 0; i < childCount; ++i)
+    const auto& parentRect = d_parent->getClientChildContentArea().get();
+    if (isWidthAdjustedToContent())
+        baseSize.d_width = parentRect.getWidth();
+    if (isHeightAdjustedToContent())
+        baseSize.d_height = parentRect.getHeight();
+
+    for (size_t i = 0; i < childCount; ++i)
     {
         const Window* const child = getChildAtIdx(i);
         Rectf area(
             CoordConverter::asAbsolute(child->getPosition(), baseSize),
-			child->getPixelSize());
+            child->getPixelSize());
 
         if (child->getHorizontalAlignment() == HorizontalAlignment::Centre)
             area.setPosition(area.getPosition() - glm::vec2(area.getWidth() * 0.5f - baseSize.d_width * 0.5f, 0.0f));
@@ -142,50 +143,41 @@ Rectf ScrolledContainer::getChildExtentsArea(void) const
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::onContentChanged(WindowEventArgs& e)
-{
-    adjustSizeToContent();
-    fireEvent(EventContentChanged, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
 bool ScrolledContainer::handleChildAreaChanged(const EventArgs& e)
 {
-    // Fire event that notifies that a child's area has changed.
-    WindowEventArgs args(this);
-    onContentChanged(args);
+    adjustSizeToContent();
     return true;
 }
 
 //----------------------------------------------------------------------------//
 Rectf ScrolledContainer::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
 {
-	// When container size doesn't depend on child extents, child areas are relative
-	// to the container itself. This allows for example to fill the whole container.
-	// Autosized dimensions are calculated relative to container's parent instead.
-	// This allows child items to scale with a viewport and make a single scrollbar pane.
+    // When container size doesn't depend on child extents, child areas are relative
+    // to the container itself. This allows for example to fill the whole container.
+    // Autosized dimensions are calculated relative to container's parent instead.
+    // This allows child items to scale with a viewport and make a single scrollbar pane.
 
-	if (!d_parent || !isSizeAdjustedToContent())
-		return Window::getUnclippedInnerRect_impl(skipAllPixelAlignment);
+    if (!d_parent || !isSizeAdjustedToContent())
+        return Window::getUnclippedInnerRect_impl(skipAllPixelAlignment);
 
     const auto& parentRect =
         (skipAllPixelAlignment ? d_parent->getUnclippedInnerRect().getFresh(true) : d_parent->getUnclippedInnerRect().get());
 
-	if (isWidthAdjustedToContent() && isHeightAdjustedToContent())
-		return parentRect;
+    if (isWidthAdjustedToContent() && isHeightAdjustedToContent())
+        return parentRect;
 
-	Rectf result = Window::getUnclippedInnerRect_impl(skipAllPixelAlignment);
-	if (isWidthAdjustedToContent())
-	{
-		result.d_min.x = parentRect.d_min.x;
-		result.d_max.x = parentRect.d_max.x;
-	}
-	else if (isHeightAdjustedToContent())
-	{
-		result.d_min.y = parentRect.d_min.y;
-		result.d_max.y = parentRect.d_max.y;
-	}
-	return result;
+    Rectf result = Window::getUnclippedInnerRect_impl(skipAllPixelAlignment);
+    if (isWidthAdjustedToContent())
+    {
+        result.d_min.x = parentRect.d_min.x;
+        result.d_max.x = parentRect.d_max.x;
+    }
+    else if (isHeightAdjustedToContent())
+    {
+        result.d_min.y = parentRect.d_min.y;
+        result.d_max.y = parentRect.d_max.y;
+    }
+    return result;
 }
 
 //----------------------------------------------------------------------------//
@@ -240,9 +232,8 @@ void ScrolledContainer::onChildAdded(ElementEventArgs& e)
     // force window to update what it thinks it's screen / pixel areas are.
     static_cast<Window*>(e.element)->notifyScreenAreaChanged(false);
 
-    // perform notification.
-    WindowEventArgs args(this);
-    onContentChanged(args);
+    // recalculate pane size if auto-sized
+    adjustSizeToContent();
 }
 
 //----------------------------------------------------------------------------//
@@ -258,12 +249,9 @@ void ScrolledContainer::onChildRemoved(ElementEventArgs& e)
         d_eventConnections.erase(conn);
     }
 
-    // perform notification only if we're not currently being destroyed
+    // recalculate pane size if auto-sized and we're not currently being destroyed
     if (!d_destructionStarted)
-    {
-        WindowEventArgs args(this);
-        onContentChanged(args);
-    }
+        adjustSizeToContent();
 }
 
 //----------------------------------------------------------------------------//
@@ -271,20 +259,17 @@ void ScrolledContainer::onParentSized(ElementEventArgs& e)
 {
     Window::onParentSized(e);
 
-	// Autosized dimension has absolute size and therefore isn't resized with the
-	// parent, but children are based on the viewport, so notify them anyway.
-	if (isSizeAdjustedToContent())
-	{
-		ElementEventArgs args(this);
-		onSized(args);
-	}
+    // Autosized dimension has absolute size and therefore isn't resized with the
+    // parent, but children are based on the viewport, so notify them anyway.
+    if (isSizeAdjustedToContent())
+        performChildWindowLayout(false, true);
 }
 
 //----------------------------------------------------------------------------//
 void ScrolledContainer::notifyScreenAreaChanged(bool recursive)
 {
-	d_clientChildContentArea.invalidateCache();
-	Window::notifyScreenAreaChanged(recursive);
+    d_clientChildContentArea.invalidateCache();
+    Window::notifyScreenAreaChanged(recursive);
 }
 
 //----------------------------------------------------------------------------//
