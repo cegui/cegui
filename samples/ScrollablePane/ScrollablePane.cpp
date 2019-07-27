@@ -123,7 +123,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     d_pane->setAdjustWidthToContent(false);
     d_pane->setAdjustHeightToContent(false);
     d_pane->setContentSize(USize(UDim(0,5000), UDim(0,5000)));
-    d_pane->setHorizontalScrollPosition(0.2f); // FIXME: doesn't work
+    d_pane->setHorizontalScrollPosition(0.015f);
     panelFixed->addChild(d_pane);
 
     // add a dialog to the first pane so we have something to drag around :)

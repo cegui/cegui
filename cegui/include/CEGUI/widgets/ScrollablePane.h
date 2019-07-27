@@ -409,26 +409,6 @@ protected:
 
     /*!
     \brief
-        Return whether the vertical scrollbar is needed.
-
-    \return
-        - true if the scrollbar is either needed or forced via setting.
-        - false if the scrollbar should not be shown.
-    */
-    bool isVertScrollbarNeeded(void) const;
-
-    /*!
-    \brief
-        Return whether the horizontal scrollbar is needed.
-
-    \return
-        - true if the scrollbar is either needed or forced via setting.
-        - false if the scrollbar should not be shown.
-    */
-    bool isHorzScrollbarNeeded(void) const;
-
-    /*!
-    \brief
         Update the content container position according to the current 
         state of the widget (like scrollbar positions, etc).
     */
@@ -556,6 +536,8 @@ protected:
     float d_horzOverlap;
     //! Event connection to content pane
     Event::Connection d_contentChangedConn;
+    // FIXME: d_contentChangedConn->enable(bool) instead?
+    bool d_suspendContentChangedConn = false;
     //! Event connection to content pane
     Event::Connection d_autoSizeChangedConn;
 

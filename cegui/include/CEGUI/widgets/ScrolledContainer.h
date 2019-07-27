@@ -51,12 +51,6 @@ public:
     static const String WidgetTypeName;
     //! Namespace for global events
     static const String EventNamespace;
-    /** Event fired whenever some child changes.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the ScrolledContainer for which a child
-     * window has changed.
-     */
-    static const String EventContentChanged;
 
     //! Constructor for ScrolledContainer objects.
     ScrolledContainer(const String& type, const String& name);
@@ -85,9 +79,9 @@ public:
     */
     Rectf getChildExtentsArea(void) const;
 
-	virtual void adjustSizeToContent() override;
-	
-	const CachedRectf& getClientChildContentArea() const override;
+    virtual void adjustSizeToContent() override;
+    
+    const CachedRectf& getClientChildContentArea() const override;
     const CachedRectf& getNonClientChildContentArea() const override;
 
     void notifyScreenAreaChanged(bool recursive) override;
@@ -97,21 +91,18 @@ protected:
     Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const override;
     
     Rectf getClientChildContentArea_impl(bool skipAllPixelAlignment) const;
-    
-    //! Notification method called whenever the content size may have changed.
-    virtual void onContentChanged(WindowEventArgs& e);
 
     //! handles notifications about child windows being moved or sized.
     bool handleChildAreaChanged(const EventArgs& e);
 
     // overridden from Window.
     void drawSelf(const RenderingContext&, std::uint32_t) override {}
-	Rectf getInnerRectClipper_impl() const override;
-	Rectf getHitTestRect_impl() const override;
+    Rectf getInnerRectClipper_impl() const override;
+    Rectf getHitTestRect_impl() const override;
     void onChildAdded(ElementEventArgs& e) override;
     void onChildRemoved(ElementEventArgs& e) override;
     void onParentSized(ElementEventArgs& e) override;
-	void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
+    void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
                       bool fireEvents, bool adjust_size) override;
 
     //! type definition for collection used to track event connections.
@@ -119,9 +110,9 @@ protected:
     //! Tracks event connections we make.
     ConnectionTracker d_eventConnections;
 
-	// This offset helps to handle negative child coords in an auto-sized content area.
-	// It is intentionally not exposed to user. Use positive coords when possible.
-	glm::vec2 d_contentOffset;
+    // This offset helps to handle negative child coords in an auto-sized content area.
+    // It is intentionally not exposed to user. Use positive coords when possible.
+    glm::vec2 d_contentOffset;
 
     CachedRectf d_clientChildContentArea;
 };
@@ -133,4 +124,4 @@ protected:
 #   pragma warning(pop)
 #endif
 
-#endif	// end of guard _CEGUIScrolledContainer_h_
+#endif    // end of guard _CEGUIScrolledContainer_h_
