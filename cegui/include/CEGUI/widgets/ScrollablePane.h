@@ -61,13 +61,13 @@ public:
     Base class for the ScrollablePane widget.
 
     The ScrollablePane widget offers a content area that may (and typically will)
-	be bigger than the widget itself. Content area then can be scrolled inside a
-	widget, which effectively becomes a viewport. Child windows can be added to
-	the content area as to any other window.
+    be bigger than the widget itself. Content area then can be scrolled inside a
+    widget, which effectively becomes a viewport. Child windows can be added to
+    the content area as to any other window.
 
-	The widget supports absolute and relative sizing of child widgets as long as
-	autosizing of the content area through "AdjustWidthToContent" and
-	"AdjustHeightToContent" properties.
+    The widget supports absolute and relative sizing of child widgets as long as
+    autosizing of the content area through "AdjustWidthToContent" and
+    "AdjustHeightToContent" properties.
 */
 class CEGUIEXPORT ScrollablePane : public Window
 {
@@ -146,7 +146,7 @@ public:
         USize object that details the current size of the content
         pane attached to this ScrollablePane.
     */
-	USize getContentSize(void) const;
+    USize getContentSize(void) const;
 
     /*!
     \brief
@@ -154,7 +154,7 @@ public:
 
     \note
         If pane width and/or height are set to be adjusted to content,
-		this operation will not affect them.
+        this operation will not affect them.
 
     \param size
         USize object that details the size to use for the content
@@ -534,8 +534,8 @@ protected:
     
     void onSized_impl(ElementEventArgs& e) override;
     void onScroll(CursorInputEventArgs& e) override;
-	void onIsSizeAdjustedToContentChanged(ElementEventArgs& e) override;
-	void adjustSizeToContent() override {}
+    void onIsSizeAdjustedToContentChanged(ElementEventArgs& e) override;
+    void adjustSizeToContent() override {}
 
     //! \copydoc Window::getChildByNamePath_impl
     NamedElement* getChildByNamePath_impl(const String& name_path) const override;
