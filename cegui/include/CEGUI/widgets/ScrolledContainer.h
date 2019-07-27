@@ -107,6 +107,7 @@ protected:
     void onParentSized(ElementEventArgs& e) override;
     void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
                       bool fireEvents, bool adjust_size) override;
+    bool moveToFront_impl(bool wasClicked) override;
 
     //! type definition for collection used to track event connections.
     typedef std::multimap<Window*, Event::Connection> ConnectionTracker;

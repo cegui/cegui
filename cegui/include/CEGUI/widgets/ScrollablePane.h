@@ -224,6 +224,21 @@ public:
 
     /*!
     \brief
+        Returns whether scrolling by swipe in a widget area is enabled.
+    */
+    bool isSwipeScrollEnabled() const;
+
+    /*!
+    \brief
+        Set whether scrolling by swipe in a widget area must be enabled.
+
+    \param setting
+        true if swipe scrolling must be enabled, false otherwise
+    */
+    void setSwipeScrollEnabled(bool setting);
+
+    /*!
+    \brief
         Returns the horizontal scrollbar step size as a fraction of one
         complete view page.
 
@@ -399,6 +414,14 @@ public:
     void destroy(void) override;
 
 protected:
+
+    enum class ScrollSource
+    {
+        Wheel,
+        Swipe,
+        Other
+    };
+
     /*!
     \brief
         display required integrated scroll bars according to current size of
@@ -406,6 +429,23 @@ protected:
         ScrolledContainer.
     */
     void configureScrollbars(void);
+
+    /*!
+    \brief
+        Method called whenever the content pane is scrolled via the 
+        wheel, swipe or other external source. Reimplemet it for
+        more sophisticated scrolling behaviour (like a kinetic one).
+
+    \param dx
+        amount of horizontal scrolling in pixels.
+
+    \param dy
+        amount of vertical scrolling in pixels.
+
+    \param source
+        source of the scrolling (mouse Wheel, Swipe or Other).
+    */
+    virtual void scrollContentPane(float dx, float dy, ScrollSource source);
 
     /*!
     \brief
@@ -520,10 +560,18 @@ protected:
     //! \copydoc Window::getChildByNamePath_impl
     NamedElement* getChildByNamePath_impl(const String& name_path) const override;
 
+    // Swipe scroll support
+    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onCursorMove(CursorInputEventArgs& e) override;
+    void onCursorActivate(CursorInputEventArgs& e) override;
+    void onCaptureLost(WindowEventArgs& e) override;
+
     //! true if vertical scrollbar should always be displayed
     bool d_forceVertScroll;
     //! true if horizontal scrollbar should always be displayed
     bool d_forceHorzScroll;
+    //! true if scrolling by swipe in a widget area is enabled
+    bool d_swipeScroll;
     //! holds content area so we can track changes.
     Rectf d_contentRect;
     //! vertical scroll step fraction.
@@ -540,6 +588,9 @@ protected:
     bool d_suspendContentChangedConn = false;
     //! Event connection to content pane
     Event::Connection d_autoSizeChangedConn;
+
+    bool d_swiping = false;
+    glm::vec2 d_swipeStartPoint;
 
 private:
     void addScrollablePaneProperties(void);
