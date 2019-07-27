@@ -65,7 +65,7 @@ public:
     widget, which effectively becomes a viewport. Child windows can be added to
     the content area as to any other window.
 
-    The widget supports absolute and relative sizing of child widgets as long as
+    The widget supports absolute and relative sizing of child widgets,
     autosizing of the content area through "AdjustWidthToContent" and
     "AdjustHeightToContent" properties.
 */
@@ -226,7 +226,7 @@ public:
     \brief
         Returns whether scrolling by swipe in a widget area is enabled.
     */
-    bool isSwipeScrollEnabled() const;
+    bool isSwipeScrollingEnabled() const;
 
     /*!
     \brief
@@ -235,7 +235,7 @@ public:
     \param setting
         true if swipe scrolling must be enabled, false otherwise
     */
-    void setSwipeScrollEnabled(bool setting);
+    void setSwipeScrollingEnabled(bool setting);
 
     /*!
     \brief
@@ -433,7 +433,7 @@ protected:
     /*!
     \brief
         Method called whenever the content pane is scrolled via the 
-        wheel, swipe or other external source. Reimplemet it for
+        wheel, swipe or other external source. Reimplement it for
         more sophisticated scrolling behaviour (like a kinetic one).
 
     \param dx
@@ -571,7 +571,7 @@ protected:
     //! true if horizontal scrollbar should always be displayed
     bool d_forceHorzScroll;
     //! true if scrolling by swipe in a widget area is enabled
-    bool d_swipeScroll;
+    bool d_swipeScrollingEnabled;
     //! holds content area so we can track changes.
     Rectf d_contentRect;
     //! vertical scroll step fraction.
