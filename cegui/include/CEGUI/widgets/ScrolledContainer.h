@@ -94,6 +94,8 @@ protected:
 
     //! handles notifications about child windows being moved or sized.
     bool handleChildAreaChanged(const EventArgs& e);
+    void subscribeOnChildAreaEvents(Window* child);
+    void onIsSizeAdjustedToContentChanged(ElementEventArgs& e) override;
 
     // overridden from Window.
     void drawSelf(const RenderingContext&, std::uint32_t) override {}
@@ -101,14 +103,15 @@ protected:
     Rectf getHitTestRect_impl() const override;
     void onChildAdded(ElementEventArgs& e) override;
     void onChildRemoved(ElementEventArgs& e) override;
+    void cleanupChildren(void) override;
     void onParentSized(ElementEventArgs& e) override;
     void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
                       bool fireEvents, bool adjust_size) override;
 
     //! type definition for collection used to track event connections.
-    typedef std::multimap<Window*, Event::Connection>  ConnectionTracker;
+    typedef std::multimap<Window*, Event::Connection> ConnectionTracker;
     //! Tracks event connections we make.
-    ConnectionTracker d_eventConnections;
+    ConnectionTracker d_childAreaChangeConnections;
 
     // This offset helps to handle negative child coords in an auto-sized content area.
     // It is intentionally not exposed to user. Use positive coords when possible.

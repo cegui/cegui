@@ -150,6 +150,37 @@ bool ScrolledContainer::handleChildAreaChanged(const EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+void ScrolledContainer::subscribeOnChildAreaEvents(Window* child)
+{
+    d_childAreaChangeConnections.emplace(child,
+        child->subscribeEvent(Window::EventSized,
+            Event::Subscriber(&ScrolledContainer::handleChildAreaChanged, this)));
+    d_childAreaChangeConnections.emplace(child,
+        child->subscribeEvent(Window::EventMoved,
+            Event::Subscriber(&ScrolledContainer::handleChildAreaChanged, this)));
+}
+
+//----------------------------------------------------------------------------//
+void ScrolledContainer::onIsSizeAdjustedToContentChanged(ElementEventArgs& e)
+{
+    // Listen to child area changes only when auto-sizing is required
+    const bool autoSize = isSizeAdjustedToContent();
+    if (autoSize && d_childAreaChangeConnections.empty())
+    {
+        for (auto* child : d_children)
+            subscribeOnChildAreaEvents(static_cast<Window*>(child));
+    }
+    else if (!autoSize && !d_childAreaChangeConnections.empty())
+    {
+        for (auto& windowToConnection : d_childAreaChangeConnections)
+            windowToConnection.second->disconnect();
+        d_childAreaChangeConnections.clear();
+    }
+
+    Window::onIsSizeAdjustedToContentChanged(e);
+}
+
+//----------------------------------------------------------------------------//
 Rectf ScrolledContainer::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
 {
     // When container size doesn't depend on child extents, child areas are relative
@@ -221,13 +252,9 @@ void ScrolledContainer::onChildAdded(ElementEventArgs& e)
 {
     Window::onChildAdded(e);
 
-    // subscribe to some events on this child
-    d_eventConnections.emplace(static_cast<Window*>(e.element),
-        static_cast<Window*>(e.element)->subscribeEvent(Window::EventSized,
-            Event::Subscriber(&ScrolledContainer::handleChildAreaChanged, this)));
-    d_eventConnections.emplace(static_cast<Window*>(e.element),
-        static_cast<Window*>(e.element)->subscribeEvent(Window::EventMoved,
-            Event::Subscriber(&ScrolledContainer::handleChildAreaChanged, this)));
+    // subscribe to area change events on this child for auto-sizing
+    if (isSizeAdjustedToContent())
+        subscribeOnChildAreaEvents(static_cast<Window*>(e.element));
 
     // force window to update what it thinks it's screen / pixel areas are.
     static_cast<Window*>(e.element)->notifyScreenAreaChanged(false);
@@ -241,17 +268,27 @@ void ScrolledContainer::onChildRemoved(ElementEventArgs& e)
 {
     Window::onChildRemoved(e);
 
-    // disconnect from events for this window.
-    ConnectionTracker::iterator conn;
-    while ((conn = d_eventConnections.find(static_cast<Window*>(e.element))) != d_eventConnections.end())
-    {
-        conn->second->disconnect();
-        d_eventConnections.erase(conn);
-    }
-
-    // recalculate pane size if auto-sized and we're not currently being destroyed
+    // take a special care of children only if we're not being destroyed
     if (!d_destructionStarted)
+    {
+        // disconnect from events of this window
+        auto range = d_childAreaChangeConnections.equal_range(static_cast<Window*>(e.element));
+        for (auto it = range.first; it != range.second; ++it)
+            it->second->disconnect();
+        d_childAreaChangeConnections.erase(range.first, range.second);
+
+        // recalculate pane size if auto-sized
         adjustSizeToContent();
+    }
+}
+
+//----------------------------------------------------------------------------//
+void ScrolledContainer::cleanupChildren(void)
+{
+    for (auto& windowToConnection : d_childAreaChangeConnections)
+        windowToConnection.second->disconnect();
+    d_childAreaChangeConnections.clear();
+    Window::cleanupChildren();
 }
 
 //----------------------------------------------------------------------------//

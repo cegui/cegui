@@ -186,6 +186,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     if (useLayout)
     {
         verticalListParent = d_wm->createWindow("VerticalLayoutContainer");
+        verticalListParent->setCursorInputPropagationEnabled(true);
         pane->addChild(verticalListParent);
     }
 
