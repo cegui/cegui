@@ -176,11 +176,8 @@ void SampleBrowser::loadSamples()
 
     std::sort(samples.begin(), samples.end(), SamplePointerCompare());
 
-	//!!!DBG TMP!
-	samples.resize(1);
-
-	std::vector<Sample*>::iterator iter = samples.begin();
-	std::vector<Sample*>::iterator iterEnd = samples.end();
+    std::vector<Sample*>::iterator iter = samples.begin();
+    std::vector<Sample*>::iterator iterEnd = samples.end();
 
     while (iter != iterEnd)
     {

@@ -29,6 +29,7 @@
 #include "CEGUI/widgets/Scrollbar.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/CoordConverter.h"
 #include <math.h>
 
 // Start of CEGUI namespace section
@@ -55,6 +56,7 @@ ScrollablePane::ScrollablePane(const String& type, const String& name) :
     Window(type, name),
     d_forceVertScroll(false),
     d_forceHorzScroll(false),
+    d_swipeScroll(false),
     d_contentRect(0.f, 0.f, 0.f, 0.f),
     d_vertStep(0.1f),
     d_vertOverlap(0.01f),
@@ -143,6 +145,18 @@ void ScrollablePane::setShowHorzScrollbar(bool setting)
         WindowEventArgs args(this);
         onHorzScrollbarModeChanged(args);
     }
+}
+
+//----------------------------------------------------------------------------//
+bool ScrollablePane::isSwipeScrollEnabled() const
+{
+    return d_swipeScroll;
+}
+
+//----------------------------------------------------------------------------//
+void ScrollablePane::setSwipeScrollEnabled(bool setting)
+{
+    d_swipeScroll = setting;
 }
 
 //----------------------------------------------------------------------------//
@@ -338,6 +352,25 @@ void ScrollablePane::configureScrollbars(void)
 }
 
 //----------------------------------------------------------------------------//
+void ScrollablePane::scrollContentPane(float dx, float dy, ScrollablePane::ScrollSource source)
+{
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
+
+    if (vertScrollbar->isEffectiveVisible() &&
+        (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
+    {
+        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + dy);
+    }
+
+    if (horzScrollbar->isEffectiveVisible() &&
+        (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
+    {
+        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + dx);
+    }
+}
+
+//----------------------------------------------------------------------------//
 void ScrollablePane::updateContainerPosition(void)
 {
     // basePos is the position represented by the scrollbars
@@ -516,23 +549,26 @@ void ScrollablePane::onScroll(CursorInputEventArgs& e)
 {
     // base class processing.
     Window::onScroll(e);
-    
+
+    float dx = 0.f;
+    float dy = 0.f;
+
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
     
     if (vertScrollbar->isEffectiveVisible() &&
         (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
     {
-        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() +
-                            vertScrollbar->getStepSize() * -e.scroll);
+        dy = vertScrollbar->getStepSize() * -e.scroll;
     }
     else if (horzScrollbar->isEffectiveVisible() &&
              (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
     {
-        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() +
-                            horzScrollbar->getStepSize() * -e.scroll);
+        dx = horzScrollbar->getStepSize() * -e.scroll;
     }
     
+    scrollContentPane(dx, dy, ScrollSource::Wheel);
+
     ++e.handled;
 }
 
@@ -557,6 +593,12 @@ void ScrollablePane::addScrollablePaneProperties(void)
     CEGUI_DEFINE_PROPERTY(ScrollablePane, USize,
         "ContentSize", "Property to get/set the content pane area size. Auto-sized width and/or height are ignored.",
         &ScrollablePane::setContentSize, &ScrollablePane::getContentSize, USize(UDim(0, 0), UDim(0, 0))
+    );
+
+    CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
+        "SwipeScroll", "Whether scrolling by swipe in a widget area is enabled. "
+        "Value is either \"true\" or \"false\".",
+        &ScrollablePane::setSwipeScrollEnabled, &ScrollablePane::isSwipeScrollEnabled, false
     );
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
@@ -653,8 +695,8 @@ NamedElement* ScrollablePane::getChildByNamePath_impl(const String& name_path) c
     else
         return Window::getChildByNamePath_impl(ScrolledContainerName + '/' + name_path);
 }
-//----------------------------------------------------------------------------//
     
+//----------------------------------------------------------------------------//
 int ScrollablePane::writeChildWindowsXML(XMLSerializer& xml_stream) const
 {
     // This is an easy and safe workaround for not writing out the buttonPane and contentPane. While in fact
@@ -681,6 +723,63 @@ int ScrollablePane::writeChildWindowsXML(XMLSerializer& xml_stream) const
     }
 
     return childOutputCount;
+}
+
+//----------------------------------------------------------------------------//
+void ScrollablePane::onCursorPressHold(CursorInputEventArgs& e)
+{
+    Window::onCursorPressHold(e);
+
+    if (d_swipeScroll && e.source == CursorInputSource::Left)
+    {
+        // we want all cursor inputs from now on
+        if (captureInput())
+        {
+            d_swiping = true;
+            d_swipeStartPoint = CoordConverter::screenToWindow(*this, e.position);
+        }
+
+        ++e.handled;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void ScrollablePane::onCursorMove(CursorInputEventArgs& e)
+{
+    Window::onCursorMove(e);
+
+    if (d_swiping)
+    {
+        auto newPos = CoordConverter::screenToWindow(*this, e.position);
+        const glm::vec2 delta(newPos - d_swipeStartPoint);
+
+        scrollContentPane(-delta.x, -delta.y, ScrollSource::Swipe);
+
+        d_swipeStartPoint = newPos;
+
+        ++e.handled;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void ScrollablePane::onCursorActivate(CursorInputEventArgs& e)
+{
+    Window::onCursorActivate(e);
+
+    if (e.source == CursorInputSource::Left)
+    {
+        releaseInput();
+        ++e.handled;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void ScrollablePane::onCaptureLost(WindowEventArgs& e)
+{
+    Window::onCaptureLost(e);
+
+    // when we lose out hold on the cursor inputs, we are no longer swiping
+    d_swiping = false;
 }
 
 }
