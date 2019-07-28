@@ -110,6 +110,10 @@ int CEGuiGLFWSharedBase::glfwWindowCloseCallback(void)
 //----------------------------------------------------------------------------//
 void CEGuiGLFWSharedBase::glfwWindowResizeCallback(int w, int h)
 {
+    // GLFW sends resize callback when window is minimized, ignore this
+    if (!w || !h)
+        return;
+
     // We cache this in order to minimise calls to notifyDisplaySizeChanged,
     // which happens in the main loop whenever d_windowSized is set to true.
     d_windowSized = true;
