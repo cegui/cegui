@@ -235,10 +235,16 @@ void GUIContext::markAsDirty(std::uint32_t drawModeMask)
 //----------------------------------------------------------------------------//
 void GUIContext::draw(std::uint32_t drawModeMask)
 {
+    // Cursor is always dirty because it must be redrawn each frame
+    const bool drawCursor = (drawModeMask & DrawModeFlagMouseCursor);
+    
     drawModeMask &= d_dirtyDrawModeMask;
 
     if (drawModeMask)
         drawWindowContentToTarget(drawModeMask);
+
+    if (drawCursor)
+        drawModeMask |= DrawModeFlagMouseCursor;
 
     RenderingSurface::draw(drawModeMask);
 }
@@ -260,6 +266,7 @@ void GUIContext::drawWindowContentToTarget(std::uint32_t drawModeMask)
     else
         clearGeometry();
 
+    // Mark all rendered modes as not dirty, except the cursor, which is always redrawn
     d_dirtyDrawModeMask &= (~drawModeMask);
 }
 

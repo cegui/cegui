@@ -896,6 +896,12 @@ bool FrameWindow::isHit(const glm::vec2& position, const bool /*allow_disabled*/
     return Window::isHit(position) && !d_rolledup;
 }
 
+void FrameWindow::setCursorInputPropagationEnabled(const bool enabled)
+{
+    Window::setCursorInputPropagationEnabled(enabled);
+    getTitlebar()->setCursorInputPropagationEnabled(enabled);
+}
+
 /*************************************************************************
     Return a pointer to the Titlebar component widget for this FrameWindow.
 *************************************************************************/

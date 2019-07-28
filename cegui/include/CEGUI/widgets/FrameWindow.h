@@ -455,6 +455,7 @@ public:
 
     // overridden from Window class
     bool isHit(const glm::vec2& position, const bool allow_disabled) const override;
+    void setCursorInputPropagationEnabled(const bool enabled) override;
 
     /*!
     \brief
