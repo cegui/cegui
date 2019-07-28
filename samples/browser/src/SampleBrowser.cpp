@@ -174,10 +174,10 @@ void SampleBrowser::loadSamples()
 {
     #include "samples.inc"
 
+    std::sort(samples.begin(), samples.end(), SamplePointerCompare());
+
     std::vector<Sample*>::iterator iter = samples.begin();
     std::vector<Sample*>::iterator iterEnd = samples.end();
-
-    std::sort(samples.begin(), samples.end(), SamplePointerCompare());
 
     while (iter != iterEnd)
     {

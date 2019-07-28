@@ -135,7 +135,9 @@ if(${OGRE_FOUND})
     endif()
 endif()
 
-find_package(OIS)
+if(${OGRE_FOUND} AND ${OGRE_VERSION} VERSION_LESS 1.10)
+    find_package(OIS)
+endif()
 find_package(DirectFB)
 find_package(OpenGLES)
 find_package(OpenGLES2)
@@ -283,7 +285,7 @@ if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
         option (CEGUI_USE_EPOXY "Specifies whether to use Epoxy as an OpenGL loading library." FALSE)
         if (CEGUI_USE_GLEW AND CEGUI_USE_EPOXY)
             message (FATAL_ERROR "You may not enable both \"CEGUI_USE_GLEW\" and \"CEGUI_USE_EPOXY\". Please choose only one of these options.")
-        endif ()           
+        endif ()
     else ()
         set (CEGUI_USE_GLEW "${GLEW_FOUND}")
         set (CEGUI_USE_EPOXY "${EPOXY_FOUND}")
@@ -371,9 +373,7 @@ if (CEGUI_BUILD_RENDERER_OGRE)
     set(CEGUI_FOUND_OGRE_VERSION_PATCH ${OGRE_VERSION_PATCH})
 endif()
 
-if (CEGUI_BUILD_RENDERER_OGRE AND OIS_FOUND)
-
-    
+if (CEGUI_BUILD_RENDERER_OGRE)
     if (NOT Boost_VERSION LESS 105000 AND "${OGRE_CONFIG_THREAD_PROVIDER}" STREQUAL "1") #Check additionally if we use boost as thread provider at all
         if (Boost_SYSTEM_FOUND)
             set (CEGUI_OGRE_SAMPLES_EXTRALIBS ${Boost_SYSTEM_LIBRARY})
@@ -397,14 +397,14 @@ set (CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECTFB})
 set (CEGUI_SAMPLES_RENDERER_OPENGLES2_ALTERNATE_ACTIVE ${CEGUI_BUILD_RENDERER_OPENGLES2_ALTERNATE})
 
 #Only build the opengles2 sample renderer for Android
-if (NOT ANDROID) 
+if (NOT ANDROID)
     set (CEGUI_SAMPLES_RENDERER_OPENGLES2_ALTERNATE_ACTIVE FALSE)
 endif()
 
-# Ogre and OpenGL have dependencies for the sample browser, if these are not available then the samples will be OFF by default   
+# Ogre and OpenGL have dependencies for the sample browser, if these are not available then the samples will be OFF by default
 if (CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_DEPS_AVAILABLE)
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
-    if (NOT OIS_FOUND)
+    if (${OGRE_VERSION} VERSION_LESS 1.10 AND NOT OIS_FOUND)
         message(WARNING "The SampleFramework is deactivated due to missing Ogre dependencies (OIS not found)")
     else()
         message(WARNING "The SampleFramework is deactivated due to missing Ogre dependencies (boost libraries)")
@@ -480,12 +480,12 @@ option( CEGUI_INSTALL_WITH_RPATH "Specifies whether to install with RPATH set to
 
 # custom install locations
 option( CEGUI_LIB_INSTALL_DIR "Specifies custom location for CEGUI_LIB_INSTALL_DIR"  )
-option( CEGUI_DATA_INSTALL_DIR "Specifies custom location for CEGUI_DATA_INSTALL_DIR" )  
-option( CEGUI_DOC_INSTALL_DIR "Specifies custom location for CEGUI_DOC_INSTALL_DIR" )  
-option( CEGUI_PKGCONFIG_INSTALL_DIR "Specifies custom location for CEGUI_PKGCONFIG_INSTALL_DIR" )  
-option( CEGUI_MODULE_INSTALL_DIR "Specifies custom location for CEGUI_MODULE_INSTALL_DIR" )  
-option( CEGUI_SAMPLE_INSTALL_DIR "Specifies custom location for CEGUI_SAMPLE_INSTALL_DIR" ) # TODO: put into /samples subdir!  
-option( CEGUI_INCLUDE_INSTALL_DIR "Specifies custom location for CEGUI_INCLUDE_INSTALL_DIR" ) 
+option( CEGUI_DATA_INSTALL_DIR "Specifies custom location for CEGUI_DATA_INSTALL_DIR" )
+option( CEGUI_DOC_INSTALL_DIR "Specifies custom location for CEGUI_DOC_INSTALL_DIR" )
+option( CEGUI_PKGCONFIG_INSTALL_DIR "Specifies custom location for CEGUI_PKGCONFIG_INSTALL_DIR" )
+option( CEGUI_MODULE_INSTALL_DIR "Specifies custom location for CEGUI_MODULE_INSTALL_DIR" )
+option( CEGUI_SAMPLE_INSTALL_DIR "Specifies custom location for CEGUI_SAMPLE_INSTALL_DIR" ) # TODO: put into /samples subdir!
+option( CEGUI_INCLUDE_INSTALL_DIR "Specifies custom location for CEGUI_INCLUDE_INSTALL_DIR" )
 
 
 ################################################################################

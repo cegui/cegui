@@ -316,7 +316,9 @@ Window::Window(const String& type, const String& name):
     d_fontRenderSizeChangeConnection(
         GlobalEventSet::getSingleton().subscribeEvent(
             "Font/RenderSizeChanged",
-            Event::Subscriber(&Window::handleFontRenderSizeChange, this)))
+            Event::Subscriber(&Window::handleFontRenderSizeChange, this))),
+
+    d_drawModeMask(DrawModeFlagWindowRegular)
 {
 #ifdef CEGUI_USE_RAQM
     d_raqmTextData = new RaqmTextData();

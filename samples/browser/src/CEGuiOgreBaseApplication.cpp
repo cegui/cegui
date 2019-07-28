@@ -58,6 +58,13 @@
 #endif
 
 //----------------------------------------------------------------------------//
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
+    OgreBites::ApplicationContext("CEGuiOgreBaseApplication"),
+    d_initialised(false)
+{
+}
+#else
 CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
     d_ogreRoot(0),
     d_initialised(false),
@@ -65,7 +72,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
     d_windowEventListener(0)
 {
     using namespace Ogre;
-    
+
 #ifdef DEBUG
     Ogre::String pluginsFileName = "plugins_d.cfg";
 #else
@@ -126,7 +133,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         }
 
         // Create a full screen workspace that just clears the screen
-        
+
 
         // Define the workspace first
         Ogre::CompositorWorkspaceDef* templatedworkspace = manager->addWorkspaceDefinition(
@@ -134,7 +141,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
         // Create a node for rendering on top of everything
         Ogre::CompositorNodeDef* rendernode = manager->addNodeDefinition("SampleCleaner");
-        
+
         rendernode->addTextureSourceName("renderwindow", 0,
             Ogre::TextureDefinitionBase::TEXTURE_INPUT);
 
@@ -161,14 +168,14 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         Ogre::CompositorPassSceneDef* scenepass =
             static_cast<Ogre::CompositorPassSceneDef*>(targetpasses->
             addPass(Ogre::PASS_SCENE));
-        
+
 #ifdef CEGUI_USE_OGRE_HLMS
 
         (void)scenepass;
-        
+
         // Connect the main render target to the node
         templatedworkspace->connectExternal(0, "SampleCleaner", 0);
-        
+
 #else
 
         // Just render the overlay group since it is the only one used
@@ -194,7 +201,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         d_camera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
 
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
-        
+
 
         // create ogre renderer, image codec and resource provider.
         CEGUI::OgreRenderer& renderer = CEGUI::OgreRenderer::create(*d_window);
@@ -216,7 +223,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         WindowEventUtilities::addWindowEventListener(d_window,
                                                      d_windowEventListener);
 
-        
+
         d_ogreRoot->addFrameListener(this);
         renderer.setRenderingEnabled(false);
 
@@ -230,8 +237,14 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         d_ogreRoot = 0;
     }
 }
+#endif
 
 //----------------------------------------------------------------------------//
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
+{
+}
+#else
 CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
 {
 #ifdef OGRE_STATIC_LIB
@@ -241,19 +254,67 @@ CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
     delete d_ogreRoot;
     delete d_windowEventListener;
 }
+#endif
+
+//----------------------------------------------------------------------------//
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+void CEGuiOgreBaseApplication::setup()
+{
+	using namespace Ogre;
+    OgreBites::ApplicationContext::setup();
+    OgreBites::ApplicationContext::addInputListener(this);
+    // Create the scene manager
+    SceneManager* sm = getRoot()->createSceneManager();
+    // Create and initialise the camera
+    d_camera = sm->createCamera("SampleCam");
+    d_camera->setPosition(Vector3(0,0,500));
+    d_camera->lookAt(Vector3(0,0,-300));
+    d_camera->setNearClipDistance(5);
+    // Create a viewport covering whole window
+    Viewport* vp = getRenderWindow()->addViewport(d_camera);
+    vp->setBackgroundColour(ColourValue(0.0f, 0.0f, 0.0f, 0.0f));
+    // Update the camera aspect ratio to that of the viewport
+    d_camera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
+    // create ogre renderer, image codec and resource provider.
+    CEGUI::OgreRenderer& renderer = CEGUI::OgreRenderer::create(*getRenderWindow());
+    d_renderer = &renderer;
+    d_imageCodec = &renderer.createOgreImageCodec();
+    d_resourceProvider = &renderer.createOgreResourceProvider();
+    renderer.setRenderingEnabled(false);
+    d_initialised = true;
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiOgreBaseApplication::windowResized(Ogre::RenderWindow* rw)
+{
+    CEGUI::System* const sys = CEGUI::System::getSingletonPtr();
+    if (sys)
+        sys->notifyDisplaySizeChanged(
+        CEGUI::Sizef(static_cast<float>(rw->getWidth()),
+        static_cast<float>(rw->getHeight())));
+}
+#endif
 
 //----------------------------------------------------------------------------//
 bool CEGuiOgreBaseApplication::init(SampleBrowserBase* sampleApp,
   const CEGUI::String &logFile, const CEGUI::String &dataPathPrefixOverride)
 {
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+    initApp();
+#endif
+
     if (!CEGuiBaseApplication::init(sampleApp, logFile, dataPathPrefixOverride))
         return false;
 
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+    OgreBites::ApplicationContext::loadResources();
+#else
     // if base initialisation failed or app was cancelled by user, bail out now.
     if (!d_ogreRoot || !d_initialised)
         return false;
 
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+#endif
 
     return true;
 }
@@ -261,7 +322,9 @@ bool CEGuiOgreBaseApplication::init(SampleBrowserBase* sampleApp,
 //----------------------------------------------------------------------------//
 void CEGuiOgreBaseApplication::destroyRenderer()
 {
+#if (OGRE_VERSION < ((1 << 16) | (10 << 8) | 0))
     delete d_frameListener;
+#endif
 
     CEGUI::OgreRenderer& renderer =
         *static_cast<CEGUI::OgreRenderer*>(d_renderer);
@@ -316,7 +379,7 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
     ResourceGroupManager::getSingleton().addResourceLocation("./", "FileSystem");
     const char* type= "FileSystem";
 #endif
-        
+
     // for each resource type, set a resource group directory
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32
     ResourceGroupManager::getSingleton().addResourceLocation(getResourcePath("schemes").c_str(), type, "schemes");
@@ -344,7 +407,7 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
 CEGUI::String CEGuiOgreBaseApplication::getResourcePath(CEGUI::String resource) {
 #ifdef __ANDROID__
     return "/datafiles/" + resource;
-#else 
+#else
     return getDataPathPrefix() + "/" + resource + "/";
 #endif
 }
@@ -375,9 +438,14 @@ void CEGuiOgreBaseApplication::run()
     try
     {
         #ifdef __ANDROID__
-                AndroidAppHelper::go();
+            AndroidAppHelper::go();
         #else
+            #if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+                getRoot()->startRendering();
+                closeApp();
+            #else
                 d_ogreRoot->startRendering();
+            #endif
         #endif
     }
     catch(...)
@@ -385,6 +453,7 @@ void CEGuiOgreBaseApplication::run()
 }
 
 //----------------------------------------------------------------------------//
+#if (OGRE_VERSION < ((1 << 16) | (10 << 8) | 0))
 void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
 {
     // Check if the config exists
@@ -437,8 +506,78 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
         }
     }
 }
+#endif
 
 //----------------------------------------------------------------------------//
+
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+
+////////////////////////////////////////////////////////////////////////////////
+/*******************************************************************************
+    Start of OgreApplicationContext mehods overloading
+*******************************************************************************/
+////////////////////////////////////////////////////////////////////////////////
+
+bool CEGuiOgreBaseApplication::frameStarted(const Ogre::FrameEvent& evt)
+{
+    if(getRenderWindow()->isClosed())
+        return false;
+    return OgreBites::ApplicationContext::frameStarted(evt);
+}
+
+bool CEGuiOgreBaseApplication::mouseMoved(const OgreBites::MouseMotionEvent &e)
+{
+    d_sampleApp->injectMousePosition(e.x, e.y);
+    return true;
+}
+
+bool CEGuiOgreBaseApplication::mouseWheelRolled(const OgreBites::MouseWheelEvent& e)
+{
+    d_sampleApp->injectMouseWheelChange(e.y);
+    return true;
+}
+
+bool CEGuiOgreBaseApplication::keyPressed(const OgreBites::KeyboardEvent &e)
+{
+    d_sampleApp->injectKeyDown(static_cast<CEGUI::Key::Scan>(e.keysym.sym));
+    d_sampleApp->injectChar(e.keysym.sym);
+    return true;
+}
+
+bool CEGuiOgreBaseApplication::keyReleased(const OgreBites::KeyboardEvent& e)
+{
+    d_sampleApp->injectKeyUp(static_cast<CEGUI::Key::Scan>(e.keysym.sym));
+    return true;
+}
+
+bool CEGuiOgreBaseApplication::mousePressed(const OgreBites::MouseButtonEvent& evt)
+{
+    d_sampleApp->injectMouseButtonDown(convertButtonToCegui(evt.button));
+    return true;
+}
+
+bool CEGuiOgreBaseApplication::mouseReleased(const OgreBites::MouseButtonEvent& evt)
+{
+    d_sampleApp->injectMouseButtonUp(convertButtonToCegui(evt.button));
+    return true;
+}
+
+CEGUI::MouseButton CEGuiOgreBaseApplication::convertButtonToCegui(int buttonID)
+{
+    switch (buttonID)
+    {
+    case OgreBites::BUTTON_LEFT:
+        return CEGUI::MouseButton::Left;
+    case OgreBites::BUTTON_RIGHT:
+        return CEGUI::MouseButton::Right;
+    case OgreBites::BUTTON_MIDDLE:
+        return CEGUI::MouseButton::Middle;
+    default:
+        return CEGUI::MouseButton::Invalid;
+    }
+}
+
+#else
 
 ////////////////////////////////////////////////////////////////////////////////
 /*******************************************************************************
@@ -561,7 +700,7 @@ bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent&)
 #ifdef __ANDROID__
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::touchMoved(const OIS::MultiTouchEvent &e)
-{   
+{
     float x = static_cast <float>(e.state.X.abs);
     float y = static_cast <float>(e.state.Y.abs);
     d_sampleApp->injectMousePosition(x, y);
@@ -664,7 +803,7 @@ OIS::Mouse* CEGuiDemoFrameListener::getOISMouse()
 
 //----------------------------------------------------------------------------//
 #ifdef __ANDROID__
-WndEvtListener::WndEvtListener() 
+WndEvtListener::WndEvtListener()
 #else
 WndEvtListener::WndEvtListener(OIS::Mouse* mouse) :
     d_mouse(mouse)
@@ -686,6 +825,8 @@ void WndEvtListener::windowResized(Ogre::RenderWindow* rw)
     mouseState.height = rw->getHeight();
 #endif
 }
+
+#endif
 
 //----------------------------------------------------------------------------//
 

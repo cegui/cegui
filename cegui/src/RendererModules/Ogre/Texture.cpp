@@ -268,10 +268,10 @@ void OgreTexture::blitFromMemory(const void* sourceData, const Rectf& area)
                       1,
                       d_texture->getFormat(), const_cast<void*>(sourceData));
 
-    Ogre::Image::Box box(static_cast<Ogre::uint32>(area.left()),
-                         static_cast<Ogre::uint32>(area.top()),
-                         static_cast<Ogre::uint32>(area.right()),
-                         static_cast<Ogre::uint32>(area.bottom()) );
+    Ogre::Box box(static_cast<Ogre::uint32>(area.left()),
+			      static_cast<Ogre::uint32>(area.top()),
+			      static_cast<Ogre::uint32>(area.right()),
+			      static_cast<Ogre::uint32>(area.bottom()) );
     d_texture->getBuffer()->blitFromMemory(pb, box);
 }
 
@@ -309,7 +309,7 @@ Ogre::String OgreTexture::getUniqueName()
         strstream << "_cegui_ogre_" << d_textureNumber++;
 
         return strstream.str();
-    #endif   
+    #endif
 }
 
 //----------------------------------------------------------------------------//
@@ -396,7 +396,7 @@ Ogre::PixelFormat OgreTexture::toOgrePixelFormat(const Texture::PixelFormat fmt)
         case Texture::PixelFormat::RgbaDxt1:  return Ogre::PF_DXT1;
         case Texture::PixelFormat::RgbaDxt3:  return Ogre::PF_DXT3;
         case Texture::PixelFormat::RgbaDxt5:  return Ogre::PF_DXT5;
-        
+
         default:
             throw InvalidRequestException(
                 "Invalid pixel format translation.");
@@ -420,7 +420,7 @@ Texture::PixelFormat OgreTexture::fromOgrePixelFormat(
         case Ogre::PF_DXT1:         return Texture::PixelFormat::RgbaDxt1;
         case Ogre::PF_DXT3:         return Texture::PixelFormat::RgbaDxt3;
         case Ogre::PF_DXT5:         return Texture::PixelFormat::RgbaDxt5;
-        
+
         default:
             throw InvalidRequestException(
                 "Invalid pixel format translation.");
