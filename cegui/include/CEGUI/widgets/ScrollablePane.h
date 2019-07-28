@@ -60,16 +60,14 @@ public:
 \brief
     Base class for the ScrollablePane widget.
 
-    The ScrollablePane widget allows child windows to be attached which cover an
-    area larger than the ScrollablePane itself and these child windows can be
-    scrolled into view using the scrollbars of the scrollable pane.
+    The ScrollablePane widget offers a content area that may (and typically will)
+    be bigger than the widget itself. Content area then can be scrolled inside a
+    widget, which effectively becomes a viewport. Child windows can be added to
+    the content area as to any other window.
 
-    Note: A relative component in a child's area is taken relative to the size
-    of content area, not the size of the scrollable pane. Therefore, when a
-    child uses a non-absolute area (i.e. which has any unified dimension with a
-    non-zero relative component) while auto-size is set to "true", this creates
-    a circular dependency and is therefore not allowed.
-    in future versions of CEGUI.
+    The widget supports absolute and relative sizing of child widgets,
+    autosizing of the content area through "AdjustWidthToContent" and
+    "AdjustHeightToContent" properties.
 */
 class CEGUIEXPORT ScrollablePane : public Window
 {
@@ -96,12 +94,6 @@ public:
      * bar mode has been changed.
      */
     static const String EventHorzScrollbarModeChanged;
-    /** Event fired when the auto size setting for the pane is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the ScrollablePane whose auto size
-     * setting has been changed.
-     */
-    static const String EventAutoSizeSettingChanged;
     /** Event fired when the pane gets scrolled.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the ScrollablePane that has been scrolled.
@@ -118,7 +110,7 @@ public:
     ScrollablePane(const String& type, const String& name);
 
     //! Destructor for the ScrollablePane base class.
-    ~ScrollablePane(void);
+    ~ScrollablePane(void) override;
 
     int writeChildWindowsXML(XMLSerializer& xml_stream) const override;
 
@@ -138,6 +130,50 @@ public:
 
     /*!
     \brief
+        Return the current content pane area in pixels.
+
+    \return
+        Rect object that details the current pixel extents of the content
+        pane attached to this ScrollablePane.
+    */
+    Rectf getContentPixelRect(void) const;
+
+    /*!
+    \brief
+        Return the current content pane size for the ScrollablePane.
+
+    \return
+        USize object that details the current size of the content
+        pane attached to this ScrollablePane.
+    */
+    USize getContentSize(void) const;
+
+    /*!
+    \brief
+        Set the current content pane size for the ScrollablePane.
+
+    \note
+        If pane width and/or height are set to be adjusted to content,
+        this operation will not affect them.
+
+    \param size
+        USize object that details the size to use for the content
+        pane attached to this ScrollablePane.
+    */
+    void setContentSize(const USize& size);
+
+    /*!
+    \brief
+        Return a Rect that described the pane's viewable area, relative
+        to this Window, in pixels.
+
+    \return
+        Rect object describing the ScrollablePane's viewable area.
+    */
+    Rectf getViewableArea(void) const;
+
+    /*!
+    \brief
         Return whether the vertical scroll bar is always shown.
 
     \return
@@ -149,13 +185,6 @@ public:
     /*!
     \brief
         Set whether the vertical scroll bar should always be shown.
-
-        Note: If the content pane is set to be auto-sized, and not both
-        (horizontal and vertical) scrollbars are set to be always visible, and
-        any of the children's size is not set to be an absolute dimension (i.e.
-        its relative component is non-zero), this creates a circular dependency
-        which may lead to a crash. Please don't use such a combination. It'll
-        probably not be allowed in future versions of CEGUI.
 
     \param setting
         - true if the vertical scroll bar should be shown even when it is not
@@ -182,13 +211,6 @@ public:
     \brief
         Set whether the horizontal scroll bar should always be shown.
 
-        Note: If the content pane is set to be auto-sized, and not both
-        (horizontal and vertical) scrollbars are set to be always visible, and
-        any of the children's size is not set to be an absolute dimension (i.e.
-        its relative component is non-zero), this creates a circular dependency
-        which may lead to a crash. Please don't use such a combination. It'll
-        probably not be allowed in future versions of CEGUI.
-
     \param setting
         - true if the horizontal scroll bar should be shown even when it is not
           required.
@@ -202,62 +224,18 @@ public:
 
     /*!
     \brief
-        Return whether the content pane is auto sized.
-
-    \return
-        - true to indicate the content pane will automatically resize itself.
-        - false to indicate the content pane will not automatically resize
-          itself.
+        Returns whether scrolling by swipe in a widget area is enabled.
     */
-    bool isContentPaneAutoSized(void) const;
+    bool isSwipeScrollingEnabled() const;
 
     /*!
     \brief
-        Set whether the content pane should be auto-sized.
-
-        Note: A relative component in a child's area is taken relative to the
-        size of content area, not the size of the scrollable pane. Therefore,
-        when a child uses a non-absolute area (i.e. which has any unified
-        dimension with a non-zero relative component) while auto-size is set to
-        "true", this creates a circular dependency and is therefore not allowed.
-        probably not be allowed in future versions of CEGUI.
+        Set whether scrolling by swipe in a widget area must be enabled.
 
     \param setting
-        - true to indicate the content pane should automatically resize itself.
-        - false to indicate the content pane should not automatically resize
-          itself.
-
-    \return 
-        Nothing.
+        true if swipe scrolling must be enabled, false otherwise
     */
-    void setContentPaneAutoSized(bool setting);
-
-    /*!
-    \brief
-        Return the current content pane area for the ScrollablePane.
-
-    \return
-        Rect object that details the current pixel extents of the content
-        pane attached to this ScrollablePane.
-    */
-    const Rectf& getContentPaneArea(void) const;
-
-    /*!
-    \brief
-        Set the current content pane area for the ScrollablePane.
-
-    \note
-        If the ScrollablePane is configured to auto-size the content pane
-        this call will have no effect.
-
-    \param area
-        Rect object that details the pixel extents to use for the content
-        pane attached to this ScrollablePane.
-
-    \return
-        Nothing.
-    */
-    void setContentPaneArea(const Rectf& area);
+    void setSwipeScrollingEnabled(bool setting);
 
     /*!
     \brief
@@ -407,16 +385,6 @@ public:
 
     /*!
     \brief
-        Return a Rect that described the pane's viewable area, relative
-        to this Window, in pixels.
-
-    \return
-        Rect object describing the ScrollablePane's viewable area.
-    */
-    Rectf getViewableArea(void) const;
-
-    /*!
-    \brief
         Return a pointer to the vertical scrollbar component widget for this
         ScrollablePane.
 
@@ -446,6 +414,14 @@ public:
     void destroy(void) override;
 
 protected:
+
+    enum class ScrollSource
+    {
+        Wheel,
+        Swipe,
+        Other
+    };
+
     /*!
     \brief
         display required integrated scroll bars according to current size of
@@ -456,23 +432,20 @@ protected:
 
     /*!
     \brief
-        Return whether the vertical scrollbar is needed.
+        Method called whenever the content pane is scrolled via the 
+        wheel, swipe or other external source. Reimplement it for
+        more sophisticated scrolling behaviour (like a kinetic one).
 
-    \return
-        - true if the scrollbar is either needed or forced via setting.
-        - false if the scrollbar should not be shown.
+    \param dx
+        amount of horizontal scrolling in pixels.
+
+    \param dy
+        amount of vertical scrolling in pixels.
+
+    \param source
+        source of the scrolling (mouse Wheel, Swipe or Other).
     */
-    bool isVertScrollbarNeeded(void) const;
-
-    /*!
-    \brief
-        Return whether the horizontal scrollbar is needed.
-
-    \return
-        - true if the scrollbar is either needed or forced via setting.
-        - false if the scrollbar should not be shown.
-    */
-    bool isHorzScrollbarNeeded(void) const;
+    virtual void scrollContentPane(float dx, float dy, ScrollSource source);
 
     /*!
     \brief
@@ -494,7 +467,6 @@ protected:
     */
     ScrolledContainer* getScrolledContainer() const;
 
-    // validate window renderer
     bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
     /*************************************************************************
@@ -541,19 +513,6 @@ protected:
 
     /*!
     \brief
-        Notification method called whenever the setting that controls whether
-        the content pane is automatically sized is changed.
-
-    \param e
-        WindowEventArgs object.
-
-    \return
-        Nothing.
-    */
-    virtual void onAutoSizeSettingChanged(WindowEventArgs& e);
-
-    /*!
-    \brief
         Notification method called whenever the content pane is scrolled via
         changes in the scrollbar positions.
 
@@ -595,14 +554,24 @@ protected:
     
     void onSized_impl(ElementEventArgs& e) override;
     void onScroll(CursorInputEventArgs& e) override;
+    void onIsSizeAdjustedToContentChanged(ElementEventArgs& e) override;
+    void adjustSizeToContent() override {}
 
     //! \copydoc Window::getChildByNamePath_impl
     NamedElement* getChildByNamePath_impl(const String& name_path) const override;
+
+    // Swipe scroll support
+    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onCursorMove(CursorInputEventArgs& e) override;
+    void onCursorActivate(CursorInputEventArgs& e) override;
+    void onCaptureLost(WindowEventArgs& e) override;
 
     //! true if vertical scrollbar should always be displayed
     bool d_forceVertScroll;
     //! true if horizontal scrollbar should always be displayed
     bool d_forceHorzScroll;
+    //! true if scrolling by swipe in a widget area is enabled
+    bool d_swipeScrollingEnabled;
     //! holds content area so we can track changes.
     Rectf d_contentRect;
     //! vertical scroll step fraction.
@@ -615,8 +584,13 @@ protected:
     float d_horzOverlap;
     //! Event connection to content pane
     Event::Connection d_contentChangedConn;
+    // FIXME: d_contentChangedConn->enable(bool) instead?
+    bool d_suspendContentChangedConn = false;
     //! Event connection to content pane
     Event::Connection d_autoSizeChangedConn;
+
+    bool d_swiping = false;
+    glm::vec2 d_swipeStartPoint;
 
 private:
     void addScrollablePaneProperties(void);

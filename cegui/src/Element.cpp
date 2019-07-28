@@ -978,19 +978,18 @@ void Element::onSized_impl(ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Element::notifyChildrenOfSizeChange(const bool non_client,
-                                         const bool client)
+void Element::notifyChildrenOfSizeChange(const bool non_client, const bool client)
 {
-    const size_t child_count = getChildCount();
-    for (size_t i = 0; i < child_count; ++i)
-    {
-        Element * const child = d_children[i];
+    if (!non_client && !client)
+        return;
 
+    for (Element* child : d_children)
+    {
         if ((non_client && child->isNonClient()) ||
             (client && !child->isNonClient()))
         {
             ElementEventArgs args(this);
-            d_children[i]->onParentSized(args);
+            child->onParentSized(args);
         }
     }
 }

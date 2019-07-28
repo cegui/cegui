@@ -40,22 +40,22 @@
 #include "CEGUI/GUIContext.h"
 
 #include "CEGUI/widgets/ScrollablePane.h"
-#include "CEGUI/widgets/ScrolledContainer.h"
+#include "CEGUI/widgets/VerticalLayoutContainer.h"
 
 #include "Sample.h"
 
 ScrollablePaneSample::ScrollablePaneSample()
 {
     Sample::d_name = "ScrollablePaneDemo";
-    Sample::d_credits = "Tomas Lindquist Olsen";
+    Sample::d_credits = "Tomas Lindquist Olsen, Vladimir 'Niello' Orlov";
     Sample::d_description =
-        "The ScrollbarPane sample uses the WindowsLook, which gives it a look similar "
-        "to old Windows applications. The background consists of a ScrollablePane to "
-        "which windows can be added, using the menu bar. The items on the pane can be "
+        "The ScrollbarPane sample shows different scenarios of ScrollablePane usage. "
+        "It uses the WindowsLook, which gives it a look similar to old Windows apps. "
+        "The background consists of several ScrollablePanes to which windows "
+        "can be added, using the menu bar. The items on each pane can be "
         "moved freely and the pane can be scrolled with the scrollbars.";
     Sample::d_summary =
-        "The background window is of target type \"CEGUI/ScrollablePane\". "
-        "The WindowsLook skin is used for all the windows.";
+        "Some scenarios of ScrollablePane usage.";
 }
 
 bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
@@ -63,7 +63,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     using namespace CEGUI;
 
     d_guiContext = guiContext;
-    d_usedFiles = CEGUI::String(__FILE__);
+    d_usedFiles = String(__FILE__);
 
     d_inputAggregator = new SampleInputAggregator(d_guiContext);
 
@@ -87,12 +87,8 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     // create a root window
     // this will be a static, to give a nice app'ish background
-    d_root = d_wm->createWindow("WindowsLook/Static");
-    d_root->setProperty("FrameEnabled", "false");
-    d_root->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
-    d_root->setProperty("BackgroundColours", "tl:FFBFBFBF tr:FFBFBFBF bl:FFBFBFBF br:FFBFBFBF");
-    d_root->subscribeEvent(Window::EventSemanticEvent,
-        Event::Subscriber(&ScrollablePaneSample::semanticEventHandler, this));
+    d_root = d_wm->createWindow("DefaultWindow");
+    d_root->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
 
     d_guiContext->setRootWindow(d_root);
 
@@ -107,21 +103,106 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     // fill out the menubar
     createMenu(bar);
 
-    // create a scrollable pane for our Sample content
-    d_pane = static_cast<ScrollablePane*>(d_wm->createWindow("WindowsLook/ScrollablePane"));
-    d_pane->setArea(URect(UDim(0,0),bar_bottom,UDim(1,0),UDim(1,0)));
-    // this scrollable pane will be a kind of virtual desktop in the sense that it's bigger than
-    // the screen. 3000 x 3000 pixels
-    d_pane->setContentPaneAutoSized(false);
-    d_pane->setContentPaneArea(CEGUI::Rectf(0, 0, 5000, 5000));
-    d_root->addChild(d_pane);
+    // Create the first, fixed-size scrollable pane. This scrollable pane will be
+    // a kind of virtual desktop in the sense that it's bigger than the screen.
 
-    // add a dialog to this pane so we have something to drag around :)
+    auto panelFixed = d_wm->createWindow("WindowsLook/Static");
+    panelFixed->setArea(URect(UDim(0,0),bar_bottom,UDim(0.75f,-1),UDim(0.5f,-1)));
+    panelFixed->setProperty("BackgroundColours", "tl:FFBFBFBF tr:FFBFBFBF bl:FFBFBFBF br:FFBFBFBF");
+    panelFixed->subscribeEvent(Window::EventSemanticEvent,
+        Event::Subscriber(&ScrollablePaneSample::semanticEventHandler, this));
+    d_root->addChild(panelFixed);
+
+    d_pane = static_cast<ScrollablePane*>(d_wm->createWindow("WindowsLook/ScrollablePane"));
+    d_pane->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
+    d_pane->setSwipeScrollingEnabled(true);
+   
+    // Disable autosizing. Windows will be sized relative to the content pane area.
+    d_pane->setAdjustWidthToContent(false);
+    d_pane->setAdjustHeightToContent(false);
+    d_pane->setContentSize(USize(UDim(0,5000), UDim(0,5000)));
+    d_pane->setHorizontalScrollPosition(0.015f);
+    panelFixed->addChild(d_pane);
+
+    // add a dialog to the first pane so we have something to drag around :)
     Window* dlg = d_wm->createWindow("WindowsLook/FrameWindow");
-    dlg->setMinSize(USize(UDim(0,250),UDim(0,100)));
-    dlg->setSize(USize(UDim(0,250),UDim(0,100)));
+    dlg->setSize(USize(UDim(0.04f,0),UDim(0.02f,0)));
     dlg->setText("Drag me around");
     d_pane->addChild(dlg);
+
+    // Create next, auto-sized scrollable pane.
+
+    auto panelAuto = d_wm->createWindow("WindowsLook/Static");
+    panelAuto->setArea(URect(UDim(0,0),UDim(0.5f,0),UDim(0.75f,-1),UDim(1,0)));
+    panelAuto->setProperty("BackgroundColours", "tl:FFBFBFBF tr:FFBFBFBF bl:FFBFBFBF br:FFBFBFBF");
+    panelAuto->subscribeEvent(Window::EventSemanticEvent,
+        Event::Subscriber(&ScrollablePaneSample::semanticEventHandler, this));
+    d_root->addChild(panelAuto);
+
+    auto pane = static_cast<ScrollablePane*>(d_wm->createWindow("WindowsLook/ScrollablePane"));
+    pane->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
+    pane->setSwipeScrollingEnabled(true);
+
+    // Enable autosizing. Windows will be sized relative to the viewable area.
+    pane->setAdjustWidthToContent(true);
+    pane->setAdjustHeightToContent(true);
+    panelAuto->addChild(pane);
+
+    // add a dialog to the first pane so we have something to drag around :)
+    dlg = d_wm->createWindow("WindowsLook/FrameWindow");
+    dlg->setSize(USize(UDim(0.2f,0),UDim(0.4f,0)));
+    dlg->setText("Drag me around");
+    pane->addChild(dlg);
+
+    // Create another scrollable pane. It will autosize vertically, but will have fixed
+    // width. Width of the content area is set to 100% of the ScrollablePane viewport,
+    // so horizontal scrollbar will never appear. ScrollablePane therefore becomes a
+    // vertical-only scrolling container.
+
+    auto panelVertical = d_wm->createWindow("WindowsLook/Static");
+    panelVertical->setArea(URect(UDim(0.75,0),bar_bottom,UDim(1,0),UDim(1,0)));
+    panelVertical->setProperty("BackgroundColours", "tl:FFBFBFBF tr:FFBFBFBF bl:FFBFBFBF br:FFBFBFBF");
+    panelVertical->subscribeEvent(Window::EventSemanticEvent,
+        Event::Subscriber(&ScrollablePaneSample::semanticEventHandler, this));
+    d_root->addChild(panelVertical);
+
+    pane = static_cast<ScrollablePane*>(d_wm->createWindow("WindowsLook/ScrollablePane"));
+    pane->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
+    pane->setSwipeScrollingEnabled(true);
+
+    // Enable height adjustment only. Since the height of the content area now depends
+    // on areas of children, that areas' relative part will be evaluated against a
+    // ScrollablePane viewport and not against the whole content area height.
+    pane->setAdjustWidthToContent(false);
+    pane->setAdjustHeightToContent(true);
+    pane->setContentSize(USize(UDim(1,0), UDim(0,0)));
+    panelVertical->addChild(pane);
+
+    // Add some windows to the pane one below other to demonstrate relative positioning.
+    // In a real scenario you probably should use a VerticalLayoutContainer instead.
+    Window* verticalListParent = pane;
+
+    constexpr bool useLayout = false;
+    if (useLayout)
+    {
+        verticalListParent = d_wm->createWindow("VerticalLayoutContainer");
+        verticalListParent->setCursorInputPropagationEnabled(true);
+        pane->addChild(verticalListParent);
+    }
+
+    for (int i = 0; i < 5; ++i)
+    {
+        dlg = d_wm->createWindow("WindowsLook/FrameWindow");
+
+        if (!useLayout)
+            dlg->setPosition(UVector2(UDim(0, 0), UDim(0.25f * i, 0)));
+
+        // Each window width is 100% of the content area, height is 25% of the viewport
+        dlg->setSize(USize(UDim(1.0f, 0), UDim(0.25f, 0)));
+        dlg->setText("Drag me around");
+        dlg->setCursorInputPropagationEnabled(true); // FIXME: frame of the FrameWindow must inherit it!
+        verticalListParent->addChild(dlg);
+    }
 
     return true;
 }

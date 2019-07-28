@@ -60,7 +60,7 @@ void MetaDataWindowManager::setSampleInfo(SampleHandler* sampleData)
     d_root->setText(sampleData->getNameText());
     d_wndSummary->setText(sampleData->getSummaryText());
     static_cast<CEGUI::Scrollbar*>(d_wndSummary->getChild("__auto_vscrollbar__"))->setScrollPosition(0.f);
-    d_wndUsedFiles->setText(sampleData->getUsedFilesText());
+    d_wndDescription->setText(sampleData->getDescriptionText());
     static_cast<CEGUI::Scrollbar*>(d_wndDescription->getChild("__auto_vscrollbar__"))->setScrollPosition(0.f);
     d_wndUsedFiles->setText(sampleData->getUsedFilesText());
     static_cast<CEGUI::Scrollbar*>(d_wndUsedFiles->getChild("__auto_vscrollbar__"))->setScrollPosition(0.f);
