@@ -69,7 +69,7 @@ Event::~Event()
 
     for (; iter != end_iter; ++iter)
     {
-        iter->second->d_event = 0;
+        iter->second->d_event = nullptr;
         iter->second->d_subscriber->cleanup();
     }
 
@@ -86,7 +86,7 @@ Event::Connection Event::subscribe(const Event::Subscriber& slot)
 Event::Connection Event::subscribe(Event::Group group,
                                    const Event::Subscriber& slot)
 {
-    Event::Connection c(CEGUI_NEW_AO BoundSlot(group, slot, *this));
+    Event::Connection c(new BoundSlot(group, slot, *this));
     d_slots.insert(std::pair<Group, Connection>(group, c));
     return c;
 }

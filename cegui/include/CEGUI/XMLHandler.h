@@ -29,109 +29,125 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
+#include "CEGUI/XmlResourceExistsAction.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class CEGUIEXPORT XMLHandler
-    {
-    public:
-        /*!
-        \brief
-            XMLHandler base class constructor.
-         */
-        XMLHandler(void);
+class CEGUIEXPORT XMLHandler
+{
+public:
+    /*!
+    \brief
+        XMLHandler base class constructor.
+        */
+    XMLHandler(void);
 
-        /*!
-        \brief
-            XMLHandler base class destructor.
-         */
-        virtual ~XMLHandler(void);
+    /*!
+    \brief
+        XMLHandler base class destructor.
+        */
+    virtual ~XMLHandler(void);
         
-        /*!
-        \brief
-            Retrieves the schema file name to use with resources handled by this handler
-         */
-        virtual const String& getSchemaName() const;
+    /*!
+    \brief
+        Retrieves the schema file name to use with resources handled by this handler
+        */
+    virtual const String& getSchemaName() const;
 
-        /*!
-        \brief
-            Retrieves the default resource group to be used when handling files
-         */
-        virtual const String& getDefaultResourceGroup() const = 0;
+    /*!
+    \brief
+        Retrieves the default resource group to be used when handling files
+        */
+    virtual const String& getDefaultResourceGroup() const = 0;
 
-        /*!
-        \brief
-            Takes given RawDataContainer containing XML and handles it
+    /*!
+    \brief
+        Takes given RawDataContainer containing XML and handles it
 
-        This is basically a convenience function used by NamedXMLResourceManager
+    This is basically a convenience function used by NamedXMLResourceManager
 
-        \internal
-            No need for this to be virtual
-         */
-        void handleContainer(const RawDataContainer& source);
+    \internal
+        No need for this to be virtual
+        */
+    void handleContainer(
+        const RawDataContainer& source,
+        XmlResourceExistsAction resourceExistsAction);
 
-        /*!
-        \brief
-            Takes given file containing XML and handles it
+    /*!
+    \brief
+        Takes given file containing XML and handles it
 
-        This is basically a convenience function used by NamedXMLResourceManager
+    This is basically a convenience function used by NamedXMLResourceManager
 
-        \internal
-            No need for this to be virtual
-         */
-        void handleFile(const String& fileName, const String& resourceGroup);
+    \internal
+        No need for this to be virtual
+        */
+    void handleFile(
+        const String& fileName,
+        const String& resourceGroup,
+        XmlResourceExistsAction resourceExistsAction);
 
-        /*!
-        \brief
-            Takes given string containing XML source and handles it
+    /*!
+    \brief
+        Takes given string containing XML source and handles it
 
-        This is basically a convenience function used by NamedXMLResourceManager
+    This is basically a convenience function used by NamedXMLResourceManager
 
-        \internal
-            No need for this to be virtual
-         */
-        void handleString(const String& source);
+    \internal
+        No need for this to be virtual
+        */
+    void handleString(const String& source,
+        XmlResourceExistsAction resourceExistsAction);
 
-        /*!
-        \brief
-            Method called to notify the handler at the start of each XML element encountered.
+    /*!
+    \brief
+        Method called to notify the handler at the start of each XML element encountered.
 
-        \param element
-            String object holding the name of the element that is starting.
+    \param element
+        String object holding the name of the element that is starting.
 
-        \param attributes
-            An XMLAttributes object holding the collection of attributes specified for the element.
+    \param attributes
+        An XMLAttributes object holding the collection of attributes specified for the element.
 
-        \return
-            Nothing.
-         */
-        virtual void elementStart(const String& element, const XMLAttributes& attributes);
+    \return
+        Nothing.
+        */
+    virtual void elementStart(const String& element, const XMLAttributes& attributes);
         
-        /*!
-        \brief
-            Method called to notify the handler at the end of each XML element encountered.
+    /*!
+    \brief
+        Method called to notify the handler at the end of each XML element encountered.
 
-        \param element
-            String object holding the name of the element that is ending.
+    \param element
+        String object holding the name of the element that is ending.
 
-        \return
-            Nothing.
-         */
-        virtual void elementEnd(const String& element);
+    \return
+        Nothing.
+        */
+    virtual void elementEnd(const String& element);
 
-	/*! 
-	\brief
-	    Method called to notify text node, several successiv text node are agregated. 
+    /*! 
+    \brief
+	    Method called to notify text node, several successive text node are aggregated. 
 	    
-	\param text 
+    \param text 
 	    String object holding the content of the text node.
 
-	\return 
+    \return 
             Nothing.
-	*/
-	virtual void text(const String& text);
-    };
+    */
+    virtual void text(const String& text);
+
+protected:
+    /*!
+    \brief
+        One of the XmlResourceExistsAction enumerated values indicating what
+        action should be taken when a resource with the specified name already
+        exists. Used during the current XML parsing process.
+    */
+    XmlResourceExistsAction d_resourceExistsAction;
+};
 
 } // End of  CEGUI namespace section
 

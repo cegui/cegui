@@ -39,9 +39,6 @@
 
 namespace CEGUI
 {
-//! \deprecated This will be removed in the next version as it has been replaced by Falagard_xmlHandler::ParentIdentifier
-extern const String S_parentIdentifier;
-
 /*!
 \brief
     Class representing a property that links to another property defined on
@@ -104,22 +101,22 @@ public:
     }
 
     //------------------------------------------------------------------------//
-    void initialisePropertyReceiver(PropertyReceiver* receiver) const
+    void initialisePropertyReceiver(PropertyReceiver* receiver) const override
     {
         updateLinkTargets(receiver, Helper::fromString(FalagardPropertyBase<T>::d_initialValue));
     }
 
     //------------------------------------------------------------------------//
-    Property* clone() const
+    Property* clone() const override
     {
-        return CEGUI_NEW_AO PropertyLinkDefinition<T>(*this);
+        return new PropertyLinkDefinition<T>(*this);
     }
 
 protected:
     // override members from FalagardPropertyBase
     //------------------------------------------------------------------------//
     typename Helper::safe_method_return_type
-    getNative_impl(const PropertyReceiver* receiver) const
+    getNative_impl(const PropertyReceiver* receiver) const override
     {
         const LinkTargetCollection::const_iterator i(d_targets.begin());
 
@@ -138,7 +135,7 @@ protected:
 
     //------------------------------------------------------------------------//
     void setNative_impl(PropertyReceiver* receiver,
-                        typename Helper::pass_type value)
+                        typename Helper::pass_type value) override
     {
         updateLinkTargets(receiver, value);
 
@@ -167,13 +164,13 @@ protected:
     }
 
     //------------------------------------------------------------------------//
-    void writeDefinitionXMLElementType(XMLSerializer& xml_stream) const
+    void writeDefinitionXMLElementType(XMLSerializer& xml_stream) const override
     {
         xml_stream.openTag(Falagard_xmlHandler::PropertyLinkDefinitionElement);
     }
 
     //------------------------------------------------------------------------//
-    virtual void writeDefinitionXMLAttributes(XMLSerializer& xml_stream) const
+    void writeDefinitionXMLAttributes(XMLSerializer& xml_stream) const override
     {
         PropertyDefinitionBase::writeDefinitionXMLAttributes(xml_stream);
 
@@ -248,7 +245,7 @@ protected:
     //------------------------------------------------------------------------//
     typedef std::pair<String,String> StringPair;
     //! type used for the collection of targets.
-    typedef std::vector<StringPair CEGUI_VECTOR_ALLOC(StringPair)> LinkTargetCollection;
+    typedef std::vector<StringPair> LinkTargetCollection;
 
     //! collection of targets for this PropertyLinkDefinition.
     LinkTargetCollection d_targets;

@@ -36,22 +36,22 @@ namespace CEGUI
 
     FalagardStaticImage::FalagardStaticImage(const String& type) :
         FalagardStatic(type),
-        d_image(0)
+        d_image(nullptr)
     {
         CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticImage, Image*,
             "Image", "Property to get/set the image for the FalagardStaticImage widget."
             " Value is \"ImagesetName/ImageName\".",
             &FalagardStaticImage::setImage, &FalagardStaticImage::getImage,
-            0);
+            nullptr);
     }
 
-    void FalagardStaticImage::render()
+    void FalagardStaticImage::createRenderGeometry()
     {
         // base class rendering
-        FalagardStatic::render();
+        FalagardStatic::createRenderGeometry();
 
         // render image if there is one
-        if (d_image!=0)
+        if (d_image!=nullptr)
         {
             // get WidgetLookFeel for the assigned look.
             const WidgetLookFeel& wlf = getLookNFeel();

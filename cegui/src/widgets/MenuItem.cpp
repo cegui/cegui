@@ -30,7 +30,6 @@
 #include "CEGUI/widgets/Menubar.h"
 #include "CEGUI/widgets/PopupMenu.h"
 
-#include "CEGUI/Logger.h"
 #include "CEGUI/WindowManager.h"
 
 // Start of CEGUI namespace section
@@ -57,14 +56,10 @@ MenuItem::MenuItem(const String& type, const String& name)
       d_popupOpening(false),
       d_autoPopupTimeout(0.0f),
       d_autoPopupTimeElapsed(0.0f),
-      d_popup(0)
+      d_popup(nullptr)
 {
-    // menuitems dont want multi-click events
-    setWantsMultiClickEvents(false);
     // add the new properties
     addMenuItemProperties();
-    d_popupOffset.d_x = cegui_absdim(0);
-    d_popupOffset.d_y = cegui_absdim(0);
 }
 
 
@@ -79,7 +74,7 @@ MenuItem::~MenuItem(void)
 /*************************************************************************
     Update the internal state of the Widget
 *************************************************************************/
-void MenuItem::updateInternalState(const Vector2f& mouse_pos)
+void MenuItem::updateInternalState(const glm::vec2& cursor_pos)
 {
     bool oldstate = d_hovering;
 
@@ -89,10 +84,10 @@ void MenuItem::updateInternalState(const Vector2f& mouse_pos)
     // if input is captured, but not by 'this', then we never hover highlight
     const Window* capture_wnd = getCaptureWindow();
 
-    if (capture_wnd == 0)
-        d_hovering = (getGUIContext().getWindowContainingMouse() == this && isHit(mouse_pos));
+    if (capture_wnd == nullptr)
+        d_hovering = (getGUIContext().getWindowContainingCursor() == this && isHit(cursor_pos));
     else
-        d_hovering = (capture_wnd == this && isHit(mouse_pos));
+        d_hovering = (capture_wnd == this && isHit(cursor_pos));
 
     // if state has changed, trigger a re-draw
     // and possible make the parent menu open another popup
@@ -109,7 +104,7 @@ void MenuItem::updateInternalState(const Vector2f& mouse_pos)
 
                 if (!menu->isMultiplePopupsAllowed())
                 {
-                    if (curpopup != this && curpopup != 0)
+                    if (curpopup != this && curpopup != nullptr)
                     {
                         if (!hasAutoPopup())
                         {
@@ -177,7 +172,7 @@ void MenuItem::setPopupMenu_impl(PopupMenu* popup, bool add_as_child)
     }
 
     // we are setting a new popup and not just clearing. and we are told to add the child
-    if (popup != 0 && add_as_child)
+    if (popup != nullptr && add_as_child)
     {
         addChild(popup);
     }
@@ -185,47 +180,175 @@ void MenuItem::setPopupMenu_impl(PopupMenu* popup, bool add_as_child)
     invalidate();
 }
 
+namespace
+{
+
+/***
+ * Implementation details for popup clipping computations
+ */
+ 
+// translate_within takes two Rectf's. It tries to find the smallest translation
+// which will move the "test rectangle" so that it is witin the "clip rectangle".
+// This is used for popup menu placement.
+// If the test rectangle does not fit (too wide or too tall) then this implementation
+// will prioritize getting the top and left-most edges correct.
+glm::vec2 translate_within(const Rectf & test_rect, const Rectf & clip_rect)
+{
+    glm::vec2 result(0, 0);
+
+    if (test_rect.top() < clip_rect.top())
+    {
+        result.y = clip_rect.top() - test_rect.top(); 
+    }
+    else if (test_rect.bottom() > clip_rect.bottom())
+    {
+        result.y = clip_rect.bottom() - test_rect.bottom();
+    }
+
+    if (test_rect.left() < clip_rect.left())
+    {
+        result.x = clip_rect.left() - test_rect.left();
+    }
+    else if (test_rect.right() > clip_rect.right())
+    {
+        result.x = clip_rect.right() - test_rect.right();
+    }
+
+    return result;
+}
+
+// helper function for glm::vec2 -> UVector2 conversion
+UVector2 as_uvector(const glm::vec2 & v)
+{
+    return UVector2(cegui_absdim(v.x), cegui_absdim(v.y));
+}
+
+// version of Rectf::offset, which yields a new rectangle
+Rectf offset_rect(Rectf result, const glm::vec2 & v)
+{
+    result.offset(v);
+    return result;
+}
+
+} // end anonymous namespace
+
+/*************************************************************************
+    Computes the offset at which a popup menu will appear.
+*************************************************************************/
+bool MenuItem::computePopupOffset(UVector2 & output) const
+{
+    Window* p = d_ownerList;
+    if (p)
+    {
+        // Current size of popup window
+        const Sizef popup_size = d_popup->getPixelSize();
+        // Absolute coords corresponding to upper left corner of menu item
+        const glm::vec2 base_pos = this->getClipRect(false).d_min;
+
+        const Rectf popup_rect{base_pos, popup_size};
+
+        // The bounding box assumed to clip the popup menus
+        const Rectf clip_rect = this->popupBoundingBox();
+
+        if (Menubar * menubar = dynamic_cast<Menubar *>(p))
+        {
+            // Use a vertical orientation
+
+            // candidate 1: align the top left of popup to the bottom-left of the menuitem
+            const glm::vec2 pos1(0, d_pixelSize.d_height);
+
+            // candidate 2: align the popup to the top-left of menuitem
+            const glm::vec2 pos2(0, - popup_size.d_height);
+
+            switch (menubar->getMenubarDirection())
+            {
+            case MenubarDirection::Down:
+                output = as_uvector(pos1);
+                return true;
+            case MenubarDirection::Up:
+                output = as_uvector(pos2);
+                return true;
+            default:
+                return false;
+            }
+        }
+        else if (dynamic_cast<PopupMenu *>(p))
+        {
+            // Use a horizontal orientation
+
+            // candidate 1: align the top left of popup to the top-right of the menuitem
+            const glm::vec2 pos1(d_pixelSize.d_width, 0);
+
+            // candidate 2: align the top right of popup to the top-left of menuitem
+            const glm::vec2 pos2(- popup_size.d_width, 0);
+
+            // Compute correction vectors for each
+            const glm::vec2 pos1_corr = translate_within(offset_rect(popup_rect, pos1), clip_rect);
+            const glm::vec2 pos2_corr = translate_within(offset_rect(popup_rect, pos2), clip_rect);
+
+            // If pos2 does not require x correction and pos1 does, then use pos2
+            if (pos1_corr.x && !pos2_corr.x)
+            {
+                output = as_uvector(pos2 + pos2_corr);
+                return true;
+            }
+            else
+            {
+                output = as_uvector(pos1 + pos1_corr);
+                return true;
+            }
+        }
+    }
+    return false;  
+}
+
+
+/*************************************************************************
+    Compute bounding box (assumed clipping rectangle) of our popup menu
+*************************************************************************/
+Rectf MenuItem::popupBoundingBox() const
+{
+    return Rectf(glm::vec2(0, 0), getRootContainerSize());
+}
+
+
 /*************************************************************************
     Open the PopupMenu attached to this item.
 *************************************************************************/
 void MenuItem::openPopupMenu(bool notify)
 {
     // no popup? or already open...
-    if (d_popup == 0 || d_opened)
+    if (d_popup == nullptr || d_opened)
         return;
 
     d_popupOpening = false;
     d_popupClosing = false;
 
-    // should we notify ?
+    // should we notify parent ?
     // if so, and we are attached to a menu bar or popup menu, we let it handle the "activation"
     Window* p = d_ownerList;
 
     if (notify && p)
     {
-        if (dynamic_cast<Menubar*>(p))
+        if (Menubar * m = dynamic_cast<Menubar*>(p))
         {
-            // align the popup to the bottom-left of the menuitem
-            UVector2 pos(cegui_absdim(0), cegui_absdim(d_pixelSize.d_height));
-            d_popup->setPosition(pos + d_popupOffset);
-
-            static_cast<Menubar*>(p)->changePopupMenuItem(this);
-            return; // the rest is handled when the menu bar eventually calls us itself
+            m->changePopupMenuItem(this);
+            return; // the rest is handled when the menu bar eventually calls us itself with notify = false
         }
-        // or maybe a popup menu?
-        else if (dynamic_cast<PopupMenu*>(p))
+        else if (PopupMenu * pm = dynamic_cast<PopupMenu*>(p))
         {
-            // align the popup to the top-right of the menuitem
-            UVector2 pos(cegui_absdim(d_pixelSize.d_width), cegui_absdim(0));
-            d_popup->setPosition(pos + d_popupOffset);
-
-            static_cast<PopupMenu*>(p)->changePopupMenuItem(this);
-            return; // the rest is handled when the popup menu eventually calls us itself
+            pm->changePopupMenuItem(this);
+            return; // the rest is handled when the menu bar eventually calls us itself with notify = false
         }
     }
 
     // by now we must handle it ourselves
-    // match up with Menubar::changePopupMenu
+    // Update the position of the popup menu before opening it
+    UVector2 pos;
+    if (this->computePopupOffset(pos)) {
+        d_popup->setPosition(pos);
+    }
+
     d_popup->openPopupMenu(false);
 
     d_opened = true;
@@ -239,7 +362,7 @@ void MenuItem::openPopupMenu(bool notify)
 void MenuItem::closePopupMenu(bool notify)
 {
     // no popup? or not open...
-    if (d_popup == 0 || !d_opened)
+    if (d_popup == nullptr || !d_opened)
         return;
 
     d_popupOpening = false;
@@ -253,7 +376,7 @@ void MenuItem::closePopupMenu(bool notify)
         // only if the menu base does not allow multiple popups
         if (!menu->isMultiplePopupsAllowed())
         {
-            menu->changePopupMenuItem(0);
+            menu->changePopupMenuItem(nullptr);
             return; // the rest is handled when the menu base eventually call us again itself
         }
     }
@@ -325,7 +448,7 @@ void MenuItem::closeAllMenuItemPopups()
     // are we attached to a PopupMenu?
     if (!d_ownerList)
         return;
-    
+
     if (dynamic_cast<Menubar*>(d_ownerList))
     {
         closePopupMenu();
@@ -338,7 +461,7 @@ void MenuItem::closeAllMenuItemPopups()
         // is this parent popup attached to a menu item?
         Window* popParent = pop->getParent();
         MenuItem* mi = dynamic_cast<MenuItem*>(popParent);
-        
+
         if (mi)
         {
             // recurse
@@ -370,18 +493,18 @@ void MenuItem::onClicked(WindowEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when the mouse moves
+    Handler for when the cursor moves
 *************************************************************************/
-void MenuItem::onMouseMove(MouseEventArgs& e)
+void MenuItem::onCursorMove(CursorInputEventArgs& e)
 {
-    // this is needed to discover whether mouse is in the widget area or not.
+    // this is needed to discover whether cursor is in the widget area or not.
     // The same thing used to be done each frame in the rendering method,
     // but in this version the rendering method may not be called every frame
     // so we must discover the internal widget state here - which is actually
     // more efficient anyway.
 
     // base class processing
-    ItemEntry::onMouseMove(e);
+    ItemEntry::onCursorMove(e);
 
     updateInternalState(e.position);
     ++e.handled;
@@ -389,14 +512,14 @@ void MenuItem::onMouseMove(MouseEventArgs& e)
 
 
 /*************************************************************************
-    Handler for mouse button pressed events
+    Handler for cursor pressed events
 *************************************************************************/
-void MenuItem::onMouseButtonDown(MouseEventArgs& e)
+void MenuItem::onCursorPressHold(CursorInputEventArgs& e)
 {
     // default processing
-    ItemEntry::onMouseButtonDown(e);
+    ItemEntry::onCursorPressHold(e);
 
-    if (e.button == LeftButton)
+    if (e.source == CursorInputSource::Left)
     {
         d_popupWasClosed = false;
 
@@ -411,27 +534,26 @@ void MenuItem::onMouseButtonDown(MouseEventArgs& e)
         // event was handled by us.
         ++e.handled;
     }
-
 }
 
 
 /*************************************************************************
-    Handler for mouse button release events
+    Handler for cursor activation events
 *************************************************************************/
-void MenuItem::onMouseButtonUp(MouseEventArgs& e)
+void MenuItem::onCursorActivate(CursorInputEventArgs& e)
 {
     // default processing
-    ItemEntry::onMouseButtonUp(e);
+    ItemEntry::onCursorActivate(e);
 
-    if (e.button == LeftButton)
+    if (e.source == CursorInputSource::Left)
     {
         releaseInput();
 
         // was the button released over this window?
-        // (use mouse position, as e.position in args has been unprojected)
+        // (use cursor position, as e.position in args has been unprojected)
         if (!d_popupWasClosed &&
                 getGUIContext().getRootWindow()->getTargetChildAtPosition(
-                    getGUIContext().getMouseCursor().getPosition()) == this)
+                    getGUIContext().getCursor().getPosition()) == this)
         {
             WindowEventArgs we(this);
             onClicked(we);
@@ -440,11 +562,10 @@ void MenuItem::onMouseButtonUp(MouseEventArgs& e)
         // event was handled by us.
         ++e.handled;
     }
-
 }
 
 /*************************************************************************
-    Handler for when mouse capture is lost
+    Handler for when cursor capture is lost
 *************************************************************************/
 void MenuItem::onCaptureLost(WindowEventArgs& e)
 {
@@ -453,7 +574,7 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
 
     d_pushed = false;
     updateInternalState(getUnprojectedPosition(
-        getGUIContext().getMouseCursor().getPosition()));
+        getGUIContext().getCursor().getPosition()));
     invalidate();
 
     // event was handled by us.
@@ -462,12 +583,12 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when mouse leaves the widget
+    Handler for when cursor leaves the widget
 *************************************************************************/
-void MenuItem::onMouseLeaves(MouseEventArgs& e)
+void MenuItem::onCursorLeaves(CursorInputEventArgs& e)
 {
-    // deafult processing
-    ItemEntry::onMouseLeaves(e);
+    // default processing
+    ItemEntry::onCursorLeaves(e);
 
     d_hovering = false;
     invalidate();
@@ -486,7 +607,7 @@ void MenuItem::onTextChanged(WindowEventArgs& e)
     // if we are attached to a ItemListBase, we make it update as necessary
     Window* parent = getParent();
     ItemListBase* ilb = dynamic_cast<ItemListBase*>(parent);
-    
+
     if (ilb)
     {
         ilb->handleUpdatedItemData();
@@ -502,7 +623,7 @@ void MenuItem::updateSelf(float elapsed)
 {
     ItemEntry::updateSelf(elapsed);
 
-    //handle delayed popup closing/opening when hovering with the mouse
+    //handle delayed popup closing/opening when hovering with the cursor
     if (d_autoPopupTimeout != 0.0f && (d_popupOpening || d_popupClosing))
     {
         // stop timer if the hovering state isn't set appropriately anymore
@@ -540,12 +661,12 @@ void MenuItem::updateSelf(float elapsed)
 void MenuItem::addChild_impl(Element* element)
 {
     Window* wnd = dynamic_cast<Window*>(element);
-    
+
     if (!wnd)
-        CEGUI_THROW(InvalidRequestException(
+        throw InvalidRequestException(
             "MenuItem can only have Elements of type Window added as children "
-            "(Window path: " + getNamePath() + ")."));
-    
+            "(Window path: " + getNamePath() + ").");
+
     ItemEntry::addChild_impl(wnd);
 
     PopupMenu* pop = dynamic_cast<PopupMenu*>(wnd);
@@ -562,12 +683,7 @@ Add MenuItem specific properties
 void MenuItem::addMenuItemProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
-    
-    CEGUI_DEFINE_PROPERTY(MenuItem, UVector2,
-        "PopupOffset","Property to specify an offset for the popup menu position. Value is a UVector2 property value.",
-        &MenuItem::setPopupOffset, &MenuItem::getPopupOffset, UVector2::zero()
-    );
-    
+
     CEGUI_DEFINE_PROPERTY(MenuItem, float,
         "AutoPopupTimeout","Property to specify the time, which has to elapse before the popup window is opened/closed if the hovering state changes. Value is a float property value.",
         &MenuItem::setAutoPopupTimeout, &MenuItem::getAutoPopupTimeout, 0.0f

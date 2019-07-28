@@ -60,7 +60,7 @@ void ceguiLua_Thumb_getVertRange(Thumb* wnd, float* min, float* max)
 *************************************************************************/
 
 // allocates and returns a new ListboxTextItem
-ListboxTextItem* ceguiLua_createListboxTextItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete)
+ListboxTextItem* ceguiLua_createListboxTextItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete)
 {
 	return new ListboxTextItem(text,item_id,item_data,disabled,auto_delete);
 }
@@ -70,7 +70,7 @@ Functions for creating tree items
 *************************************************************************/
 
 // allocates and returns a new TreeItem
-TreeItem* ceguiLua_createTreeItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete)
+TreeItem* ceguiLua_createTreeItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete)
 {
 	return new TreeItem(text,item_id,item_data,disabled,auto_delete);
 }
@@ -114,9 +114,9 @@ float ceguiLua_PropertyHelper::stringToFloat(const String& str)
 }
 
 //----------------------------------------------------------------------------//
-unsigned int ceguiLua_PropertyHelper::stringToUint(const String& str)
+unsigned int ceguiLua_PropertyHelper::stringToUint32(const String& str)
 {
-    return PropertyHelper<uint>::fromString(str);
+    return PropertyHelper<std::uint32_t>::fromString(str);
 }
 
 //----------------------------------------------------------------------------//
@@ -198,9 +198,9 @@ String ceguiLua_PropertyHelper::floatToString(float val)
 }
 
 //----------------------------------------------------------------------------//
-String ceguiLua_PropertyHelper::uintToString(unsigned int val)
+String ceguiLua_PropertyHelper::uint32ToString(unsigned int val)
 {
-    return PropertyHelper<uint>::toString(val);
+    return PropertyHelper<std::uint32_t>::toString(val);
 }
 
 //----------------------------------------------------------------------------//

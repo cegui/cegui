@@ -44,7 +44,7 @@ KeyFrame::KeyFrame(Affector* parent, float position):
         d_parent(parent),
         d_position(position),
 
-        d_progression(P_Linear)
+        d_progression(Progression::Linear)
 {}
 
 //----------------------------------------------------------------------------//
@@ -74,8 +74,8 @@ size_t KeyFrame::getIdxInParent() const
         ++i;
     }
 
-    CEGUI_THROW(UnknownObjectException(
-        "KeyFrame wasn't found in parent, therefore its index is unknown!"));
+    throw UnknownObjectException(
+        "KeyFrame wasn't found in parent, therefore its index is unknown!");
 }
 
 //----------------------------------------------------------------------------//
@@ -146,16 +146,16 @@ float KeyFrame::alterInterpolationPosition(float position)
 {
     switch (d_progression)
     {
-    case P_Linear:
+    case Progression::Linear:
         return position;
 
-    case P_QuadraticAccelerating:
+    case Progression::QuadraticAccelerating:
         return position * position;
 
-    case P_QuadraticDecelerating:
+    case Progression::QuadraticDecelerating:
         return sqrtf(position);
 
-    case P_Discrete:
+    case Progression::Discrete:
         return position < 1.0f ? 0.0f : 1.0f;
     }
 
@@ -197,16 +197,16 @@ void KeyFrame::writeXMLToStream(XMLSerializer& xml_stream) const
     String progression;
     switch(getProgression())
     {
-    case P_Linear:
+    case Progression::Linear:
         progression = AnimationKeyFrameHandler::ProgressionLinear;
         break;
-    case P_Discrete:
+    case Progression::Discrete:
         progression = AnimationKeyFrameHandler::ProgressionDiscrete;
         break;
-    case P_QuadraticAccelerating:
+    case Progression::QuadraticAccelerating:
         progression = AnimationKeyFrameHandler::ProgressionQuadraticAccelerating;
         break;
-    case P_QuadraticDecelerating:
+    case Progression::QuadraticDecelerating:
         progression = AnimationKeyFrameHandler::ProgressionQuadraticDecelerating;
         break;
 

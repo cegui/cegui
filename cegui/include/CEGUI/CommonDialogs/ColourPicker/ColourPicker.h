@@ -93,7 +93,7 @@ public:
     Colour getColour();
 
     // overridden from Window base class
-    void initialiseComponents(void);
+    void initialiseComponents(void) override;
     void destroy(void);
 
 protected:

@@ -39,7 +39,7 @@ namespace CEGUI
     {
     }
 
-    void FalagardTooltip::render()
+    void FalagardTooltip::createRenderGeometry()
     {
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
@@ -51,7 +51,7 @@ namespace CEGUI
 
     Sizef FalagardTooltip::getTextSize() const
     {
-        Tooltip* w = (Tooltip*)d_window;
+        Tooltip* w = static_cast<Tooltip*>(d_window);
         Sizef sz(w->getTextSize_impl());
 
         // get WidgetLookFeel for the assigned look.
