@@ -2996,8 +2996,8 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/TabContentPane">
-        <PropertyDefinition name="EnableTop" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" type="uint"/>
-        <PropertyDefinition name="EnableBottom" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" type="uint"/>
+        <PropertyDefinition name="EnableTop" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" type="std::uint32_t"/>
+        <PropertyDefinition name="EnableBottom" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" type="std::uint32_t"/>
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -3071,8 +3071,8 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/TabButtonPane">
-        <PropertyDefinition name="EnableTop" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" type="uint"/>
-        <PropertyDefinition name="EnableBottom" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" type="uint"/>
+        <PropertyDefinition name="EnableTop" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" type="std::uint32_t"/>
+        <PropertyDefinition name="EnableBottom" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" type="std::uint32_t"/>
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -3448,7 +3448,7 @@
     -->
     <WidgetLook name="TaharezLook/PopupMenu">
         <PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        <PropertyDefinition name="BorderWidth" initialValue="0" layoutOnWrite="true" type="uint"/>
+        <PropertyDefinition name="BorderWidth" initialValue="0" layoutOnWrite="true" type="std::uint32_t"/>
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ItemRenderArea">
             <Area>
@@ -3521,7 +3521,7 @@
     -->
     <WidgetLook name="TaharezLook/Menubar">
         <PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        <PropertyDefinition name="BorderWidth" initialValue="5" layoutOnWrite="true" type="uint"/>
+        <PropertyDefinition name="BorderWidth" initialValue="5" layoutOnWrite="true" type="std::uint32_t"/>
         <Property name="Size" value="{{1, 0}, {0, 32}}" />
         <NamedArea name="ItemRenderArea">
             <Area>
