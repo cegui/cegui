@@ -33,9 +33,12 @@
 
 #include "CEGUI/RendererModules/Ogre/Renderer.h"
 #include <Ogre.h>
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+#include <OgreApplicationContext.h>
+#include <OgreInput.h>
+#else
 #include <OIS.h>
 #include <OgreFrameListener.h>
-
 #include <OgreBuildSettings.h>
 #ifdef OGRE_STATIC_LIB
 #   ifdef OGRE_BUILD_RENDERSYSTEM_D3D9
@@ -63,15 +66,20 @@
 class CEGuiDemoFrameListener;
 // Window event listener forward ref (see class below)
 class WndEvtListener;
+#endif
 
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+class CEGuiOgreBaseApplication : public CEGuiBaseApplication, public OgreBites::ApplicationContext, public OgreBites::InputListener
+#else
 class CEGuiOgreBaseApplication : public CEGuiBaseApplication, public Ogre::FrameListener
+#endif
 {
 public:
     //! Constructor.
     CEGuiOgreBaseApplication();
 
     //! Destructor.
-    ~CEGuiOgreBaseApplication();
+    virtual ~CEGuiOgreBaseApplication();
 
     bool init(SampleBrowserBase* sampleApp, const CEGUI::String &logFile,
               const CEGUI::String &dataPathPrefixOverride);
@@ -87,6 +95,24 @@ public:
     bool isInitialised();
     void run();
 
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+    void setup();
+
+    bool frameStarted(const Ogre::FrameEvent& evt);
+
+    bool keyPressed(const OgreBites::KeyboardEvent& evt);
+    bool keyReleased(const OgreBites::KeyboardEvent& evt);
+    bool mouseMoved(const OgreBites::MouseMotionEvent& evt);
+    bool mouseWheelRolled(const OgreBites::MouseWheelEvent& evt);
+    bool mousePressed(const OgreBites::MouseButtonEvent& evt);
+    bool mouseReleased(const OgreBites::MouseButtonEvent& evt);
+
+    void windowResized(Ogre::RenderWindow* rw);
+
+    void locateResources() {}
+    void loadResources() {}
+#endif
+
 protected:
     // override from base class since we use a non-default resource provider.
     void initialiseResourceGroupDirectories();
@@ -98,26 +124,38 @@ protected:
     void beginRendering(const float elapsed);
     void endRendering();
 
+#if (OGRE_VERSION < ((1 << 16) | (10 << 8) | 0))
     // We set up our Ogre default config to match our other renderer's default values if possible
     // and if no config available already
     void setupDefaultConfigIfNeeded();
+#endif
 
     /*************************************************************************
         Data Fields
     *************************************************************************/
+#if (OGRE_VERSION < ((1 << 16) | (10 << 8) | 0))
     Ogre::Root* d_ogreRoot;
+#endif
     Ogre::Camera* d_camera;
+#if (OGRE_VERSION < ((1 << 16) | (10 << 8) | 0))
     Ogre::RenderWindow* d_window;
+#endif
     bool d_initialised;
+
+#if (OGRE_VERSION >= ((1 << 16) | (10 << 8) | 0))
+    // convert an SDL mouse button into a CEGUI mouse button
+    CEGUI::MouseButton convertButtonToCegui(int buttonID);
+#else
 #ifdef OGRE_STATIC_LIB
-    Ogre::StaticPluginLoader* d_staticPluginLoader; 
+    Ogre::StaticPluginLoader* d_staticPluginLoader;
 #endif
 
     CEGuiDemoFrameListener* d_frameListener;
     WndEvtListener* d_windowEventListener;
-
+#endif
 };
 
+#if (OGRE_VERSION < ((1 << 16) | (10 << 8) | 0))
 /*!
 \brief
     Ogre FrameListener class where we deal with input processing and the like.
@@ -198,6 +236,6 @@ protected:
     OIS::Mouse* d_mouse;
 #endif
 };
-
+#endif
 
 #endif  // end of guard _CEGuiOgreBaseApplication_h_
