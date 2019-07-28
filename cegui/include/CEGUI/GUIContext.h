@@ -111,8 +111,9 @@ public:
     const Sizef& getSurfaceSize() const;
 
     //! call to indicate that some redrawing is required.
-    void markAsDirty();
-    bool isDirty() const;
+    void markAsDirty(std::uint32_t drawModeMask = DrawModeMaskAll);
+    bool isDirty() const { return d_dirtyDrawModeMask != 0; }
+    std::uint32_t getDirtyDrawModeMask() const { return d_dirtyDrawModeMask; }
 
     /*!
     \brief
@@ -277,7 +278,6 @@ protected:
     bool handleRedoRequest(const SemanticInputEvent& event);
 
     Window* d_rootWindow;
-    bool d_isDirty;
     Cursor d_cursor;
 
     mutable Tooltip* d_defaultTooltipObject;
@@ -294,8 +294,8 @@ protected:
     Window* d_modalWindow;
     Window* d_captureWindow;
 
-    //! The draw mode mask that was used in the last draw call 
-    std::uint32_t d_lastDrawModeMask;
+    //! The mask of draw modes that must be redrawn
+    std::uint32_t d_dirtyDrawModeMask;
 
     CursorsState d_cursorsState;
 
