@@ -59,12 +59,12 @@ namespace CEGUI
         ~TinyXML2Parser(void);
 
         // Implementation of public abstract interface
-        void parseXML(XMLHandler& handler, const RawDataContainer& filename, const String& schemaName);
+        void parseXML(XMLHandler& handler, const RawDataContainer& filename, const String& schemaName, bool allowXmlValidation) override;
 
     protected:
         // Implementation of abstract interface.
-        bool initialiseImpl(void);
-        void cleanupImpl(void);
+        bool initialiseImpl(void) override;
+        void cleanupImpl(void) override;
  
         static void processElement(XMLHandler& handler, const tinyxml2::XMLElement* element);
    };

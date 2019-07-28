@@ -59,7 +59,7 @@
 #define tolua_tofieldutf8string tolua_tofieldstring
 
 typedef CEGUI::String string;
-typedef CEGUI::encoded_char* utf8string;
+typedef char* utf8string;
 
 namespace CEGUI
 {
@@ -88,12 +88,12 @@ void ceguiLua_Thumb_getVertRange(Thumb* wnd, float* min, float* max);
 /*************************************************************************
 	Functions for creating list box items
 *************************************************************************/
-ListboxTextItem* ceguiLua_createListboxTextItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete);
+ListboxTextItem* ceguiLua_createListboxTextItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete);
 
 /*************************************************************************
 Functions for creating tree items
 *************************************************************************/
-TreeItem* ceguiLua_createTreeItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete);
+TreeItem* ceguiLua_createTreeItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete);
 
 /************************************************************************
     Stuff needed to make the iterators work

@@ -46,7 +46,7 @@ void FactoryRegisterer::registerFactory() const
         CEGUI::Logger::getSingleton().logEvent(
             "Factory for '" + CEGUI::String(d_type) +
             "' appears to be  already registered, skipping.",
-            CEGUI::Informative);
+            CEGUI::LoggingLevel::Informative);
     else
         this->doFactoryAdd();
 }

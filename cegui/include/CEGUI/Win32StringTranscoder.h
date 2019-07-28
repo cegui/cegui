@@ -29,6 +29,11 @@
 
 #include "CEGUI/StringTranscoder.h"
 
+#if defined(_MSC_VER)
+#    pragma warning(push)
+#    pragma warning(disable : 4251)
+#endif
+
 namespace CEGUI
 {
 
@@ -39,14 +44,18 @@ public:
     Win32StringTranscoder();
 
     // implement abstract interface
-    uint16* stringToUTF16(const String& input) const;
-    std::wstring stringToStdWString(const String& input) const;
-    String stringFromUTF16(const uint16* input) const;
-    String stringFromStdWString(const std::wstring& input) const;
-    void deleteUTF16Buffer(uint16* input) const;
+    char16_t* stringToUTF16(const String& input) const override;
+    std::wstring stringToStdWString(const String& input) const override;
+    String stringFromUTF16(const char16_t* input) const override;
+    String stringFromStdWString(const std::wstring& input) const override;
 };
 
 }
+
+#if defined (_MSC_VER)
+#   pragma warning(pop)
+#endif
+
 
 #endif
 

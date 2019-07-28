@@ -55,21 +55,21 @@ public:
     ~PropertyDefinition() {}
 
     //------------------------------------------------------------------------//
-    void initialisePropertyReceiver(PropertyReceiver* receiver) const
+    void initialisePropertyReceiver(PropertyReceiver* receiver) const override
     {
         setWindowUserString(static_cast<Window*>(receiver), FalagardPropertyBase<T>::d_initialValue);
     }
 
     //------------------------------------------------------------------------//
-    Property* clone() const
+    Property* clone() const override
     {
-        return CEGUI_NEW_AO PropertyDefinition<T>(*this);
+        return new PropertyDefinition<T>(*this);
     }
 
 protected:
     //------------------------------------------------------------------------//
     typename Helper::safe_method_return_type
-    getNative_impl(const PropertyReceiver* receiver) const
+    getNative_impl(const PropertyReceiver* receiver) const override
     {
         const Window* const wnd = static_cast<const Window*>(receiver);
 
@@ -80,11 +80,11 @@ protected:
         // string.
         // Maybe the only negative here is that an error gets logged, though
         // this can be treated as a 'soft' error.
-        CEGUI_TRY
+        try
         {
             return Helper::fromString(wnd->getUserString(d_userStringName));
         }
-        CEGUI_CATCH (UnknownObjectException&)
+        catch (UnknownObjectException&)
         {
             Logger::getSingleton().logEvent(
                 "PropertyDefiniton::get: Defining new user string: " +
@@ -102,7 +102,7 @@ protected:
     }
 
     //------------------------------------------------------------------------//
-    void setNative_impl(PropertyReceiver* receiver,typename Helper::pass_type value)
+    void setNative_impl(PropertyReceiver* receiver,typename Helper::pass_type value) override
     {
         setWindowUserString(static_cast<Window*>(receiver), Helper::toString(value));
         FalagardPropertyBase<T>::setNative_impl(receiver, value);
@@ -115,12 +115,12 @@ protected:
     }
 
     //------------------------------------------------------------------------//
-    void writeDefinitionXMLElementType(XMLSerializer& xml_stream) const
+    void writeDefinitionXMLElementType(XMLSerializer& xml_stream) const override
     {
         xml_stream.openTag(Falagard_xmlHandler::PropertyDefinitionElement);
     }
     //------------------------------------------------------------------------//
-    virtual void writeDefinitionXMLAttributes(XMLSerializer& xml_stream) const
+    void writeDefinitionXMLAttributes(XMLSerializer& xml_stream) const override
     {
         PropertyDefinitionBase::writeDefinitionXMLAttributes(xml_stream);
 

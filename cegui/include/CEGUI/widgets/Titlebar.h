@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	25/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface for a Titlebar Widget
 *************************************************************************/
 /***************************************************************************
@@ -85,7 +85,7 @@ public:
     \brief
         Gets the point at which the title bar widget is/was being dragged
     */
-    const Vector2f& getDragPoint() const;
+    const glm::vec2& getDragPoint() const;
 
 	/*************************************************************************
 		Construction / Destruction
@@ -108,12 +108,12 @@ protected:
 	/*************************************************************************
 		Overridden event handler functions
 	*************************************************************************/
-	virtual void	onMouseMove(MouseEventArgs& e);
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual void	onMouseButtonUp(MouseEventArgs& e);
-	virtual void	onMouseDoubleClicked(MouseEventArgs& e);
-	virtual void	onCaptureLost(WindowEventArgs& e);
-	virtual void	onFontChanged(WindowEventArgs &e);
+    void    onCursorMove(CursorInputEventArgs& e) override;
+    void    onCursorPressHold(CursorInputEventArgs& e) override;
+    void    onCursorActivate(CursorInputEventArgs& e) override;
+    void	onCaptureLost(WindowEventArgs& e) override;
+    void	onFontChanged(WindowEventArgs &e) override;
+    void    onSemanticInputEvent(SemanticEventArgs& e) override;
 
 
 	/*************************************************************************
@@ -122,7 +122,7 @@ protected:
 	/*!
 	\brief
 		Event handler called when the 'draggable' state for the title bar is changed.
-		
+
 		Note that this is for 'internal' use at the moment and as such does not add or
 		fire a public Event that can be subscribed to.
 	*/
@@ -132,7 +132,7 @@ protected:
 		Implementation Data
 	*************************************************************************/
 	bool d_dragging;			//!< set to true when the window is being dragged.
-	Vector2f d_dragPoint;		//!< Point at which we are being dragged.
+    glm::vec2 d_dragPoint;		//!< Point at which we are being dragged.
 	bool d_dragEnabled;		//!< true when dragging for the widget is enabled.
 
 	Rectf d_oldCursorArea;	//!< Used to backup cursor restraint area.

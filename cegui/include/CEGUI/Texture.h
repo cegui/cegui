@@ -32,9 +32,8 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Size.h"
-#include "CEGUI/Vector.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Sizef.h"
+#include "CEGUI/Rectf.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -49,8 +48,7 @@ namespace CEGUI
     for the rest of the system to work.  Texture objects are only created
     through the Renderer object's texture creation functions.
 */
-class CEGUIEXPORT Texture :
-    public AllocatedObject<Texture>
+class CEGUIEXPORT Texture
 {
 public:
     /*!
@@ -58,28 +56,28 @@ public:
         Enumerated type containing the supported pixel formats that can be
         passed to loadFromMemory
     */
-    enum PixelFormat
+    enum class PixelFormat : int
     {
         //! Each pixel is 3 bytes. RGB in that order.
-        PF_RGB,
+        Rgb,
         //! Each pixel is 4 bytes. RGBA in that order.
-        PF_RGBA,
+        Rgba,
         //! Each pixel is 2 bytes. RGBA in that order.
-        PF_RGBA_4444,
+        Rgba4444,
         //! Each pixel is 2 bytes. RGB in that order.
-        PF_RGB_565,
+        Rgb565,
         //! PVR texture compression. Each pixel is 2 bits.
-        PF_PVRTC2,
+        Pvrtc2,
         //! PVR texture compression. Each pixel is 4 bits.
-        PF_PVRTC4,
+        Pvrtc4,
         //! S3 DXT1 texture compression (RGB).
-        PF_RGB_DXT1,
+        RgbDxt1,
         //! S3 DXT1 texture compression (RGBA).
-        PF_RGBA_DXT1,
+        RgbaDxt1,
         //! S3 DXT1 texture compression (RGBA).
-        PF_RGBA_DXT3,
+        RgbaDxt3,
         //! S3 DXT1 texture compression (RGBA).
-        PF_RGBA_DXT5
+        RgbaDxt5
     };
 
     /*!
@@ -126,7 +124,7 @@ public:
         Reference to a Vector2 object that describes the scaling values required
         to accurately map pixel positions to texture co-ordinates.
     */
-    virtual const Vector2f& getTexelScaling() const = 0;
+    virtual const glm::vec2& getTexelScaling() const = 0;
 
     /*!
     \brief
@@ -134,7 +132,7 @@ public:
         as required to hold the image.
 
     \param filename
-        The filename of the image file that is to be loaded into the texture
+        The filename of the image file that is to be loaded into the texture.
 
     \param resourceGroup
         Resource group identifier to be passed to the resource provider when

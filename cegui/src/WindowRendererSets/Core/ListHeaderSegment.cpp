@@ -39,9 +39,9 @@ namespace CEGUI
     {
     }
 
-    void FalagardListHeaderSegment::render()
+    void FalagardListHeaderSegment::createRenderGeometry()
     {
-        ListHeaderSegment* w = (ListHeaderSegment*)d_window;
+        ListHeaderSegment* w = static_cast<ListHeaderSegment*>(d_window);
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
 
@@ -70,12 +70,12 @@ namespace CEGUI
 
         // Render sorting icon as needed
         ListHeaderSegment::SortDirection sort_dir = w->getSortDirection();
-        if (sort_dir == ListHeaderSegment::Ascending)
+        if (sort_dir == ListHeaderSegment::SortDirection::Ascending)
         {
             imagery = &wlf.getStateImagery("AscendingSortIcon");
             imagery->render(*w);
         }
-        else if (sort_dir == ListHeaderSegment::Descending)
+        else if (sort_dir == ListHeaderSegment::SortDirection::Descending)
         {
             imagery = &wlf.getStateImagery("DescendingSortIcon");
             imagery->render(*w);
@@ -91,12 +91,12 @@ namespace CEGUI
             imagery->render(*w, targetArea);
 
             // Render sorting icon as needed
-            if (sort_dir == ListHeaderSegment::Ascending)
+            if (sort_dir == ListHeaderSegment::SortDirection::Ascending)
             {
                 imagery = &wlf.getStateImagery("GhostAscendingSortIcon");
                 imagery->render(*w, targetArea);
             }
-            else if (sort_dir == ListHeaderSegment::Descending)
+            else if (sort_dir == ListHeaderSegment::SortDirection::Descending)
             {
                 imagery = &wlf.getStateImagery("GhostDescendingSortIcon");
                 imagery->render(*w, targetArea);
