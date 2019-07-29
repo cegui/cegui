@@ -387,7 +387,7 @@ bool Window::isChild(unsigned int ID) const
     const size_t child_count = getChildCount();
 
     for (size_t i = 0; i < child_count; ++i)
-        if (getChildAtIdx(i)->getID() == ID)
+        if (getChildAtIndex(i)->getID() == ID)
             return true;
 
     return false;
@@ -399,7 +399,7 @@ bool Window::isChildRecursive(unsigned int ID) const
     const size_t child_count = getChildCount();
 
     for (size_t i = 0; i < child_count; ++i)
-        if (getChildAtIdx(i)->getID() == ID || getChildAtIdx(i)->isChildRecursive(ID))
+        if (getChildAtIndex(i)->getID() == ID || getChildAtIndex(i)->isChildRecursive(ID))
             return true;
 
     return false;
@@ -411,7 +411,7 @@ size_t Window::getChildIndex(Window* wnd) const
     const size_t child_count = getChildCount();
 
     for (size_t i = 0; i < child_count; ++i)
-        if (getChildAtIdx(i) == wnd)
+        if (getChildAtIndex(i) == wnd)
             return i;
 
     // Any value >= getChildCount() must be treated as invalid
@@ -424,8 +424,8 @@ Window* Window::getChild(unsigned int ID) const
     const size_t child_count = getChildCount();
 
     for (size_t i = 0; i < child_count; ++i)
-        if (getChildAtIdx(i)->getID() == ID)
-            return getChildAtIdx(i);
+        if (getChildAtIndex(i)->getID() == ID)
+            return getChildAtIndex(i);
 
     std::stringstream& sstream = SharedStringstream::GetPreparedStream();
     sstream << std::hex << ID << std::dec;
@@ -443,7 +443,7 @@ Window* Window::getChildRecursive(unsigned int ID) const
 
     for (size_t i = 0; i < child_count; ++i) // load all children into the queue
     {
-        Element* child = getChildElementAtIdx(i);
+        Element* child = getChildElementAtIndex(i);
         ElementsToSearch.push(child);
     }
 
@@ -464,7 +464,7 @@ Window* Window::getChildRecursive(unsigned int ID) const
         const size_t element_child_count = child->getChildCount();
         for(size_t i = 0; i < element_child_count; ++i)
         {
-            ElementsToSearch.push(child->getChildElementAtIdx(i));
+            ElementsToSearch.push(child->getChildElementAtIndex(i));
         }
     }
 
@@ -874,7 +874,7 @@ void Window::removeChild(unsigned int ID)
 
     for (size_t i = 0; i < child_count; ++i)
     {
-        if (getChildAtIdx(i)->getID() == ID)
+        if (getChildAtIndex(i)->getID() == ID)
         {
             removeChild(d_children[i]);
             return;
@@ -1069,7 +1069,7 @@ void Window::setRestoreOldCapture(bool setting)
     const size_t child_count = getChildCount();
 
     for (size_t i = 0; i < child_count; ++i)
-        getChildAtIdx(i)->setRestoreOldCapture(setting);
+        getChildAtIndex(i)->setRestoreOldCapture(setting);
 }
 
 //----------------------------------------------------------------------------//
@@ -1136,7 +1136,7 @@ void Window::invalidate_impl(const bool recursive)
     {
         const size_t child_count = getChildCount();
         for (size_t i = 0; i < child_count; ++i)
-            getChildAtIdx(i)->invalidate_impl(true);
+            getChildAtIndex(i)->invalidate_impl(true);
     }
 }
 
@@ -1327,8 +1327,8 @@ void Window::onZChange_impl(void)
 
         for (size_t i = 0; i < child_count; ++i)
         {
-            WindowEventArgs args(getParent()->getChildAtIdx(i));
-            getParent()->getChildAtIdx(i)->onZChanged(args);
+            WindowEventArgs args(getParent()->getChildAtIndex(i));
+            getParent()->getChildAtIndex(i)->onZChanged(args);
         }
 
     }
@@ -1672,11 +1672,11 @@ void Window::update(float elapsed)
     for (size_t i = 0; i < getChildCount(); ++i)
     {
         // update children based on their WindowUpdateMode setting.
-        if (getChildAtIdx(i)->d_updateMode == WindowUpdateMode::Always ||
-                (getChildAtIdx(i)->d_updateMode == WindowUpdateMode::Visible &&
-                 getChildAtIdx(i)->isVisible()))
+        if (getChildAtIndex(i)->d_updateMode == WindowUpdateMode::Always ||
+                (getChildAtIndex(i)->d_updateMode == WindowUpdateMode::Visible &&
+                 getChildAtIndex(i)->isVisible()))
         {
-            getChildAtIdx(i)->update(elapsed);
+            getChildAtIndex(i)->update(elapsed);
         }
     }
 }
@@ -2201,7 +2201,7 @@ int Window::writeChildWindowsXML(XMLSerializer& xml_stream) const
 
     for (unsigned int i = 0; i < getChildCount(); ++i)
     {
-        const Window* const child = getChildAtIdx(i);
+        const Window* const child = getChildAtIndex(i);
 
         // conditional to ensure that auto created windows are handled
         // seperately.
@@ -2406,10 +2406,10 @@ void Window::onAlphaChanged(WindowEventArgs& e)
 
     for (size_t i = 0; i < child_count; ++i)
     {
-        if (getChildAtIdx(i)->inheritsAlpha())
+        if (getChildAtIndex(i)->inheritsAlpha())
         {
-            WindowEventArgs args(getChildAtIdx(i));
-            getChildAtIdx(i)->onAlphaChanged(args);
+            WindowEventArgs args(getChildAtIndex(i));
+            getChildAtIndex(i)->onAlphaChanged(args);
         }
 
     }
@@ -2456,10 +2456,10 @@ void Window::onEnabled(WindowEventArgs& e)
     const size_t child_count = getChildCount();
     for (size_t i = 0; i < child_count; ++i)
     {
-        if (getChildAtIdx(i)->d_enabled)
+        if (getChildAtIndex(i)->d_enabled)
         {
-            WindowEventArgs args(getChildAtIdx(i));
-            getChildAtIdx(i)->onEnabled(args);
+            WindowEventArgs args(getChildAtIndex(i));
+            getChildAtIndex(i)->onEnabled(args);
         }
     }
 
@@ -2475,10 +2475,10 @@ void Window::onDisabled(WindowEventArgs& e)
     const size_t child_count = getChildCount();
     for (size_t i = 0; i < child_count; ++i)
     {
-        if (getChildAtIdx(i)->d_enabled)
+        if (getChildAtIndex(i)->d_enabled)
         {
-            WindowEventArgs args(getChildAtIdx(i));
-            getChildAtIdx(i)->onDisabled(args);
+            WindowEventArgs args(getChildAtIndex(i));
+            getChildAtIndex(i)->onDisabled(args);
         }
     }
 
@@ -2600,12 +2600,12 @@ void Window::onDeactivated(ActivationEventArgs& e)
     const size_t child_count = getChildCount();
     for (size_t i = 0; i < child_count; ++i)
     {
-        if (getChildAtIdx(i)->isActive())
+        if (getChildAtIndex(i)->isActive())
         {
             // make sure the child gets itself as the .window member
-            ActivationEventArgs child_e(getChildAtIdx(i));
+            ActivationEventArgs child_e(getChildAtIndex(i));
             child_e.otherWindow = e.otherWindow;
-            getChildAtIdx(i)->onDeactivated(child_e);
+            getChildAtIndex(i)->onDeactivated(child_e);
         }
 
     }
@@ -2964,7 +2964,7 @@ void Window::banPropertyFromXMLRecursive(const String& property_name)
     const size_t childCount = getChildCount();
     for(size_t i = 0; i < childCount; ++i)
     {
-        getChildAtIdx(i)->banPropertyFromXMLRecursive(property_name);
+        getChildAtIndex(i)->banPropertyFromXMLRecursive(property_name);
     }
 }
 
@@ -2982,7 +2982,7 @@ void Window::unbanPropertyFromXMLRecursive(const String& property_name)
     const size_t childCount = getChildCount();
     for(size_t i = 0; i < childCount; ++i)
     {
-        getChildAtIdx(i)->unbanPropertyFromXMLRecursive(property_name);
+        getChildAtIndex(i)->unbanPropertyFromXMLRecursive(property_name);
     }
 }
 
@@ -3089,8 +3089,8 @@ void Window::notifyClippingChanged(void)
     // inform children that their clipped screen areas must be updated
     const size_t num = d_children.size();
     for (size_t i=0; i<num; ++i)
-        if (getChildAtIdx(i)->isClippedByParent())
-            getChildAtIdx(i)->notifyClippingChanged();
+        if (getChildAtIndex(i)->isClippedByParent())
+            getChildAtIndex(i)->notifyClippingChanged();
 }
 
 //----------------------------------------------------------------------------//
@@ -3826,7 +3826,7 @@ void Window::cloneChildWidgetsTo(Window& target) const
     // todo: ChildWindowIterator?
     for (size_t childI = 0; childI < getChildCount(); ++childI)
     {
-        Window* child = getChildAtIdx(childI);
+        Window* child = getChildAtIndex(childI);
         if (child->isAutoWindow())
         {
             // we skip auto windows, they are already created

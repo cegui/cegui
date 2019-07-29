@@ -149,7 +149,7 @@ public:
     \brief
         Retrieves animation by index
     */
-    Animation* getAnimationAtIdx(size_t index) const;
+    Animation* getAnimationAtIndex(size_t index) const;
 
     /*!
     \brief
@@ -197,7 +197,7 @@ public:
     \brief
         Retrieves animation instance at given index
     */
-    AnimationInstance* getAnimationInstanceAtIdx(size_t index) const;
+    AnimationInstance* getAnimationInstanceAtIndex(size_t index) const;
 
     /*!
     \brief

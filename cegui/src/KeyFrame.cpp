@@ -58,7 +58,7 @@ Affector* KeyFrame::getParent() const
 }
 
 //----------------------------------------------------------------------------//
-size_t KeyFrame::getIdxInParent() const
+size_t KeyFrame::getIndexInParent() const
 {
     const Affector* parent = getParent();
     assert(getParent() && "No parent, no index in parent!");
@@ -66,7 +66,7 @@ size_t KeyFrame::getIdxInParent() const
     size_t i = 0;
     while (i < parent->getNumKeyFrames())
     {
-        if (parent->getKeyFrameAtIdx(i) == this)
+        if (parent->getKeyFrameAtIndex(i) == this)
         {
             return i;
         }

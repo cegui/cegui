@@ -205,7 +205,7 @@ void LayoutContainer::addChildToIndex(Window* window, size_t position)
 //----------------------------------------------------------------------------//
 void LayoutContainer::removeChildFromIndex(size_t position)
 {
-    removeChild(getChildAtIdx(position));
+    removeChild(getChildAtIndex(position));
 }
 
 //----------------------------------------------------------------------------//

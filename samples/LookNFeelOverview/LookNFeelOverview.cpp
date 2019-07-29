@@ -146,7 +146,7 @@ bool LookNFeelOverviewSample::handleSkinSelectionAccepted(const CEGUI::EventArgs
     StandardItem* selectedItem = skinSelectionCombobox->getSelectedItem();
 
     while(d_loadedLayoutContainer->getChildCount() > 0)
-        d_loadedLayoutContainer->removeChild(d_loadedLayoutContainer->getChildAtIdx(0));
+        d_loadedLayoutContainer->removeChild(d_loadedLayoutContainer->getChildAtIndex(0));
 
     if(selectedItem == d_taharezLookListboxItem)
     {

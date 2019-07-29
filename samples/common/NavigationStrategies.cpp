@@ -122,7 +122,7 @@ CEGUI::Window* WindowChildrenNavigationStrategy::getWindow(CEGUI::Window* neighb
 
     for (size_t i = 0; i < child_count; ++i)
     {
-        if (d_targetWindow->getChildAtIdx(i) == neighbour)
+        if (d_targetWindow->getChildAtIndex(i) == neighbour)
         {
             found = true;
             index = i;
@@ -149,7 +149,7 @@ CEGUI::Window* WindowChildrenNavigationStrategy::getWindow(CEGUI::Window* neighb
         }
     }
 
-    Window* child = d_targetWindow->getChildAtIdx(index);
+    Window* child = d_targetWindow->getChildAtIndex(index);
 
     // start a new search
     if (!child->canFocus())

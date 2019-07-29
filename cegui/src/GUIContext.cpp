@@ -644,7 +644,7 @@ void GUIContext::notifyDefaultFontChanged(Window* hierarchy_root) const
         hierarchy_root->onFontChanged(evt_args);
 
     for (size_t i = 0; i < hierarchy_root->getChildCount(); ++i)
-        notifyDefaultFontChanged(hierarchy_root->getChildAtIdx(i));
+        notifyDefaultFontChanged(hierarchy_root->getChildAtIndex(i));
 }
 
 //----------------------------------------------------------------------------//

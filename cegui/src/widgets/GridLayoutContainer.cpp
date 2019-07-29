@@ -274,7 +274,7 @@ void GridLayoutContainer::getMinimalSizeInCells(size_t& width, size_t& height) c
 size_t GridLayoutContainer::getFirstFreeIndex(size_t start) const
 {
     for (size_t i = start; i < d_children.size(); ++i)
-        if (isDummy(static_cast<Window*>(getChildAtIdx(i))))
+        if (isDummy(static_cast<Window*>(getChildAtIndex(i))))
             return i;
 
     return std::numeric_limits<size_t>().max();
@@ -287,7 +287,7 @@ size_t GridLayoutContainer::getLastBusyIndex() const
     size_t lastIdx = 0;
     for (size_t i = 0; i < d_children.size(); ++i)
     {
-        if (!isDummy(static_cast<Window*>(getChildAtIdx(i))))
+        if (!isDummy(static_cast<Window*>(getChildAtIndex(i))))
         {
             lastIdx = i;
             found = true;
@@ -303,7 +303,7 @@ size_t GridLayoutContainer::getFirstFreeAutoPositioningIndex(size_t start) const
     for (size_t i = start; i < d_children.size(); ++i)
     {
         const size_t realIndex = translateAPToGridIdx(i);
-        if (isDummy(static_cast<Window*>(getChildAtIdx(realIndex))))
+        if (isDummy(static_cast<Window*>(getChildAtIndex(realIndex))))
             return i;
     }
 
@@ -318,7 +318,7 @@ size_t GridLayoutContainer::getLastBusyAutoPositioningIndex() const
     for (size_t i = 0; i < d_children.size(); ++i)
     {
         const size_t realIndex = translateAPToGridIdx(i);
-        if (!isDummy(static_cast<Window*>(getChildAtIdx(realIndex))))
+        if (!isDummy(static_cast<Window*>(getChildAtIndex(realIndex))))
         {
             lastIdx = i;
             found = true;
@@ -346,7 +346,7 @@ Window* GridLayoutContainer::getChildAtCell(size_t gridX, size_t gridY) const
     if (gridX >= d_gridWidth || gridY >= d_gridHeight)
         return nullptr;
 
-    return getChildAtIdx(mapCellToIndex(gridX, gridY));
+    return getChildAtIndex(mapCellToIndex(gridX, gridY));
 }
 
 //----------------------------------------------------------------------------//
