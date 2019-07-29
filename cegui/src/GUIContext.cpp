@@ -266,7 +266,7 @@ void GUIContext::drawWindowContentToTarget(std::uint32_t drawModeMask)
     else
         clearGeometry();
 
-    // Mark all rendered modes as not dirty, except the cursor, which is always redrawn
+    // Mark all rendered modes as not dirty (cursor is always redrawn anyway)
     d_dirtyDrawModeMask &= (~drawModeMask);
 }
 
