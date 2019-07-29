@@ -692,21 +692,6 @@ public:
 
     /*!
     \brief
-        returns an index of the specified child window. Index is based on the
-        order in which the children were added and is stable.
-
-    \param wnd
-        A window whose index must be calculated.
-
-    \return
-        Returns a zero-based index of the window \a wnd. Any value that is not
-        less than the value returned by getChildCount() must be treated as invalid.
-        It means that the given window is not our child.
-    */
-    size_t getChildIndex(Window* wnd) const;
-
-    /*!
-    \brief
         return the attached child window that the given name path references.
 
         A name path is a string that describes a path down the window
@@ -1494,20 +1479,6 @@ public:
 
     /*!
     \brief
-        Set whether this window is always on top, or not.
-
-    \param setting
-        - true to have the Window appear on top of all other non always on top
-          windows
-        - false to allow the window to be covered by other normal windows.
-
-    \return
-        Nothing
-    */
-    void setAlwaysOnTop(bool setting);
-
-    /*!
-    \brief
         Set whether this window is enabled or disabled.  A disabled window
         normally can not be interacted with, and may have different rendering.
 
@@ -1835,20 +1806,6 @@ public:
 
     /*!
     \brief
-        Return the (visual) z index of the window on it's parent.
-
-        The z index is a number that indicates the order that windows will be
-        drawn (but is not a 'z co-ordinate', as such).  Higher numbers are in
-        front of lower numbers.
-
-        The number returned will not be stable, and generally should be used to
-        compare with the z index of sibling windows (and only sibling windows)
-        to discover the current z ordering of those windows.
-    */
-    size_t getZIndex() const;
-
-    /*!
-    \brief
         Return whether /a this Window is in front of the given window.
 
     \note
@@ -1868,6 +1825,34 @@ public:
         window is obscured by the other.
     */
     bool isBehind(const Window& wnd) const;
+
+    /*!
+    \brief
+        Return the (visual) z index of the window on it's parent.
+
+        The z index is a number that indicates the order that windows will be
+        drawn (but is not a 'z co-ordinate', as such).  Higher numbers are in
+        front of lower numbers.
+
+        The number returned will not be stable, and generally should be used to
+        compare with the z index of sibling windows (and only sibling windows)
+        to discover the current z ordering of those windows.
+    */
+    size_t getZIndex() const;
+
+    /*!
+    \brief
+        Set whether this window is always on top, or not.
+
+    \param setting
+        - true to have the Window appear on top of all other non always on top
+          windows
+        - false to allow the window to be covered by other normal windows.
+
+    \return
+        Nothing
+    */
+    void setAlwaysOnTop(bool setting);
 
     /*!
     \brief

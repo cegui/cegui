@@ -406,19 +406,6 @@ bool Window::isChildRecursive(unsigned int ID) const
 }
 
 //----------------------------------------------------------------------------//
-size_t Window::getChildIndex(Window* wnd) const
-{
-    const size_t child_count = getChildCount();
-
-    for (size_t i = 0; i < child_count; ++i)
-        if (getChildAtIndex(i) == wnd)
-            return i;
-
-    // Any value >= getChildCount() must be treated as invalid
-    return std::numeric_limits<size_t>().max();
-}
-
-//----------------------------------------------------------------------------//
 Window* Window::getChild(unsigned int ID) const
 {
     const size_t child_count = getChildCount();
@@ -708,31 +695,6 @@ bool Window::isHitTargetWindow(const glm::vec2& position, bool allow_disabled) c
 }
 
 //----------------------------------------------------------------------------//
-void Window::setAlwaysOnTop(bool setting)
-{
-    // only react to an actual change
-    if (isAlwaysOnTop() == setting)
-        return;
-
-    d_alwaysOnTop = setting;
-
-    // move us in front of sibling windows with the same 'always-on-top'
-    // setting as we have.
-    if (d_parent)
-    {
-        Window* const org_parent = getParent();
-
-        org_parent->removeChild_impl(this);
-        org_parent->addChild_impl(this);
-
-        onZChange_impl();
-    }
-
-    WindowEventArgs args(this);
-    onAlwaysOnTopChanged(args);
-}
-
-//----------------------------------------------------------------------------//
 void Window::setEnabled(bool enabled)
 {
     // only react if setting has changed
@@ -1006,6 +968,143 @@ void Window::moveToBack()
 
         getParent()->moveToBack();
     }
+}
+
+//----------------------------------------------------------------------------//
+void Window::moveInFront(const Window* const window)
+{
+    if (!window || !window->d_parent || window->d_parent != d_parent ||
+        window == this || window->d_alwaysOnTop != d_alwaysOnTop ||
+        !d_zOrderingEnabled)
+        return;
+
+    // find our position in the parent child draw list
+    const ChildDrawList::iterator p(std::find(getParent()->d_drawList.begin(),
+        getParent()->d_drawList.end(),
+        this));
+    // sanity checK that we were attached to our parent.
+    assert(p != getParent()->d_drawList.end());
+
+    // erase us from our current position
+    getParent()->d_drawList.erase(p);
+
+    // find window we're to be moved in front of in parent's draw list
+    ChildDrawList::iterator i(std::find(getParent()->d_drawList.begin(),
+        getParent()->d_drawList.end(),
+        window));
+    // sanity check that target window was also attached to correct parent.
+    assert(i != getParent()->d_drawList.end());
+
+    // reinsert ourselves at the right location
+    getParent()->d_drawList.insert(++i, this);
+
+    // handle event notifications for affected windows.
+    onZChange_impl();
+}
+
+//----------------------------------------------------------------------------//
+void Window::moveBehind(const Window* const window)
+{
+    if (!window || !window->d_parent || window->d_parent != d_parent ||
+        window == this || window->d_alwaysOnTop != d_alwaysOnTop ||
+        !d_zOrderingEnabled)
+        return;
+
+    // find our position in the parent child draw list
+    const ChildDrawList::iterator p(std::find(getParent()->d_drawList.begin(),
+        getParent()->d_drawList.end(),
+        this));
+    // sanity checK that we were attached to our parent.
+    assert(p != getParent()->d_drawList.end());
+
+    // erase us from our current position
+    getParent()->d_drawList.erase(p);
+
+    // find window we're to be moved in front of in parent's draw list
+    const ChildDrawList::iterator i(std::find(getParent()->d_drawList.begin(),
+        getParent()->d_drawList.end(),
+        window));
+    // sanity check that target window was also attached to correct parent.
+    assert(i != getParent()->d_drawList.end());
+
+    // reinsert ourselves at the right location
+    getParent()->d_drawList.insert(i, this);
+
+    // handle event notifications for affected windows.
+    onZChange_impl();
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isInFront(const Window& wnd) const
+{
+    // children are always in front of their ancestors
+    if (isAncestor(&wnd))
+        return true;
+
+    // conversely, ancestors are always behind their children
+    if (wnd.isAncestor(this))
+        return false;
+
+    const Window* const w1 = getWindowAttachedToCommonAncestor(wnd);
+
+    // seems not to be in same window hierarchy
+    if (!w1)
+        return false;
+
+    const Window* const w2 = wnd.getWindowAttachedToCommonAncestor(*this);
+
+    // at this point, w1 and w2 share the same parent.
+    return w2->getZIndex() > w1->getZIndex();
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isBehind(const Window& wnd) const
+{
+    return !isInFront(wnd);
+}
+
+//----------------------------------------------------------------------------//
+size_t Window::getZIndex() const
+{
+    if (!d_parent)
+        return 0;
+
+    const auto& parentDrawList = getParent()->d_drawList;
+    auto it = std::find(parentDrawList.begin(), parentDrawList.end(), this);
+    if (it == getParent()->d_drawList.end())
+        throw InvalidRequestException(
+            "Window is not in its parent's draw list.");
+
+    return std::distance(parentDrawList.begin(), it);
+}
+
+//----------------------------------------------------------------------------//
+void Window::setAlwaysOnTop(bool setting)
+{
+    // only react to an actual change
+    if (isAlwaysOnTop() == setting)
+        return;
+
+    d_alwaysOnTop = setting;
+
+    // we only proceed if we have a parent (otherwise we can have no siblings)
+    if (d_parent)
+    {
+        if (d_zOrderingEnabled)
+        {
+            // remove us from our parent's draw list
+            getParent()->removeWindowFromDrawList(*this);
+            // re-attach ourselves to our parent's draw list which will move us
+            // in behind sibling windows with the same 'always-on-top' setting
+            // as we have.
+            getParent()->addWindowToDrawList(*this, true);
+            // notify relevant windows about the z-order change.
+            onZChange_impl();
+        }
+    }
+
+    WindowEventArgs args(this);
+    onAlwaysOnTopChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -3685,70 +3784,6 @@ void Window::onMarginChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::moveInFront(const Window* const window)
-{
-    if (!window || !window->d_parent || window->d_parent != d_parent ||
-        window == this || window->d_alwaysOnTop != d_alwaysOnTop ||
-        !d_zOrderingEnabled)
-            return;
-
-    // find our position in the parent child draw list
-    const ChildDrawList::iterator p(std::find(getParent()->d_drawList.begin(),
-                                              getParent()->d_drawList.end(),
-                                              this));
-    // sanity checK that we were attached to our parent.
-    assert(p != getParent()->d_drawList.end());
-
-    // erase us from our current position
-    getParent()->d_drawList.erase(p);
-
-    // find window we're to be moved in front of in parent's draw list
-    ChildDrawList::iterator i(std::find(getParent()->d_drawList.begin(),
-                                        getParent()->d_drawList.end(),
-                                        window));
-    // sanity check that target window was also attached to correct parent.
-    assert(i != getParent()->d_drawList.end());
-
-    // reinsert ourselves at the right location
-    getParent()->d_drawList.insert(++i, this);
-
-    // handle event notifications for affected windows.
-    onZChange_impl();
-}
-
-//----------------------------------------------------------------------------//
-void Window::moveBehind(const Window* const window)
-{
-    if (!window || !window->d_parent || window->d_parent != d_parent ||
-        window == this || window->d_alwaysOnTop != d_alwaysOnTop ||
-        !d_zOrderingEnabled)
-            return;
-
-    // find our position in the parent child draw list
-    const ChildDrawList::iterator p(std::find(getParent()->d_drawList.begin(),
-                                              getParent()->d_drawList.end(),
-                                              this));
-    // sanity checK that we were attached to our parent.
-    assert(p != getParent()->d_drawList.end());
-
-    // erase us from our current position
-    getParent()->d_drawList.erase(p);
-
-    // find window we're to be moved in front of in parent's draw list
-    const ChildDrawList::iterator i(std::find(getParent()->d_drawList.begin(),
-                                              getParent()->d_drawList.end(),
-                                              window));
-    // sanity check that target window was also attached to correct parent.
-    assert(i != getParent()->d_drawList.end());
-
-    // reinsert ourselves at the right location
-    getParent()->d_drawList.insert(i, this);
-
-    // handle event notifications for affected windows.
-    onZChange_impl();
-}
-
-//----------------------------------------------------------------------------//
 void Window::setUpdateMode(const WindowUpdateMode mode)
 {
     d_updateMode = mode;
@@ -3851,47 +3886,6 @@ void Window::cloneChildWidgetsTo(Window& target) const
 }
 
 //----------------------------------------------------------------------------//
-size_t Window::getZIndex() const
-{
-    if (!d_parent)
-        return 0;
-
-    ChildDrawList::iterator i = std::find(
-        getParent()->d_drawList.begin(),
-        getParent()->d_drawList.end(),
-        this);
-
-    if (i == getParent()->d_drawList.end())
-        throw InvalidRequestException(
-            "Window is not in its parent's draw list.");
-
-    return std::distance(getParent()->d_drawList.begin(), i);
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isInFront(const Window& wnd) const
-{
-    // children are always in front of their ancestors
-    if (isAncestor(&wnd))
-        return true;
-
-    // conversely, ancestors are always behind their children
-    if (wnd.isAncestor(this))
-        return false;
-
-    const Window* const w1 = getWindowAttachedToCommonAncestor(wnd);
-
-    // seems not to be in same window hierarchy
-    if (!w1)
-        return false;
-
-    const Window* const w2 = wnd.getWindowAttachedToCommonAncestor(*this);
-
-    // at this point, w1 and w2 share the same parent.
-    return w2->getZIndex() > w1->getZIndex();
-}
-
-//----------------------------------------------------------------------------//
 const Window* Window::getWindowAttachedToCommonAncestor(const Window& wnd) const
 {
     const Window* w = &wnd;
@@ -3907,12 +3901,6 @@ const Window* Window::getWindowAttachedToCommonAncestor(const Window& wnd) const
     }
 
     return tmp ? w : 0;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isBehind(const Window& wnd) const
-{
-    return !isInFront(wnd);
 }
 
 //----------------------------------------------------------------------------//
