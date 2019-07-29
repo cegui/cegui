@@ -134,6 +134,11 @@ public:
      * ElementEventArgs::element set to the child element that was removed.
      */
     static const String EventChildRemoved;
+    /** Event fired when child elements get rearranged.
+     * Handlers are passed a const ElementEventArgs reference with
+     * ElementEventArgs::element set to the element whose children were rearranged.
+     */
+    static const String EventChildOrderChanged;
     /** Event fired when the z-order of the element has changed.
      * Handlers are passed a const ElementEventArgs reference with
      * ElementEventArgs::element set to the Element whose z order position has
@@ -821,6 +826,62 @@ public:
 
     /*!
     \brief
+        Adds a child to given position
+    */
+    void addChildToIndex(Element* element, size_t index);
+
+    /*!
+    \brief
+        Removes a child from given position
+    */
+    void removeChildFromIndex(size_t index);
+
+    /*!
+    \brief
+        Moves an element that is already a child of this element
+        to given position (if the element is currently in a position
+        that is smaller than given position, given position is
+        automatically decremented
+    */
+    void moveChildToIndex(size_t indexFrom, size_t indexTo);
+
+    /*!
+    \brief
+        Moves a element that is already a child of this element
+        to given position (if the element is currently in a position
+        that is smaller than given position, given position is
+        automatically decremented
+    */
+    void moveChildToIndex(Element* child, size_t index);
+
+    /*!
+    \brief
+        Moves an element forward or backward in the child list, depending on
+        delta (-1 moves it backward one step, 1 moves it forward one step)
+
+    \note
+        This method clamps resulting index rather than cycles.
+
+    \param delta
+        The amount of steps the element will be moved
+        (old index + delta = new index)
+    */
+    void moveChildByDelta(Element* child, int delta = 1);
+
+    /*!
+    \brief
+        Swaps child elements at given positions
+    */
+    void swapChildren(size_t index1, size_t index2);
+
+    /*!
+    \brief
+        Swaps positions of given elements
+    */
+    void swapChildren(Element* child1, Element* child2);
+
+    /*!
+    \brief
         return a pointer to the child element that is attached to 'this' at the
         given index.
 
@@ -832,18 +893,27 @@ public:
     \return
         Pointer to the child element currently attached at index position \a idx
     */
-    inline Element* getChildElementAtIndex(size_t idx) const
-    {
-        return d_children[idx];
-    }
+    inline Element* getChildElementAtIndex(size_t idx) const { return d_children[idx]; }
+
+    /*!
+    \brief
+        returns an index of the specified child element. Index is based on the
+        order in which the children were added and is stable.
+
+    \param child
+        A element whose index must be calculated.
+
+    \return
+        Returns a zero-based index of the element \a child. Any value that is not
+        less than the value returned by getChildCount() must be treated as invalid.
+        It means that the given element is not our child.
+    */
+    size_t getChildIndex(const Element* child) const;
 
     /*!
     \brief Returns number of child elements attached to this Element
     */
-    inline size_t getChildCount() const
-    {
-        return d_children.size();
-    }
+    inline size_t getChildCount() const { return d_children.size(); }
 
     /*!
     \brief Checks whether given element is attached to this Element
@@ -1673,6 +1743,15 @@ protected:
         that has been removed.
     */
     virtual void onChildRemoved(ElementEventArgs& e);
+
+    /*!
+    \brief
+        Handler called when children of this element gets rearranged in any way
+
+    \param e
+        ElementEventArgs object whose 'element' field is set to this element
+    */
+    virtual void onChildOrderChanged(ElementEventArgs& e);
 
     /*!
     \brief

@@ -47,7 +47,7 @@ namespace CEGUI
     An abstract base class providing common functionality and specifying the
     required interface for derived classes.
 
-    Layout Container provide means for automatic positioning based on sizes of
+    Layout Container provides means for automatic positioning based on sizes of
     it's child Windows. This is useful for dynamic UIs.
 */
 class CEGUIEXPORT LayoutContainer : public Window
@@ -58,9 +58,6 @@ public:
     *************************************************************************/
     //! Namespace for global events
     static const String EventNamespace;
-
-    //! fired when child windows get rearranged
-    static const String EventChildOrderChanged;
 
     /*!
     \brief
@@ -78,7 +75,7 @@ public:
     \brief
         Destructor for Window base class
     */
-    virtual ~LayoutContainer(void);
+    virtual ~LayoutContainer(void) override;
 
     /*!
     \brief
@@ -111,92 +108,6 @@ public:
     */
     virtual size_t getActualChildCount() const;
 
-    /*!
-    \brief
-        Gets the position of given child window
-    */
-    size_t getChildIndexByName(const String& wnd) const;
-
-    /*!
-    \brief
-        Swaps positions of given windows
-    */
-    void swapChildren(Window* wnd1, Window* wnd2);
-
-    /*!
-    \brief
-        Swaps positions of given windows
-    */
-    void swapChildren(const String& wnd1, Window* wnd2);
-
-    /*!
-    \brief
-        Swaps positions of given windows
-    */
-    void swapChildren(Window* wnd1, const String& wnd2);
-
-    /*!
-    \brief
-        Swaps positions of given windows
-    */
-    void swapChildren(const String& wnd1, const String& wnd2);
-
-    /*!
-    \brief
-        Swaps child windows at given positions
-    */
-    void swapChildren(size_t index1, size_t index2);
-
-    /*!
-    \brief
-        Moves a window that is already a child of the layout container
-        to given position (if the window is currently in a position
-        that is smaller than given position, given position is
-        automatically decremented
-    */
-    void moveChildToIndex(size_t indexFrom, size_t indexTo);
-
-    /*!
-    \brief
-        Moves a window that is already a child of the layout container
-        to given position (if the window is currently in a position
-        that is smaller than given position, given position is
-        automatically decremented
-    */
-    void moveChildToIndex(Window* wnd, size_t index);
-
-    /*!
-    \brief
-        Moves a window that is already a child of the layout container
-        to given position (if the window is currently in a position
-        that is smaller than given position, given position is
-        automatically decremented
-    */
-    void moveChildToIndex(const String& wnd, size_t index);
-
-    /*!
-    \brief
-        Moves a window forward or backward, depending on delta
-        (-1 moves it backward one step, 1 moves it forward one step)
-
-    \param delta
-        The amount of steps the window will be moved
-        (old position + delta = new position)
-    */
-    void moveChild(Window* window, int delta = 1);
-
-    /*!
-    \brief
-        Adds a window to given position
-    */
-    void addChildToIndex(Window* window, size_t position);
-
-    /*!
-    \brief
-        Removes a window from given position
-    */
-    void removeChildFromIndex(size_t position);
-
     /// @copydoc Window::update
     void update(float elapsed) override;
 
@@ -214,6 +125,8 @@ protected:
     void addChild_impl(Element* element) override;
     /// @copydoc Window::removeChild_impl
     void removeChild_impl(Element* element) override;
+    /// @copydoc Window::cleanupChildren
+    void cleanupChildren(void) override;
 
     /*************************************************************************
         Event trigger methods
@@ -276,16 +189,7 @@ protected:
 
     // overridden from parent class
     void onParentSized(ElementEventArgs& e) override;
-
-    /*!
-    \brief
-        Handler called when children of this window gets rearranged in any way
-
-    \param e
-        WindowEventArgs object whose 'window' field is set this layout
-        container.
-    */
-    virtual void onChildOrderChanged(WindowEventArgs& e);
+    void onChildOrderChanged(ElementEventArgs& e) override;
 
     /*************************************************************************
         Implementation Data
@@ -293,7 +197,7 @@ protected:
     // if true, we will relayout before rendering of this window starts
     bool d_needsLayouting;
 
-    typedef std::multimap<Window*, Event::Connection>  ConnectionTracker;
+    typedef std::multimap<Window*, Event::Connection> ConnectionTracker;
     //! Tracks event connections we make.
     ConnectionTracker d_eventConnections;
     

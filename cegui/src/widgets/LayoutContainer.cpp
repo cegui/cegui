@@ -43,12 +43,10 @@ namespace CEGUI
 {
 
 const String LayoutContainer::EventNamespace("LayoutContainer");
-const String LayoutContainer::EventChildOrderChanged("ChildOrderChanged");
 
 //----------------------------------------------------------------------------//
 LayoutContainer::LayoutContainer(const String& type, const String& name):
     Window(type, name),
-
     d_needsLayouting(false),
     d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&LayoutContainer::getClientChildContentArea_impl))
 {
@@ -94,118 +92,6 @@ void LayoutContainer::layoutIfNecessary()
 size_t LayoutContainer::getActualChildCount() const
 {
     return getChildCount();
-}
-
-//----------------------------------------------------------------------------//
-size_t LayoutContainer::getChildIndexByName(const String& wnd) const
-{
-    return getChildIndex(getChild(wnd));
-}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::swapChildren(Window* wnd1, Window* wnd2)
-{
-    swapChildren(getChildIndex(wnd1), getChildIndex(wnd2));
-}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::swapChildren(const String& wnd1, Window* wnd2)
-{
-    swapChildren(getChild(wnd1), wnd2);
-}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::swapChildren(Window* wnd1, const String& wnd2)
-{
-    swapChildren(wnd1, getChild(wnd2));
-}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::swapChildren(const String& wnd1, const String& wnd2)
-{
-    swapChildren(getChild(wnd1), getChild(wnd2));
-}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::swapChildren(size_t index1, size_t index2)
-{
-    if (index1 < d_children.size() && index2 < d_children.size())
-    {
-        std::swap(d_children[index1], d_children[index2]);
-
-        WindowEventArgs args(this);
-        onChildOrderChanged(args);
-    }
-}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::moveChildToIndex(size_t indexFrom, size_t indexTo)
-{
-    indexTo = std::min(indexTo, d_children.size());
-
-    if (indexFrom == indexTo || indexFrom >= d_children.size())
-    {
-        return;
-    }
-
-    // we get the iterator of the old position
-    ChildList::iterator it = d_children.begin();
-    std::advance(it, indexFrom);
-
-    auto child = *it;
-
-    // erase the child from it's old position
-    d_children.erase(it);
-
-    // if the window comes before the point we want to insert to,
-    // we have to decrement the position
-    if (indexFrom < indexTo)
-    {
-        --indexTo;
-    }
-
-    // find iterator of the new position
-    it = d_children.begin();
-    std::advance(it, indexTo);
-    // and insert the window there
-    d_children.insert(it, child);
-
-    WindowEventArgs args(this);
-    onChildOrderChanged(args);
-}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::moveChildToIndex(Window* wnd, size_t index)
-{
-    moveChildToIndex(getChildIndex(wnd), index);
-}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::moveChildToIndex(const String& wnd, size_t index)
-{
-    moveChildToIndex(getChild(wnd), index);
-}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::moveChild(Window* window, int delta)
-{
-    const size_t oldIndex = getChildIndex(window);
-    const size_t newIndex =
-		static_cast<size_t>(std::max(0, static_cast<int>(oldIndex) + delta));
-    moveChildToIndex(oldIndex, newIndex);
-}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::addChildToIndex(Window* window, size_t position)
-{
-    addChild(window);
-    moveChildToIndex(window, position);
-}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::removeChildFromIndex(size_t position)
-{
-    removeChild(getChildAtIndex(position));
 }
 
 //----------------------------------------------------------------------------//
@@ -259,14 +145,9 @@ Rectf LayoutContainer::getClientChildContentArea_impl(bool skipAllPixelAlignment
 //----------------------------------------------------------------------------//
 void LayoutContainer::addChild_impl(Element* element)
 {
-    Window* wnd = dynamic_cast<Window*>(element);
-    
-    if (!wnd)
-        throw InvalidRequestException(
-            "LayoutContainer can only have Elements of type Window added as "
-            "children (Window path: " + getNamePath() + ").");
-    
-    Window::addChild_impl(wnd);
+    Window::addChild_impl(element);
+
+    Window* wnd = static_cast<Window*>(element);
 
     // we have to subscribe to the EventSized for layout updates
     d_eventConnections.insert(std::make_pair(wnd,
@@ -280,27 +161,34 @@ void LayoutContainer::addChild_impl(Element* element)
 //----------------------------------------------------------------------------//
 void LayoutContainer::removeChild_impl(Element* element)
 {
-    Window* wnd = static_cast<Window*>(element);
-    
-    // we want to get rid of the subscription, because the child window could
-    // get removed and added somewhere else, we would be wastefully updating
-    // layouts if it was sized inside other Window
-    ConnectionTracker::iterator conn;
-
-    while ((conn = d_eventConnections.find(wnd)) != d_eventConnections.end())
+    if (!d_destructionStarted)
     {
-        conn->second->disconnect();
-        d_eventConnections.erase(conn);
+        // we want to get rid of the subscription, because the child window could
+        // get removed and added somewhere else, we would be wastefully updating
+        // layouts if it was sized inside other Window
+        auto range = d_eventConnections.equal_range(static_cast<Window*>(element));
+        for (auto it = range.first; it != range.second; ++it)
+            it->second->disconnect();
+        d_eventConnections.erase(range.first, range.second);
     }
 
-    Window::removeChild_impl(wnd);
+    Window::removeChild_impl(element);
+}
+
+//----------------------------------------------------------------------------//
+void LayoutContainer::cleanupChildren(void)
+{
+    for (auto& windowToConnection : d_eventConnections)
+        windowToConnection.second->disconnect();
+    d_eventConnections.clear();
+
+    Window::cleanupChildren();
 }
 
 //----------------------------------------------------------------------------//
 bool LayoutContainer::handleChildSized(const EventArgs&)
 {
     markNeedsLayouting();
-
     return true;
 }
 
@@ -308,7 +196,6 @@ bool LayoutContainer::handleChildSized(const EventArgs&)
 bool LayoutContainer::handleChildMarginChanged(const EventArgs&)
 {
     markNeedsLayouting();
-
     return true;
 }
 
@@ -316,7 +203,6 @@ bool LayoutContainer::handleChildMarginChanged(const EventArgs&)
 bool LayoutContainer::handleChildAdded(const EventArgs&)
 {
     markNeedsLayouting();
-
     return true;
 }
 
@@ -324,7 +210,6 @@ bool LayoutContainer::handleChildAdded(const EventArgs&)
 bool LayoutContainer::handleChildRemoved(const EventArgs&)
 {
     markNeedsLayouting();
-
     return true;
 }
 
@@ -369,11 +254,10 @@ void LayoutContainer::onParentSized(ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void LayoutContainer::onChildOrderChanged(WindowEventArgs& e)
+void LayoutContainer::onChildOrderChanged(ElementEventArgs& e)
 {
     markNeedsLayouting();
-
-    fireEvent(EventChildOrderChanged, e, EventNamespace);
+    Window::onChildOrderChanged(e);
 }
 
 //----------------------------------------------------------------------------//
