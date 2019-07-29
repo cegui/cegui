@@ -226,21 +226,7 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
     Sizef absMax(CoordConverter::asAbsolute(d_maxSize,
         getRootContainerSize(), false));
 
-    Sizef base_size;
-    if (skipAllPixelAlignment)
-    {
-        base_size = Sizef((d_parent && !d_nonClient) ?
-                           d_parent->getUnclippedInnerRect().getFresh(true).getSize() :
-                           getParentPixelSize(true));
-    }
-    else
-    {
-        base_size = Sizef((d_parent && !d_nonClient) ?
-                           d_parent->getUnclippedInnerRect().get().getSize() :
-                           getParentPixelSize());
-    }
-
-    Sizef ret = CoordConverter::asAbsolute(getSize(), base_size, false);
+    Sizef ret = CoordConverter::asAbsolute(getSize(), getBasePixelSize(skipAllPixelAlignment), false);
 
     // in case absMin components are larger than absMax ones,
     // max size takes precedence
@@ -321,6 +307,23 @@ Sizef Element::getParentPixelSize(bool skipAllPixelAlignment) const
     else
     {
         return getRootContainerSize();
+    }
+}
+
+//----------------------------------------------------------------------------//
+Sizef Element::getBasePixelSize(bool skipAllPixelAlignment) const
+{
+    if (skipAllPixelAlignment)
+    {
+        return Sizef((d_parent && !d_nonClient) ?
+            d_parent->getUnclippedInnerRect().getFresh(true).getSize() :
+            getParentPixelSize(true));
+    }
+    else
+    {
+        return Sizef((d_parent && !d_nonClient) ?
+            d_parent->getUnclippedInnerRect().get().getSize() :
+            getParentPixelSize());
     }
 }
 

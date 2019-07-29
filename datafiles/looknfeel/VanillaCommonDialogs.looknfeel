@@ -510,7 +510,7 @@
         <PropertyDefinition initialValue="Vanilla/StaticImage" type="String" name="ColourPickerCursorStyle"/>
         <PropertyDefinition initialValue="Vanilla-Images/ColourPickerCursor" type="Image" name="ColourPickerCursorImage"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="tl:D3FFFFFF tr:D3FFFFFF bl:D3FFFFFF br:D3FFFFFF" type="ColourRect" name="BackgroundColours"/>
-        <PropertyDefinition redrawOnWrite="true" initialValue="20" type="uint" name="ColourPickerImageSliderWidth"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="20" type="std::uint32_t" name="ColourPickerImageSliderWidth"/>
         <PropertyLinkDefinition targetProperty="Colour" widget="__auto_oldcolourrect__" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="PreviousColour"/>
         <PropertyLinkDefinition targetProperty="Colour" widget="__auto_newcolourrect__" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="NewColour"/>
         <PropertyLinkDefinition targetProperty="CaptionColour" widget="__auto_titlebar__" initialValue="FF4A4A4A" type="ColourRect" name="CaptionColour"/>

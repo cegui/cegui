@@ -731,6 +731,11 @@ public:
     Sizef getParentPixelSize(bool skipAllPixelAlignment = false) const;
 
     /*!
+    \brief Return the base pixel size for relative calculations.
+    */
+    Sizef getBasePixelSize(bool skipAllPixelAlignment = false) const;
+
+    /*!
     \brief sets rotation of this widget
 
     \param rotation
