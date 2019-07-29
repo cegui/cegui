@@ -1,8 +1,8 @@
 /***********************************************************************
-	created:	25/4/2004
-	author:		Paul D Turner
+    created:    25/4/2004
+    author:     Paul D Turner
 
-	purpose:	Interface for a Titlebar Widget
+    purpose:    Interface for a Titlebar Widget
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -33,8 +33,8 @@
 
 
 #if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4251)
+#    pragma warning(push)
+#    pragma warning(disable : 4251)
 #endif
 
 
@@ -44,36 +44,36 @@ namespace CEGUI
 
 /*!
 \brief
-	Class representing the title bar for Frame Windows.
+    Class representing the title bar for Frame Windows.
 
 */
 class CEGUIEXPORT Titlebar : public Window
 {
 public:
-	static const String EventNamespace;				//!< Namespace for global events
+    static const String EventNamespace;                //!< Namespace for global events
     static const String WidgetTypeName;             //!< Window factory name
 
-	/*!
-	\brief
-		Return whether this title bar will respond to dragging.
+    /*!
+    \brief
+        Return whether this title bar will respond to dragging.
 
-	\return
-		true if the title bar will respond to dragging, false if the title bar will not respond.
-	*/
-	bool	isDraggingEnabled(void) const;
+    \return
+        true if the title bar will respond to dragging, false if the title bar will not respond.
+    */
+    bool isDraggingEnabled(void) const;
 
 
-	/*!
-	\brief
-		Set whether this title bar widget will respond to dragging.
+    /*!
+    \brief
+        Set whether this title bar widget will respond to dragging.
 
-	\param setting
-		true if the title bar should respond to being dragged, false if it should not respond.
+    \param setting
+        true if the title bar should respond to being dragged, false if it should not respond.
 
-	\return
-		Nothing.
-	*/
-	void	setDraggingEnabled(bool setting);
+    \return
+        Nothing.
+    */
+    void setDraggingEnabled(bool setting);
 
     /*!
     \brief
@@ -87,67 +87,67 @@ public:
     */
     const glm::vec2& getDragPoint() const;
 
-	/*************************************************************************
-		Construction / Destruction
-	*************************************************************************/
-	/*!
-	\brief
-		Constructor for Titlebar base class.
-	*/
-	Titlebar(const String& type, const String& name);
+    /*************************************************************************
+        Construction / Destruction
+    *************************************************************************/
+    /*!
+    \brief
+        Constructor for Titlebar base class.
+    */
+    Titlebar(const String& type, const String& name);
 
 
-	/*!
-	\brief
-		Destructor for Titlebar base class.
-	*/
-	virtual ~Titlebar(void);
+    /*!
+    \brief
+        Destructor for Titlebar base class.
+    */
+    virtual ~Titlebar(void);
 
 
 protected:
-	/*************************************************************************
-		Overridden event handler functions
-	*************************************************************************/
-    void    onCursorMove(CursorInputEventArgs& e) override;
-    void    onCursorPressHold(CursorInputEventArgs& e) override;
-    void    onCursorActivate(CursorInputEventArgs& e) override;
-    void	onCaptureLost(WindowEventArgs& e) override;
-    void	onFontChanged(WindowEventArgs &e) override;
-    void    onSemanticInputEvent(SemanticEventArgs& e) override;
+    /*************************************************************************
+        Overridden event handler functions
+    *************************************************************************/
+    void onCursorMove(CursorInputEventArgs& e) override;
+    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onCursorActivate(CursorInputEventArgs& e) override;
+    void onCaptureLost(WindowEventArgs& e) override;
+    void onFontChanged(WindowEventArgs &e) override;
+    void onSemanticInputEvent(SemanticEventArgs& e) override;
 
 
-	/*************************************************************************
-		New event handlers for title bar
-	*************************************************************************/
-	/*!
-	\brief
-		Event handler called when the 'draggable' state for the title bar is changed.
+    /*************************************************************************
+        New event handlers for title bar
+    *************************************************************************/
+    /*!
+    \brief
+        Event handler called when the 'draggable' state for the title bar is changed.
 
-		Note that this is for 'internal' use at the moment and as such does not add or
-		fire a public Event that can be subscribed to.
-	*/
-	virtual void	onDraggingModeChanged(WindowEventArgs&) {}
+        Note that this is for 'internal' use at the moment and as such does not add or
+        fire a public Event that can be subscribed to.
+    */
+    virtual void onDraggingModeChanged(WindowEventArgs&) {}
 
-	/*************************************************************************
-		Implementation Data
-	*************************************************************************/
-	bool d_dragging;			//!< set to true when the window is being dragged.
-    glm::vec2 d_dragPoint;		//!< Point at which we are being dragged.
-	bool d_dragEnabled;		//!< true when dragging for the widget is enabled.
+    /*************************************************************************
+        Implementation Data
+    *************************************************************************/
+    bool d_dragging;            //!< set to true when the window is being dragged.
+    glm::vec2 d_dragPoint;        //!< Point at which we are being dragged.
+    bool d_dragEnabled;        //!< true when dragging for the widget is enabled.
 
-	Rectf d_oldCursorArea;	//!< Used to backup cursor restraint area.
+    Rectf d_oldCursorArea;    //!< Used to backup cursor restraint area.
 
 private:
-	/*************************************************************************
-		Private methods
-	*************************************************************************/
-	void	addTitlebarProperties(void);
+    /*************************************************************************
+        Private methods
+    *************************************************************************/
+    void addTitlebarProperties(void);
 };
 
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)
-#	pragma warning(pop)
+#    pragma warning(pop)
 #endif
 
-#endif	// end of guard _CEGUITitlebar_h_
+#endif // end of guard _CEGUITitlebar_h_
