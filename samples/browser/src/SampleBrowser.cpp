@@ -322,7 +322,7 @@ void SampleBrowser::handleNewWindowSize(int width, int height)
         sampleData->handleNewWindowSize(width, height);
     }
 
-    if (d_samplesWinMgr)
+    if (d_samplesWinMgr && height > 0)
         d_samplesWinMgr->setWindowRatio(width / static_cast<float>(height));
 }
 

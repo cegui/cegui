@@ -302,7 +302,7 @@ void FontManager::destroyObject(
     String addressStr = SharedStringstream::GetPointerAddressAsString(ob->second);
     Logger::getSingleton().logEvent("Object of type '" + ResourceTypeName +
         "' named '" + ob->first + "' has been destroyed. " +
-        addressStr, LoggingLevel::Warning);
+        addressStr, LoggingLevel::Informative);
 
     // Set up event args for event notification
     ResourceEventArgs args(ResourceTypeName, ob->first);
