@@ -485,37 +485,32 @@ bool FrameWindow::closeClickHandler(const EventArgs&)
     Set the appropriate cursor for the given window-relative pixel
     point.
 *************************************************************************/
-void FrameWindow::setIndicatorForPoint(const glm::vec2& pt) const
+void FrameWindow::setCursorForSizingLocation(SizingLocation location) const
 {
-    switch(getSizingBorderAtPoint(pt))
+    switch(location)
     {
     case SizingLocation::Top:
     case SizingLocation::Bottom:
-        getGUIContext().
-            getCursor().setImage(d_nsSizingCursor);
+        getGUIContext().getCursor().setImage(d_nsSizingCursor);
         break;
 
     case SizingLocation::Left:
     case SizingLocation::Right:
-        getGUIContext().
-            getCursor().setImage(d_ewSizingCursor);
+        getGUIContext().getCursor().setImage(d_ewSizingCursor);
         break;
 
     case SizingLocation::TopLeft:
     case SizingLocation::BottomRight:
-        getGUIContext().
-            getCursor().setImage(d_nwseSizingCursor);
+        getGUIContext().getCursor().setImage(d_nwseSizingCursor);
         break;
 
     case SizingLocation::TopRight:
     case SizingLocation::BottomLeft:
-        getGUIContext().
-            getCursor().setImage(d_neswSizingCursor);
+        getGUIContext().getCursor().setImage(d_neswSizingCursor);
         break;
 
     default:
-        getGUIContext().
-            getCursor().setImage(getCursor());
+        getGUIContext().getCursor().setImage(getCursor());
         break;
     }
 }
@@ -554,22 +549,24 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
     Window::onCursorMove(e);
 
     // if we are not the window containing the cursor, do NOT change the indicator
-    if (getGUIContext().getWindowContainingCursor() != this)
+    const Window* wndUnderCursor = getGUIContext().getWindowContainingCursor();
+    if (wndUnderCursor != this && wndUnderCursor != getTitlebar())
     {
         return;
     }
 
     if (isSizingEnabled())
     {
-        const glm::vec2 local_cursor_pos(CoordConverter::screenToWindow(*this, e.position));
+        SizingLocation dragEdge;
+        const glm::vec2 localCursorPos(CoordConverter::screenToWindow(*this, e.position));
 
         if (d_beingSized)
         {
-            SizingLocation dragEdge = getSizingBorderAtPoint(d_dragPoint);
+            dragEdge = getSizingBorderAtPoint(d_dragPoint);
 
             // calculate sizing deltas...
-            const float deltaX = local_cursor_pos.x - d_dragPoint.x;
-            const float deltaY = local_cursor_pos.y - d_dragPoint.y;
+            const float deltaX = localCursorPos.x - d_dragPoint.x;
+            const float deltaY = localCursorPos.y - d_dragPoint.y;
 
             URect new_area(d_area);
             bool top_left_sizing = false;
@@ -597,8 +594,11 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
         }
         else
         {
-            setIndicatorForPoint(local_cursor_pos);
+            dragEdge = getSizingBorderAtPoint(localCursorPos);
         }
+
+        // Update cursor every time because titlebar might reset it
+        setCursorForSizingLocation(dragEdge);
     }
 
     // mark event as handled
@@ -894,12 +894,6 @@ void FrameWindow::setNESWSizingIndicatorImage(const String& name)
 bool FrameWindow::isHit(const glm::vec2& position, const bool /*allow_disabled*/) const
 {
     return Window::isHit(position) && !d_rolledup;
-}
-
-void FrameWindow::setCursorInputPropagationEnabled(const bool enabled)
-{
-    Window::setCursorInputPropagationEnabled(enabled);
-    getTitlebar()->setCursorInputPropagationEnabled(enabled);
 }
 
 /*************************************************************************

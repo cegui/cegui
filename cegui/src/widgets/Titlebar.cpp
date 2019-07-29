@@ -45,6 +45,7 @@ Titlebar::Titlebar(const String& type, const String& name) :
 {
     addTitlebarProperties();
     setAlwaysOnTop(true);
+    setCursorInputPropagationEnabled(true);
 
     // basic initialisation
     d_dragging = false;
@@ -127,12 +128,20 @@ void Titlebar::onCursorMove(CursorInputEventArgs& e)
 *************************************************************************/
 void Titlebar::onCursorPressHold(CursorInputEventArgs& e)
 {
-    // Base class processing
     Window::onCursorPressHold(e);
 
     if (e.source == CursorInputSource::Left)
     {
-        if ((d_parent != nullptr) && d_dragEnabled)
+        // Sizing border events are propagated to the owning FrameWindow
+        auto frameWnd = dynamic_cast<FrameWindow*>(d_parent);
+        if (frameWnd && frameWnd->isSizingEnabled())
+        {
+            const glm::vec2 localCursorPos(CoordConverter::screenToWindow(*frameWnd, e.position));
+            if (frameWnd->getSizingBorderAtPoint(localCursorPos) != FrameWindow::SizingLocation::Invalid)
+                return;
+        }
+
+        if (d_parent && d_dragEnabled)
         {
             // we want all cursor inputs from now on
             if (captureInput())
@@ -142,24 +151,21 @@ void Titlebar::onCursorPressHold(CursorInputEventArgs& e)
                 d_dragPoint = CoordConverter::screenToWindow(*this, e.position);
 
                 // store old constraint area
-                d_oldCursorArea = getGUIContext().
-                    getCursor().getConstraintArea();
+                d_oldCursorArea = getGUIContext().getCursor().getConstraintArea();
 
                 // setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
                 Rectf constrainArea;
-
-                if ((d_parent == nullptr) || (getParent()->getParent() == nullptr))
+                if (auto grandParent = static_cast<Window*>(d_parent->getParentElement()))
+                {
+                    constrainArea = grandParent->getInnerRectClipper().getIntersection(d_oldCursorArea);
+                }
+                else
                 {
                     const Rectf screen(glm::vec2(0, 0), getRootContainerSize());
                     constrainArea = screen.getIntersection(d_oldCursorArea);
                 }
-                else
-                {
-                    constrainArea = getParent()->getParent()->getInnerRectClipper().getIntersection(d_oldCursorArea);
-                }
 
-                getGUIContext().getCursor().
-                    setConstraintArea(&constrainArea);
+                getGUIContext().getCursor().setConstraintArea(&constrainArea);
             }
         }
 
