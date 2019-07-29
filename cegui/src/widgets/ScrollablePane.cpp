@@ -157,6 +157,9 @@ bool ScrollablePane::isSwipeScrollingEnabled() const
 void ScrollablePane::setSwipeScrollingEnabled(bool setting)
 {
     d_swipeScrollingEnabled = setting;
+
+    if (!d_swipeScrollingEnabled && d_swiping)
+        releaseInput();
 }
 
 //----------------------------------------------------------------------------//

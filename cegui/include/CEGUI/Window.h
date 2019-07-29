@@ -2750,7 +2750,7 @@ public:
         (including it's event subscribers) should be propagated back to the
         Window's parent.
     */
-    virtual void setCursorInputPropagationEnabled(const bool enabled);
+    void setCursorInputPropagationEnabled(const bool enabled);
 
     /*!
     \brief

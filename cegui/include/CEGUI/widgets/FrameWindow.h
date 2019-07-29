@@ -455,7 +455,6 @@ public:
 
     // overridden from Window class
     bool isHit(const glm::vec2& position, const bool allow_disabled) const override;
-    void setCursorInputPropagationEnabled(const bool enabled) override;
 
     /*!
     \brief
@@ -481,6 +480,21 @@ public:
         Thrown if the close button component does not exist.
     */
     PushButton* getCloseButton() const;
+
+    /*!
+    \brief
+        check local pixel co-ordinate point 'pt' and return one of the
+        SizingLocation enumerated values depending where the point falls on
+        the sizing border.
+
+    \param pt
+        vec2 object describing, in pixels, the window relative offset to check.
+
+    \return
+        One of the SizingLocation enumerated values that describe which part of
+        the sizing border that \a pt corresponded to, if any.
+    */
+    SizingLocation getSizingBorderAtPoint(const glm::vec2& pt) const;
 
     /*************************************************************************
         Construction / Destruction
@@ -544,22 +558,6 @@ protected:
 
     /*!
     \brief
-        check local pixel co-ordinate point 'pt' and return one of the
-        SizingLocation enumerated values depending where the point falls on
-        the sizing border.
-
-    \param pt
-        vec2 object describing, in pixels, the window relative offset to check.
-
-    \return
-        One of the SizingLocation enumerated values that describe which part of
-        the sizing border that \a pt corresponded to, if any.
-    */
-    SizingLocation getSizingBorderAtPoint(const glm::vec2& pt) const;
-
-
-    /*!
-    \brief
         return true if given SizingLocation is on left edge.
 
     \param loc
@@ -619,9 +617,9 @@ protected:
 
     /*!
     \brief
-        Set the appropriate cursor for the given window-relative pixel point.
+        Set the appropriate cursor for the given sizing location.
     */
-    void setIndicatorForPoint(const glm::vec2& pt) const;
+    void setCursorForSizingLocation(SizingLocation location) const;
 
 
     /*!
