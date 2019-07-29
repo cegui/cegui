@@ -685,9 +685,9 @@ public:
     \return
         Pointer to the child window currently attached at index position \a idx
     */
-    inline Window* getChildAtIdx(size_t idx) const
+    inline Window* getChildAtIndex(size_t idx) const
     {
-        return static_cast<Window*>(getChildElementAtIdx(idx));
+        return static_cast<Window*>(getChildElementAtIndex(idx));
     }
 
     /*!

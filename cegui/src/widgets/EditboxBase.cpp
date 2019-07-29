@@ -397,7 +397,7 @@ void EditboxBase::handleWordLeft(bool select)
 {
     if (d_caretPos > 0)
     {
-        setCaretIndex(TextUtils::getWordStartIdx(getText(), getCaretIndex()));
+        setCaretIndex(TextUtils::getWordStartIndex(getText(), getCaretIndex()));
     }
 
     if (select)
@@ -439,7 +439,7 @@ void EditboxBase::handleCharRight(bool select)
 void EditboxBase::handleWordRight(bool select)
 {
     if (d_caretPos < getText().length())
-        setCaretIndex(TextUtils::getNextWordStartIdx(getText(), d_caretPos));
+        setCaretIndex(TextUtils::getNextWordStartIndex(getText(), d_caretPos));
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);

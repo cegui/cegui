@@ -836,7 +836,7 @@ void TabControl::removeTab_impl(Window* window)
 
     if (reselect && (getTabCount() > 0))
         // Select another tab
-        setSelectedTab(getTabPane()->getChildAtIdx(0)->getName());
+        setSelectedTab(getTabPane()->getChildAtIndex(0)->getName());
 
     performChildWindowLayout();
 

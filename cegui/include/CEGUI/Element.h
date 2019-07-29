@@ -832,7 +832,7 @@ public:
     \return
         Pointer to the child element currently attached at index position \a idx
     */
-    inline Element* getChildElementAtIdx(size_t idx) const
+    inline Element* getChildElementAtIndex(size_t idx) const
     {
         return d_children[idx];
     }

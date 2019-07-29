@@ -1082,9 +1082,9 @@ void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
     }
     else if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == CursorInputSource::Left)
     {
-        d_dragAnchorIdx = TextUtils::getWordStartIdx(getText(),
+        d_dragAnchorIdx = TextUtils::getWordStartIndex(getText(),
             (d_caretPos == getText().length()) ? d_caretPos : d_caretPos + 1);
-        d_caretPos      = TextUtils::getNextWordStartIdx(getText(), d_caretPos);
+        d_caretPos      = TextUtils::getNextWordStartIndex(getText(), d_caretPos);
 
         // perform actual selection operation.
         setSelection(d_dragAnchorIdx, d_caretPos);

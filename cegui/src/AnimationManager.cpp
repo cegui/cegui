@@ -233,7 +233,7 @@ bool AnimationManager::isAnimationPresent(const String& name) const
 }
 
 //----------------------------------------------------------------------------//
-Animation* AnimationManager::getAnimationAtIdx(size_t index) const
+Animation* AnimationManager::getAnimationAtIndex(size_t index) const
 {
     if (index >= d_animations.size())
     {
@@ -321,7 +321,7 @@ void AnimationManager::destroyAllAnimationInstances()
 }
 
 //----------------------------------------------------------------------------//
-AnimationInstance* AnimationManager::getAnimationInstanceAtIdx(size_t index) const
+AnimationInstance* AnimationManager::getAnimationInstanceAtIndex(size_t index) const
 {
     if (index >= d_animationInstances.size())
     {

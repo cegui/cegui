@@ -117,7 +117,7 @@ Rectf ScrolledContainer::getChildExtentsArea(void) const
 
     for (size_t i = 0; i < childCount; ++i)
     {
-        const Window* const child = getChildAtIdx(i);
+        const Window* const child = getChildAtIndex(i);
         Rectf area(
             CoordConverter::asAbsolute(child->getPosition(), baseSize),
             child->getPixelSize());

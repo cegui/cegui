@@ -722,7 +722,7 @@ int ScrollablePane::writeChildWindowsXML(XMLSerializer& xml_stream) const
     const size_t childCount = getContentPane()->getChildCount();
     for (size_t i = 0; i < childCount; ++i)
     {
-        getScrolledContainer()->getChildAtIdx(i)->writeXMLToStream(xml_stream);
+        getScrolledContainer()->getChildAtIndex(i)->writeXMLToStream(xml_stream);
         ++childOutputCount;
     }
 
