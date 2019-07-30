@@ -46,9 +46,6 @@ static inline bool isDummy(const Element& child)
 //----------------------------------------------------------------------------//
 GridLayoutContainer::GridLayoutContainer(const String& type, const String& name) :
     LayoutContainer(type, name),
-    d_gridWidth(0),
-    d_gridHeight(0),
-    d_nextDummyIdx(0),
     d_requestedChildIdx(std::numeric_limits<size_t>().max())
 {
     // grid size is 0x0 that means 0 child windows,
@@ -185,7 +182,7 @@ void GridLayoutContainer::setAutoGrowing(bool enabled)
 size_t GridLayoutContainer::getActualChildCount() const
 {
     size_t count = 0;
-    for (auto* child : d_children)
+    for (const Element* child : d_children)
         if (!isDummy(*child))
             ++count;
 
@@ -203,7 +200,7 @@ void GridLayoutContainer::getMinimalSizeInCells(size_t& width, size_t& height) c
         {
             if (x >= width || y >= height)
             {
-                Window* child = getChildAtIndex(mapCellToIndex(x, y));
+                const Window* child = getChildAtIndex(mapCellToIndex(x, y));
                 if (child && !isDummy(*child))
                 {
                     if (x >= width)
@@ -252,19 +249,31 @@ void GridLayoutContainer::addChildToIndex(Element* element, size_t index)
     // children are shifted until an empty cell or the end of the grid reached.
     // If the end was reached, exception is thrown because of insufficient space.
 
-    if (index >= getChildCount())
-        throw InvalidRequestException("Invalid index specified.");
+    size_t x, y;
+    mapIndexToCell(index, x, y);
+    validateGridCell(x, y);
 
     // The target cell is not free
     if (!isDummy(*getChildAtIndex(index)))
     {
         // Find the first free cell from the requested position
-        const size_t freeIdx = getFirstFreeIndex(index + 1);
+        size_t freeIdx = getFirstFreeIndex(index + 1);
 
-        // No free cell, we can't insert a child so that the desired order is maintained
         if (freeIdx >= getChildCount())
-            throw InvalidRequestException(
-                "Unable to add a child because the grid has no appropriate free cells.");
+        {
+            // The grid is full
+            if (d_autoGrow)
+            {
+                freeIdx = getChildCount();
+                growByOneLine();
+            }
+            else
+            {
+                // No free cell, we can't insert a child so that the desired order is maintained
+                throw InvalidRequestException(
+                    "Unable to add a child because the grid has no appropriate free cells.");
+            }
+        }
 
         // Transfer the free cell to the target index, now we can insert a child there
         moveChildToIndex(freeIdx, index);
@@ -275,11 +284,24 @@ void GridLayoutContainer::addChildToIndex(Element* element, size_t index)
 }
 
 //----------------------------------------------------------------------------//
+void GridLayoutContainer::moveChildToIndex(size_t indexFrom, size_t indexTo)
+{
+    if (indexFrom >= getChildCount())
+        return;
+
+    size_t x, y;
+    mapIndexToCell(indexTo, x, y);
+    validateGridCell(x, y);
+
+    LayoutContainer::moveChildToIndex(indexFrom, indexTo);
+}
+
+//----------------------------------------------------------------------------//
 void GridLayoutContainer::addChildToCell(Window* window, size_t gridX, size_t gridY, bool replace)
 {
+    validateGridCell(gridX, gridY);
+
     const auto index = mapCellToIndex(gridX, gridY);
-    if (index >= getChildCount())
-        throw InvalidRequestException("Invalid index specified.");
     if (!replace && !isDummy(*getChildAtIndex(index)))
         throw InvalidRequestException("Target cell is busy, set replace to true to replace existing item.");
 
@@ -304,6 +326,12 @@ void GridLayoutContainer::removeChildFromCell(size_t gridX, size_t gridY)
 }
 
 //----------------------------------------------------------------------------//
+void GridLayoutContainer::moveChildToCell(Window* wnd, size_t gridX, size_t gridY)
+{
+    moveChildToIndex(getChildIndex(wnd), mapCellToIndex(gridX, gridY));
+}
+
+//----------------------------------------------------------------------------//
 void GridLayoutContainer::swapCells(size_t gridX1, size_t gridY1,
                                     size_t gridX2, size_t gridY2)
 {
@@ -311,33 +339,24 @@ void GridLayoutContainer::swapCells(size_t gridX1, size_t gridY1,
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::moveChildToCell(Window* wnd, size_t gridX, size_t gridY)
-{
-    removeChild(wnd);
-    addChildToCell(wnd, gridX, gridY);
-}
-
-//----------------------------------------------------------------------------//
 void GridLayoutContainer::layout()
 {
-    std::vector<UDim> colSizes(d_gridWidth, UDim(0, 0));
-    std::vector<UDim> rowSizes(d_gridHeight, UDim(0, 0));
-
     // Used to compare UDims
     const Rectf& childContentArea = getChildContentArea().get();
     const float absWidth = childContentArea.getWidth();
     const float absHeight = childContentArea.getHeight();
 
+    // Trigger recalculation of children pixel sizes
+    notifyChildrenOfSizeChange(false, true);
+
     // First, we need to determine rowSizes and colSizes, this is
     // needed before any layouting work takes place
+    std::vector<UDim> colSizes(d_gridWidth, UDim(0, 0));
+    std::vector<UDim> rowSizes(d_gridHeight, UDim(0, 0));
     for (size_t y = 0; y < d_gridHeight; ++y)
     {
         for (size_t x = 0; x < d_gridWidth; ++x)
         {
-            //!!!!!!!!!!!!!!
-            // FIXME: child pixel size is probably not yet calculated!
-            //!!!!!!!!!!!!!!!!!!
-
             Window* window = getChildAtIndex(mapCellToIndex(x, y));
             const UVector2 size = getBoundingSizeForWindow(window);
 
@@ -421,52 +440,77 @@ Window* GridLayoutContainer::createDummy()
 }
 
 //----------------------------------------------------------------------------//
+void GridLayoutContainer::validateGridCell(size_t gridX, size_t gridY)
+{
+    if (gridX < d_gridWidth && gridY < d_gridHeight)
+        return;
+
+    if (d_autoGrow)
+        setGridDimensions(std::max(d_gridWidth, gridX + 1), std::max(d_gridHeight, gridY + 1));
+    else
+        throw InvalidRequestException("The cell specified is out of the grid bounds.");
+}
+
+//----------------------------------------------------------------------------//
+void GridLayoutContainer::growByOneLine()
+{
+    const size_t newWidth = std::max(1, d_gridWidth + d_rowMajor ? 0 : 1);
+    const size_t newHeight = std::max(1, d_gridHeight + d_rowMajor ? 1 : 0);
+    setGridDimensions(newWidth, newHeight);
+}
+
+//----------------------------------------------------------------------------//
 void GridLayoutContainer::addChild_impl(Element* element)
 {
-    if (!d_gridWidth || !d_gridHeight)
+    // Regular logic for dummies
+    if (isDummy(*element))
     {
-        throw InvalidRequestException(
-            "GridLayoutContainer must have non-zero width and height to accept children.");
+        LayoutContainer::addChild_impl(element);
+        return;
     }
 
-    LayoutContainer::addChild_impl(element);
-
-    if (!isDummy(*element))
+    // If requested index is unspecified (invalid), get the first free index
+    if (d_requestedChildIdx >= getChildCount())
     {
-        // OK, wnd is already in d_children, now move it to the right place
-        // If requested index is unspecified (invalid), get the first free index
+        d_requestedChildIdx = getFirstFreeIndex();
+
         if (d_requestedChildIdx >= getChildCount())
         {
-            d_requestedChildIdx = getFirstFreeIndex();
-
-            // The grid is full, we can't insert a new child
-            if (d_requestedChildIdx >= getChildCount())
+            // The grid is full
+            if (d_autoGrow)
             {
-                LayoutContainer::removeChild_impl(element);
+                d_requestedChildIdx = getChildCount();
+                growByOneLine();
+            }
+            else
+            {
                 throw InvalidRequestException(
                     "Unable to add a child because the grid is full. Consider using the "
-                    "GridLayoutContainer::addChildToCell function with replace=true or "
-                    "clearing some cells manually with GridLayoutContainer::removeChild[FromCell]");
+                    "GridLayoutContainer::addChildToCell function with replace=true, "
+                    "clearing some cells manually with GridLayoutContainer::removeChild[FromCell] "
+                    "or using an auto-growing feature with GridLayoutContainer::setAutoGrowing.");
             }
         }
-
-        // We swap the element in the target cell with the added child. This essentially
-        // places the added child to its right position and puts the replaced element at
-        // the end of d_children it will soon get removed from. Note that replaced element
-        // may be a dummy or a regular child. The d_requestedChildIdx pointing to it means
-        // that the user confirmed replacement earlier.
-        std::swap(d_children[d_requestedChildIdx], d_children[d_children.size() - 1]);
-
-        // Clear the requested index so that it doesn't influence the next call
-        d_requestedChildIdx = std::numeric_limits<size_t>().max();
-
-        Window* toBeRemoved = static_cast<Window*>(d_children[d_children.size() - 1]);
-
-        removeChild(toBeRemoved);
-
-        if (toBeRemoved->isDestroyedByParent())
-            WindowManager::getSingleton().destroyWindow(toBeRemoved);
     }
+
+    // The new child is added to the end of d_children
+    LayoutContainer::addChild_impl(element);
+
+    // We swap the element in the target cell with the added child. This essentially
+    // places the added child to its right position and puts the replaced element at
+    // the end of d_children it will soon get removed from. Note that replaced element
+    // may be a dummy or a regular child. The d_requestedChildIdx pointing to it means
+    // that the user confirmed replacement earlier.
+    std::swap(d_children[d_requestedChildIdx], d_children[d_children.size() - 1]);
+
+    // Clear the requested index so that it doesn't influence the next call
+    d_requestedChildIdx = std::numeric_limits<size_t>().max();
+
+    // Finally remove the child that was in the target cell before
+    Window* toBeRemoved = static_cast<Window*>(d_children[d_children.size() - 1]);
+    removeChild(toBeRemoved);
+    if (toBeRemoved->isDestroyedByParent())
+        WindowManager::getSingleton().destroyWindow(toBeRemoved);
 }
 
 //----------------------------------------------------------------------------//

@@ -843,7 +843,7 @@ public:
         that is smaller than given position, given position is
         automatically decremented
     */
-    void moveChildToIndex(size_t indexFrom, size_t indexTo);
+    virtual void moveChildToIndex(size_t indexFrom, size_t indexTo);
 
     /*!
     \brief
