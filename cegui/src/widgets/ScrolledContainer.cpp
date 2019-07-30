@@ -289,6 +289,7 @@ void ScrolledContainer::cleanupChildren(void)
     for (auto& windowToConnection : d_childAreaChangeConnections)
         windowToConnection.second->disconnect();
     d_childAreaChangeConnections.clear();
+
     Window::cleanupChildren();
 }
 
