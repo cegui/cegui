@@ -37,7 +37,6 @@
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
@@ -47,77 +46,38 @@ namespace CEGUI
 class CEGUIEXPORT GridLayoutContainer : public LayoutContainer
 {
 public:
-    /**
-     * enumerates auto positioning methods for the grid - these allow you to
-     * fill the grid without specifying gridX and gridY positions for each
-     * addChild.
-     */
-    enum class AutoPositioning : int
-    {
-        //! no auto positioning!
-        Disabled,
-        /**
-         * Left to right positioning:
-         * - 1 2 3
-         * - 4 5 6
-         */
-        LeftToRight,
-        /**
-         * Top to bottom positioning
-         * - 1 3 5
-         * - 2 4 6
-         */
-        TopToBottom
-    };
-
-    /*************************************************************************
-        Constants
-    *************************************************************************/
     //! The unique typename of this widget
     static const String WidgetTypeName;
 
-    /*************************************************************************
-        Child Widget name suffix constants
-    *************************************************************************/
-    //! Widget name for dummies.
-    static const String DummyName;
-
-    /*************************************************************************
-        Event name constants
-    *************************************************************************/
     //! Namespace for global events
     static const String EventNamespace;
 
-    /*************************************************************************
-        Construction and Destruction
-    *************************************************************************/
-    /*!
-    \brief
-        Constructor for GUISheet windows.
-    */
-    GridLayoutContainer(const String& type, const String& name);
+    //! Widget name for dummies.
+    static const String DummyName;
 
-    /*!
-    \brief
-        Destructor for GUISheet windows.
-    */
+    GridLayoutContainer(const String& type, const String& name);
     virtual ~GridLayoutContainer(void) override;
 
     /*!
     \brief
-        Sets grid's dimensions.
+        Sets both grid dimensions at once. New cells are created empty.
+        Items that don't fit into a new grid are removed from its children.
     */
     void setGridDimensions(size_t width, size_t height);
 
     /*!
     \brief
         Sets grid width.
+
+    \see GridLayoutContainer::setGridDimensions(size_t width, size_t height)
     */
     void setGridWidth(size_t width);
 
     /*!
     \brief
         Sets grid height.
+
+    \see GridLayoutContainer::setGridDimensions(size_t width, size_t height)
     */
     void setGridHeight(size_t height);
 
@@ -125,49 +85,40 @@ public:
     \brief
         Retrieves grid width, the amount of cells in one row
     */
-    size_t getGridWidth() const;
+    size_t getGridWidth() const { return d_gridWidth; }
 
     /*!
     \brief
         Retrieves grid height, the amount of rows in the grid
     */
-    size_t getGridHeight() const;
+    size_t getGridHeight() const { return d_gridHeight; }
 
     /*!
     \brief
-        Sets new auto positioning method.
+        Sets majority of the grid layout (columns or rows).
 
     \par
-        The newly set auto positioning sequence will start over!
-        Use setAutoPositioningIdx to set it's starting point
+        true for row-major layout, false for column-major.
     */
-    void setAutoPositioning(AutoPositioning positioning);
+    void setRowMajor(bool rowMajor);
 
     /*!
     \brief
-        Retrieves current auto positioning method.
+        Retrieves whether grid layout is row-major currently.
     */
-    AutoPositioning getAutoPositioning() const;
+    bool isRowMajor() const { return d_rowMajor; }
 
     /*!
     \brief
-        Sets the next auto positioning "sequence position", this will be used
-        next time when addChild is called.
+        Enables or disables auto-growing of the grid when its capacity is exhausted.
     */
-    void setNextAutoPositioningIdx(size_t idx);
+    void setAutoGrowing(bool enabled);
 
     /*!
     \brief
-        Retrieves auto positioning "sequence position", this will be used next
-        time when addChild is called.
+        Retrieves whether the grid will grow automatically when its capacity is exhausted.
     */
-    size_t getNextAutoPositioningIdx() const;
-
-    /*!
-    \brief
-        Skips given number of cells in the auto positioning sequence
-    */
-    void autoPositioningSkipCells(size_t cells);
+    bool isAutoGrowing() const { return d_autoGrow; }
 
     /*!
     \brief
@@ -184,32 +135,17 @@ public:
     /*!
     \brief
         Returns the first free index in a grid or an invalid index (>= child count).
-        Index returned is a regular grid index (row-major).
     */
     size_t getFirstFreeIndex(size_t start = 0) const;
 
     /*!
     \brief
         Returns the last busy index in a grid or an invalid index (>= child count).
-        Index returned is a regular grid index (row-major).
     */
     size_t getLastBusyIndex() const;
-
-    /*!
-    \brief
-        Returns the first free index in a grid or an invalid index (>= child count).
-        Takes auto positioning mode into account. Row/column-majority is also determined
-        by an auto positioning mode. Intended to be used with setNextAutoPositioningIdx().
-    */
-    size_t getFirstFreeAutoPositioningIndex(size_t start = 0) const;
-
-    /*!
-    \brief
-        Returns the last busy index in a grid or an invalid index (>= child count).
-        Takes auto positioning mode into account. Row/column-majority is also determined
-        by an auto positioning mode. Intended to be used with setNextAutoPositioningIdx().
-    */
-    size_t getLastBusyAutoPositioningIndex() const;
+    
+    // Overridden to provide more appropriate implementation for the grid
+    void addChildToIndex(Element* element, size_t index) override;
 
     /*!
     \brief
@@ -228,13 +164,7 @@ public:
     \see
         Window::addChild
     */
-    void addChildToCell(Window* window, size_t gridX, size_t gridY);
-
-    /*!
-    \brief
-        Retrieves child window that is currently at given grid position
-    */
-    Window* getChildAtCell(size_t gridX, size_t gridY) const;
+    void addChildToCell(Window* window, size_t gridX, size_t gridY, bool replace = false);
 
     /*!
     \brief
@@ -249,8 +179,8 @@ public:
     \brief
         Swaps positions of 2 windows given by grid positions
     */
-    void swapChildCells(size_t gridX1, size_t gridY1,
-                        size_t gridX2, size_t gridY2);
+    void swapCells(size_t gridX1, size_t gridY1,
+                   size_t gridX2, size_t gridY2);
 
     /*!
     \brief
@@ -260,9 +190,9 @@ public:
 
     /*!
     \brief
-        Moves named child window to given grid position
+        Retrieves child window that is currently at given grid position
     */
-    void moveChildToCell(const String& wnd, size_t gridX, size_t gridY);
+    Window* getChildAtCell(size_t gridX, size_t gridY) const;
 
     //! @copydoc LayoutContainer::layout
     virtual void layout() override;
@@ -274,111 +204,24 @@ public:
 
 protected:
 
-    /** calculates grid cell offset
-     * (relative to position of this layout container)
-     */
-    UVector2 getGridCellOffset(const std::vector<UDim>& colSizes,
-                               const std::vector<UDim>& rowSizes,
-                               size_t gridX, size_t gridY) const;
-    //! calculates total grid size
-    USize getGridSize(const std::vector<UDim>& colSizes,
-                         const std::vector<UDim>& rowSizes) const;
-
-    //! translates auto positioning index to absolute grid index
-    size_t translateAPToGridIdx(size_t APIdx) const;
-
-    //! stores grid width - amount of columns
     size_t d_gridWidth;
-    //! stores grid height - amount of rows
     size_t d_gridHeight;
-
-    //! stores currently used auto positioning method
-    AutoPositioning d_autoPositioning;
-    /** stores next auto positioning index (will be used for next
-     * added window if d_autoPositioning != AutoPositioning::DISABLED)
-     */
-    size_t d_nextAutoPositioningIdx;
-
-    /** stores next used grid X position
-     * (only used if d_autoPositioning == AutoPositioning::DISABLED)
-     */
-    size_t d_nextGridX;
-    /** stores next used grid Y position
-     * (only used if d_autoPositioning == AutoPositioning::DISABLED)
-     */
-    size_t d_nextGridY;
-
-    /** stores next used dummy suffix index
-     * (used to generate unique dummy names)
-     */
+    
+    size_t d_requestedChildIdx;
+    
     size_t d_nextDummyIdx;
+    
+    bool d_rowMajor = true;
+    bool d_autoGrow = false;
 
-    //! creates a dummy window
     Window* createDummy();
-    //! checks whether given window is a dummy
-    bool isDummy(Window* wnd) const;
 
-    /// @copydoc Window::addChild_impl
     void addChild_impl(Element* element) override;
-    /// @copydoc Window::removeChild_impl
     void removeChild_impl(Element* element) override;
 
 private:
+
     void addGridLayoutContainerProperties(void);
-};
-
-template<>
-class PropertyHelper<GridLayoutContainer::AutoPositioning>
-{
-public:
-    typedef GridLayoutContainer::AutoPositioning return_type;
-    typedef return_type safe_method_return_type;
-    typedef GridLayoutContainer::AutoPositioning pass_type;
-    typedef String string_return_type;
-
-    static const String& getDataTypeName()
-    {
-        static String type("AutoPositioning");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-        if (str == "Disabled")
-        {
-            return GridLayoutContainer::AutoPositioning::Disabled;
-        }
-        else if (str == "Top to Bottom")
-        {
-            return GridLayoutContainer::AutoPositioning::TopToBottom;
-        }
-        else
-        {
-            return GridLayoutContainer::AutoPositioning::LeftToRight;
-        }
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        if (val == GridLayoutContainer::AutoPositioning::LeftToRight)
-        {
-            return "Left to Right";
-        }
-        else if (val == GridLayoutContainer::AutoPositioning::Disabled)
-        {
-            return "Disabled";
-        }
-        else if (val == GridLayoutContainer::AutoPositioning::TopToBottom)
-        {
-            return "Top to Bottom";
-        }
-        else
-        {
-            assert(false && "Invalid Auto Positioning");
-            return "Left to Right";
-        }
-    }
 };
 
 } // End of  CEGUI namespace section
