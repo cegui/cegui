@@ -64,6 +64,9 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
     if (width == d_gridWidth && height == d_gridHeight)
         return;
 
+    // Too many things may change, so drop the cache
+    d_freeSearchStart = 0;
+
     const size_t oldWidth = d_gridWidth;
     const size_t oldHeight = d_gridHeight;
 
@@ -284,6 +287,14 @@ void GridLayoutContainer::addChildToIndex(Element* element, size_t index)
 }
 
 //----------------------------------------------------------------------------//
+void GridLayoutContainer::removeChildFromIndex(size_t index)
+{
+    auto child = getChildAtIndex(index);
+    if (child && !isDummy(*child))
+        removeChild(child);
+}
+
+//----------------------------------------------------------------------------//
 void GridLayoutContainer::moveChildToIndex(size_t indexFrom, size_t indexTo)
 {
     if (indexFrom >= getChildCount())
@@ -312,8 +323,7 @@ void GridLayoutContainer::addChildToCell(Window* window, size_t gridX, size_t gr
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::removeChildFromCell(size_t gridX, size_t gridY)
 {
-    if (auto child = getChildAtCell(gridX, gridY))
-        removeChild(child);
+    removeChildFromIndex(mapCellToIndex(gridX, gridY));
 }
 
 //----------------------------------------------------------------------------//
@@ -403,6 +413,14 @@ void GridLayoutContainer::layout()
 }
 
 //----------------------------------------------------------------------------//
+void GridLayoutContainer::onChildOrderChanged(ElementEventArgs& e)
+{
+    // TODO: could optimize if e would contain the first affected index
+    d_freeSearchStart = 0;
+    LayoutContainer::onChildOrderChanged(e);
+}
+
+//----------------------------------------------------------------------------//
 size_t GridLayoutContainer::mapCellToIndex(size_t gridX, size_t gridY) const
 {
     return d_rowMajor ? (gridY * d_gridWidth + gridX) : (gridX * d_gridHeight + gridY);
@@ -472,7 +490,7 @@ void GridLayoutContainer::addChild_impl(Element* element)
     // If requested index is unspecified (invalid), get the first free index
     if (d_requestedChildIdx >= getChildCount())
     {
-        d_requestedChildIdx = getFirstFreeIndex();
+        d_requestedChildIdx = getFirstFreeIndex(d_freeSearchStart);
 
         if (d_requestedChildIdx >= getChildCount())
         {
@@ -491,6 +509,11 @@ void GridLayoutContainer::addChild_impl(Element* element)
                     "or using an auto-growing feature with GridLayoutContainer::setAutoGrowing.");
             }
         }
+
+        // We now know an index of the first free cell. Caching it allows us not to scan the
+        // whole child list each time we insert a child without specifying a location. This
+        // cache is invalidated in some situations. Be careful when changing related logic.
+        d_freeSearchStart = d_requestedChildIdx + 1;
     }
 
     // The new child is added to the end of d_children
@@ -522,6 +545,7 @@ void GridLayoutContainer::removeChild_impl(Element* element)
     // 2. If removing a dummy. It is always an intentional internal action.
     // 3. If the window manager is locked, at which time we can't create a new dummy.
     // 4. If the child is not in our list, which happens internally when grid is resized.
+
     if (!d_destructionStarted &&
         !isDummy(*element) &&
         !WindowManager::getSingleton().isLocked())
@@ -529,10 +553,19 @@ void GridLayoutContainer::removeChild_impl(Element* element)
         auto it = std::find(d_children.cbegin(), d_children.cend(), element);
         if (it != d_children.cend())
         {
-            const auto idx = std::distance(d_children.cbegin(), it);
+            const size_t idx = static_cast<size_t>(std::distance(d_children.cbegin(), it));
             addChild(createDummy());
             std::swap(d_children[idx], d_children[d_children.size() - 1]);
+
+            if (d_freeSearchStart > idx)
+                d_freeSearchStart = idx;
         }
+    }
+    else if (WindowManager::getSingleton().isLocked())
+    {
+        // Free cells may shift towards the beginning of the child list
+        if (d_freeSearchStart > 0)
+            --d_freeSearchStart;
     }
 
     LayoutContainer::removeChild_impl(element);
