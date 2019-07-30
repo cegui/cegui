@@ -310,15 +310,6 @@ void GridLayoutContainer::addChildToCell(Window* window, size_t gridX, size_t gr
 }
 
 //----------------------------------------------------------------------------//
-Window* GridLayoutContainer::getChildAtCell(size_t gridX, size_t gridY) const
-{
-    if (gridX >= d_gridWidth || gridY >= d_gridHeight)
-        return nullptr;
-
-    return getChildAtIndex(mapCellToIndex(gridX, gridY));
-}
-
-//----------------------------------------------------------------------------//
 void GridLayoutContainer::removeChildFromCell(size_t gridX, size_t gridY)
 {
     if (auto child = getChildAtCell(gridX, gridY))
@@ -336,6 +327,15 @@ void GridLayoutContainer::swapCells(size_t gridX1, size_t gridY1,
                                     size_t gridX2, size_t gridY2)
 {
     swapChildren(mapCellToIndex(gridX1, gridY1), mapCellToIndex(gridX2, gridY2));
+}
+
+//----------------------------------------------------------------------------//
+Window* GridLayoutContainer::getChildAtCell(size_t gridX, size_t gridY) const
+{
+    if (gridX >= d_gridWidth || gridY >= d_gridHeight)
+        return nullptr;
+
+    return getChildAtIndex(mapCellToIndex(gridX, gridY));
 }
 
 //----------------------------------------------------------------------------//
