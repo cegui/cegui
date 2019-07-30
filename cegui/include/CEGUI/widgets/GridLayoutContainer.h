@@ -147,19 +147,17 @@ public:
     // Overridden to provide more appropriate implementation for the grid
     void addChildToIndex(Element* element, size_t index) override;
 
+    // Overridden to support auto-growing
+    void moveChildToIndex(size_t indexFrom, size_t indexTo) override;
+
     /*!
     \brief
         Add the specified Window to specified grid position as a child of
-        this Grid Layout Container.  If the Window \a window is already
-        attached to a Window, it is detached before being added to this Window.
+        this Grid Layout Container. If the Window \a window already
+        has parent, it is detached before being added to this Window.
 
     \par
         If something is already in given grid cell, it gets removed!
-
-    \par
-        This disabled auto positioning from further usage! You need to call
-        setAutoPositioning(..) to set it back to your desired value and use
-        setAutoPositioningIdx(..) to set it's starting point back
 
     \see
         Window::addChild
@@ -177,16 +175,17 @@ public:
 
     /*!
     \brief
+        Moves given child window to given grid position, shifting
+        all children between the old and the new positions.
+    */
+    void moveChildToCell(Window* wnd, size_t gridX, size_t gridY);
+
+    /*!
+    \brief
         Swaps positions of 2 windows given by grid positions
     */
     void swapCells(size_t gridX1, size_t gridY1,
                    size_t gridX2, size_t gridY2);
-
-    /*!
-    \brief
-        Moves given child window to given grid position
-    */
-    void moveChildToCell(Window* wnd, size_t gridX, size_t gridY);
 
     /*!
     \brief
@@ -204,20 +203,22 @@ public:
 
 protected:
 
-    size_t d_gridWidth;
-    size_t d_gridHeight;
-    
-    size_t d_requestedChildIdx;
-    
-    size_t d_nextDummyIdx;
-    
-    bool d_rowMajor = true;
-    bool d_autoGrow = false;
-
     Window* createDummy();
+    void validateGridCell(size_t gridX, size_t gridY);
+    void growByOneLine();
 
     void addChild_impl(Element* element) override;
     void removeChild_impl(Element* element) override;
+
+    size_t d_gridWidth = 0;
+    size_t d_gridHeight = 0;
+    
+    size_t d_requestedChildIdx;
+    
+    size_t d_nextDummyIdx = 0;
+    
+    bool d_rowMajor = true;
+    bool d_autoGrow = false;
 
 private:
 
