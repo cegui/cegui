@@ -121,11 +121,8 @@ protected:
     
     Rectf getClientChildContentArea_impl(bool skipAllPixelAlignment) const;
 
-    /// @copydoc Window::addChild_impl
     void addChild_impl(Element* element) override;
-    /// @copydoc Window::removeChild_impl
     void removeChild_impl(Element* element) override;
-    /// @copydoc Window::cleanupChildren
     void cleanupChildren(void) override;
 
     /*************************************************************************
