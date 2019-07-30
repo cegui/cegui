@@ -147,6 +147,9 @@ public:
     // Overridden to provide more appropriate implementation for the grid
     void addChildToIndex(Element* element, size_t index) override;
 
+    // Overridden to provide more appropriate implementation for the grid
+    void removeChildFromIndex(size_t index) override;
+
     // Overridden to support auto-growing
     void moveChildToIndex(size_t indexFrom, size_t indexTo) override;
 
@@ -196,6 +199,8 @@ public:
     //! @copydoc LayoutContainer::layout
     virtual void layout() override;
 
+    void onChildOrderChanged(ElementEventArgs& e) override;
+
     //! converts from grid cell position to idx
     size_t mapCellToIndex(size_t gridX, size_t gridY) const;
     //! converts from idx to grid cell position
@@ -214,6 +219,7 @@ protected:
     size_t d_gridHeight = 0;
     
     size_t d_requestedChildIdx;
+    size_t d_freeSearchStart = 0; // Free cell search optimization
     
     size_t d_nextDummyIdx = 0;
     

@@ -834,7 +834,7 @@ public:
     \brief
         Removes a child from given position
     */
-    void removeChildFromIndex(size_t index);
+    virtual void removeChildFromIndex(size_t index);
 
     /*!
     \brief
