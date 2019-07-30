@@ -1340,7 +1340,7 @@ void Window::setParent(Element* parent)
 //----------------------------------------------------------------------------//
 void Window::cleanupChildren(void)
 {
-    while(getChildCount() != 0)
+    while (getChildCount() != 0)
     {
         Window* wnd = static_cast<Window*>(d_children[0]);
 
@@ -1381,35 +1381,21 @@ void Window::removeChild_impl(Element* element)
 {
     Window* wnd = static_cast<Window*>(element);
 
-    Window* const capture_wnd = getCaptureWindow();
-    if ((capture_wnd && wnd) &&
-        (capture_wnd == wnd || capture_wnd->isAncestor(wnd)))
-            getCaptureWindow()->releaseInput();
+    Window* captureWnd = getCaptureWindow();
+    if (captureWnd && wnd && (captureWnd == wnd || captureWnd->isAncestor(wnd)))
+        captureWnd->releaseInput();
 
     // remove from draw list
     removeWindowFromDrawList(*wnd);
 
-    Element::removeChild_impl(wnd);
-
-    // find this window in the child list
-    const ChildList::iterator position =
-        std::find(d_children.begin(), d_children.end(), wnd);
-
-    // if the window was found in the child list
-    if (position != d_children.end())
-    {
-        // unban properties window could write as a root window
-        wnd->unbanPropertyFromXML(RestoreOldCapturePropertyName);
-    }
+    NamedElement::removeChild_impl(wnd);
 
     wnd->onZChange_impl();
 
     // Removed windows should not be active anymore (they are not attached
     // to anything so this would not make sense)
-    if(wnd->isActive())
-    {
+    if (wnd->isActive())
         wnd->deactivate();
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -2323,8 +2309,7 @@ int Window::writeChildWindowsXML(XMLSerializer& xml_stream) const
 //----------------------------------------------------------------------------//
 bool Window::writeAutoChildWindowXML(XMLSerializer& xml_stream) const
 {
-
-    // just stop now if we are'nt allowed to write XML
+    // just stop now if we aren't allowed to write XML
     if (!d_allowWriteXML)
         return false;
 

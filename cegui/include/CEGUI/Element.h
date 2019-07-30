@@ -828,7 +828,7 @@ public:
     \brief
         Adds a child to given position
     */
-    void addChildToIndex(Element* element, size_t index);
+    virtual void addChildToIndex(Element* element, size_t index);
 
     /*!
     \brief
