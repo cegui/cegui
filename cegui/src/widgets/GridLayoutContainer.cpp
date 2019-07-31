@@ -138,14 +138,17 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
             }
         }
 
+        // If there are no reusable dummies left, the new one is created but not
+        // added yet, because nullptrs in a d_children may confuse Window code
         if (!child)
-        {
-            // addChild will not insert a second copy of the child
-            // into d_children, but will do all necessary setup
             child = createDummy();
-            addChild(child);
-        }
     }
+
+    // Register new dummies as our childs. This will not insert a second copy
+    // of the child into d_children, but will do all necessary setup.
+    for (Element* child : d_children)
+        if (!child->getParentElement())
+            addChild(child);
 
     // Now remove children that are left unused and do not fit into the new grid
     for (Element* child : oldChildren)
@@ -482,8 +485,8 @@ void GridLayoutContainer::validateGridCell(size_t gridX, size_t gridY)
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::growByOneLine()
 {
-    const size_t newWidth = std::max(1, d_gridWidth + d_rowMajor ? 0 : 1);
-    const size_t newHeight = std::max(1, d_gridHeight + d_rowMajor ? 1 : 0);
+    const size_t newWidth = std::max(size_t{1}, d_gridWidth + (d_rowMajor ? 0 : 1));
+    const size_t newHeight = std::max(size_t{1}, d_gridHeight + (d_rowMajor ? 1 : 0));
     setGridDimensions(newWidth, newHeight);
 }
 
@@ -625,13 +628,14 @@ int GridLayoutContainer::writeChildWindowsXML(XMLSerializer& xml_stream) const
         {
             windowsWritten += dummiesSkipped + 1;
 
-            while (dummiesSkipped--)
+            while (dummiesSkipped)
             {
                 // All dummies are written with the same name. It serves
                 // as a type for on-demand creation when loading.
                 xml_stream.openTag(AutoWindowXMLElementName);
                 xml_stream.attribute(AutoWindowNamePathXMLAttributeName, DummyName);
                 xml_stream.closeTag();
+                --dummiesSkipped;
             }
 
             static_cast<const Window*>(child)->writeXMLToStream(xml_stream);
