@@ -699,7 +699,7 @@ NamedElement* ScrollablePane::getChildByNamePath_impl(const String& name_path) c
     else
         return Window::getChildByNamePath_impl(ScrolledContainerName + '/' + name_path);
 }
-    
+
 //----------------------------------------------------------------------------//
 int ScrollablePane::writeChildWindowsXML(XMLSerializer& xml_stream) const
 {

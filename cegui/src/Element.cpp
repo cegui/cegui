@@ -963,7 +963,8 @@ void Element::addChild_impl(Element* element)
         old_parent->removeChild(element);
 
     // add element to child list
-    d_children.push_back(element);
+    if (std::find(d_children.cbegin(), d_children.cend(), element) == d_children.cend())
+        d_children.push_back(element);
 
     // set the parent element
     element->setParent(this);
