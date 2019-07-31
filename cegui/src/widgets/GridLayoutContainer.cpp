@@ -73,6 +73,10 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
     d_gridWidth = width;
     d_gridHeight = height;
 
+    // Empty cells will be filled with dummies after loading
+    if (d_initialising)
+        return;
+
     ChildList oldChildren = std::move(d_children);
 
     d_children.reserve(width * height);
@@ -122,20 +126,25 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
             continue;
 
         // Find a reusable dummy if there is one
-        Element* dummy = nullptr;
         while (itUnusedChild != oldChildren.end())
         {
-            auto& oldChild = *itUnusedChild;
+            auto& unusedChild = *itUnusedChild;
             ++itUnusedChild;
-            if (isDummy(*oldChild))
+            if (isDummy(*unusedChild))
             {
-                dummy = oldChild;
-                oldChild = nullptr;
+                child = unusedChild;
+                unusedChild = nullptr;
                 break;
             }
         }
 
-        child = dummy ? dummy : createDummy();
+        if (!child)
+        {
+            // addChild will not insert a second copy of the child
+            // into d_children, but will do all necessary setup
+            child = createDummy();
+            addChild(child);
+        }
     }
 
     // Now remove children that are left unused and do not fit into the new grid
@@ -442,7 +451,7 @@ void GridLayoutContainer::mapIndexToCell(size_t idx, size_t& gridX, size_t& grid
 }
 
 //----------------------------------------------------------------------------//
-Window* GridLayoutContainer::createDummy()
+Window* GridLayoutContainer::createDummy() const
 {
     Window* dummy = WindowManager::getSingleton().createWindow("DefaultWindow",
                     DummyName + std::to_string(d_nextDummyIdx));
@@ -453,6 +462,7 @@ Window* GridLayoutContainer::createDummy()
     dummy->setVisible(false);
     dummy->setSize(USize(UDim(0, 0), UDim(0, 0)));
     dummy->setDestroyedByParent(true);
+    //dummy->banPropertyFromXML("Visible");
 
     return dummy;
 }
@@ -478,10 +488,21 @@ void GridLayoutContainer::growByOneLine()
 }
 
 //----------------------------------------------------------------------------//
+void GridLayoutContainer::endInitialisation(void)
+{
+    // After we loaded children from XML, fill remaining free cells with dummies
+    const size_t capacity = d_gridWidth * d_gridHeight;
+    for (size_t i = d_children.size(); i < capacity; ++i)
+        addChild(createDummy());
+
+    LayoutContainer::endInitialisation();
+}
+
+//----------------------------------------------------------------------------//
 void GridLayoutContainer::addChild_impl(Element* element)
 {
-    // Regular logic for dummies
-    if (isDummy(*element))
+    // Regular logic for dummies and for the loading time
+    if (d_initialising || isDummy(*element))
     {
         LayoutContainer::addChild_impl(element);
         return;
@@ -542,11 +563,13 @@ void GridLayoutContainer::removeChild_impl(Element* element)
     // Before we remove the child, we must add a new dummy and place it
     // instead of the removed child. There are exceptions though:
     // 1. If the grid is being destroyed, we don't want to maintain its structure anymore.
-    // 2. If removing a dummy. It is always an intentional internal action.
-    // 3. If the window manager is locked, at which time we can't create a new dummy.
-    // 4. If the child is not in our list, which happens internally when grid is resized.
+    // 2. If the grid is being initialized, structure is not established yet.
+    // 3. If removing a dummy. It is always an intentional internal action.
+    // 4. If the window manager is locked, at which time we can't create a new dummy.
+    // 5. If the child is not in our list, which happens internally when grid is resized.
 
     if (!d_destructionStarted &&
+        !d_initialising &&
         !isDummy(*element) &&
         !WindowManager::getSingleton().isLocked())
     {
@@ -569,6 +592,49 @@ void GridLayoutContainer::removeChild_impl(Element* element)
     }
 
     LayoutContainer::removeChild_impl(element);
+}
+
+//----------------------------------------------------------------------------//
+NamedElement* GridLayoutContainer::getChildByNamePath_impl(const String& name_path) const
+{
+    // Since dummies are on-demand and their names may change from one run to another,
+    // we create them right at the loading time and ignore exact names.
+    if (d_initialising && name_path == DummyName)
+        return createDummy();
+    else
+        return Window::getChildByNamePath_impl(name_path);
+}
+
+//----------------------------------------------------------------------------//
+int GridLayoutContainer::writeChildWindowsXML(XMLSerializer& xml_stream) const
+{
+    int windowsWritten = 0;
+    size_t dummiesSkipped = 0;
+    for (const Element* child : d_children)
+    {
+        if (isDummy(*child))
+        {
+            // Trailing dummies aren't saved
+            ++dummiesSkipped;
+        }
+        else
+        {
+            windowsWritten += dummiesSkipped + 1;
+
+            while (dummiesSkipped--)
+            {
+                // All dummies are written with the same name. It serves
+                // as a type for on-demand creation when loading.
+                xml_stream.openTag(AutoWindowXMLElementName);
+                xml_stream.attribute(AutoWindowNamePathXMLAttributeName, DummyName);
+                xml_stream.closeTag();
+            }
+
+            static_cast<const Window*>(child)->writeXMLToStream(xml_stream);
+        }
+    }
+
+    return windowsWritten;
 }
 
 //----------------------------------------------------------------------------//
@@ -601,4 +667,4 @@ void GridLayoutContainer::addGridLayoutContainerProperties(void)
 
 //----------------------------------------------------------------------------//
 
-} // End of  CEGUI namespace section
+} // End of CEGUI namespace section
