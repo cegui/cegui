@@ -48,6 +48,7 @@ String Font::d_defaultResourceGroup;
 //----------------------------------------------------------------------------//
 const String Font::EventNamespace("Font");
 const String Font::EventRenderSizeChanged("RenderSizeChanged");
+const char32_t Font::UnicodeReplacementCharacter = 0xFFFD;
 
 //----------------------------------------------------------------------------//
 Font::Font(const String& name, const String& type_name, const String& filename,

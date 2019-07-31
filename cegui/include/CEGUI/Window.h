@@ -3644,7 +3644,11 @@ protected:
     void layoutLookNFeelChildWidgets();
 
     Window* getChildAtPosition(const glm::vec2& position,
-                               bool (Window::*hittestfunc)(const glm::vec2&, bool) const,
+                               bool (Window::*hittestfunc)(const glm::vec2&, bool)
+                               #ifndef SWIG
+                               const
+                               #endif
+                               ,
                                bool allow_disabled = false) const;
 
     bool isHitTargetWindow(const glm::vec2& position, bool allow_disabled) const;
