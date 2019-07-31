@@ -2395,7 +2395,7 @@ public:
         That is just after the window has been created, but before any children or
         properties are read.
     */
-    virtual void beginInitialisation(void)     {d_initialising = true;}
+    virtual void beginInitialisation(void) { d_initialising = true; }
 
     /*!
     \brief
@@ -2404,7 +2404,23 @@ public:
         creating a window. That is after all properties and children have been
         loaded and just before the next sibling gets created.
     */
-    virtual void endInitialisation(void)       {d_initialising = false;}
+    virtual void endInitialisation(void) { d_initialising = false; }
+
+    /*!
+    \brief
+        Returns an auto window with given name. Auto windows are created by
+        the widget itself and typically can be seen as its parts. In the most
+        cases auto windows are precreated and fetched by name here, but some
+        widgets may create auto windows on demand based on \a name. The name
+        of auto window created on demand may differ from the name passed.
+
+    \param name
+        String object holding the name of the child auto window to return.
+
+    \return
+        the Window object for the auto window referenced by \a name.
+    */
+    virtual Window* getChildAutoWindow(const String& name);
 
     /*!
     \brief
