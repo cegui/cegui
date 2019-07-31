@@ -256,7 +256,7 @@ void GUILayout_xmlHandler::elementWindowStart(const XMLAttributes& attributes)
 void GUILayout_xmlHandler::elementAutoWindowStart(const XMLAttributes& attributes)
 {
     // get window name
-    const String name_path(
+    const String name(
         attributes.getValueAsString(Window::AutoWindowNamePathXMLAttributeName));
 
     try
@@ -264,9 +264,9 @@ void GUILayout_xmlHandler::elementAutoWindowStart(const XMLAttributes& attribute
         // we need a window to fetch children
         if (!d_stack.empty())
         {
-            Window* wnd = d_stack.back().first->getChild(name_path);
+            Window* wnd = d_stack.back().first->getChildAutoWindow(name);
             // make this window the top of the stack
-            d_stack.push_back(WindowStackEntry(wnd,false));
+            d_stack.push_back(WindowStackEntry(wnd, false));
         }
     }
     catch (UnknownObjectException&)
@@ -277,7 +277,7 @@ void GUILayout_xmlHandler::elementAutoWindowStart(const XMLAttributes& attribute
         // signal error - with more info about what we have done.
         throw InvalidRequestException(
             "layout loading has been aborted since auto window '" +
-            name_path + "' could not be referenced.");
+            name + "' could not be referenced.");
     }
 }
 

@@ -2343,6 +2343,12 @@ bool Window::writeAutoChildWindowXML(XMLSerializer& xml_stream) const
 }
 
 //----------------------------------------------------------------------------//
+Window* Window::getChildAutoWindow(const String& name)
+{
+    return getChild(name);
+}
+
+//----------------------------------------------------------------------------//
 void Window::addWindowToDrawList(Window& wnd, bool at_back)
 {
     // add behind other windows in same group

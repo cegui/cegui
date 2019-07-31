@@ -208,14 +208,14 @@ public:
 
 protected:
 
-    Window* createDummy() const;
+    Window* createDummy();
     void validateGridCell(size_t gridX, size_t gridY);
     void growByOneLine();
 
     void endInitialisation(void) override;
     void addChild_impl(Element* element) override;
     void removeChild_impl(Element* element) override;
-    NamedElement* getChildByNamePath_impl(const String& name_path) const override;
+    Window* getChildAutoWindow(const String& name) override;
     int writeChildWindowsXML(XMLSerializer& xml_stream) const override;
 
     size_t d_gridWidth = 0;
@@ -224,7 +224,7 @@ protected:
     size_t d_requestedChildIdx;
     size_t d_freeSearchStart = 0; // Free cell search optimization
     
-    mutable size_t d_nextDummyIdx = 0;
+    size_t d_nextDummyIdx = 0;
     
     bool d_rowMajor = true;
     bool d_autoGrow = false;

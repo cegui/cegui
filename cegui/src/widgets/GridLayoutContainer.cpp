@@ -451,7 +451,7 @@ void GridLayoutContainer::mapIndexToCell(size_t idx, size_t& gridX, size_t& grid
 }
 
 //----------------------------------------------------------------------------//
-Window* GridLayoutContainer::createDummy() const
+Window* GridLayoutContainer::createDummy()
 {
     Window* dummy = WindowManager::getSingleton().createWindow("DefaultWindow",
                     DummyName + std::to_string(d_nextDummyIdx));
@@ -595,14 +595,18 @@ void GridLayoutContainer::removeChild_impl(Element* element)
 }
 
 //----------------------------------------------------------------------------//
-NamedElement* GridLayoutContainer::getChildByNamePath_impl(const String& name_path) const
+Window* GridLayoutContainer::getChildAutoWindow(const String& name)
 {
-    // Since dummies are on-demand and their names may change from one run to another,
-    // we create them right at the loading time and ignore exact names.
-    if (d_initialising && name_path == DummyName)
-        return createDummy();
-    else
-        return Window::getChildByNamePath_impl(name_path);
+    // Since dummies are on-demand and their names may change from one run to
+    // another, we create them right at the loading time and ignore exact names.
+    if (d_initialising && name == DummyName)
+    {
+        Window* dummy = createDummy();
+        addChild(dummy);
+        return dummy;
+    }
+
+    return LayoutContainer::getChildAutoWindow(name);
 }
 
 //----------------------------------------------------------------------------//
