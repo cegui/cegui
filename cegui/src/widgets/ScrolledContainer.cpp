@@ -253,15 +253,11 @@ void ScrolledContainer::onChildAdded(ElementEventArgs& e)
 {
     Window::onChildAdded(e);
 
-    // subscribe to area change events on this child for auto-sizing
     if (isSizeAdjustedToContent())
+    {
         subscribeOnChildAreaEvents(static_cast<Window*>(e.element));
-
-    // force window to update what it thinks it's screen / pixel areas are.
-    static_cast<Window*>(e.element)->notifyScreenAreaChanged(false);
-
-    // recalculate pane size if auto-sized
-    adjustSizeToContent();
+        adjustSizeToContent();
+    }
 }
 
 //----------------------------------------------------------------------------//
