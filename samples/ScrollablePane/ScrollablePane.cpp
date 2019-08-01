@@ -75,7 +75,6 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     auto wm = WindowManager::getSingletonPtr();
 
     // create a root window
-    // this will be a static, to give a nice app'ish background
     auto root = wm->createWindow("DefaultWindow");
     root->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
 

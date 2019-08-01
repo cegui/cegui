@@ -49,7 +49,7 @@ public:
     }
 };
 
-// ScrollablePane Sample sample class
+// ScrollablePane sample class
 class ScrollablePaneSample : public Sample
 {
 public:
