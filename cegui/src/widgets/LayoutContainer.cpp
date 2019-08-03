@@ -82,9 +82,11 @@ void LayoutContainer::layoutIfNecessary()
 {
     if (d_needsLayouting)
     {
-        layout();
-
+        // Sometimes layout() triggers subsequent layouting, for example when
+        // the final size calculation changes parent ScrollablePane scrollbars.
+        // This is why the flag is cleared before layouting, not after it.
         d_needsLayouting = false;
+        layout();
     }
 }
 
