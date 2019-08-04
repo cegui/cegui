@@ -44,18 +44,18 @@ class OpenGLTexture;
 class OPENGL_GUIRENDERER_API OpenGLGLXPBTextureTarget : public OpenGLTextureTarget
 {
 public:
-    OpenGLGLXPBTextureTarget(OpenGLRendererBase& owner);
+    OpenGLGLXPBTextureTarget(OpenGLRendererBase& owner, bool addStencilBuffer);
     virtual ~OpenGLGLXPBTextureTarget();
 
     // overrides from OpenGLRenderTarget
-    void activate();
-    void deactivate();
+    void activate() override;
+    void deactivate() override;
     // implementation of TextureTarget interface
-    void clear();
-    void declareRenderSize(const Sizef& sz);
+    void clear() override;
+    void declareRenderSize(const Sizef& sz) override;
     // specialise functions from OpenGLTextureTarget
-    void grabTexture();
-    void restoreTexture();
+    void grabTexture() override;
+    void restoreTexture() override;
 
 protected:
     //! default size of created texture objects

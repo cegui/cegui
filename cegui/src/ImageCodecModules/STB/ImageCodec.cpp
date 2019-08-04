@@ -29,7 +29,7 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodecModules/STB/ImageCodec.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/Size.h"
+#include "CEGUI/Sizef.h"
 #define STBI_HEADER_FILE_ONLY
 #include "stb_image.cpp"
 
@@ -61,7 +61,7 @@ Texture* STBImageCodec::load(const RawDataContainer& data, Texture* result)
     if (!image) 
     {
         Logger::getSingletonPtr()->logEvent(
-            "STBImageCodec::load - Invalid image data", Errors);
+            "STBImageCodec::load - Invalid image data", LoggingLevel::Error);
 
         return 0;
     }
@@ -70,15 +70,15 @@ Texture* STBImageCodec::load(const RawDataContainer& data, Texture* result)
     switch (comp) 
     {
     case 4:
-        format = Texture::PF_RGBA;
+        format = Texture::PixelFormat::Rgba;
         break;
     case 3:
-        format = Texture::PF_RGB;
+        format = Texture::PixelFormat::Rgb;
         break;
     default:
         Logger::getSingletonPtr()->logEvent(
             "STBImageCodec::load - Invalid image format. "
-            "Only RGB and RGBA images are supported", Errors);
+            "Only RGB and RGBA images are supported", LoggingLevel::Error);
 
         stbi_image_free(image);
         return 0;

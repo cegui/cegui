@@ -1,8 +1,8 @@
 /***********************************************************************
-	created:	25/4/2004
-	author:		Paul D Turner
-	
-	purpose:	Implementation of common Titlebar parts.
+    created:    25/4/2004
+    author:     Paul D Turner
+
+    purpose:    Implementation of common Titlebar parts.
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "CEGUI/widgets/Titlebar.h"
 #include "CEGUI/widgets/FrameWindow.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/Cursor.h"
 #include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
@@ -38,21 +38,22 @@ const String Titlebar::EventNamespace("Titlebar");
 const String Titlebar::WidgetTypeName("CEGUI/Titlebar");
 
 /*************************************************************************
-	Constructor
+    Constructor
 *************************************************************************/
 Titlebar::Titlebar(const String& type, const String& name) :
-	Window(type, name)
+    Window(type, name)
 {
-	addTitlebarProperties();
-	setAlwaysOnTop(true);
+    addTitlebarProperties();
+    setAlwaysOnTop(true);
+    setCursorInputPropagationEnabled(true);
 
-	// basic initialisation
-	d_dragging = false;
-	d_dragEnabled = true;
+    // basic initialisation
+    d_dragging = false;
+    d_dragEnabled = true;
 }
 
 /*************************************************************************
-	Destructor
+    Destructor
 *************************************************************************/
 Titlebar::~Titlebar(void)
 {
@@ -60,33 +61,33 @@ Titlebar::~Titlebar(void)
 
 
 /*************************************************************************
-	Return whether this title bar will respond to dragging.
+    Return whether this title bar will respond to dragging.
 *************************************************************************/
 bool Titlebar::isDraggingEnabled(void) const
 {
-	return d_dragEnabled;
+    return d_dragEnabled;
 }
 
 
 /*************************************************************************
-	Set whether this title bar widget will respond to dragging.
+    Set whether this title bar widget will respond to dragging.
 *************************************************************************/
 void Titlebar::setDraggingEnabled(bool setting)
 {
-	if (d_dragEnabled != setting)
-	{
-		d_dragEnabled = setting;
+    if (d_dragEnabled != setting)
+    {
+        d_dragEnabled = setting;
 
-		// stop dragging now if the setting has been disabled.
-		if ((!d_dragEnabled) && d_dragging)
-		{
-			releaseInput();
-		}
+        // stop dragging now if the setting has been disabled.
+        if ((!d_dragEnabled) && d_dragging)
+        {
+            releaseInput();
+        }
 
-		// call event handler.
-		WindowEventArgs args(this);
-		onDraggingModeChanged(args);
-	}
+        // call event handler.
+        WindowEventArgs args(this);
+        onDraggingModeChanged(args);
+    }
 
 }
 
@@ -95,153 +96,150 @@ bool Titlebar::isDragged() const
     return d_dragging;
 }
 
-const Vector2f& Titlebar::getDragPoint() const
+const glm::vec2& Titlebar::getDragPoint() const
 {
     return d_dragPoint;
 }
 
 /*************************************************************************
-	Handler for mouse movement events
+    Handler for cursor movement events
 *************************************************************************/
-void Titlebar::onMouseMove(MouseEventArgs& e)
+void Titlebar::onCursorMove(CursorInputEventArgs& e)
 {
-	// Base class processing.
-	Window::onMouseMove(e);
+    // Base class processing.
+    Window::onCursorMove(e);
 
-	if (d_dragging && (d_parent != 0))
-	{
-		Vector2f delta(CoordConverter::screenToWindow(*this, e.position));
+    if (d_dragging && (d_parent != nullptr))
+    {
+        // move the window.  *** Again: Titlebar objects should only be attached to FrameWindow derived classes. ***
+        if (auto frameWnd = dynamic_cast<FrameWindow*>(d_parent))
+        {
+            const glm::vec2 delta(CoordConverter::screenToWindow(*this, e.position) - d_dragPoint);
+            frameWnd->setPosition(frameWnd->getPosition() + UVector2(cegui_absdim(delta.x), cegui_absdim(delta.y)));
+        }
 
-		// calculate amount that window has been moved
-		delta -= d_dragPoint;
-
-		// move the window.  *** Again: Titlebar objects should only be attached to FrameWindow derived classes. ***
-		((FrameWindow*)d_parent)->offsetPixelPosition(delta);
-
-		++e.handled;
-	}
+        ++e.handled;
+    }
 }
 
 
 /*************************************************************************
-	Handler for mouse button press events
+    Handler for cursor press events
 *************************************************************************/
-void Titlebar::onMouseButtonDown(MouseEventArgs& e)
+void Titlebar::onCursorPressHold(CursorInputEventArgs& e)
 {
-	// Base class processing
-	Window::onMouseButtonDown(e);
+    Window::onCursorPressHold(e);
 
-	if (e.button == LeftButton)
-	{
-		if ((d_parent != 0) && d_dragEnabled)
-		{
-			// we want all mouse inputs from now on
-			if (captureInput())
-			{
-				// initialise the dragging state
-				d_dragging = true;
-				d_dragPoint = CoordConverter::screenToWindow(*this, e.position);
+    if (e.source == CursorInputSource::Left)
+    {
+        // Sizing border events are propagated to the owning FrameWindow
+        auto frameWnd = dynamic_cast<FrameWindow*>(d_parent);
+        if (frameWnd && frameWnd->isSizingEnabled())
+        {
+            const glm::vec2 localCursorPos(CoordConverter::screenToWindow(*frameWnd, e.position));
+            if (frameWnd->getSizingBorderAtPoint(localCursorPos) != FrameWindow::SizingLocation::Invalid)
+                return;
+        }
+
+        if (d_parent && d_dragEnabled)
+        {
+            // we want all cursor inputs from now on
+            if (captureInput())
+            {
+                // initialise the dragging state
+                d_dragging = true;
+                d_dragPoint = CoordConverter::screenToWindow(*this, e.position);
 
                 // store old constraint area
-                d_oldCursorArea = getGUIContext().
-                    getMouseCursor().getConstraintArea();
+                d_oldCursorArea = getGUIContext().getCursor().getConstraintArea();
 
-				// setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
-				Rectf constrainArea;
+                // setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
+                Rectf constrainArea;
+                if (auto grandParent = static_cast<Window*>(d_parent->getParentElement()))
+                {
+                    constrainArea = grandParent->getInnerRectClipper().getIntersection(d_oldCursorArea);
+                }
+                else
+                {
+                    const Rectf screen(glm::vec2(0, 0), getRootContainerSize());
+                    constrainArea = screen.getIntersection(d_oldCursorArea);
+                }
 
-				if ((d_parent == 0) || (getParent()->getParent() == 0))
-				{
-                    Rectf screen(Vector2f(0, 0), getRootContainerSize());
-					constrainArea = screen.getIntersection(d_oldCursorArea);
-				}
-				else 
-				{
-					constrainArea = getParent()->getParent()->getInnerRectClipper().getIntersection(d_oldCursorArea);
-				}
+                getGUIContext().getCursor().setConstraintArea(&constrainArea);
+            }
+        }
 
-                getGUIContext().getMouseCursor().
-                    setConstraintArea(&constrainArea);
-			}
-		}
-
-		++e.handled;
-	}
+        ++e.handled;
+    }
 }
 
 
 /*************************************************************************
-	Handler for mouse button release events
+    Handler for cursor activation events
 *************************************************************************/
-void Titlebar::onMouseButtonUp(MouseEventArgs& e)
+void Titlebar::onCursorActivate(CursorInputEventArgs& e)
 {
-	// Base class processing
-	Window::onMouseButtonUp(e);
+    // Base class processing
+    Window::onCursorActivate(e);
 
-	if (e.button == LeftButton)
-	{
-		releaseInput();
-		++e.handled;
-	}
-
+    if (e.source == CursorInputSource::Left)
+    {
+        releaseInput();
+        ++e.handled;
+    }
 }
 
-
-/*************************************************************************
-	Handler for mouse button double-click events
-*************************************************************************/
-void Titlebar::onMouseDoubleClicked(MouseEventArgs& e)
+void Titlebar::onSemanticInputEvent(SemanticEventArgs& e)
 {
-	// Base class processing
-	Window::onMouseDoubleClicked(e);
+    // Base class processing
+    Window::onSemanticInputEvent(e);
 
-	if (e.button == LeftButton)
-	{
-		// if we do not have a parent window, then obviously nothing should happen.
-		if (d_parent)
-		{
-			// we should only ever be attached to a FrameWindow (or derived) class
-			((FrameWindow*)d_parent)->toggleRollup();
-		}
+    if (isDisabled())
+        return;
 
-		++e.handled;
-	}
+    if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == CursorInputSource::Left)
+    {
+        // Our parent must be a FrameWindow or subclass for rolling up to work
+        if (auto frameWnd = dynamic_cast<FrameWindow*>(d_parent))
+            frameWnd->toggleRollup();
 
+        ++e.handled;
+    }
 }
 
-
 /*************************************************************************
-	Handler for if the window loses capture of the mouse.
+    Handler for if the window loses capture of the cursor.
 *************************************************************************/
 void Titlebar::onCaptureLost(WindowEventArgs& e)
 {
-	// Base class processing
-	Window::onCaptureLost(e);
+    // Base class processing
+    Window::onCaptureLost(e);
 
-	// when we lose out hold on the mouse inputs, we are no longer dragging.
-	d_dragging = false;
+    // when we lose out hold on the cursor inputs, we are no longer dragging.
+    d_dragging = false;
 
-	// restore old constraint area
-	getGUIContext().
-        getMouseCursor().setConstraintArea(&d_oldCursorArea);
+    // restore old constraint area
+    getGUIContext().
+        getCursor().setConstraintArea(&d_oldCursorArea);
 }
 
 
 /*************************************************************************
-	Handler for when the font for this Window is changed
+    Handler for when the font for this Window is changed
 *************************************************************************/
 void Titlebar::onFontChanged(WindowEventArgs& e)
 {
-	Window::onFontChanged(e);
+    Window::onFontChanged(e);
 
-	if (d_parent)
-	{
-		getParent()->performChildWindowLayout();
-	}
+    if (d_parent)
+    {
+        getParent()->performChildWindowLayout();
+    }
 }
 
 
 /*************************************************************************
-	Add title bar specific properties
+    Add title bar specific properties
 *************************************************************************/
 void Titlebar::addTitlebarProperties(void)
 {
@@ -252,6 +250,5 @@ void Titlebar::addTitlebarProperties(void)
         &Titlebar::setDraggingEnabled, &Titlebar::isDraggingEnabled, true
     );
 }
-
 
 } // End of  CEGUI namespace section

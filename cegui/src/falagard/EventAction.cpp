@@ -29,6 +29,7 @@
 #include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/SharedStringStream.h"
 
 namespace CEGUI
 {
@@ -45,19 +46,17 @@ struct EventActionFunctor
     {
         switch (action)
         {
-        case CEA_REDRAW:
+        case ChildEventAction::Redraw:
             window.invalidate(false);
             return true;
 
-        case CEA_LAYOUT:
+        case ChildEventAction::Layout:
             window.performChildWindowLayout();
             return true;
 
         default:
-            CEGUI_THROW(InvalidRequestException("invalid action."));
+            throw InvalidRequestException("invalid action.");
         }
-
-        return false;
     }
 
     Window& window;
@@ -107,8 +106,8 @@ void EventAction::initialiseWidget(Window& widget) const
     Window* parent = widget.getParent();
 
     if (!parent)
-        CEGUI_THROW(InvalidRequestException(
-            "EvenAction can only be initialised on child widgets."));
+        throw InvalidRequestException(
+            "EvenAction can only be initialised on child widgets.");
 
     d_connections.insert(
         std::make_pair(makeConnectionKeyName(widget),
@@ -129,7 +128,7 @@ void EventAction::cleanupWidget(Window& widget) const
         Logger::getSingleton().logEvent("EventAction::cleanupWidget: "
             "An event connection with key '" + keyname + "' was not "
             "found.  This may be harmless, but most likely could point "
-            "to a double-deletion or some other serious issue.", Errors);
+            "to a double-deletion or some other serious issue.", LoggingLevel::Error);
 }
 
 //----------------------------------------------------------------------------//
@@ -142,14 +141,11 @@ void EventAction::writeXMLToStream(XMLSerializer& xml_stream) const
 }
 
 //----------------------------------------------------------------------------//
-String EventAction::makeConnectionKeyName(const Window& widget) const
+String EventAction::makeConnectionKeyName(const Window& /*widget*/) const
 {
-    char addr[32];
-    std::sprintf(addr, "%p", static_cast<const void *>(&widget));
+    String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 
-    return String(addr) +
-           d_eventName +
-           FalagardXMLHelper<ChildEventAction>::toString(d_action);
+    return addressStr + d_eventName + FalagardXMLHelper<ChildEventAction>::toString(d_action);
 }
 
 //----------------------------------------------------------------------------//

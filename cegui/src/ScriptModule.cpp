@@ -57,7 +57,7 @@ bool ScriptFunctor::operator()(const EventArgs& e) const
 	}
 	else
 	{
-		Logger::getSingleton().logEvent("Scripted event handler '" + scriptFunctionName + "' could not be called as no ScriptModule is available.", Errors);
+		Logger::getSingleton().logEvent("Scripted event handler '" + scriptFunctionName + "' could not be called as no ScriptModule is available.", LoggingLevel::Error);
 
 		return false;
 	}

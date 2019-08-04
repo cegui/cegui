@@ -71,21 +71,21 @@ public:
         {}
 
         GetterFunctor(ConstRefGetter getter):
-            d_plainGetter(0),
+            d_plainGetter(nullptr),
             d_constRefGetter(getter)
             //d_refGetter(0) // no need to initialise this, we will never use it
         {}
 
         GetterFunctor(RefGetter getter):
-            d_plainGetter(0),
-            d_constRefGetter(0),
+            d_plainGetter(nullptr),
+            d_constRefGetter(nullptr),
             d_refGetter(getter)
         {}
         // to set 0 as func
         GetterFunctor(int /*val*/):
-            d_plainGetter(0),
-            d_constRefGetter(0),
-            d_refGetter(0)
+            d_plainGetter(nullptr),
+            d_constRefGetter(nullptr),
+            d_refGetter(nullptr)
         {}
         operator bool(void) const
         {
@@ -96,15 +96,15 @@ public:
             // FIXME: Ideally we want this to be done during compilation, not runtime
 
             if (d_plainGetter)
-                return CEGUI_CALL_MEMBER_FN(*instance, d_plainGetter)();
+                return (*instance.*d_plainGetter)();
             if (d_constRefGetter)
-                return CEGUI_CALL_MEMBER_FN(*instance, d_constRefGetter)();
+                return (*instance.*d_constRefGetter)();
             if (d_refGetter)
-                return CEGUI_CALL_MEMBER_FN(*instance, d_refGetter)();
+                return (*instance.*d_refGetter)();
 
             assert(false);
             // just to get rid of the warning
-            return CEGUI_CALL_MEMBER_FN(*instance, d_plainGetter)();
+            return (*instance.*d_plainGetter)();
         }
 
         PlainGetter d_plainGetter;
@@ -123,12 +123,12 @@ public:
     {}
 
     //! \copydoc Property::isReadable
-    virtual bool isReadable() const
+    bool isReadable() const override
     {
         return d_getter;
     }
     //! \copydoc Property::isWritable
-    virtual bool isWritable() const
+    bool isWritable() const override
     {
         return d_setter;
     }

@@ -32,7 +32,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-void RenderQueue::draw(uint32 drawModeMask) const
+void RenderQueue::draw(std::uint32_t drawModeMask) const
 {
     // draw the buffers
     BufferList::const_iterator i = d_buffers.begin();
@@ -41,16 +41,22 @@ void RenderQueue::draw(uint32 drawModeMask) const
 }
 
 //----------------------------------------------------------------------------//
-void RenderQueue::addGeometryBuffer(const GeometryBuffer& buffer)
+void RenderQueue::addGeometryBuffers(const std::vector<GeometryBuffer*>& geometry_buffers)
 {
-    d_buffers.push_back(&buffer);
+    d_buffers.insert(d_buffers.end(), geometry_buffers.begin(), geometry_buffers.end());
 }
 
 //----------------------------------------------------------------------------//
-void RenderQueue::removeGeometryBuffer(const GeometryBuffer& buffer)
+void RenderQueue::addGeometryBuffer(GeometryBuffer& geometry_buffer)
+{
+    d_buffers.push_back(&geometry_buffer);
+}
+
+//----------------------------------------------------------------------------//
+void RenderQueue::removeGeometryBuffer(const GeometryBuffer& geometry_buffer)
 {
     BufferList::iterator i = std::find(d_buffers.begin(), d_buffers.end(),
-                                       &buffer);
+                                       &geometry_buffer);
     if (i != d_buffers.end())
         d_buffers.erase(i);
 }
