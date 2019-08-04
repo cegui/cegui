@@ -32,13 +32,16 @@
 #include "CEGUI/System.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
+
+#include <cstdint>
+
 #include <irrlicht.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-uint32 IrrlichtTexture::d_textureNumber = 0;
+std::uint32_t IrrlichtTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 void IrrlichtTexture::setIrrlichtTexture(irr::video::ITexture* tex)
@@ -80,7 +83,7 @@ const Sizef& IrrlichtTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& IrrlichtTexture::getTexelScaling() const
+const glm::vec2& IrrlichtTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -92,8 +95,8 @@ void IrrlichtTexture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException(
-            "CEGUI::System object has not been created!"));
+        throw RendererException(
+            "CEGUI::System object has not been created!");
 
     // load file to memory via resource provider
     RawDataContainer texFile;
@@ -107,9 +110,9 @@ void IrrlichtTexture::loadFromFile(const String& filename,
 
     // throw exception if data was load loaded to texture.
     if (!res)
-        CEGUI_THROW(RendererException(
+        throw RendererException(
             sys->getImageCodec().getIdentifierString() +
-            " failed to load image '" + filename + "'."));
+            " failed to load image '" + filename + "'.");
 }
 
 //----------------------------------------------------------------------------//
@@ -120,8 +123,8 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
     using namespace irr;
 
     if (!isPixelFormatSupported(pixel_format))
-        CEGUI_THROW(InvalidRequestException(
-            "Data was supplied in an unsupported pixel format."));
+        throw InvalidRequestException(
+            "Data was supplied in an unsupported pixel format.");
 
     freeIrrlichtTexture();
     createIrrlichtTexture(buffer_size);
@@ -132,7 +135,7 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
 
     updateCachedScaleValues();
 
-    const size_t pix_sz = (pixel_format == PF_RGB) ? 3 : 4;
+    const size_t pix_sz = (pixel_format == PixelFormat::Rgb) ? 3 : 4;
     const char* src = static_cast<const char*>(buffer);
     char* dest = static_cast<char*>(d_texture->lock());
 
@@ -162,12 +165,12 @@ void IrrlichtTexture::blitFromMemory(const void* sourceData, const Rectf& area)
         return;
 
     const size_t pitch = d_texture->getPitch();
-    const uint32* src = static_cast<const uint32*>(sourceData);
-    uint32* dst = static_cast<uint32*>(d_texture->lock());
+    const std::uint32_t* src = static_cast<const std::uint32_t*>(sourceData);
+    std::uint32_t* dst = static_cast<std::uint32_t*>(d_texture->lock());
 
     if (!dst)
-        CEGUI_THROW(RendererException(
-            "[IrrlichtRenderer] ITexture::lock failed."));
+        throw RendererException(
+            "[IrrlichtRenderer] ITexture::lock failed.");
 
     dst += static_cast<size_t>(area.top()) * (pitch / 4) +
         static_cast<size_t>(area.left());
@@ -200,8 +203,8 @@ void IrrlichtTexture::blitToMemory(void* targetData)
     const void* src = d_texture->lock(irr::video::ETLM_WRITE_ONLY);
 #endif
     if (!src)
-        CEGUI_THROW(RendererException(
-            "[IrrlichtRenderer] ITexture::lock failed."));
+        throw RendererException(
+            "[IrrlichtRenderer] ITexture::lock failed.");
 
     memcpy(targetData, src,
            static_cast<size_t>(d_size.d_width * d_size.d_height) * 4);
@@ -315,8 +318,8 @@ void IrrlichtTexture::createIrrlichtTexture(const Sizef& sz)
 
     // we use ARGB all the time for now, so throw if we gut something else!
     if(video::ECF_A8R8G8B8 != d_texture->getColorFormat())
-        CEGUI_THROW(RendererException(
-            "texture did not have the correct format (ARGB)"));
+        throw RendererException(
+            "texture did not have the correct format (ARGB)");
 }
 
 //----------------------------------------------------------------------------//
@@ -332,10 +335,10 @@ void IrrlichtTexture::freeIrrlichtTexture()
 //----------------------------------------------------------------------------//
 std::string IrrlichtTexture::getUniqueName()
 {
-    char tmp[32];
-    sprintf(tmp, "irr_tex_%d", d_textureNumber++);
+    std::stringstream sstream;
+    sstream << irr_tex_ << d_textureNumber++;
 
-    return std::string(tmp);
+    return sstream.str();
 }
 
 //----------------------------------------------------------------------------//
@@ -358,7 +361,7 @@ void IrrlichtTexture::updateCachedScaleValues()
     // on the original size.
     // if texture is wider (and source data was not stretched), scale
     // is based on the size of the resulting texture.
-    d_texelScaling.d_x = 1.0f / ((orgW == texW) ? orgW : texW);
+    d_texelScaling.x = 1.0f / ((orgW == texW) ? orgW : texW);
 
     //
     // calculate what to use for y scale
@@ -370,13 +373,13 @@ void IrrlichtTexture::updateCachedScaleValues()
     // on the original size.
     // if texture is taller (and source data was not stretched), scale
     // is based on the size of the resulting texture.
-    d_texelScaling.d_y = 1.0f / ((orgH == texH) ? orgH : texH);
+    d_texelScaling.y = 1.0f / ((orgH == texH) ? orgH : texH);
 }
 
 //----------------------------------------------------------------------------//
 bool IrrlichtTexture::isPixelFormatSupported(const PixelFormat fmt) const
 {
-    return fmt == PF_RGBA || fmt == PF_RGB;
+    return fmt == PixelFormat::Rgba || fmt == PixelFormat::Rgb;
 }
 
 //----------------------------------------------------------------------------//

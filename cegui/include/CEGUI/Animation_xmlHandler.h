@@ -44,14 +44,14 @@ public:
     virtual ~Animation_xmlHandler();
 
     // XMLHandler overrides
-    const String& getSchemaName() const;
-    const String& getDefaultResourceGroup() const;
+    const String& getSchemaName() const override;
+    const String& getDefaultResourceGroup() const override;
 
 protected:
     // implement ChainedXMLHandler interface.
     void elementStartLocal(const String& element,
-                           const XMLAttributes& attributes);
-    void elementEndLocal(const String& element);
+                           const XMLAttributes& attributes) override;
+    void elementEndLocal(const String& element) override;
 };
 
 //----------------------------------------------------------------------------//
@@ -79,8 +79,8 @@ public:
 protected:
     // implement ChainedXMLHandler interface.
     void elementStartLocal(const String& element,
-                           const XMLAttributes& attributes);
-    void elementEndLocal(const String& element);
+                           const XMLAttributes& attributes) override;
+    void elementEndLocal(const String& element) override;
 
     //! Pointer to the Animation created by this handler.
     Animation* d_anim;
@@ -109,8 +109,8 @@ public:
 protected:
     // implement ChainedXMLHandler interface.
     void elementStartLocal(const String& element,
-                           const XMLAttributes& attributes);
-    void elementEndLocal(const String& element);
+                           const XMLAttributes& attributes) override;
+    void elementEndLocal(const String& element) override;
 
     //! Affector created by this handler.
     Affector* d_affector;
@@ -141,8 +141,8 @@ public:
 protected:
     // implement ChainedXMLHandler interface.
     void elementStartLocal(const String& element,
-                           const XMLAttributes& attributes);
-    void elementEndLocal(const String& element);
+                           const XMLAttributes& attributes) override;
+    void elementEndLocal(const String& element) override;
 };
 
 //----------------------------------------------------------------------------//
@@ -163,8 +163,8 @@ public:
 protected:
     // implement ChainedXMLHandler interface.
     void elementStartLocal(const String& element,
-                           const XMLAttributes& attributes);
-    void elementEndLocal(const String& element);
+                           const XMLAttributes& attributes) override;
+    void elementEndLocal(const String& element) override;
 };
 
 } // End of  CEGUI namespace section

@@ -35,7 +35,6 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 OpenGLESGeometryBuffer::OpenGLESGeometryBuffer() :
     d_activeTexture(0),
-    d_clipRect(0, 0, 0, 0),
     d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
@@ -55,17 +54,17 @@ void OpenGLESGeometryBuffer::appendVertex(const Vertex& vertex)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::draw(uint32 drawModeMask) const
+void OpenGLESGeometryBuffer::draw(std::uint32_t drawModeMask) const
 {
     CEGUI_UNUSED(drawModeMask);
     
     // setup clip region
     GLint vp[4];
     glGetIntegerv(GL_VIEWPORT, vp);
-    glScissor(static_cast<GLint>(d_clipRect.left()),
-              static_cast<GLint>(vp[3] - d_clipRect.bottom()),
-              static_cast<GLint>(d_clipRect.getWidth()),
-              static_cast<GLint>(d_clipRect.getHeight()));
+    glScissor(static_cast<GLint>(d_preparedClippingRegion.left()),
+              static_cast<GLint>(vp[3] - d_preparedClippingRegion.bottom()),
+              static_cast<GLint>(d_preparedClippingRegion.getWidth()),
+              static_cast<GLint>(d_preparedClippingRegion.getHeight()));
 
     // apply the transformations we need to use.
     if (!d_matrixValid)
@@ -106,35 +105,29 @@ void OpenGLESGeometryBuffer::draw(uint32 drawModeMask) const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::setTranslation(const Vector3f& v)
+void OpenGLESGeometryBuffer::setTranslation(const glm::vec3& v)
 {
     d_translation = v;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::setRotation(const Quaternion& r)
+void OpenGLESGeometryBuffer::setRotation(const glm::quat& r)
 {
     d_rotation = r;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::setPivot(const Vector3f& p)
+void OpenGLESGeometryBuffer::setPivot(const glm::vec3& p)
 {
-    d_pivot = Vector3f(p.d_x, p.d_y, p.d_z);
+    d_pivot = p;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::setClippingRegion(const Rectf& region)
-{
-    d_clipRect = region;
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLESGeometryBuffer::appendGeometry(const Vertex* const vbuff,
-    uint vertex_count)
+    unsigned int vertex_count)
 {
     performBatchManagement();
 
@@ -144,7 +137,7 @@ void OpenGLESGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     // buffer these vertices
     GLVertex vd;
     const Vertex* vs = vbuff;
-    for (uint i = 0; i < vertex_count; ++i, ++vs)
+    for ((unsigned int i = 0; i < vertex_count; ++i, ++vs)
     {
         // copy vertex info the buffer, converting from CEGUI::Vertex to
         // something directly usable by OpenGLES as needed.
@@ -182,13 +175,13 @@ Texture* OpenGLESGeometryBuffer::getActiveTexture() const
 }
 
 //----------------------------------------------------------------------------//
-uint OpenGLESGeometryBuffer::getVertexCount() const
+(unsigned int OpenGLESGeometryBuffer::getVertexCount() const
 {
     return d_vertices.size();
 }
 
 //----------------------------------------------------------------------------//
-uint OpenGLESGeometryBuffer::getBatchCount() const
+(unsigned int OpenGLESGeometryBuffer::getBatchCount() const
 {
     return d_batches.size();
 }
@@ -196,7 +189,7 @@ uint OpenGLESGeometryBuffer::getBatchCount() const
 //----------------------------------------------------------------------------//
 void OpenGLESGeometryBuffer::performBatchManagement()
 {
-    const GLuint gltex = d_activeTexture ?
+    const GL(unsigned int gltex = d_activeTexture ?
                             d_activeTexture->getOpenGLESTexture() : 0;
 
     // create a new batch if there are no batches yet, or if the active texture
@@ -232,12 +225,10 @@ void OpenGLESGeometryBuffer::updateMatrix() const
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 
-    const Vector3f final_trans(d_translation.d_x + d_pivot.d_x,
-                               d_translation.d_y + d_pivot.d_y,
-                               d_translation.d_z + d_pivot.d_z);
+    const Vector3f final_trans = d_translation + d_pivot;
 
     glLoadIdentity();
-    glTranslatef(final_trans.d_x, final_trans.d_y, final_trans.d_z);
+    glTranslatef(final_trans.x, final_trans.y, final_trans.z);
 
     float rotation_matrix[16];
     rotation_matrix[ 0] = 1.0f - 2.0f * (d_rotation.d_y * d_rotation.d_y + d_rotation.d_z * d_rotation.d_z);
@@ -262,7 +253,7 @@ void OpenGLESGeometryBuffer::updateMatrix() const
 
     glMultMatrixf(rotation_matrix);
 
-    glTranslatef(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
+    glTranslatef(-d_pivot.x, -d_pivot.y, -d_pivot.z);
 
 	glGetFloatv(GL_MODELVIEW_MATRIX, d_matrix);
     glPopMatrix();

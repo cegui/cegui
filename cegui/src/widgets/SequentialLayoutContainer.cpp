@@ -52,7 +52,7 @@ SequentialLayoutContainer::~SequentialLayoutContainer(void)
 //----------------------------------------------------------------------------//
 size_t SequentialLayoutContainer::getPositionOfChild(Window* wnd) const
 {
-    return getIdxOfChild(wnd);
+    return getChildIdx(wnd);
 }
 
 //----------------------------------------------------------------------------//

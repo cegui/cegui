@@ -1,7 +1,14 @@
 <?xml version="1.0" ?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
-	<xsd:element name="Font" type="FontType" />
-
+	<xsd:element name="Fonts" type="FontsType" />
+    
+    <xsd:complexType name="FontsType">
+        <xsd:sequence>
+            <xsd:element name="Font" type="FontType" maxOccurs="unbounded" minOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="version" type="xsd:nonNegativeInteger" use="optional" default="0" />
+	</xsd:complexType>
+    
 	<xsd:complexType name="FontType">
 		<xsd:sequence>
 			<xsd:element name="Mapping" type="MapType" maxOccurs="unbounded" minOccurs="0" />
@@ -42,6 +49,5 @@
 		</xsd:attribute>
 		<xsd:attribute name="antiAlias" type="xsd:boolean" use="optional" default="true" />
 		<xsd:attribute name="lineSpacing" type="xsd:decimal" use="optional" default="0" />
-		<xsd:attribute name="version" type="xsd:nonNegativeInteger" use="optional" default="0" />
 	</xsd:attributeGroup>
 </xsd:schema>

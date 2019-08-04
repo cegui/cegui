@@ -43,7 +43,14 @@ StdRegexMatcher::~StdRegexMatcher()
 //----------------------------------------------------------------------------//
 void StdRegexMatcher::setRegexString(const String& regex)
 {
-    d_regex = std::regex(std::string(regex.c_str()));
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8
+    const std::string& regex8bit = regex.getString();
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    std::string regex8bit = String::convertUtf32ToUtf8(regex.getString());
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII
+    const std::string& regex8bit = regex;
+#endif
+    d_regex = std::regex(regex8bit);
     d_string = regex;
 }
 
@@ -56,19 +63,22 @@ const String& StdRegexMatcher::getRegexString() const
 //----------------------------------------------------------------------------//
 bool StdRegexMatcher::matchRegex(const String& str) const
 {
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8
+    const std::string& str8bit = str.getString();
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    std::string str8bit = String::convertUtf32ToUtf8(str.getString());
+#elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII
+    const std::string& str8bit = str;
+#endif
     std::smatch smatch;
-    std::string temp = str.c_str();
-    if (std::regex_match(temp, smatch, d_regex) == false)
-        return false;
-    return smatch.empty() == false;
+    return std::regex_match(str8bit, smatch, d_regex) && !smatch.empty();
 }
 
 //----------------------------------------------------------------------------//
 RegexMatcher::MatchState StdRegexMatcher::getMatchStateOfString(const String& str) const
 {
-    if (matchRegex(str))
-        return MS_VALID;
-    return MS_INVALID;
+    // There is no partial regex matching in std yet
+    return matchRegex(str) ? MatchState::Valid : MatchState::Invalid;
 }
 
 //----------------------------------------------------------------------------//

@@ -42,8 +42,7 @@ namespace CEGUI
 {
 class Window;
 
-class CEGUIEXPORT EventAction :
-    public AllocatedObject<EventAction>
+class CEGUIEXPORT EventAction
 {
 public:
     EventAction(const String& event_name, ChildEventAction action);
@@ -65,9 +64,8 @@ protected:
     ChildEventAction d_action;
 
     String makeConnectionKeyName(const Window& widget) const;
-
-    typedef std::multimap<String, Event::ScopedConnection, StringFastLessCompare
-        CEGUI_MULTIMAP_ALLOC(String, Event::ScopedConnection)> ConnectionMap;
+    
+    typedef std::multimap<String, Event::ScopedConnection> ConnectionMap;
     mutable ConnectionMap d_connections;
 };
 
