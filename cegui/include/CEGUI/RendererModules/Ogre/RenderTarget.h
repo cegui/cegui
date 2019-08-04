@@ -64,8 +64,8 @@ public:
 #endif
 
     // implement parts of CEGUI::RenderTarget interface
-    void draw(const GeometryBuffer& buffer);
-    void draw(const RenderQueue& queue);
+    void draw(const GeometryBuffer& buffer, uint32 drawModeMask = DrawModeMaskAll);
+    void draw(const RenderQueue& queue, uint32 drawModeMask = DrawModeMaskAll);
     void setArea(const Rectf& area);
     const Rectf& getArea() const;
     void activate();
@@ -92,7 +92,7 @@ protected:
     //! Ogre render target that we are effectively wrapping
     Ogre::RenderTarget* d_renderTarget;
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-    
+
     //! Set when the workspace needs to switch render targets
     bool d_renderTargetUpdated;
 
