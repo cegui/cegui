@@ -280,7 +280,7 @@ public:
     void unprojectPoint(const glm::vec2& p_in, glm::vec2& p_out);
 
     // overrides from base
-    void draw() override;
+    void draw(std::uint32_t drawModeMask = DrawModeMaskAll) override;
     void invalidate() override;
     bool isRenderingWindow() const override;
 

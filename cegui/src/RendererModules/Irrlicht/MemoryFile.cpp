@@ -40,9 +40,9 @@ IrrlichtMemoryFile::IrrlichtMemoryFile(const String& filename,
 {
 }
 
-irr::s32 IrrlichtMemoryFile::read(void* buffer, irr::u32 sizeToRead)
+std::size_t IrrlichtMemoryFile::read(void* buffer, std::size_t sizeToRead)
 {
-    std::uint32_t realReadSize =
+    std::size_t realReadSize =
     ((d_position + sizeToRead) > d_size) ? d_size - d_position : sizeToRead;
 
     memcpy(buffer, d_buffer + d_position, realReadSize);

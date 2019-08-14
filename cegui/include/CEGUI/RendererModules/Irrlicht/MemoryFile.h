@@ -52,7 +52,7 @@ public:
     virtual ~IrrlichtMemoryFile() {};
 
     // implement required interface from IReadFile
-    irr::s32 read(void* buffer, irr::u32 sizeToRead);
+    std::size_t read(void* buffer, std::size_t sizeToRead);
     long getSize() const;
     long getPos() const;
     bool seek(long finalPos, bool relativeMovement = false);

@@ -53,7 +53,7 @@ public:
 
 
     // Implement GeometryBuffer interface.
-    virtual void draw() const;
+    virtual void draw(std::uint32_t drawModeMask = DrawModeMaskAll) const;
     virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
 
     /*

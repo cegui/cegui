@@ -61,8 +61,10 @@ Direct3D11GeometryBuffer::~Direct3D11GeometryBuffer()
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::draw() const
+void Direct3D11GeometryBuffer::draw(std::uint32_t drawModeMask) const
 {
+    CEGUI_UNUSED(drawModeMask);
+
     if(d_vertexData.empty())
         return;
 

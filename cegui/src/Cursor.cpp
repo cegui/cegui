@@ -29,11 +29,14 @@
 #include "CEGUI/Cursor.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/System.h"
+#include "CEGUI/GUIContext.h"
+#include "CEGUI/Window.h"
 #include "CEGUI/Renderer.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/GUIContext.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -55,7 +58,8 @@ const String Cursor::EventDefaultImageChanged("DefaultImageChanged");
 /*************************************************************************
 	constructor
 *************************************************************************/
-Cursor::Cursor(void) :
+Cursor::Cursor(const GUIContext& context) :
+    d_context(context),
     d_indicatorImage(nullptr),
     d_defaultIndicatorImage(nullptr),
     d_position(0.0f, 0.0f),
@@ -64,17 +68,9 @@ Cursor::Cursor(void) :
     d_customOffset(0.0f, 0.0f),
     d_cachedGeometryValid(false)
 {
-    const Rectf screenArea(glm::vec2(0, 0),
-                           System::getSingleton().getRenderer()->getDisplaySize());
-	// default constraint is to whole screen
-	setConstraintArea(&screenArea);
-
-    if (s_initialPositionSet)
-        setPosition(s_initialPosition);
-    else
-        // pointer defaults to middle of the constrained area
-        setPosition(0.5f * glm::vec2(screenArea.getWidth(),
-                                     screenArea.getHeight()));
+    // default constraint is to whole screen
+    const URect screenArea(cegui_reldim(0.f), cegui_reldim(0.f), cegui_reldim(1.f), cegui_reldim(1.f));
+    setUnifiedConstraintArea(&screenArea);
 }
 
 
@@ -118,8 +114,18 @@ void Cursor::setDefaultImage(const Image* image)
     if (image == d_defaultIndicatorImage)
         return;
 
+    // update the current image if it is the default image
+    if(d_indicatorImage == d_defaultIndicatorImage)
+    {
+        auto* window = d_context.getWindowContainingCursor();
+        if(!window || !window->getCursor(false))
+        {
+            setImage(image);
+        }
+    }
+    
     d_defaultIndicatorImage = image;
-    d_cachedGeometryValid = d_indicatorImage != nullptr;
+    d_cachedGeometryValid = false;
 
 	CursorEventArgs args(this);
 	args.d_image = image;
@@ -141,7 +147,7 @@ const Image* Cursor::getDefaultImage() const
 /*************************************************************************
 	Draw the cursor
 *************************************************************************/
-void Cursor::draw()
+void Cursor::draw(std::uint32_t drawModeMask)
 {
     if (!d_visible || !d_indicatorImage)
         return;
@@ -149,9 +155,10 @@ void Cursor::draw()
     if (!d_cachedGeometryValid)
         cacheGeometry();
 
+    System::getSingleton().getRenderer()->uploadBuffers(d_geometryBuffers);
     const size_t geom_buffer_count = d_geometryBuffers.size();
     for (size_t i = 0; i < geom_buffer_count; ++i)
-        d_geometryBuffers[i]->draw();
+        d_geometryBuffers[i]->draw(drawModeMask);
 }
 
 
@@ -206,8 +213,7 @@ void Cursor::constrainPosition()
 *************************************************************************/
 void Cursor::setConstraintArea(const Rectf* area)
 {
-    const Rectf renderer_area(glm::vec2(0, 0),
-                              System::getSingleton().getRenderer()->getDisplaySize());
+    const Rectf renderer_area(glm::vec2(0, 0), d_context.getSurfaceSize());
 
 	if (!area)
 	{
@@ -234,15 +240,13 @@ void Cursor::setConstraintArea(const Rectf* area)
 *************************************************************************/
 void Cursor::setUnifiedConstraintArea(const URect* area)
 {
-    const Rectf renderer_area(glm::vec2(0, 0),
-                              System::getSingleton().getRenderer()->getDisplaySize());
-
 	if (area)
 	{
         d_constraints = *area;
 	}
 	else
 	{
+        const Rectf renderer_area(glm::vec2(0, 0), d_context.getSurfaceSize());
 		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_min.x / renderer_area.getWidth());
 		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_min.y / renderer_area.getHeight());
 		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_max.x / renderer_area.getWidth());
@@ -253,15 +257,15 @@ void Cursor::setUnifiedConstraintArea(const URect* area)
 }
 
 /*************************************************************************
-	Set the area that the cursor is constrained to.
+	Get the area that the cursor is constrained to.
 *************************************************************************/
 Rectf Cursor::getConstraintArea(void) const
 {
-    return Rectf(CoordConverter::asAbsolute(d_constraints, System::getSingleton().getRenderer()->getDisplaySize()));
+    return Rectf(CoordConverter::asAbsolute(d_constraints, d_context.getSurfaceSize()));
 }
 
 /*************************************************************************
-	Set the area that the cursor is constrained to.
+	Get the area that the cursor is constrained to.
 *************************************************************************/
 const URect& Cursor::getUnifiedConstraintArea(void) const
 {
@@ -274,19 +278,32 @@ const URect& Cursor::getUnifiedConstraintArea(void) const
 *************************************************************************/
 glm::vec2 Cursor::getDisplayIndependantPosition(void) const
 {
-    const Sizef dsz(System::getSingleton().getRenderer()->getDisplaySize());
+    const Sizef& dsz = d_context.getSurfaceSize();
 
     return glm::vec2(d_position.x / (dsz.d_width - 1.0f),
                      d_position.y / (dsz.d_height - 1.0f));
 }
 
 //----------------------------------------------------------------------------//
-void Cursor::notifyDisplaySizeChanged(const Sizef& new_size)
+void Cursor::notifyTargetSizeChanged(const Sizef& new_size)
 {
     updateGeometryBuffersClipping(Rectf(glm::vec2(0.0f, 0.0f), new_size));
 
     // invalidate to regenerate geometry at (maybe) new size
     d_cachedGeometryValid = false;
+}
+
+//----------------------------------------------------------------------------//
+void Cursor::resetPositionToDefault()
+{
+    if (s_initialPositionSet)
+        setPosition(s_initialPosition);
+    else
+    {
+        // pointer defaults to middle of the constrained area
+        Rectf absArea = getConstraintArea();
+        setPosition(0.5f * glm::vec2(absArea.getWidth(), absArea.getHeight()));
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -333,8 +350,7 @@ void Cursor::cacheGeometry()
         d_geometryBuffers.insert(d_geometryBuffers.end(), geomBuffers.begin(), geomBuffers.end());
     }
 
-    const Rectf clipping_area(glm::vec2(0, 0),
-        System::getSingleton().getRenderer()->getDisplaySize());
+    const Rectf clipping_area(glm::vec2(0, 0), d_context.getSurfaceSize());
     updateGeometryBuffersClipping(clipping_area);
     updateGeometryBuffersTranslation();
 }

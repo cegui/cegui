@@ -107,9 +107,7 @@
 SampleBrowserBase::SampleBrowserBase() :
         d_rendererSelector(nullptr),
         d_baseApp(nullptr),
-        d_quitting(false),
-        d_appWindowWidth(0),
-        d_appWindowHeight(0)
+        d_quitting(false)
 {}
 
 
@@ -230,8 +228,10 @@ bool SampleBrowserBase::initialise
         case OgreGuiRendererType:
             {
                 CEGuiOgreBaseApplication* ogreBaseApp = new CEGuiOgreBaseApplication();
-                if(!ogreBaseApp->isInitialised())
-                    return false;
+                #if (OGRE_VERSION < ((1 << 16) | (10 << 8) | 0))
+                    if(!ogreBaseApp->isInitialised())
+					    return false;
+                #endif
 
                 d_baseApp = ogreBaseApp;
             }

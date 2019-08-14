@@ -237,16 +237,16 @@ void GUILayout_xmlHandler::elementWindowStart(const XMLAttributes& attributes)
 
         // signal error - with more info about what we have done.
         throw InvalidRequestException(
-            "layout loading has been aborted since Window named '" + windowName + "' already exists.");
+            "Layout loading has been aborted since Window named '" + windowName + "' already exists.");
     }
-    catch (UnknownObjectException&)
+    catch (UnknownObjectException& e)
     {
         // delete all windows created
         cleanupLoadedWindows();
 
         // signal error - with more info about what we have done.
         throw InvalidRequestException(
-            "layout loading has been aborted since no WindowFactory is available for '" + windowType + "' objects.");
+            String("Layout loading has been aborted with error:\n") + e.getMessage());
     }
 }
 

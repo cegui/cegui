@@ -202,7 +202,7 @@ void ListboxTextItem::setText(const String& text)
 void ListboxTextItem::parseTextString() const
 {
     d_renderedString =
-        d_renderedStringParser->parse(getTextVisual(), nullptr, &d_textCols);
+        d_renderedStringParser->parse(getTextVisual(), getFont(), &d_textCols);
 
     d_renderedStringValid = true;
 }

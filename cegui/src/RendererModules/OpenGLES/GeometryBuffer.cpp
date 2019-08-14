@@ -54,8 +54,10 @@ void OpenGLESGeometryBuffer::appendVertex(const Vertex& vertex)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::draw() const
+void OpenGLESGeometryBuffer::draw(std::uint32_t drawModeMask) const
 {
+    CEGUI_UNUSED(drawModeMask);
+    
     // setup clip region
     GLint vp[4];
     glGetIntegerv(GL_VIEWPORT, vp);

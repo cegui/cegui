@@ -135,21 +135,6 @@ Rectf LayoutContainer::getClientChildContentArea_impl(bool skipAllPixelAlignment
 }
 
 //----------------------------------------------------------------------------//
-size_t LayoutContainer::getIdxOfChild(Window* wnd) const
-{
-    for (size_t i = 0; i < getChildCount(); ++i)
-    {
-        if (getChildAtIdx(i) == wnd)
-        {
-            return i;
-        }
-    }
-
-    assert(0);
-    return 0;
-}
-
-//----------------------------------------------------------------------------//
 void LayoutContainer::addChild_impl(Element* element)
 {
     Window* wnd = dynamic_cast<Window*>(element);
@@ -260,6 +245,9 @@ void LayoutContainer::onParentSized(ElementEventArgs& e)
     // force update of child positioning.
     notifyScreenAreaChanged(true);
     performChildWindowLayout(true, true);
+
+    // It is possible that children didn't change, but we must re-layout them
+    markNeedsLayouting();
 }
 
 //----------------------------------------------------------------------------//

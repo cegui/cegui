@@ -4391,7 +4391,7 @@
 -->
     <WidgetLook name="OgreTray/Menubar">
         <PropertyDefinition redrawOnWrite="true" initialValue="tl:FFDFEFF5 tr:FFDFDFF5 bl:FFF4F3F5 br:FFF4F3F5" type="ColourRect" name="BackgroundColours"/>
-        <PropertyDefinition layoutOnWrite="true" initialValue="5" type="uint" name="BorderWidth"/>
+        <PropertyDefinition layoutOnWrite="true" initialValue="5" type="std::uint32_t" name="BorderWidth"/>
         <NamedArea name="ItemRenderArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -4666,8 +4666,8 @@
 :::: Tab Button Pane
 -->
     <WidgetLook name="OgreTray/TabButtonPane">
-        <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="1" type="uint" name="EnableTop"/>
-        <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="1" type="uint" name="EnableBottom"/>
+        <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="1" type="std::uint32_t" name="EnableTop"/>
+        <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="1" type="std::uint32_t" name="EnableBottom"/>
         <Property name="Size" value="{{0, 0.3}, {0, 0.3}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -4711,8 +4711,8 @@
 :::: Tab content pane
 -->
     <WidgetLook name="OgreTray/TabContentPane">
-        <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="0" type="uint" name="EnableTop"/>
-        <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="0" type="uint" name="EnableBottom"/>
+        <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="0" type="std::uint32_t" name="EnableTop"/>
+        <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="0" type="std::uint32_t" name="EnableBottom"/>
         <Property name="Size" value="{{0, 0.3}, {0, 0.3}}" />
         <ImagerySection name="normal">
             <FrameComponent>

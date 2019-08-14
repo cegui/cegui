@@ -307,7 +307,7 @@ private:
     typedef std::vector<Interpolator*> BasicInterpolatorList;
     //! stores interpolators that are inbuilt in CEGUI
     BasicInterpolatorList d_basicInterpolators;
-
+    
     typedef std::map<String, Animation*> AnimationMap;
     //! all defined animations
     AnimationMap d_animations;

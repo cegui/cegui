@@ -47,7 +47,7 @@ public:
     inline Rectf()
     {}
 
-    inline Rectf(const float& left, const float& top, const float& right, const float& bottom):
+    inline Rectf(float left, float top, float right, float bottom):
         d_min(left, top),
         d_max(right, bottom)
     {}
@@ -75,42 +75,42 @@ public:
         return *this;
     }
 
-    inline void left(const float& v)
+    inline void left(float v)
     {
         d_min.x = v;
     }
 
-    inline const float& left() const
+    inline float left() const
     {
         return d_min.x;
     }
 
-    inline void top(const float& v)
+    inline void top(float v)
     {
         d_min.y = v;
     }
 
-    inline const float& top() const
+    inline float top() const
     {
         return d_min.y;
     }
 
-    inline void right(const float& v)
+    inline void right(float v)
     {
         d_max.x = v;
     }
 
-    inline const float& right() const
+    inline float right() const
     {
         return d_max.x;
     }
 
-    inline void bottom(const float& v)
+    inline void bottom(float v)
     {
         d_max.y = v;
     }
 
-    inline const float& bottom() const
+    inline float bottom() const
     {
         return d_max.y;
     }
@@ -149,7 +149,7 @@ public:
         return Sizef(getWidth(), getHeight());
     }
 
-    void setWidth(const float& w)
+    void setWidth(float w)
     {
         d_max.x = d_min.x + w;
     }
@@ -163,7 +163,7 @@ public:
         return d_max.x - d_min.x;
     }
 
-    void setHeight(const float& h)
+    void setHeight(float h)
     {
         d_max.y = d_min.y + h;
     }

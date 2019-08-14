@@ -54,7 +54,7 @@ public:
     virtual ~NullGeometryBuffer();
 
     // Implementation/overrides of member functions inherited from GeometryBuffer
-    void draw() const override;
+    void draw(std::uint32_t drawModeMask = DrawModeMaskAll) const override;
     void appendGeometry(const std::vector<float>& vertex_data);
 };
 

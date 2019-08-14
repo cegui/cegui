@@ -58,7 +58,7 @@ public:
         The GeometryBuffer objects remain in the queue after drawing has taken
         place.
     */
-    void draw() const;
+    void draw(std::uint32_t drawModeMask = DrawModeMaskAll) const;
 
     /*!
     \brief
@@ -78,7 +78,7 @@ public:
     \param geometry_buffers
         The GeometryBuffer that is to be added to the RenderQueue for later drawing.
     */
-    void addGeometryBuffer(const GeometryBuffer& geometry_buffer);
+    void addGeometryBuffer(GeometryBuffer& geometry_buffer);
 
     /*!
     \brief
@@ -99,9 +99,12 @@ public:
     */
     void reset();
 
-private:
     //! Type to use for the GeometryBuffer collection.
-    typedef std::vector<const GeometryBuffer*> BufferList;
+    typedef std::vector<GeometryBuffer*> BufferList;
+    BufferList& getBuffers()         {return d_buffers;}
+
+private:
+
     //! Collection of GeometryBuffer objects that comprise this RenderQueue.
     BufferList d_buffers;
 };

@@ -85,7 +85,7 @@ public:
     /** Event fired when the default font changes.
      * Handlers are passed a const reference to a generic EventArgs struct.
      */
-	static const String EventDefaultFontChanged;
+    static const String EventDefaultFontChanged;
 
     GUIContext(RenderTarget& target);
     ~GUIContext();
@@ -111,8 +111,9 @@ public:
     const Sizef& getSurfaceSize() const;
 
     //! call to indicate that some redrawing is required.
-    void markAsDirty();
-    bool isDirty() const;
+    void markAsDirty(std::uint32_t drawModeMask = DrawModeMaskAll);
+    bool isDirty() const { return d_dirtyDrawModeMask != 0; }
+    std::uint32_t getDirtyDrawModeMask() const { return d_dirtyDrawModeMask; }
 
     /*!
     \brief
@@ -215,7 +216,7 @@ public:
     bool injectInputEvent(const InputEvent& event) override;
 
     // public overrides
-    void draw() override;
+    void draw(std::uint32_t drawMode = DrawModeMaskAll) override;
 
     /*!
     \brief
@@ -225,8 +226,8 @@ public:
 
 protected:
     void updateRootWindowAreaRects() const;
-    void drawWindowContentToTarget();
-    void renderWindowHierarchyToSurfaces();
+    void drawWindowContentToTarget(std::uint32_t drawModeMask);
+    void renderWindowHierarchyToSurfaces(std::uint32_t drawModeMask);
 
     void createDefaultTooltipWindowInstance() const;
     void destroyDefaultTooltipWindowInstance();
@@ -256,7 +257,7 @@ protected:
     virtual void onDefaultFontChanged(EventArgs& args);
 
     // protected overrides
-    void drawContent() override;
+    void drawContent(std::uint32_t drawModeMask = DrawModeMaskAll) override;
 
     // Input event handlers
     void initializeSemanticEventHandlers();
@@ -277,7 +278,6 @@ protected:
     bool handleRedoRequest(const SemanticInputEvent& event);
 
     Window* d_rootWindow;
-    bool d_isDirty;
     Cursor d_cursor;
 
     mutable Tooltip* d_defaultTooltipObject;
@@ -293,6 +293,9 @@ protected:
     mutable bool d_windowContainingCursorIsUpToDate;
     Window* d_modalWindow;
     Window* d_captureWindow;
+
+    //! The mask of draw modes that must be redrawn
+    std::uint32_t d_dirtyDrawModeMask;
 
     CursorsState d_cursorsState;
 

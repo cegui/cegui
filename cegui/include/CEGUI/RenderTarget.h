@@ -83,8 +83,13 @@ public:
     \param buffer
         GeometryBuffer object holding the geometry that should be drawn to the
         RenderTarget.
+
+    \param drawModeMask
+        Defines the draw mode mask that may be used by the renderer to separate
+        draw calls.
     */
-    virtual void draw(const GeometryBuffer& buffer);
+    virtual void draw(const GeometryBuffer& buffer,
+        std::uint32_t drawModeMask = DrawModeMaskAll);
 
     /*!
     \brief
@@ -94,8 +99,13 @@ public:
     \param queue
         RenderQueue object holding the geometry that should be drawn to the
         RenderTarget.
+
+    \param drawModeMask
+        Defines the draw mode mask that may be used by the renderer to separate
+        draw calls.
     */
-    virtual void draw(const RenderQueue& queue);
+    virtual void draw(const RenderQueue& queue,
+        std::uint32_t drawModeMask = DrawModeMaskAll);
 
     /*!
     \brief

@@ -29,6 +29,8 @@
 
 #include "CEGUI/Config.h"
 
+#define CEGUI_OPENGL_BIG_BUFFER
+
 #if defined CEGUI_USE_EPOXY
 
 #include <epoxy/gl.h>

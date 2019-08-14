@@ -226,21 +226,7 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
     Sizef absMax(CoordConverter::asAbsolute(d_maxSize,
         getRootContainerSize(), false));
 
-    Sizef base_size;
-    if (skipAllPixelAlignment)
-    {
-        base_size = Sizef((d_parent && !d_nonClient) ?
-                           d_parent->getUnclippedInnerRect().getFresh(true).getSize() :
-                           getParentPixelSize(true));
-    }
-    else
-    {
-        base_size = Sizef((d_parent && !d_nonClient) ?
-                           d_parent->getUnclippedInnerRect().get().getSize() :
-                           getParentPixelSize());
-    }
-
-    Sizef ret = CoordConverter::asAbsolute(getSize(), base_size, false);
+    Sizef ret = CoordConverter::asAbsolute(getSize(), getBasePixelSize(skipAllPixelAlignment), false);
 
     // in case absMin components are larger than absMax ones,
     // max size takes precedence
@@ -325,7 +311,24 @@ Sizef Element::getParentPixelSize(bool skipAllPixelAlignment) const
 }
 
 //----------------------------------------------------------------------------//
-const Sizef& Element::getRootContainerSize() const
+Sizef Element::getBasePixelSize(bool skipAllPixelAlignment) const
+{
+    if (skipAllPixelAlignment)
+    {
+        return Sizef((d_parent && !d_nonClient) ?
+            d_parent->getUnclippedInnerRect().getFresh(true).getSize() :
+            getParentPixelSize(true));
+    }
+    else
+    {
+        return Sizef((d_parent && !d_nonClient) ?
+            d_parent->getUnclippedInnerRect().get().getSize() :
+            getParentPixelSize());
+    }
+}
+
+//----------------------------------------------------------------------------//
+Sizef Element::getRootContainerSize() const
 {
     return System::getSingleton().getRenderer()->getDisplaySize();
 }
@@ -978,19 +981,18 @@ void Element::onSized_impl(ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Element::notifyChildrenOfSizeChange(const bool non_client,
-                                         const bool client)
+void Element::notifyChildrenOfSizeChange(const bool non_client, const bool client)
 {
-    const size_t child_count = getChildCount();
-    for (size_t i = 0; i < child_count; ++i)
-    {
-        Element * const child = d_children[i];
+    if (!non_client && !client)
+        return;
 
+    for (Element* child : d_children)
+    {
         if ((non_client && child->isNonClient()) ||
             (client && !child->isNonClient()))
         {
             ElementEventArgs args(this);
-            d_children[i]->onParentSized(args);
+            child->onParentSized(args);
         }
     }
 }

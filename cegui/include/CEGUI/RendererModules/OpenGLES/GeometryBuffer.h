@@ -55,7 +55,7 @@ public:
     OpenGLESGeometryBuffer();
 
     // implementation of abstract members from GeometryBuffer
-    void draw() const;
+    void draw(std::uint32_t drawModeMask = DrawModeMaskAll) const;
     void setTranslation(const glm::vec3& t);
     void setRotation(const glm::quat& r);
     void setPivot(const glm::vec3& p);

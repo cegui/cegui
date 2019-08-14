@@ -188,11 +188,14 @@ RenderingSurface& RenderingWindow::getOwner()
 //----------------------------------------------------------------------------//
 void RenderingWindow::setOwner(RenderingSurface& owner)
 {
+    if (&owner == this)
+        throw InvalidRequestException("RenderingWindow can't own itself!");
+
     d_owner = &owner;
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::draw()
+void RenderingWindow::draw(std::uint32_t drawModeMask)
 {
     // update geometry if needed.
     if (!d_geometryValid)
@@ -201,7 +204,7 @@ void RenderingWindow::draw()
     if (d_invalidated)
     {
         // base class will render out queues for us
-        RenderingSurface::draw();
+        RenderingSurface::draw(drawModeMask);
         // mark as no longer invalidated
         d_invalidated = false;
     }

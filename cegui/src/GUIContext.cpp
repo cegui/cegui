@@ -49,13 +49,13 @@ const String GUIContext::EventDefaultFontChanged("DefaultFontChanged");
 GUIContext::GUIContext(RenderTarget& target) :
     RenderingSurface(target),
     d_rootWindow(nullptr),
-    d_isDirty(false),
     d_defaultTooltipObject(nullptr),
     d_weCreatedTooltipObject(false),
     d_defaultFont(nullptr),
     d_surfaceSize(target.getArea().getSize()),
     d_modalWindow(nullptr),
     d_captureWindow(nullptr),
+    d_dirtyDrawModeMask(0),
     d_areaChangedEventConnection(
         target.subscribeEvent(
             RenderTarget::EventAreaChanged,
@@ -65,8 +65,10 @@ GUIContext::GUIContext(RenderTarget& target) :
             WindowManager::EventWindowDestroyed,
             Event::Subscriber(&GUIContext::windowDestroyedHandler, this))),
     d_semanticEventHandlers(),
-    d_windowNavigator(nullptr)
+    d_windowNavigator(nullptr),
+    d_cursor(*this)
 {
+    d_cursor.resetPositionToDefault();
     resetWindowContainingCursor();
     initializeSemanticEventHandlers();
 }
@@ -100,6 +102,8 @@ void GUIContext::setRootWindow(Window* new_root)
     if (d_rootWindow == new_root)
         return;
 
+    setInputCaptureWindow(nullptr);
+
     if (d_rootWindow)
         d_rootWindow->setGUIContext(nullptr);
 
@@ -108,10 +112,7 @@ void GUIContext::setRootWindow(Window* new_root)
     d_rootWindow = new_root;
 
     if (d_rootWindow)
-    {
         d_rootWindow->setGUIContext(this);
-        d_rootWindow->syncTargetSurface();
-    }
 
     onRootWindowChanged(args);
 }
@@ -186,10 +187,10 @@ void GUIContext::createDefaultTooltipWindowInstance() const
     d_defaultTooltipObject = dynamic_cast<Tooltip*>(
         winmgr.createWindow(d_defaultTooltipType,
                             "CEGUI::System::default__auto_tooltip__"));
-    d_defaultTooltipObject->setAutoWindow(true);
 
     if (d_defaultTooltipObject)
     {
+        d_defaultTooltipObject->setAutoWindow(true);
         d_defaultTooltipObject->setWritingXMLAllowed(false);
         d_weCreatedTooltipObject = true;
     }
@@ -226,55 +227,67 @@ const Sizef& GUIContext::getSurfaceSize() const
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::markAsDirty()
+void GUIContext::markAsDirty(std::uint32_t drawModeMask)
 {
-    d_isDirty = true;
+    d_dirtyDrawModeMask |= drawModeMask;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::isDirty() const
+void GUIContext::draw(std::uint32_t drawModeMask)
 {
-    return d_isDirty;
+    // Cursor is always dirty because it must be redrawn each frame
+    const bool drawCursor = (drawModeMask & DrawModeFlagMouseCursor);
+    
+    drawModeMask &= d_dirtyDrawModeMask;
+
+    drawWindowContentToTarget(drawModeMask);
+
+    if (drawCursor)
+        drawModeMask |= DrawModeFlagMouseCursor;
+
+    RenderingSurface::draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::draw()
+void GUIContext::drawContent(std::uint32_t drawModeMask)
 {
-    if (d_isDirty)
-        drawWindowContentToTarget();
+    if (!drawModeMask)
+        return;
 
-    RenderingSurface::draw();
+    RenderingSurface::drawContent(drawModeMask);
+
+    if (drawModeMask & DrawModeFlagMouseCursor)
+        d_cursor.draw(DrawModeFlagMouseCursor);
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::drawContent()
+void GUIContext::drawWindowContentToTarget(std::uint32_t drawModeMask)
 {
-    RenderingSurface::drawContent();
+    if (!drawModeMask)
+        return;
 
-    d_cursor.draw();
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::drawWindowContentToTarget()
-{
     if (d_rootWindow)
-        renderWindowHierarchyToSurfaces();
+        renderWindowHierarchyToSurfaces(drawModeMask);
     else
         clearGeometry();
 
-    d_isDirty = false;
+    // Mark all rendered modes as not dirty (cursor is always redrawn anyway)
+    d_dirtyDrawModeMask &= (~drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::renderWindowHierarchyToSurfaces()
+void GUIContext::renderWindowHierarchyToSurfaces(std::uint32_t drawModeMask)
 {
-    RenderingSurface& rs = d_rootWindow->getTargetRenderingSurface();
-    rs.clearGeometry();
+    RenderingSurface* rs = d_rootWindow->getTargetRenderingSurface();
+    if (!rs)
+        return;
 
-    if (rs.isRenderingWindow())
-        static_cast<RenderingWindow&>(rs).getOwner().clearGeometry();
+    rs->clearGeometry();
 
-    d_rootWindow->draw();
+    if (rs->isRenderingWindow())
+        static_cast<RenderingWindow*>(rs)->getOwner().clearGeometry();
+
+    d_rootWindow->draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//
@@ -294,7 +307,7 @@ const Cursor& GUIContext::getCursor() const
 bool GUIContext::areaChangedHandler(const EventArgs&)
 {
     d_surfaceSize = d_target->getArea().getSize();
-    d_cursor.notifyDisplaySizeChanged(d_surfaceSize);
+    d_cursor.notifyTargetSizeChanged(d_surfaceSize);
 
     if (d_rootWindow)
         updateRootWindowAreaRects();
@@ -569,9 +582,6 @@ void GUIContext::setRenderTarget(RenderTarget& target)
 
     RenderTarget* const old_target = d_target;
     d_target = &target;
-
-    if (d_rootWindow)
-        d_rootWindow->syncTargetSurface();
 
     d_areaChangedEventConnection.disconnect();
     d_areaChangedEventConnection = d_target->subscribeEvent(

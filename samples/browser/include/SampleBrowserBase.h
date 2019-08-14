@@ -88,7 +88,7 @@ public:
     \brief
     Update function for window size changes
     */
-    virtual void handleNewWindowSize(float width, float height) = 0;
+    virtual void handleNewWindowSize(int width, int height) = 0;
 
     void renderSingleFrame(float elapsed);
 
@@ -186,12 +186,12 @@ protected:
         Data fields
     *************************************************************************/
     CEGuiRendererSelector*  d_rendererSelector;     //!< Points to the renderer selector object.
-    CEGuiBaseApplication*   d_baseApp;            //!< Pointer to the base application object.
+    CEGuiBaseApplication*   d_baseApp;              //!< Pointer to the base application object.
 
-    bool                    d_quitting;              //!< Bool defining if application should quit.
+    bool                    d_quitting;             //!< Bool defining if application should quit.
 
-    int                     d_appWindowWidth;            //!< Int defining the application window's width.
-    int                     d_appWindowHeight;           //!< Int defining the application window's height.
+    int                     d_appWindowWidth = 0;   //!< The application window's width.
+    int                     d_appWindowHeight = 0;  //!< The application window's height.
 };
 
 #endif  // end of guard _SampleBrowserBase_h_

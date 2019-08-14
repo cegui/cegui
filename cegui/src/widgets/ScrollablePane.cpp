@@ -29,6 +29,7 @@
 #include "CEGUI/widgets/Scrollbar.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/CoordConverter.h"
 #include <math.h>
 
 // Start of CEGUI namespace section
@@ -40,7 +41,6 @@ const String ScrollablePane::EventNamespace("ScrollablePane");
 const String ScrollablePane::EventContentPaneChanged("ContentPaneChanged");
 const String ScrollablePane::EventVertScrollbarModeChanged("VertScrollbarModeChanged");
 const String ScrollablePane::EventHorzScrollbarModeChanged("HorzScrollbarModeChanged");
-const String ScrollablePane::EventAutoSizeSettingChanged("AutoSizeSettingChanged");
 const String ScrollablePane::EventContentPaneScrolled("ContentPaneScrolled");
 const String ScrollablePane::VertScrollbarName( "__auto_vscrollbar__" );
 const String ScrollablePane::HorzScrollbarName( "__auto_hscrollbar__" );
@@ -56,7 +56,8 @@ ScrollablePane::ScrollablePane(const String& type, const String& name) :
     Window(type, name),
     d_forceVertScroll(false),
     d_forceHorzScroll(false),
-    d_contentRect(0, 0, 0, 0),
+    d_swipeScrollingEnabled(false),
+    d_contentRect(0.f, 0.f, 0.f, 0.f),
     d_vertStep(0.1f),
     d_vertOverlap(0.01f),
     d_horzStep(0.1f),
@@ -71,6 +72,11 @@ ScrollablePane::ScrollablePane(const String& type, const String& name) :
             ScrolledContainerName));
     container->setAutoWindow(true);
 
+    // Size adjustment flags are synchronized with ones of the container.
+    // ScrollablePane's own values have no meaning, at least for now.
+    d_isWidthAdjustedToContent = container->isWidthAdjustedToContent();
+    d_isHeightAdjustedToContent = container->isHeightAdjustedToContent();
+
     // add scrolled container widget as child
     addChild(container);
 }
@@ -83,6 +89,24 @@ ScrollablePane::~ScrollablePane(void)
 const ScrolledContainer* ScrollablePane::getContentPane(void) const
 {
     return getScrolledContainer();
+}
+
+//----------------------------------------------------------------------------//
+Rectf ScrollablePane::getContentPixelRect(void) const
+{
+    return getScrolledContainer()->getContentPixelRect();
+}
+
+//----------------------------------------------------------------------------//
+USize ScrollablePane::getContentSize(void) const
+{
+    return getScrolledContainer()->getSize();
+}
+
+//----------------------------------------------------------------------------//
+void ScrollablePane::setContentSize(const USize& size)
+{
+    getScrolledContainer()->setSize(size);
 }
 
 //----------------------------------------------------------------------------//
@@ -124,27 +148,18 @@ void ScrollablePane::setShowHorzScrollbar(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-bool ScrollablePane::isContentPaneAutoSized(void) const
+bool ScrollablePane::isSwipeScrollingEnabled() const
 {
-    return getScrolledContainer()->isContentPaneAutoSized();
+    return d_swipeScrollingEnabled;
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::setContentPaneAutoSized(bool setting)
+void ScrollablePane::setSwipeScrollingEnabled(bool setting)
 {
-    getScrolledContainer()->setContentPaneAutoSized(setting);
-}
+    d_swipeScrollingEnabled = setting;
 
-//----------------------------------------------------------------------------//
-const Rectf& ScrollablePane::getContentPaneArea(void) const
-{
-    return getScrolledContainer()->getContentArea();
-}
-
-//----------------------------------------------------------------------------//
-void ScrollablePane::setContentPaneArea(const Rectf& area)
-{
-    getScrolledContainer()->setContentArea(area);
+    if (!d_swipeScrollingEnabled && d_swiping)
+        releaseInput();
 }
 
 //----------------------------------------------------------------------------//
@@ -237,14 +252,15 @@ void ScrollablePane::initialiseComponents(void)
     
     // ban properties forwarded from here
     container->banPropertyFromXML(Window::CursorInputPropagationEnabledPropertyName);
-    container->banPropertyFromXML("ContentArea");
-    container->banPropertyFromXML("ContentPaneAutoSized");
+    container->banPropertyFromXML("AdjustWidthToContent");
+    container->banPropertyFromXML("AdjustHeightToContent");
     horzScrollbar->banPropertyFromXML(Window::AlwaysOnTopPropertyName);
     vertScrollbar->banPropertyFromXML(Window::AlwaysOnTopPropertyName);
 
     // do a bit of initialisation
     horzScrollbar->setAlwaysOnTop(true);
     vertScrollbar->setAlwaysOnTop(true);
+    container->setCursor(getCursor());
 
     // subscribe to events we need to hear about
     vertScrollbar->subscribeEvent(
@@ -256,11 +272,11 @@ void ScrollablePane::initialiseComponents(void)
             Event::Subscriber(&ScrollablePane::handleScrollChange, this));
 
     d_contentChangedConn = container->subscribeEvent(
-            ScrolledContainer::EventContentChanged,
+            ScrolledContainer::EventSized,
             Event::Subscriber(&ScrollablePane::handleContentAreaChange, this));
 
     d_autoSizeChangedConn = container->subscribeEvent(
-            ScrolledContainer::EventAutoSizeSettingChanged,
+            ScrolledContainer::EventIsSizeAdjustedToContentChanged,
             Event::Subscriber(&ScrollablePane::handleAutoSizePaneChanged, this));
     
     // finalise setup
@@ -274,39 +290,64 @@ void ScrollablePane::configureScrollbars(void)
     Scrollbar* const vertScrollbar = getVertScrollbar();
     Scrollbar* const horzScrollbar = getHorzScrollbar();
 
-    const bool horzScrollBarWasVisible = horzScrollbar->isVisible();
-    const bool vertScrollBarWasVisible = vertScrollbar->isVisible();
-
-    // enable required scrollbars
-    vertScrollbar->setVisible(isVertScrollbarNeeded());
-    horzScrollbar->setVisible(isHorzScrollbarNeeded());
-    
-    // Check if the addition of the horizontal scrollbar means we
-    // now also need the vertical bar.
-    if (horzScrollbar->isVisible())
-        vertScrollbar->setVisible(isVertScrollbarNeeded());
-
-    if (horzScrollBarWasVisible != horzScrollbar->isVisible() ||
-        vertScrollBarWasVisible != vertScrollbar->isVisible())
+    // update vertical scrollbar state
     {
-        ElementEventArgs args(this);
-        onSized(args);
+        const bool show = d_forceVertScroll ||
+            (getScrolledContainer()->getPixelSize().d_height > getViewableArea().getHeight());
+
+        if (vertScrollbar->isVisible() != show)
+        {
+            vertScrollbar->setVisible(show);
+
+            notifyScreenAreaChanged(true);
+            performChildWindowLayout(false, true);
+        }
     }
 
-    performChildWindowLayout();
+    // update horizontal scrollbar state
+    const bool wasVisibleHorz = horzScrollbar->isVisible();
+    {
+        const bool show = d_forceHorzScroll ||
+            (getScrolledContainer()->getPixelSize().d_width > getViewableArea().getWidth());
+
+        if (wasVisibleHorz != show)
+        {
+            horzScrollbar->setVisible(show);
+
+            notifyScreenAreaChanged(true);
+            performChildWindowLayout(false, true);
+        }
+    }
+
+    // change in a horizontal scrollbar state might affect viewable area,
+    // so update vertical scrollbar state again
+    if (wasVisibleHorz != horzScrollbar->isVisible())
+    {
+        const bool show = d_forceVertScroll ||
+            (getScrolledContainer()->getPixelSize().d_height > getViewableArea().getHeight());
+
+        if (vertScrollbar->isVisible() != show)
+        {
+            vertScrollbar->setVisible(show);
+
+            notifyScreenAreaChanged(true);
+            performChildWindowLayout(false, true);
+        }
+    }
     
     // get viewable area
     const Rectf viewableArea(getViewableArea());
+    const auto& paneSize = getScrolledContainer()->getPixelSize();
     
     // set up vertical scroll bar values
-    vertScrollbar->setDocumentSize(fabsf(d_contentRect.getHeight()));
+    vertScrollbar->setDocumentSize(paneSize.d_height);
     vertScrollbar->setPageSize(viewableArea.getHeight());
     vertScrollbar->setStepSize(std::max(1.0f, viewableArea.getHeight() * d_vertStep));
     vertScrollbar->setOverlapSize(std::max(1.0f, viewableArea.getHeight() * d_vertOverlap));
     vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
     
     // set up horizontal scroll bar values
-    horzScrollbar->setDocumentSize(fabsf(d_contentRect.getWidth()));
+    horzScrollbar->setDocumentSize(paneSize.d_width);
     horzScrollbar->setPageSize(viewableArea.getWidth());
     horzScrollbar->setStepSize(std::max(1.0f, viewableArea.getWidth() * d_horzStep));
     horzScrollbar->setOverlapSize(std::max(1.0f, viewableArea.getWidth() * d_horzOverlap));
@@ -314,17 +355,22 @@ void ScrollablePane::configureScrollbars(void)
 }
 
 //----------------------------------------------------------------------------//
-bool ScrollablePane::isHorzScrollbarNeeded(void) const
+void ScrollablePane::scrollContentPane(float dx, float dy, ScrollablePane::ScrollSource source)
 {
-    return ((fabs(d_contentRect.getWidth()) > getViewableArea().getWidth()) ||
-            d_forceHorzScroll);
-}
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
 
-//----------------------------------------------------------------------------//
-bool ScrollablePane::isVertScrollbarNeeded(void) const
-{
-    return ((fabs(d_contentRect.getHeight()) > getViewableArea().getHeight()) ||
-            d_forceVertScroll);
+    if (dy != 0.f && vertScrollbar->isEffectiveVisible() &&
+        (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
+    {
+        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + dy);
+    }
+
+    if (dx != 0.f && horzScrollbar->isEffectiveVisible() &&
+        (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
+    {
+        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + dx);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -348,7 +394,7 @@ void ScrollablePane::updateContainerPosition(void)
 //----------------------------------------------------------------------------//
 bool ScrollablePane::validateWindowRenderer(const WindowRenderer* renderer) const
 {
-	return dynamic_cast<const ScrollablePaneWindowRenderer*>(renderer) != nullptr;
+    return dynamic_cast<const ScrollablePaneWindowRenderer*>(renderer) != nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -370,12 +416,6 @@ void ScrollablePane::onHorzScrollbarModeChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onAutoSizeSettingChanged(WindowEventArgs& e)
-{
-    fireEvent(EventAutoSizeSettingChanged, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
 void ScrollablePane::onContentPaneScrolled(WindowEventArgs& e)
 {
     updateContainerPosition();
@@ -393,30 +433,44 @@ bool ScrollablePane::handleScrollChange(const EventArgs&)
 //----------------------------------------------------------------------------//
 bool ScrollablePane::handleContentAreaChange(const EventArgs&)
 {
-    // get updated extents of the content
-    const Rectf contentArea(getScrolledContainer()->getContentArea());
-    
-    // calculate any change on the top and left edges.
-    const float xChange = contentArea.d_min.x - d_contentRect.d_min.x;
-    const float yChange = contentArea.d_min.y - d_contentRect.d_min.y;
-    
-    // store new content extents information
-    d_contentRect = contentArea;
+    // prevent recursion due to shown/hidden scrollbars
+    // FIXME: can't unsubscribe inside a handler! add a method to connection for temporary disabling?
+    //d_contentChangedConn->disconnect();
+    if (d_suspendContentChangedConn)
+        return false;
+    d_suspendContentChangedConn = true;
     
     configureScrollbars();
-    
+
+    // get updated extents of the content
+    const Rectf contentRect(getScrolledContainer()->getContentPixelRect());
+
+    // calculate any change on the top and left edges.
+    const float xChange = contentRect.d_min.x - d_contentRect.d_min.x;
+    const float yChange = contentRect.d_min.y - d_contentRect.d_min.y;
+
+    // store new content extents information
+    d_contentRect = contentRect;
+
     // update scrollbar positions (which causes container pane to be moved as needed).
     Scrollbar* const horzScrollbar = getHorzScrollbar();
     horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() - xChange);
     Scrollbar* const vertScrollbar = getVertScrollbar();
     vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() - yChange);
     
-    // this call may already have been made if the scroll positions changed.  The call
+    // this call may already have been made if the scroll positions changed. The call
     // is required here for cases where the top/left 'bias' has changed; in which
     // case the scroll position notification may or may not have been fired.
     if (xChange || yChange)
         updateContainerPosition();
-    
+
+    // restore monitoring of the pane size
+    // FIXME: can't unsubscribe inside a handler! add a method to connection for temporary disabling?
+    //d_contentChangedConn = getScrolledContainer()->subscribeEvent(
+    //    ScrolledContainer::EventSized,
+    //    Event::Subscriber(&ScrollablePane::handleContentAreaChange, this));
+    d_suspendContentChangedConn = false;
+
     // fire event
     WindowEventArgs args(this);
     onContentPaneChanged(args);
@@ -427,9 +481,14 @@ bool ScrollablePane::handleContentAreaChange(const EventArgs&)
 //----------------------------------------------------------------------------//
 bool ScrollablePane::handleAutoSizePaneChanged(const EventArgs&)
 {
-    // just forward event to client.
+    // sync properties with ones of the container
+    auto container = getScrolledContainer();
+    d_isWidthAdjustedToContent = container->isWidthAdjustedToContent();
+    d_isHeightAdjustedToContent = container->isHeightAdjustedToContent();
+
+    // forward event to client.
     WindowEventArgs args(this);
-    fireEvent(EventAutoSizeSettingChanged, args, EventNamespace);
+    fireEvent(EventIsSizeAdjustedToContentChanged, args, EventNamespace);
     return args.handled > 0;
 }
 
@@ -493,30 +552,58 @@ void ScrollablePane::onScroll(CursorInputEventArgs& e)
 {
     // base class processing.
     Window::onScroll(e);
-    
+
+    float dx = 0.f;
+    float dy = 0.f;
+
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
     
     if (vertScrollbar->isEffectiveVisible() &&
         (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
     {
-        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() +
-                            vertScrollbar->getStepSize() * -e.scroll);
+        dy = vertScrollbar->getStepSize() * -e.scroll;
     }
     else if (horzScrollbar->isEffectiveVisible() &&
              (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
     {
-        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() +
-                            horzScrollbar->getStepSize() * -e.scroll);
+        dx = horzScrollbar->getStepSize() * -e.scroll;
     }
     
+    scrollContentPane(dx, dy, ScrollSource::Wheel);
+
     ++e.handled;
+}
+
+//----------------------------------------------------------------------------//
+void ScrollablePane::onIsSizeAdjustedToContentChanged(ElementEventArgs& e)
+{
+    // Forward to the container. handleAutoSizePaneChanged will be called
+    // from the inside.
+    auto container = getScrolledContainer();
+    if (container)
+    {
+        container->setAdjustWidthToContent(d_isWidthAdjustedToContent);
+        container->setAdjustHeightToContent(d_isHeightAdjustedToContent);
+    }
 }
 
 //----------------------------------------------------------------------------//
 void ScrollablePane::addScrollablePaneProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
+
+    CEGUI_DEFINE_PROPERTY(ScrollablePane, USize,
+        "ContentSize", "Property to get/set the content pane area size. Will not set dimensions that are "
+        "adjusted to the content.",
+        &ScrollablePane::setContentSize, &ScrollablePane::getContentSize, USize(UDim(0, 0), UDim(0, 0))
+    );
+
+    CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
+        "SwipeScrolling", "Whether scrolling by swipe in a widget area is enabled. "
+        "Value is either \"true\" or \"false\".",
+        &ScrollablePane::setSwipeScrollingEnabled, &ScrollablePane::isSwipeScrollingEnabled, false
+    );
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
         "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll "
@@ -559,16 +646,6 @@ void ScrollablePane::addScrollablePaneProperties(void)
         "VertScrollPosition", "Property to get/set the scroll position of the vertical Scrollbar as a fraction.  Value is a float.",
         &ScrollablePane::setVerticalScrollPosition, &ScrollablePane::getVerticalScrollPosition, 0.0f /* TODO: Inconsistency */
     );
-
-    CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
-        "ContentPaneAutoSized", "Property to get/set the setting which controls whether the content pane will auto-size itself.  Value is either \"true\" or \"false\".",
-        &ScrollablePane::setContentPaneAutoSized, &ScrollablePane::isContentPaneAutoSized, true
-    );
-
-    CEGUI_DEFINE_PROPERTY(ScrollablePane, Rectf,
-        "ContentArea", "Property to get/set the current content area rectangle of the content pane.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
-        &ScrollablePane::setContentPaneArea, &ScrollablePane::getContentPaneArea, Rectf::zero() /* TODO: Inconsistency */
-    );
 }
 
 //----------------------------------------------------------------------------//
@@ -604,7 +681,7 @@ Rectf ScrollablePane::getViewableArea() const
 //----------------------------------------------------------------------------//
 void ScrollablePane::destroy(void)
 {
-    // detach from events on content pane
+    // detach from events of content pane
     d_contentChangedConn->disconnect();
     d_autoSizeChangedConn->disconnect();
     
@@ -619,11 +696,11 @@ NamedElement* ScrollablePane::getChildByNamePath_impl(const String& name_path) c
     //
     if (name_path.substr(0, 7) == "__auto_")
         return Window::getChildByNamePath_impl(name_path);
-	else
+    else
         return Window::getChildByNamePath_impl(ScrolledContainerName + '/' + name_path);
 }
-//----------------------------------------------------------------------------//
     
+//----------------------------------------------------------------------------//
 int ScrollablePane::writeChildWindowsXML(XMLSerializer& xml_stream) const
 {
     // This is an easy and safe workaround for not writing out the buttonPane and contentPane. While in fact
@@ -650,6 +727,63 @@ int ScrollablePane::writeChildWindowsXML(XMLSerializer& xml_stream) const
     }
 
     return childOutputCount;
+}
+
+//----------------------------------------------------------------------------//
+void ScrollablePane::onCursorPressHold(CursorInputEventArgs& e)
+{
+    Window::onCursorPressHold(e);
+
+    if (d_swipeScrollingEnabled && e.source == CursorInputSource::Left)
+    {
+        // we want all cursor inputs from now on
+        if (captureInput())
+        {
+            d_swiping = true;
+            d_swipeStartPoint = CoordConverter::screenToWindow(*this, e.position);
+        }
+
+        ++e.handled;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void ScrollablePane::onCursorMove(CursorInputEventArgs& e)
+{
+    Window::onCursorMove(e);
+
+    if (d_swiping)
+    {
+        auto newPos = CoordConverter::screenToWindow(*this, e.position);
+        const glm::vec2 delta(newPos - d_swipeStartPoint);
+
+        scrollContentPane(-delta.x, -delta.y, ScrollSource::Swipe);
+
+        d_swipeStartPoint = newPos;
+
+        ++e.handled;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void ScrollablePane::onCursorActivate(CursorInputEventArgs& e)
+{
+    Window::onCursorActivate(e);
+
+    if (e.source == CursorInputSource::Left)
+    {
+        releaseInput();
+        ++e.handled;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void ScrollablePane::onCaptureLost(WindowEventArgs& e)
+{
+    Window::onCaptureLost(e);
+
+    // when we lose out hold on the cursor inputs, we are no longer swiping
+    d_swiping = false;
 }
 
 }

@@ -142,7 +142,7 @@ void RapidXMLDocument::processElement(const rapidxml::xml_node<>* element)
             break;
 
         case rapidxml::node_data:
-            if (childNode->value() != '\0')
+            if (childNode->value()[0] != '\0')
                 d_handler->text(childNode->value());
 
             break;
