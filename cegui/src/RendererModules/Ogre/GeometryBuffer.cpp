@@ -24,6 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "CEGUI/RendererModules/Ogre/OgreMacros.h"
 #include "CEGUI/RendererModules/Ogre/GeometryBuffer.h"
 #include "CEGUI/RendererModules/Ogre/Texture.h"
 #include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
@@ -76,15 +77,17 @@ OgreGeometryBuffer::~OgreGeometryBuffer()
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::draw() const
+void OgreGeometryBuffer::draw(std::uint32_t drawModeMask) const
 {
+    CEGUI_UNUSED(drawModeMask);
+
     if (d_vertexData.empty())
         return;
 
     if (d_dataAppended)
         syncVertexData();
 
-    if (d_hwBuffer.isNull())
+    if (OGRE_ISNULL(d_hwBuffer))
         return;
 
 #ifdef CEGUI_USE_OGRE_HLMS
@@ -150,7 +153,9 @@ void OgreGeometryBuffer::draw() const
         // This is required because the material cannot set shader parameters before
         // the PSO is bound
 
+    #ifdef CEGUI_USE_OGRE_HLMS
         shaderWrapper->setRenderOperation( d_renderOp );
+    #endif //CEGUI_USE_OGRE_HLMS
         d_renderMaterial->prepareForRendering();
 
         // draw the geometry
@@ -192,7 +197,7 @@ void OgreGeometryBuffer::syncVertexData() const
     // Make sure that our vertex buffer is large enough
     size_t current_size;
 
-    if (!d_hwBuffer.isNull() &&
+    if (!OGRE_ISNULL(d_hwBuffer) &&
         (current_size = d_hwBuffer->getNumVertices()) < d_vertexCount)
     {
         size_t new_size = current_size;
@@ -207,7 +212,7 @@ void OgreGeometryBuffer::syncVertexData() const
     // copy vertex data into the Ogre hardware buffer
     if (d_vertexCount > 0)
     {
-        if (d_hwBuffer.isNull())
+        if (OGRE_ISNULL(d_hwBuffer))
         {
 
             setVertexBuffer(d_vertexCount);
@@ -311,7 +316,7 @@ void OgreGeometryBuffer::setVertexBuffer(size_t count) const
     // We use auto here because the return type depends on Ogre version
     auto already_created = d_owner.getVertexBuffer(count);
 
-    if (!already_created.isNull())
+    if (!OGRE_ISNULL(already_created))
     {
 
         d_hwBuffer = already_created;
@@ -332,7 +337,7 @@ void OgreGeometryBuffer::setVertexBuffer(size_t count) const
     #endif //CEGUI_USE_OGRE_HLMS
     }
 
-    if (d_hwBuffer.isNull())
+    if (OGRE_ISNULL(d_hwBuffer))
     {
         throw RendererException("Failed to create Ogre vertex buffer, "
             "probably because the vertex layout is invalid.");
@@ -352,7 +357,7 @@ void OgreGeometryBuffer::cleanUpVertexAttributes()
     if (d_hwBuffer.get())
         d_owner.returnVertexBuffer(d_hwBuffer);
 
-    d_hwBuffer.setNull();
+    OGRE_RESET(d_hwBuffer);
 }
 
 // ------------------------------------ //

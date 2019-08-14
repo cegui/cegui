@@ -122,6 +122,17 @@ static const float		DefaultNativeHorzRes	= 640.0f;		//!< Default native horizont
 static const float		DefaultNativeVertRes	= 480.0f;		//!< Default native vertical resolution (for fonts and imagesets)
 
 
+
+/*************************************************************************
+	System wide constants
+*************************************************************************/
+//! Draw bitmask for drawing all objects (default draw mode)
+static const std::uint32_t DrawModeMaskAll = ~0U;
+//! Draw bit flag signifying a regular window (default window flag)
+static const std::uint32_t DrawModeFlagWindowRegular = 1U << 0;
+//! Draw bit flag signifying a mouse cursor
+static const std::uint32_t DrawModeFlagMouseCursor = 1U << 1;
+
 /*************************************************************************
     Additional typedefs
 *************************************************************************/
@@ -132,5 +143,16 @@ typedef std::ostream OutStream;     //!< Output stream class.
 	Bring in forward references to all GUI base system classes
 *************************************************************************/
 #include "CEGUI/ForwardRefs.h"
+
+/*************************************************************************
+    Static assert
+*************************************************************************/
+#if (__cplusplus >= 201103L) || (_MSC_VER >= 1600)
+#   define CEGUI_STATIC_ASSERT(e) static_assert(e, #e)
+#elif defined(_MSC_VER)
+#   define CEGUI_STATIC_ASSERT(e) _STATIC_ASSERT(e)
+#else
+#   define CEGUI_STATIC_ASSERT(e) {}
+#endif
 
 #endif	// end of guard _CEGUIBase_h_

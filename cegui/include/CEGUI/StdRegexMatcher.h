@@ -1,11 +1,9 @@
 /***********************************************************************
-	created:	21/2/2004
-	author:		Paul D Turner
-	
-	purpose:	Implements the WindowFactory common functionality
+    created:    Sun Feb 24 2019
+    author:     Metora Wang
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2019 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -26,12 +24,44 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/WindowFactory.h"
+#ifndef _CEGUIStdRegexMatcher_h_
+#define _CEGUIStdRegexMatcher_h_
 
+#include "CEGUI/RegexMatcher.h"
+#include "CEGUI/String.h"
+
+#if (__cplusplus >= 201103L) || (_MSC_VER >= 1600)
+#include <regex>
+#else
+#include <tr1/regex>
+namespace std { using namespace tr1; }
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//! Implementation of RegexMatcher using std::regex
+class StdRegexMatcher : public RegexMatcher
+{
+public:
+    //! Constructor.
+    StdRegexMatcher();
+    //! Destructor.
+    virtual ~StdRegexMatcher() override;
 
+    // implement required interface
+    virtual void setRegexString(const String& regex) override;
+    virtual const String& getRegexString() const override;
+    bool matchRegex(const String& str) const;
+    virtual MatchState getMatchStateOfString(const String& str) const override;
+
+private:
+    //! Copy of the regex string assigned.
+    String d_string;
+    //! Pointer to std::regex compiled RegEx.
+    std::regex d_regex;
+};
 
 } // End of  CEGUI namespace section
+
+#endif  // end of guard _CEGUIStdRegexMatcher_h_

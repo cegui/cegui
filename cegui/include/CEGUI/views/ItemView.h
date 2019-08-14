@@ -407,6 +407,8 @@ protected:
     void onSemanticInputEvent(SemanticEventArgs& e) override;
     void onParentSized(ElementEventArgs& e) override;
 
+    virtual void onTargetSurfaceChanged(RenderingSurface* newSurface) override;
+
     Event::Connection d_eventChildrenWillBeAddedConnection;
     Event::Connection d_eventChildrenAddedConnection;
     Event::Connection d_eventChildrenWillBeRemovedConnection;

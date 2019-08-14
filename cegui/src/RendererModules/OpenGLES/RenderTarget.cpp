@@ -51,13 +51,13 @@ OpenGLESRenderTarget::OpenGLESRenderTarget(OpenGLESRenderer& owner) :
 
 void OpenGLESRenderTarget::draw(const GeometryBuffer& buffer)
 {
-    buffer.draw();
+    buffer.draw(drawModeMask);
 }
 
 
 void OpenGLESRenderTarget::draw(const RenderQueue& queue)
 {
-    queue.draw();
+    queue.draw(drawModeMask);
 }
 
 

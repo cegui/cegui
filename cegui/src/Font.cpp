@@ -38,12 +38,17 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+#if defined(CEGUI_FONT_USE_GLYPH_PAGE_LOAD)
+#else
+#define GLYPHS_PER_PAGE 1
+#endif
 const argb_t Font::DefaultColour = 0xFFFFFFFF;
 String Font::d_defaultResourceGroup;
 
 //----------------------------------------------------------------------------//
 const String Font::EventNamespace("Font");
 const String Font::EventRenderSizeChanged("RenderSizeChanged");
+const char32_t Font::UnicodeReplacementCharacter = 0xFFFD;
 
 //----------------------------------------------------------------------------//
 Font::Font(const String& name, const String& type_name, const String& filename,
@@ -179,7 +184,7 @@ float Font::getTextAdvance(const String& text) const
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
     {
-        if (const FontGlyph* glyph = getGlyphForCodepoint(text[c]))
+        if (const FontGlyph* glyph = getPreparedGlyph(text[c]))
         {
             advance += glyph->getAdvance();
         }
@@ -189,7 +194,7 @@ String::codepoint_iterator currentCodePointIter(text.begin(), text.begin(), text
 while (!currentCodePointIter.isAtEnd())
 {
     char32_t currentCodePoint = *currentCodePointIter;
-    if (const FontGlyph* glyph = getGlyphForCodepoint(currentCodePoint))
+    if (const FontGlyph* glyph = getPreparedGlyph(currentCodePoint))
     {
         advance += glyph->getAdvance();
     }

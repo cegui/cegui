@@ -731,6 +731,11 @@ public:
     Sizef getParentPixelSize(bool skipAllPixelAlignment = false) const;
 
     /*!
+    \brief Return the base pixel size for relative calculations.
+    */
+    Sizef getBasePixelSize(bool skipAllPixelAlignment = false) const;
+
+    /*!
     \brief sets rotation of this widget
 
     \param rotation
@@ -1106,7 +1111,7 @@ public:
     The value is significant and is used to size and position the root if
     it is using scale UDim component in position and/or size.
     */
-    virtual const Sizef& getRootContainerSize() const;
+    virtual Sizef getRootContainerSize() const;
 
     /*!
     \brief

@@ -43,6 +43,7 @@
 #include "CEGUI/VerticalAlignment.h"
 #include "CEGUI/DefaultParagraphDirection.h"
 
+
 #include <glm/gtc/quaternion.hpp>
 
 

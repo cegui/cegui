@@ -65,6 +65,12 @@
 #include <OgrePsoCacheHelper.h>
 #endif
 
+#ifndef CEGUI_USE_OGRE_HLMS
+#if OGRE_VERSION >= 0x10800
+#   include "OgreRTShaderConfig.h"
+#endif
+#endif
+
 #if OGRE_VERSION >= 0x020100
 #include <CommandBuffer/OgreCbDrawCall.h>
 #endif
@@ -229,7 +235,7 @@ struct OgreRenderer_impl
     //! HLMS cache used to store pso
     Ogre::SharedPtr<Ogre::PsoCacheHelper> d_hlmsCache;
 #endif
-    
+
     //! What we think is the current blend mode to use
     BlendMode d_activeBlendMode;
     //! Whether _beginFrame and _endFrame will be called.
@@ -238,7 +244,7 @@ struct OgreRenderer_impl
     bool d_useGLSL;
     //! Whether shaders are glsles
     bool d_useGLSLES;
-    //! Whether shaders are hlsl 
+    //! Whether shaders are hlsl
     bool d_useHLSL;
     //! Whether we use the ARB glsl shaders or the OpenGL 3.2 Core shader profile (140 core)
     bool d_useGLSLCore;
@@ -368,7 +374,7 @@ OgreRenderer& OgreRenderer::registerWindow(OgreRenderer& /*main_window*/,
 
     return *new OgreRenderer(new_window);
 }
-    
+
 //----------------------------------------------------------------------------//
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 void OgreRenderer::createOgreCompositorResources()
@@ -385,11 +391,11 @@ void OgreRenderer::createOgreCompositorResources()
         "you must call Ogre::Root::initialiseCompositor() after "
         "creating at least one window.");
 
-    Ogre::CompositorWorkspaceDef* templatedworkspace = 
+    Ogre::CompositorWorkspaceDef* templatedworkspace =
         manager->addWorkspaceDefinition("CEGUI_workspace");
 
     // Create a node for rendering on top of everything
-    Ogre::CompositorNodeDef* rendernode = 
+    Ogre::CompositorNodeDef* rendernode =
         manager->addNodeDefinition("CEGUIRenderNode");
 
     // Use the render target passed from the workspace for rendering on top of
@@ -400,7 +406,7 @@ void OgreRenderer::createOgreCompositorResources()
     rendernode->setNumTargetPass(1);
 
     // Pass for it
-    Ogre::CompositorTargetDef* targetpasses = 
+    Ogre::CompositorTargetDef* targetpasses =
         rendernode->addTargetPass("renderwindow");
     targetpasses->setNumPasses(2);
 
@@ -419,10 +425,10 @@ void OgreRenderer::createOgreCompositorResources()
             addPass(Ogre::PASS_SCENE));
 #ifdef CEGUI_USE_OGRE_HLMS
     (void)scenepass;
-    
+
     // Connect the main render target to the node
     templatedworkspace->connectExternal(0, "CEGUIRenderNode", 0);
-    
+
 #else
     // Just render the overlay group since it is the only one used
     scenepass->mFirstRQ = Ogre::RENDER_QUEUE_OVERLAY;
@@ -431,7 +437,7 @@ void OgreRenderer::createOgreCompositorResources()
     // Connect the main render target to the node
     templatedworkspace->connectOutput("CEGUIRenderNode", 0);
 #endif //CEGUI_USE_OGRE_HLMS
-    
+
     // Resources now created
     OgreRenderer_impl::s_compositorResourcesInitialized = true;
 
@@ -640,7 +646,7 @@ void OgreRenderer::destroyAllTextures()
 Texture& OgreRenderer::getTexture(const String& name) const
 {
     TextureMap::const_iterator i = d_pimpl->d_textures.find(name);
-    
+
     if (i == d_pimpl->d_textures.end())
         throw UnknownObjectException("Texture does not exist: " + name);
 
@@ -657,7 +663,7 @@ bool OgreRenderer::isTextureDefined(const String& name) const
 void OgreRenderer::beginRendering()
 {
     #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
-        if ( !d_pimpl->d_previousVP ) 
+        if ( !d_pimpl->d_previousVP )
         {
             d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
             if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
@@ -677,7 +683,7 @@ void OgreRenderer::endRendering()
         d_pimpl->d_renderSystem->_endFrame();
 
     #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
-        if ( d_pimpl->d_previousVP ) 
+        if ( d_pimpl->d_previousVP )
         {
             d_pimpl->d_renderSystem->_setViewport(d_pimpl->d_previousVP);
 
@@ -691,7 +697,7 @@ void OgreRenderer::endRendering()
             d_pimpl->d_previousVP = 0;
             d_pimpl->d_previousProjMatrix = Ogre::Matrix4::IDENTITY;
         }
-    #endif    
+    #endif
 }
 
 //----------------------------------------------------------------------------//
@@ -752,7 +758,7 @@ OgreRenderer::~OgreRenderer()
     // Remove the workspace so the contents aren't rendered anymore
     d_pimpl->d_ogreRoot->getCompositorManager2()->removeWorkspace(
         d_pimpl->d_workspace);
-    
+
     d_pimpl->d_workspace = 0;
 
 #else
@@ -833,7 +839,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     // Unused camera for the scene
     d_pimpl->d_dummyCamera = d_pimpl->d_dummyScene->createCamera(
         "CEGUI_dummy_camera");
-    
+
 
     // We will get notified when the workspace is drawn
     d_pimpl->d_frameListener = new OgreGUIRenderQueueListener(this);
@@ -886,9 +892,9 @@ void OgreRenderer::initialiseShaders()
     // PSO
     d_pimpl->d_hlmsCache = Ogre::SharedPtr<Ogre::PsoCacheHelper>(
         new Ogre::PsoCacheHelper(d_pimpl->d_renderSystem));
-    
+
 #endif
-    
+
     Ogre::HighLevelGpuProgramPtr texture_vs;
     Ogre::HighLevelGpuProgramPtr texture_ps;
 
@@ -917,7 +923,7 @@ void OgreRenderer::initialiseShaders()
         shaderLanguage = "hlsl";
     }
     else {
-        throw RendererException("Underlying Ogre render system does not support available " 
+        throw RendererException("Underlying Ogre render system does not support available "
             "shader languages which should be one of glsl, glsles or hlsl "
             "which are required for supporting custom shaders in this CEGUI version");
     }
@@ -1069,10 +1075,10 @@ void OgreRenderer::initialiseShaders()
     colour_vs->load();
     colour_ps->load();
 
-    d_pimpl->d_texturedShaderWrapper = new OgreShaderWrapper(*this, 
+    d_pimpl->d_texturedShaderWrapper = new OgreShaderWrapper(*this,
         *d_pimpl->d_renderSystem, texture_vs, texture_ps);
 
-    d_pimpl->d_colouredShaderWrapper = new OgreShaderWrapper(*this, 
+    d_pimpl->d_colouredShaderWrapper = new OgreShaderWrapper(*this,
         *d_pimpl->d_renderSystem, colour_vs, colour_ps);
 }
 
@@ -1094,8 +1100,8 @@ void OgreRenderer::cleanupShaders()
     if (d_pimpl->d_hlmsSamplerblock != nullptr)
         hlmsManager->destroySamplerblock(d_pimpl->d_hlmsSamplerblock);
 
-    
-    
+
+
 #endif //CEGUI_USE_OGRE_HLMS
 }
 
@@ -1122,15 +1128,15 @@ void OgreRenderer::setupRenderingBlendMode(const BlendMode mode,
     // Enable force if no blend block has been created
     if (!d_pimpl->d_hlmsBlendblock)
         force = true;
-    
+
 #endif //CEGUI_USE_OGRE_HLMS
-    
+
     // do nothing if mode appears current (and is not forced)
     if ((d_pimpl->d_activeBlendMode == mode) && !force)
         return;
 
     d_pimpl->d_activeBlendMode = mode;
-    
+
 #ifdef CEGUI_USE_OGRE_HLMS
 
     Ogre::HlmsManager* hlmsManager = d_pimpl->d_ogreRoot->getHlmsManager();
@@ -1153,7 +1159,7 @@ void OgreRenderer::setupRenderingBlendMode(const BlendMode mode,
     }
     d_pimpl->d_hlmsBlendblock = hlmsManager->getBlendblock(blendblock);
 
-    
+
 #else
     using namespace Ogre;
 
@@ -1166,7 +1172,7 @@ void OgreRenderer::setupRenderingBlendMode(const BlendMode mode,
                 SBF_ONE_MINUS_SOURCE_ALPHA,
                 SBF_ONE_MINUS_DEST_ALPHA,
                 SBF_ONE);
-    
+
 #endif //CEGUI_USE_OGRE_HLMS
 }
 
@@ -1204,7 +1210,7 @@ void OgreRenderer::setGPUPrograms(const Ogre::HighLevelGpuProgramPtr &vs,
 {
     Ogre::GpuProgramPtr vsConverted = vs;
     Ogre::GpuProgramPtr psConverted = ps;
-    
+
     d_pimpl->d_hlmsCache->setVertexShader(vsConverted);
     d_pimpl->d_hlmsCache->setPixelShader(psConverted);
 }
@@ -1280,7 +1286,7 @@ void OgreRenderer::initialiseRenderStateSettings()
     // This is in the Ogre example usage but doesn't seem to be needed.
     // d_pimpl->d_hlmsCache->clearState();
     d_pimpl->d_hlmsCache->setRenderTarget(target);
-    
+
 #else
     // initialise render settings
     d_pimpl->d_renderSystem->setLightingEnabled(false);
@@ -1334,7 +1340,7 @@ void OgreRenderer::setViewProjectionMatrix(const glm::mat4& viewProjMatrix)
         d_viewProjectionMatrix[1][1] = -d_viewProjectionMatrix[1][1];
         d_viewProjectionMatrix[2][1] = -d_viewProjectionMatrix[2][1];
         d_viewProjectionMatrix[3][1] = -d_viewProjectionMatrix[3][1];
-    }  
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -1349,7 +1355,7 @@ RefCounted<RenderMaterial> OgreRenderer::createRenderMaterial(
 {
     if (shaderType == DefaultShaderType::Textured)
     {
-        RefCounted<RenderMaterial> render_material(new 
+        RefCounted<RenderMaterial> render_material(new
             RenderMaterial(d_pimpl->d_texturedShaderWrapper));
 
         return render_material;
@@ -1373,7 +1379,7 @@ RefCounted<RenderMaterial> OgreRenderer::createRenderMaterial(
 GeometryBuffer& OgreRenderer::createGeometryBufferColoured(
     CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    OgreGeometryBuffer* geom_buffer = new OgreGeometryBuffer(*this, 
+    OgreGeometryBuffer* geom_buffer = new OgreGeometryBuffer(*this,
         *d_pimpl->d_renderSystem, renderMaterial);
 
     geom_buffer->addVertexAttribute(VertexAttributeType::Position0);
@@ -1389,9 +1395,9 @@ GeometryBuffer& OgreRenderer::createGeometryBufferColoured(
 GeometryBuffer& OgreRenderer::createGeometryBufferTextured(
     CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    OgreGeometryBuffer* geom_buffer = new OgreGeometryBuffer(*this, 
+    OgreGeometryBuffer* geom_buffer = new OgreGeometryBuffer(*this,
         *d_pimpl->d_renderSystem, renderMaterial);
-    
+
     geom_buffer->addVertexAttribute(VertexAttributeType::Position0);
     geom_buffer->addVertexAttribute(VertexAttributeType::Colour0);
     geom_buffer->addVertexAttribute(VertexAttributeType::TexCoord0);
@@ -1410,7 +1416,7 @@ Ogre::SceneManager& OgreRenderer::getDummyScene() const{
 #endif
 
 //----------------------------------------------------------------------------//
-UsedOgreHWBuffer OgreRenderer::getVertexBuffer(size_t 
+UsedOgreHWBuffer OgreRenderer::getVertexBuffer(size_t
     min_size)
 {
     UsedOgreHWBuffer result(0);
@@ -1435,7 +1441,7 @@ UsedOgreHWBuffer OgreRenderer::getVertexBuffer(size_t
             d_pimpl->d_vbPool.erase(d_pimpl->d_vbPool.begin()+i);
             continue;
         }
-        
+
         size_t current_over = current->getNumVertices()-min_size;
 
         // Perfect match stops searching instantly
@@ -1484,7 +1490,7 @@ UsedOgreHWBuffer OgreRenderer::getVertexBuffer(size_t
     return result;
 }
 
-void OgreRenderer::returnVertexBuffer(UsedOgreHWBuffer 
+void OgreRenderer::returnVertexBuffer(UsedOgreHWBuffer
     buffer)
 {
     d_pimpl->d_vbPool.push_back(buffer);
@@ -1505,7 +1511,7 @@ void OgreRenderer::cleanLargestVertexBufferPool(size_t count)
 {
     // The easiest way might be to sort the vector and delete the last count
     // elements
-    std::sort(d_pimpl->d_vbPool.begin(), d_pimpl->d_vbPool.end(), 
+    std::sort(d_pimpl->d_vbPool.begin(), d_pimpl->d_vbPool.end(),
         &hardwareBufferSizeLess);
 
     // Adjust the count if there aren't enough elements to delete to avoid
@@ -1584,7 +1590,7 @@ bool OgreGUIRenderQueueListener::isCEGUIRenderEnabled() const
 
 void OgreGUIRenderQueueListener::passPreExecute(Ogre::CompositorPass *pass)
 {
-    
+
     if (d_enabled && pass->getType() == Ogre::PASS_SCENE)
     {
         // We should only render contexts that are on this render target

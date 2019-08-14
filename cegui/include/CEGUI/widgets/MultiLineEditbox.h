@@ -418,6 +418,7 @@ protected:
     // validate window renderer
     bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
+    virtual void onTargetSurfaceChanged(RenderingSurface* newSurface) override;
 
 	/*!
 	\brief

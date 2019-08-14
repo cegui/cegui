@@ -195,7 +195,7 @@ public:
         a RenderingSurface.
     */
     void addGeometryBuffer(const RenderQueueID queue,
-                           const GeometryBuffer& geometry_buffer);
+                           GeometryBuffer& geometry_buffer);
 
     /*!
     \brief
@@ -244,8 +244,19 @@ public:
         operation is complete.  This allows the next draw operation to occur
         without needing to requeue all the GeometryBuffers (if for instance the
         sequence of buffers to be drawn remains unchanged).
+
+    \param drawMode
+        The drawMode is a bit-mask that specifies which Windows shall be
+        rendered in this pass. The bit flags that are active in each Window's
+        bit-mask will be checked against the supplied mask. If any of them matches,
+        then the Window will be rendered, otherwise it won't.
+
+        The default draw bitmask has all bits set to 1. The default flag for is
+        Windows is Window::DrawModeFlagWindowRegular and the flag bit for the cursor
+        is Window::DrawModeFlagMouseCursor.
+
     */
-    virtual void draw();
+    virtual void draw(std::uint32_t drawMode = DrawModeMaskAll);
 
     /*!
     \brief
@@ -353,14 +364,18 @@ public:
     const RenderTarget& getRenderTarget() const;
     RenderTarget& getRenderTarget();
 
+	//! collection type for the queues
+	typedef std::map<RenderQueueID, RenderQueue> RenderQueueList;
+	RenderQueueList& getRenderQueueList()         {return d_queues;}
+
 protected:
     /** draw the surface content. Default impl draws the render queues.
      * NB: Called between RenderTarget activate and deactivate calls.
      */
-    virtual void drawContent();
+    virtual void drawContent(std::uint32_t drawModeMask);
 
     //! draw a rendering queue, firing events before and after.
-    void draw(const RenderQueue& queue, RenderQueueEventArgs& args);
+    void draw(const RenderQueue& queue, RenderQueueEventArgs& args, std::uint32_t drawModeMask);
 
     //! detatch ReneringWindow from this RenderingSurface
     void detatchWindow(RenderingWindow& w);
@@ -368,8 +383,6 @@ protected:
     //! attach ReneringWindow from this RenderingSurface
     void attachWindow(RenderingWindow& w);
 
-    //! collection type for the queues
-    typedef std::map<RenderQueueID, RenderQueue> RenderQueueList;
     //! collection type for created RenderingWindow objects
     typedef std::vector<RenderingWindow*> RenderingWindowList;
     //! the collection of RenderQueue objects.

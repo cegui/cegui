@@ -49,7 +49,7 @@ public:
     ~DirectFBGeometryBuffer();
 
     // Implement GeometryBuffer interface.
-    void draw() const;
+    void draw(std::uint32_t drawModeMask = DrawModeMaskAll) const;
     void setTranslation(const glm::vec3& v);
     void setRotation(const glm::quat& r);
     void setPivot(const glm::vec3& p);

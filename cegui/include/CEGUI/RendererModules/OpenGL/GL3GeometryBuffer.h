@@ -46,12 +46,14 @@ public:
     virtual ~OpenGL3GeometryBuffer();
 
     // Overrides of virtual and abstract methods from GeometryBuffer
-    void draw() const override;
+    void draw(std::uint32_t drawModeMask = DrawModeMaskAll) const override;
     void appendGeometry(const float* vertex_data, std::size_t array_size) override;
     void reset() override;
 
     // Implementation/overrides of member functions inherited from OpenGLGeometryBufferBase
     void finaliseVertexAttributes() const override;
+
+    std::size_t d_verticesVBOPosition;
 
 protected:
     void initialiseVertexBuffers();
@@ -61,14 +63,16 @@ protected:
     //! Draws the vertex data depending on the fill rule that was set for this object.
     void drawDependingOnFillRule() const;
 
+#ifndef CEGUI_OPENGL_BIG_BUFFER
     //! OpenGL vao used for the vertices
     GLuint d_verticesVAO;
     //! OpenGL vbo containing all vertex data
     GLuint d_verticesVBO;
-    //! Pointer to the OpenGL state changer wrapper that was created inside the Renderer
-    OpenGLBaseStateChangeWrapper* d_glStateChanger;
     //! Size of the buffer that is currently in use
     GLuint d_bufferSize;
+#endif
+    //! Pointer to the OpenGL state changer wrapper that was created inside the Renderer
+    OpenGLBaseStateChangeWrapper* d_glStateChanger;
 };
 
 }

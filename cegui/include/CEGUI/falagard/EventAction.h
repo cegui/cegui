@@ -64,7 +64,7 @@ protected:
     ChildEventAction d_action;
 
     String makeConnectionKeyName(const Window& widget) const;
-
+    
     typedef std::multimap<String, Event::ScopedConnection> ConnectionMap;
     mutable ConnectionMap d_connections;
 };

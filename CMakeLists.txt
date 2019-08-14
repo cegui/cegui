@@ -1,7 +1,7 @@
 ################################################################################
 # Top-level CMakeLists.txt file for Crazy Eddie's GUI System
 ################################################################################
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 if (POLICY CMP0017)
     cmake_policy(SET CMP0017 OLD)
 endif()
@@ -118,8 +118,26 @@ find_package(SFML 2.3 COMPONENTS ${CEGUI_SFML_COMPONENTS})
 
 find_package(DirectXSDK)
 find_package(Irrlicht)
-find_package(Ogre)
-find_package(OIS)
+
+find_package(OGRE CONFIG)
+if(NOT ${OGRE_FOUND})
+    find_package(Ogre)
+endif()
+if(${OGRE_FOUND})
+    if (${OGRE_VERSION} VERSION_GREATER 1.11)
+        set(CMAKE_CXX_STANDARD 11)
+        set(CMAKE_CXX_STANDARD_REQUIRED ON)
+        set(CMAKE_CXX_EXTENSIONS OFF)
+
+        set(CEGUI_FOUND_OGRE_VERSION_MAJOR ${OGRE_VERSION_MAJOR})
+        set(CEGUI_FOUND_OGRE_VERSION_MINOR ${OGRE_VERSION_MINOR})
+        set(CEGUI_FOUND_OGRE_VERSION_PATCH ${OGRE_VERSION_PATCH})
+    endif()
+    if(${OGRE_VERSION} VERSION_LESS 1.10)
+        find_package(OIS)
+    endif()
+endif()
+
 find_package(DirectFB)
 find_package(OpenGLES)
 find_package(OpenGLES2)
@@ -141,9 +159,19 @@ find_package(PVRTools)
 
 find_package(Lua51)
 find_package(TOLUAPP)
-find_package(PythonInterp)
 
-## ensure python3 not picked up as default
+## search python3 libs
+find_package(PythonLibs 3.5)
+string(REGEX REPLACE "^([0-9]+)\\..*$" "\\1" PYTHON_VERSION_MAJOR "${PYTHONLIBS_VERSION_STRING}")
+if(${PYTHON_VERSION_MAJOR} AND ${PYTHON_VERSION_MAJOR} EQUAL 3)
+        set(PYTHON3LIBS_FOUND     ${PYTHONLIBS_FOUND}    CACHE STRING   "python3 found")
+        set(PYTHON3_LIBRARIES     ${PYTHON_LIBRARIES}    CACHE FILEPATH "python3 lib path")
+        set(PYTHON3_INCLUDE_DIRS  ${PYTHON_INCLUDE_DIRS} CACHE PATH     "python3 include dir path")
+        mark_as_advanced(PYTHON3LIBS_FOUND PYTHON3_LIBRARIES PYTHON3_INCLUDE_DIRS)
+endif()
+
+## search python libs in version of default interpreter
+find_package(PythonInterp)
 find_package(PythonVersion)
 if (UNIX AND PYTHON_VERSION_FOUND)
   find_package(PythonLibs ${PYTHON_VERSION_STRING} EXACT)
@@ -183,7 +211,7 @@ components - they must all match or you will get crashes, heap corruption and/or
 other issues." FALSE "WIN32 OR APPLE" FALSE)
 option( CEGUI_BUILD_STATIC_CONFIGURATION "Specifies whether the static configs will be built.  (NB: Shared configs are always built)" FALSE)
 option( CEGUI_BUILD_DYNAMIC_CONFIGURATION "Dynamic libs to be built.  Always true except for Android" TRUE)
-option( CEGUI_BUILD_STATIC_FACTORY_MODULE "For static CEGUI builds, specifies whether to include the getWindoFactoryModule method.  When false, the developer must provide a custom implementation of the method" FALSE)
+option( CEGUI_BUILD_STATIC_FACTORY_MODULE "For static CEGUI builds, specifies whether to include the getWindowFactoryModule method.  When false, the developer must provide a custom implementation of the method" FALSE)
 # sanity check on static build option for factory method
 if (CEGUI_BUILD_STATIC_FACTORY_MODULE AND NOT CEGUI_BUILD_STATIC_CONFIGURATION)
     message(SEND_ERROR "You may not enable CEGUI_BUILD_STATIC_FACTORY_MODULE without CEGUI_BUILD_STATIC_CONFIGURATION enabled.  CEGUI needs to be built statically if building the static factory method.")
@@ -198,9 +226,17 @@ set( CEGUI_STRING_CLASS 2 CACHE INT "CEGUI offers three CEGUI::String class conf
 3 - std::string : regular std::string used as CEGUI::String, not Unicode aware"
 )
 
+if (PCRE_FOUND)
+    set (CEGUI_NEED_STD11_REGEX FALSE)
+else ()
+    set (CEGUI_NEED_STD11_REGEX TRUE)
+endif ()
 
+option( CEGUI_FONT_USE_GLYPH_PAGE_LOAD "Specifies whether to let fonts use glyph page load" TRUE )
 option( CEGUI_HAS_FREETYPE "Specifies whether to include Freetype font support" ${FREETYPE_FOUND} )
+option( CEGUI_HAS_FREETYPE_TEMPORARY_BUFFER "Specifies whether to let Freetype font use temporary buffer." FALSE )
 option( CEGUI_HAS_PCRE_REGEX "Specifies whether to include PCRE regexp matching for editbox string validation" ${PCRE_FOUND} )
+option( CEGUI_HAS_STD11_REGEX "Specifies whether to include C++11 Regular expressions library for editbox string validation" ${CEGUI_NEED_STD11_REGEX} )
 option( CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER "Specifies whether to build the minizip based resource provider" ${MINIZIP_FOUND} )
 option( CEGUI_HAS_DEFAULT_LOGGER "Specifies whether to build the DefaultLogger implementation" TRUE)
 
@@ -235,7 +271,8 @@ option( CEGUI_BUILD_RENDERER_OPENGLES2_ALTERNATE_WITH_GLES3_SUPPORT "Specifies w
 cegui_dependent_option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" "LUA51_FOUND;TOLUAPP_FOUND" )
 cegui_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" "LUA51_FOUND;TOLUAPP_FOUND" )
 
-cegui_dependent_option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build the Python extension module(s)" "PYTHONINTERP_FOUND;PYTHONLIBS_FOUND;Boost_PYTHON_FOUND" )
+cegui_dependent_option( CEGUI_BUILD_PYTHON_MODULES_PYPLUSPLUS "Specifies whether to build the Python extension module(s) via boost and Py++" "PYTHONINTERP_FOUND;PYTHONLIBS_FOUND;Boost_PYTHON_FOUND" )
+option( CEGUI_BUILD_PYTHON_MODULES_SWIG "Specifies whether to build the Python extension module(s)" ${PYTHON3LIBS_FOUND} )
 
 option( CEGUI_OPTION_SAFE_LUA_MODULE "Specifies whether to enable extra validation in the Lua script module in non-debug builds" FALSE )
 
@@ -259,7 +296,7 @@ if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
         option (CEGUI_USE_EPOXY "Specifies whether to use Epoxy as an OpenGL loading library." FALSE)
         if (CEGUI_USE_GLEW AND CEGUI_USE_EPOXY)
             message (FATAL_ERROR "You may not enable both \"CEGUI_USE_GLEW\" and \"CEGUI_USE_EPOXY\". Please choose only one of these options.")
-        endif ()           
+        endif ()
     else ()
         set (CEGUI_USE_GLEW "${GLEW_FOUND}")
         set (CEGUI_USE_EPOXY "${EPOXY_FOUND}")
@@ -347,9 +384,7 @@ if (CEGUI_BUILD_RENDERER_OGRE)
     set(CEGUI_FOUND_OGRE_VERSION_PATCH ${OGRE_VERSION_PATCH})
 endif()
 
-if (CEGUI_BUILD_RENDERER_OGRE AND OIS_FOUND)
-
-    
+if (CEGUI_BUILD_RENDERER_OGRE)
     if (NOT Boost_VERSION LESS 105000 AND "${OGRE_CONFIG_THREAD_PROVIDER}" STREQUAL "1") #Check additionally if we use boost as thread provider at all
         if (Boost_SYSTEM_FOUND)
             set (CEGUI_OGRE_SAMPLES_EXTRALIBS ${Boost_SYSTEM_LIBRARY})
@@ -373,14 +408,14 @@ set (CEGUI_SAMPLES_RENDERER_DIRECTFB_ACTIVE ${CEGUI_BUILD_RENDERER_DIRECTFB})
 set (CEGUI_SAMPLES_RENDERER_OPENGLES2_ALTERNATE_ACTIVE ${CEGUI_BUILD_RENDERER_OPENGLES2_ALTERNATE})
 
 #Only build the opengles2 sample renderer for Android
-if (NOT ANDROID) 
+if (NOT ANDROID)
     set (CEGUI_SAMPLES_RENDERER_OPENGLES2_ALTERNATE_ACTIVE FALSE)
 endif()
 
-# Ogre and OpenGL have dependencies for the sample browser, if these are not available then the samples will be OFF by default   
+# Ogre and OpenGL have dependencies for the sample browser, if these are not available then the samples will be OFF by default
 if (CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_DEPS_AVAILABLE)
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
-    if (NOT OIS_FOUND)
+    if (${OGRE_VERSION} VERSION_LESS 1.10 AND NOT OIS_FOUND)
         message(WARNING "The SampleFramework is deactivated due to missing Ogre dependencies (OIS not found)")
     else()
         message(WARNING "The SampleFramework is deactivated due to missing Ogre dependencies (boost libraries)")
@@ -456,12 +491,12 @@ option( CEGUI_INSTALL_WITH_RPATH "Specifies whether to install with RPATH set to
 
 # custom install locations
 option( CEGUI_LIB_INSTALL_DIR "Specifies custom location for CEGUI_LIB_INSTALL_DIR"  )
-option( CEGUI_DATA_INSTALL_DIR "Specifies custom location for CEGUI_DATA_INSTALL_DIR" )  
-option( CEGUI_DOC_INSTALL_DIR "Specifies custom location for CEGUI_DOC_INSTALL_DIR" )  
-option( CEGUI_PKGCONFIG_INSTALL_DIR "Specifies custom location for CEGUI_PKGCONFIG_INSTALL_DIR" )  
-option( CEGUI_MODULE_INSTALL_DIR "Specifies custom location for CEGUI_MODULE_INSTALL_DIR" )  
-option( CEGUI_SAMPLE_INSTALL_DIR "Specifies custom location for CEGUI_SAMPLE_INSTALL_DIR" ) # TODO: put into /samples subdir!  
-option( CEGUI_INCLUDE_INSTALL_DIR "Specifies custom location for CEGUI_INCLUDE_INSTALL_DIR" ) 
+option( CEGUI_DATA_INSTALL_DIR "Specifies custom location for CEGUI_DATA_INSTALL_DIR" )
+option( CEGUI_DOC_INSTALL_DIR "Specifies custom location for CEGUI_DOC_INSTALL_DIR" )
+option( CEGUI_PKGCONFIG_INSTALL_DIR "Specifies custom location for CEGUI_PKGCONFIG_INSTALL_DIR" )
+option( CEGUI_MODULE_INSTALL_DIR "Specifies custom location for CEGUI_MODULE_INSTALL_DIR" )
+option( CEGUI_SAMPLE_INSTALL_DIR "Specifies custom location for CEGUI_SAMPLE_INSTALL_DIR" ) # TODO: put into /samples subdir!
+option( CEGUI_INCLUDE_INSTALL_DIR "Specifies custom location for CEGUI_INCLUDE_INSTALL_DIR" )
 
 
 ################################################################################

@@ -502,7 +502,7 @@ void DragContainer::getRenderingContext_impl(RenderingContext& ctx) const
 
     // otherwise, switch rendering onto root rendering surface
     const Window* root = getRootWindow();
-    ctx.surface = &root->getTargetRenderingSurface();
+    ctx.surface = root->getTargetRenderingSurface();
     // ensure root window is only used as owner if it really is.
     ctx.owner = root->getRenderingSurface() == ctx.surface ? root : 0;
     // ensure use of correct offset for the surface we're targetting

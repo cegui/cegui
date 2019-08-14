@@ -235,7 +235,11 @@ public:
         const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
         const Sizef& native_res = Sizef(640.0f, 480.0f),
         const float specificLineSpacing = 0.0f,
+        #ifndef SWIG
         const FreeTypeFontLayerVector& fontLayers = FreeTypeFontLayerVector{ FreeTypeFontLayer() },
+        #else
+        const FreeTypeFontLayerVector& fontLayers = { FreeTypeFontLayer() },
+        #endif
         XmlResourceExistsAction resourceExistsAction = XmlResourceExistsAction::Return);
 
     /*!

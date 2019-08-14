@@ -64,8 +64,10 @@ IrrlichtGeometryBuffer::IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::draw() const
+void IrrlichtGeometryBuffer::draw(std::uint32_t drawModeMask) const
 {
+    CEGUI_UNUSED(drawModeMask);
+    
     if (!d_matrixValid)
         updateMatrix();
 

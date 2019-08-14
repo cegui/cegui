@@ -54,15 +54,15 @@ IrrlichtRenderTarget::~IrrlichtRenderTarget()
 }
 
 
-void IrrlichtRenderTarget::draw(const GeometryBuffer& buffer)
+void IrrlichtRenderTarget::draw(const GeometryBuffer& buffer, std::uint32_t drawModeMask)
 {
-    buffer.draw();
+    buffer.draw(drawModeMask);
 }
 
 
-void IrrlichtRenderTarget::draw(const RenderQueue& queue)
+void IrrlichtRenderTarget::draw(const RenderQueue& queue, std::uint32_t drawModeMask)
 {
-    queue.draw();
+    queue.draw(drawModeMask);
 }
 
 
