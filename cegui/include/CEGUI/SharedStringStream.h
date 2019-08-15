@@ -33,25 +33,11 @@
 
 namespace CEGUI
 {
-
 //! For library-internal usage only
 class SharedStringstream
 {
 public:
     SharedStringstream();
-
-    /*!
-    \brief
-        Changes the precision of the stream (the amount of decimal numbers after the decimal
-        separator, in case of std::fixed, which is our default)
-    */
-    void setPrecision(int precision);
-
-    std::stringstream d_sharedStream;
-    
-    // TODO: make this "static thread_local" in the future once supported on all major compilers,
-    // currently only supported on VS 2015 apparently
-    static SharedStringstream s_sharedStreamInstance;
 
     /*!
     \brief
@@ -96,6 +82,18 @@ public:
         A String containing the memory address representation.
     */
     static String GetPointerAddressAsString(const void* addressPointer);
+
+    static CEGUI::String::value_type GetDecimalPoint() { return s_sharedStreamInstance.d_decimalPoint; }
+    static CEGUI::String::value_type GetNegativeSign() { return s_sharedStreamInstance.d_negativeSign; }
+    static CEGUI::String::value_type GetPositiveSign() { return s_sharedStreamInstance.d_positiveSign; }
+
+private:
+    thread_local static SharedStringstream s_sharedStreamInstance;
+
+    std::stringstream d_sharedStream;
+    CEGUI::String::value_type d_decimalPoint;
+    CEGUI::String::value_type d_negativeSign;
+    CEGUI::String::value_type d_positiveSign;
 };
 
 }
