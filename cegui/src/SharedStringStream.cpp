@@ -28,9 +28,7 @@
 
 namespace CEGUI
 {
-
-// TODO make thread_local once supported on all major compilers
-SharedStringstream SharedStringstream::s_sharedStreamInstance;
+thread_local SharedStringstream SharedStringstream::s_sharedStreamInstance;
 
 SharedStringstream::SharedStringstream()
 {
@@ -41,12 +39,11 @@ SharedStringstream::SharedStringstream()
     d_sharedStream.unsetf(std::ios_base::floatfield);
     d_sharedStream.precision(8);
     d_sharedStream.unsetf(std::ios_base::showpoint);
-}
 
-// TODO make thread_local once supported on all major compilers
-void SharedStringstream::setPrecision(int precision)
-{
-    d_sharedStream.precision(precision);
+    d_decimalPoint = static_cast<CEGUI::String::value_type>(
+        std::use_facet<std::numpunct<char>>(d_sharedStream.getloc()).decimal_point());
+    d_negativeSign = static_cast<CEGUI::String::value_type>('-');
+    d_positiveSign = static_cast<CEGUI::String::value_type>('+');
 }
 
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_ASCII
@@ -54,9 +51,9 @@ std::stringstream& SharedStringstream::GetPreparedStream(const String& initialVa
 {
     std::stringstream& sstream = s_sharedStreamInstance.d_sharedStream;
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    sstream.str(String::convertUtf32ToUtf8(initialValue.getString()).c_str());
+    sstream.str(String::convertUtf32ToUtf8(initialValue.getString()));
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8
-    sstream.str(initialValue.getString());
+        sstream.str(initialValue.getString());
 #endif
     sstream.clear();
 
@@ -83,9 +80,8 @@ std::stringstream& SharedStringstream::GetPreparedStream()
 
 CEGUI::String SharedStringstream::GetPointerAddressAsString(const void* addressPointer)
 {
-    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+    std::stringstream& sstream = GetPreparedStream();
     sstream << addressPointer;
     return CEGUI::String(sstream.str());
 }
-
 }
