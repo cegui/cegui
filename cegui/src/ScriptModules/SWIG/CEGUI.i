@@ -1,6 +1,7 @@
 %module(directors="1") CEGUI
 %{
 #include "CEGUI/CEGUI.h"
+#include "CEGUI/Config.h"
 using namespace CEGUI;
 
 #ifdef __linux__
@@ -16,6 +17,7 @@ using namespace CEGUI;
 
 %include "CEGUI/Base.h"
 %include "CEGUI/Singleton.h"
+%include "CEGUI/RefCounted.h"
 
 %template(CEGUISingleton_WindowManager) CEGUI::Singleton<CEGUI::WindowManager>;
 %template(CEGUISingleton_ImageManager) CEGUI::Singleton<CEGUI::ImageManager>;
@@ -46,7 +48,11 @@ using namespace CEGUI;
 %typemap(in) CEGUI::String & {
 	Py_ssize_t  strLen = 0;
 	const char* strData = PyUnicode_AsUTF8AndSize( $input, &strLen );
+	#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+	$1 = new CEGUI::String( strData );
+	#else
 	$1 = new CEGUI::String( strData, strLen );
+	#endif
 }
 %typemap(freearg) CEGUI::String & %{
 	delete $1;
@@ -55,8 +61,21 @@ using namespace CEGUI;
 	$1 = PyUnicode_Check($input) ? 1 : 0;
 %}
 // string conversion to python
+%extend CEGUI::String {
+	PyObject* asPythonStr() {
+		%#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+		return PyUnicode_DecodeUTF32($self->c_str(), $self->length(), NULL, 0);
+		%#else
+		return PyUnicode_DecodeUTF8($self->c_str(), $self->length(), NULL);
+		%#endif
+	}
+};
 %typemap(out) CEGUI::String & %{
-	$result = PyUnicode_DecodeUTF8($1->c_str(), strlen($1->c_str()), NULL);
+	#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+	$result = PyUnicode_DecodeUTF32($1->c_str(), $1->length(), NULL, 0);
+	#else
+	$result = PyUnicode_DecodeUTF8($1->c_str(), $1->length(), NULL);
+	#endif
 %}
 
 // events, poperty
@@ -66,6 +85,34 @@ using namespace CEGUI;
 %include "CEGUI/Property.h"
 %include "CEGUI/PropertyHelper.h"
 %include "CEGUI/PropertySet.h"
+
+// events subscriber base class as PySubscriber
+%feature("director") PySubscriber;
+%include "CEGUI/SlotFunctorBase.h"
+%include "CEGUI/SubscriberSlot.h"
+%inline %{
+	#include "CEGUI/SubscriberSlot.h"
+
+	class PySubscriber : CEGUI::SubscriberSlot {
+			bool run_proxy(const CEGUI::EventArgs& args) { return run(args); }
+		public:
+			PySubscriber() : CEGUI::SubscriberSlot( &PySubscriber::run_proxy, this ) {}
+			
+			virtual bool run(const CEGUI::EventArgs& args) { return false; }
+			
+			virtual ~PySubscriber() {};
+	};
+%}
+
+/* EXAMPLE OF USAGE in Python:
+	mywin = ...
+	class Callback(CEGUI.PySubscriber):
+		def run(self, n):
+			mywin.hide()
+			return True; # must return bool
+	handleHideInfoWin = Callback() # can't be temporary object !!!
+	CEGUI.toFrameWindow(mywin).getCloseButton().subscribeEvent( CEGUI.PushButton.EventClicked.asPythonStr(), handleHideInfoWin )
+*/
 
 // xml
 %include "CEGUI/XMLHandler.h"
@@ -229,8 +276,11 @@ using namespace CEGUI;
 %include "CEGUI/widgets/Tooltip.h"
 %include "CEGUI/widgets/TreeWidget.h"
 
-%{
-#define WINDOW_CONVERTER(Type) Type* to##Type(Window* p) { return static_cast<Type*>(p); }
+%define WINDOW_CONVERTER(Type)
+%inline %{
+	CEGUI::Type* to##Type(CEGUI::Window* p) { return static_cast<CEGUI::Type*>(p); }
+%}
+%enddef
 
 WINDOW_CONVERTER(EditboxBase)
 WINDOW_CONVERTER(ButtonBase)
@@ -259,7 +309,9 @@ WINDOW_CONVERTER(ItemEntry)
 
 // ListboxItem is not derived from Window
 // ListboxTextItem is derived from ListboxItem
-ListboxTextItem* toListboxTextItem(ListboxItem* p) { return static_cast<ListboxTextItem*>(p); }
+%inline %{
+	CEGUI::ListboxTextItem* toListboxTextItem(CEGUI::ListboxItem* p) { return static_cast<CEGUI::ListboxTextItem*>(p); }
+%}
 
 WINDOW_CONVERTER(ListHeader)
 WINDOW_CONVERTER(Menubar)
@@ -279,4 +331,3 @@ WINDOW_CONVERTER(Thumb)
 WINDOW_CONVERTER(Titlebar)
 WINDOW_CONVERTER(Tooltip)
 WINDOW_CONVERTER(TreeWidget)
-%}
