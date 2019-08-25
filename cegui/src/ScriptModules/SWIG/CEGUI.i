@@ -2,6 +2,12 @@
 %{
 #include "CEGUI/CEGUI.h"
 using namespace CEGUI;
+
+#ifdef __linux__
+#pragma GCC diagnostic ignored "-Wcast-function-type"
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wunused-label"
+#endif
 %}
 
 %include <std_string.i>
@@ -34,8 +40,6 @@ using namespace CEGUI;
 %include "CEGUI/Rectf.h"
 %include "CEGUI/URect.h"
 %include "CEGUI/UVector.h"
-%include "CEGUI/Interpolator.h"
-%include "CEGUI/Quaternion.h"
 %include "CEGUI/String.h"
 
 // string conversion from python
@@ -159,7 +163,6 @@ using namespace CEGUI;
 %include "CEGUI/WindowRendererManager.h"
 %include "CEGUI/WindowRenderer.h"
 
-%include "CEGUI/TplInterpolators.h"
 %include "CEGUI/TplWindowFactory.h"
 %include "CEGUI/TplWindowRendererFactory.h"
 %include "CEGUI/TplWindowFactoryRegisterer.h"
@@ -225,3 +228,55 @@ using namespace CEGUI;
 %include "CEGUI/widgets/Titlebar.h"
 %include "CEGUI/widgets/Tooltip.h"
 %include "CEGUI/widgets/TreeWidget.h"
+
+%{
+#define WINDOW_CONVERTER(Type) Type* to##Type(Window* p) { return static_cast<Type*>(p); }
+
+WINDOW_CONVERTER(EditboxBase)
+WINDOW_CONVERTER(ButtonBase)
+WINDOW_CONVERTER(ItemListBase)
+WINDOW_CONVERTER(MenuBase)
+WINDOW_CONVERTER(ListWidget)
+
+WINDOW_CONVERTER(LayoutContainer)
+WINDOW_CONVERTER(SequentialLayoutContainer)
+WINDOW_CONVERTER(GridLayoutContainer)
+WINDOW_CONVERTER(HorizontalLayoutContainer)
+WINDOW_CONVERTER(VerticalLayoutContainer)
+
+WINDOW_CONVERTER(PushButton)
+WINDOW_CONVERTER(ToggleButton)
+WINDOW_CONVERTER(RadioButton)
+WINDOW_CONVERTER(Editbox)
+WINDOW_CONVERTER(DefaultWindow)
+WINDOW_CONVERTER(FrameWindow)
+
+WINDOW_CONVERTER(Combobox)
+WINDOW_CONVERTER(ComboDropList)
+WINDOW_CONVERTER(DragContainer)
+WINDOW_CONVERTER(GroupBox)
+WINDOW_CONVERTER(ItemEntry)
+
+// ListboxItem is not derived from Window
+// ListboxTextItem is derived from ListboxItem
+ListboxTextItem* toListboxTextItem(ListboxItem* p) { return static_cast<ListboxTextItem*>(p); }
+
+WINDOW_CONVERTER(ListHeader)
+WINDOW_CONVERTER(Menubar)
+WINDOW_CONVERTER(MenuItem)
+WINDOW_CONVERTER(MultiColumnList)
+WINDOW_CONVERTER(MultiLineEditbox)
+WINDOW_CONVERTER(PopupMenu)
+WINDOW_CONVERTER(ProgressBar)
+WINDOW_CONVERTER(ScrollablePane)
+WINDOW_CONVERTER(Scrollbar)
+WINDOW_CONVERTER(ScrolledContainer)
+WINDOW_CONVERTER(Slider)
+WINDOW_CONVERTER(Spinner)
+WINDOW_CONVERTER(TabButton)
+WINDOW_CONVERTER(TabControl)
+WINDOW_CONVERTER(Thumb)
+WINDOW_CONVERTER(Titlebar)
+WINDOW_CONVERTER(Tooltip)
+WINDOW_CONVERTER(TreeWidget)
+%}
