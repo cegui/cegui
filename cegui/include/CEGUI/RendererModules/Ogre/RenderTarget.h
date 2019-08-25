@@ -61,9 +61,12 @@ public:
     void setOgreViewportDimensions(const Rectf& area);
 
     // implement parts of CEGUI::RenderTarget interface
-    void draw(const GeometryBuffer& buffer, uint32 drawModeMask = DrawModeMaskAll);
-    void draw(const RenderQueue& queue, uint32 drawModeMask = DrawModeMaskAll);
-                        const glm::vec2& p_in, glm::vec2& p_out) const;
+    void draw(const GeometryBuffer& buffer, std::uint32_t drawModeMask = DrawModeMaskAll);
+    void draw(const RenderQueue& queue, std::uint32_t drawModeMask = DrawModeMaskAll);
+
+    void activate();
+    void unprojectPoint(const GeometryBuffer& buff, const glm::vec2& p_in, glm::vec2& p_out) const;
+
     virtual void setArea(const Rectf& area);
     // implementing the virtual function with a covariant return type
     virtual OgreRenderer& getOwner();
