@@ -4,7 +4,7 @@
 #include "CEGUI/Config.h"
 using namespace CEGUI;
 
-#ifdef __linux__
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wcast-function-type"
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wunused-label"
