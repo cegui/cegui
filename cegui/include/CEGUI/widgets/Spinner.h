@@ -427,7 +427,7 @@ namespace CEGUI
         double   d_currentValue; //!< Numerical copy of the text in d_editbox.
         double   d_maxValue;     //!< Maximum value for spinner.
         double   d_minValue;     //!< Minimum value for spinner.
-        int      i_precision;    //!< precision (number of decimal places)
+        int      d_precision;    //!< precision (number of decimal places)
         TextInputMode   d_inputMode;    //!< Current text display/input mode.
 
     private:
