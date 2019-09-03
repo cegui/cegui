@@ -66,7 +66,7 @@ namespace CEGUI
         d_currentValue(1.0f),
         d_maxValue(32767.0f),
         d_minValue(-32768.0f),
-        i_precision(6),
+        d_precision(6),
         d_inputMode(static_cast<TextInputMode>(-1))
     {
         addSpinnerProperties();
@@ -127,7 +127,7 @@ namespace CEGUI
 
     int Spinner::getPrecision(void) const
     {
-        return i_precision;
+        return d_precision;
     }
 
     Spinner::TextInputMode Spinner::getTextInputMode(void) const
@@ -184,7 +184,7 @@ namespace CEGUI
 
     void Spinner::setPrecision(int val)
     {
-        i_precision = val;
+        d_precision = val;
     }
 
     void Spinner::setTextInputMode(TextInputMode mode)
@@ -305,8 +305,11 @@ namespace CEGUI
         switch (d_inputMode)
         {
         case TextInputMode::FloatingPoint:
-            tmp << std::fixed << std::setprecision(i_precision) << d_currentValue << std::setprecision(6) << std::defaultfloat;
+        {
+            int defPrec = tmp.precision();
+            tmp << std::fixed << std::setprecision(d_precision) << d_currentValue << std::setprecision(defPrec) << std::defaultfloat;
             break;
+        }
         case TextInputMode::Integer:
             tmp << static_cast<int>(d_currentValue);
             break;
