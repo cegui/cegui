@@ -175,6 +175,18 @@ namespace CEGUI
 
         /*!
         \brief
+            Set precision (number of decimal places)
+
+        \param val
+            The floating point precision using by the spinner.
+
+        \return
+            Nothing.
+        */
+        int getPrecision(void) const;
+
+        /*!
+        \brief
             Return the current text input / display mode setting.
 
         \return
@@ -234,6 +246,18 @@ namespace CEGUI
             Nothing.
         */
         void setMinimumValue(double minVaue);
+
+        /*!
+        \brief
+            Set precision (number of decimal places)
+
+        \param val
+            The floating point precision using by the spinner.
+
+        \return
+            Nothing.
+        */
+        void setPrecision(int val);
 
         /*!
         \brief
@@ -403,6 +427,7 @@ namespace CEGUI
         double   d_currentValue; //!< Numerical copy of the text in d_editbox.
         double   d_maxValue;     //!< Maximum value for spinner.
         double   d_minValue;     //!< Minimum value for spinner.
+        int      d_precision;    //!< precision (number of decimal places)
         TextInputMode   d_inputMode;    //!< Current text display/input mode.
 
     private:
