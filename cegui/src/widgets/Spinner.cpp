@@ -66,6 +66,7 @@ namespace CEGUI
         d_currentValue(1.0f),
         d_maxValue(32767.0f),
         d_minValue(-32768.0f),
+        d_precision(6),
         d_inputMode(static_cast<TextInputMode>(-1))
     {
         addSpinnerProperties();
@@ -124,6 +125,11 @@ namespace CEGUI
         return d_minValue;
     }
 
+    int Spinner::getPrecision(void) const
+    {
+        return d_precision;
+    }
+
     Spinner::TextInputMode Spinner::getTextInputMode(void) const
     {
         return d_inputMode;
@@ -174,6 +180,11 @@ namespace CEGUI
             WindowEventArgs args(this);
             onMinimumValueChanged(args);
         }
+    }
+
+    void Spinner::setPrecision(int val)
+    {
+        d_precision = val;
     }
 
     void Spinner::setTextInputMode(TextInputMode mode)
@@ -234,6 +245,11 @@ namespace CEGUI
             "TextInputMode", "Property to get/set the TextInputMode setting for the spinner.  Value is \"FloatingPoint\", \"Integer\", \"Hexadecimal\", or \"Octal\".",
             &Spinner::setTextInputMode, &Spinner::getTextInputMode, Spinner::TextInputMode::Integer
         );
+
+        CEGUI_DEFINE_PROPERTY(Spinner, int,
+            "Precision", "Property to get/set the precision of display the floating point values.  Value is a int.",
+            &Spinner::setPrecision, &Spinner::getPrecision, 6
+        );
     }
 
     double Spinner::getValueFromText(void) const
@@ -289,8 +305,11 @@ namespace CEGUI
         switch (d_inputMode)
         {
         case TextInputMode::FloatingPoint:
-            return CEGUI::PropertyHelper<float>::toString( static_cast<float>(d_currentValue) );
+        {
+            int defPrec = tmp.precision();
+            tmp << std::fixed << std::setprecision(d_precision) << d_currentValue << std::setprecision(defPrec) << std::defaultfloat;
             break;
+        }
         case TextInputMode::Integer:
             tmp << static_cast<int>(d_currentValue);
             break;
