@@ -62,85 +62,106 @@ const String ListView::EventNamespace("ListView");
 const String ListView::WidgetTypeName("CEGUI/ListView");
 
 //----------------------------------------------------------------------------//
-ListViewItemRenderedString::ListViewItemRenderedString() :
-    d_formattedString(nullptr)
-{
-}
-
-ListViewItemRenderedString::ListViewItemRenderedString(const ListViewItemRenderedString& src) :
-    d_formattedString(nullptr)
-{
-    setStringAndFormatting(src.d_string, src.d_horzFormat);
-}
-
-ListViewItemRenderedString::~ListViewItemRenderedString()
-{
-    delete d_formattedString;
-}
-
-void ListViewItemRenderedString::setStringAndFormatting(const RenderedString& string, HorizontalTextFormatting h_fmt)
-{
-    d_horzFormat = h_fmt;
-    d_string = string;
-
-    delete d_formattedString;
-
-    switch(d_horzFormat)
-    {
-    case HorizontalTextFormatting::LeftAligned:
-        d_formattedString =
-            new LeftAlignedRenderedString(d_string);
-        break;
-
-    case HorizontalTextFormatting::RightAligned:
-        d_formattedString =
-            new RightAlignedRenderedString(d_string);
-        break;
-
-    case HorizontalTextFormatting::CentreAligned:
-        d_formattedString =
-            new CentredRenderedString(d_string);
-        break;
-
-    case HorizontalTextFormatting::Justified:
-        d_formattedString =
-            new JustifiedRenderedString(d_string);
-        break;
-
-    case HorizontalTextFormatting::WordWrapLeftAligned:
-        d_formattedString =
-            new RenderedStringWordWrapper<LeftAlignedRenderedString>(d_string);
-        break;
-
-    case HorizontalTextFormatting::WordWrapRightAligned:
-        d_formattedString =
-            new RenderedStringWordWrapper<RightAlignedRenderedString>(d_string);
-        break;
-
-    case HorizontalTextFormatting::WordWrapCentreAligned:
-        d_formattedString =
-            new RenderedStringWordWrapper<CentredRenderedString>(d_string);
-        break;
-
-    case HorizontalTextFormatting::WordWraperJustified:
-        d_formattedString =
-            new RenderedStringWordWrapper<JustifiedRenderedString>(d_string);
-        break;
-    }
-}
-
-FormattedRenderedString* ListViewItemRenderedString::getFormattedString()
-{
-    return d_formattedString;
-}
-
-//----------------------------------------------------------------------------//
 ListViewItemRenderingState::ListViewItemRenderingState(ListView* list_view) :
+    d_string(nullptr),
+    d_formattedString(nullptr),
     d_isSelected(false),
     d_attachedListView(list_view)
 {
 }
 
+//----------------------------------------------------------------------------//
+ListViewItemRenderingState::~ListViewItemRenderingState()
+{
+    delete d_formattedString;
+    delete d_string;
+}
+
+//----------------------------------------------------------------------------//
+ListViewItemRenderingState::ListViewItemRenderingState(ListViewItemRenderingState&& src) :
+    d_string           (src.d_string),
+    d_formattedString  (src.d_formattedString),
+    d_icon             (std::move(src.d_icon)),
+    d_size             (std::move(src.d_size)),
+    d_isSelected       (src.d_isSelected),
+    d_index            (std::move(src.d_index)),
+    d_text             (std::move(src.d_text)),
+    d_attachedListView (src.d_attachedListView)
+{
+    src.d_string          = nullptr; // don't allow delete d_string by src
+    src.d_formattedString = nullptr; // don't allow delete d_formattedString by src
+}
+
+//----------------------------------------------------------------------------//
+ListViewItemRenderingState& ListViewItemRenderingState::operator=(ListViewItemRenderingState&& src) {
+    d_string           = src.d_string,
+    d_formattedString  = src.d_formattedString;
+    d_icon             = std::move(src.d_icon);
+    d_size             = std::move(src.d_size);
+    d_isSelected       = src.d_isSelected;
+    d_index            = std::move(src.d_index);
+    d_text             = std::move(src.d_text);
+    d_attachedListView = src.d_attachedListView;
+
+    src.d_string          = nullptr; // don't allow delete d_string by src
+    src.d_formattedString = nullptr; // don't allow delete d_formattedString by src
+
+    return *this;
+}
+
+//----------------------------------------------------------------------------//
+void ListViewItemRenderingState::setStringAndFormatting(const RenderedString& string, HorizontalTextFormatting h_fmt)
+{
+    delete d_formattedString;
+    delete d_string;
+
+    d_string = new RenderedString(string); // d_string is pointer to avoid change it address, because d_formattedString holds pointer to it
+
+    switch(h_fmt)
+    {
+    case HorizontalTextFormatting::LeftAligned:
+        d_formattedString =
+            new LeftAlignedRenderedString(*d_string);
+        break;
+
+    case HorizontalTextFormatting::RightAligned:
+        d_formattedString =
+            new RightAlignedRenderedString(*d_string);
+        break;
+
+    case HorizontalTextFormatting::CentreAligned:
+        d_formattedString =
+            new CentredRenderedString(*d_string);
+        break;
+
+    case HorizontalTextFormatting::Justified:
+        d_formattedString =
+            new JustifiedRenderedString(*d_string);
+        break;
+
+    case HorizontalTextFormatting::WordWrapLeftAligned:
+        d_formattedString =
+            new RenderedStringWordWrapper<LeftAlignedRenderedString>(*d_string);
+        break;
+
+    case HorizontalTextFormatting::WordWrapRightAligned:
+        d_formattedString =
+            new RenderedStringWordWrapper<RightAlignedRenderedString>(*d_string);
+        break;
+
+    case HorizontalTextFormatting::WordWrapCentreAligned:
+        d_formattedString =
+            new RenderedStringWordWrapper<CentredRenderedString>(*d_string);
+        break;
+
+    case HorizontalTextFormatting::WordWraperJustified:
+        d_formattedString =
+            new RenderedStringWordWrapper<JustifiedRenderedString>(*d_string);
+        break;
+    }
+}
+
+//----------------------------------------------------------------------------//
 bool ListViewItemRenderingState::operator<(ListViewItemRenderingState const& other) const
 {
     return d_attachedListView->getModel()->compareIndices(d_index, other.d_index) < 0;
@@ -204,7 +225,7 @@ void ListView::prepareForRender()
         {
             ListViewItemRenderingState state = ListViewItemRenderingState(this);
             updateItem(state, index, d_renderedMaxWidth, d_renderedTotalHeight);
-            d_items.push_back(state);
+            d_items.push_back(std::move(state));
         }
         else
         {
@@ -293,7 +314,7 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index,
 {
     String text = d_itemModel->getData(index);
 
-    item.d_string.setStringAndFormatting(
+    item.setStringAndFormatting(
         getRenderedStringParser().parse(text, getFont(), &d_textColourRect),
         d_horzFormatting
     );
@@ -303,15 +324,15 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index,
     if (vertScrollbar->isVisible())
         itemsAreaSize.d_width = itemsAreaSize.d_width - vertScrollbar->getPixelSize().d_width;
     itemsAreaSize.d_width -= 2;
-    item.d_string.getFormattedString()->format(this, itemsAreaSize);
+    item.d_formattedString->format(this, itemsAreaSize);
 
     item.d_index = index;
     item.d_text = text;
     item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);
 
     item.d_size = Sizef(
-        item.d_string.getFormattedString()->getHorizontalExtent(this),
-        item.d_string.getFormattedString()->getVerticalExtent(this));
+        item.d_formattedString->getHorizontalExtent(this),
+        item.d_formattedString->getVerticalExtent(this));
 
     max_width = std::max(item.d_size.d_width, max_width);
 
@@ -338,10 +359,10 @@ bool ListView::onChildrenAdded(const EventArgs& args)
             d_itemModel->makeIndex(margs.d_startId + i, margs.d_parentIndex),
             d_renderedMaxWidth, d_renderedTotalHeight);
 
-        items.push_back(item);
+        items.push_back(std::move(item));
     }
 
-    d_items.insert(d_items.begin() + margs.d_startId, items.begin(), items.end());
+    d_items.insert(d_items.begin() + margs.d_startId, std::make_move_iterator(items.begin()), std::make_move_iterator(items.end()));
 
     //TODO: insert in the right place directly!
     resortListView();
