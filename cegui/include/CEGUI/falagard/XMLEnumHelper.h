@@ -497,6 +497,12 @@ public:
         case DimensionOperator::Divide:
             return Divide;
 
+        case DimensionOperator::Max:
+            return Max;
+
+        case DimensionOperator::Min:
+            return Min;
+
         default:
             return Noop;
         }
@@ -516,6 +522,12 @@ public:
         else if (str == Divide)
             return DimensionOperator::Divide;
 
+        else if (str == Max)
+            return DimensionOperator::Max;
+
+        else if (str == Min)
+            return DimensionOperator::Min;
+
         else
             return DimensionOperator::NoOp;
     }
@@ -524,6 +536,8 @@ public:
     static const CEGUI::String Subtract;
     static const CEGUI::String Multiply;
     static const CEGUI::String Divide;
+    static const CEGUI::String Max;
+    static const CEGUI::String Min;
     static const CEGUI::String Noop;
 };
 

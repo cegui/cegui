@@ -123,7 +123,9 @@ namespace CEGUI
         Add,        //!< Dims should be added.
         Subtract,   //!< Dims should be subtracted.
         Multiply,   //!< Dims should be multiplied.
-        Divide      //!< Dims should be divided.
+        Divide,     //!< Dims should be divided.
+        Max,        //!< Return max dim.
+        Min         //!< Return min dim.
     };
 
     /*!
