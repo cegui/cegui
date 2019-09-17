@@ -86,6 +86,8 @@ namespace CEGUI
     const CEGUI::String FalagardXMLHelper<DimensionOperator>::Subtract("Subtract");
     const CEGUI::String FalagardXMLHelper<DimensionOperator>::Multiply("Multiply");
     const CEGUI::String FalagardXMLHelper<DimensionOperator>::Divide("Divide");
+    const CEGUI::String FalagardXMLHelper<DimensionOperator>::Max("Max");
+    const CEGUI::String FalagardXMLHelper<DimensionOperator>::Min("Min");
     const CEGUI::String FalagardXMLHelper<DimensionOperator>::Noop("Noop");
 
     const CEGUI::String FalagardXMLHelper<FrameImageComponent>::TopLeftCorner("TopLeftCorner");
