@@ -1363,13 +1363,11 @@ void Window::addChild_impl(Element* element)
             "Window can only have Elements of type Window added as children "
             "(Window path: " + getNamePath() + ").");
 
-    // Process the child even if it is in our list already. This happens in some
-    // widgets that use optimizations in child rearrangement operations.
+    if (isChild(element))
+        return;
 
     NamedElement::addChild_impl(wnd);
 
-    // Reinsert to the draw list in any case
-    removeWindowFromDrawList(*wnd);
     addWindowToDrawList(*wnd);
 
     wnd->invalidate(true);
