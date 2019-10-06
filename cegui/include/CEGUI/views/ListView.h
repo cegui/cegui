@@ -40,21 +40,6 @@
 namespace CEGUI
 {
 
-struct CEGUIEXPORT ListViewItemRenderedString
-{
-    ListViewItemRenderedString();
-    ListViewItemRenderedString(const ListViewItemRenderedString&);
-    ~ListViewItemRenderedString();
-
-    void setStringAndFormatting(const RenderedString& string, HorizontalTextFormatting h_fmt);
-    FormattedRenderedString* getFormattedString();
-
-private:
-    RenderedString d_string;
-    HorizontalTextFormatting d_horzFormat;
-    FormattedRenderedString* d_formattedString;
-};
-
 /*!
 \brief
     This internal struct represents the rendering state of an item that is part
@@ -67,7 +52,8 @@ private:
 */
 struct CEGUIEXPORT ListViewItemRenderingState
 {
-    ListViewItemRenderedString d_string;
+    RenderedString* d_string;
+    FormattedRenderedString* d_formattedString;
     //! The name of the image that represents the icon
     String d_icon;
     Sizef d_size;
@@ -77,6 +63,16 @@ struct CEGUIEXPORT ListViewItemRenderingState
     ListView* d_attachedListView;
 
     ListViewItemRenderingState(ListView* list_view);
+    ~ListViewItemRenderingState();
+
+    ListViewItemRenderingState(ListViewItemRenderingState&&);
+    ListViewItemRenderingState& operator=(ListViewItemRenderingState&&);
+
+    ListViewItemRenderingState(const ListViewItemRenderingState&) = delete;
+    ListViewItemRenderingState& operator=(const ListViewItemRenderingState&) = delete;
+
+    void setStringAndFormatting(const RenderedString& string, HorizontalTextFormatting h_fmt);
+
     bool operator< (const ListViewItemRenderingState& other) const;
     bool operator> (const ListViewItemRenderingState& other) const;
 };
