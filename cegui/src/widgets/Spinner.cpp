@@ -306,7 +306,7 @@ namespace CEGUI
         {
         case TextInputMode::FloatingPoint:
         {
-            int defPrec = tmp.precision();
+            std::streamsize defPrec = tmp.precision();
             tmp << std::fixed << std::setprecision(d_precision) << d_currentValue << std::setprecision(defPrec) << std::defaultfloat;
             break;
         }
