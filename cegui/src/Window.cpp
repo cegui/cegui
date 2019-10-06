@@ -1363,6 +1363,7 @@ void Window::addChild_impl(Element* element)
             "Window can only have Elements of type Window added as children "
             "(Window path: " + getNamePath() + ").");
 
+    // if the element is already a child of this Window, this is a NOOP
     if (isChild(element))
         return;
 
