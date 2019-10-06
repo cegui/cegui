@@ -26,43 +26,27 @@
  ***************************************************************************/
 #include "CEGUI/widgets/GridLayoutContainer.h"
 #include "CEGUI/WindowManager.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/SharedStringStream.h"
-#include <limits>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-/*************************************************************************
-    Constants
-*************************************************************************/
-// type name for this widget
 const String GridLayoutContainer::WidgetTypeName("GridLayoutContainer");
+const String GridLayoutContainer::EventNamespace("GridLayoutContainer");
+
 // name for dummies, a number is added to the end of that
 const String GridLayoutContainer::DummyName("__auto_dummy_");
 
-const String GridLayoutContainer::EventNamespace("GridLayoutContainer");
+//----------------------------------------------------------------------------//
+static inline bool isDummy(const Element& child)
+{
+    // all auto windows inside grid are dummies
+    return static_cast<const Window&>(child).isAutoWindow();
+}
 
-const String GridLayoutContainer::EventChildOrderChanged("ChildOrderChanged");
-
-/*************************************************************************
-    Constructor
-*************************************************************************/
-GridLayoutContainer::GridLayoutContainer(const String& type,
-                                         const String& name) :
+//----------------------------------------------------------------------------//
+GridLayoutContainer::GridLayoutContainer(const String& type, const String& name) :
     LayoutContainer(type, name),
-
-    d_gridWidth(0),
-    d_gridHeight(0),
-
-    d_autoPositioning(AutoPositioning::LeftToRight),
-    d_nextAutoPositioningIdx(0),
-
-    d_nextGridX(std::numeric_limits<size_t>::max()),
-    d_nextGridY(std::numeric_limits<size_t>::max()),
-
-    d_nextDummyIdx(0)
+    d_requestedChildIdx(std::numeric_limits<size_t>().max())
 {
     // grid size is 0x0 that means 0 child windows,
     // no need to populate d_children with dummies
@@ -77,238 +61,325 @@ GridLayoutContainer::~GridLayoutContainer(void)
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
 {
-    // copy the old children list
-    ChildList oldChildren = d_children;
+    if (width == d_gridWidth && height == d_gridHeight)
+        return;
 
-    // remove all child windows
-    while (getChildCount() != 0)
-    {
-        Window* wnd = static_cast<Window*>(d_children[0]);
-        removeChild(wnd);
-    }
-
-    // we simply fill the grid with dummies to ensure everything works smoothly
-    // when something is added to the grid, it simply replaces the dummy
-    for (size_t i = 0; i < width * height; ++i)
-    {
-        Window* dummy = createDummy();
-        addChild(dummy);
-    }
+    // Too many things may change, so drop the cache
+    d_freeSearchStart = 0;
 
     const size_t oldWidth = d_gridWidth;
-
     const size_t oldHeight = d_gridHeight;
 
-    const AutoPositioning oldAO = d_autoPositioning;
-
     d_gridWidth = width;
-
     d_gridHeight = height;
 
-    // now we have to map oldChildren to new children
-    for (size_t y = 0; y < height; ++y)
+    // Empty cells will be filled with dummies after loading
+    if (d_initialising)
+        return;
+
+    ChildList oldChildren = std::move(d_children);
+
+    d_children.reserve(width * height);
+
+    // To handle majority we operate not on rows & columns, but on major & minor dimensions
+    const size_t oldMajorDim = d_rowMajor ? oldWidth : oldHeight;
+    const size_t newMajorDim = d_rowMajor ? width : height;
+    const size_t oldMinorDim = d_rowMajor ? oldHeight : oldWidth;
+    const size_t newMinorDim = d_rowMajor ? height : width;
+    const size_t majorTransferSize = std::min(oldMajorDim, newMajorDim);
+    const size_t minorTransferSize = std::min(oldMinorDim, newMinorDim);
+    const size_t majorTailSize = (newMajorDim > oldMajorDim) ? (newMajorDim - oldMajorDim) : 0;
+    const size_t minorTailSize = (newMinorDim > oldMinorDim) ? (newMinorDim - oldMinorDim) : 0;
+
+    // Copy existing data row by row or column by column
+    auto itMajorStart = oldChildren.begin();
+    for (size_t y = 0; y < minorTransferSize; ++y)
     {
-        for (size_t x = 0; x < width; ++x)
+        // Move transferrable part of the line
+        if (majorTransferSize)
         {
-            // we have to skip if we are out of the old grid
-            if (x >= oldWidth || y >= oldHeight)
-                continue;
+            d_children.insert(d_children.end(), itMajorStart, itMajorStart + majorTransferSize);
+            std::fill(itMajorStart, itMajorStart + majorTransferSize, nullptr);
+        }
 
-            const size_t oldIdx = mapFromGridToIdx(x, y, oldWidth, oldHeight);
-            Window* previous = static_cast<Window*>(oldChildren[oldIdx]);
+        // Fill the remaining part of the line with dummies. Set nullptr
+        // for now, fill with real dummies later.
+        if (majorTailSize)
+            d_children.insert(d_children.end(), majorTailSize, nullptr);
 
-            if (isDummy(previous))
+        itMajorStart += oldMajorDim;
+    }
+
+    // Remove empty records from oldChildren, leaving only unused children there
+    oldChildren.erase(std::remove(oldChildren.begin(), oldChildren.end(), nullptr), oldChildren.end());
+
+    // Fill remaining cells with dummies. Set nullptr for now, fill with real
+    // dummies later. That's not necessary but done this way for code unification.
+    if (minorTailSize)
+        d_children.insert(d_children.end(), minorTailSize * newMajorDim, nullptr);
+
+    // Do a second pass over new children, fixing nullptrs with real dummies
+    auto itUnusedChild = oldChildren.begin();
+    for (auto& child : d_children)
+    {
+        if (child)
+            continue;
+
+        // Find a reusable dummy if there is one
+        while (itUnusedChild != oldChildren.end())
+        {
+            auto& unusedChild = *itUnusedChild;
+            ++itUnusedChild;
+            if (isDummy(*unusedChild))
             {
-                WindowManager::getSingleton().destroyWindow(previous);
+                child = unusedChild;
+                unusedChild = nullptr;
+                break;
+            }
+        }
+
+        // If there are no reusable dummies left, the new one is created but not
+        // added yet, because nullptrs in a d_children may confuse Window code
+        if (!child)
+            child = createDummy();
+    }
+
+    // Register new dummies as our childs. This will not insert a second copy
+    // of the child into d_children, but will do all necessary setup.
+    for (Element* child : d_children)
+        if (!child->getParentElement())
+            addChild(child);
+
+    // Now remove children that are left unused and do not fit into the new grid
+    for (Element* child : oldChildren)
+    {
+        // Skip reused dummies, we replaced them with nullptrs above
+        if (!child)
+            continue;
+
+        // Grid will not repace this child with a dummy because it isn't present
+        // in the actual child list. This is done intentionally and is a key point.
+        removeChild(child);
+
+        if (static_cast<Window*>(child)->isDestroyedByParent())
+            WindowManager::getSingleton().destroyWindow(static_cast<Window*>(child));
+    }
+}
+
+//----------------------------------------------------------------------------//
+void GridLayoutContainer::setGridWidth(size_t width)
+{
+    setGridDimensions(width, d_gridHeight);
+}
+
+//----------------------------------------------------------------------------//
+void GridLayoutContainer::setGridHeight(size_t height)
+{
+    setGridDimensions(d_gridWidth, height);
+}
+
+//----------------------------------------------------------------------------//
+void GridLayoutContainer::setRowMajor(bool rowMajor)
+{
+    if (d_rowMajor == rowMajor) return;
+
+    d_rowMajor = rowMajor;
+    markNeedsLayouting();
+}
+
+//----------------------------------------------------------------------------//
+void GridLayoutContainer::setAutoGrowing(bool enabled)
+{
+    d_autoGrow = enabled;
+}
+
+//----------------------------------------------------------------------------//
+size_t GridLayoutContainer::getActualChildCount() const
+{
+    size_t count = 0;
+    for (const Element* child : d_children)
+        if (!isDummy(*child))
+            ++count;
+
+    return count;
+}
+
+//----------------------------------------------------------------------------//
+void GridLayoutContainer::getMinimalSizeInCells(size_t& width, size_t& height) const
+{
+    width = 0;
+    height = 0;
+    for (size_t y = 0; y < d_gridHeight; ++y)
+    {
+        for (size_t x = 0; x < d_gridWidth; ++x)
+        {
+            if (x >= width || y >= height)
+            {
+                const Window* child = getChildAtIndex(mapCellToIndex(x, y));
+                if (child && !isDummy(*child))
+                {
+                    if (x >= width)
+                        width = x + 1;
+                    if (y >= height)
+                        height = y + 1;
+                }
+            }
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
+size_t GridLayoutContainer::getFirstFreeIndex(size_t start) const
+{
+    for (size_t i = start; i < d_children.size(); ++i)
+        if (isDummy(*getChildAtIndex(i)))
+            return i;
+
+    return std::numeric_limits<size_t>().max();
+}
+
+//----------------------------------------------------------------------------//
+size_t GridLayoutContainer::getLastBusyIndex() const
+{
+    bool found = false;
+    size_t lastIdx = 0;
+    for (size_t i = 0; i < d_children.size(); ++i)
+    {
+        if (!isDummy(*getChildAtIndex(i)))
+        {
+            lastIdx = i;
+            found = true;
+        }
+    }
+
+    return found ? lastIdx : std::numeric_limits<size_t>().max();
+}
+
+//----------------------------------------------------------------------------//
+void GridLayoutContainer::addChildAtIndex(Element* element, size_t index)
+{
+    // Intended usage of this method is insertion of the new item into an
+    // one-dimensional child list, like in an editor. If the target cell is
+    // empty then the new child will be inserted into it. Otherwise next
+    // children are shifted until an empty cell or the end of the grid reached.
+    // If the end was reached, exception is thrown because of insufficient space.
+
+    size_t x, y;
+    mapIndexToCell(index, x, y);
+    validateGridCell(x, y);
+
+    // The target cell is not free
+    if (!isDummy(*getChildAtIndex(index)))
+    {
+        // Find the first free cell from the requested position
+        size_t freeIdx = getFirstFreeIndex(index + 1);
+
+        if (freeIdx >= getChildCount())
+        {
+            // The grid is full
+            if (d_autoGrow)
+            {
+                freeIdx = getChildCount();
+                growByOneLine();
             }
             else
             {
-                addChildToPosition(previous, x, y);
+                // No free cell, we can't insert a child so that the desired order is maintained
+                throw InvalidRequestException(
+                    "Unable to add a child because the grid has no appropriate free cells.");
             }
-
-            oldChildren[oldIdx] = nullptr;
         }
+
+        // Transfer the free cell to the target index, now we can insert a child there
+        moveChildToIndex(freeIdx, index);
     }
 
-    setAutoPositioning(oldAO);
-    // oldAOIdx could mean something completely different now!
-    // todo: perhaps convert oldAOOdx to new AOIdx?
-    setNextAutoPositioningIdx(0);
-
-    // we have to destroy windows that don't fit the new grid if they are set
-    // to be destroyed by parent
-    for (size_t i = 0; i < oldChildren.size(); ++i)
-    {
-        if (oldChildren[i] && static_cast<Window*>(oldChildren[i])->isDestroyedByParent())
-        {
-            WindowManager::getSingleton().destroyWindow(static_cast<Window*>(oldChildren[i]));
-        }
-    }
+    d_requestedChildIdx = index;
+    addChild(element);
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::setGrid(const Sizef &size)
+void GridLayoutContainer::removeChildAtIndex(size_t index)
 {
-    setGridDimensions(static_cast<size_t>(ceil(std::max(0.0f, size.d_width))),
-        static_cast<size_t>(ceil(std::max(0.0f, size.d_height))));
+    auto child = getChildAtIndex(index);
+    if (child && !isDummy(*child))
+        removeChild(child);
 }
 
 //----------------------------------------------------------------------------//
-size_t GridLayoutContainer::getGridWidth() const
+void GridLayoutContainer::moveChildToIndex(size_t indexFrom, size_t indexTo)
 {
-    return d_gridWidth;
+    if (indexFrom >= getChildCount())
+        return;
+
+    size_t x, y;
+    mapIndexToCell(indexTo, x, y);
+    validateGridCell(x, y);
+
+    LayoutContainer::moveChildToIndex(indexFrom, indexTo);
 }
 
 //----------------------------------------------------------------------------//
-size_t GridLayoutContainer::getGridHeight() const
+void GridLayoutContainer::addChildToCell(Window* window, size_t gridX, size_t gridY, bool replace)
 {
-    return d_gridHeight;
-}
-//----------------------------------------------------------------------------//
-Sizef GridLayoutContainer::getGrid() const
-{
-    return Sizef(static_cast<float>(getGridWidth()), static_cast<float>(getGridHeight()));
-}
+    validateGridCell(gridX, gridY);
 
+    const auto index = mapCellToIndex(gridX, gridY);
+    if (!replace && !isDummy(*getChildAtIndex(index)))
+        throw InvalidRequestException("Target cell is busy, set replace to true to replace existing item.");
 
-
-//----------------------------------------------------------------------------//
-void GridLayoutContainer::setAutoPositioning(AutoPositioning positioning)
-{
-    d_autoPositioning = positioning;
-    d_nextAutoPositioningIdx = 0;
+    d_requestedChildIdx = index;
+    addChild(window);
 }
 
 //----------------------------------------------------------------------------//
-GridLayoutContainer::AutoPositioning GridLayoutContainer::getAutoPositioning() const
+void GridLayoutContainer::removeChildFromCell(size_t gridX, size_t gridY)
 {
-    return d_autoPositioning;
+    removeChildAtIndex(mapCellToIndex(gridX, gridY));
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::setNextAutoPositioningIdx(size_t idx)
+void GridLayoutContainer::moveChildToCell(Window* wnd, size_t gridX, size_t gridY)
 {
-    d_nextAutoPositioningIdx = idx;
+    moveChildToIndex(getChildIndex(wnd), mapCellToIndex(gridX, gridY));
 }
 
 //----------------------------------------------------------------------------//
-size_t GridLayoutContainer::getNextAutoPositioningIdx() const
+void GridLayoutContainer::swapCells(size_t gridX1, size_t gridY1,
+                                    size_t gridX2, size_t gridY2)
 {
-    return d_nextAutoPositioningIdx;
+    swapChildren(mapCellToIndex(gridX1, gridY1), mapCellToIndex(gridX2, gridY2));
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::autoPositioningSkipCells(size_t cells)
+Window* GridLayoutContainer::getChildAtCell(size_t gridX, size_t gridY) const
 {
-    setNextAutoPositioningIdx(getNextAutoPositioningIdx() + cells);
-}
+    if (gridX >= d_gridWidth || gridY >= d_gridHeight)
+        return nullptr;
 
-//----------------------------------------------------------------------------//
-void GridLayoutContainer::addChildToPosition(Window* window,
-                                             size_t gridX, size_t gridY)
-{
-    // when user starts to add windows to specific locations, AO has to be disabled
-    setAutoPositioning(AutoPositioning::Disabled);
-    d_nextGridX = gridX;
-    d_nextGridY = gridY;
-
-    LayoutContainer::addChild(window);
-}
-
-//----------------------------------------------------------------------------//
-Window* GridLayoutContainer::getChildAtPosition(size_t gridX,
-                                                size_t gridY)
-{
-    assert(gridX < d_gridWidth && "out of bounds");
-    assert(gridY < d_gridHeight && "out of bounds");
-
-    return getChildAtIdx(mapFromGridToIdx(gridX, gridY,
-                                          d_gridWidth, d_gridHeight));
-}
-
-//----------------------------------------------------------------------------//
-void GridLayoutContainer::removeChildFromPosition(size_t gridX,
-                                                  size_t gridY)
-{
-    removeChild(getChildAtPosition(gridX, gridY));
-}
-
-//----------------------------------------------------------------------------//
-void GridLayoutContainer::swapChildPositions(size_t wnd1, size_t wnd2)
-{
-    if (wnd1 < d_children.size() && wnd2 < d_children.size())
-    {
-        std::swap(d_children[wnd1], d_children[wnd2]);
-
-        WindowEventArgs args(this);
-        onChildOrderChanged(args);
-    }
-}
-
-//----------------------------------------------------------------------------//
-void GridLayoutContainer::swapChildPositions(size_t gridX1, size_t gridY1,
-                                             size_t gridX2, size_t gridY2)
-{
-    swapChildPositions(
-        mapFromGridToIdx(gridX1, gridY1, d_gridWidth, d_gridHeight),
-        mapFromGridToIdx(gridX2, gridY2, d_gridWidth, d_gridHeight));
-}
-
-//----------------------------------------------------------------------------//
-void GridLayoutContainer::swapChildren(Window* wnd1, Window* wnd2)
-{
-    swapChildPositions(getChildIdx(wnd1),
-                       getChildIdx(wnd2));
-}
-
-//----------------------------------------------------------------------------//
-void GridLayoutContainer::swapChildren(Window* wnd1, const String& wnd2)
-{
-    swapChildren(wnd1, getChild(wnd2));
-}
-
-//----------------------------------------------------------------------------//
-void GridLayoutContainer::swapChildren(const String& wnd1, Window* wnd2)
-{
-    swapChildren(getChild(wnd1), wnd2);
-}
-
-//----------------------------------------------------------------------------//
-void GridLayoutContainer::moveChildToPosition(Window* wnd,
-                                                    size_t gridX, size_t gridY)
-{
-    removeChild(wnd);
-    addChildToPosition(wnd, gridX, gridY);
-}
-
-//----------------------------------------------------------------------------//
-void GridLayoutContainer::moveChildToPosition(const String& wnd,
-                                                    size_t gridX, size_t gridY)
-{
-    moveChildToPosition(getChild(wnd), gridX, gridY);
+    return getChildAtIndex(mapCellToIndex(gridX, gridY));
 }
 
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::layout()
 {
+    // Used to compare UDims
+    const Rectf& childContentArea = getChildContentArea().get();
+    const float absWidth = childContentArea.getWidth();
+    const float absHeight = childContentArea.getHeight();
+
+    // Trigger recalculation of children pixel sizes
+    notifyChildrenOfSizeChange(false, true);
+
+    // First, we need to determine rowSizes and colSizes, this is
+    // needed before any layouting work takes place
     std::vector<UDim> colSizes(d_gridWidth, UDim(0, 0));
     std::vector<UDim> rowSizes(d_gridHeight, UDim(0, 0));
-
-    // used to compare UDims
-    const float absWidth = getChildContentArea().get().getWidth();
-    const float absHeight = getChildContentArea().get().getHeight();
-
-    // first, we need to determine rowSizes and colSizes, this is needed before
-    // any layouting work takes place
     for (size_t y = 0; y < d_gridHeight; ++y)
     {
         for (size_t x = 0; x < d_gridWidth; ++x)
         {
-            // x and y is the position of window in the grid
-            const size_t childIdx =
-                mapFromGridToIdx(x, y, d_gridWidth, d_gridHeight);
-
-            Window* window = getChildAtIdx(childIdx);
+            Window* window = getChildAtIndex(mapCellToIndex(x, y));
             const UVector2 size = getBoundingSizeForWindow(window);
 
             if (CoordConverter::asAbsolute(colSizes[x], absWidth) <
@@ -325,185 +396,70 @@ void GridLayoutContainer::layout()
         }
     }
 
-    // OK, now in rowSizes[y] is the height of y-th row
-    //         in colSizes[x] is the width of x-th column
+    // OK, now rowSizes[y] is the height of y-th row
+    //         colSizes[x] is the width of x-th column
 
-    // second layouting phase starts now
+    // Second layouting phase starts now
+    UDim cellX;
+    UDim cellY(0.f, 0.f);
     for (size_t y = 0; y < d_gridHeight; ++y)
     {
+        cellX.d_scale = 0.f;
+        cellX.d_offset = 0.f;
+        
         for (size_t x = 0; x < d_gridWidth; ++x)
         {
-            // x and y is the position of window in the grid
-            const size_t childIdx = mapFromGridToIdx(x, y,
-                                                     d_gridWidth, d_gridHeight);
-            Window* window = getChildAtIdx(childIdx);
+            Window* window = getChildAtIndex(mapCellToIndex(x, y));
             const UVector2 offset = getOffsetForWindow(window);
-            const UVector2 gridCellOffset = getGridCellOffset(colSizes,
-                                                              rowSizes,
-                                                              x, y);
+            window->setPosition(UVector2(cellX, cellY) + offset);
 
-            window->setPosition(gridCellOffset + offset);
-        }
-    }
-
-    // now we just need to determine the total width and height and set it
-    setSize(getGridSize(colSizes, rowSizes));
-}
-
-//----------------------------------------------------------------------------//
-void GridLayoutContainer::onChildOrderChanged(WindowEventArgs& e)
-{
-    markNeedsLayouting();
-
-    fireEvent(EventChildOrderChanged, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-size_t GridLayoutContainer::mapFromGridToIdx(size_t gridX,
-                                             size_t gridY,
-                                             size_t gridWidth,
-                                             size_t gridHeight) const
-{
-    // example:
-    // d_children = {1, 2, 3, 4, 5, 6}
-    // grid is 3x2
-    // 1 2 3
-    // 4 5 6
-
-    assert(gridX < gridWidth);
-    assert(gridY < gridHeight);
-    CEGUI_UNUSED(gridHeight); // silence warning in release builds
-
-    return gridY * gridWidth + gridX;
-}
-
-//----------------------------------------------------------------------------//
-void GridLayoutContainer::mapFromIdxToGrid(size_t idx,
-                                           size_t& gridX,
-                                           size_t& gridY,
-                                           size_t gridWidth,
-                                           size_t gridHeight) const
-{
-    gridX = 0;
-    gridY = 0;
-
-    while (idx >= gridWidth)
-    {
-        idx -= gridWidth;
-        ++gridY;
-    }
-
-    assert(gridY < gridHeight);
-    CEGUI_UNUSED(gridHeight); // silence warning in release builds
-
-    gridX = idx;
-}
-
-//----------------------------------------------------------------------------//
-UVector2 GridLayoutContainer::getGridCellOffset(
-        const std::vector<UDim>& colSizes,
-        const std::vector<UDim>& rowSizes,
-        size_t gridX, size_t gridY) const
-{
-    assert(gridX < d_gridWidth);
-    assert(gridY < d_gridHeight);
-
-    UVector2 ret(UDim(0, 0), UDim(0, 0));
-
-    for (size_t i = 0; i < gridX; ++i)
-    {
-        ret.d_x += colSizes[i];
-    }
-
-    for (size_t i = 0; i < gridY; ++i)
-    {
-        ret.d_y += rowSizes[i];
-    }
-
-    return ret;
-}
-
-//----------------------------------------------------------------------------//
-USize GridLayoutContainer::getGridSize(const std::vector<UDim>& colSizes,
-        const std::vector<UDim>& rowSizes) const
-{
-    USize ret(UDim(0, 0), UDim(0, 0));
-
-    for (size_t i = 0; i < colSizes.size(); ++i)
-    {
-        ret.d_width += colSizes[i];
-    }
-
-    for (size_t i = 0; i < rowSizes.size(); ++i)
-    {
-        ret.d_height += rowSizes[i];
-    }
-
-    return ret;
-}
-
-//----------------------------------------------------------------------------//
-size_t GridLayoutContainer::translateAPToGridIdx(size_t APIdx) const
-{
-    // todo: more auto positioning variants? will someone use them?
-
-    if (d_autoPositioning == AutoPositioning::Disabled)
-    {
-        assert(0);
-    }
-    else if (d_autoPositioning == AutoPositioning::LeftToRight)
-    {
-        // this is the same positioning as implementation
-        return APIdx;
-    }
-    else if (d_autoPositioning == AutoPositioning::TopToBottom)
-    {
-        // we want
-        // 1 3 5
-        // 2 4 6
-
-        size_t x = 0;
-        size_t y = 0;
-        bool done = false;
-
-        for (x = 0; x < d_gridWidth; ++x)
-        {
-            for (y = 0; y < d_gridHeight; ++y)
-            {
-                if (APIdx == 0)
-                {
-                    done = true;
-                    break;
-                }
-
-                --APIdx;
-            }
-
-            if (done)
-            {
-                break;
-            }
+            cellX += colSizes[x];
         }
 
-        assert(APIdx == 0);
-        return mapFromGridToIdx(x, y, d_gridWidth, d_gridHeight);
+        cellY += rowSizes[y];
     }
 
-    // should never happen
-    assert(0);
-    return APIdx;
+    // Now we just need to set the total width and height
+
+    setSize(USize(cellX, cellY));
+}
+
+//----------------------------------------------------------------------------//
+void GridLayoutContainer::onChildOrderChanged(ElementEventArgs& e)
+{
+    // TODO: could optimize if e would contain the first affected index
+    d_freeSearchStart = 0;
+    LayoutContainer::onChildOrderChanged(e);
+}
+
+//----------------------------------------------------------------------------//
+size_t GridLayoutContainer::mapCellToIndex(size_t gridX, size_t gridY) const
+{
+    return d_rowMajor ? (gridY * d_gridWidth + gridX) : (gridX * d_gridHeight + gridY);
+}
+
+//----------------------------------------------------------------------------//
+void GridLayoutContainer::mapIndexToCell(size_t idx, size_t& gridX, size_t& gridY) const
+{
+    if (d_rowMajor)
+    {
+        gridY = idx / d_gridWidth;
+        gridX = idx - gridY * d_gridWidth;
+    }
+    else
+    {
+        gridX = idx / d_gridHeight;
+        gridY = idx - gridX * d_gridHeight;
+    }
 }
 
 //----------------------------------------------------------------------------//
 Window* GridLayoutContainer::createDummy()
 {
-    std::stringstream& sstream = SharedStringstream::GetPreparedStream();
-    sstream << d_nextDummyIdx;
+    Window* dummy = WindowManager::getSingleton().createWindow("DefaultWindow",
+                    DummyName + std::to_string(d_nextDummyIdx));
 
     ++d_nextDummyIdx;
-
-    Window* dummy = WindowManager::getSingleton().createWindow("DefaultWindow",
-                    DummyName + sstream.str());
 
     dummy->setAutoWindow(true);
     dummy->setVisible(false);
@@ -514,92 +470,189 @@ Window* GridLayoutContainer::createDummy()
 }
 
 //----------------------------------------------------------------------------//
-bool GridLayoutContainer::isDummy(Window* wnd) const
+void GridLayoutContainer::validateGridCell(size_t gridX, size_t gridY)
 {
-    // all auto windows inside grid are dummies
-    return wnd->isAutoWindow();
+    if (gridX < d_gridWidth && gridY < d_gridHeight)
+        return;
+
+    if (d_autoGrow)
+        setGridDimensions(std::max(d_gridWidth, gridX + 1), std::max(d_gridHeight, gridY + 1));
+    else
+        throw InvalidRequestException("The cell specified is out of the grid bounds.");
+}
+
+//----------------------------------------------------------------------------//
+void GridLayoutContainer::growByOneLine()
+{
+    const size_t newWidth = std::max(size_t{1}, d_gridWidth + (d_rowMajor ? 0 : 1));
+    const size_t newHeight = std::max(size_t{1}, d_gridHeight + (d_rowMajor ? 1 : 0));
+    setGridDimensions(newWidth, newHeight);
+}
+
+//----------------------------------------------------------------------------//
+void GridLayoutContainer::endInitialisation(void)
+{
+    // After we loaded children from XML, fill remaining free cells with dummies
+    const size_t capacity = d_gridWidth * d_gridHeight;
+    for (size_t i = d_children.size(); i < capacity; ++i)
+        addChild(createDummy());
+
+    LayoutContainer::endInitialisation();
 }
 
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::addChild_impl(Element* element)
 {
-    Window* wnd = dynamic_cast<Window*>(element);
-    
-    if (!wnd)
+    // Custom logic for dummies. Allow to refresh children already in the list.
+    // It is necessary for rearrangement optimization when resizing the grid.
+    // Also skip LayoutContainer's subscriptions on child resizing and draw list
+    // maintaining because dummies have no size and are invisible.
+    if (isDummy(*element))
     {
-        throw InvalidRequestException(
-            "GridLayoutContainer can only have Elements of type Window added "
-            "as children (Window path: " + getNamePath() + ").");
+        NamedElement::addChild_impl(element);
+        static_cast<Window*>(element)->invalidate(true);
+        return;
     }
-    
-    if (isDummy(wnd))
+
+    // Regular logic for the loading time
+    if (d_initialising)
     {
-        LayoutContainer::addChild_impl(wnd);
+        LayoutContainer::addChild_impl(element);
+        return;
     }
-    else
+
+    // If requested index is unspecified (invalid), get the first free index
+    if (d_requestedChildIdx >= getChildCount())
     {
-        LayoutContainer::addChild_impl(wnd);
+        d_requestedChildIdx = getFirstFreeIndex(d_freeSearchStart);
 
-        // OK, wnd is already in d_children
-
-        // idx is the future index of the child that's being added
-        size_t idx;
-
-        if (d_autoPositioning == AutoPositioning::Disabled)
+        if (d_requestedChildIdx >= getChildCount())
         {
-            if ((d_nextGridX == std::numeric_limits<size_t>::max()) &&
-                (d_nextGridY == std::numeric_limits<size_t>::max()))
+            // The grid is full
+            if (d_autoGrow)
+            {
+                d_requestedChildIdx = getChildCount();
+                growByOneLine();
+            }
+            else
             {
                 throw InvalidRequestException(
-                    "Unable to add child without explicit grid position "
-                    "because auto positioning is disabled.  Consider using the "
-                    "GridLayoutContainer::addChildToPosition functions.");
+                    "Unable to add a child because the grid is full. Consider using the "
+                    "GridLayoutContainer::addChildToCell function with replace=true, "
+                    "clearing some cells manually with GridLayoutContainer::removeChild[FromCell] "
+                    "or using an auto-growing feature with GridLayoutContainer::setAutoGrowing.");
             }
-
-            idx = mapFromGridToIdx(d_nextGridX, d_nextGridY,
-                                   d_gridWidth, d_gridHeight);
-
-            // reset location to sentinel values.
-            d_nextGridX = d_nextGridY = std::numeric_limits<size_t>::max();
-        }
-        else
-        {
-            idx = translateAPToGridIdx(d_nextAutoPositioningIdx);
-            ++d_nextAutoPositioningIdx;
         }
 
-        // we swap the dummy and the added child
-        // this essentially places the added child to it's right position and
-        // puts the dummy at the end of d_children it will soon get removed from
-        std::swap(d_children[idx], d_children[d_children.size() - 1]);
-
-        Window* toBeRemoved = static_cast<Window*>(d_children[d_children.size() - 1]);
-        removeChild(toBeRemoved);
-
-        if (toBeRemoved->isDestroyedByParent())
-        {
-            WindowManager::getSingleton().destroyWindow(toBeRemoved);
-        }
+        // We now know an index of the first free cell. Caching it allows us not to scan the
+        // whole child list each time we insert a child without specifying a location. This
+        // cache is invalidated in some situations. Be careful when changing related logic.
+        d_freeSearchStart = d_requestedChildIdx + 1;
     }
+
+    // The new child is added to the end of d_children
+    LayoutContainer::addChild_impl(element);
+
+    // We swap the element in the target cell with the added child. This essentially
+    // places the added child to its right position and puts the replaced element at
+    // the end of d_children it will soon get removed from. Note that replaced element
+    // may be a dummy or a regular child. The d_requestedChildIdx pointing to it means
+    // that the user confirmed replacement earlier.
+    std::swap(d_children[d_requestedChildIdx], d_children[d_children.size() - 1]);
+
+    // Clear the requested index so that it doesn't influence the next call
+    d_requestedChildIdx = std::numeric_limits<size_t>().max();
+
+    // Finally remove the child that was in the target cell before
+    Window* toBeRemoved = static_cast<Window*>(d_children[d_children.size() - 1]);
+    removeChild(toBeRemoved);
+    if (toBeRemoved->isDestroyedByParent())
+        WindowManager::getSingleton().destroyWindow(toBeRemoved);
 }
 
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::removeChild_impl(Element* element)
 {
-    Window* wnd = static_cast<Window*>(element);
-    
-    if (!isDummy(wnd) && !WindowManager::getSingleton().isLocked())
-    {
-        // before we remove the child, we must add new dummy and place it
-        // instead of the removed child
-        Window* dummy = createDummy();
-        addChild(dummy);
+    // Before we remove the child, we must add a new dummy and place it
+    // instead of the removed child. There are exceptions though:
+    // 1. If the grid is being destroyed, we don't want to maintain its structure anymore.
+    // 2. If the grid is being initialized, structure is not established yet.
+    // 3. If removing a dummy. It is always an intentional internal action.
+    // 4. If the window manager is locked, at which time we can't create a new dummy.
+    // 5. If the child is not in our list, which happens internally when grid is resized.
 
-        const size_t i = getChildIdx(wnd);
-        std::swap(d_children[i], d_children[d_children.size() - 1]);
+    if (!d_destructionStarted &&
+        !d_initialising &&
+        !isDummy(*element) &&
+        !WindowManager::getSingleton().isLocked())
+    {
+        auto it = std::find(d_children.cbegin(), d_children.cend(), element);
+        if (it != d_children.cend())
+        {
+            const size_t idx = static_cast<size_t>(std::distance(d_children.cbegin(), it));
+            addChild(createDummy());
+            std::swap(d_children[idx], d_children[d_children.size() - 1]);
+
+            if (d_freeSearchStart > idx)
+                d_freeSearchStart = idx;
+        }
+    }
+    else if (WindowManager::getSingleton().isLocked())
+    {
+        // Free cells may shift towards the beginning of the child list
+        if (d_freeSearchStart > 0)
+            --d_freeSearchStart;
     }
 
-    LayoutContainer::removeChild_impl(wnd);
+    LayoutContainer::removeChild_impl(element);
+}
+
+//----------------------------------------------------------------------------//
+Window* GridLayoutContainer::getChildAutoWindow(const String& name)
+{
+    // Since dummies are on-demand and their names may change from one run to
+    // another, we create them right at the loading time and ignore exact names.
+    if (d_initialising && name == DummyName)
+    {
+        Window* dummy = createDummy();
+        addChild(dummy);
+        return dummy;
+    }
+
+    return LayoutContainer::getChildAutoWindow(name);
+}
+
+//----------------------------------------------------------------------------//
+int GridLayoutContainer::writeChildWindowsXML(XMLSerializer& xml_stream) const
+{
+    int windowsWritten = 0;
+    size_t dummiesSkipped = 0;
+    for (const Element* child : d_children)
+    {
+        if (isDummy(*child))
+        {
+            // Trailing dummies aren't saved
+            ++dummiesSkipped;
+        }
+        else
+        {
+            windowsWritten += dummiesSkipped + 1;
+
+            while (dummiesSkipped)
+            {
+                // All dummies are written with the same name. It serves
+                // as a type for on-demand creation when loading.
+                xml_stream.openTag(AutoWindowXMLElementName);
+                xml_stream.attribute(AutoWindowNamePathXMLAttributeName, DummyName);
+                xml_stream.closeTag();
+                --dummiesSkipped;
+            }
+
+            static_cast<const Window*>(child)->writeXMLToStream(xml_stream);
+        }
+    }
+
+    return windowsWritten;
 }
 
 //----------------------------------------------------------------------------//
@@ -607,21 +660,29 @@ void GridLayoutContainer::addGridLayoutContainerProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
 
-    CEGUI_DEFINE_PROPERTY(GridLayoutContainer, Sizef,
-        "GridSize", "Size of the grid of this layout container. "
-        "Value uses the 'w:# h:#' format and will be rounded up because "
-        "only integer values are valid as grid size.",
-        &GridLayoutContainer::setGrid, &GridLayoutContainer::getGrid, Sizef::zero()
-    );
-    
-    CEGUI_DEFINE_PROPERTY(GridLayoutContainer, AutoPositioning,
-        "AutoPositioning", "Sets the method used for auto positioning. "
-        "Possible values: 'Disabled', 'Left to Right', 'Top to Bottom'.",
-        &GridLayoutContainer::setAutoPositioning, &GridLayoutContainer::getAutoPositioning, GridLayoutContainer::AutoPositioning::LeftToRight
+    CEGUI_DEFINE_PROPERTY(GridLayoutContainer, size_t,
+        "GridWidth", "Width of the grid of this layout container. "
+        "Value is an unsigned integer number.",
+        &GridLayoutContainer::setGridWidth, &GridLayoutContainer::getGridWidth, 0
     );
 
+    CEGUI_DEFINE_PROPERTY(GridLayoutContainer, size_t,
+        "GridHeight", "Height of the grid of this layout container. "
+        "Value is an unsigned integer number.",
+        &GridLayoutContainer::setGridHeight, &GridLayoutContainer::getGridHeight, 0
+    );
+
+    CEGUI_DEFINE_PROPERTY(GridLayoutContainer, bool,
+        "RowMajor", "Boolean flag - whether grid is laid out row-major (true) or column-major (false)",
+        &GridLayoutContainer::setRowMajor, &GridLayoutContainer::isRowMajor, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(GridLayoutContainer, bool,
+        "AutoGrow", "Allow the grid to expand when its capacity is insufficient to add a new item",
+        &GridLayoutContainer::setAutoGrowing, &GridLayoutContainer::isAutoGrowing, false
+    );
 }
 
 //----------------------------------------------------------------------------//
 
-} // End of  CEGUI namespace section
+} // End of CEGUI namespace section

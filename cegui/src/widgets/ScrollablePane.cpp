@@ -699,7 +699,7 @@ NamedElement* ScrollablePane::getChildByNamePath_impl(const String& name_path) c
     else
         return Window::getChildByNamePath_impl(ScrolledContainerName + '/' + name_path);
 }
-    
+
 //----------------------------------------------------------------------------//
 int ScrollablePane::writeChildWindowsXML(XMLSerializer& xml_stream) const
 {
@@ -716,13 +716,13 @@ int ScrollablePane::writeChildWindowsXML(XMLSerializer& xml_stream) const
 
     getScrolledContainer()->setWritingXMLAllowed(wasContentPaneWritingAllowed);
 
-    // since TabControl content is actually added to the component tab
-    // content pane window, this overridden function exists to dump those
+    // since ScrolledContainer content is actually added to the
+    // ScrollablePane window, this overridden function exists to dump those
     // out as if they were our own children.
     const size_t childCount = getContentPane()->getChildCount();
     for (size_t i = 0; i < childCount; ++i)
     {
-        getScrolledContainer()->getChildAtIdx(i)->writeXMLToStream(xml_stream);
+        getScrolledContainer()->getChildAtIndex(i)->writeXMLToStream(xml_stream);
         ++childOutputCount;
     }
 

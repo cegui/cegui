@@ -685,25 +685,10 @@ public:
     \return
         Pointer to the child window currently attached at index position \a idx
     */
-    inline Window* getChildAtIdx(size_t idx) const
+    inline Window* getChildAtIndex(size_t idx) const
     {
-        return static_cast<Window*>(getChildElementAtIdx(idx));
+        return static_cast<Window*>(getChildElementAtIndex(idx));
     }
-
-    /*!
-    \brief
-        returns an index of the specified child window. Index is based on the
-        order in which the children were added and is stable.
-
-    \param wnd
-        A window whose index must be calculated.
-
-    \return
-        Returns a zero-based index of the window \a wnd. Any value that is not
-        less than the value returned by getChildCount() must be treated as invalid.
-        It means that the given window is not our child.
-    */
-    size_t getChildIdx(Window* wnd) const;
 
     /*!
     \brief
@@ -775,12 +760,12 @@ public:
 
     \return
         Pointer to the (first) Window object attached to this window that has
-        the ID code \a ID.
+        the ID code \a id.
 
     \exception UnknownObjectException
-        thrown if no window with the ID code \a ID is attached to this Window.
+        thrown if no window with the ID code \a id is attached to this Window.
     */
-    Window* getChild(unsigned int ID) const;
+    Window* getChild(unsigned int id) const;
 
     /*!
     \brief
@@ -1494,20 +1479,6 @@ public:
 
     /*!
     \brief
-        Set whether this window is always on top, or not.
-
-    \param setting
-        - true to have the Window appear on top of all other non always on top
-          windows
-        - false to allow the window to be covered by other normal windows.
-
-    \return
-        Nothing
-    */
-    void setAlwaysOnTop(bool setting);
-
-    /*!
-    \brief
         Set whether this window is enabled or disabled.  A disabled window
         normally can not be interacted with, and may have different rendering.
 
@@ -1810,7 +1781,7 @@ public:
         - \a window is 0.
         - \a window is not a sibling of this window.
         - \a window and this window have different AlwaysOnTop settings.
-        - z ordering is disabled for this window.
+        - z-ordering is disabled for this window.
 
     \param window
         The sibling window that this window will be moved in front of.
@@ -1826,26 +1797,12 @@ public:
         - \a window is 0.
         - \a window is not a sibling of this window.
         - \a window and this window have different AlwaysOnTop settings.
-        - z ordering is disabled for this window.
+        - z-ordering is disabled for this window.
 
     \param window
         The sibling window that this window will be moved behind.
     */
     void moveBehind(const Window* const window);
-
-    /*!
-    \brief
-        Return the (visual) z index of the window on it's parent.
-
-        The z index is a number that indicates the order that windows will be
-        drawn (but is not a 'z co-ordinate', as such).  Higher numbers are in
-        front of lower numbers.
-
-        The number returned will not be stable, and generally should be used to
-        compare with the z index of sibling windows (and only sibling windows)
-        to discover the current z ordering of those windows.
-    */
-    size_t getZIndex() const;
 
     /*!
     \brief
@@ -1871,6 +1828,33 @@ public:
 
     /*!
     \brief
+        Return the (visual) z index of the window on it's parent.
+
+        The z index is a number that indicates the order that windows will be
+        drawn (but is not a 'z co-ordinate', as such).  Higher numbers are in
+        front of lower numbers.
+
+        The number returned will not be stable, and generally should be used to
+        compare with the z index of sibling windows (and only sibling windows)
+        to discover the current z-ordering of those windows.
+    */
+    size_t getZIndex() const;
+
+    /*!
+    \brief
+        Set whether this window is always on top, or not.
+
+    \param setting
+        - true to have the Window appear on top of all normal (non-topmost) windows.
+        - false to allow the window to be covered by other normal windows.
+
+    \return
+        Nothing
+    */
+    void setAlwaysOnTop(bool setting);
+
+    /*!
+    \brief
         Captures input to this window
 
     \return
@@ -1882,7 +1866,7 @@ public:
 
     /*!
     \brief
-        Releases input capture from this Window.  If this Window does not have
+        Releases input capture from this Window. If this Window does not have
         inputs captured, nothing happens.
 
     \return
@@ -2410,7 +2394,7 @@ public:
         That is just after the window has been created, but before any children or
         properties are read.
     */
-    virtual void beginInitialisation(void)     {d_initialising = true;}
+    virtual void beginInitialisation(void) { d_initialising = true; }
 
     /*!
     \brief
@@ -2419,7 +2403,23 @@ public:
         creating a window. That is after all properties and children have been
         loaded and just before the next sibling gets created.
     */
-    virtual void endInitialisation(void)       {d_initialising = false;}
+    virtual void endInitialisation(void) { d_initialising = false; }
+
+    /*!
+    \brief
+        Returns an auto window with given name. Auto windows are created by
+        the widget itself and typically can be seen as its parts. In the most
+        cases auto windows are precreated and fetched by name here, but some
+        widgets may create auto windows on demand based on \a name. The name
+        of auto window created on demand may differ from the name passed.
+
+    \param name
+        String object holding the name of the child auto window to return.
+
+    \return
+        the Window object for the auto window referenced by \a name.
+    */
+    virtual Window* getChildAutoWindow(const String& name);
 
     /*!
     \brief

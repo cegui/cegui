@@ -54,12 +54,12 @@ Affector::~Affector(void)
 {
     while (d_keyFrames.size() > 0)
     {
-        destroyKeyFrame(getKeyFrameAtIdx(0));
+        destroyKeyFrame(getKeyFrameAtIndex(0));
     }
 }
 
 //----------------------------------------------------------------------------//
-size_t Affector::getIdxInParent() const
+size_t Affector::getIndexInParent() const
 {
     const Animation* parent = getParent();
     assert(getParent() && "No parent, no index in parent!");
@@ -67,7 +67,7 @@ size_t Affector::getIdxInParent() const
     size_t i = 0;
     while (i < parent->getNumAffectors())
     {
-        if (parent->getAffectorAtIdx(i) == this)
+        if (parent->getAffectorAtIndex(i) == this)
         {
             return i;
         }
@@ -187,7 +187,7 @@ bool Affector::hasKeyFrameAtPosition(float position) const
 }
 
 //----------------------------------------------------------------------------//
-KeyFrame* Affector::getKeyFrameAtIdx(size_t index) const
+KeyFrame* Affector::getKeyFrameAtIndex(size_t index) const
 {
     if (index >= d_keyFrames.size())
     {

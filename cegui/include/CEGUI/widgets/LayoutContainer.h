@@ -47,7 +47,7 @@ namespace CEGUI
     An abstract base class providing common functionality and specifying the
     required interface for derived classes.
 
-    Layout Container provide means for automatic positioning based on sizes of
+    Layout Container provides means for automatic positioning based on sizes of
     it's child Windows. This is useful for dynamic UIs.
 */
 class CEGUIEXPORT LayoutContainer : public Window
@@ -75,7 +75,7 @@ public:
     \brief
         Destructor for Window base class
     */
-    virtual ~LayoutContainer(void);
+    virtual ~LayoutContainer(void) override;
 
     /*!
     \brief
@@ -100,7 +100,13 @@ public:
         (re)layouts all windows inside this layout container if it was marked
         necessary
     */
-    virtual void layoutIfNecessary();
+    void layoutIfNecessary();
+
+    /*!
+    \brief
+        Returns an actual layout child count not including auxiliary items
+    */
+    virtual size_t getActualChildCount() const;
 
     /// @copydoc Window::update
     void update(float elapsed) override;
@@ -115,10 +121,9 @@ protected:
     
     Rectf getClientChildContentArea_impl(bool skipAllPixelAlignment) const;
 
-    /// @copydoc Window::addChild_impl
     void addChild_impl(Element* element) override;
-    /// @copydoc Window::removeChild_impl
     void removeChild_impl(Element* element) override;
+    void cleanupChildren(void) override;
 
     /*************************************************************************
         Event trigger methods
@@ -181,6 +186,7 @@ protected:
 
     // overridden from parent class
     void onParentSized(ElementEventArgs& e) override;
+    void onChildOrderChanged(ElementEventArgs& e) override;
 
     /*************************************************************************
         Implementation Data
@@ -188,7 +194,7 @@ protected:
     // if true, we will relayout before rendering of this window starts
     bool d_needsLayouting;
 
-    typedef std::multimap<Window*, Event::Connection>  ConnectionTracker;
+    typedef std::multimap<Window*, Event::Connection> ConnectionTracker;
     //! Tracks event connections we make.
     ConnectionTracker d_eventConnections;
     

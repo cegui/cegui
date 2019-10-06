@@ -98,9 +98,9 @@ void SampleHandler::initialise(int width, int height)
 
     initialiseSamplePreviewRenderTarget(widthF, heightF);
 
-    initialiseInputAggregator();
-
     initialiseSample();
+
+    initialiseInputAggregator();
 }
 
 void SampleHandler::deinitialise()

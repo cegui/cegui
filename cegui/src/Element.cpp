@@ -61,6 +61,7 @@ const String Element::EventVerticalAlignmentChanged("VerticalAlignmentChanged");
 const String Element::EventRotated("Rotated");
 const String Element::EventChildAdded("ChildAdded");
 const String Element::EventChildRemoved("ChildRemoved");
+const String Element::EventChildOrderChanged("ChildOrderChanged");
 const String Element::EventZOrderChanged("ZOrderChanged");
 const String Element::EventNonClientChanged("NonClientChanged");
 const String Element::EventIsSizeAdjustedToContentChanged("IsSizeAdjustedToContentChanged");
@@ -583,12 +584,11 @@ void Element::setPivot(const UVector3& pivot)
 void Element::addChild(Element* element)
 {
     if (!element)
-        throw 
-                InvalidRequestException("Can't add NULL to Element as a child!");
+        throw InvalidRequestException("Can't add NULL to Element as a child!");
 
     if (element == this)
         throw InvalidRequestException("Can't make element its own child - "
-                                       "this->addChild(this); is forbidden.");
+                                      "this->addChild(this); is forbidden.");
 
     addChild_impl(element);
     ElementEventArgs args(element);
@@ -599,14 +599,111 @@ void Element::addChild(Element* element)
 void Element::removeChild(Element* element)
 {
     if (!element)
-        throw 
-                InvalidRequestException("NULL can't be a child of any Element, "
-                                        "it makes little sense to ask for its "
-                                        "removal");
+        throw InvalidRequestException("NULL can't be a child of any Element, "
+                                      "it makes little sense to ask for its "
+                                      "removal");
 
     removeChild_impl(element);
     ElementEventArgs args(element);
     onChildRemoved(args);
+}
+
+//----------------------------------------------------------------------------//
+void Element::addChildAtIndex(Element* element, size_t index)
+{
+    addChild(element);
+    moveChildToIndex(element, index);
+}
+
+//----------------------------------------------------------------------------//
+void Element::removeChildAtIndex(size_t index)
+{
+    removeChild(getChildElementAtIndex(index));
+}
+
+//----------------------------------------------------------------------------//
+void Element::moveChildToIndex(size_t indexFrom, size_t indexTo)
+{
+    indexTo = std::min(indexTo, d_children.size());
+
+    if (indexFrom == indexTo || indexFrom >= d_children.size())
+    {
+        return;
+    }
+
+    // we get the iterator of the old position
+    ChildList::iterator it = d_children.begin();
+    std::advance(it, indexFrom);
+
+    Element* child = *it;
+
+    // erase the child from it's old position
+    d_children.erase(it);
+
+    // if the window comes before the point we want to insert to,
+    // we have to decrement the position
+    if (indexFrom < indexTo)
+    {
+        --indexTo;
+    }
+
+    // find iterator of the new position
+    it = d_children.begin();
+    std::advance(it, indexTo);
+    // and insert the window there
+    d_children.insert(it, child);
+
+    ElementEventArgs args(this);
+    onChildOrderChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void Element::moveChildToIndex(Element* child, size_t index)
+{
+    moveChildToIndex(getChildIndex(child), index);
+}
+
+//----------------------------------------------------------------------------//
+void Element::moveChildByDelta(Element* child, int delta)
+{
+    const size_t oldIndex = getChildIndex(child);
+    const size_t newIndex =
+        static_cast<size_t>(std::max(0, static_cast<int>(oldIndex) + delta));
+    moveChildToIndex(oldIndex, newIndex);
+}
+
+//----------------------------------------------------------------------------//
+void Element::swapChildren(size_t index1, size_t index2)
+{
+    if (index1 < d_children.size() &&
+        index2 < d_children.size() &&
+        index1 != index2)
+    {
+        std::swap(d_children[index1], d_children[index2]);
+
+        ElementEventArgs args(this);
+        onChildOrderChanged(args);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Element::swapChildren(Element* child1, Element* child2)
+{
+    if (child1 != child2)
+        swapChildren(getChildIndex(child1), getChildIndex(child2));
+}
+
+//----------------------------------------------------------------------------//
+size_t Element::getChildIndex(const Element* child) const
+{
+    const size_t child_count = getChildCount();
+
+    for (size_t i = 0; i < child_count; ++i)
+        if (d_children[i] == child)
+            return i;
+
+    // Any value >= getChildCount() must be treated as invalid
+    return std::numeric_limits<size_t>().max();
 }
 
 //----------------------------------------------------------------------------//
@@ -866,7 +963,8 @@ void Element::addChild_impl(Element* element)
         old_parent->removeChild(element);
 
     // add element to child list
-    d_children.push_back(element);
+    if (std::find(d_children.cbegin(), d_children.cend(), element) == d_children.cend())
+        d_children.push_back(element);
 
     // set the parent element
     element->setParent(this);
@@ -885,17 +983,18 @@ void Element::addChild_impl(Element* element)
 //----------------------------------------------------------------------------//
 void Element::removeChild_impl(Element* element)
 {
+    // NB: it is intentionally valid to remove an element that is not in the list
+
     // find this element in the child list
     ChildList::iterator it = std::find(d_children.begin(), d_children.end(), element);
 
-    // if the element was found in the child list
+    // if the element was found in the child list, remove it from there
     if (it != d_children.end())
-    {
-        // remove element from child list
         d_children.erase(it);
-        // reset element's parent so it's no longer this element.
+
+    // reset element's parent so it's no longer this element
+    if (element->getParentElement() == this)
         element->setParent(nullptr);
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -1059,6 +1158,12 @@ void Element::onChildRemoved(ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+void Element::onChildOrderChanged(ElementEventArgs& e)
+{
+    fireEvent(EventChildOrderChanged, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
 void Element::onNonClientChanged(ElementEventArgs& e)
 {
     // TODO: Be less wasteful with this update
@@ -1067,11 +1172,13 @@ void Element::onNonClientChanged(ElementEventArgs& e)
     fireEvent(EventNonClientChanged, e, EventNamespace);
 }
 
+//----------------------------------------------------------------------------//
 DefaultParagraphDirection Element::getDefaultParagraphDirection() const
 {
     return d_defaultParagraphDirection;
 }
 
+//----------------------------------------------------------------------------//
 void Element::setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection)
 {
     if(defaultParagraphDirection != d_defaultParagraphDirection)
