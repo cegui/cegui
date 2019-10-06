@@ -760,12 +760,12 @@ public:
 
     \return
         Pointer to the (first) Window object attached to this window that has
-        the ID code \a ID.
+        the ID code \a id.
 
     \exception UnknownObjectException
-        thrown if no window with the ID code \a ID is attached to this Window.
+        thrown if no window with the ID code \a id is attached to this Window.
     */
-    Window* getChild(unsigned int ID) const;
+    Window* getChild(unsigned int id) const;
 
     /*!
     \brief
@@ -1781,7 +1781,7 @@ public:
         - \a window is 0.
         - \a window is not a sibling of this window.
         - \a window and this window have different AlwaysOnTop settings.
-        - z ordering is disabled for this window.
+        - z-ordering is disabled for this window.
 
     \param window
         The sibling window that this window will be moved in front of.
@@ -1797,7 +1797,7 @@ public:
         - \a window is 0.
         - \a window is not a sibling of this window.
         - \a window and this window have different AlwaysOnTop settings.
-        - z ordering is disabled for this window.
+        - z-ordering is disabled for this window.
 
     \param window
         The sibling window that this window will be moved behind.
@@ -1836,7 +1836,7 @@ public:
 
         The number returned will not be stable, and generally should be used to
         compare with the z index of sibling windows (and only sibling windows)
-        to discover the current z ordering of those windows.
+        to discover the current z-ordering of those windows.
     */
     size_t getZIndex() const;
 
@@ -1845,8 +1845,7 @@ public:
         Set whether this window is always on top, or not.
 
     \param setting
-        - true to have the Window appear on top of all other non always on top
-          windows
+        - true to have the Window appear on top of all normal (non-topmost) windows.
         - false to allow the window to be covered by other normal windows.
 
     \return
@@ -1867,7 +1866,7 @@ public:
 
     /*!
     \brief
-        Releases input capture from this Window.  If this Window does not have
+        Releases input capture from this Window. If this Window does not have
         inputs captured, nothing happens.
 
     \return

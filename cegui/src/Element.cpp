@@ -609,14 +609,14 @@ void Element::removeChild(Element* element)
 }
 
 //----------------------------------------------------------------------------//
-void Element::addChildToIndex(Element* element, size_t index)
+void Element::addChildAtIndex(Element* element, size_t index)
 {
     addChild(element);
     moveChildToIndex(element, index);
 }
 
 //----------------------------------------------------------------------------//
-void Element::removeChildFromIndex(size_t index)
+void Element::removeChildAtIndex(size_t index)
 {
     removeChild(getChildElementAtIndex(index));
 }
