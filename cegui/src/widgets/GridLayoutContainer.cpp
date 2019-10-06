@@ -503,8 +503,19 @@ void GridLayoutContainer::endInitialisation(void)
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::addChild_impl(Element* element)
 {
-    // Regular logic for dummies and for the loading time
-    if (d_initialising || isDummy(*element))
+    // Custom logic for dummies. Allow to refresh children already in the list.
+    // It is necessary for rearrangement optimization when resizing the grid.
+    // Also skip LayoutContainer's subscriptions on child resizing and draw list
+    // maintaining because dummies have no size and are invisible.
+    if (isDummy(*element))
+    {
+        NamedElement::addChild_impl(element);
+        static_cast<Window*>(element)->invalidate(true);
+        return;
+    }
+
+    // Regular logic for the loading time
+    if (d_initialising)
     {
         LayoutContainer::addChild_impl(element);
         return;
