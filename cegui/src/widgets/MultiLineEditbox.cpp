@@ -840,9 +840,15 @@ void MultiLineEditbox::onCharacter(TextEventArgs& e)
             undo.d_startIdx = getCaretIndex();
             undo.d_text = e.d_character;
             d_undoHandler->addUndoHistory(undo);
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+            size_t strLen = newText.length();
+#endif
             newText.insert(getCaretIndex(), 1, e.d_character);
-
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+            d_caretPos += newText.length() - strLen;
+#else
             d_caretPos++;
+#endif
             setText(newText);
             ++e.handled;
         }

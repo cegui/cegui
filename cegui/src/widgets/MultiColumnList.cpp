@@ -1943,6 +1943,8 @@ void MultiColumnList::onSemanticInputEvent(SemanticEventArgs& e)
 
         ++ e.handled;
     }
+
+    Window::onSemanticInputEvent(e);
 }
 
 /*************************************************************************

@@ -3114,9 +3114,12 @@
                 </Dim>
                 <Dim type="Height">
                     <OperatorDim op="Multiply">
-                        <OperatorDim op="Divide">
-                            <PropertyDim name="PageSize"/>
-                            <PropertyDim name="DocumentSize"/>
+                        <OperatorDim op="Min">
+                            <OperatorDim op="Divide">
+                                <PropertyDim name="PageSize"/>
+                                <PropertyDim name="DocumentSize"/>
+                            </OperatorDim>
+                            <AbsoluteDim value="1"/>
                         </OperatorDim>
                         <OperatorDim op="Subtract">
                             <OperatorDim op="Subtract">

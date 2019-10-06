@@ -205,6 +205,12 @@ float OperatorDim::getValueImpl(const float lval, const float rval) const
     case DimensionOperator::Divide:
         return rval == 0.0f ? rval : lval / rval;
 
+    case DimensionOperator::Max:
+        return (lval > rval) ? lval : rval;
+
+    case DimensionOperator::Min:
+        return (lval < rval) ? lval : rval;
+
     default:
         throw InvalidRequestException(
             "Unknown DimensionOperator value.");
@@ -300,6 +306,22 @@ UDim OperatorDim::getBoundAsUDim(const UDim& lval, const UDim& rval) const
             }
             else
                 throw InvalidRequestException("Division gives a non-affine function");
+        case DimensionOperator::Max:
+            if (lval.d_scale > rval.d_scale && lval.d_offset > rval.d_offset)
+                return lval;
+            else if (lval.d_scale < rval.d_scale && lval.d_offset < rval.d_offset)
+                return rval;
+            else
+                throw InvalidRequestException("Non comparable UDim values in Max function");
+
+        case DimensionOperator::Min:
+            if (lval.d_scale > rval.d_scale && lval.d_offset > rval.d_offset)
+                return rval;
+            else if (lval.d_scale < rval.d_scale && lval.d_offset < rval.d_offset)
+                return lval;
+            else
+                throw InvalidRequestException("Non comparable UDim values in Min function");
+
         default:
             throw InvalidRequestException("Unknown DimensionOperator value.");
         }

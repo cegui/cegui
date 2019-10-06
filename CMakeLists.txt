@@ -159,9 +159,19 @@ find_package(PVRTools)
 
 find_package(Lua51)
 find_package(TOLUAPP)
-find_package(PythonInterp)
 
-## ensure python3 not picked up as default
+## search python3 libs
+find_package(PythonLibs 3.5)
+string(REGEX REPLACE "^([0-9]+)\\..*$" "\\1" PYTHON_VERSION_MAJOR "${PYTHONLIBS_VERSION_STRING}")
+if(${PYTHON_VERSION_MAJOR} AND ${PYTHON_VERSION_MAJOR} EQUAL 3)
+        set(PYTHON3LIBS_FOUND     ${PYTHONLIBS_FOUND}    CACHE STRING   "python3 found")
+        set(PYTHON3_LIBRARIES     ${PYTHON_LIBRARIES}    CACHE FILEPATH "python3 lib path")
+        set(PYTHON3_INCLUDE_DIRS  ${PYTHON_INCLUDE_DIRS} CACHE PATH     "python3 include dir path")
+        mark_as_advanced(PYTHON3LIBS_FOUND PYTHON3_LIBRARIES PYTHON3_INCLUDE_DIRS)
+endif()
+
+## search python libs in version of default interpreter
+find_package(PythonInterp)
 find_package(PythonVersion)
 if (UNIX AND PYTHON_VERSION_FOUND)
   find_package(PythonLibs ${PYTHON_VERSION_STRING} EXACT)
@@ -261,7 +271,8 @@ option( CEGUI_BUILD_RENDERER_OPENGLES2_ALTERNATE_WITH_GLES3_SUPPORT "Specifies w
 cegui_dependent_option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" "LUA51_FOUND;TOLUAPP_FOUND" )
 cegui_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" "LUA51_FOUND;TOLUAPP_FOUND" )
 
-cegui_dependent_option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build the Python extension module(s)" "PYTHONINTERP_FOUND;PYTHONLIBS_FOUND;Boost_PYTHON_FOUND" )
+cegui_dependent_option( CEGUI_BUILD_PYTHON_MODULES_PYPLUSPLUS "Specifies whether to build the Python extension module(s) via boost and Py++" "PYTHONINTERP_FOUND;PYTHONLIBS_FOUND;Boost_PYTHON_FOUND" )
+option( CEGUI_BUILD_PYTHON_MODULES_SWIG "Specifies whether to build the Python extension module(s)" ${PYTHON3LIBS_FOUND} )
 
 option( CEGUI_OPTION_SAFE_LUA_MODULE "Specifies whether to enable extra validation in the Lua script module in non-debug builds" FALSE )
 
