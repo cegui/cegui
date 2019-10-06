@@ -71,7 +71,7 @@ void RadioButton::deselectSiblingRadioButtonsInGroup() const
     for (size_t child = 0; child < child_count; ++child)
     {
         if (RadioButton* rb = dynamic_cast<RadioButton*>(
-                getParent()->getChildAtIdx(child)))
+                getParent()->getChildAtIndex(child)))
         {
             if (rb->isSelected() && (rb != this) &&
                 (rb->getGroupID() == d_groupID))
@@ -94,9 +94,9 @@ RadioButton* RadioButton::getSelectedButtonInGroup() const
         for (size_t child = 0; child < child_count; ++child)
         {
             // is this child same type as we are?
-            if (getParent()->getChildAtIdx(child)->getType() == getType())
+            if (getParent()->getChildAtIndex(child)->getType() == getType())
             {
-                RadioButton* rb = static_cast<RadioButton*>(getParent()->getChildAtIdx(child));
+                RadioButton* rb = static_cast<RadioButton*>(getParent()->getChildAtIndex(child));
 
                 // is child same group and selected?
                 if (rb->isSelected() && (rb->getGroupID() == d_groupID))

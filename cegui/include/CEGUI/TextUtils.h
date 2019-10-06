@@ -94,7 +94,7 @@ public:
     \return
         Index into \a str which marks the beginning of the word at index \a idx.
     */
-    static  String::size_type   getWordStartIdx(const String& str, String::size_type idx);
+    static String::size_type getWordStartIndex(const String& str, String::size_type idx);
 
 
     /*!
@@ -114,7 +114,7 @@ public:
         Index into \a str which marks the beginning of the word at after the word at index \a idx.
         If \a idx is within the last word, then the return is the last index in \a str.
     */
-    static  String::size_type   getNextWordStartIdx(const String& str, String::size_type idx);
+    static String::size_type getNextWordStartIndex(const String& str, String::size_type idx);
 
 
     /*!

@@ -28,27 +28,10 @@ author:     Luca Ebach <lucaebach@gmail.com>
 #ifndef _ScrollablePaneSample_h_
 #define _ScrollablePaneSample_h_
 
-#include "CEGUI/System.h"
-#include "CEGUI/SchemeManager.h"
-#include "CEGUI/WindowManager.h"
-#include "CEGUI/FontManager.h"
-#include "CEGUI/ImageManager.h"
 #include "CEGUI/InputAggregator.h"
-#include "CEGUI/InputEventReceiver.h"
-#include "CEGUI/Font.h"
-#include "CEGUI/Window.h"
-#include "CEGUI/CoordConverter.h"
-#include "CEGUI/GUIContext.h"
-
-#include "CEGUI/widgets/ScrollablePane.h"
-#include "CEGUI/widgets/ScrolledContainer.h"
-
 #include "Sample.h"
 
-
-/*************************************************************************
-Custom implementation of InputAggregator
-*************************************************************************/
+// Custom implementation of InputAggregator
 class SampleInputAggregator : public CEGUI::InputAggregator
 {
 public:
@@ -57,14 +40,16 @@ public:
     {
     }
 
-    void initialise()
+    void initialise(bool handle_on_keyup = true) override
     {
+        CEGUI::InputAggregator::initialise(handle_on_keyup);
+
         d_keyValuesMappings[static_cast<unsigned char>(CEGUI::Key::Scan::Space)] =
             CEGUI::SemanticValue::SpawnNewDialog;
     }
 };
 
-// ScrollablePane Sample sample class
+// ScrollablePane sample class
 class ScrollablePaneSample : public Sample
 {
 public:
@@ -84,17 +69,10 @@ private:
     bool fileQuit(const CEGUI::EventArgs&) { return true; }
 
     // new dialog menu item handler
-    bool SampleNewDialog(const CEGUI::EventArgs& e);
+    bool addNewChild(const CEGUI::EventArgs& e);
     bool semanticEventHandler(const CEGUI::EventArgs& e);
 
-    // member data
-    CEGUI::WindowManager* d_wm; // we will use the window manager alot
-    CEGUI::System* d_system;    // the gui system
-    CEGUI::Window* d_root;      // the gui sheet
-    CEGUI::Font* d_font;        // the font we use
-    CEGUI::ScrollablePane* d_pane; // the scrollable pane. center piece of the Sample
-
-    CEGUI::GUIContext* d_guiContext;
+    CEGUI::ScrollablePane* d_pane = nullptr;
 };
 
 #endif // _ScrollablePaneSample

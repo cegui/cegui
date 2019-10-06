@@ -66,7 +66,7 @@ String TextUtils::getNextWord(const String& str, String::size_type start_idx, co
 /*************************************************************************
     Return the index of the first character of the word at 'idx'.
 *************************************************************************/
-String::size_type TextUtils::getWordStartIdx(const String& str, String::size_type idx)
+String::size_type TextUtils::getWordStartIndex(const String& str, String::size_type idx)
 {
     String  temp = str.substr(0, idx);
 
@@ -105,7 +105,7 @@ String::size_type TextUtils::getWordStartIdx(const String& str, String::size_typ
     Return the index of the first character of the word after the word
     at 'idx'.
 *************************************************************************/
-String::size_type TextUtils::getNextWordStartIdx(const String& str, String::size_type idx)
+String::size_type TextUtils::getNextWordStartIndex(const String& str, String::size_type idx)
 {
     String::size_type str_len = str.length();
 

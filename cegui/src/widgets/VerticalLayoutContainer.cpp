@@ -42,7 +42,7 @@ const String VerticalLayoutContainer::WidgetTypeName("VerticalLayoutContainer");
 *************************************************************************/
 VerticalLayoutContainer::VerticalLayoutContainer(const String& type,
                                                  const String& name) :
-        SequentialLayoutContainer(type, name)
+    LayoutContainer(type, name)
 {}
 
 //----------------------------------------------------------------------------//
@@ -65,6 +65,9 @@ void VerticalLayoutContainer::layout()
         Window* window = static_cast<Window*>(*it);
 
         const UVector2 offset = getOffsetForWindow(window);
+        window->setPosition(offset + UVector2(UDim(0, 0), topOffset));
+
+        // setPosition triggered child pixel size recalculation, now we can get bounds
         const UVector2 boundingSize = getBoundingSizeForWindow(window);
 
         // full child window width, including margins
@@ -76,7 +79,6 @@ void VerticalLayoutContainer::layout()
             layoutWidth = childWidth;
         }
 
-        window->setPosition(offset + UVector2(UDim(0, 0), topOffset));
         topOffset += boundingSize.d_y;
     }
 

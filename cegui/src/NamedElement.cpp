@@ -198,7 +198,7 @@ NamedElement* NamedElement::getChildByNamePath_impl(const String& name_path) con
 
     for (size_t i = 0; i < child_count; ++i)
     {
-        Element* child = getChildElementAtIdx(i);
+        Element* child = getChildElementAtIndex(i);
         NamedElement* named_child = dynamic_cast<NamedElement*>(child);
 
         if (!named_child)
@@ -225,7 +225,7 @@ NamedElement* NamedElement::getChildByNameRecursive_impl(const String& name) con
 
     for (size_t i = 0; i < child_count; ++i) // load all children into the queue
     {
-        Element* child = getChildElementAtIdx(i);
+        Element* child = getChildElementAtIndex(i);
         ElementsToSearch.push(child);
     }
 
@@ -246,7 +246,7 @@ NamedElement* NamedElement::getChildByNameRecursive_impl(const String& name) con
         const size_t element_child_count = child->getChildCount();
         for(size_t i = 0; i < element_child_count; ++i)
         {
-            ElementsToSearch.push(child->getChildElementAtIdx(i));
+            ElementsToSearch.push(child->getChildElementAtIndex(i));
         }
     }
 

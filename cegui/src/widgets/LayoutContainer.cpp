@@ -47,7 +47,6 @@ const String LayoutContainer::EventNamespace("LayoutContainer");
 //----------------------------------------------------------------------------//
 LayoutContainer::LayoutContainer(const String& type, const String& name):
     Window(type, name),
-
     d_needsLayouting(false),
     d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&LayoutContainer::getClientChildContentArea_impl))
 {
@@ -83,10 +82,18 @@ void LayoutContainer::layoutIfNecessary()
 {
     if (d_needsLayouting)
     {
-        layout();
-
+        // Sometimes layout() triggers subsequent layouting, for example when
+        // the final size calculation changes parent ScrollablePane scrollbars.
+        // This is why the flag is cleared before layouting, not after it.
         d_needsLayouting = false;
+        layout();
     }
+}
+
+//----------------------------------------------------------------------------//
+size_t LayoutContainer::getActualChildCount() const
+{
+    return getChildCount();
 }
 
 //----------------------------------------------------------------------------//
@@ -114,9 +121,12 @@ void LayoutContainer::notifyScreenAreaChanged(bool recursive)
 //----------------------------------------------------------------------------//
 Rectf LayoutContainer::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
 {
-    return d_parent ?
-           (skipAllPixelAlignment ? d_parent->getUnclippedInnerRect().getFresh(true) : d_parent->getUnclippedInnerRect().get()) :
-           Window::getUnclippedInnerRect_impl(skipAllPixelAlignment);
+    if (!d_parent)
+        return Window::getUnclippedInnerRect_impl(skipAllPixelAlignment);
+
+    return skipAllPixelAlignment ?
+        d_parent->getUnclippedInnerRect().getFresh(true) :
+        d_parent->getUnclippedInnerRect().get();
 }
 
 //----------------------------------------------------------------------------//
@@ -137,14 +147,9 @@ Rectf LayoutContainer::getClientChildContentArea_impl(bool skipAllPixelAlignment
 //----------------------------------------------------------------------------//
 void LayoutContainer::addChild_impl(Element* element)
 {
-    Window* wnd = dynamic_cast<Window*>(element);
-    
-    if (!wnd)
-        throw InvalidRequestException(
-            "LayoutContainer can only have Elements of type Window added as "
-            "children (Window path: " + getNamePath() + ").");
-    
-    Window::addChild_impl(wnd);
+    Window::addChild_impl(element);
+
+    Window* wnd = static_cast<Window*>(element);
 
     // we have to subscribe to the EventSized for layout updates
     d_eventConnections.insert(std::make_pair(wnd,
@@ -158,27 +163,34 @@ void LayoutContainer::addChild_impl(Element* element)
 //----------------------------------------------------------------------------//
 void LayoutContainer::removeChild_impl(Element* element)
 {
-    Window* wnd = static_cast<Window*>(element);
-    
-    // we want to get rid of the subscription, because the child window could
-    // get removed and added somewhere else, we would be wastefully updating
-    // layouts if it was sized inside other Window
-    ConnectionTracker::iterator conn;
-
-    while ((conn = d_eventConnections.find(wnd)) != d_eventConnections.end())
+    if (!d_destructionStarted)
     {
-        conn->second->disconnect();
-        d_eventConnections.erase(conn);
+        // we want to get rid of the subscription, because the child window could
+        // get removed and added somewhere else, we would be wastefully updating
+        // layouts if it was sized inside other Window
+        auto range = d_eventConnections.equal_range(static_cast<Window*>(element));
+        for (auto it = range.first; it != range.second; ++it)
+            it->second->disconnect();
+        d_eventConnections.erase(range.first, range.second);
     }
 
-    Window::removeChild_impl(wnd);
+    Window::removeChild_impl(element);
+}
+
+//----------------------------------------------------------------------------//
+void LayoutContainer::cleanupChildren(void)
+{
+    for (auto& windowToConnection : d_eventConnections)
+        windowToConnection.second->disconnect();
+    d_eventConnections.clear();
+
+    Window::cleanupChildren();
 }
 
 //----------------------------------------------------------------------------//
 bool LayoutContainer::handleChildSized(const EventArgs&)
 {
     markNeedsLayouting();
-
     return true;
 }
 
@@ -186,7 +198,6 @@ bool LayoutContainer::handleChildSized(const EventArgs&)
 bool LayoutContainer::handleChildMarginChanged(const EventArgs&)
 {
     markNeedsLayouting();
-
     return true;
 }
 
@@ -194,7 +205,6 @@ bool LayoutContainer::handleChildMarginChanged(const EventArgs&)
 bool LayoutContainer::handleChildAdded(const EventArgs&)
 {
     markNeedsLayouting();
-
     return true;
 }
 
@@ -202,7 +212,6 @@ bool LayoutContainer::handleChildAdded(const EventArgs&)
 bool LayoutContainer::handleChildRemoved(const EventArgs&)
 {
     markNeedsLayouting();
-
     return true;
 }
 
@@ -210,11 +219,7 @@ bool LayoutContainer::handleChildRemoved(const EventArgs&)
 UVector2 LayoutContainer::getOffsetForWindow(Window* window) const
 {
     const UBox& margin = window->getMargin();
-
-    return UVector2(
-               margin.d_left,
-               margin.d_top
-           );
+    return UVector2(margin.d_left, margin.d_top);
 }
 
 //----------------------------------------------------------------------------//
@@ -248,6 +253,13 @@ void LayoutContainer::onParentSized(ElementEventArgs& e)
 
     // It is possible that children didn't change, but we must re-layout them
     markNeedsLayouting();
+}
+
+//----------------------------------------------------------------------------//
+void LayoutContainer::onChildOrderChanged(ElementEventArgs& e)
+{
+    markNeedsLayouting();
+    Window::onChildOrderChanged(e);
 }
 
 //----------------------------------------------------------------------------//

@@ -163,7 +163,7 @@ public:
     \brief
         Retrieves the Affector at given index
     */
-    Affector* getAffectorAtIdx(size_t index) const;
+    Affector* getAffectorAtIndex(size_t index) const;
 
     /*!
     \brief

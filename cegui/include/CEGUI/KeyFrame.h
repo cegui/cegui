@@ -86,7 +86,7 @@ public:
     \note
         The index is only valid as long as the list of affectors is unchanged in animation!
     */
-    size_t getIdxInParent() const;
+    size_t getIndexInParent() const;
 
     /*!
     \brief

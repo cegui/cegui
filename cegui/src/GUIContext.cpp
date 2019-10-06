@@ -103,18 +103,26 @@ void GUIContext::setRootWindow(Window* new_root)
         return;
 
     setInputCaptureWindow(nullptr);
+    setModalWindow(nullptr);
+    updateWindowContainingCursor();
 
     if (d_rootWindow)
         d_rootWindow->setGUIContext(nullptr);
 
+    // Remember previous root for the event
     WindowEventArgs args(d_rootWindow);
 
     d_rootWindow = new_root;
 
     if (d_rootWindow)
+    {
         d_rootWindow->setGUIContext(this);
+        updateRootWindowAreaRects();
+    }
 
-    onRootWindowChanged(args);
+    markAsDirty();
+
+    fireEvent(EventRootWindowChanged, args);
 }
 
 //----------------------------------------------------------------------------//
@@ -340,17 +348,6 @@ bool GUIContext::windowDestroyedHandler(const EventArgs& args)
     }
 
     return true;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::onRootWindowChanged(WindowEventArgs& args)
-{
-    if (d_rootWindow)
-        updateRootWindowAreaRects();
-
-    markAsDirty();
-
-    fireEvent(EventRootWindowChanged, args);
 }
 
 //----------------------------------------------------------------------------//
@@ -652,7 +649,7 @@ void GUIContext::notifyDefaultFontChanged(Window* hierarchy_root) const
         hierarchy_root->onFontChanged(evt_args);
 
     for (size_t i = 0; i < hierarchy_root->getChildCount(); ++i)
-        notifyDefaultFontChanged(hierarchy_root->getChildAtIdx(i));
+        notifyDefaultFontChanged(hierarchy_root->getChildAtIndex(i));
 }
 
 //----------------------------------------------------------------------------//

@@ -223,7 +223,7 @@
         </Window>
         <Window type="TaharezLook/ScrollablePane" name="ScrollablePane" >
             <Property name="Area" value="{{0.492188,0},{0.25,24},{0.648438,0},{0.402778,0}}" />
-            <Property name="ContentArea" value="l:0 t:0 r:1040 b:619" />
+            <Property name="ContentSize" value="{{0,1040},{0,619}}" />
             <Property name="ForceHorzScrollbar" value="true" />
             <Property name="ForceVertScrollbar" value="true" />
             <Window type="TaharezLook/Button" name="Button" >
