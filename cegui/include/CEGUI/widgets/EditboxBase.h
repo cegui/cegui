@@ -583,7 +583,9 @@ private:
     void addEditboxBaseProperties();
 };
 
+#ifndef SWIG
 bool isSelectionSemanticValue(SemanticValue value);
+#endif
 
 } // End of  CEGUI namespace section
 

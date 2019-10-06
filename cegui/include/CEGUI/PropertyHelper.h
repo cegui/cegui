@@ -49,6 +49,19 @@
 
 namespace CEGUI
 {
+
+#ifndef SWIG
+/*!
+\brief
+	Helper class for the conversion and checks performed on parseable types
+*/
+namespace ParserHelper
+{
+    bool IsEmptyOrContainingOnlyDecimalPointOrSign(const CEGUI::String& text);
+    bool IsEmptyOrContainingSign(const CEGUI::String& text);
+};
+#endif
+
 /*!
 \brief
 	Helper class used to convert various data types to and from the format expected in Property strings
@@ -86,7 +99,6 @@ public:
     {
         return PropertyHelper<T>::toString(val);
     }
-   
 };
 
 

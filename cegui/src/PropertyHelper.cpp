@@ -41,7 +41,6 @@
 
 namespace CEGUI
 {
-
 //! Definitions of static constants
 const String PropertyHelper<bool>::ValueTrue("true");
 const String PropertyHelper<bool>::ValueFalse("false");
@@ -55,10 +54,56 @@ const String PropertyHelper<AspectMode>::Ignore("Ignore");
 const String PropertyHelper<FontSizeUnit>::Points("Points");
 const String PropertyHelper<FontSizeUnit>::Pixels("Pixels");
 
-//! Helper function for throwing errors
-static void throwParsingException(const String& typeName, const String& parsedstring)
+namespace
 {
-    throw InvalidRequestException("PropertyHelper::fromString could not parse the type " + typeName + " from the string: \"" + parsedstring + "\"");
+    //! Helper function for throwing errors
+    void throwParsingException(const String& typeName, const String& parsedstring)
+    {
+        throw InvalidRequestException(
+            "PropertyHelper::fromString could not parse the type " + typeName + " from the string: \"" + parsedstring +
+            "\"");
+    }
+}
+
+bool ParserHelper::IsEmptyOrContainingOnlyDecimalPointOrSign(const CEGUI::String& text)
+{
+    if (text.empty())
+    {
+        return true;
+    }
+
+    if (text.length() == 1)
+    {
+        CEGUI::String::value_type character = text[0];
+        if ((character == SharedStringstream::GetDecimalPoint()) ||
+            (character == SharedStringstream::GetNegativeSign()) ||
+            (character == SharedStringstream::GetPositiveSign()))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool ParserHelper::IsEmptyOrContainingSign(const CEGUI::String& text)
+{
+    if (text.empty())
+    {
+        return true;
+    }
+
+    if (text.length() == 1)
+    {
+        CEGUI::String::value_type character = text[0];
+        if ((character == SharedStringstream::GetNegativeSign()) ||
+            (character == SharedStringstream::GetPositiveSign()))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 const String& PropertyHelper<bool>::getDataTypeName()
@@ -153,7 +198,7 @@ PropertyHelper<Image*>::fromString(const String& str)
     if (str.empty())
         return nullptr;
 
-    PropertyHelper<Image*>::return_type image;
+    return_type image;
 
     try
     {
@@ -188,7 +233,7 @@ PropertyHelper<Font*>::fromString(const String& str)
     if (str.empty())
         return nullptr;
 
-    PropertyHelper<Font*>::return_type image;
+    return_type image;
 
     try
     {
@@ -219,12 +264,14 @@ const String& PropertyHelper<float>::getDataTypeName()
 PropertyHelper<float>::return_type
 PropertyHelper<float>::fromString(const String& str)
 {
+    if (ParserHelper::IsEmptyOrContainingOnlyDecimalPointOrSign(str))
+    {
+        return 0.0f;
+    }
+    
     float val = 0.0f;
-
-    if (str.empty())
-        return val;
-
     std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);
+
     sstream >> val;
     if (sstream.fail())
         throwParsingException(getDataTypeName(), str);
@@ -233,7 +280,7 @@ PropertyHelper<float>::fromString(const String& str)
 }
 
 PropertyHelper<float>::string_return_type PropertyHelper<float>::toString(
-    PropertyHelper<float>::pass_type val)
+    pass_type val)
 {
     std::stringstream& sstream = SharedStringstream::GetPreparedStream();
     sstream << val;
@@ -361,7 +408,7 @@ PropertyHelper<USize>::fromString(const String& str)
 }
 
 PropertyHelper<USize>::string_return_type PropertyHelper<USize>::toString(
-    PropertyHelper<USize>::pass_type val)
+    pass_type val)
 {
     std::stringstream& sstream = SharedStringstream::GetPreparedStream();
     sstream << val;
@@ -470,8 +517,6 @@ PropertyHelper<ColourRect>::fromString(const String& str)
 
         return val;
     }
-
-    return val;
 }
 
 PropertyHelper<ColourRect>::string_return_type PropertyHelper<ColourRect>::toString(
@@ -594,12 +639,14 @@ const String& PropertyHelper<double>::getDataTypeName()
 PropertyHelper<double>::return_type
 PropertyHelper<double>::fromString(const String& str)
 {
-    double val = 0.0;
+    if (ParserHelper::IsEmptyOrContainingOnlyDecimalPointOrSign(str))
+    {
+        return 0.0;
+    }
 
-    if (str.empty())
-        return val;
-
+    double val;
     std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);
+
     sstream >> val;
     if (sstream.fail())
         throwParsingException(getDataTypeName(), str);
@@ -609,7 +656,7 @@ PropertyHelper<double>::fromString(const String& str)
 
 
 PropertyHelper<double>::string_return_type PropertyHelper<double>::toString(
-    PropertyHelper<double>::pass_type val)
+    pass_type val)
 {
     std::stringstream& sstream = SharedStringstream::GetPreparedStream();
     sstream << val;
@@ -628,12 +675,14 @@ const String& PropertyHelper<std::int16_t>::getDataTypeName()
 PropertyHelper<std::int16_t>::return_type
 PropertyHelper<std::int16_t>::fromString(const String& str)
 {
+    if (ParserHelper::IsEmptyOrContainingSign(str))
+    {
+        return 0;
+    }
+    
     std::int16_t val = 0;
-
-    if (str.empty())
-        return val;
-
     std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);
+
     sstream >> val;
     if (sstream.fail())
         throwParsingException(getDataTypeName(), str);
@@ -643,7 +692,7 @@ PropertyHelper<std::int16_t>::fromString(const String& str)
 
 
 PropertyHelper<std::int16_t>::string_return_type PropertyHelper<std::int16_t>::toString(
-    PropertyHelper<std::int16_t>::pass_type val)
+    pass_type val)
 {
     std::stringstream& sstream = SharedStringstream::GetPreparedStream();
     sstream << val;
@@ -662,12 +711,14 @@ const String& PropertyHelper<std::int32_t>::getDataTypeName()
 PropertyHelper<std::int32_t>::return_type
 PropertyHelper<std::int32_t>::fromString(const String& str)
 {
+    if (ParserHelper::IsEmptyOrContainingSign(str))
+    {
+        return 0;
+    }
+    
     std::int32_t val = 0;
-
-    if (str.empty())
-        return val;
-
     std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);
+
     sstream >> val;
     if (sstream.fail())
         throwParsingException(getDataTypeName(), str);
@@ -695,12 +746,14 @@ const String& PropertyHelper<std::int64_t>::getDataTypeName()
 PropertyHelper<std::int64_t>::return_type
 PropertyHelper<std::int64_t>::fromString(const String& str)
 {
+    if (ParserHelper::IsEmptyOrContainingSign(str))
+    {
+        return 0;
+    }
+    
     std::int64_t val = 0;
-
-    if (str.empty())
-        return val;
-
     std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);
+
     sstream >> val;
     if (sstream.fail())
         throwParsingException(getDataTypeName(), str);
@@ -729,12 +782,14 @@ const String& PropertyHelper<std::uint32_t>::getDataTypeName()
 PropertyHelper<std::uint32_t>::return_type
 PropertyHelper<std::uint32_t>::fromString(const String& str)
 {
+    if (ParserHelper::IsEmptyOrContainingSign(str))
+    {
+        return 0;
+    }
+    
     std::uint32_t val = 0;
-
-    if (str.empty())
-        return val;
-
     std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);
+
     sstream >> val;
     if (sstream.fail())
         throwParsingException(getDataTypeName(), str);
@@ -762,12 +817,14 @@ const String& PropertyHelper<std::uint64_t>::getDataTypeName()
 PropertyHelper<std::uint64_t>::return_type
 PropertyHelper<std::uint64_t>::fromString(const String& str)
 {
+    if (ParserHelper::IsEmptyOrContainingSign(str))
+    {
+        return 0;
+    }
+    
     std::uint64_t val = 0;
-
-    if (str.empty())
-        return val;
-
     std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);
+
     sstream >> val;
     if (sstream.fail())
         throwParsingException(getDataTypeName(), str);
@@ -892,7 +949,7 @@ PropertyHelper<glm::quat>::fromString(const String& str)
 }
 
 PropertyHelper<glm::quat>::string_return_type PropertyHelper<glm::quat>::toString(
-    PropertyHelper<glm::quat>::pass_type val)
+    pass_type val)
 {
     std::stringstream& sstream = SharedStringstream::GetPreparedStream();
     sstream << "w:" << val.w << " x:" << val.x << " y:" << val.y << " z:" << val.z;
@@ -913,10 +970,39 @@ PropertyHelper<String>::return_type PropertyHelper<String>::fromString(const Str
 }
 
 PropertyHelper<String>::string_return_type PropertyHelper<String>::toString(
-    PropertyHelper<String>::pass_type val)
+    pass_type val)
 {
     return val;
 }
+
+
+// Explicit instantiation definitions
+template class PropertyHelper<String>;
+template class PropertyHelper<float>;
+template class PropertyHelper<double>;
+template class PropertyHelper<std::int16_t>;
+template class PropertyHelper<std::int32_t>;
+template class PropertyHelper<std::int64_t>;
+template class PropertyHelper<std::uint32_t>;
+template class PropertyHelper<std::uint64_t>;
+template class PropertyHelper<bool>;
+template class PropertyHelper<AspectMode>;
+template class PropertyHelper<USize>;
+template class PropertyHelper<Sizef>;
+template class PropertyHelper<glm::vec2>;
+template class PropertyHelper<glm::vec3>;
+template class PropertyHelper<glm::quat>;
+template class PropertyHelper<Image*>;
+template class PropertyHelper<Colour>;
+template class PropertyHelper<ColourRect>;
+template class PropertyHelper<UDim>;
+template class PropertyHelper<UVector2>;
+template class PropertyHelper<URect>;
+template class PropertyHelper<Rectf>;
+template class PropertyHelper<UBox>;
+template class PropertyHelper<FontSizeUnit>;
+template class PropertyHelper<Font*>;
+
 
 const String& PropertyHelper<FontSizeUnit>::getDataTypeName()
 {
@@ -956,34 +1042,6 @@ PropertyHelper<FontSizeUnit>::return_type PropertyHelper<FontSizeUnit>::fromStri
 
     return FontSizeUnit::Pixels;
 }
-
-
-// Explicit instantiation definitions
-template class PropertyHelper<String>;
-template class PropertyHelper<float>;
-template class PropertyHelper<double>;
-template class PropertyHelper<std::int16_t>;
-template class PropertyHelper<std::int32_t>;
-template class PropertyHelper<std::int64_t>;
-template class PropertyHelper<std::uint32_t>;
-template class PropertyHelper<std::uint64_t>;
-template class PropertyHelper<bool>;
-template class PropertyHelper<AspectMode>;
-template class PropertyHelper<USize>;
-template class PropertyHelper<Sizef>;
-template class PropertyHelper<glm::vec2>;
-template class PropertyHelper<glm::vec3>;
-template class PropertyHelper<glm::quat>;
-template class PropertyHelper<Image*>;
-template class PropertyHelper<Colour>;
-template class PropertyHelper<ColourRect>;
-template class PropertyHelper<UDim>;
-template class PropertyHelper<UVector2>;
-template class PropertyHelper<URect>;
-template class PropertyHelper<Rectf>;
-template class PropertyHelper<UBox>;
-template class PropertyHelper<FontSizeUnit>;
-template class PropertyHelper<Font*>;
 
 const String& PropertyHelper<HorizontalAlignment>::getDataTypeName()
 {

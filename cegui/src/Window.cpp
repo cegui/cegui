@@ -1549,7 +1549,7 @@ void Window::addWindowProperties(void)
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
         ActivePropertyName, "Property to get/set the 'active' setting for the Window. Value is either \"true\" or \"false\".",
-        &Window::setActive, &Window::isActive, false 
+        &Window::setActive, &Window::isActive, false
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
@@ -1915,7 +1915,7 @@ void Window::destroy(void)
 
     // ensure custom tooltip is cleaned up
     setTooltip(static_cast<Tooltip*>(nullptr));
-    
+
 
 
     // clean up looknfeel related things

@@ -66,6 +66,7 @@ namespace CEGUI
         d_currentValue(1.0f),
         d_maxValue(32767.0f),
         d_minValue(-32768.0f),
+        d_precision(6),
         d_inputMode(static_cast<TextInputMode>(-1))
     {
         addSpinnerProperties();
@@ -124,6 +125,11 @@ namespace CEGUI
         return d_minValue;
     }
 
+    int Spinner::getPrecision(void) const
+    {
+        return d_precision;
+    }
+
     Spinner::TextInputMode Spinner::getTextInputMode(void) const
     {
         return d_inputMode;
@@ -174,6 +180,11 @@ namespace CEGUI
             WindowEventArgs args(this);
             onMinimumValueChanged(args);
         }
+    }
+
+    void Spinner::setPrecision(int val)
+    {
+        d_precision = val;
     }
 
     void Spinner::setTextInputMode(TextInputMode mode)
@@ -234,59 +245,57 @@ namespace CEGUI
             "TextInputMode", "Property to get/set the TextInputMode setting for the spinner.  Value is \"FloatingPoint\", \"Integer\", \"Hexadecimal\", or \"Octal\".",
             &Spinner::setTextInputMode, &Spinner::getTextInputMode, Spinner::TextInputMode::Integer
         );
+
+        CEGUI_DEFINE_PROPERTY(Spinner, int,
+            "Precision", "Property to get/set the precision of display the floating point values.  Value is a int.",
+            &Spinner::setPrecision, &Spinner::getPrecision, 6
+        );
     }
 
     double Spinner::getValueFromText(void) const
     {
-        String tmpTxt(getEditbox()->getText());
-
-        // handle empty and lone '-' or '.' cases
-        if (tmpTxt.empty() || (tmpTxt == "-") || (tmpTxt == "."))
-        {
-            return 0.0f;
-        }
-
-        int tmp;
-        unsigned int utmp;
-        double val;
-
-        std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+        const String& text = getEditbox()->getText();
 
         switch (d_inputMode)
         {
         case TextInputMode::FloatingPoint:
-            sstream << tmpTxt;
-            sstream >> val;
-            break;
+            return static_cast<double>(PropertyHelper<float>::fromString(text));
         case TextInputMode::Integer:
-            sstream << tmpTxt;
-            sstream >> tmp;
-            val = static_cast<double>(tmp);
-            break;
+            return static_cast<double>(PropertyHelper<int>::fromString(text));
         case TextInputMode::Hexadecimal:
-            sstream << std::hex << tmpTxt;
-            sstream >> utmp;
+        {
+            unsigned int tempUint;
+            std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+            sstream << std::hex << text;
+            sstream >> tempUint;
             sstream << std::dec;
-            val = static_cast<double>(utmp);
-            break;
+            if (sstream.fail())
+            {
+                throw InvalidRequestException("The string '" + getEditbox()->getText() +
+                    "' could not be converted to numerical representation.");
+            }
+            
+            return static_cast<double>(tempUint);
+        }
         case TextInputMode::Octal:
-            sstream << std::oct << tmpTxt;
-            sstream >> utmp;
+        {
+            unsigned int tempUint;
+            std::stringstream& sstream = SharedStringstream::GetPreparedStream();
+            sstream << std::oct << text;
+            sstream >> tempUint;
             sstream << std::dec;
-            val = static_cast<double>(utmp);
-            break;
+            if (sstream.fail())
+            {
+                throw InvalidRequestException("The string '" + getEditbox()->getText() +
+                    "' could not be converted to numerical representation.");
+            }
+            
+            return static_cast<double>(tempUint);
+        }
         default:
             throw InvalidRequestException(
                 "An unknown TextInputMode was encountered.");
         }
-
-        if (!sstream.fail())
-        {
-            return val;
-        }
-
-        throw InvalidRequestException("The string '" + getEditbox()->getText() +
-                                      "' could not be converted to numerical representation.");
     }
 
     String Spinner::getTextFromValue(void) const
@@ -296,8 +305,11 @@ namespace CEGUI
         switch (d_inputMode)
         {
         case TextInputMode::FloatingPoint:
-            return CEGUI::PropertyHelper<float>::toString( static_cast<float>(d_currentValue) );
+        {
+            int defPrec = tmp.precision();
+            tmp << std::fixed << std::setprecision(d_precision) << d_currentValue << std::setprecision(defPrec) << std::defaultfloat;
             break;
+        }
         case TextInputMode::Integer:
             tmp << static_cast<int>(d_currentValue);
             break;
@@ -363,9 +375,8 @@ namespace CEGUI
         editbox->setMutedState(true);
 
         // Update editbox and spinner text with new value.
-        // (allow empty and '-' cases to equal 0 with no text change required)
-        if (!(d_currentValue == 0 &&
-              (editbox->getText().empty() || editbox->getText() == "-")))
+        // (allow empty and '-'/'+' cases to equal 0 with no text change required)
+        if(d_currentValue != 0 || !ParserHelper::IsEmptyOrContainingSign(editbox->getText()))
         {
             const CEGUI::String& valueString = getTextFromValue();
             editbox->setText(valueString);

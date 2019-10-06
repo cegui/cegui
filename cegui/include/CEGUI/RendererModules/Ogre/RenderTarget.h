@@ -61,9 +61,12 @@ public:
     void setOgreViewportDimensions(const Rectf& area);
 
     // implement parts of CEGUI::RenderTarget interface
-    virtual void activate();
-    virtual void unprojectPoint(const GeometryBuffer& buff,
-                        const glm::vec2& p_in, glm::vec2& p_out) const;
+    void draw(const GeometryBuffer& buffer, std::uint32_t drawModeMask = DrawModeMaskAll);
+    void draw(const RenderQueue& queue, std::uint32_t drawModeMask = DrawModeMaskAll);
+
+    void activate();
+    void unprojectPoint(const GeometryBuffer& buff, const glm::vec2& p_in, glm::vec2& p_out) const;
+
     virtual void setArea(const Rectf& area);
     // implementing the virtual function with a covariant return type
     virtual OgreRenderer& getOwner();
@@ -82,7 +85,7 @@ protected:
     Ogre::RenderSystem& d_renderSystem;
     //! Ogre render target that we are effectively wrapping
     Ogre::RenderTarget* d_renderTarget;
-    
+
     //! Ogre viewport used for this target.
     Ogre::Viewport* d_viewport;
     //! holds set Ogre viewport dimensions

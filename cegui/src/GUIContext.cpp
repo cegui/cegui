@@ -248,8 +248,7 @@ void GUIContext::draw(std::uint32_t drawModeMask)
     
     drawModeMask &= d_dirtyDrawModeMask;
 
-    if (drawModeMask)
-        drawWindowContentToTarget(drawModeMask);
+    drawWindowContentToTarget(drawModeMask);
 
     if (drawCursor)
         drawModeMask |= DrawModeFlagMouseCursor;
@@ -260,6 +259,9 @@ void GUIContext::draw(std::uint32_t drawModeMask)
 //----------------------------------------------------------------------------//
 void GUIContext::drawContent(std::uint32_t drawModeMask)
 {
+    if (!drawModeMask)
+        return;
+
     RenderingSurface::drawContent(drawModeMask);
 
     if (drawModeMask & DrawModeFlagMouseCursor)
@@ -269,6 +271,9 @@ void GUIContext::drawContent(std::uint32_t drawModeMask)
 //----------------------------------------------------------------------------//
 void GUIContext::drawWindowContentToTarget(std::uint32_t drawModeMask)
 {
+    if (!drawModeMask)
+        return;
+
     if (d_rootWindow)
         renderWindowHierarchyToSurfaces(drawModeMask);
     else

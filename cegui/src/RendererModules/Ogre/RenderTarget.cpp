@@ -27,6 +27,7 @@
 #include "CEGUI/RendererModules/Ogre/RenderTarget.h"
 #include "CEGUI/RendererModules/Ogre/GeometryBuffer.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/RenderQueue.h"
 
 #include <OgreRenderSystem.h>
 #include <OgreRenderTarget.h>
@@ -106,6 +107,15 @@ void OgreRenderTarget::activate()
     RenderTarget::activate();
 }
 
+void OgreRenderTarget::draw(const GeometryBuffer& buffer, std::uint32_t drawModeMask)
+{
+    buffer.draw(drawModeMask);
+}
+
+void OgreRenderTarget::draw(const RenderQueue& queue, std::uint32_t drawModeMask)
+{
+    queue.draw(drawModeMask);
+}
 
 void OgreRenderTarget::unprojectPoint(const GeometryBuffer& buff,
                                          const glm::vec2& p_in,
