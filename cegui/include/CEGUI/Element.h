@@ -828,20 +828,20 @@ public:
     \brief
         Adds a child to given position
     */
-    virtual void addChildToIndex(Element* element, size_t index);
+    virtual void addChildAtIndex(Element* element, size_t index);
 
     /*!
     \brief
         Removes a child from given position
     */
-    virtual void removeChildFromIndex(size_t index);
+    virtual void removeChildAtIndex(size_t index);
 
     /*!
     \brief
         Moves an element that is already a child of this element
         to given position (if the element is currently in a position
         that is smaller than given position, given position is
-        automatically decremented
+        automatically decremented)
     */
     virtual void moveChildToIndex(size_t indexFrom, size_t indexTo);
 
@@ -850,7 +850,7 @@ public:
         Moves a element that is already a child of this element
         to given position (if the element is currently in a position
         that is smaller than given position, given position is
-        automatically decremented
+        automatically decremented)
     */
     void moveChildToIndex(Element* child, size_t index);
 

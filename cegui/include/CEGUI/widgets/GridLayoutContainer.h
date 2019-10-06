@@ -145,10 +145,10 @@ public:
     size_t getLastBusyIndex() const;
     
     // Overridden to provide more appropriate implementation for the grid
-    void addChildToIndex(Element* element, size_t index) override;
+    void addChildAtIndex(Element* element, size_t index) override;
 
     // Overridden to provide more appropriate implementation for the grid
-    void removeChildFromIndex(size_t index) override;
+    void removeChildAtIndex(size_t index) override;
 
     // Overridden to support auto-growing
     void moveChildToIndex(size_t indexFrom, size_t indexTo) override;

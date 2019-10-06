@@ -256,7 +256,7 @@ size_t GridLayoutContainer::getLastBusyIndex() const
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::addChildToIndex(Element* element, size_t index)
+void GridLayoutContainer::addChildAtIndex(Element* element, size_t index)
 {
     // Intended usage of this method is insertion of the new item into an
     // one-dimensional child list, like in an editor. If the target cell is
@@ -299,7 +299,7 @@ void GridLayoutContainer::addChildToIndex(Element* element, size_t index)
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::removeChildFromIndex(size_t index)
+void GridLayoutContainer::removeChildAtIndex(size_t index)
 {
     auto child = getChildAtIndex(index);
     if (child && !isDummy(*child))
@@ -335,7 +335,7 @@ void GridLayoutContainer::addChildToCell(Window* window, size_t gridX, size_t gr
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::removeChildFromCell(size_t gridX, size_t gridY)
 {
-    removeChildFromIndex(mapCellToIndex(gridX, gridY));
+    removeChildAtIndex(mapCellToIndex(gridX, gridY));
 }
 
 //----------------------------------------------------------------------------//
@@ -465,7 +465,6 @@ Window* GridLayoutContainer::createDummy()
     dummy->setVisible(false);
     dummy->setSize(USize(UDim(0, 0), UDim(0, 0)));
     dummy->setDestroyedByParent(true);
-    //dummy->banPropertyFromXML("Visible");
 
     return dummy;
 }
