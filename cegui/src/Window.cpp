@@ -138,6 +138,7 @@ const String Window::EventCursorEntersSurface("CursorEntersSurface");
 const String Window::EventCursorLeavesSurface("CursorLeavesSurface");
 const String Window::EventCursorMove("CursorMove");
 const String Window::EventCursorPressHold("CursorPressHold");
+const String Window::EventSelectWord("SelectWord");
 const String Window::EventCursorActivate("CursorActivate");
 const String Window::EventCharacterKey("CharacterKey");
 const String Window::EventScroll("Scroll");
@@ -2868,6 +2869,26 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
     {
         e.window = getParent();
         getParent()->onCursorPressHold(e);
+
+        return;
+    }
+
+    // by default we now mark cursor events as handled
+    // (derived classes may override, of course!)
+    ++e.handled;
+}
+
+//----------------------------------------------------------------------------//
+void Window::onSelectWord(CursorInputEventArgs& e)
+{
+    fireEvent(EventSelectWord, e, EventNamespace);
+
+    // optionally propagate to parent
+    if (!e.handled && d_propagatePointerInputs &&
+        d_parent && this != getGUIContext().getModalWindow())
+    {
+        e.window = getParent();
+        getParent()->onSelectWord(e);
 
         return;
     }
