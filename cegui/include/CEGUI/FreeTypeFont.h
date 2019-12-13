@@ -55,7 +55,7 @@ namespace CEGUI
     Glyphs are rendered dynamically on demand, so a large font with lots
     of glyphs won't slow application startup time.
 */
-class FreeTypeFont : public Font
+class CEGUIEXPORT FreeTypeFont : public Font
 {
 public:
     /*!
