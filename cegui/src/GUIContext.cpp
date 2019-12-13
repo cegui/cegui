@@ -725,10 +725,13 @@ void GUIContext::initializeSemanticEventHandlers()
 
     d_semanticEventHandlers.insert(std::make_pair(SemanticValue::CursorActivate,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-        &GUIContext::handleCursorActivateEvent, this)));
+            &GUIContext::handleCursorActivateEvent, this)));
     d_semanticEventHandlers.insert(std::make_pair(SemanticValue::CursorPressHold,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-        &GUIContext::handleCursorPressHoldEvent, this)));
+            &GUIContext::handleCursorPressHoldEvent, this)));
+    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::SelectWord,
+        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
+            &GUIContext::handleSelectWord, this)));
     d_semanticEventHandlers.insert(std::make_pair(SemanticValue::CursorMove,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
             &GUIContext::handleCursorMoveEvent, this)));
