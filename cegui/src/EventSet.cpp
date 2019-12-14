@@ -100,7 +100,7 @@ void EventSet::removeAllEvents(void)
 }
 
 //----------------------------------------------------------------------------//
-bool EventSet::isEventPresent(const String& name)
+bool EventSet::isEventPresent(const String& name) const
 {
     return (d_events.find(name) != d_events.end());
 }
