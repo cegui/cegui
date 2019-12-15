@@ -109,7 +109,7 @@ public:
         return UVector2(d_x * vec.d_x, d_y * vec.d_y);
     }
 
-    inline UVector2 operator* (const float c)
+    inline UVector2 operator* (const float c) const
     {
         return UVector2(d_x * c, d_y * c);
     }
