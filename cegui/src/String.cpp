@@ -29,6 +29,10 @@
 #include "CEGUI/String.h"
 #include "CEGUI/Exceptions.h"
 
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+#include <istream>
+#endif
+
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
 
 namespace CEGUI
