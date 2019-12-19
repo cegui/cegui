@@ -249,7 +249,7 @@ public:
         - true if an Event named \a name is defined for this EventSet.
         - false if no Event named \a name is defined for this EventSet.
     */
-    bool isEventPresent(const String& name);
+    bool isEventPresent(const String& name) const;
 
     /*!
     \brief

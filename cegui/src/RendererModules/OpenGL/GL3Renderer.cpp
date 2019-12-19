@@ -268,6 +268,7 @@ OpenGL3Renderer::~OpenGL3Renderer()
 {
 #ifdef CEGUI_OPENGL_BIG_BUFFER
     glDeleteVertexArrays(1, &d_verticesTexturedVAO);
+    glDeleteVertexArrays(1, &d_verticesSolidVAO);
     glDeleteBuffers(1, &d_verticesSolidVBO);
     glDeleteBuffers(1, &d_verticesTexturedVBO);
 #endif
