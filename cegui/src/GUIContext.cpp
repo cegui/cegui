@@ -725,10 +725,13 @@ void GUIContext::initializeSemanticEventHandlers()
 
     d_semanticEventHandlers.insert(std::make_pair(SemanticValue::CursorActivate,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-        &GUIContext::handleCursorActivateEvent, this)));
+            &GUIContext::handleCursorActivateEvent, this)));
     d_semanticEventHandlers.insert(std::make_pair(SemanticValue::CursorPressHold,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-        &GUIContext::handleCursorPressHoldEvent, this)));
+            &GUIContext::handleCursorPressHoldEvent, this)));
+    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::SelectWord,
+        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
+            &GUIContext::handleSelectWord, this)));
     d_semanticEventHandlers.insert(std::make_pair(SemanticValue::CursorMove,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
             &GUIContext::handleCursorMoveEvent, this)));
@@ -789,6 +792,30 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
         d_windowNavigator->setCurrentFocusedWindow(ciea.window);
 
     ciea.window->onCursorPressHold(ciea);
+    return ciea.handled != 0;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::handleSelectWord(const SemanticInputEvent& event)
+{
+    CursorInputEventArgs ciea(nullptr);
+    ciea.position = d_cursor.getPosition();
+    ciea.moveDelta = glm::vec2(0, 0);
+    ciea.source = event.d_payload.source;
+    ciea.scroll = 0;
+    ciea.window = getTargetWindow(ciea.position, false);
+    // make cursor position sane for this target window
+    if (ciea.window)
+        ciea.position = ciea.window->getUnprojectedPosition(ciea.position);
+
+    // if there is no target window, input can not be handled.
+    if (!ciea.window)
+        return false;
+
+    if (d_windowNavigator != nullptr)
+        d_windowNavigator->setCurrentFocusedWindow(ciea.window);
+
+    ciea.window->onSelectWord(ciea);
     return ciea.handled != 0;
 }
 

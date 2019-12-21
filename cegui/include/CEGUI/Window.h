@@ -449,6 +449,11 @@ public:
      * valid.
      */
     static const String EventCursorPressHold;
+    /** Event fired when the cursor is activated twice within the Window.
+     * Handlers are passed a const CursorInputEventArgs reference with all fields
+     * valid.
+     */
+    static const String EventSelectWord;
     /** Event fired when the cursor is activated within the Window.
      * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
@@ -3262,7 +3267,16 @@ protected:
         CursorInputEventArgs object.  All fields are valid.
     */
     virtual void onCursorPressHold(CursorInputEventArgs& e);
+    
+    /*!
+    \brief
+        Handler called when a cursor is activated twice within this window's area.
 
+    \param e
+        CursorInputEventArgs object.  All fields are valid.
+    */
+    virtual void onSelectWord(CursorInputEventArgs& e);
+    
     /*!
     \brief
         Handler called when a cursor is activated within this window's area.
