@@ -120,6 +120,20 @@ namespace CEGUI
             tmpPos.y = cursor_pos.y - tipRect.getHeight() - 5;
         }
 
+        // prevent being cut off at the bottom and right edge
+        if (tmpPos.x + tipRect.getWidth() > screen.right())
+        {
+            tmpPos.x = screen.right() - tipRect.getWidth();
+        }
+        if (tmpPos.y + tipRect.getHeight() > screen.bottom())
+        {
+            tmpPos.y = screen.bottom() - tipRect.getHeight();
+        }
+
+        // prevent being cut off at the left and top edge
+        tmpPos.x = std::max(0.0f, tmpPos.x);
+        tmpPos.y = std::max(0.0f, tmpPos.y);
+
         // set final position of tooltip window.
         setPosition(
             UVector2(cegui_absdim(tmpPos.x),
