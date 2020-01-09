@@ -274,6 +274,7 @@ protected:
     bool handleCursorActivateEvent(const SemanticInputEvent& event);
     bool handleCursorPressHoldEvent(const SemanticInputEvent& event);
     bool handleSelectWord(const SemanticInputEvent& event);
+    bool handleSelectAll(const SemanticInputEvent& event);
     bool handleUndoRequest(const SemanticInputEvent& event);
     bool handleRedoRequest(const SemanticInputEvent& event);
 

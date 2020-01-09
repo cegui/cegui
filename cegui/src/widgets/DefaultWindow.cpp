@@ -78,6 +78,14 @@ void DefaultWindow::onSelectWord(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+void DefaultWindow::onSelectAll(CursorInputEventArgs& e)
+{
+    // always call the base class handler
+    Window::onSelectAll(e);
+    updatePointerEventHandled(e);
+}
+
+//----------------------------------------------------------------------------//
 void DefaultWindow::onCursorActivate(CursorInputEventArgs& e)
 {
     // always call the base class handler
