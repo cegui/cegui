@@ -97,6 +97,7 @@ enum class SemanticValue : int
     PointerDeactivate,
     CursorPressHold,
     CursorSelectWord,
+    CursorSelectAll,
     CursorMove,
     PointerLeave,
     SelectRange,

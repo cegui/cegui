@@ -454,6 +454,11 @@ public:
      * valid.
      */
     static const String EventSelectWord;
+    /** Event fired when the cursor is activated three times within the Window.
+     * Handlers are passed a const CursorInputEventArgs reference with all fields
+     * valid.
+     */
+    static const String EventSelectAll;
     /** Event fired when the cursor is activated within the Window.
      * Handlers are passed a const CursorInputEventArgs reference with all fields
      * valid.
@@ -3276,7 +3281,16 @@ protected:
         CursorInputEventArgs object.  All fields are valid.
     */
     virtual void onSelectWord(CursorInputEventArgs& e);
-    
+
+    /*!
+    \brief
+        Handler called when a cursor is activated three times within this window's area.
+
+    \param e
+        CursorInputEventArgs object.  All fields are valid.
+    */
+    virtual void onSelectAll(CursorInputEventArgs& e);
+
     /*!
     \brief
         Handler called when a cursor is activated within this window's area.
