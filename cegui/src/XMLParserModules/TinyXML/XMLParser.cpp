@@ -64,23 +64,20 @@ namespace CEGUI
         d_handler = &handler;
 
         // Create a buffer with extra bytes for a newline and a terminating null
-        size_t size = source.getSize();
-        char* buf = new char[size + 2];
-        memcpy(buf, source.getDataPtr(), size);
+        const size_t size = source.getSize();
+        std::string buf;
+        buf.reserve(size + 1);
+        buf.assign(source.getDataPtr(), size);
         // PDT: The addition of the newline is a kludge to resolve an issue
         // whereby parse returns 0 if the xml file has no newline at the end but
         // is otherwise well formed.
-        buf[size] = '\n';
-        buf[size+1] = 0;
+        buf += '\n';
 
         // Parse the document
         TiXmlDocument doc;
-        if (!doc.Parse(static_cast<const char*>(buf)))
+        if (!doc.Parse(buf.data()))
         {
-            // error detected, cleanup out buffers
-            delete[] buf;
-
-            // throw exception
+            // error detected, throw exception
             CEGUI_THROW(FileIOException("an error occurred while "
                 "parsing the XML document - check it for potential errors!."));
         }
@@ -88,21 +85,9 @@ namespace CEGUI
         const TiXmlElement* currElement = doc.RootElement();
         if (currElement)
         {
-            CEGUI_TRY
-            {
-                // function called recursively to parse xml data
-                processElement(currElement);
-            }
-            CEGUI_CATCH(...)
-            {
-                delete [] buf;
-
-                CEGUI_RETHROW;
-            }
+           // function called recursively to parse xml data
+           processElement(currElement);
         } // if (currElement)
-
-        // Free memory
-        delete [] buf;
     }
 
     void TinyXMLDocument::processElement(const TiXmlElement* element)
