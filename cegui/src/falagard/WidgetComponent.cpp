@@ -171,11 +171,18 @@ namespace CEGUI
 
     void WidgetComponent::removePropertyInitialiser(const String& name)
     {
-        for(PropertyInitialiserList::iterator i = d_propertyInitialisers.begin();
-                i < d_propertyInitialisers.end();
-                ++i)
-            if(i->getTargetPropertyName() == name)
-                d_propertyInitialisers.erase(i);
+        PropertyInitialiserList::iterator f = d_propertyInitialisers.begin();
+        PropertyInitialiserList::iterator const l = d_propertyInitialisers.end();
+        for(; f != l; ++f)
+            if(f->getTargetPropertyName() == name)
+                break;
+        if(f == l) return;
+        for(PropertyInitialiserList::iterator i = f; ++i != l;)
+            if(f->getTargetPropertyName() != name) {
+                *f = *i;
+                ++f;
+            }
+        d_propertyInitialisers.erase(f, l);
     }
 
     void WidgetComponent::clearPropertyInitialisers()
