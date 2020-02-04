@@ -144,7 +144,7 @@ void OpenGLESRenderTarget::unprojectPoint(const GeometryBuffer& buff,
     in_z = -d_viewDistance;
 
 	double gb_matrixd[16], d_matrixd[16];
-	for ((unsigned int i = 0; i < 16; ++i)
+	for (unsigned int i = 0; i < 16; ++i)
 	{
 		gb_matrixd[i] = (double)gb.getMatrix()[i];
 		d_matrixd[i] = (double)d_matrix[i];

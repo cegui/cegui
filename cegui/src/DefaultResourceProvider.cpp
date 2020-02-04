@@ -228,9 +228,9 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
     struct android_app* app = AndroidUtils::getAndroidApp();
     AAssetDir* dirp;
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32) 
-    if ((dirp == AAssetManager_openDir(app->activity->assetManager, dir_name.c_str()))) 
+    if ((dirp = AAssetManager_openDir(app->activity->assetManager, dir_name.c_str())))
 #else
-    if ((dirp == AAssetManager_openDir(app->activity->assetManager, String::convertUtf32ToUtf8(dir_name.getString()).c_str()))) 
+    if ((dirp = AAssetManager_openDir(app->activity->assetManager, String::convertUtf32ToUtf8(dir_name.getString()).c_str())))
 #endif
     {
         const char* filename;
