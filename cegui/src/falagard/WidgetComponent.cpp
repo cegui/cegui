@@ -173,15 +173,28 @@ namespace CEGUI
     {
         PropertyInitialiserList::iterator f = d_propertyInitialisers.begin();
         PropertyInitialiserList::iterator const l = d_propertyInitialisers.end();
+        // look for any removal candidate
         for(; f != l; ++f)
+        {
             if(f->getTargetPropertyName() == name)
+            {
                 break;
-        if(f == l) return;
+            }
+        }
+        if(f == l)
+        {
+            // nothing to remove, so done
+            return;
+        }
+        // start moving over any remaining items to keep
         for(PropertyInitialiserList::iterator i = f; ++i != l;)
-            if(f->getTargetPropertyName() != name) {
-                *f = *i;
+        {
+            if(f->getTargetPropertyName() != name)
+            {
+                std::iter_swap(f, i);
                 ++f;
             }
+        }
         d_propertyInitialisers.erase(f, l);
     }
 
