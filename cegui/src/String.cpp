@@ -29,7 +29,7 @@
 #include "CEGUI/String.h"
 #include "CEGUI/Exceptions.h"
 
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
 #include <istream>
 #endif
 
