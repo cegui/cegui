@@ -189,7 +189,7 @@ namespace CEGUI
         // start moving over any remaining items to keep
         for(PropertyInitialiserList::iterator i = f; ++i != l;)
         {
-            if(f->getTargetPropertyName() != name)
+            if(i->getTargetPropertyName() != name)
             {
                 std::iter_swap(f, i);
                 ++f;
