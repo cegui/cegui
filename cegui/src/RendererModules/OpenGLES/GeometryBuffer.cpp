@@ -137,7 +137,7 @@ void OpenGLESGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     // buffer these vertices
     GLVertex vd;
     const Vertex* vs = vbuff;
-    for ((unsigned int i = 0; i < vertex_count; ++i, ++vs)
+    for (unsigned int i = 0; i < vertex_count; ++i, ++vs)
     {
         // copy vertex info the buffer, converting from CEGUI::Vertex to
         // something directly usable by OpenGLES as needed.
@@ -175,13 +175,13 @@ Texture* OpenGLESGeometryBuffer::getActiveTexture() const
 }
 
 //----------------------------------------------------------------------------//
-(unsigned int OpenGLESGeometryBuffer::getVertexCount() const
+unsigned int OpenGLESGeometryBuffer::getVertexCount() const
 {
     return d_vertices.size();
 }
 
 //----------------------------------------------------------------------------//
-(unsigned int OpenGLESGeometryBuffer::getBatchCount() const
+unsigned int OpenGLESGeometryBuffer::getBatchCount() const
 {
     return d_batches.size();
 }
@@ -189,7 +189,7 @@ Texture* OpenGLESGeometryBuffer::getActiveTexture() const
 //----------------------------------------------------------------------------//
 void OpenGLESGeometryBuffer::performBatchManagement()
 {
-    const GL(unsigned int gltex = d_activeTexture ?
+    const unsigned int gltex = d_activeTexture ?
                             d_activeTexture->getOpenGLESTexture() : 0;
 
     // create a new batch if there are no batches yet, or if the active texture
