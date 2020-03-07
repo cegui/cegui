@@ -563,6 +563,9 @@ elseif (CEGUI_BUILD_IMAGECODEC_SDL2)
 elseif (CEGUI_BUILD_IMAGECODEC_TGA)
     set( CEGUI_OPTION_DEFAULT_IMAGECODEC "TGAImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" )
     set( CEGUI_STATIC_IMAGECODEC_MODULE ${CEGUI_TGA_IMAGECODEC_LIBNAME} CACHE STRING "Specifies image codec library to link to samples in static builds." )
+elseif (CEGUI_BUILD_RENDERER_OGRE)
+    set( CEGUI_OPTION_DEFAULT_IMAGECODEC "OgreRenderer-0" CACHE STRING "Specifies the ImageCodec module to use as the default" )
+    set( CEGUI_STATIC_IMAGECODEC_MODULE ${CEGUI_OGRE_RENDERER_LIBNAME} CACHE STRING "Specifies image codec library to link to samples in static builds." )
 else()
 message(WARNING "None of the image codec modules are going to be built.
 You should ensure that CEGUI_OPTION_DEFAULT_IMAGECODEC is set to something
@@ -576,6 +579,7 @@ cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "STBImageCodec" 
 cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "CoronaImageCodec" CEGUI_BUILD_IMAGECODEC_CORONA)
 cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "TGAImageCodec" CEGUI_BUILD_IMAGECODEC_TGA)
 cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "SDL2ImageCodec" CEGUI_BUILD_IMAGECODEC_SDL2)
+cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "OgreRenderer-0" CEGUI_BUILD_RENDERER_OGRE)
 
 if (CEGUI_BUILD_STATIC_CONFIGURATION)
     cegui_defaultmodule_sanity_test(CEGUI_STATIC_IMAGECODEC_MODULE ${CEGUI_SILLY_IMAGECODEC_LIBNAME} CEGUI_BUILD_IMAGECODEC_SILLY)
@@ -585,6 +589,7 @@ if (CEGUI_BUILD_STATIC_CONFIGURATION)
     cegui_defaultmodule_sanity_test(CEGUI_STATIC_IMAGECODEC_MODULE ${CEGUI_CORONA_IMAGECODEC_LIBNAME} CEGUI_BUILD_IMAGECODEC_CORONA)
     cegui_defaultmodule_sanity_test(CEGUI_STATIC_IMAGECODEC_MODULE ${CEGUI_TGA_IMAGECODEC_LIBNAME} CEGUI_BUILD_IMAGECODEC_TGA)
     cegui_defaultmodule_sanity_test(CEGUI_STATIC_IMAGECODEC_MODULE ${CEGUI_SDL2_IMAGECODEC_LIBNAME} CEGUI_BUILD_IMAGECODEC_SDL2)
+    cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC ${CEGUI_OGRE_RENDERER_LIBNAME} CEGUI_BUILD_RENDERER_OGRE)
 endif()
 
 ################################################################################
