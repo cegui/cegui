@@ -123,7 +123,7 @@ bool MinizipResourceProvider::doesFileExist(const String& filename)
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     std::ifstream dataFile(filename.c_str(), std::ios::binary | std::ios::ate);
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    std::ifstream dataFile(String::convertUtf32ToUtf8(filename.getString()).c_str(), 
+    std::ifstream dataFile(String::convertUtf32ToUtf8(filename.getString()).c_str(),
                            std::ios::binary | std::ios::ate);
 #endif
 
@@ -207,7 +207,7 @@ void MinizipResourceProvider::loadRawDataContainer(const String& filename,
             "' error reading file header");
     }
 
-    if (unzOpenCurrentFilePassword(d_pimpl->d_zfile, d_pimpl->d_password.c_str()) != UNZ_OK)
+    if (unzOpenCurrentFilePassword(d_pimpl->d_zfile, (const char*) d_pimpl->d_password.c_str()) != UNZ_OK)
     {
         throw FileIOException("'" + final_filename +
             "' error opening file");
@@ -259,7 +259,7 @@ size_t MinizipResourceProvider::getResourceGroupFileNames(
 
     char current_name[1024];
     unz_file_info file_info;
-    
+
     if (unzGoToFirstFile(d_pimpl->d_zfile) != UNZ_OK)
     {
         Logger::getSingleton().logEvent(
