@@ -50,8 +50,8 @@
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 #ifdef GLEW_VERSION_4_3
-// The function must be a C method with the same calling convention as the GL API functions, here this is done using the APIENTRY function prefix
-static void APIENTRY OpenGlDebugCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam )
+// The function must be a C method with the same calling convention as the GL API functions, here this is done using the GLAPIENTRY function prefix
+static void GLAPIENTRY OpenGlDebugCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam )
 {
     std::string str_type;
     switch(type)
@@ -238,7 +238,7 @@ void OpenGL3Renderer::init()
         throw RendererException("Only version 2 and up of OpenGL ES is "
                                 "supported by this type of renderer.");
     initialiseRendererIDString();
-   
+
 #ifdef DEBUG
 #   ifdef GLEW_VERSION_4_3
     if(OpenGLInfo::getSingleton().verAtLeast(4, 3))
@@ -340,14 +340,14 @@ void OpenGL3Renderer::restoreChangedStatesToDefaults(bool isAfterRendering)
 
     if (OpenGLInfo::getSingleton().isPolygonModeSupported())
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
- 
+
     d_openGLStateChanger->disable(GL_CULL_FACE);
     d_openGLStateChanger->disable(GL_DEPTH_TEST);
 
     // During the preparation before rendering, these states will be changed anyways
     // so we do not want to change them extra
     if(isAfterRendering)
-    { 
+    {
         d_openGLStateChanger->disable(GL_BLEND);
         d_openGLStateChanger->disable(GL_SCISSOR_TEST);
     }
@@ -619,7 +619,7 @@ void OpenGL3Renderer::initialiseStandardColouredVAO()
 OpenGLTexture* OpenGL3Renderer::createTexture_impl(const String& name)
 {
     return new OpenGL3Texture(*this, name);
-}  
+}
 
 //----------------------------------------------------------------------------//
 
