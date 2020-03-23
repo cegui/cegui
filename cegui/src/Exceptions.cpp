@@ -42,7 +42,9 @@
 #elif     (defined(__linux__) && !defined(__ANDROID__)) \
       ||  defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) \
       ||  defined(__HAIKU__)
+#ifdef HAVE_EXECINFO_H
 #   include <execinfo.h>
+#endif
 #   include <dlfcn.h>
 #   include <cxxabi.h>
 #   include <cstdlib>
