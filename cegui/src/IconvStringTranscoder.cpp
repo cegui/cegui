@@ -47,7 +47,7 @@ public:
         d_toCode(tocode),
         d_cd(iconv_open(d_toCode.c_str(), d_fromCode.c_str()))
     {
-        if (d_cd == reinterpret_cast<iconv_t>(-1))
+        if (d_cd == (iconv_t)(-1))
             throw InvalidRequestException(String(
                 "Failed to create conversion descriptor from \"") +
                 d_fromCode.c_str() + "\" to \"" + d_toCode.c_str() + "\".");
