@@ -238,7 +238,6 @@ using namespace CEGUI;
 %include "CEGUI/widgets/ListWidget.h"
 
 %include "CEGUI/widgets/LayoutContainer.h"
-%include "CEGUI/widgets/SequentialLayoutContainer.h"
 %include "CEGUI/widgets/GridLayoutContainer.h"
 %include "CEGUI/widgets/HorizontalLayoutContainer.h"
 %include "CEGUI/widgets/VerticalLayoutContainer.h"
@@ -289,7 +288,6 @@ WINDOW_CONVERTER(MenuBase)
 WINDOW_CONVERTER(ListWidget)
 
 WINDOW_CONVERTER(LayoutContainer)
-WINDOW_CONVERTER(SequentialLayoutContainer)
 WINDOW_CONVERTER(GridLayoutContainer)
 WINDOW_CONVERTER(HorizontalLayoutContainer)
 WINDOW_CONVERTER(VerticalLayoutContainer)
