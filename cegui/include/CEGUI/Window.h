@@ -658,6 +658,7 @@ public:
     */
     bool isChild(unsigned int ID) const;
 
+    using NamedElement::isChildRecursive;
     /*!
     \brief
         returns whether at least one window with the given ID code is attached
