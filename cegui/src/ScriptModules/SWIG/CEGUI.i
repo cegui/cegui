@@ -157,6 +157,9 @@ using namespace CEGUI;
 %include "CEGUI/DefaultLogger.h"
 %include "CEGUI/DefaultRenderedStringParser.h"
 %include "CEGUI/DefaultResourceProvider.h"
+%inline %{
+	CEGUI::DefaultResourceProvider* toDefaultResourceProvider(CEGUI::ResourceProvider* p) { return static_cast<CEGUI::DefaultResourceProvider*>(p); }
+%}
 %include "CEGUI/DynamicModule.h"
 %include "CEGUI/FactoryModule.h"
 %include "CEGUI/FactoryRegisterer.h"
@@ -171,7 +174,13 @@ using namespace CEGUI;
 %include "CEGUI/ImageManager.h"
 %include "CEGUI/InputEvent.h"
 %include "CEGUI/InputEvents.h"
+%feature("notabstract") CEGUI::InputAggregator;
 %include "CEGUI/InputAggregator.h"
+%extend CEGUI::InputAggregator {
+	void injectChar(int c) {
+		$self->injectChar(static_cast<char32_t>(c));
+	}
+}
 %include "CEGUI/JustifiedRenderedString.h"
 %include "CEGUI/KeyFrame.h"
 %include "CEGUI/LeftAlignedRenderedString.h"
