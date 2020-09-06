@@ -380,27 +380,8 @@ void OgreGeometryBuffer::setScissorRects(Ogre::Viewport* current_viewport) const
     float scissorsHeight = (d_preparedClippingRegion.bottom() -
         d_preparedClippingRegion.top()) / actualHeight;
     
-
-	if(scissorsLeft > 0.1f)
-	{
-		int x = 43;
-		scissorsLeft = scissorsLeft;
-	}
-
-	if(scissorsLeft == 0.0f)
-	{
-		int x = 43;
-		scissorsLeft = scissorsLeft;
-	}
-
     current_viewport->setScissors(scissorsLeft, scissorsTop, scissorsWidth,
         scissorsHeight);
-
-	bool coversEntireScreen = current_viewport->coversEntireTarget();
-	if(coversEntireScreen)
-		coversEntireScreen = coversEntireScreen;
-
-	coversEntireScreen = coversEntireScreen;
 }
 
 #else
