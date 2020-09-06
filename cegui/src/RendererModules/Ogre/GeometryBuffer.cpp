@@ -110,6 +110,13 @@ void OgreGeometryBuffer::draw(std::uint32_t drawModeMask) const
     {
     #ifdef CEGUI_USE_OGRE_HLMS
         setScissorRects(currentViewport);
+		
+		// if needed clear and re-set viewport to have ogre apply the acual scissor settings
+		if(!currentViewport->coversEntireTarget())
+		{
+			d_renderSystem._setViewport(NULL);
+			d_renderSystem._setViewport(currentViewport);
+		}
     #else
         setScissorRects();
     #endif //CEGUI_USE_OGRE_HLMS
@@ -373,8 +380,27 @@ void OgreGeometryBuffer::setScissorRects(Ogre::Viewport* current_viewport) const
     float scissorsHeight = (d_preparedClippingRegion.bottom() -
         d_preparedClippingRegion.top()) / actualHeight;
     
+
+	if(scissorsLeft > 0.1f)
+	{
+		int x = 43;
+		scissorsLeft = scissorsLeft;
+	}
+
+	if(scissorsLeft == 0.0f)
+	{
+		int x = 43;
+		scissorsLeft = scissorsLeft;
+	}
+
     current_viewport->setScissors(scissorsLeft, scissorsTop, scissorsWidth,
         scissorsHeight);
+
+	bool coversEntireScreen = current_viewport->coversEntireTarget();
+	if(coversEntireScreen)
+		coversEntireScreen = coversEntireScreen;
+
+	coversEntireScreen = coversEntireScreen;
 }
 
 #else
