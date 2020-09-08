@@ -238,8 +238,11 @@ namespace CEGUI
 
     void DragContainer::updateActiveCursor(void) const
     {
-        getGUIContext().getCursor().
-            setImage(d_dragging ? getDragIndicatorImage() : getCursor());
+        if (getGUIContextPtr())
+        {
+            getGUIContext().getCursor().
+                setImage(d_dragging ? getDragIndicatorImage() : getCursor());
+        }
     }
 
     void DragContainer::onCursorPressHold(CursorInputEventArgs& e)
