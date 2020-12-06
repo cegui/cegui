@@ -1001,7 +1001,7 @@ void WidgetsSample::initMenubar(CEGUI::Menubar* menuBar)
 
 
     CEGUI::MenuItem* viewMenuItem = static_cast<CEGUI::MenuItem*>(windowManager.createWindow(menuItemMapping, "ViewMenuItem"));
-    fileMenuItem->setText("View");
+    viewMenuItem->setText("View");
     menuBar->addChild(viewMenuItem);
 
     CEGUI::PopupMenu* viewPopupMenu = static_cast<CEGUI::PopupMenu*>(windowManager.createWindow(popupMenuMapping, "ViewPopupMenu"));
