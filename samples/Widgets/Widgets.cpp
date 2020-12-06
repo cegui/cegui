@@ -715,6 +715,13 @@ void WidgetsSample::initMultiColumnList(CEGUI::MultiColumnList* multilineColumnL
     multilineColumnList->setItem(new MyListItem("Yet Another Game Server"), 0, 4);
     multilineColumnList->setItem(new MyListItem("abc.abcdefghijklmn.org"), 1, 4);
     multilineColumnList->setItem(new MyListItem("[colour='FFFF6600']284ms"), 2, 4);
+
+    // Enable colouring oin the last column. Note that it is possible to tune formatting per item.
+    static_cast<MyListItem*>(multilineColumnList->getItemAtGridReference(MCLGridRef(0, 2)))->setTextParsingEnabled(true);
+    static_cast<MyListItem*>(multilineColumnList->getItemAtGridReference(MCLGridRef(1, 2)))->setTextParsingEnabled(true);
+    static_cast<MyListItem*>(multilineColumnList->getItemAtGridReference(MCLGridRef(2, 2)))->setTextParsingEnabled(true);
+    static_cast<MyListItem*>(multilineColumnList->getItemAtGridReference(MCLGridRef(3, 2)))->setTextParsingEnabled(true);
+    static_cast<MyListItem*>(multilineColumnList->getItemAtGridReference(MCLGridRef(4, 2)))->setTextParsingEnabled(true);
 }
 
 void WidgetsSample::initCombobox(Combobox* combobox)
@@ -932,7 +939,7 @@ void WidgetsSample::fillWidgetPropertiesDisplayWindow(CEGUI::Window* widgetWindo
         try
         {
             // Set the second row item (value) for the property if it is gettable
-            if (widget->isPropertyPresent(curProperty->getName()))
+            if (widget->isPropertyPresent(curProperty->getName()) && widget->getPropertyInstance(curProperty->getName())->isReadable())
                 d_widgetPropertiesDisplayWindow->setItem(new MyListItem(widget->getProperty(curProperty->getName())), 2, rowID);
         }
         catch (CEGUI::InvalidRequestException exception)

@@ -67,7 +67,9 @@ static void dumpBacktrace(size_t frames)
 #if defined(_MSC_VER)
     SymSetOptions(SYMOPT_DEFERRED_LOADS | SYMOPT_INCLUDE_32BIT_MODULES);
 
-    if (!SymInitialize(GetCurrentProcess(), nullptr, TRUE))
+    HANDLE process = GetCurrentProcess();
+
+    if (!SymInitialize(process, nullptr, TRUE))
         return;
 
     HANDLE thread = GetCurrentThread();
@@ -103,7 +105,7 @@ static void dumpBacktrace(size_t frames)
     logger.logEvent("========== Start of Backtrace ==========", LoggingLevel::Error);
 
     size_t frame_no = 0;
-    while (StackWalk64(machine_arch, GetCurrentProcess(), thread, &stackframe,
+    while (StackWalk64(machine_arch, process, thread, &stackframe,
                        &context, nullptr, SymFunctionTableAccess64, SymGetModuleBase64, nullptr) &&
            stackframe.AddrPC.Offset)
     {
