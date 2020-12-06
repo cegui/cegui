@@ -94,8 +94,8 @@ void Editbox::setValidationString(const String& validation_string)
             "Unable to set validation string on Editbox '" + getNamePath() +
             "' because it does not currently have a RegexMatcher validator.");
 
-    d_validationString = validation_string;
     d_validator->setRegexString(validation_string);
+    d_validationString = validation_string;
 
     // notification
     WindowEventArgs args(this);
