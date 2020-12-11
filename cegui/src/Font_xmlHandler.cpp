@@ -80,7 +80,7 @@ const String Font_xmlHandler::FontTypePixmap("Pixmap");
 // 2 - CEGUI versions 0.5.x through 0.7.x (Static/Dynamic types renamed to Pixmap/TrueType
 //                                         Removed facility to pre-declare glyphs and glyph ranges)
 // 3 - CEGUI version 1.x.x (changed case of attr names, added version support)
-const String NativeVersion( "4" );
+const String Font_xmlHandler::NativeVersion("4");
 
 //----------------------------------------------------------------------------//
 Font_xmlHandler::Font_xmlHandler():

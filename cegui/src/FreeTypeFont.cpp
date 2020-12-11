@@ -828,6 +828,10 @@ void FreeTypeFont::writeXMLToStream_impl(XMLSerializer& xml_stream) const
 {
     xml_stream.attribute(Font_xmlHandler::FontSizeAttribute,
                          PropertyHelper<float>::toString(d_size));
+
+    if (d_sizeUnit != FontSizeUnit::Points)
+        xml_stream.attribute(Font_xmlHandler::FontSizeUnitAttribute,
+                             PropertyHelper<FontSizeUnit>::toString(d_sizeUnit));
     if (!d_antiAliased)
         xml_stream.attribute(Font_xmlHandler::FontAntiAliasedAttribute, "false");
 

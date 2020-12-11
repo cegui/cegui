@@ -406,9 +406,11 @@ void Font::notifyDisplaySizeChanged(const Sizef& size)
 void Font::writeXMLToStream(XMLSerializer& xml_stream) const
 {
     // output starting <Font ... > element
-    xml_stream.openTag("Font")
+    xml_stream.openTag(Font_xmlHandler::FontElement)
         .attribute(Font_xmlHandler::FontNameAttribute, d_name)
-        .attribute(Font_xmlHandler::FontFilenameAttribute, d_filename);
+        .attribute(Font_xmlHandler::FontVersionAttribute, Font_xmlHandler::NativeVersion)
+        .attribute(Font_xmlHandler::FontFilenameAttribute, d_filename)
+        .attribute(Font_xmlHandler::FontTypeAttribute, d_type);
 
     if (!d_resourceGroup.empty())
         xml_stream.attribute(Font_xmlHandler::FontResourceGroupAttribute,

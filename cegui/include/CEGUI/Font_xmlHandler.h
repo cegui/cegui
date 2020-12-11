@@ -86,6 +86,8 @@ public:
     static const String FontTypeFreeType;
     //! Type name of Pixmap fonts.
     static const String FontTypePixmap;
+    //! Font format version native for the current CEGUI implementation.
+    static const String NativeVersion;
 
     //! Constructor.
     Font_xmlHandler();
