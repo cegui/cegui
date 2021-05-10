@@ -51,8 +51,10 @@ public:
     virtual ~NullRenderTarget();
 
     // implement parts of CEGUI::RenderTarget interface
-    void draw(const GeometryBuffer& buffer);
-    void draw(const RenderQueue& queue);
+    void draw(const GeometryBuffer& buffer,
+        std::uint32_t drawModeMask = DrawModeMaskAll);
+    void draw(const RenderQueue& queue,
+        std::uint32_t drawModeMask = DrawModeMaskAll);
     void setArea(const Rectf& area);
     const Rectf& getArea() const;
     void activate();
