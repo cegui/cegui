@@ -29,7 +29,7 @@
 
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/RendererModules/OpenGLES/Renderer.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 
 #include <utility>
 #include <vector>

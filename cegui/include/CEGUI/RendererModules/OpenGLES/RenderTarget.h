@@ -29,7 +29,7 @@
 
 #include "CEGUI/RendererModules/OpenGLES/Renderer.h"
 #include "CEGUI/RenderTarget.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

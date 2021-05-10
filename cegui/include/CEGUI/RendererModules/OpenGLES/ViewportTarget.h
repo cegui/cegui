@@ -28,7 +28,7 @@
 #define _CEGUIOpenGLESViewportTarget_h_
 
 #include "CEGUI/RendererModules/OpenGLES/RenderTarget.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
