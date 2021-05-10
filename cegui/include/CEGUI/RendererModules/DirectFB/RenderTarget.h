@@ -28,7 +28,7 @@
 #define _CEGUIDirectFBRenderTarget_h_
 
 #include "../../RenderTarget.h"
-#include "../../Rect.h"
+#include "../../Rectf.h"
 #include <directfb.h>
 
 // Start of CEGUI namespace section

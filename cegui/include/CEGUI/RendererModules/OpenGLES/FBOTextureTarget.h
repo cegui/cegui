@@ -29,7 +29,7 @@
 
 #include "CEGUI/RendererModules/OpenGLES/RenderTarget.h"
 #include "CEGUI/TextureTarget.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 #include "CEGUI/RendererModules/OpenGLES/GLES.h"
 
 #if defined(_MSC_VER)

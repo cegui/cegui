@@ -29,7 +29,7 @@
 
 #include "CEGUI/Renderer.h"
 #include "CEGUI/Sizef.h"
-#include "CEGUI/Vector.h"
+#include "CEGUI/UVector.h"
 #include <directfb.h>
 #include <vector>
 #include <unordered_map>

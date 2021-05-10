@@ -29,7 +29,7 @@
 
 #include "CEGUI/RendererModules/Irrlicht/RendererDef.h"
 #include "../../RenderTarget.h"
-#include "../../Rect.h"
+#include "../../Rectf.h"
 
 #include <irrlicht.h>
 

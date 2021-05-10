@@ -28,7 +28,7 @@
 #define _CEGUIDirectFBGeometryBuffer_h_
 
 #include "CEGUI/GeometryBuffer.h"
-#include "CEGUI/Rect.h"
+#include "CEGUI/Rectf.h"
 #include <directfb.h>
 #include <vector>
 
