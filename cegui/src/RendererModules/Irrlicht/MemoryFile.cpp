@@ -40,7 +40,11 @@ IrrlichtMemoryFile::IrrlichtMemoryFile(const String& filename,
 {
 }
 
+#if CEGUI_IRR_SDK_VERSION > 18
 std::size_t IrrlichtMemoryFile::read(void* buffer, std::size_t sizeToRead)
+#else
+irr::s32 IrrlichtMemoryFile::read(void* buffer, irr::u32 sizeToRead)
+#endif
 {
     std::size_t realReadSize =
     ((d_position + sizeToRead) > d_size) ? d_size - d_position : sizeToRead;
