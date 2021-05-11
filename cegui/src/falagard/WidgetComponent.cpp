@@ -188,10 +188,11 @@ namespace CEGUI
     void WidgetComponent::removePropertyInitialiser(const String& name)
     {
         for(PropertiesList::iterator i = d_properties.begin();
-                i < d_properties.end();
-                ++i)
+                i != d_properties.end();)
             if(i->getTargetPropertyName() == name)
-                d_properties.erase(i);
+                i = d_properties.erase(i);
+            else
+                ++i;
     }
 
     void WidgetComponent::clearPropertyInitialisers()
