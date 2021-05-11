@@ -394,6 +394,11 @@ endif()
 # Option wether to build application templates; default off
 option(CEGUI_BUILD_APPLICATION_TEMPLATES "Specifies whether to build the application templates." TRUE)
 
+if (NOT APPLE AND CEGUI_BUILD_RENDERER_OPENGLES)
+    find_package(EGL)
+    set(CEGUI_BUILD_RENDERER_OPENGLES ${EGL_FOUND} CACHE BOOL "OpenGL ES 1 RenderSystem requires EGL on other systems than APPLE" FORCE)
+endif()
+
 if (WIN32 OR APPLE)
     set (CEGUI_BUILD_SUFFIX "_d" CACHE STRING "String holding a suffix appended to the name of output binaries (under CMake build, only used for debug).")
 else()
