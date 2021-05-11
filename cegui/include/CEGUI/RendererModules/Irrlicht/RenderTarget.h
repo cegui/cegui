@@ -55,8 +55,10 @@ public:
     virtual ~IrrlichtRenderTarget();
 
     // implement common parts of RenderTarget interface
-    void draw(const GeometryBuffer& buffer);
-    void draw(const RenderQueue& queue);
+    void draw(const GeometryBuffer& buffer,
+        uint32 drawModeMask = DrawModeMaskAll);
+    void draw(const RenderQueue& queue,
+        uint32 drawModeMask = DrawModeMaskAll);
     void setArea(const Rectf& area);
     const Rectf& getArea() const;
     void activate();
