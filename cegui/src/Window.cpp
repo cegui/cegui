@@ -3846,6 +3846,9 @@ Window* Window::clone(const bool deepCopy) const
     Window* ret =
         WindowManager::getSingleton().createWindow(getType(), getName());
 
+    //Setting some properties on DragContainer trigger events that require the GUI Context to be set
+    if (this->d_guiContext)
+        ret->setGUIContext(this->d_guiContext);
     // always copy properties
     clonePropertiesTo(*ret);
 
