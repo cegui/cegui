@@ -115,6 +115,10 @@ if(${OGRE_FOUND})
         set(CMAKE_CXX_STANDARD 11)
         set(CMAKE_CXX_STANDARD_REQUIRED ON)
         set(CMAKE_CXX_EXTENSIONS OFF)
+
+        set(CEGUI_FOUND_OGRE_VERSION_MAJOR ${OGRE_VERSION_MAJOR})
+        set(CEGUI_FOUND_OGRE_VERSION_MINOR ${OGRE_VERSION_MINOR})
+        set(CEGUI_FOUND_OGRE_VERSION_PATCH ${OGRE_VERSION_PATCH})
     endif()
 endif()
 
@@ -389,6 +393,11 @@ endif()
 
 # Option wether to build application templates; default off
 option(CEGUI_BUILD_APPLICATION_TEMPLATES "Specifies whether to build the application templates." TRUE)
+
+if (NOT APPLE AND CEGUI_BUILD_RENDERER_OPENGLES)
+    find_package(EGL)
+    set(CEGUI_BUILD_RENDERER_OPENGLES ${EGL_FOUND} CACHE BOOL "OpenGL ES 1 RenderSystem requires EGL on other systems than APPLE" FORCE)
+endif()
 
 if (WIN32 OR APPLE)
     set (CEGUI_BUILD_SUFFIX "_d" CACHE STRING "String holding a suffix appended to the name of output binaries (under CMake build, only used for debug).")
