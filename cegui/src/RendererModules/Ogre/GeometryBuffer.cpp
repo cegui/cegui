@@ -110,6 +110,10 @@ void OgreGeometryBuffer::draw(std::uint32_t drawModeMask) const
     {
     #ifdef CEGUI_USE_OGRE_HLMS
         setScissorRects(currentViewport);
+		
+		// clear and re-set viewport to have ogre apply the actual scissor settings
+		d_renderSystem._setViewport(NULL);
+		d_renderSystem._setViewport(currentViewport);
     #else
         setScissorRects();
     #endif //CEGUI_USE_OGRE_HLMS
@@ -173,6 +177,10 @@ void OgreGeometryBuffer::draw(std::uint32_t drawModeMask) const
         currentViewport->setScissors(previousClipRect.left(), previousClipRect.top(),
             previousClipRect.right(), previousClipRect.bottom());
         // Restore viewport? d_renderSystem._setViewport(previousViewport);
+		
+		// clear and re-set viewport to have ogre apply the previous scissor settings
+		d_renderSystem._setViewport(NULL);
+		d_renderSystem._setViewport(currentViewport);
     #else
         d_renderSystem.setScissorTest(false);
     #endif //CEGUI_USE_OGRE_HLMS
