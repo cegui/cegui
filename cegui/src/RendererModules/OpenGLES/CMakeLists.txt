@@ -4,6 +4,9 @@ cegui_gather_files()
 
 cegui_add_library(${CEGUI_TARGET_NAME} CORE_SOURCE_FILES CORE_HEADER_FILES)
 cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGLES)
+if (NOT APPLE)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} EGL)
+endif()
 
 cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
 
