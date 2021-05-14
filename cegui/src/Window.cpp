@@ -3546,6 +3546,8 @@ void Window::allocateRenderingWindow(bool addStencilBuffer)
     static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
     static_cast<RenderingWindow*>(d_surface)->
         setPosition(getUnclippedOuterRect().get().getPosition());
+    static_cast<RenderingWindow*>(d_surface)->setRotation(d_rotation);
+    updatePivot();
 
     GUIContext* context = getGUIContextPtr();
     if (context)
@@ -3628,6 +3630,11 @@ void Window::initialiseClippers(const RenderingContext& ctx)
 void Window::onRotated(ElementEventArgs& e)
 {
     Element::onRotated(e);
+    
+    if(!getGUIContextPtr())
+    {
+        return;
+    }
 
     // TODO: Checking quaternion for equality with IDENTITY is stupid,
     //       change this to something else, checking with tolerance.
