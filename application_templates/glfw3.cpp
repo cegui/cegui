@@ -45,22 +45,23 @@ author:     Luca Ebach <bitbucket@lucebac.net>
 
 static GLFWwindow* window;
 static CEGUI::InputAggregator* G_inputAggregator;
+static CEGUI::GUIContext* G_ctx;
 
 CEGUI::MouseButton toCEGUIButton(int button)
 {
     switch (button)
     {
     case GLFW_MOUSE_BUTTON_LEFT: 
-        return CEGUI::LeftButton;
-        
+        return CEGUI::MouseButton::Left;
+
     case GLFW_MOUSE_BUTTON_MIDDLE:
-        return CEGUI::MiddleButton;
+        return CEGUI::MouseButton::Middle;
 
     case GLFW_MOUSE_BUTTON_RIGHT:
-        return CEGUI::RightButton;
+        return CEGUI::MouseButton::Right;
 
     default:
-        return CEGUI::MouseButtonCount;
+        return CEGUI::MouseButton::Count;
     }
 }
 
@@ -68,70 +69,70 @@ CEGUI::Key::Scan toCEGUIKey(int glfwKey)
 {
     switch (glfwKey)
     {
-    case GLFW_KEY_ESCAPE: return CEGUI::Key::Escape;
-    case GLFW_KEY_F1: return CEGUI::Key::F1;
-    case GLFW_KEY_F2: return CEGUI::Key::F2;
-    case GLFW_KEY_F3: return CEGUI::Key::F3;
-    case GLFW_KEY_F4: return CEGUI::Key::F4;
-    case GLFW_KEY_F5: return CEGUI::Key::F5;
-    case GLFW_KEY_F6: return CEGUI::Key::F6;
-    case GLFW_KEY_F7: return CEGUI::Key::F7;
-    case GLFW_KEY_F8: return CEGUI::Key::F8;
-    case GLFW_KEY_F9: return CEGUI::Key::F9;
-    case GLFW_KEY_F10: return CEGUI::Key::F10;
-    case GLFW_KEY_F11: return CEGUI::Key::F11;
-    case GLFW_KEY_F12: return CEGUI::Key::F12;
-    case GLFW_KEY_F13: return CEGUI::Key::F13;
-    case GLFW_KEY_F14: return CEGUI::Key::F14;
-    case GLFW_KEY_F15: return CEGUI::Key::F15;
-    case GLFW_KEY_UP: return CEGUI::Key::ArrowUp;
-    case GLFW_KEY_DOWN: return CEGUI::Key::ArrowDown;
-    case GLFW_KEY_LEFT: return CEGUI::Key::ArrowLeft;
-    case GLFW_KEY_RIGHT: return CEGUI::Key::ArrowRight;
-    case GLFW_KEY_LEFT_SHIFT: return CEGUI::Key::LeftShift;
-    case GLFW_KEY_RIGHT_SHIFT: return CEGUI::Key::RightShift;
-    case GLFW_KEY_LEFT_CONTROL: return CEGUI::Key::LeftControl;
-    case GLFW_KEY_RIGHT_CONTROL: return CEGUI::Key::RightControl;
-    case GLFW_KEY_LEFT_ALT: return CEGUI::Key::LeftAlt;
-    case GLFW_KEY_RIGHT_ALT: return CEGUI::Key::RightAlt;
-    case GLFW_KEY_TAB: return CEGUI::Key::Tab;
-    case GLFW_KEY_ENTER: return CEGUI::Key::Return;
-    case GLFW_KEY_BACKSPACE: return CEGUI::Key::Backspace;
-    case GLFW_KEY_INSERT: return CEGUI::Key::Insert;
-    case GLFW_KEY_DELETE: return CEGUI::Key::Delete;
-    case GLFW_KEY_PAGE_UP: return CEGUI::Key::PageUp;
-    case GLFW_KEY_PAGE_DOWN: return CEGUI::Key::PageDown;
-    case GLFW_KEY_HOME: return CEGUI::Key::Home;
-    case GLFW_KEY_END: return CEGUI::Key::End;
-    case GLFW_KEY_KP_ENTER: return CEGUI::Key::NumpadEnter;
-    case GLFW_KEY_SPACE: return CEGUI::Key::Space;
-    case 'A': return CEGUI::Key::A;
-    case 'B': return CEGUI::Key::B;
-    case 'C': return CEGUI::Key::C;
-    case 'D': return CEGUI::Key::D;
-    case 'E': return CEGUI::Key::E;
-    case 'F': return CEGUI::Key::F;
-    case 'G': return CEGUI::Key::G;
-    case 'H': return CEGUI::Key::H;
-    case 'I': return CEGUI::Key::I;
-    case 'J': return CEGUI::Key::J;
-    case 'K': return CEGUI::Key::K;
-    case 'L': return CEGUI::Key::L;
-    case 'M': return CEGUI::Key::M;
-    case 'N': return CEGUI::Key::N;
-    case 'O': return CEGUI::Key::O;
-    case 'P': return CEGUI::Key::P;
-    case 'Q': return CEGUI::Key::Q;
-    case 'R': return CEGUI::Key::R;
-    case 'S': return CEGUI::Key::S;
-    case 'T': return CEGUI::Key::T;
-    case 'U': return CEGUI::Key::U;
-    case 'V': return CEGUI::Key::V;
-    case 'W': return CEGUI::Key::W;
-    case 'X': return CEGUI::Key::X;
-    case 'Y': return CEGUI::Key::Y;
-    case 'Z': return CEGUI::Key::Z;
-    default: return CEGUI::Key::Unknown;
+    case GLFW_KEY_ESCAPE: return CEGUI::Key::Scan::Esc;
+    case GLFW_KEY_F1: return CEGUI::Key::Scan::F1;
+    case GLFW_KEY_F2: return CEGUI::Key::Scan::F2;
+    case GLFW_KEY_F3: return CEGUI::Key::Scan::F3;
+    case GLFW_KEY_F4: return CEGUI::Key::Scan::F4;
+    case GLFW_KEY_F5: return CEGUI::Key::Scan::F5;
+    case GLFW_KEY_F6: return CEGUI::Key::Scan::F6;
+    case GLFW_KEY_F7: return CEGUI::Key::Scan::F7;
+    case GLFW_KEY_F8: return CEGUI::Key::Scan::F8;
+    case GLFW_KEY_F9: return CEGUI::Key::Scan::F9;
+    case GLFW_KEY_F10: return CEGUI::Key::Scan::F10;
+    case GLFW_KEY_F11: return CEGUI::Key::Scan::F11;
+    case GLFW_KEY_F12: return CEGUI::Key::Scan::F12;
+    case GLFW_KEY_F13: return CEGUI::Key::Scan::F13;
+    case GLFW_KEY_F14: return CEGUI::Key::Scan::F14;
+    case GLFW_KEY_F15: return CEGUI::Key::Scan::F15;
+    case GLFW_KEY_UP: return CEGUI::Key::Scan::ArrowUp;
+    case GLFW_KEY_DOWN: return CEGUI::Key::Scan::ArrowDown;
+    case GLFW_KEY_LEFT: return CEGUI::Key::Scan::ArrowLeft;
+    case GLFW_KEY_RIGHT: return CEGUI::Key::Scan::ArrowRight;
+    case GLFW_KEY_LEFT_SHIFT: return CEGUI::Key::Scan::LeftShift;
+    case GLFW_KEY_RIGHT_SHIFT: return CEGUI::Key::Scan::RightShift;
+    case GLFW_KEY_LEFT_CONTROL: return CEGUI::Key::Scan::LeftControl;
+    case GLFW_KEY_RIGHT_CONTROL: return CEGUI::Key::Scan::RightControl;
+    case GLFW_KEY_LEFT_ALT: return CEGUI::Key::Scan::LeftAlt;
+    case GLFW_KEY_RIGHT_ALT: return CEGUI::Key::Scan::RightAlt;
+    case GLFW_KEY_TAB: return CEGUI::Key::Scan::Tab;
+    case GLFW_KEY_ENTER: return CEGUI::Key::Scan::Return;
+    case GLFW_KEY_BACKSPACE: return CEGUI::Key::Scan::Backspace;
+    case GLFW_KEY_INSERT: return CEGUI::Key::Scan::Insert;
+    case GLFW_KEY_DELETE: return CEGUI::Key::Scan::DeleteKey;
+    case GLFW_KEY_PAGE_UP: return CEGUI::Key::Scan::PageUp;
+    case GLFW_KEY_PAGE_DOWN: return CEGUI::Key::Scan::PageDown;
+    case GLFW_KEY_HOME: return CEGUI::Key::Scan::Home;
+    case GLFW_KEY_END: return CEGUI::Key::Scan::End;
+    case GLFW_KEY_KP_ENTER: return CEGUI::Key::Scan::NumpadEnter;
+    case GLFW_KEY_SPACE: return CEGUI::Key::Scan::Space;
+    case 'A': return CEGUI::Key::Scan::A;
+    case 'B': return CEGUI::Key::Scan::B;
+    case 'C': return CEGUI::Key::Scan::C;
+    case 'D': return CEGUI::Key::Scan::D;
+    case 'E': return CEGUI::Key::Scan::E;
+    case 'F': return CEGUI::Key::Scan::F;
+    case 'G': return CEGUI::Key::Scan::G;
+    case 'H': return CEGUI::Key::Scan::H;
+    case 'I': return CEGUI::Key::Scan::I;
+    case 'J': return CEGUI::Key::Scan::J;
+    case 'K': return CEGUI::Key::Scan::K;
+    case 'L': return CEGUI::Key::Scan::L;
+    case 'M': return CEGUI::Key::Scan::M;
+    case 'N': return CEGUI::Key::Scan::N;
+    case 'O': return CEGUI::Key::Scan::O;
+    case 'P': return CEGUI::Key::Scan::P;
+    case 'Q': return CEGUI::Key::Scan::Q;
+    case 'R': return CEGUI::Key::Scan::R;
+    case 'S': return CEGUI::Key::Scan::S;
+    case 'T': return CEGUI::Key::Scan::T;
+    case 'U': return CEGUI::Key::Scan::U;
+    case 'V': return CEGUI::Key::Scan::V;
+    case 'W': return CEGUI::Key::Scan::W;
+    case 'X': return CEGUI::Key::Scan::X;
+    case 'Y': return CEGUI::Key::Scan::Y;
+    case 'Z': return CEGUI::Key::Scan::Z;
+    default: return CEGUI::Key::Scan::Unknown;
     }
 }
 
@@ -187,7 +188,7 @@ void windowResizedCallback(GLFWwindow*, int width, int height)
 
 void errorCallback(int /*error*/, const char* message)
 {
-    CEGUI::Logger::getSingleton().logEvent(message, CEGUI::Errors);
+    CEGUI::Logger::getSingleton().logEvent(message, CEGUI::LoggingLevel::Error);
 }
 
 void setupCallbacks()
@@ -226,7 +227,7 @@ void initGLFW()
 
     // makes this window's gl context the current one
     glfwMakeContextCurrent(window);
-    
+
     // hide native mouse cursor when it is over the window
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
@@ -247,7 +248,9 @@ void initCEGUI()
     // create CEGUI system object
     CEGUI::System::create(cegui_renderer);
 
-    G_inputAggregator = new InputAggregator(&System::getSingletonPtr()->getDefaultGUIContext());
+    G_ctx = &CEGUI::System::getSingleton().createGUIContext(cegui_renderer.getDefaultRenderTarget());
+
+    G_inputAggregator = new InputAggregator(G_ctx);
     G_inputAggregator->initialise();
 
     // setup resource directories
@@ -277,9 +280,9 @@ void initCEGUI()
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // set default font and cursor image and tooltip type
-    System::getSingleton().getDefaultGUIContext().setDefaultFont("DejaVuSans-10");
-    System::getSingleton().getDefaultGUIContext().getCursor().setDefaultImage("TaharezLook/MouseArrow");
-    System::getSingleton().getDefaultGUIContext().setDefaultTooltipType("TaharezLook/Tooltip");
+    G_ctx->setDefaultFont("DejaVuSans-10");
+    G_ctx->getCursor().setDefaultImage("TaharezLook/MouseArrow");
+    G_ctx->setDefaultTooltipType("TaharezLook/Tooltip");
 }
 
 void initWindows()
@@ -295,7 +298,7 @@ void initWindows()
 
     // load layout
     Window* root = WindowManager::getSingleton().loadLayoutFromFile("application_templates.layout");
-    System::getSingleton().getDefaultGUIContext().setRootWindow(root);
+    G_ctx->setRootWindow(root);
 }
 
 #ifdef _MSC_VER
@@ -339,7 +342,7 @@ int main()
         const float newtime = glfwGetTime();
         const float time_elapsed = newtime - time;
         System::getSingleton().injectTimePulse(time_elapsed);
-        System::getSingleton().getDefaultGUIContext().injectTimePulse(time_elapsed);
+        G_ctx->injectTimePulse(time_elapsed);
         time = newtime;
 
         // render gui
