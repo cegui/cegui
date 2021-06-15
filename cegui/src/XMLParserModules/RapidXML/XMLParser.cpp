@@ -38,6 +38,8 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
 
+#include <string.h>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
