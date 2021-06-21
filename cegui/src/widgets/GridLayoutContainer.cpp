@@ -77,7 +77,8 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
     if (d_initialising)
         return;
 
-    ChildList oldChildren = std::move(d_children);
+    ChildList oldChildren;
+    std::swap(oldChildren, d_children);
 
     d_children.reserve(width * height);
 
@@ -503,6 +504,10 @@ void GridLayoutContainer::endInitialisation(void)
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::addChild_impl(Element* element)
 {
+    // if the element is already a child of this Window, this is a NOOP
+    if (isChild(element))
+        return;
+
     // Custom logic for dummies. Allow to refresh children already in the list.
     // It is necessary for rearrangement optimization when resizing the grid.
     // Also skip LayoutContainer's subscriptions on child resizing and draw list
