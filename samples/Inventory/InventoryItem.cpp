@@ -118,12 +118,11 @@ void InventoryItem::populateGeometryBuffer()
     if (!img)
         return;
 
-    const Sizef square_size(squarePixelSize());
+    const Sizef square_size = (d_dragging && currentDropTargetIsValid()) ?
+        static_cast<InventoryReceiver*>(d_dropTarget)->squarePixelSize() :
+        squarePixelSize();
 
-    argb_t colour = 0xFF00FF00;
-
-    if (d_dragging && !currentDropTargetIsValid())
-        colour = 0xFFFF0000;
+    const argb_t colour = (d_dragging && !currentDropTargetIsValid()) ? 0xFFFF0000 : 0xFF00FF00;
 
     ImageRenderSettings imgRenderSettings(
         Rectf(), nullptr, false, ColourRect(colour));
