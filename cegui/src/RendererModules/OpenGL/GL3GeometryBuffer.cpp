@@ -299,7 +299,7 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
     else if(d_polygonFillRule == PolygonFillRule::EvenOdd)
     {
         //We use a stencil buffer to determine the insideness
-        //of a fragment. Every draw inverts the precious value
+        //of a fragment. Every draw inverts the previous value
         //according to the even-odd rule.
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 

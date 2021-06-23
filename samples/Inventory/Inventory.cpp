@@ -88,7 +88,7 @@ bool InventorySample::initialise(CEGUI::GUIContext* guiContext)
         "InventoryItemRenderer");       // WindowRenderer to use.
 
     // Create Backpack window
-    Window* wnd = winMgr.createWindow("TaharezLook/FrameWindow");
+    Window* wnd = winMgr.createWindow("TaharezLook/FrameWindow", "BackpackWindow");
     root->addChild(wnd);
     wnd->setPosition(UVector2(UDim(0.1f, 0), UDim(0.1f, 0)));
     wnd->setSize(USize(UDim(0.2f, 0), UDim(0.4f, 0)));
@@ -102,7 +102,7 @@ bool InventorySample::initialise(CEGUI::GUIContext* guiContext)
     receiver1.setUserString("BlockImage", "TaharezLook/GenericBrush");
 
     // Create vault window
-    Window* wnd2 = winMgr.createWindow("TaharezLook/FrameWindow");
+    Window* wnd2 = winMgr.createWindow("TaharezLook/FrameWindow", "BankVaultWindow");
     root->addChild(wnd2);
     wnd2->setPosition(UVector2(UDim(0.48f, 0), UDim(0.2f, 0)));
     wnd2->setSize(USize(UDim(0.5f, 0), UDim(0.5f, 0)));
