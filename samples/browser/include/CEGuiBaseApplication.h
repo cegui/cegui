@@ -187,8 +187,6 @@ protected:
     void updateLogoGeometryRotation();
     //! event handler function that draws the logo and FPS overlay elements.
     bool sampleBrowserOverlayHandler(const CEGUI::EventArgs& args);
-    //! event handler function that draws the FPS overlay elements.
-    bool sampleOverlayHandler(const CEGUI::EventArgs& args);
     //! event handler function called when main view is resized
     bool resizeHandler(const CEGUI::EventArgs& args);
 

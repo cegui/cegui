@@ -313,21 +313,6 @@ bool CEGuiBaseApplication::sampleBrowserOverlayHandler(const CEGUI::EventArgs& a
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiBaseApplication::sampleOverlayHandler(const CEGUI::EventArgs& args)
-{
-    if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RenderQueueID::Overlay)
-        return false;
-
-    // Draw FPS value
-    d_renderer->uploadBuffers(d_FPSGeometry);
-    const size_t bufferCount = d_FPSGeometry.size();
-    for (size_t i = 0; i < bufferCount; ++i)
-        d_FPSGeometry.at(i)->draw();
-
-    return true;
-}
-
-//----------------------------------------------------------------------------//
 void CEGuiBaseApplication::updateFPS(const float elapsed)
 {
     // another frame
@@ -454,9 +439,22 @@ void CEGuiBaseApplication::registerSampleOverlayHandler(CEGUI::GUIContext* gui_c
     gui_context->clearGeometry(CEGUI::RenderQueueID::Overlay);
 
     // subscribe handler to render overlay items
-    gui_context->subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
-        CEGUI::Event::Subscriber(&CEGuiBaseApplication::sampleOverlayHandler,
-        this));
+    // FIXME: could add buffers to ctx instead of subscription, but queue clearing breaks that now
+    //gui_context->addGeometryBuffers(RenderQueueID::Overlay, d_FPSGeometry);
+    gui_context->subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueEnded,
+        [this, gui_context](const CEGUI::EventArgs& args)
+    {
+        if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RenderQueueID::Overlay)
+            return false;
+
+        // Draw FPS value
+        d_renderer->uploadBuffers(d_FPSGeometry);
+        const size_t bufferCount = d_FPSGeometry.size();
+        for (size_t i = 0; i < bufferCount; ++i)
+            d_FPSGeometry.at(i)->draw();
+
+        return true;
+    });
 }
 
 //----------------------------------------------------------------------------//
