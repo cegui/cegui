@@ -4,7 +4,7 @@ set(Python_ADDITIONAL_VERSIONS 3.5)
 
 find_package(PythonInterp)
 find_package(PythonLibs)
-find_package(SWIG 3.0.8)
+#find_package(SWIG 3.0.8)
 
 include_directories(${PYTHON_INCLUDE_PATH})
 

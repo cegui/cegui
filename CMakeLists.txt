@@ -179,6 +179,7 @@ else()
   find_package(PythonLibs)
 endif()
 find_package(Boost 1.36.0 COMPONENTS python unit_test_framework system timer)
+find_package(SWIG 3.0.8)
 
 find_package(Doxygen)
 find_package(GTK2 COMPONENTS gtk)
@@ -272,7 +273,7 @@ cegui_dependent_option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the L
 cegui_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" "LUA51_FOUND;TOLUAPP_FOUND" )
 
 cegui_dependent_option( CEGUI_BUILD_PYTHON_MODULES_PYPLUSPLUS "Specifies whether to build the Python extension module(s) via boost and Py++" "PYTHONINTERP_FOUND;PYTHONLIBS_FOUND;Boost_PYTHON_FOUND" )
-option( CEGUI_BUILD_PYTHON_MODULES_SWIG "Specifies whether to build the Python extension module(s)" ${PYTHON3LIBS_FOUND} )
+cegui_dependent_option( CEGUI_BUILD_PYTHON_MODULES_SWIG "Specifies whether to build the Python extension module(s) via SWIG" "PYTHON3LIBS_FOUND;SWIG_FOUND" )
 
 option( CEGUI_OPTION_SAFE_LUA_MODULE "Specifies whether to enable extra validation in the Lua script module in non-debug builds" FALSE )
 
@@ -435,14 +436,22 @@ else()
 endif()
 
 # We set the Samples to the default value
-option( CEGUI_SAMPLES_ENABLED "Specifies whether to build the CEGUI sample applications" ${_CEGUI_SAMPLES_ENABLED_DEFAULT} )
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/samples")
+    option( CEGUI_SAMPLES_ENABLED "Specifies whether to build the CEGUI sample applications" ${_CEGUI_SAMPLES_ENABLED_DEFAULT} )
+else()
+    unset(CEGUI_SAMPLES_ENABLED CACHE)
+endif()
 
 if (UNIX AND NOT APPLE AND NOT WIN32)
     option( CEGUI_SAMPLES_USE_GTK2 "Specifies whether the sample applications will make use of the GTK2 UI for renderer selection." FALSE )
 endif()
 
 # Option wether to build application templates; default off
-option(CEGUI_BUILD_APPLICATION_TEMPLATES "Specifies whether to build the application templates." TRUE)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/application_templates")
+    option(CEGUI_BUILD_APPLICATION_TEMPLATES "Specifies whether to build the application templates." TRUE)
+else()
+    unset(CEGUI_BUILD_APPLICATION_TEMPLATES CACHE)
+endif()
 
 if (ANDROID)
     set(CEGUI_BUILD_STATIC_CONFIGURATION TRUE CACHE BOOL "Forcing static build for Android" FORCE)
@@ -584,12 +593,14 @@ You should ensure that CEGUI_OPTION_DEFAULT_XMLPARSER is set to something
 appropriate.")
 endif()
 
-cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_XMLPARSER "ExpatParser" CEGUI_BUILD_XMLPARSER_EXPAT)
-cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_XMLPARSER "XercesParser" CEGUI_BUILD_XMLPARSER_XERCES)
-cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_XMLPARSER "LibXMLParser" CEGUI_BUILD_XMLPARSER_LIBXML2)
-cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_XMLPARSER "RapidXMLParser" CEGUI_BUILD_XMLPARSER_RAPIDXML)
-cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_XMLPARSER "TinyXMLParser" CEGUI_BUILD_XMLPARSER_TINYXML)
-cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_XMLPARSER "TinyXML2Parser" CEGUI_BUILD_XMLPARSER_TINYXML2)
+if(CEGUI_BUILD_DYNAMIC_CONFIGURATION)
+    cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_XMLPARSER "ExpatParser" CEGUI_BUILD_XMLPARSER_EXPAT)
+    cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_XMLPARSER "XercesParser" CEGUI_BUILD_XMLPARSER_XERCES)
+    cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_XMLPARSER "LibXMLParser" CEGUI_BUILD_XMLPARSER_LIBXML2)
+    cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_XMLPARSER "RapidXMLParser" CEGUI_BUILD_XMLPARSER_RAPIDXML)
+    cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_XMLPARSER "TinyXMLParser" CEGUI_BUILD_XMLPARSER_TINYXML)
+    cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_XMLPARSER "TinyXML2Parser" CEGUI_BUILD_XMLPARSER_TINYXML2)
+endif()
 
 if (CEGUI_BUILD_STATIC_CONFIGURATION)
     cegui_defaultmodule_sanity_test(CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_EXPAT_PARSER_LIBNAME} CEGUI_BUILD_XMLPARSER_EXPAT)
@@ -631,13 +642,15 @@ You should ensure that CEGUI_OPTION_DEFAULT_IMAGECODEC is set to something
 appropriate.")
 endif()
 
-cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "SILLYImageCodec" CEGUI_BUILD_IMAGECODEC_SILLY)
-cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "DevILImageCodec" CEGUI_BUILD_IMAGECODEC_DEVIL)
-cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "FreeImageImageCodec" CEGUI_BUILD_IMAGECODEC_FREEIMAGE)
-cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "STBImageCodec" CEGUI_BUILD_IMAGECODEC_STB)
-cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "CoronaImageCodec" CEGUI_BUILD_IMAGECODEC_CORONA)
-cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "TGAImageCodec" CEGUI_BUILD_IMAGECODEC_TGA)
-cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "SDL2ImageCodec" CEGUI_BUILD_IMAGECODEC_SDL2)
+if(CEGUI_BUILD_DYNAMIC_CONFIGURATION)
+    cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "SILLYImageCodec" CEGUI_BUILD_IMAGECODEC_SILLY)
+    cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "DevILImageCodec" CEGUI_BUILD_IMAGECODEC_DEVIL)
+    cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "FreeImageImageCodec" CEGUI_BUILD_IMAGECODEC_FREEIMAGE)
+    cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "STBImageCodec" CEGUI_BUILD_IMAGECODEC_STB)
+    cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "CoronaImageCodec" CEGUI_BUILD_IMAGECODEC_CORONA)
+    cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "TGAImageCodec" CEGUI_BUILD_IMAGECODEC_TGA)
+    cegui_defaultmodule_sanity_test(CEGUI_OPTION_DEFAULT_IMAGECODEC "SDL2ImageCodec" CEGUI_BUILD_IMAGECODEC_SDL2)
+endif()
 
 if (CEGUI_BUILD_STATIC_CONFIGURATION)
     cegui_defaultmodule_sanity_test(CEGUI_STATIC_IMAGECODEC_MODULE ${CEGUI_SILLY_IMAGECODEC_LIBNAME} CEGUI_BUILD_IMAGECODEC_SILLY)
@@ -742,8 +755,12 @@ endif()
 configure_file( cegui/include/CEGUI/Version.h.in cegui/include/CEGUI/Version.h )
 configure_file( cegui/include/CEGUI/Config.h.in cegui/include/CEGUI/Config.h )
 configure_file( cegui/include/CEGUI/ModuleConfig.h.in cegui/include/CEGUI/ModuleConfig.h )
-configure_file( samples/common/include/CEGUISamplesConfig.h.in samples/common/include/CEGUISamplesConfig.h )
-configure_file( doc/doxygen/doxyfile.in doc/doxygen/doxyfile )
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/samples")
+    configure_file( samples/common/include/CEGUISamplesConfig.h.in samples/common/include/CEGUISamplesConfig.h )
+endif()
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc")
+    configure_file( doc/doxygen/doxyfile.in doc/doxygen/doxyfile )
+endif()
 
 ################################################################################
 # Perhaps install pkg-config ("*.pc") files.
@@ -807,9 +824,11 @@ if (CEGUI_BUILD_APPLICATION_TEMPLATES)
     add_subdirectory(application_templates)
 endif()
 
-add_subdirectory(datafiles)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/datafiles")
+    add_subdirectory(datafiles)
+endif()
 
-if (DOXYGEN_FOUND)
+if (DOXYGEN_FOUND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc")
     add_custom_target(html
         "${DOXYGEN_EXECUTABLE}"
         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/doc/doxygen"
