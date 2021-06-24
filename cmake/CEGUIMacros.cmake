@@ -138,31 +138,33 @@ macro (cegui_add_dependency _TARGET_NAME _DEP_NAME)
     ###########################################################################
     #                    NON-STATIC VERSION OF TARGET
     ###########################################################################
-    if (${_DEP_NAME}_DEFINITIONS)
-        set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS} )
-    endif()
-    if (${_DEP_NAME}_COMPILE_FLAGS)
-        set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_FLAGS ${${_DEP_NAME}_COMPILE_FLAGS} )
-    endif()
-
-    if (CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
-        if (${_DEP_NAME}_DEFINITIONS_STATIC)
-            set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS_STATIC} )
+    if (_DYNAMIC_EXISTS)
+        if (${_DEP_NAME}_DEFINITIONS)
+            set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS} )
         endif()
-        if (${_DEP_NAME}_COMPILE_FLAGS_STATIC)
-            set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_FLAGS ${${_DEP_NAME}_COMPILE_FLAGS_STATIC} )
+        if (${_DEP_NAME}_COMPILE_FLAGS)
+            set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_FLAGS ${${_DEP_NAME}_COMPILE_FLAGS} )
         endif()
 
-        cegui_add_dependency_static_libs(${_TARGET_NAME} ${_DEP_NAME})
-    else()
-        if (${_DEP_NAME}_DEFINITIONS_DYNAMIC)
-            set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS_DYNAMIC} )
-        endif()
-        if (${_DEP_NAME}_COMPILE_FLAGS_DYNAMIC)
-            set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_FLAGS ${${_DEP_NAME}_COMPILE_FLAGS_DYNAMIC} )
-        endif()
+        if (CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
+            if (${_DEP_NAME}_DEFINITIONS_STATIC)
+                set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS_STATIC} )
+            endif()
+            if (${_DEP_NAME}_COMPILE_FLAGS_STATIC)
+                set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_FLAGS ${${_DEP_NAME}_COMPILE_FLAGS_STATIC} )
+            endif()
 
-        cegui_add_dependency_dynamic_libs(${_TARGET_NAME} ${_DEP_NAME})
+            cegui_add_dependency_static_libs(${_TARGET_NAME} ${_DEP_NAME})
+        else()
+            if (${_DEP_NAME}_DEFINITIONS_DYNAMIC)
+                set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS_DYNAMIC} )
+            endif()
+            if (${_DEP_NAME}_COMPILE_FLAGS_DYNAMIC)
+                set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_FLAGS ${${_DEP_NAME}_COMPILE_FLAGS_DYNAMIC} )
+            endif()
+
+            cegui_add_dependency_dynamic_libs(${_TARGET_NAME} ${_DEP_NAME})
+        endif()
     endif()
 
 
@@ -395,7 +397,7 @@ macro (cegui_add_sample_with_extra_files _NAME _EXTRA_HEADER_FILES _EXTRA_SOURCE
         ${CMAKE_SOURCE_DIR}/samples/common/include/SampleBase.h
     )
 
-	set(CORE_SOURCE_FILES ${CORE_SOURCE_FILES} ${_EXTRA_SOURCE_FILES})
+    set(CORE_SOURCE_FILES ${CORE_SOURCE_FILES} ${_EXTRA_SOURCE_FILES})
 
     # Each demo will become a dynamically linked library as plugin (module)
     cegui_add_library_impl(${CEGUI_TARGET_NAME} TRUE CORE_SOURCE_FILES CORE_HEADER_FILES FALSE FALSE)
@@ -432,7 +434,7 @@ macro (cegui_add_sample_with_extra_files _NAME _EXTRA_HEADER_FILES _EXTRA_SOURCE
 
 endmacro()
 macro (cegui_add_sample _NAME)
-	cegui_add_sample_with_extra_files(${_NAME} "" "")
+    cegui_add_sample_with_extra_files(${_NAME} "" "")
 endmacro()
 
 
