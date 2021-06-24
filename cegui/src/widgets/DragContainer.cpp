@@ -1,6 +1,6 @@
 /***********************************************************************
-	created:	14/2/2005
-	author:		Paul D Turner
+    created:    14/2/2005
+    author:        Paul D Turner
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -202,38 +202,20 @@ namespace CEGUI
         return (deltaX > d_dragThreshold || deltaY > d_dragThreshold) ? true : false;
     }
 
-    void DragContainer::initialiseDragging(void)
-    {
-        // only proceed if dragging is actually enabled
-        if (d_draggingEnabled)
-        {
-            // initialise drag moving state
-            d_storedClipState = d_clippedByParent;
-            setClippedByParent(false);
-            d_storedAlpha = d_alpha;
-            setAlpha(d_dragAlpha);
-            d_startPosition = getPosition();
-
-            d_dragging = true;
-
-            notifyScreenAreaChanged();
-
-            // Now drag mode is set, change cursor as required
-            updateActiveCursor();
-        }
-    }
-
     void DragContainer::doDragging(const glm::vec2& local_cursor)
     {
         // calculate amount to move
         UVector2 offset(cegui_absdim(local_cursor.x), cegui_absdim(local_cursor.y));
         offset -= (d_usingFixedDragOffset) ? d_fixedDragOffset : d_dragPoint;
-        // set new position
-        setPosition(getPosition() + offset);
+        if (offset != UVector2::zero())
+        {
+            // set new position
+            setPosition(getPosition() + offset);
 
-        // Perform event notification
-        WindowEventArgs args(this);
-        onDragPositionChanged(args);
+            // Perform event notification
+            WindowEventArgs args(this);
+            onDragPositionChanged(args);
+        }
     }
 
     void DragContainer::updateActiveCursor(void) const
@@ -286,7 +268,8 @@ namespace CEGUI
             // check for sticky pick up
             else if (d_stickyMode && !d_pickedUp)
             {
-                initialiseDragging();
+                WindowEventArgs args(this);
+                onDragStarted(args);
                 d_pickedUp = true;
                 // in this case, do not proceed to release inputs.
                 return;
@@ -386,9 +369,30 @@ namespace CEGUI
 
     void DragContainer::onDragStarted(WindowEventArgs& e)
     {
-        initialiseDragging();
+        // only proceed if dragging is actually enabled
+        if (!d_draggingEnabled)
+            return;
+
+        // initialise drag moving state
+        d_storedClipState = d_clippedByParent;
+        setClippedByParent(false);
+        d_storedAlpha = d_alpha;
+        setAlpha(d_dragAlpha);
+        d_startPosition = getPosition();
+
+        d_dragging = true;
+
+        notifyScreenAreaChanged();
+
+        // Now drag mode is set, change cursor as required
+        updateActiveCursor();
 
         fireEvent(EventDragStarted, e, EventNamespace);
+
+        // Immediately update position relative to the cursor
+        const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this,
+            getGUIContext().getCursor().getPosition()));
+        doDragging(localPointerPos);
     }
 
     void DragContainer::onDragEnded(WindowEventArgs& e)
@@ -553,13 +557,8 @@ bool DragContainer::pickUp(const bool force_sticky /*= false*/)
             d_dragPoint.d_y = cegui_absdim(d_pixelSize.d_height / 2);
 
             // initialise the dragging state
-            initialiseDragging();
-
-            // get position of cursor as co-ordinates local to this window.
-            const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this,
-                getGUIContext().getCursor().getPosition()));
-            doDragging(localPointerPos);
-
+            WindowEventArgs args(this);
+            onDragStarted(args);
             d_pickedUp = true;
         }
     }

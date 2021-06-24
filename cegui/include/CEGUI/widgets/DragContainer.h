@@ -1,6 +1,6 @@
 /***********************************************************************
-	created:	14/2/2005
-	author:		Paul D Turner
+    created:    14/2/2005
+    author:        Paul D Turner
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -31,8 +31,8 @@
 #include "../WindowFactory.h"
 
 #if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4251)
+#    pragma warning(push)
+#    pragma warning(disable : 4251)
 #endif
 
 // Start of CEGUI namespace section
@@ -116,7 +116,7 @@ namespace CEGUI
         virtual ~DragContainer(void);
 
         /*************************************************************************
-        	Public Interface to DragContainer
+            Public Interface to DragContainer
         *************************************************************************/
         /*!
         \brief
@@ -377,15 +377,6 @@ namespace CEGUI
         */
         bool isDraggingThresholdExceeded(const glm::vec2& local_cursor);
 
-	    /*!
-	    \brief
-		    Initialise the required states to put the window into dragging mode.
-
-        \return
-            Nothing.
-	    */
-        void initialiseDragging(void);
-
         /*!
         \brief
             Update state for window dragging.
@@ -393,9 +384,9 @@ namespace CEGUI
         \param local_cursor
             Cursor position as a pixel offset from the top-left corner of this window.
 
-	    \return
-		    Nothing.
-	    */
+        \return
+            Nothing.
+        */
         void doDragging(const glm::vec2& local_cursor);
 
         /*!
@@ -405,11 +396,11 @@ namespace CEGUI
         void updateActiveCursor(void) const;
 
         /*************************************************************************
-        	Overrides of methods in Window
+            Overrides of methods in Window
         *************************************************************************/
 
         /*************************************************************************
-        	Overrides for Event handler methods
+            Overrides for Event handler methods
         *************************************************************************/
         void onCursorPressHold(CursorInputEventArgs& e) override;
         void onCursorActivate(CursorInputEventArgs& e) override;
@@ -420,7 +411,7 @@ namespace CEGUI
         void onMoved(ElementEventArgs& e) override;
 
         /*************************************************************************
-        	New Event handler methods
+            New Event handler methods
         *************************************************************************/
         /*!
         \brief
@@ -516,7 +507,7 @@ namespace CEGUI
         virtual void onDragDropTargetChanged(DragDropEventArgs& e);
 
         /*************************************************************************
-        	Data
+            Data
         *************************************************************************/
         bool    d_draggingEnabled;  //!< True when dragging is enabled.
         bool    d_leftPointerHeld;    //!< True when left cursor source is held.
@@ -541,7 +532,7 @@ namespace CEGUI
 
     private:
         /*************************************************************************
-        	Implementation methods
+            Implementation methods
         *************************************************************************/
         /*!
         \brief
@@ -557,7 +548,7 @@ namespace CEGUI
 
 
 #if defined(_MSC_VER)
-#	pragma warning(pop)
+#    pragma warning(pop)
 #endif
 
-#endif	// end of guard _CEGUIDragContainer_h_
+#endif    // end of guard _CEGUIDragContainer_h_
