@@ -96,16 +96,15 @@ FrameWindow::~FrameWindow(void)
 *************************************************************************/
 void FrameWindow::initialiseComponents(void)
 {
-    // get component windows
     Titlebar* titlebar = getTitlebar();
     PushButton* closeButton = getCloseButton();
 
-    // configure titlebar
     titlebar->setDraggingEnabled(d_dragMovable);
     titlebar->setText(getText());
+    titlebar->setAutoWindow(true);
+    closeButton->setAutoWindow(true);
 
-    // ban some properties on components, since they are linked to settings
-    // defined here.
+    // ban some properties on components, since they are linked to settings defined here
     titlebar->banPropertyFromXML("Text");
     titlebar->banPropertyFromXML("Visible");
     titlebar->banPropertyFromXML("Disabled");

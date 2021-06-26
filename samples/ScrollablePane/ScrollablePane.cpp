@@ -32,6 +32,7 @@
 #include "CEGUI/FontManager.h"
 #include "CEGUI/widgets/ScrollablePane.h"
 #include "CEGUI/widgets/ScrolledContainer.h"
+#include "CEGUI/widgets/FrameWindow.h"
 
  //----------------------------------------------------------------------------//
 ScrollablePaneSample::ScrollablePaneSample()
@@ -116,6 +117,10 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     Window* dlg = wm->createWindow("WindowsLook/FrameWindow");
     dlg->setSize(USize(UDim(0.04f,0),UDim(0.02f,0)));
     dlg->setText("Drag me around");
+    dlg->subscribeEvent(FrameWindow::EventCloseClicked, [dlg]()
+    {
+        WindowManager::getSingletonPtr()->destroyWindow(dlg);
+    });
     d_pane->addChild(dlg);
 
     // Create next, auto-sized scrollable pane.
@@ -140,6 +145,10 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     dlg = wm->createWindow("WindowsLook/FrameWindow");
     dlg->setSize(USize(UDim(0.2f,0),UDim(0.4f,0)));
     dlg->setText("Drag me around");
+    dlg->subscribeEvent(FrameWindow::EventCloseClicked, [dlg]()
+    {
+        WindowManager::getSingletonPtr()->destroyWindow(dlg);
+    });
     pane->addChild(dlg);
 
     // Create another scrollable pane. It will autosize vertically, but will have fixed
@@ -189,6 +198,10 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
         dlg->setSize(USize(UDim(1.0f, 0), UDim(0.25f, 0)));
         dlg->setText("Drag me around");
         dlg->setCursorInputPropagationEnabled(true); // FIXME: frame of the FrameWindow must inherit it!
+        dlg->subscribeEvent(FrameWindow::EventCloseClicked, [dlg]()
+        {
+            WindowManager::getSingletonPtr()->destroyWindow(dlg);
+        });
         verticalListParent->addChild(dlg);
     }
 
@@ -259,6 +272,11 @@ bool ScrollablePaneSample::addNewChild(const CEGUI::EventArgs&)
         UDim(0, viewportSize.d_width / 2.f - offset.x - 100.f),
         UDim(0, viewportSize.d_height / 2.f - offset.y - 50.f));
     dlg->setPosition(pos);
+
+    dlg->subscribeEvent(FrameWindow::EventCloseClicked, [dlg]()
+    {
+        WindowManager::getSingletonPtr()->destroyWindow(dlg);
+    });
 
     d_pane->addChild(dlg);
 
