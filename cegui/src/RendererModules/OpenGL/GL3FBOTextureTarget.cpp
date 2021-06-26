@@ -86,7 +86,8 @@ void OpenGL3FBOTextureTarget::activate()
             reinterpret_cast<GLint*>(&d_previousFrameBuffer));
 
     // switch to rendering to the texture
-    glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
+    if (d_previousFrameBuffer != d_frameBuffer)
+        glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
 
     OpenGLTextureTarget::activate();
 }
@@ -97,7 +98,8 @@ void OpenGL3FBOTextureTarget::deactivate()
     OpenGLTextureTarget::deactivate();
 
     // switch back to rendering to the previously bound framebuffer
-    glBindFramebuffer(GL_FRAMEBUFFER, d_previousFrameBuffer);
+    if (d_previousFrameBuffer != d_frameBuffer)
+        glBindFramebuffer(GL_FRAMEBUFFER, d_previousFrameBuffer);
 }
 
 //----------------------------------------------------------------------------//
