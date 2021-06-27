@@ -124,7 +124,7 @@ void OpenGL3FBOTextureTarget::clear()
     glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
     // Clear it.
     d_glStateChanger->disable(GL_SCISSOR_TEST);
-    glClearColor(0,0,0,0);
+    glClearColor(0.f, 0.f, 0.f, 0.f);
 
     if(!d_usesStencil)
         glClear(GL_COLOR_BUFFER_BIT);
@@ -157,14 +157,9 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
             GL_FRAMEBUFFER_BINDING : GL_FRAMEBUFFER_BINDING_EXT,
             &previousFBO);
 
-    // create FBO
-    glGenFramebuffers(1, &d_frameBuffer);
-
-    glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
-
     // set up the texture the FBO will draw to
     glGenTextures(1, &d_texture);
-    d_glStateChanger->bindTexture(GL_TEXTURE_2D, d_texture);
+    glBindTexture(GL_TEXTURE_2D, d_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -176,6 +171,13 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
                  static_cast<GLsizei>(DEFAULT_SIZE),
                  static_cast<GLsizei>(DEFAULT_SIZE),
                  0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+
+    // restore previous texture binding.
+    glBindTexture(GL_TEXTURE_2D, old_tex);
+
+    // create FBO
+    glGenFramebuffers(1, &d_frameBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                               GL_TEXTURE_2D, d_texture, 0);
 
@@ -206,9 +208,6 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
 
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, d_area.getSize());
-
-    // restore previous texture binding.
-    d_glStateChanger->bindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
@@ -230,7 +229,8 @@ void OpenGL3FBOTextureTarget::resizeRenderTexture()
     }
 
     // set the texture to the required size
-    d_glStateChanger->bindTexture(GL_TEXTURE_2D, d_texture);
+    if (d_texture != old_tex)
+        glBindTexture(GL_TEXTURE_2D, d_texture);
 
     glTexImage2D(GL_TEXTURE_2D, 0,
                  OpenGLInfo::getSingleton().isSizedInternalFormatSupported() ?
@@ -254,7 +254,8 @@ void OpenGL3FBOTextureTarget::resizeRenderTexture()
     d_CEGUITexture->setOpenGLTexture(d_texture, sz);
 
     // restore previous texture binding.
-    d_glStateChanger->bindTexture(GL_TEXTURE_2D, old_tex);
+    if (d_texture != old_tex)
+        glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
