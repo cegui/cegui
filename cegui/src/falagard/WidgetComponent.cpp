@@ -235,7 +235,7 @@ namespace CEGUI
 
             Window* wnd = owner.getChild(d_name);
             wnd->setArea(window_area);
-            wnd->notifyScreenAreaChanged();
+            wnd->notifyScreenAreaChanged(true);
         }
         catch (UnknownObjectException&)
         {}

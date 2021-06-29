@@ -322,7 +322,7 @@ namespace CEGUI
             setClippedByParent(d_storedClipState);
             setAlpha(d_storedAlpha);
 
-            notifyScreenAreaChanged();
+            notifyScreenAreaChanged(true);
 
             // restore normal cursor
             updateActiveCursor();
@@ -382,7 +382,7 @@ namespace CEGUI
 
         d_dragging = true;
 
-        notifyScreenAreaChanged();
+        notifyScreenAreaChanged(true);
 
         // Now drag mode is set, change cursor as required
         updateActiveCursor();

@@ -347,9 +347,9 @@ void ItemListBase::onListContentsChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ItemListBase::onParentSized(ElementEventArgs& e)
+void ItemListBase::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
 {
-    Window::onParentSized(e);
+    Window::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
 
     if (d_autoResize)
         sizeToContent();

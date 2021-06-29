@@ -370,7 +370,8 @@ void GridLayoutContainer::layout()
     const float absHeight = childContentArea.getHeight();
 
     // Trigger recalculation of children pixel sizes
-    notifyChildrenOfSizeChange(false, true);
+    for (Element* child : d_children)
+        child->notifyParentContentAreaChanged(true, true);
 
     // First, we need to determine rowSizes and colSizes, this is
     // needed before any layouting work takes place

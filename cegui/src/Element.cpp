@@ -111,7 +111,7 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
 }
 
 //----------------------------------------------------------------------------//
-void Element::notifyScreenAreaChanged(bool recursive /* = true */)
+void Element::notifyScreenAreaChanged(bool recursive)
 {
     d_unclippedOuterRect.invalidateCache();
     d_unclippedInnerRect.invalidateCache();
@@ -119,9 +119,8 @@ void Element::notifyScreenAreaChanged(bool recursive /* = true */)
     // inform children that their screen area must be updated
     if (recursive)
     {
-        const size_t child_count = getChildCount();
-        for (size_t i = 0; i < child_count; ++i)
-            d_children[i]->notifyScreenAreaChanged();
+        for (Element* child : d_children)
+            child->notifyScreenAreaChanged(true);
     }
 }
 
@@ -972,12 +971,9 @@ void Element::addChild_impl(Element* element)
     // update area rects and content for the added element
     element->notifyScreenAreaChanged(true);
 
-    // correctly call parent sized notification if needed.
+    // handle effective change of parent size
     if (!old_parent || old_parent->getPixelSize() != getPixelSize())
-    {
-        ElementEventArgs args(this);
-        element->onParentSized(args);
-    }
+        element->notifyParentContentAreaChanged(true, true);
 }
 
 //----------------------------------------------------------------------------//
@@ -1074,30 +1070,15 @@ void Element::onSized(ElementEventArgs& e, bool adjust_size_to_content)
 void Element::onSized_impl(ElementEventArgs& e)
 {
     notifyScreenAreaChanged(false);
-    notifyChildrenOfSizeChange(true, true);
+
+    for (Element* child : d_children)
+        child->notifyParentContentAreaChanged(false, true);
 
     fireEvent(EventSized, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Element::notifyChildrenOfSizeChange(const bool non_client, const bool client)
-{
-    if (!non_client && !client)
-        return;
-
-    for (Element* child : d_children)
-    {
-        if ((non_client && child->isNonClient()) ||
-            (client && !child->isNonClient()))
-        {
-            ElementEventArgs args(this);
-            child->onParentSized(args);
-        }
-    }
-}
-
-//----------------------------------------------------------------------------//
-void Element::onParentSized(ElementEventArgs& e)
+void Element::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
 {
     d_unclippedOuterRect.invalidateCache();
     d_unclippedInnerRect.invalidateCache();
@@ -1106,19 +1087,20 @@ void Element::onParentSized(ElementEventArgs& e)
     d_pixelSize = calculatePixelSize();
     const bool sized = (d_pixelSize != oldSize) || isInnerRectSizeChanged();
 
-    const bool moved =
+    const bool moved = offsetChanged || (sizeChanged && (
         ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
-         (d_horizontalAlignment != HorizontalAlignment::Left) || (d_verticalAlignment != VerticalAlignment::Top));
+         (d_horizontalAlignment != HorizontalAlignment::Left) || (d_verticalAlignment != VerticalAlignment::Top))));
 
     fireAreaChangeEvents(moved, sized);
 
+    ElementEventArgs e(getParentElement());
     fireEvent(EventParentSized, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 void Element::onMoved(ElementEventArgs& e)
 {
-    notifyScreenAreaChanged();
+    notifyScreenAreaChanged(true);
 
     fireEvent(EventMoved, e, EventNamespace);
 }
@@ -1126,7 +1108,7 @@ void Element::onMoved(ElementEventArgs& e)
 //----------------------------------------------------------------------------//
 void Element::onHorizontalAlignmentChanged(ElementEventArgs& e)
 {
-    notifyScreenAreaChanged();
+    notifyScreenAreaChanged(true);
 
     fireEvent(EventHorizontalAlignmentChanged, e, EventNamespace);
 }
@@ -1134,7 +1116,7 @@ void Element::onHorizontalAlignmentChanged(ElementEventArgs& e)
 //----------------------------------------------------------------------------//
 void Element::onVerticalAlignmentChanged(ElementEventArgs& e)
 {
-    notifyScreenAreaChanged();
+    notifyScreenAreaChanged(true);
 
     fireEvent(EventVerticalAlignmentChanged, e, EventNamespace);
 }
@@ -1185,7 +1167,7 @@ void Element::setDefaultParagraphDirection(DefaultParagraphDirection defaultPara
     {
         d_defaultParagraphDirection = defaultParagraphDirection;
 
-        notifyScreenAreaChanged();
+        notifyScreenAreaChanged(true);
 
         ElementEventArgs eventArgs(this);
         fireEvent(EventDefaultParagraphDirectionChanged, eventArgs, EventNamespace);

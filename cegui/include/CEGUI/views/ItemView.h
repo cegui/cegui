@@ -405,7 +405,7 @@ protected:
     void onCursorPressHold(CursorInputEventArgs& e) override;
     void onCursorMove(CursorInputEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;
-    void onParentSized(ElementEventArgs& e) override;
+    void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged) override;
 
     virtual void onTargetSurfaceChanged(RenderingSurface* newSurface) override;
 
