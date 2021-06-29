@@ -757,9 +757,9 @@ void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onParentSized(ElementEventArgs& e)
+void ItemView::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
 {
-    Window::onParentSized(e);
+    Window::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
 
     resizeToContent();
 }

@@ -104,7 +104,7 @@ protected:
     void onChildAdded(ElementEventArgs& e) override;
     void onChildRemoved(ElementEventArgs& e) override;
     void cleanupChildren(void) override;
-    void onParentSized(ElementEventArgs& e) override;
+    void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged) override;
     void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
                       bool fireEvents, bool adjust_size) override;
     bool moveToFront_impl(bool wasClicked) override;

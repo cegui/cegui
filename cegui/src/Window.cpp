@@ -2151,7 +2151,14 @@ void Window::performChildWindowLayout(const bool nonclient_sized_hint,
     if (d_windowRenderer)
         d_windowRenderer->performChildWindowLayout();
 
-    notifyChildrenOfSizeChange(outer_changed, inner_changed);
+    if (outer_changed || inner_changed)
+    {
+        for (Element* child : d_children)
+        {
+            if (child->isNonClient() ? outer_changed : inner_changed)
+                child->notifyParentContentAreaChanged(true, true); // FIXME: calc flags!
+        }
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -2432,9 +2439,9 @@ void Window::onSized_impl(ElementEventArgs& e)
 {
     /*
      * Why are we not calling Element::onSized_impl?  It's because that function
-     * always calls the onParentSized notification for all children - we really
-     * want that to be done via performChildWindowLayout instead and we
-     * definitely don't want it done twice.
+     * always calls the notifyParentContentAreaChanged notification for all children
+     * - we really want that to be done via performChildWindowLayout instead and
+     * we definitely don't want it done twice.
      *
      * (The other option was to add an Element::performChildLayout function -
      * maybe we should consider that).
@@ -2708,9 +2715,9 @@ void Window::onDeactivated(ActivationEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onParentSized(ElementEventArgs& e)
+void Window::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
 {
-    Element::onParentSized(e);
+    Element::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
 
     // if we were not moved or sized, do child layout anyway!
     // URGENT FIXME
@@ -3226,7 +3233,7 @@ void Window::notifyClippingChanged(void)
 }
 
 //----------------------------------------------------------------------------//
-void Window::notifyScreenAreaChanged(bool recursive /* = true */)
+void Window::notifyScreenAreaChanged(bool recursive)
 {
     markCachedWindowRectsInvalid();
     Element::notifyScreenAreaChanged(recursive);
@@ -3429,7 +3436,7 @@ void Window::setRenderingSurface(RenderingSurface* surface)
     if (d_surface)
     {
         transferChildSurfaces();
-        notifyScreenAreaChanged();
+        notifyScreenAreaChanged(true);
     }
 }
 
@@ -3487,7 +3494,7 @@ void Window::setUsingAutoRenderingSurface(bool setting)
 
     // while the actual area on screen may not have changed, the arrangement of
     // surfaces and geometry did...
-    notifyScreenAreaChanged();
+    notifyScreenAreaChanged(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -3507,7 +3514,7 @@ void Window::setAutoRenderingSurfaceStencilEnabled(bool setting)
 
     // while the actual area on screen may not have changed, the arrangement of
     // surfaces and geometry did...
-    notifyScreenAreaChanged();
+    notifyScreenAreaChanged(true);
 }
 
 //----------------------------------------------------------------------------//

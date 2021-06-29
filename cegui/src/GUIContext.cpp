@@ -117,19 +117,12 @@ void GUIContext::setRootWindow(Window* new_root)
     if (d_rootWindow)
     {
         d_rootWindow->setGUIContext(this);
-        updateRootWindowAreaRects();
+        d_rootWindow->notifyParentContentAreaChanged(true, true);
     }
 
     markAsDirty();
 
     fireEvent(EventRootWindowChanged, args);
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::updateRootWindowAreaRects() const
-{
-    ElementEventArgs args(nullptr);
-    d_rootWindow->onParentSized(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -318,7 +311,7 @@ bool GUIContext::areaChangedHandler(const EventArgs&)
     d_cursor.notifyTargetSizeChanged(d_surfaceSize);
 
     if (d_rootWindow)
-        updateRootWindowAreaRects();
+        d_rootWindow->notifyParentContentAreaChanged(false, true);
 
     return true;
 }

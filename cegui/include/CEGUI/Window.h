@@ -2261,9 +2261,9 @@ public:
               rectangles sychronised.
             - assigned WindowRenderer given the opportunity to update child
               content areas as needed.
-            - All content is then potentially updated via the onParentSized
-              notification as required by changes in non-client and client area
-              rectangles.
+            - All content is then potentially updated via the
+              notifyParentContentAreaChanged notification as required by changes in
+              non-client and client area rectangles.
 
         The system may call this at various times (like when a window is resized
         for example), and it may be invoked directly where required.
@@ -2275,7 +2275,7 @@ public:
         Hint that the client area rectangle has changed size.
 
     \note
-        The hint parameters are essentially a way to force onParentSized
+        The hint parameters are essentially a way to force notifyParentContentAreaChanged
         notifications for a given type (client / nonclient) of child window.
         Setting a hint to false does not mean a notification will not happen,
         instead it means that the function is to do its best to determine
@@ -2497,7 +2497,21 @@ public:
           Window objects.
         - false to just process \e this Window.
     */
-    void notifyScreenAreaChanged(bool recursive = true) override;
+    void notifyScreenAreaChanged(bool recursive) override;
+
+    /*!
+    \brief
+        Notify called when this element's parent content area has changed. For
+        client elements it is an inner rect, and for non-clients it's outer rect.
+        If this element is the root / GUI Sheet element, this call will be made
+        when the display size changes.
+
+    \param offsetChanged
+        - true if content area has shifted, i.e. its left or top coord changed.
+    \param sizeChanged
+        - true if content area has changed its size.
+    */
+    void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged) override;
 
     /*!
     \brief
@@ -3162,19 +3176,6 @@ protected:
         window that has now become active, or NULL for none.
     */
     virtual void onDeactivated(ActivationEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when this window's parent window has been resized.  If
-        this window is the root / GUI Sheet window, this call will be made when
-        the display size changes.
-
-    \param e
-        WindowEventArgs object whose 'window' pointer field is set the the
-        window that caused the event; this is typically either this window's
-        parent window, or NULL to indicate the screen size has changed.
-    */
-    void onParentSized(ElementEventArgs& e) override;
 
     /*!
     \brief

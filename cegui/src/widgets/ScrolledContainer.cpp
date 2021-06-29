@@ -290,9 +290,9 @@ void ScrolledContainer::cleanupChildren(void)
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::onParentSized(ElementEventArgs& e)
+void ScrolledContainer::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
 {
-    Window::onParentSized(e);
+    Window::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
 
     // Autosized dimension has absolute size and therefore isn't resized with the
     // parent, but children are based on the viewport, so notify them anyway.

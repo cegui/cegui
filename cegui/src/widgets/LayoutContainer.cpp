@@ -242,10 +242,10 @@ UVector2 LayoutContainer::getBoundingSizeForWindow(Window* window) const
 }
 
 //----------------------------------------------------------------------------//
-void LayoutContainer::onParentSized(ElementEventArgs& e)
+void LayoutContainer::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
 {
-    // This is intentionally not Window::onParentSized.
-    Element::onParentSized(e);
+    // This is intentionally not Window::notifyParentContentAreaChanged.
+    Element::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
 
     // force update of child positioning.
     notifyScreenAreaChanged(true);

@@ -544,7 +544,7 @@ protected:
 	/*************************************************************************
 		Overridden Event handlers
 	*************************************************************************/
-    void onParentSized(ElementEventArgs& e) override;
+    void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged) override;
 	//virtual void    onChildRemoved(WindowEventArgs& e);
     //virtual void    onDestructionStarted(WindowEventArgs& e);
 

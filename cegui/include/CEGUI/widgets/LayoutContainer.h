@@ -185,7 +185,7 @@ protected:
     virtual UVector2 getBoundingSizeForWindow(Window* window) const;
 
     // overridden from parent class
-    void onParentSized(ElementEventArgs& e) override;
+    void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged) override;
     void onChildOrderChanged(ElementEventArgs& e) override;
 
     /*************************************************************************

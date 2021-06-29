@@ -1170,7 +1170,21 @@ public:
           Element objects.
         - false to just process \e this Element.
     */
-    virtual void notifyScreenAreaChanged(bool recursive = true);
+    virtual void notifyScreenAreaChanged(bool recursive);
+
+    /*!
+    \brief
+        Notify called when this element's parent content area has changed. For
+        client elements it is an inner rect, and for non-clients it's outer rect.
+        If this element is the root / GUI Sheet element, this call will be made
+        when the display size changes.
+
+    \param offsetChanged
+        - true if content area has shifted, i.e. its left or top coord changed.
+    \param sizeChanged
+        - true if content area has changed its size.
+    */
+    virtual void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged);
 
     /*!
     \brief Return the size of the root container (such as screen size).
@@ -1635,8 +1649,7 @@ protected:
     */
     void fireAreaChangeEvents(const bool moved, const bool sized, bool adjust_size_to_content=true);
 
-    void notifyChildrenOfSizeChange(const bool non_client,
-                                    const bool client);
+    void notifyChildrenOfSizeChange(const bool non_client, const bool client);
 
     /*************************************************************************
         Event trigger methods
@@ -1666,19 +1679,6 @@ protected:
         that triggered the event.
     */
     virtual void onSized_impl(ElementEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when this element's parent element has been resized.  If
-        this element is the root / GUI Sheet element, this call will be made when
-        the display size changes.
-
-    \param e
-        ElementEventArgs object whose 'element' pointer field is set the the
-        element that caused the event; this is typically either this element's
-        parent element, or NULL to indicate the screen size has changed.
-    */
-    virtual void onParentSized(ElementEventArgs& e);
 
     /*!
     \brief
