@@ -3896,12 +3896,6 @@ protected:
 
 
 private:
-    /*************************************************************************
-        May not copy or assign Window objects
-    *************************************************************************/
-    Window(const Window&): NamedElement() {}
-    Window& operator=(const Window&) {return *this;}
-
     //! Not intended for public use, only used as a "Font" property getter
     const Font* property_getFont() const;
     //! Not intended for public use, only used as a "Cursor" property getter
