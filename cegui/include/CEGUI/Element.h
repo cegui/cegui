@@ -96,12 +96,6 @@ public:
      * ElementEventArgs::element set to the Element whose size was changed.
      */
     static const String EventSized;
-    /** Event fired when the parent of this Element has been re-sized.
-     * Handlers are passed a const ElementEventArgs reference with
-     * ElementEventArgs::element pointing to the <em>parent element</em> that
-     * was resized, not the element whose parent was resized.
-     */
-    static const String EventParentSized;
     /** Event fired when the Element position has changed.
      * Handlers are passed a const ElementEventArgs reference with
      * ElementEventArgs::element set to the Element whose position was changed.
@@ -1636,20 +1630,6 @@ protected:
     virtual Rectf getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const;
     //! Default implementation of function to return Element's inner rect area.
     virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
-
-    /*!
-    \brief
-        Helper to fire events based on changes to area rect.
-    
-    \param adjust_size_to_content
-        If the size actually changes, should we call "AdjustSizeToContent"?
-        Normally, this should be true. However, if this function is called from
-        inside "AdjustSizeToContent", you must set this to false to prevent
-        infinite recursion.  
-    */
-    void fireAreaChangeEvents(const bool moved, const bool sized, bool adjust_size_to_content=true);
-
-    void notifyChildrenOfSizeChange(const bool non_client, const bool client);
 
     /*************************************************************************
         Event trigger methods

@@ -54,7 +54,6 @@ namespace CEGUI
 const String Element::EventNamespace("Element");
 
 const String Element::EventSized("Sized");
-const String Element::EventParentSized("ParentSized");
 const String Element::EventMoved("Moved");
 const String Element::EventHorizontalAlignmentChanged("HorizontalAlignmentChanged");
 const String Element::EventVerticalAlignmentChanged("VerticalAlignmentChanged");
@@ -122,6 +121,27 @@ void Element::notifyScreenAreaChanged(bool recursive)
         for (Element* child : d_children)
             child->notifyScreenAreaChanged(true);
     }
+}
+
+//----------------------------------------------------------------------------//
+void Element::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
+{
+    d_unclippedOuterRect.invalidateCache();
+    d_unclippedInnerRect.invalidateCache();
+
+    const Sizef oldSize(d_pixelSize);
+    d_pixelSize = calculatePixelSize();
+    const bool sized = (d_pixelSize != oldSize) || isInnerRectSizeChanged();
+
+    const bool moved = offsetChanged || (sizeChanged && (
+        ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
+            (d_horizontalAlignment != HorizontalAlignment::Left) || (d_verticalAlignment != VerticalAlignment::Top))));
+
+    if (moved)
+        onMoved(ElementEventArgs(this));
+
+    if (sized)
+        onSized(ElementEventArgs(this), true);
 }
 
 //----------------------------------------------------------------------------//
@@ -928,22 +948,12 @@ void Element::setArea_impl(const UVector2& pos, const USize& size, bool topLeftS
         d_area.setPosition(pos);
 
     if (fireEvents)
-        fireAreaChangeEvents(moved, sized, adjust_size_to_content);
-}
-
-//----------------------------------------------------------------------------//
-void Element::fireAreaChangeEvents(const bool moved, const bool sized, bool adjust_size_to_content)
-{
-    if (moved)
     {
-        ElementEventArgs args(this);
-        onMoved(args);
-    }
+        if (moved)
+            onMoved(ElementEventArgs(this));
 
-    if (sized)
-    {
-        ElementEventArgs args(this);
-        onSized(args, adjust_size_to_content);
+        if (sized)
+            onSized(ElementEventArgs(this), adjust_size_to_content);
     }
 }
 
@@ -1075,26 +1085,6 @@ void Element::onSized_impl(ElementEventArgs& e)
         child->notifyParentContentAreaChanged(false, true);
 
     fireEvent(EventSized, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-void Element::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
-{
-    d_unclippedOuterRect.invalidateCache();
-    d_unclippedInnerRect.invalidateCache();
-
-    const Sizef oldSize(d_pixelSize);
-    d_pixelSize = calculatePixelSize();
-    const bool sized = (d_pixelSize != oldSize) || isInnerRectSizeChanged();
-
-    const bool moved = offsetChanged || (sizeChanged && (
-        ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
-         (d_horizontalAlignment != HorizontalAlignment::Left) || (d_verticalAlignment != VerticalAlignment::Top))));
-
-    fireAreaChangeEvents(moved, sized);
-
-    ElementEventArgs e(getParentElement());
-    fireEvent(EventParentSized, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
