@@ -83,7 +83,7 @@ Element::Element():
     d_aspectRatio(1.0 / 1.0),
     d_pixelAligned(true),
     d_pixelSize(0.0f, 0.0f),
-    d_rotation(1, 0, 0, 0), // <-- IDENTITY
+    d_rotation(1.f, 0.f, 0.f, 0.f), // <-- IDENTITY
     d_pivot(UVector3(cegui_reldim(1./2), cegui_reldim(1./2), cegui_reldim(1./2))),
 
     d_unclippedOuterRect(this, &Element::getUnclippedOuterRect_impl),
@@ -94,13 +94,6 @@ Element::Element():
 
 //----------------------------------------------------------------------------//
 Element::~Element()
-{}
-
-//----------------------------------------------------------------------------//
-Element::Element(const Element& other):
-    EventSet(other),
-    d_unclippedOuterRect(this, &Element::getUnclippedOuterRect_impl),
-    d_unclippedInnerRect(this, &Element::getUnclippedInnerRect_impl)
 {}
 
 //----------------------------------------------------------------------------//

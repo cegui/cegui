@@ -253,6 +253,9 @@ public:
     */
     Element();
 
+    Element(const Element&) = delete;
+    Element& operator=(const Element&) = delete;
+
     /*!
     \brief Destructor
     */
@@ -1814,13 +1817,6 @@ protected:
     \see DefaultParagraphDirection
     */
     DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
-private:
-    /*************************************************************************
-        May not copy or assign Element objects
-    *************************************************************************/
-    Element(const Element&);
-
-    Element& operator=(const Element&) {return *this;}
 };
 
 } // End of  CEGUI namespace section
