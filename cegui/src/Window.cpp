@@ -342,48 +342,6 @@ Window::~Window(void)
 }
 
 //----------------------------------------------------------------------------//
-const String& Window::getType(void) const
-{
-    return d_falagardType.empty() ? d_type : d_falagardType;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isDisabled() const
-{
-    return !d_enabled;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isEffectiveDisabled() const
-{
-    const bool parent_disabled = !d_parent ? false : getParent()->isEffectiveDisabled();
-
-    return !d_enabled || parent_disabled;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isVisible() const
-{
-    return d_visible;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isEffectiveVisible() const
-{
-    const bool parent_visible = !d_parent ? true : getParent()->isEffectiveVisible();
-
-    return d_visible && parent_visible;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isActive(void) const
-{
-    const bool parent_active = !d_parent ? true : getParent()->isActive();
-
-    return d_active && parent_active;
-}
-
-//----------------------------------------------------------------------------//
 bool Window::isChild(unsigned int ID) const
 {
     const size_t child_count = getChildCount();
@@ -744,13 +702,13 @@ void Window::setVisible(bool setting)
 //----------------------------------------------------------------------------//
 void Window::setActive(bool setting)
 {
-  if (isActive() == setting)
-    return;
+    if (isActive() == setting)
+        return;
 
-  if (setting)
-    activate();
-  else
-    deactivate();
+    if (setting)
+        activate();
+    else
+        deactivate();
 }
 
 //----------------------------------------------------------------------------//
@@ -1060,12 +1018,6 @@ bool Window::isInFront(const Window& wnd) const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isBehind(const Window& wnd) const
-{
-    return !isInFront(wnd);
-}
-
-//----------------------------------------------------------------------------//
 size_t Window::getZIndex() const
 {
     if (!d_parent)
@@ -1277,11 +1229,6 @@ void Window::draw(std::uint32_t drawModeMask)
     // do final rendering for surface if it's ours
     if (ctx.owner == this && allowDrawing)
         ctx.surface->draw(drawModeMask);
-}
-
-bool Window::checkIfDrawMaskAllowsDrawing(std::uint32_t drawModeMask) const
-{
-    return (getDrawModeMask() & drawModeMask) != 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -1677,33 +1624,9 @@ void Window::addWindowProperties(void)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isZOrderingEnabled(void) const
-{
-    return d_zOrderingEnabled;
-}
-
-//----------------------------------------------------------------------------//
 void Window::setZOrderingEnabled(bool setting)
 {
     d_zOrderingEnabled = setting;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isCursorAutoRepeatEnabled(void) const
-{
-    return d_autoRepeat;
-}
-
-//----------------------------------------------------------------------------//
-float Window::getAutoRepeatDelay(void) const
-{
-    return d_repeatDelay;
-}
-
-//----------------------------------------------------------------------------//
-float Window::getAutoRepeatRate(void) const
-{
-    return d_repeatRate;
 }
 
 //----------------------------------------------------------------------------//
@@ -1834,12 +1757,6 @@ bool Window::performRedo()
 }
 
 //----------------------------------------------------------------------------//
-bool Window::distributesCapturedInputs(void) const
-{
-    return d_distCapturedInputs;
-}
-
-//----------------------------------------------------------------------------//
 void Window::setDistributesCapturedInputs(bool setting)
 {
     d_distCapturedInputs = setting;
@@ -1939,12 +1856,6 @@ void Window::destroy(void)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isUsingDefaultTooltip(void) const
-{
-    return d_customTip == nullptr;
-}
-
-//----------------------------------------------------------------------------//
 Tooltip* Window::getTooltip(void) const
 {
     if (!isUsingDefaultTooltip())
@@ -2014,24 +1925,12 @@ void Window::setTooltipText(const String& tip)
 }
 
 //----------------------------------------------------------------------------//
-const String& Window::getTooltipText(void) const
-{
-    return d_tooltipText;
-}
-
-//----------------------------------------------------------------------------//
 const String& Window::getTooltipTextIncludingInheritance(void) const
 {
     if (d_inheritsTipText && d_parent && d_tooltipText.empty())
         return getParent()->getTooltipText();
     else
         return d_tooltipText;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::inheritsTooltipText(void) const
-{
-    return d_inheritsTipText;
 }
 
 //----------------------------------------------------------------------------//
@@ -2066,12 +1965,6 @@ void Window::markCachedWindowRectsInvalid()
     d_outerRectClipperValid = false;
     d_innerRectClipperValid = false;
     d_hitTestRectValid = false;
-}
-
-//----------------------------------------------------------------------------//
-const String& Window::getLookNFeel() const
-{
-    return d_lookName;
 }
 
 //----------------------------------------------------------------------------//
@@ -3027,12 +2920,6 @@ void Window::setWindowRenderer(const String& name)
 }
 
 //----------------------------------------------------------------------------//
-WindowRenderer* Window::getWindowRenderer(void) const
-{
-    return d_windowRenderer;
-}
-
-//----------------------------------------------------------------------------//
 void Window::onWindowRendererAttached(WindowEventArgs& e)
 {
     if (!validateWindowRenderer(d_windowRenderer))
@@ -3273,12 +3160,6 @@ void Window::updateGeometryRenderSettings()
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isDragDropTarget() const
-{
-    return d_dragDropTarget;
-}
-
-//----------------------------------------------------------------------------//
 void Window::setDragDropTarget(bool setting)
 {
     d_dragDropTarget = setting;
@@ -3362,11 +3243,6 @@ void Window::appendText(const String& text)
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*>& Window::getGeometryBuffers()
-{
-    return d_geometryBuffers;
-}
-
 void Window::appendGeometryBuffers(std::vector<GeometryBuffer*>& geomBuffers)
 {
     d_geometryBuffers.insert(d_geometryBuffers.end(), geomBuffers.begin(),
@@ -3403,12 +3279,6 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
         ctx.offset = glm::vec2(0, 0);
         ctx.queue = RenderQueueID::Base;
     }
-}
-
-//----------------------------------------------------------------------------//
-RenderingSurface* Window::getRenderingSurface() const
-{
-    return d_surface;
 }
 
 //----------------------------------------------------------------------------//
@@ -3463,18 +3333,6 @@ Window* Window::getRootWindow()
 {
     return const_cast<Window*>(
         static_cast<const Window*>(this)->getRootWindow());
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isUsingAutoRenderingSurface() const
-{
-    return d_autoRenderingWindow;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isAutoRenderingSurfaceStencilEnabled() const
-{
-    return d_autoRenderingSurfaceStencilEnabled;
 }
 
 //----------------------------------------------------------------------------//
@@ -3670,12 +3528,6 @@ const RenderedString& Window::getRenderedString() const
 }
 
 //----------------------------------------------------------------------------//
-RenderedStringParser* Window::getCustomRenderedStringParser() const
-{
-    return d_customStringParser;
-}
-
-//----------------------------------------------------------------------------//
 void Window::setCustomRenderedStringParser(RenderedStringParser* parser)
 {
     d_customStringParser = parser;
@@ -3758,12 +3610,6 @@ const String& Window::getTextVisual() const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isTextParsingEnabled() const
-{
-    return d_textParsingEnabled;
-}
-
-//----------------------------------------------------------------------------//
 void Window::setTextParsingEnabled(const bool setting)
 {
     d_textParsingEnabled = setting;
@@ -3780,12 +3626,6 @@ void Window::setMargin(const UBox& margin)
 
     WindowEventArgs args(this);
     onMarginChanged(args);
-}
-
-//----------------------------------------------------------------------------//
-const UBox& Window::getMargin() const
-{
-    return d_margin;
 }
 
 //----------------------------------------------------------------------------//
@@ -3807,21 +3647,9 @@ void Window::setUpdateMode(const WindowUpdateMode mode)
 }
 
 //----------------------------------------------------------------------------//
-WindowUpdateMode Window::getUpdateMode() const
-{
-    return d_updateMode;
-}
-
-//----------------------------------------------------------------------------//
 void Window::setCursorInputPropagationEnabled(const bool enabled)
 {
     d_propagatePointerInputs = enabled;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isCursorInputPropagationEnabled() const
-{
-    return d_propagatePointerInputs;
 }
 
 //----------------------------------------------------------------------------//
@@ -4164,18 +3992,6 @@ bool Window::handleFontRenderSizeChange(const EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isPointerContainedInArea() const
-{
-    return d_containsPointer;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isFocused() const
-{
-    return d_isFocused;
-}
-
-//----------------------------------------------------------------------------//
 void Window::focus()
 {
     if (isDisabled())
@@ -4200,7 +4016,7 @@ void Window::unfocus()
 }
 
 //----------------------------------------------------------------------------//
-bool Window::canFocus()
+bool Window::canFocus() const
 {
     // by default all widgets can be focused if they are not disabled
     return !isDisabled();
@@ -4250,12 +4066,6 @@ void Window::setDrawModeMask(std::uint32_t drawModeMask)
 
     d_drawModeMask = drawModeMask;
     getGUIContext().markAsDirty();
-}
-
-//----------------------------------------------------------------------------//
-std::uint32_t Window::getDrawModeMask() const
-{
-    return d_drawModeMask;
 }
 
 //----------------------------------------------------------------------------//
