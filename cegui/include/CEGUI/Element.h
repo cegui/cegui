@@ -809,6 +809,9 @@ public:
     \exception InvalidRequestException
         thrown if Element \a element is an ancestor of this Element, to prevent
         cyclic Element structures.
+
+    \see
+        Element::removeChild
     */
     void addChild(Element* element);
 
