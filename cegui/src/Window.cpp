@@ -3241,26 +3241,33 @@ void Window::updateGeometryRenderSettings()
     RenderingContext ctx;
     getRenderingContext(ctx);
 
-    // move the underlying RenderingWindow if we're using such a thing
+    const auto& pos = getUnclippedOuterRect().get().getPosition();
+
     if (ctx.owner == this && ctx.surface->isRenderingWindow())
     {
-        static_cast<RenderingWindow*>(ctx.surface)->
-            setPosition(getUnclippedOuterRect().get().getPosition());
-        updatePivot();
+        RenderingWindow* const rw = static_cast<RenderingWindow*>(ctx.surface);
 
-        d_translation = glm::vec3(0, 0, 0);
+        // move the underlying RenderingWindow if we're using such a thing
+        rw->setPosition(pos);
+        updatePivot();
+        d_translation = glm::vec3(0.0f, 0.0f, 0.0f);
+
+        rw->setClippingRegion((d_clippedByParent && d_parent)?
+            getParent()->getClipRect(d_nonClient) :
+            Rectf(glm::vec2(0, 0), getRootContainerSize()));
+
+        d_clippingRegion = Rectf(glm::vec2(0, 0), d_pixelSize);
     }
-    // if we're not texture backed, update geometry position.
     else
     {
+        // if we're not texture backed, update geometry position.
         // position is the offset of the window on the dest surface.
-        const Rectf ucrect(getUnclippedOuterRect().get());
+        d_translation = glm::vec3(pos - ctx.offset, 0.0f);
 
-        d_translation = glm::vec3(ucrect.d_min.x - ctx.offset.x,
-                                  ucrect.d_min.y - ctx.offset.y,
-                                  0.0f);
+        d_clippingRegion = getOuterRectClipper();
+        if (d_clippingRegion.getWidth() != 0.0f && d_clippingRegion.getHeight() != 0.0f)
+            d_clippingRegion.offset(-ctx.offset);
     }
-    initialiseClippers(ctx);
 
     updateGeometryBuffersTranslationAndClipping();
 }
@@ -3593,37 +3600,6 @@ void Window::transferChildSurfaces()
                 *static_cast<RenderingWindow*>(childWnd->d_surface));
         else
             childWnd->transferChildSurfaces();
-    }
-}
-
-//----------------------------------------------------------------------------//
-void Window::initialiseClippers(const RenderingContext& ctx)
-{
-    if (!ctx.surface)
-        return;
-
-    if (ctx.surface->isRenderingWindow() && ctx.owner == this)
-    {
-        RenderingWindow* const rendering_window =
-            static_cast<RenderingWindow*>(ctx.surface);
-
-        if (d_clippedByParent && d_parent)
-            rendering_window->setClippingRegion(
-                getParent()->getClipRect(d_nonClient));
-        else
-            rendering_window->setClippingRegion(
-                Rectf(glm::vec2(0, 0), getRootContainerSize()));
-
-        d_clippingRegion = Rectf(glm::vec2(0, 0), d_pixelSize);
-    }
-    else
-    {
-        Rectf geo_clip(getOuterRectClipper());
-
-        if (geo_clip.getWidth() != 0.0f && geo_clip.getHeight() != 0.0f)
-            geo_clip.offset(-ctx.offset);
-
-        d_clippingRegion = Rectf(geo_clip);
     }
 }
 
