@@ -455,45 +455,42 @@ void ItemListBase::addItemListBaseProperties(void)
 void ItemListBase::addChild_impl(Element* element)
 {
     ItemEntry* item = dynamic_cast<ItemEntry*>(element);
-    
-    // if this is an ItemEntry we add it like one, but only if it is not already in the list!
-    if (item)
-    {
-        // add to the pane if we have one
-        if (d_pane != this)
-        {
-            d_pane->addChild(item);
-        }
-        // add item directly to us
-        else
-        {
-            Window::addChild_impl(item);
-        }
-
-	    if (item->d_ownerList != this)
-	    {
-	        // perform normal addItem
-	        // if sorting is enabled, re-sort the list
-            if (d_sortEnabled)
-            {
-                d_listItems.insert(
-                    std::upper_bound(d_listItems.begin(), d_listItems.end(), item, getRealSortCallback()),
-                    item);
-            }
-            // just stick it on the end.
-            else
-            {
-                d_listItems.push_back(item);
-            }
-	        item->d_ownerList = this;
-		    handleUpdatedItemData();
-	    }
-	}
-	// otherwise it's base class processing
-    else
+    if (!item)
     {
         Window::addChild_impl(element);
+        return;
     }
+    
+    // if this is an ItemEntry we add it like one, but only if it is not already in the list!
+    // add to the pane if we have one
+    if (d_pane != this)
+    {
+        d_pane->addChild(item);
+    }
+    // add item directly to us
+    else
+    {
+        Window::addChild_impl(item);
+    }
+
+	if (item->d_ownerList != this)
+	{
+	    // perform normal addItem
+	    // if sorting is enabled, re-sort the list
+        if (d_sortEnabled)
+        {
+            d_listItems.insert(
+                std::upper_bound(d_listItems.begin(), d_listItems.end(), item, getRealSortCallback()),
+                item);
+        }
+        // just stick it on the end.
+        else
+        {
+            d_listItems.push_back(item);
+        }
+	    item->d_ownerList = this;
+		handleUpdatedItemData();
+	}
 }
 
 

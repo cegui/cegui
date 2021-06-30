@@ -43,7 +43,7 @@
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
-#   pragma warning(disable : 4355)
+#   pragma warning(disable : 4355) // 'this' is used to init unclipped rects
 #endif
 
 
@@ -100,6 +100,43 @@ Element::~Element()
 void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content)
 {
     setArea_impl(pos, size, false, adjust_size_to_content);
+}
+
+//----------------------------------------------------------------------------//
+void Element::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
+    bool adjust_size_to_content)
+{
+    // we make sure the screen areas are recached when this is called as we need
+    // it in most cases
+    d_unclippedOuterRect.invalidateCache();
+    d_unclippedInnerRect.invalidateCache();
+
+    // save original size so we can work out how to behave later on
+    const Sizef oldSize(d_pixelSize);
+
+    d_area.setSize(size);
+    d_pixelSize = calculatePixelSize();
+
+    // have we resized the element?
+    const bool sized = (d_pixelSize != oldSize);
+
+    // If this is a top/left edge sizing op, only modify position if the size actually
+    // changed. If it is not a sizing op, then position may always change.
+    const bool moved = (!topLeftSizing || sized) && pos != d_area.d_min;
+
+    if (moved)
+    {
+        d_area.setPosition(pos);
+        onMoved(ElementEventArgs(this));
+    }
+
+    if (sized)
+    {
+        onSized(ElementEventArgs(this));
+
+        if (adjust_size_to_content)
+            adjustSizeToContent();
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -548,8 +585,7 @@ Sizef Element::getSizeAdjustedToContent_bisection(const USize& size_func, float 
 }
 
 //----------------------------------------------------------------------------//
-bool Element::contentFitsForSpecifiedElementSize(const Sizef& element_size)
-  const
+bool Element::contentFitsForSpecifiedElementSize(const Sizef& element_size) const
 {
     return contentFitsForSpecifiedElementSize_tryByResizing(element_size);
 }
@@ -560,7 +596,7 @@ bool Element::contentFitsForSpecifiedElementSize_tryByResizing(const Sizef& elem
     const USize current_size(getSize());
     const_cast<Element*>(this)->setSize(
       USize(UDim(0.f, element_size.d_width), UDim(0.f, element_size.d_height)), false);
-    bool ret(contentFits());
+    const bool ret = contentFits();
     const_cast<Element*>(this)->setSize(current_size, false);
     return ret;
 }
@@ -574,6 +610,9 @@ bool Element::contentFits() const
 //----------------------------------------------------------------------------//
 void Element::setRotation(const glm::quat& rotation)
 {
+    if (d_rotation == rotation)
+        return;
+
     d_rotation = rotation;
 
     ElementEventArgs args(this);
@@ -581,14 +620,11 @@ void Element::setRotation(const glm::quat& rotation)
 }
 
 //----------------------------------------------------------------------------//
-UVector3 Element::getPivot() const
-{
-    return d_pivot;
-}
-
-//----------------------------------------------------------------------------//
 void Element::setPivot(const UVector3& pivot)
 {
+    if (d_pivot == pivot)
+        return;
+
     d_pivot = pivot;
 
     ElementEventArgs args(this);
@@ -730,22 +766,15 @@ bool Element::isChild(const Element* element) const
 //----------------------------------------------------------------------------//
 bool Element::isAncestor(const Element* element) const
 {
-    if (!d_parent)
-    {
-        // no parent, no ancestor, nothing can be our ancestor
-        return false;
-    }
-
-    return d_parent == element || d_parent->isAncestor(element);
+    // no parent - no ancestor at all
+    return d_parent && (d_parent == element || d_parent->isAncestor(element));
 }
 
 //----------------------------------------------------------------------------//
 void Element::setNonClient(const bool setting)
 {
     if (setting == d_nonClient)
-    {
         return;
-    }
 
     d_nonClient = setting;
 
@@ -778,24 +807,6 @@ void Element::onIsSizeAdjustedToContentChanged(ElementEventArgs& e)
 {
     adjustSizeToContent();
     fireEvent(EventIsSizeAdjustedToContentChanged, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-bool Element::isWidthAdjustedToContent() const
-{
-    return d_isWidthAdjustedToContent;
-}
-
-//----------------------------------------------------------------------------//
-bool Element::isHeightAdjustedToContent() const
-{
-    return d_isHeightAdjustedToContent;
-}
-
-//----------------------------------------------------------------------------//
-bool Element::isSizeAdjustedToContent() const
-{
-    return isWidthAdjustedToContent() || isHeightAdjustedToContent();
 }
 
 //----------------------------------------------------------------------------//
@@ -918,44 +929,6 @@ void Element::addElementProperties()
 }
 
 //----------------------------------------------------------------------------//
-void Element::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
-                           bool adjust_size_to_content)
-{
-    // we make sure the screen areas are recached when this is called as we need
-    // it in most cases
-    d_unclippedOuterRect.invalidateCache();
-    d_unclippedInnerRect.invalidateCache();
-
-    // save original size so we can work out how to behave later on
-    const Sizef oldSize(d_pixelSize);
-
-    d_area.setSize(size);
-    d_pixelSize = calculatePixelSize();
-
-    // have we resized the element?
-    const bool sized = (d_pixelSize != oldSize);
-
-    // If this is a top/left edge sizing op, only modify position if the size
-    // actually changed.  If it is not a sizing op, then position may always
-    // change.
-    const bool moved = (!topLeftSizing || sized) && pos != d_area.d_min;
-
-    if (moved)
-        d_area.setPosition(pos);
-
-    if (moved)
-        onMoved(ElementEventArgs(this));
-
-    if (sized)
-    {
-        onSized(ElementEventArgs(this));
-
-        if (adjust_size_to_content)
-            adjustSizeToContent();
-    }
-}
-
-//----------------------------------------------------------------------------//
 void Element::setParent(Element* parent)
 {
     d_parent = parent;
@@ -1013,7 +986,7 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
     Rectf parent_rect;
     if (parent)
     {
-        const CachedRectf& base = parent->getChildContentArea(isNonClient());
+        const CachedRectf& base = parent->getChildContentArea(d_nonClient);
         parent_rect = skipAllPixelAlignment ? base.getFresh(true) : base.get();
     }
     else
@@ -1131,12 +1104,6 @@ void Element::onNonClientChanged(ElementEventArgs& e)
     setArea(getArea());
 
     fireEvent(EventNonClientChanged, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-DefaultParagraphDirection Element::getDefaultParagraphDirection() const
-{
-    return d_defaultParagraphDirection;
 }
 
 //----------------------------------------------------------------------------//
