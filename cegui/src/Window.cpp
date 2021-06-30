@@ -1171,8 +1171,7 @@ void Window::invalidate(const bool recursive)
 {
     invalidate_impl(recursive);
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
         context->markAsDirty();
 }
 
@@ -1187,9 +1186,8 @@ void Window::invalidate_impl(const bool recursive)
 
     if (recursive)
     {
-        const size_t child_count = getChildCount();
-        for (size_t i = 0; i < child_count; ++i)
-            getChildAtIndex(i)->invalidate_impl(true);
+        for (Element* child : d_children)
+            static_cast<Window*>(child)->invalidate_impl(true);
     }
 }
 
