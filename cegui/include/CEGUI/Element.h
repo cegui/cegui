@@ -936,7 +936,11 @@ public:
           parent, etc) of this Element.
         - false if \a element is not an ancestor of this element.
     */
-    bool isAncestor(const Element* element) const;
+    inline bool isAncestor(const Element* element) const
+    {
+        // no parent - no ancestor at all
+        return d_parent && (d_parent == element || d_parent->isAncestor(element));
+    }
 
     /*!
     \brief Set whether the Element is non-client.

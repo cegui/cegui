@@ -27,21 +27,15 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/Window.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/WindowManager.h"
-#include "CEGUI/System.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/ImageManager.h"
-#include "CEGUI/Cursor.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/WindowRendererManager.h"
 #include "CEGUI/WindowFactoryManager.h"
 #include "CEGUI/widgets/Tooltip.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
-#include "CEGUI/falagard/WidgetLookFeel.h"
-#include "CEGUI/falagard/WidgetComponent.h"
 #include "CEGUI/GeometryBuffer.h"
-#include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/RenderTarget.h"
@@ -56,15 +50,7 @@
     #include "CEGUI/RaqmTextData.h"
 #endif
 
-#include <algorithm>
-#include <iterator>
-#include <stdio.h>
 #include <queue>
-
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4355)
-#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -315,16 +301,17 @@ Window::Window(const String& type, const String& name):
 
     d_containsPointer(false),
     d_isFocused(false),
-    d_fontRenderSizeChangeConnection(
-        GlobalEventSet::getSingleton().subscribeEvent(
-            "Font/RenderSizeChanged",
-            Event::Subscriber(&Window::handleFontRenderSizeChange, this))),
 
     d_drawModeMask(DrawModeFlagWindowRegular)
 {
 #ifdef CEGUI_USE_RAQM
     d_raqmTextData = new RaqmTextData();
 #endif
+
+    d_fontRenderSizeChangeConnection =
+        GlobalEventSet::getSingleton().subscribeEvent(
+            "Font/RenderSizeChanged",
+            Event::Subscriber(&Window::handleFontRenderSizeChange, this));
 
     // add properties
     addWindowProperties();
@@ -3982,10 +3969,7 @@ void Window::banPropertiesForAutoWindow()
 //----------------------------------------------------------------------------//
 bool Window::handleFontRenderSizeChange(const EventArgs& args)
 {
-    if (!d_windowRenderer)
-        return false;
-
-    return d_windowRenderer->handleFontRenderSizeChange(
+    return d_windowRenderer && d_windowRenderer->handleFontRenderSizeChange(
         static_cast<const FontEventArgs&>(args).font);
 }
 
@@ -4067,9 +4051,5 @@ void Window::setDrawModeMask(std::uint32_t drawModeMask)
 }
 
 //----------------------------------------------------------------------------//
-
-#if defined(_MSC_VER)
-#   pragma warning(pop)
-#endif
 
 } // End of  CEGUI namespace section

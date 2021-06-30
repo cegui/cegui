@@ -34,12 +34,6 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/USize.h"
-#include "CEGUI/Sizef.h"
-#include "CEGUI/URect.h"
-#include "CEGUI/DefaultParagraphDirection.h"
-
-#include <algorithm>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -93,8 +87,7 @@ Element::Element():
 }
 
 //----------------------------------------------------------------------------//
-Element::~Element()
-{}
+Element::~Element() = default;
 
 //----------------------------------------------------------------------------//
 void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content)
@@ -766,13 +759,6 @@ size_t Element::getChildIndex(const Element* child) const
 bool Element::isChild(const Element* element) const
 {
     return std::find(d_children.begin(), d_children.end(), element) != d_children.end();
-}
-
-//----------------------------------------------------------------------------//
-bool Element::isAncestor(const Element* element) const
-{
-    // no parent - no ancestor at all
-    return d_parent && (d_parent == element || d_parent->isAncestor(element));
 }
 
 //----------------------------------------------------------------------------//
