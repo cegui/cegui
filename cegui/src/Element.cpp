@@ -106,6 +106,9 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
 void Element::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
     bool adjust_size_to_content)
 {
+    d_area.setSize(size);
+
+    //???do only if moved or sized?
     // we make sure the screen areas are recached when this is called as we need
     // it in most cases
     d_unclippedOuterRect.invalidateCache();
@@ -113,8 +116,6 @@ void Element::setArea_impl(const UVector2& pos, const USize& size, bool topLeftS
 
     // save original size so we can work out how to behave later on
     const Sizef oldSize(d_pixelSize);
-
-    d_area.setSize(size);
     d_pixelSize = calculatePixelSize();
 
     // have we resized the element?
