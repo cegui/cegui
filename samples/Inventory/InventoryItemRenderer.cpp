@@ -44,6 +44,9 @@ InventoryItemRenderer::InventoryItemRenderer(const String& type) :
 //------------------------------------------------------------------------------//
 void InventoryItemRenderer::createRenderGeometry()
 {
+    if (!d_window)
+        return;
+
     const WidgetLookFeel& wlf = getLookNFeel();
 
     InventoryItem* item = dynamic_cast<InventoryItem*>(d_window);
@@ -51,8 +54,7 @@ void InventoryItemRenderer::createRenderGeometry()
     if (!item)
         // render basic imagery
         wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled").render(*d_window);
-
-    if (item->isBeingDragged())
+    else if (item->isBeingDragged())
         wlf.getStateImagery(item->currentDropTargetIsValid() ? "DraggingValidTarget" : "DraggingInvalidTarget").render(*item);
     else
         wlf.getStateImagery("Normal").render(*item);
