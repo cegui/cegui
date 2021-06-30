@@ -776,7 +776,10 @@ public:
     \see Element::setPivot
     \see Element::getRotation
     */
-    UVector3 getPivot() const;
+    inline UVector3 getPivot() const
+    {
+        return d_pivot;
+    }
 
     /*!
     \brief
@@ -1012,7 +1015,10 @@ public:
     \see onIsSizeAdjustedToContentChanged
     \see onSized
     */
-    bool isWidthAdjustedToContent() const;
+    inline bool isWidthAdjustedToContent() const
+    {
+        return d_isWidthAdjustedToContent;
+    }
 
     /*!
     \brief
@@ -1042,7 +1048,10 @@ public:
     \see onIsSizeAdjustedToContentChanged
     \see onSized
     */
-    bool isHeightAdjustedToContent() const;
+    inline bool isHeightAdjustedToContent() const
+    {
+        return d_isHeightAdjustedToContent;
+    }
 
     /*!
     \brief
@@ -1052,7 +1061,10 @@ public:
     \see isWidthAdjustedToContent
     \see isHeightAdjustedToContent
     */
-    bool isSizeAdjustedToContent() const;
+    inline bool isSizeAdjustedToContent() const
+    {
+        return isWidthAdjustedToContent() || isHeightAdjustedToContent();
+    }
 
     /*!
     \brief Return a Rect that describes the unclipped outer rect area of the Element
@@ -1545,7 +1557,10 @@ public:
     virtual bool contentFits() const;
 
     //! Gets the default paragraph direction for the displayed text of this Element.
-    DefaultParagraphDirection getDefaultParagraphDirection() const;
+    inline DefaultParagraphDirection getDefaultParagraphDirection() const
+    {
+        return d_defaultParagraphDirection;
+    }
 
     //! Sets the default paragraph direction for the displayed text of this Element.
     void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);

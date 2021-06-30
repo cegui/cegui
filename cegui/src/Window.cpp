@@ -582,7 +582,7 @@ Rectf Window::getParentElementClipIntersection(const Rectf& unclipped_area) cons
 {
     return unclipped_area.getIntersection(
         (d_parent && d_clippedByParent) ?
-            getParent()->getClipRect(isNonClient()) :
+            getParent()->getClipRect(d_nonClient) :
             Rectf(glm::vec2(0, 0), getRootContainerSize()));
 }
 
@@ -620,7 +620,7 @@ Rectf Window::getHitTestRect_impl() const
     {
         return getUnclippedOuterRect().get().getIntersection(
             getParent()->getHitTestRect().getIntersection(
-                getParent()->getClipRect(isNonClient())));
+                getParent()->getClipRect(d_nonClient)));
     }
     // not clipped to parent wnd, so get intersection with screen area.
     else
@@ -2154,7 +2154,7 @@ void Window::performChildWindowLayout(const bool nonclient_sized_hint,
     {
         for (Element* child : d_children)
         {
-            if (child->isNonClient() ? outer_changed : inner_changed)
+            if (d_nonClient ? outer_changed : inner_changed)
                 child->notifyParentContentAreaChanged(true, true); // FIXME: calc flags!
         }
     }
@@ -4076,11 +4076,9 @@ void Window::onTargetSurfaceChanged(RenderingSurface* newSurface)
 //----------------------------------------------------------------------------//
 Sizef Window::getRootContainerSize() const
 {
-    auto root = getRootWindow();
-    if (root)
+    if (auto root = getRootWindow())
     {
-        GUIContext* context = root->getGUIContextPtr();
-        if (context)
+        if (GUIContext* context = root->getGUIContextPtr())
         {
             return context->getSurfaceSize();
         }
