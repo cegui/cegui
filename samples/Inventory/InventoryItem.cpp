@@ -118,6 +118,8 @@ void InventoryItem::populateGeometryBuffer()
     if (!img)
         return;
 
+    // If is over a valid receiver, render in a cell size of the receiver
+    // TODO: do the same for items rendered by InventoryItemRenderer
     const Sizef square_size = (d_dragging && currentDropTargetIsValid()) ?
         static_cast<InventoryReceiver*>(d_dropTarget)->squarePixelSize() :
         squarePixelSize();
@@ -158,9 +160,7 @@ void InventoryItem::onMoved(ElementEventArgs& e)
 
     DragContainer::onMoved(e);
 
-    InventoryReceiver* receiver = dynamic_cast<InventoryReceiver*>(d_dropTarget);
-
-    if (receiver)
+    if (InventoryReceiver* receiver = dynamic_cast<InventoryReceiver*>(d_dropTarget))
     {
         const Sizef square_size(receiver->squarePixelSize());
         Rectf area(getUnclippedOuterRect().get());
