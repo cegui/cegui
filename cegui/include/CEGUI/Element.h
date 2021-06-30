@@ -1633,23 +1633,7 @@ protected:
 
     /*************************************************************************
         Event trigger methods
-    *************************************************************************/
-    /*!
-    \brief
-        Handler called when the element's size changes.
-
-    \param e
-        ElementEventArgs object whose 'element' pointer field is set to the element
-        that triggered the event.
-
-    \param adjust_size_to_content
-        If the size actually changes, should we call "AdjustSizeToContent"?
-        Normally, this should be true. However, if this function is called from
-        inside "AdjustSizeToContent", you must set this to false to prevent
-        infinite recursion.  
-    */
-    virtual void onSized(ElementEventArgs& e, bool adjust_size_to_content=true);
-    
+    *************************************************************************/    
     /*!
     \brief
         Handler called when the element's size changes.
@@ -1658,7 +1642,7 @@ protected:
         ElementEventArgs object whose 'element' pointer field is set to the element
         that triggered the event.
     */
-    virtual void onSized_impl(ElementEventArgs& e);
+    virtual void onSized(ElementEventArgs& e);
 
     /*!
     \brief

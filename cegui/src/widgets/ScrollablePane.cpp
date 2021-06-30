@@ -538,11 +538,11 @@ void ScrollablePane::removeChild_impl(Element* element)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onSized_impl(ElementEventArgs& e)
+void ScrollablePane::onSized(ElementEventArgs& e)
 {
     configureScrollbars();
     updateContainerPosition();
-    Window::onSized_impl(e);
+    Window::onSized(e);
     
     ++e.handled;
 }

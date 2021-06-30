@@ -1902,10 +1902,10 @@ void MultiColumnList::onFontChanged(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when we are sized
 *************************************************************************/
-void MultiColumnList::onSized_impl(ElementEventArgs& e)
+void MultiColumnList::onSized(ElementEventArgs& e)
 {
 	// base class handling
-	Window::onSized_impl(e);
+	Window::onSized(e);
 
 	configureScrollbars();
 

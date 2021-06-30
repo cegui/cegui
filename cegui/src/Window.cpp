@@ -2434,10 +2434,10 @@ Window* Window::getActiveSibling()
 }
 
 //----------------------------------------------------------------------------//
-void Window::onSized_impl(ElementEventArgs& e)
+void Window::onSized(ElementEventArgs& e)
 {
     /*
-     * Why are we not calling Element::onSized_impl?  It's because that function
+     * Why are we not calling Element::onSized?  It's because that function
      * always calls the notifyParentContentAreaChanged notification for all children
      * - we really want that to be done via performChildWindowLayout instead and
      * we definitely don't want it done twice.

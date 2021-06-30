@@ -897,12 +897,12 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
 }
 
 
-void MultiLineEditbox::onSized_impl(ElementEventArgs& e)
+void MultiLineEditbox::onSized(ElementEventArgs& e)
 {
 	formatText(true);
 
 	// base class handling
-	Window::onSized_impl(e);
+	Window::onSized(e);
 
 	++e.handled;
 }

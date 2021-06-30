@@ -552,7 +552,7 @@ protected:
     void addChild_impl(Element* element) override;
     void removeChild_impl(Element* element) override;
     
-    void onSized_impl(ElementEventArgs& e) override;
+    void onSized(ElementEventArgs& e) override;
     void onScroll(CursorInputEventArgs& e) override;
     void onIsSizeAdjustedToContentChanged(ElementEventArgs& e) override;
     void adjustSizeToContent() override {}
