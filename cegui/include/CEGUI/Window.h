@@ -3516,9 +3516,6 @@ protected:
     //! helper to clean up the auto RenderingWindow surface
     void releaseRenderingWindow();
 
-    //! Helper to intialise the needed clipping for geometry and render surface.
-    void initialiseClippers(const RenderingContext& ctx);
-
     //! \copydoc Element::setArea_impl
     void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
                       bool adjust_size_to_content) override;
