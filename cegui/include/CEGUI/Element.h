@@ -346,7 +346,7 @@ public:
     */
     inline void setPosition(const UVector2& pos)
     {
-        setArea_impl(pos, getSize());
+        setArea_impl(pos, getSize(), false, true);
     }
 
     //! \overload
@@ -1168,7 +1168,7 @@ public:
 
     /*!
     \brief
-        Notify called when this element's parent content area has changed. For
+        Informs an element when its parent content area has changed. For
         client elements it is an inner rect, and for non-clients it's outer rect.
         If this element is the root / GUI Sheet element, this call will be made
         when the display size changes.
@@ -1590,8 +1590,8 @@ protected:
         inside "AdjustSizeToContent", you must set this to false to prevent
         infinite recursion.
      */
-    virtual void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing=false, bool fireEvents=true,
-                              bool adjust_size_to_content=true);
+    virtual void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
+                              bool adjust_size_to_content);
 
     //! helper to return whether the inner rect size has changed
     inline bool isInnerRectSizeChanged() const

@@ -589,7 +589,7 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
                 top_left_sizing |= moveBottomEdge(deltaY, new_area);
             }
 
-            setArea_impl(new_area.d_min, new_area.getSize(), top_left_sizing);
+            setArea_impl(new_area.d_min, new_area.getSize(), top_left_sizing, true);
         }
         else
         {

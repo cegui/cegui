@@ -2045,14 +2045,13 @@ void Window::setInheritsTooltipText(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing, bool fireEvents,
+void Window::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
                           bool adjust_size_to_content)
 {
     markCachedWindowRectsInvalid();
-    Element::setArea_impl(pos, size, topLeftSizing, fireEvents, adjust_size_to_content);
+    Element::setArea_impl(pos, size, topLeftSizing, adjust_size_to_content);
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
     {
         //if (moved || sized)
         // FIXME: This is potentially wasteful to update every time
@@ -3226,10 +3225,9 @@ void Window::notifyClippingChanged(void)
     markCachedWindowRectsInvalid();
 
     // inform children that their clipped screen areas must be updated
-    const size_t num = d_children.size();
-    for (size_t i=0; i<num; ++i)
-        if (getChildAtIndex(i)->isClippedByParent())
-            getChildAtIndex(i)->notifyClippingChanged();
+    for (Element* child : d_children)
+        if (static_cast<Window*>(child)->isClippedByParent())
+            static_cast<Window*>(child)->notifyClippingChanged();
 }
 
 //----------------------------------------------------------------------------//
