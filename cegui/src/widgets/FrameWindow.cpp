@@ -525,6 +525,7 @@ void FrameWindow::onRollupToggled(WindowEventArgs& e)
     notifyScreenAreaChanged(true);
     ElementEventArgs size_args(e.window);
     onSized(size_args);
+    adjustSizeToContent();
 
     fireEvent(EventRollupToggled, e, EventNamespace);
 }

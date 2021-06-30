@@ -141,7 +141,10 @@ void Element::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChange
         onMoved(ElementEventArgs(this));
 
     if (sized)
-        onSized(ElementEventArgs(this), true);
+    {
+        onSized(ElementEventArgs(this));
+        adjustSizeToContent();
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -951,7 +954,12 @@ void Element::setArea_impl(const UVector2& pos, const USize& size, bool topLeftS
         onMoved(ElementEventArgs(this));
 
     if (sized)
-        onSized(ElementEventArgs(this), adjust_size_to_content);
+    {
+        onSized(ElementEventArgs(this));
+
+        if (adjust_size_to_content)
+            adjustSizeToContent();
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -1065,16 +1073,7 @@ Rectf Element::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
 }
 
 //----------------------------------------------------------------------------//
-void Element::onSized(ElementEventArgs& e, bool adjust_size_to_content)
-{
-    onSized_impl(e);
-
-    if (adjust_size_to_content)
-        adjustSizeToContent();
-}
-
-//----------------------------------------------------------------------------//
-void Element::onSized_impl(ElementEventArgs& e)
+void Element::onSized(ElementEventArgs& e)
 {
     notifyScreenAreaChanged(false);
 

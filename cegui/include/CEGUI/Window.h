@@ -2909,7 +2909,7 @@ protected:
         that triggered the event.  For this event the trigger window is always
         'this'.
     */
-    void onSized_impl(ElementEventArgs& e) override;
+    void onSized(ElementEventArgs& e) override;
 
     /*!
     \brief
