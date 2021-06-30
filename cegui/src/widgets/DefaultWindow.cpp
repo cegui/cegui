@@ -121,7 +121,7 @@ void DefaultWindow::onSemanticInputEvent(SemanticEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool DefaultWindow::canFocus()
+bool DefaultWindow::canFocus() const
 {
     // cannot focus something that doesn't have an explicit visual appearance
     return false;

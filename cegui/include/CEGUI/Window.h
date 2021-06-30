@@ -515,7 +515,10 @@ public:
     \return
         String object holding the Window type.
     */
-    const String& getType(void) const;
+    inline const String& getType() const
+    {
+        return d_falagardType.empty() ? d_type : d_falagardType;
+    }
 
     /*!
     \brief
@@ -551,7 +554,10 @@ public:
         - true if the window is disabled.
         - false if the window is enabled.
     */
-    bool isDisabled() const;
+    inline bool isDisabled() const
+    {
+        return !d_enabled;
+    }
 
     /*!
     \brief
@@ -565,7 +571,10 @@ public:
         - true if the window is disabled.
         - false if the window is enabled.
     */
-    bool isEffectiveDisabled() const;
+    inline bool isEffectiveDisabled() const
+    {
+        return !d_enabled || (d_parent && getParent()->isEffectiveDisabled());
+    }
 
     /*!
     \brief
@@ -583,7 +592,10 @@ public:
         - true if the window is set as visible.
         - false if the window is set as hidden.
     */
-    bool isVisible() const;
+    inline bool isVisible() const
+    {
+        return d_visible;
+    }
 
     /*!
     \brief
@@ -601,7 +613,10 @@ public:
         - true if the window will be drawn.
         - false if the window is hidden and therefore ignored when rendering.
     */
-    bool isEffectiveVisible() const;
+    inline bool isEffectiveVisible() const
+    {
+        return d_visible && (!d_parent || getParent()->isEffectiveVisible());
+    }
 
     /*!
     \brief
@@ -617,7 +632,10 @@ public:
         - true if the window is active and may be sent inputs by the system.
         - false if the window is inactive and will not be sent inputs.
     */
-    bool isActive(void) const;
+    inline bool isActive() const
+    {
+        return d_active && (!d_parent || getParent()->isActive());
+    }
 
     /*!
     \brief
@@ -1142,7 +1160,10 @@ public:
         - false: z-order changes are disabled for this window.
           moveToFront, moveToBack, moveInFront and moveBehind are ignored.
     */
-    bool isZOrderingEnabled(void) const;
+    inline bool isZOrderingEnabled() const
+    {
+        return d_zOrderingEnabled;
+    }
 
     /*!
     \brief
@@ -1155,7 +1176,10 @@ public:
         - false if autorepeat of cursor press events is not enabled for
           this window.
     */
-    bool isCursorAutoRepeatEnabled(void) const;
+    inline bool isCursorAutoRepeatEnabled() const
+    {
+        return d_autoRepeat;
+    }
 
     /*!
     \brief
@@ -1165,7 +1189,10 @@ public:
         float value indicating the delay, in seconds, before the first repeat
         cursor press event will be triggered when autorepeat is enabled.
     */
-    float getAutoRepeatDelay(void) const;
+    inline float getAutoRepeatDelay() const
+    {
+        return d_repeatDelay;
+    }
 
     /*!
     \brief
@@ -1175,7 +1202,10 @@ public:
         float value indicating the rate, in seconds, at which repeat cursor press
         events will be generated after the initial delay has expired.
     */
-    float getAutoRepeatRate(void) const;
+    inline float getAutoRepeatRate() const
+    {
+        return d_repeatRate;
+    }
 
     /*!
     \brief
@@ -1186,7 +1216,10 @@ public:
         - true if System should pass captured input events to child windows.
         - false if System should pass captured input events to this window only.
     */
-    bool distributesCapturedInputs(void) const;
+    inline bool distributesCapturedInputs() const
+    {
+        return d_distCapturedInputs;
+    }
 
     /*!
     \brief
@@ -1197,7 +1230,10 @@ public:
         - true if the Window will use the system default tooltip.
         - false if the window has a custom Tooltip object.
     */
-    bool isUsingDefaultTooltip(void) const;
+    inline bool isUsingDefaultTooltip() const
+    {
+        return !d_customTip;
+    }
 
     /*!
     \brief
@@ -1227,7 +1263,10 @@ public:
     \return
         String object holding the current tooltip text set for this window.
      */
-    const String& getTooltipText(void) const;
+    inline const String& getTooltipText() const
+    {
+        return d_tooltipText;
+    }
 
     /*!
     \brief
@@ -1252,7 +1291,10 @@ public:
         - false if the window does not inherit tooltip text from its parent
           (and shows no tooltip when no text is set).
      */
-    bool inheritsTooltipText(void) const;
+    inline bool inheritsTooltipText() const
+    {
+        return d_inheritsTipText;
+    }
 
     /*!
     \brief
@@ -1283,8 +1325,10 @@ public:
     \return
         Reference to the list of GeometryBuffer objects for this Window.
     */
-    std::vector<GeometryBuffer*>& getGeometryBuffers();
-
+    inline std::vector<GeometryBuffer*>& getGeometryBuffers()
+    {
+        return d_geometryBuffers;
+    }
     
     /*!
     \brief
@@ -1303,7 +1347,10 @@ public:
         String object holding the name of the look assigned to this window.
         Returns the empty string if no look is assigned.
     */
-    const String& getLookNFeel() const;
+    inline const String& getLookNFeel() const
+    {
+        return d_lookName;
+    }
 
     /*!
     \brief
@@ -1396,7 +1443,10 @@ public:
         - true if the Window is enabled as a drag and drop target.
         - false if the window is not enabled as a drag and drop target.
     */
-    bool isDragDropTarget() const;
+    inline bool isDragDropTarget() const
+    {
+        return d_dragDropTarget;
+    }
 
     /*!
     \brief
@@ -1413,7 +1463,10 @@ public:
         return the RenderingSurface currently set for this window.  May return
         0.
     */
-    RenderingSurface* getRenderingSurface() const;
+    inline RenderingSurface* getRenderingSurface() const
+    {
+        return d_surface;
+    }
 
     /*!
     \brief
@@ -1433,7 +1486,10 @@ public:
         - true if automatic use of a caching RenderingSurface is enabled.
         - false if automatic use of a caching RenderTarget is not enabled.
     */
-    bool isUsingAutoRenderingSurface() const;
+    inline bool isUsingAutoRenderingSurface() const
+    {
+        return d_autoRenderingWindow;
+    }
 
     /*!
     \brief
@@ -1445,7 +1501,10 @@ public:
     - true to provide stencil buffer functionality with the texture caching.
     - false to not provide a stencil buffer functionality with the texture caching.
     */
-    bool isAutoRenderingSurfaceStencilEnabled() const;
+    inline bool isAutoRenderingSurfaceStencilEnabled() const
+    {
+        return d_autoRenderingSurfaceStencilEnabled;
+    }
 
     /*!
     \brief
@@ -1835,7 +1894,10 @@ public:
         is not meant to imply that the windows are overlapping nor that one
         window is obscured by the other.
     */
-    bool isBehind(const Window& wnd) const;
+    inline bool isBehind(const Window& wnd) const
+    {
+        return !isInFront(wnd);
+    }
 
     /*!
     \brief
@@ -2468,7 +2530,10 @@ public:
         A pointer to the assigned window renderer object.
         0 if no window renderer is assigned.
     */
-    WindowRenderer* getWindowRenderer(void) const;
+    inline WindowRenderer* getWindowRenderer() const
+    {
+        return d_windowRenderer;
+    }
 
     /*!
     \brief
@@ -2606,20 +2671,29 @@ public:
     //! Return the parsed RenderedString object for this window.
     const RenderedString& getRenderedString() const;
     //! Return a pointer to any custom RenderedStringParser set, or 0 if none.
-    RenderedStringParser* getCustomRenderedStringParser() const;
+    inline RenderedStringParser* getCustomRenderedStringParser() const
+    {
+        return d_customStringParser;
+    }
     //! Set a custom RenderedStringParser, or 0 to remove an existing one.
     void setCustomRenderedStringParser(RenderedStringParser* parser);
     //! return the active RenderedStringParser to be used
     virtual RenderedStringParser& getRenderedStringParser() const;
     //! return whether text parsing is enabled for this window.
-    bool isTextParsingEnabled() const;
+    inline bool isTextParsingEnabled() const
+    {
+        return d_textParsingEnabled;
+    }
     //! set whether text parsing is enabled for this window.
     void setTextParsingEnabled(const bool setting);
 
     //! set margin
     virtual void setMargin(const UBox& margin);
     //! retrieves currently set margin
-    const UBox& getMargin() const;
+    inline const UBox& getMargin() const
+    {
+        return d_margin;
+    }
 
     //! return glm::vec2 \a pos after being fully unprojected for this Window.
     glm::vec2 getUnprojectedPosition(const glm::vec2& pos) const;
@@ -2747,7 +2821,10 @@ public:
         One of the WindowUpdateMode enumerated values indicating the current
         mode set for this Window.
     */
-    WindowUpdateMode getUpdateMode() const;
+    inline WindowUpdateMode getUpdateMode() const
+    {
+        return d_updateMode;
+    }
 
     /*!
     \brief
@@ -2763,7 +2840,10 @@ public:
         (including it's event subscribers) should be propagated back to the
         Window's parent.
     */
-    bool isCursorInputPropagationEnabled() const;
+    inline bool isCursorInputPropagationEnabled() const
+    {
+        return d_propagatePointerInputs;
+    }
 
     /*!
     \brief
@@ -2806,7 +2886,10 @@ public:
         returned here may be inaccurate - this is not a bug, but is required
         to ensure correct handling of certain events.
     */
-    bool isPointerContainedInArea() const;
+    inline bool isPointerContainedInArea() const
+    {
+        return d_containsPointer;
+    }
 
     // overridden from Element
     Sizef getRootContainerSize() const override;
@@ -2818,7 +2901,10 @@ public:
         A window is focused when it is the active Window inside the current
         GUIContext.
     */
-    bool isFocused() const;
+    inline bool isFocused() const
+    {
+        return d_isFocused;
+    }
 
     /*!
     \brief
@@ -2845,7 +2931,7 @@ public:
         A Window cannot be usually focused when it's disabled. Other widgets
         can override this method based on their own behaviour.
     */
-    virtual bool canFocus();
+    virtual bool canFocus() const;
     
     /*!
     \brief
@@ -2869,7 +2955,10 @@ public:
     \return
         The drawMode bitmask that is set for this Window.
     */
-    std::uint32_t getDrawModeMask() const;
+    inline std::uint32_t getDrawModeMask() const
+    {
+        return d_drawModeMask;
+    }
 
     /*!
     \brief
@@ -2882,8 +2971,11 @@ public:
     \return
         True if a bitwise and between the masks return non-zero.
     */
-    bool checkIfDrawMaskAllowsDrawing(std::uint32_t drawModeMask) const;
-    
+    inline bool checkIfDrawMaskAllowsDrawing(std::uint32_t drawModeMask) const
+    {
+        return (getDrawModeMask() & drawModeMask) != 0;
+    }
+
     float getContentWidth() const override;
     float getContentHeight() const override;
     UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth() const override;
