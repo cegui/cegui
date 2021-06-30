@@ -1365,10 +1365,6 @@ void Window::addChild_impl(Element* element)
             "Window can only have Elements of type Window added as children "
             "(Window path: " + getNamePath() + ").");
 
-    // if the element is already a child of this Window, this is a NOOP
-    if (isChild(element))
-        return;
-
     NamedElement::addChild_impl(wnd);
 
     addWindowToDrawList(*wnd);
@@ -3906,7 +3902,9 @@ void Window::clonePropertiesTo(Window& target) const
 //----------------------------------------------------------------------------//
 void Window::cloneChildWidgetsTo(Window& target) const
 {
-    // todo: ChildWindowIterator?
+    // TODO: need to check &target != this?
+
+    // TODO: ChildWindowIterator?
     for (size_t childI = 0; childI < getChildCount(); ++childI)
     {
         Window* child = getChildAtIndex(childI);

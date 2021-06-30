@@ -641,6 +641,10 @@ void Element::addChild(Element* element)
         throw InvalidRequestException("Can't make element its own child - "
                                       "this->addChild(this); is forbidden.");
 
+    // if the element is already a child of this Element, this is a NOOP
+    if (isChild(element))
+        return;
+
     addChild_impl(element);
     ElementEventArgs args(element);
     onChildAdded(args);

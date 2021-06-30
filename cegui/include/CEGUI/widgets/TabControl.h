@@ -490,10 +490,10 @@ protected:
     /*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addTabControlProperties(void);
+	void addTabControlProperties(void);
 
-    void    addChild_impl(Element* element) override;
-    void    removeChild_impl(Element* element) override;
+    void addChild_impl(Element* element) override;
+    void removeChild_impl(Element* element) override;
 
     //! \copydoc Window::getChildByNamePath_impl
     NamedElement* getChildByNamePath_impl(const String& name_path) const override;
