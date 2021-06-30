@@ -281,7 +281,7 @@ void ListHeaderSegment::doDragSizing(const glm::vec2& local_cursor)
     // update segment area rect
     // URGENT FIXME: The pixel alignment will be done automatically again, right? Why is it done here? setArea_impl will do it!
     URect area(d_area.d_min.d_x, d_area.d_min.d_y, d_area.d_max.d_x + UDim(0,/*PixelAligned(*/delta/*)*/), d_area.d_max.d_y);
-    setArea_impl(area.d_min, area.getSize());
+    setArea_impl(area.d_min, area.getSize(), false, true);
 
     // move the dragging point so cursor remains 'attached' to edge of segment
     d_dragPoint.x += d_pixelSize.d_width - orgWidth;

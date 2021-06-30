@@ -2487,30 +2487,10 @@ public:
     */
     void setWritingXMLAllowed(bool allow)   {d_allowWriteXML = allow;}
 
-    /*!
-    \brief
-        Inform the window, and optionally all children, that screen area
-        rectangles have changed.
-
-    \param recursive
-        - true to recursively call notifyScreenAreaChanged on attached child
-          Window objects.
-        - false to just process \e this Window.
-    */
+    //! \copydoc Element::notifyScreenAreaChanged
     void notifyScreenAreaChanged(bool recursive) override;
 
-    /*!
-    \brief
-        Notify called when this element's parent content area has changed. For
-        client elements it is an inner rect, and for non-clients it's outer rect.
-        If this element is the root / GUI Sheet element, this call will be made
-        when the display size changes.
-
-    \param offsetChanged
-        - true if content area has shifted, i.e. its left or top coord changed.
-    \param sizeChanged
-        - true if content area has changed its size.
-    */
+    //! \copydoc Element::notifyParentContentAreaChanged
     void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged) override;
 
     /*!
@@ -3540,8 +3520,8 @@ protected:
     void initialiseClippers(const RenderingContext& ctx);
 
     //! \copydoc Element::setArea_impl
-    void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing=false,
-                              bool fireEvents=true, bool adjust_size_to_content=true) override;
+    void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
+                      bool adjust_size_to_content) override;
 
     /*!
     \brief

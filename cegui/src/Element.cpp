@@ -106,7 +106,7 @@ Element::Element(const Element& other):
 //----------------------------------------------------------------------------//
 void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content)
 {
-    setArea_impl(pos, size, false, true, adjust_size_to_content);
+    setArea_impl(pos, size, false, adjust_size_to_content);
 }
 
 //----------------------------------------------------------------------------//
@@ -922,7 +922,7 @@ void Element::addElementProperties()
 }
 
 //----------------------------------------------------------------------------//
-void Element::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing, bool fireEvents,
+void Element::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
                            bool adjust_size_to_content)
 {
     // we make sure the screen areas are recached when this is called as we need
@@ -947,14 +947,11 @@ void Element::setArea_impl(const UVector2& pos, const USize& size, bool topLeftS
     if (moved)
         d_area.setPosition(pos);
 
-    if (fireEvents)
-    {
-        if (moved)
-            onMoved(ElementEventArgs(this));
+    if (moved)
+        onMoved(ElementEventArgs(this));
 
-        if (sized)
-            onSized(ElementEventArgs(this), adjust_size_to_content);
-    }
+    if (sized)
+        onSized(ElementEventArgs(this), adjust_size_to_content);
 }
 
 //----------------------------------------------------------------------------//
