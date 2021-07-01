@@ -298,13 +298,19 @@ public:
 
     \see UDim
     */
-    virtual void setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content=true);
+    virtual void setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content);
 
     //! \overload
     inline void setArea(const UDim& xpos, const UDim& ypos,
                         const UDim& width, const UDim& height)
     {
         setArea(UVector2(xpos, ypos), USize(width, height));
+    }
+
+    //! \overload
+    inline void setArea(const UVector2& pos, const USize& size)
+    {
+        setArea(pos, size, true);
     }
 
     //! \overload
@@ -349,7 +355,7 @@ public:
     */
     inline void setPosition(const UVector2& pos)
     {
-        setArea_impl(pos, getSize(), false, true);
+        setArea(pos, getSize(), true);
     }
 
     //! \overload
@@ -1578,45 +1584,6 @@ protected:
         Add standard CEGUI::Element properties.
     */
     void addElementProperties();
-
-    /*!
-    \brief
-        Implementation method to modify element area while correctly applying
-        min / max size processing, and firing any appropriate events.
-
-    \note
-        This is the implementation function for setting size and position.
-        In order to simplify area management, from this point on, all
-        modifications to element size and position (area rect) should come
-        through here.
-
-    \param pos
-        UVector2 object describing the new area position.
-
-    \param size
-        USize object describing the new area size.
-
-    \param topLeftSizing
-        - true to indicate the operation is a sizing operation on the top
-          and/or left edges of the area, and so element movement should be
-          inhibited if size is at max or min.
-        - false to indicate the operation is not a strict sizing operation on
-          the top and/or left edges and that the element position may change as
-          required
-
-    \param fireEvents
-        - true if events should be fired as normal.
-        - false to inhibit firing of events (required, for example, if you need
-          to call this from the onSize/onMove handlers).
-
-    \param adjust_size_to_content
-        If the size actually changes, should we call "AdjustSizeToContent"?
-        Normally, this should be true. However, if this function is called from
-        inside "AdjustSizeToContent", you must set this to false to prevent
-        infinite recursion.
-     */
-    virtual void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
-                              bool adjust_size_to_content);
 
     //! helper to return whether the inner rect size has changed
     inline bool isInnerRectSizeChanged() const

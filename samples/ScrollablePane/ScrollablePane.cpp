@@ -265,6 +265,10 @@ bool ScrollablePaneSample::addNewChild(const CEGUI::EventArgs&)
     dlg->setSize(USize(UDim(0,200),UDim(0,100)));
     dlg->setText("Drag me around too!");
 
+    //!!!DBG TMP!
+    dlg->setHorizontalAlignment(HorizontalAlignment::Right);
+    dlg->setVerticalAlignment(VerticalAlignment::Bottom);
+
     // Move the new dialog to the center of the viewable area
     const glm::vec2 offset = d_pane->getContentPane()->getPixelPosition();
     const Sizef viewportSize = d_pane->getViewableArea().getSize();
