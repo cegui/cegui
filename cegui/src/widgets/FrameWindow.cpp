@@ -562,13 +562,11 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
         {
             dragEdge = getSizingBorderAtPoint(d_dragPoint);
 
-            // calculate sizing deltas...
-            const float deltaX = localCursorPos.x - d_dragPoint.x;
-            const float deltaY = localCursorPos.y - d_dragPoint.y;
-
             URect new_area(d_area);
             bool top_left_sizing = false;
+
             // size left or right edges
+            const float deltaX = localCursorPos.x - d_dragPoint.x;
             if (isLeftSizingLocation(dragEdge))
             {
                 top_left_sizing |= moveLeftEdge(deltaX, new_area);
@@ -579,6 +577,7 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
             }
 
             // size top or bottom edges
+            const float deltaY = localCursorPos.y - d_dragPoint.y;
             if (isTopSizingLocation(dragEdge))
             {
                 top_left_sizing |= moveTopEdge(deltaY, new_area);
@@ -794,70 +793,6 @@ void FrameWindow::addFrameWindowProperties(void)
 }
 
 /*************************************************************************
-    return the image used for the north-south sizing cursor.
-*************************************************************************/
-const Image* FrameWindow::getNSSizingIndicatorImage() const
-{
-    return d_nsSizingCursor;
-}
-
-/*************************************************************************
-    return the image used for the east-west sizing cursor.
-*************************************************************************/
-const Image* FrameWindow::getEWSizingIndicatorImage() const
-{
-    return d_ewSizingCursor;
-}
-
-/*************************************************************************
-    return the image used for the northwest-southeast sizing cursor.
-*************************************************************************/
-const Image* FrameWindow::getNWSESizingIndicatorImage() const
-{
-    return d_nwseSizingCursor;
-}
-
-/*************************************************************************
-    return the image used for the northeast-southwest sizing cursor.
-*************************************************************************/
-const Image* FrameWindow::getNESWSizingIndicatorImage() const
-{
-    return d_neswSizingCursor;
-}
-
-/*************************************************************************
-    set the image used for the north-south sizing cursor.
-*************************************************************************/
-void FrameWindow::setNSSizingIndicatorImage(const Image* image)
-{
-    d_nsSizingCursor = image;
-}
-
-/*************************************************************************
-    set the image used for the east-west sizing cursor.
-*************************************************************************/
-void FrameWindow::setEWSizingIndicatorImage(const Image* image)
-{
-    d_ewSizingCursor = image;
-}
-
-/*************************************************************************
-    set the image used for the northwest-southeast sizing cursor.
-*************************************************************************/
-void FrameWindow::setNWSESizingIndicatorImage(const Image* image)
-{
-    d_nwseSizingCursor = image;
-}
-
-/*************************************************************************
-    set the image used for the northeast-southwest sizing cursor.
-*************************************************************************/
-void FrameWindow::setNESWSizingIndicatorImage(const Image* image)
-{
-    d_neswSizingCursor = image;
-}
-
-/*************************************************************************
     set the image used for the north-south sizing cursor.
 *************************************************************************/
 void FrameWindow::setNSSizingIndicatorImage(const String& name)
@@ -926,4 +861,3 @@ void FrameWindow::onDragSizingEnded(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
-

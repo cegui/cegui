@@ -317,7 +317,10 @@ public:
     \return
         Pointer to an Image object, or 0 for none.
     */
-    const Image* getNSSizingIndicatorImage() const;
+    inline const Image* getNSSizingIndicatorImage() const
+    {
+        return d_nsSizingCursor;
+    }
 
     /*!
     \brief
@@ -327,7 +330,10 @@ public:
     \return
         Pointer to an Image object, or 0 for none.
     */
-    const Image* getEWSizingIndicatorImage() const;
+    inline const Image* getEWSizingIndicatorImage() const
+    {
+        return d_ewSizingCursor;
+    }
 
     /*!
     \brief
@@ -337,7 +343,10 @@ public:
     \return
         Pointer to an Image object, or 0 for none.
     */
-    const Image* getNWSESizingIndicatorImage() const;
+    inline const Image* getNWSESizingIndicatorImage() const
+    {
+        return d_nwseSizingCursor;
+    }
 
     /*!
     \brief
@@ -347,7 +356,10 @@ public:
     \return
         Pointer to an Image object, or 0 for none.
     */
-    const Image* getNESWSizingIndicatorImage() const;
+    inline const Image* getNESWSizingIndicatorImage() const
+    {
+        return d_neswSizingCursor;
+    }
 
     /*!
     \brief
@@ -359,7 +371,10 @@ public:
     \return
         Nothing.
     */
-    void setNSSizingIndicatorImage(const Image* image);
+    inline void setNSSizingIndicatorImage(const Image* image)
+    {
+        d_nsSizingCursor = image;
+    }
 
     /*!
     \brief
@@ -371,7 +386,10 @@ public:
     \return
         Nothing.
     */
-    void setEWSizingIndicatorImage(const Image* image);
+    inline void setEWSizingIndicatorImage(const Image* image)
+    {
+        d_ewSizingCursor = image;
+    }
 
     /*!
     \brief
@@ -383,7 +401,10 @@ public:
     \return
         Nothing.
     */
-    void setNWSESizingIndicatorImage(const Image* image);
+    inline void setNWSESizingIndicatorImage(const Image* image)
+    {
+        d_nwseSizingCursor = image;
+    }
 
     /*!
     \brief
@@ -395,7 +416,10 @@ public:
     \return
         Nothing.
     */
-    void setNESWSizingIndicatorImage(const Image* image);
+    inline void setNESWSizingIndicatorImage(const Image* image)
+    {
+        d_neswSizingCursor = image;
+    }
 
     /*!
     \brief
