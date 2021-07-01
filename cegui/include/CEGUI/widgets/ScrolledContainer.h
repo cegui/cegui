@@ -84,7 +84,7 @@ public:
     const CachedRectf& getClientChildContentArea() const override;
     const CachedRectf& getNonClientChildContentArea() const override;
 
-    void notifyScreenAreaChanged(bool recursive) override;
+    void notifyScreenAreaChanged(bool moved, bool adjustSize) override;
     
 protected:
     // Overridden from Window.

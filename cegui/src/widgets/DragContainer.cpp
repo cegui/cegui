@@ -318,11 +318,9 @@ namespace CEGUI
         {
             // restore windows 'normal' state.
             d_dragging = false;
-            setPosition(d_startPosition);
             setClippedByParent(d_storedClipState);
+            setPosition(d_startPosition);
             setAlpha(d_storedAlpha);
-
-            notifyScreenAreaChanged(true);
 
             // restore normal cursor
             updateActiveCursor();
@@ -381,8 +379,6 @@ namespace CEGUI
         d_startPosition = getPosition();
 
         d_dragging = true;
-
-        notifyScreenAreaChanged(true);
 
         // Now drag mode is set, change cursor as required
         updateActiveCursor();

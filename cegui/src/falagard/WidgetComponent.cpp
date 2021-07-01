@@ -227,15 +227,12 @@ namespace CEGUI
     {
         try
         {
-            Rectf pixelArea(d_area.getPixelRect(owner));
-            URect window_area(cegui_absdim(pixelArea.left()),
-                                cegui_absdim(pixelArea.top()),
-                                cegui_absdim(pixelArea.right()),
-                                cegui_absdim(pixelArea.bottom()));
-
-            Window* wnd = owner.getChild(d_name);
-            wnd->setArea(window_area);
-            wnd->notifyScreenAreaChanged(true);
+            const Rectf pixelArea = d_area.getPixelRect(owner);
+            owner.getChild(d_name)->setArea(
+                cegui_absdim(pixelArea.left()),
+                cegui_absdim(pixelArea.top()),
+                cegui_absdim(pixelArea.getWidth()),
+                cegui_absdim(pixelArea.getHeight()));
         }
         catch (UnknownObjectException&)
         {}

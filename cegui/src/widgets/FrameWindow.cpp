@@ -513,8 +513,7 @@ void FrameWindow::setCursorForSizingLocation(SizingLocation location) const
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
     invalidate(true);
-    onSized(ElementEventArgs(e.window));
-    adjustSizeToContent();
+    notifyScreenAreaChanged(false, true);
 
     fireEvent(EventRollupToggled, e, EventNamespace);
 }

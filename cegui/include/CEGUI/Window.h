@@ -2558,7 +2558,7 @@ public:
     void setWritingXMLAllowed(bool allow)   {d_allowWriteXML = allow;}
 
     //! \copydoc Element::notifyScreenAreaChanged
-    void notifyScreenAreaChanged(bool recursive) override;
+    void notifyScreenAreaChanged(bool moved, bool adjustSize) override;
 
     //! \copydoc Element::notifyParentContentAreaChanged
     void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged) override;

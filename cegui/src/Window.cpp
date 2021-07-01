@@ -2013,7 +2013,10 @@ void Window::performChildWindowLayout(const bool nonclient_sized_hint,
     layoutLookNFeelChildWidgets();
 
     const bool outer_changed = nonclient_sized_hint || d_pixelSize != old_size;
-    const bool inner_changed = client_sized_hint || isInnerRectSizeChanged();
+
+    const Sizef old_sz(d_unclippedInnerRect.get().getSize());
+    d_unclippedInnerRect.invalidateCache();
+    const bool inner_changed = client_sized_hint || (old_sz != d_unclippedInnerRect.get().getSize());
 
     d_outerRectClipperValid &= !outer_changed;
     d_innerRectClipperValid &= !inner_changed;
@@ -2585,17 +2588,6 @@ void Window::onDeactivated(ActivationEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
-{
-    Element::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
-
-    // if we were not moved or sized, do child layout anyway!
-    // URGENT FIXME
-    //if (!(moved || sized))
-    performChildWindowLayout();
-}
-
-//----------------------------------------------------------------------------//
 void Window::onChildAdded(ElementEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
@@ -3096,10 +3088,21 @@ void Window::notifyClippingChanged(void)
 }
 
 //----------------------------------------------------------------------------//
-void Window::notifyScreenAreaChanged(bool recursive)
+void Window::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
+{
+    Element::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
+
+    // if we were not moved or sized, do child layout anyway!
+    // URGENT FIXME
+    //if (!(moved || sized))
+    performChildWindowLayout();
+}
+
+//----------------------------------------------------------------------------//
+void Window::notifyScreenAreaChanged(bool moved, bool adjustSize)
 {
     markCachedWindowRectsInvalid();
-    Element::notifyScreenAreaChanged(recursive);
+    Element::notifyScreenAreaChanged(moved, adjustSize);
 
     updateGeometryRenderSettings();
 }
@@ -3352,10 +3355,6 @@ void Window::setAutoRenderingSurfaceStencilEnabled(bool setting)
     // We need to recreate the auto rendering window since we just changed a crucial setting for it
     releaseRenderingWindow();
     allocateRenderingWindow(setting);
-
-    // while the actual area on screen may not have changed, the arrangement of
-    // surfaces and geometry did...
-    notifyScreenAreaChanged(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -3397,8 +3396,7 @@ void Window::allocateRenderingWindow(bool addStencilBuffer)
     static_cast<RenderingWindow*>(d_surface)->setRotation(d_rotation);
     updatePivot();
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
         context->markAsDirty();
 }
 
@@ -3419,8 +3417,7 @@ void Window::releaseRenderingWindow()
     old_surface->getOwner().destroyRenderingWindow(*old_surface);
     System::getSingleton().getRenderer()->destroyTextureTarget(tt);
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
         context->markAsDirty();
 }
 

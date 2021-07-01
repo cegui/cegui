@@ -1192,7 +1192,7 @@ public:
           Element objects.
         - false to just process \e this Element.
     */
-    virtual void notifyScreenAreaChanged(bool recursive);
+    virtual void notifyScreenAreaChanged(bool moved, bool adjustSize);
 
     /*!
     \brief
@@ -1585,14 +1585,6 @@ protected:
     */
     void addElementProperties();
 
-    //! helper to return whether the inner rect size has changed
-    inline bool isInnerRectSizeChanged() const
-    {
-        const Sizef old_sz(d_unclippedInnerRect.get().getSize());
-        d_unclippedInnerRect.invalidateCache();
-        return old_sz != d_unclippedInnerRect.get().getSize();
-    }
-
     /*!
     \brief
         Set the parent element for this element object.
@@ -1622,6 +1614,8 @@ protected:
     virtual Rectf getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const;
     //! Default implementation of function to return Element's inner rect area.
     virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
+    //! Invalidates all content rects.
+    virtual void invalidateRects();
 
     /*************************************************************************
         Event trigger methods
