@@ -308,11 +308,10 @@ void ScrolledContainer::notifyScreenAreaChanged(bool recursive)
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
-                                     bool adjust_size)
+void ScrolledContainer::setArea(const UVector2& pos, const USize& size, bool adjustSize)
 {
     d_clientChildContentArea.invalidateCache();
-    Window::setArea_impl(pos, size, topLeftSizing, adjust_size);
+    Window::setArea(pos, size, adjustSize);
 }
 
 //----------------------------------------------------------------------------//

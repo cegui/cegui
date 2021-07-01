@@ -648,6 +648,11 @@ public:
     */
     bool isClippedByParent(void) const {return d_clippedByParent;}
 
+    using NamedElement::setArea;
+
+    //! \copydoc Element::setArea
+    void setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content) override;
+
     /*!
     \brief
         return the ID code currently assigned to this Window by client code.
@@ -3607,10 +3612,6 @@ protected:
 
     //! helper to clean up the auto RenderingWindow surface
     void releaseRenderingWindow();
-
-    //! \copydoc Element::setArea_impl
-    void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
-                      bool adjust_size_to_content) override;
 
     /*!
     \brief

@@ -105,8 +105,7 @@ protected:
     void onChildRemoved(ElementEventArgs& e) override;
     void cleanupChildren(void) override;
     void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged) override;
-    void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
-                      bool adjust_size) override;
+    void setArea(const UVector2& pos, const USize& size, bool adjustSize) override;
     bool moveToFront_impl(bool wasClicked) override;
 
     //! type definition for collection used to track event connections.

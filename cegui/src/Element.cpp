@@ -92,14 +92,13 @@ Element::~Element() = default;
 //----------------------------------------------------------------------------//
 void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content)
 {
-    setArea_impl(pos, size, false, adjust_size_to_content);
-}
-
-//----------------------------------------------------------------------------//
-void Element::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
-    bool adjust_size_to_content)
-{
     d_area.setSize(size);
+
+    // If this is a top/left edge sizing op, only modify position if the size actually
+    // changed. If it is not a sizing op, then position may always change.
+    //???check pixel position?
+    const bool moved = /*(!topLeftSizing || sized) &&*/ pos != d_area.d_min;
+    d_area.setPosition(pos);
 
     //???do only if moved or sized?
     // we make sure the screen areas are recached when this is called as we need
@@ -114,13 +113,9 @@ void Element::setArea_impl(const UVector2& pos, const USize& size, bool topLeftS
     // have we resized the element?
     const bool sized = (d_pixelSize != oldSize);
 
-    // If this is a top/left edge sizing op, only modify position if the size actually
-    // changed. If it is not a sizing op, then position may always change.
-    const bool moved = (!topLeftSizing || sized) && pos != d_area.d_min;
-
     if (moved)
     {
-        d_area.setPosition(pos);
+        //d_area.setPosition(pos);
         onMoved(ElementEventArgs(this));
     }
 
