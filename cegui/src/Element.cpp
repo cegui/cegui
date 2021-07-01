@@ -92,69 +92,79 @@ Element::~Element() = default;
 //----------------------------------------------------------------------------//
 void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content)
 {
-    d_area.setSize(size);
-
-    // If this is a top/left edge sizing op, only modify position if the size actually
-    // changed. If it is not a sizing op, then position may always change.
     //???check pixel position?
-    const bool moved = /*(!topLeftSizing || sized) &&*/ pos != d_area.d_min;
-    d_area.setPosition(pos);
+    const bool moved = (pos != d_area.d_min);
+    d_area.setPositionAndSize(pos, size);
 
-    //???do only if moved or sized?
-    // we make sure the screen areas are recached when this is called as we need
-    // it in most cases
-    d_unclippedOuterRect.invalidateCache();
-    d_unclippedInnerRect.invalidateCache();
-
-    // save original size so we can work out how to behave later on
-    const Sizef oldSize(d_pixelSize);
-    d_pixelSize = calculatePixelSize();
-
-    // have we resized the element?
-    const bool sized = (d_pixelSize != oldSize);
-
-    if (moved)
-    {
-        //d_area.setPosition(pos);
-        onMoved(ElementEventArgs(this));
-    }
-
-    if (sized)
-    {
-        onSized(ElementEventArgs(this));
-
-        if (adjust_size_to_content)
-            adjustSizeToContent();
-    }
-}
-
-//----------------------------------------------------------------------------//
-void Element::notifyScreenAreaChanged(bool recursive)
-{
-    d_unclippedOuterRect.invalidateCache();
-    d_unclippedInnerRect.invalidateCache();
-
-    // inform children that their screen area must be updated
-    if (recursive)
-    {
-        for (Element* child : d_children)
-            child->notifyScreenAreaChanged(true);
-    }
+    notifyScreenAreaChanged(moved, adjust_size_to_content);
 }
 
 //----------------------------------------------------------------------------//
 void Element::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
 {
-    d_unclippedOuterRect.invalidateCache();
-    d_unclippedInnerRect.invalidateCache();
-
-    const Sizef oldSize(d_pixelSize);
-    d_pixelSize = calculatePixelSize();
-    const bool sized = (d_pixelSize != oldSize) || isInnerRectSizeChanged();
-
     const bool moved = offsetChanged || (sizeChanged && (
         ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
             (d_horizontalAlignment != HorizontalAlignment::Left) || (d_verticalAlignment != VerticalAlignment::Top))));
+
+    notifyScreenAreaChanged(moved, true);
+}
+
+// TODO:
+// 1. FrameWindow::onRollupToggled - need separate recursive invalidation?
+// 2. Element::onSized aims to be only an event caller. Window::onSized is infrastructural, needs fixing!
+//    May make virtual notifyScreenAreaChanged and process children layouting there in Window, not in onSized!
+// 3. notifyScreenAreaChanged must always be recursive, now non-recursive is a hack.
+// 4. notifyParentContentAreaChanged must not be virtual, override notifyScreenAreaChanged instead.
+// 5. onHorizontalAlignmentChanged etc below - not always moved=true!!! Also should make them fire-only, move logic!
+// 6. Ensure LCs and other widgets with parent's client area are working correctly.
+// 7. Can make notifyScreenAreaChanged non-virtual!
+// 8. Ensure recalculation is delayed! notifyScreenAreaChanged only invalidated rects before!
+//    (but onParentSized calculated inner rect!). At least ensure that not sized content area will not
+//    trigger heavy sizing related things! Also note that recalculated rect can help detecting that no changes were
+//    made and therefore no invalidation of child rects will happen. But still must optimize for move-only case.
+//----------------------------------------------------------------------------//
+void Element::notifyScreenAreaChanged(bool moved, bool adjustSize)
+{
+    //???simply get unclipped outer rect? but must calculate pixel size before!
+    //???can detect actual pixel screen position change?
+    //!!!if so, may skip calc in notifyParentContentAreaChanged!
+    //!!!then may need no (bool offsetChanged, bool sizeChanged) = no re-caching of content areas here to calc these flags!
+
+    // Update pixel size and detect resizing
+    const Sizef oldSize = d_pixelSize;
+    d_pixelSize = calculatePixelSize();
+    const bool sized = (d_pixelSize != oldSize);
+
+    // Update outer rect to detect moving
+    //!!!need rect invalidation for that!
+
+    if (!moved && !sized)
+        return;
+
+    const Rectf oldClientRect = getChildContentArea(false).get();
+    const Rectf oldNonClientRect = getChildContentArea(true).get();
+
+    invalidateRects();
+
+    const Rectf newClientRect = getChildContentArea(false).get();
+    if (newClientRect != oldClientRect)
+    {
+        const bool clientMoved = (newClientRect.getPosition() != oldClientRect.getPosition());
+        const bool clientSized = (newClientRect.getSize() != newClientRect.getSize());
+        for (Element* child : d_children)
+            if (!child->d_nonClient)
+                child->notifyParentContentAreaChanged(clientMoved, clientSized);
+    }
+
+    const Rectf newNonClientRect = getChildContentArea(true).get();
+    if (newNonClientRect != oldNonClientRect)
+    {
+        const bool nonClientMoved = (newNonClientRect.getPosition() != oldNonClientRect.getPosition());
+        const bool nonClientSized = (newNonClientRect.getSize() != newNonClientRect.getSize());
+        for (Element* child : d_children)
+            if (child->d_nonClient)
+                child->notifyParentContentAreaChanged(nonClientMoved, nonClientSized);
+    }
 
     if (moved)
         onMoved(ElementEventArgs(this));
@@ -162,8 +172,17 @@ void Element::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChange
     if (sized)
     {
         onSized(ElementEventArgs(this));
-        adjustSizeToContent();
+
+        if (adjustSize)
+            adjustSizeToContent();
     }
+}
+
+//----------------------------------------------------------------------------//
+void Element::invalidateRects()
+{
+    d_unclippedOuterRect.invalidateCache();
+    d_unclippedInnerRect.invalidateCache();
 }
 
 //----------------------------------------------------------------------------//
@@ -223,7 +242,7 @@ void Element::setAspectMode(AspectMode mode)
     // Ensure the area is calculated with the new aspect mode
     // TODO: This potentially wastes effort, we should just mark it as dirty
     //       and postpone the calculation for as long as possible
-    setArea(getArea());
+    setArea(d_area);
 }
 
 //----------------------------------------------------------------------------//
@@ -239,7 +258,7 @@ void Element::setAspectRatio(float ratio)
     // Ensure the area is calculated with the new aspect ratio
     // TODO: This potentially wastes effort, we should just mark it as dirty
     //       and postpone the calculation for as long as possible
-    setArea(getArea());
+    setArea(d_area);
 }
 
 //----------------------------------------------------------------------------//
@@ -255,7 +274,7 @@ void Element::setPixelAligned(const bool setting)
     // Ensure the area is calculated with the new pixel aligned setting
     // TODO: This potentially wastes effort, we should just mark it as dirty
     //       and postpone the calculation for as long as possible
-    setArea(getArea());
+    setArea(d_area);
 }
 
 //----------------------------------------------------------------------------//
@@ -263,10 +282,9 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
 {
     // calculate pixel sizes for everything, so we have a common format for
     // comparisons.
-    Sizef absMin(CoordConverter::asAbsolute(d_minSize,
-        getRootContainerSize(), false));
-    Sizef absMax(CoordConverter::asAbsolute(d_maxSize,
-        getRootContainerSize(), false));
+    const Sizef rootSize = getRootContainerSize();
+    Sizef absMin(CoordConverter::asAbsolute(d_minSize, rootSize, false));
+    const Sizef absMax(CoordConverter::asAbsolute(d_maxSize, rootSize, false));
 
     Sizef ret = CoordConverter::asAbsolute(getSize(), getBasePixelSize(skipAllPixelAlignment), false);
 
@@ -936,11 +954,8 @@ void Element::addChild_impl(Element* element)
     element->setParent(this);
 
     // update area rects and content for the added element
-    element->notifyScreenAreaChanged(true);
-
-    // handle effective change of parent size
-    if (!old_parent || old_parent->getPixelSize() != getPixelSize())
-        element->notifyParentContentAreaChanged(true, true);
+    const bool sized = (!old_parent || old_parent->getPixelSize() != getPixelSize());
+    element->notifyParentContentAreaChanged(true, sized);
 }
 
 //----------------------------------------------------------------------------//
@@ -982,7 +997,7 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 
     const Sizef parent_size = parent_rect.getSize();
 
-    glm::vec2 offset = glm::vec2(parent_rect.d_min.x, parent_rect.d_min.y) + CoordConverter::asAbsolute(getArea().d_min, parent_size, false);
+    glm::vec2 offset = glm::vec2(parent_rect.d_min.x, parent_rect.d_min.y) + CoordConverter::asAbsolute(d_area.d_min, parent_size, false);
 
     switch (getHorizontalAlignment())
     {
@@ -1027,26 +1042,19 @@ Rectf Element::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
 //----------------------------------------------------------------------------//
 void Element::onSized(ElementEventArgs& e)
 {
-    notifyScreenAreaChanged(false);
-
-    for (Element* child : d_children)
-        child->notifyParentContentAreaChanged(false, true);
-
     fireEvent(EventSized, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 void Element::onMoved(ElementEventArgs& e)
 {
-    notifyScreenAreaChanged(true);
-
     fireEvent(EventMoved, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 void Element::onHorizontalAlignmentChanged(ElementEventArgs& e)
 {
-    notifyScreenAreaChanged(true);
+    notifyScreenAreaChanged(true, true);
 
     fireEvent(EventHorizontalAlignmentChanged, e, EventNamespace);
 }
@@ -1054,7 +1062,7 @@ void Element::onHorizontalAlignmentChanged(ElementEventArgs& e)
 //----------------------------------------------------------------------------//
 void Element::onVerticalAlignmentChanged(ElementEventArgs& e)
 {
-    notifyScreenAreaChanged(true);
+    notifyScreenAreaChanged(true, true);
 
     fireEvent(EventVerticalAlignmentChanged, e, EventNamespace);
 }
@@ -1087,7 +1095,7 @@ void Element::onChildOrderChanged(ElementEventArgs& e)
 void Element::onNonClientChanged(ElementEventArgs& e)
 {
     // TODO: Be less wasteful with this update
-    setArea(getArea());
+    setArea(d_area);
 
     fireEvent(EventNonClientChanged, e, EventNamespace);
 }
@@ -1099,7 +1107,7 @@ void Element::setDefaultParagraphDirection(DefaultParagraphDirection defaultPara
     {
         d_defaultParagraphDirection = defaultParagraphDirection;
 
-        notifyScreenAreaChanged(true);
+        notifyScreenAreaChanged(true, true);
 
         ElementEventArgs eventArgs(this);
         fireEvent(EventDefaultParagraphDirectionChanged, eventArgs, EventNamespace);

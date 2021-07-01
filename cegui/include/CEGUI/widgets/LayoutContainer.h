@@ -113,7 +113,7 @@ public:
 
     const CachedRectf& getClientChildContentArea() const override;
 
-    void notifyScreenAreaChanged(bool recursive) override;
+    void notifyScreenAreaChanged(bool moved, bool adjustSize) override;
 
 protected:
     /// @copydoc Window::getUnclippedInnerRect_impl

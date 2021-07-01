@@ -150,6 +150,12 @@ public:
         return USize(getWidth(), getHeight());
     }
 
+    inline void setPositionAndSize(const UVector2& pos, const USize& size)
+    {
+        d_min = pos;
+        d_max = pos + UVector2(size.d_width, size.d_height);
+    }
+
     void setWidth(const UDim& w)
     {
         d_max.d_x = d_min.d_x + w;

@@ -301,10 +301,10 @@ void ScrolledContainer::notifyParentContentAreaChanged(bool offsetChanged, bool 
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::notifyScreenAreaChanged(bool recursive)
+void ScrolledContainer::notifyScreenAreaChanged(bool moved, bool adjustSize)
 {
     d_clientChildContentArea.invalidateCache();
-    Window::notifyScreenAreaChanged(recursive);
+    Window::notifyScreenAreaChanged(moved, adjustSize);
 }
 
 //----------------------------------------------------------------------------//
