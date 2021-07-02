@@ -114,14 +114,33 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     panelFixed->addChild(d_pane);
 
     // add a dialog to the first pane so we have something to drag around :)
-    Window* dlg = wm->createWindow("WindowsLook/FrameWindow");
-    dlg->setSize(USize(UDim(0.04f,0),UDim(0.02f,0)));
-    dlg->setText("Drag me around");
-    dlg->subscribeEvent(FrameWindow::EventCloseClicked, [dlg]()
     {
-        WindowManager::getSingletonPtr()->destroyWindow(dlg);
-    });
-    d_pane->addChild(dlg);
+        Window* dlg = wm->createWindow("WindowsLook/FrameWindow");
+        dlg->setSize(USize(UDim(0.04f, 0), UDim(0.02f, 0)));
+        dlg->setText("Drag me around");
+        dlg->subscribeEvent(FrameWindow::EventCloseClicked, [dlg]()
+        {
+            WindowManager::getSingletonPtr()->destroyWindow(dlg);
+        });
+        dlg->subscribeEvent(FrameWindow::EventCursorEntersArea, [dlg]()
+        {
+            static_cast<FrameWindow*>(dlg)->setRolledup(false);
+        });
+        dlg->subscribeEvent(FrameWindow::EventCursorLeavesArea, [dlg]()
+        {
+            static_cast<FrameWindow*>(dlg)->setRolledup(true);
+        });
+
+        // To see how window children behave
+        {
+            auto child = wm->createWindow("WindowsLook/Static");
+            child->setArea(URect(UDim(0.25f, 0), UDim(0.25f, 0), UDim(0.75f, 0), UDim(0.75f, 0)));
+            child->setProperty("BackgroundColours", "tl:FFFF00FF tr:FFFF00FF bl:FFFF00BB br:FFFF00BB");
+            dlg->addChild(child);
+        }
+
+        d_pane->addChild(dlg);
+    }
 
     // Create next, auto-sized scrollable pane.
 
@@ -142,7 +161,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     panelAuto->addChild(pane);
 
     // add a dialog to the first pane so we have something to drag around :)
-    dlg = wm->createWindow("WindowsLook/FrameWindow");
+    Window* dlg = wm->createWindow("WindowsLook/FrameWindow");
     dlg->setSize(USize(UDim(0.2f,0),UDim(0.4f,0)));
     dlg->setText("Drag me around");
     dlg->subscribeEvent(FrameWindow::EventCloseClicked, [dlg]()
