@@ -347,15 +347,6 @@ void ItemListBase::onListContentsChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ItemListBase::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
-{
-    Window::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
-
-    if (d_autoResize)
-        sizeToContent();
-}
-
-//----------------------------------------------------------------------------//
 
 /************************************************************************
     Handler for when a child is removed
@@ -503,10 +494,7 @@ void ItemListBase::endInitialisation(void)
     handleUpdatedItemData(true);
 }
 
-
-/************************************************************************
-	Perform child window layout
-************************************************************************/
+//----------------------------------------------------------------------------//
 void ItemListBase::performChildWindowLayout(bool nonclient_sized_hint,
                                             bool client_sized_hint)
 {
@@ -523,9 +511,18 @@ void ItemListBase::performChildWindowLayout(bool nonclient_sized_hint,
 	}
 }
 
-/************************************************************************
-    Resize to fit content
-************************************************************************/
+//----------------------------------------------------------------------------//
+void ItemListBase::notifyScreenAreaChanged(bool adjust_size_to_content)
+{
+    Window::notifyScreenAreaChanged(adjust_size_to_content);
+
+    // FIXME: notifyScreenAreaChanged will call 'adjustSizeToContent' inside. Need this than?
+    // FIXME: infinite recursion!
+    //if (d_autoResize)
+    //    sizeToContent();
+}
+
+//----------------------------------------------------------------------------//
 void ItemListBase::sizeToContent_impl(void)
 {
     Rectf renderArea(getItemRenderArea());

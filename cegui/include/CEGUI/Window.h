@@ -2329,7 +2329,7 @@ public:
             - assigned WindowRenderer given the opportunity to update child
               content areas as needed.
             - All content is then potentially updated via the
-              notifyParentContentAreaChanged notification as required by changes in
+              notifyScreenAreaChanged notification as required by changes in
               non-client and client area rectangles.
 
         The system may call this at various times (like when a window is resized
@@ -2342,7 +2342,7 @@ public:
         Hint that the client area rectangle has changed size.
 
     \note
-        The hint parameters are essentially a way to force notifyParentContentAreaChanged
+        The hint parameters are essentially a way to force notifyScreenAreaChanged
         notifications for a given type (client / nonclient) of child window.
         Setting a hint to false does not mean a notification will not happen,
         instead it means that the function is to do its best to determine
@@ -2558,10 +2558,7 @@ public:
     void setWritingXMLAllowed(bool allow)   {d_allowWriteXML = allow;}
 
     //! \copydoc Element::notifyScreenAreaChanged
-    void notifyScreenAreaChanged(bool moved, bool adjustSize) override;
-
-    //! \copydoc Element::notifyParentContentAreaChanged
-    void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged) override;
+    void notifyScreenAreaChanged(bool adjust_size_to_content) override;
 
     /*!
     \brief
@@ -3741,7 +3738,6 @@ protected:
 
     // mark the rect caches defined on Window invalid (does not affect Element)
     void markCachedWindowRectsInvalid();
-    void layoutLookNFeelChildWidgets();
 
     Window* getChildAtPosition(const glm::vec2& position,
                                bool (Window::*hittestfunc)(const glm::vec2&, bool)

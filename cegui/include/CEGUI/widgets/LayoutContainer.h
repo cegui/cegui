@@ -113,7 +113,7 @@ public:
 
     const CachedRectf& getClientChildContentArea() const override;
 
-    void notifyScreenAreaChanged(bool moved, bool adjustSize) override;
+    void notifyScreenAreaChanged(bool adjust_size_to_content) override;
 
 protected:
     /// @copydoc Window::getUnclippedInnerRect_impl
@@ -185,7 +185,6 @@ protected:
     virtual UVector2 getBoundingSizeForWindow(Window* window) const;
 
     // overridden from parent class
-    void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged) override;
     void onChildOrderChanged(ElementEventArgs& e) override;
 
     /*************************************************************************

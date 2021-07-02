@@ -405,8 +405,8 @@ protected:
     void onCursorPressHold(CursorInputEventArgs& e) override;
     void onCursorMove(CursorInputEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;
-    void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged) override;
 
+    virtual void notifyScreenAreaChanged(bool adjust_size_to_content) override;
     virtual void onTargetSurfaceChanged(RenderingSurface* newSurface) override;
 
     Event::Connection d_eventChildrenWillBeAddedConnection;

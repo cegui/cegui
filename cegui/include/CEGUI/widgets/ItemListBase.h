@@ -351,6 +351,7 @@ public:
     void performChildWindowLayout(bool nonclient_sized_hint = false,
                                   bool client_sized_hint = false) override;
 
+    virtual void notifyScreenAreaChanged(bool adjust_size_to_content) override;
 
     /*!
     \brief
@@ -540,14 +541,6 @@ protected:
         Handler called internally when the sorting mode is changed.
     */
     virtual void onSortModeChanged(WindowEventArgs& e);
-
-	/*************************************************************************
-		Overridden Event handlers
-	*************************************************************************/
-    void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged) override;
-	//virtual void    onChildRemoved(WindowEventArgs& e);
-    //virtual void    onDestructionStarted(WindowEventArgs& e);
-
 
     /*!
     \brief

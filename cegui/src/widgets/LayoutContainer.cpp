@@ -111,25 +111,24 @@ const Element::CachedRectf& LayoutContainer::getClientChildContentArea() const
 }
 
 //----------------------------------------------------------------------------//
-void LayoutContainer::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
-{
-    // This is intentionally not Window::notifyParentContentAreaChanged.
-    Element::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
-
-    // force update of child positioning.
-    notifyScreenAreaChanged(true);
-    performChildWindowLayout(true, true);
-
-    // It is possible that children didn't change, but we must re-layout them
-    markNeedsLayouting();
-}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::notifyScreenAreaChanged(bool moved, bool adjustSize)
+void LayoutContainer::notifyScreenAreaChanged(bool adjust_size_to_content)
 {
     d_clientChildContentArea.invalidateCache();
 
-    Window::notifyScreenAreaChanged(moved, adjustSize);
+    Window::notifyScreenAreaChanged(adjust_size_to_content);
+
+//!!!FIXME:
+// From notifyParentContentAreaChanged:
+
+    //// This is intentionally not Window::notifyParentContentAreaChanged.
+    //Element::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
+
+    //// force update of child positioning.
+    //notifyScreenAreaChanged(true);
+    //performChildWindowLayout(true, true);
+
+    //// It is possible that children didn't change, but we must re-layout them
+    //markNeedsLayouting();
 }
 
 //----------------------------------------------------------------------------//

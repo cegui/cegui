@@ -290,28 +290,20 @@ void ScrolledContainer::cleanupChildren(void)
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
-{
-    Window::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
-
-    // Autosized dimension has absolute size and therefore isn't resized with the
-    // parent, but children are based on the viewport, so notify them anyway.
-    if (isSizeAdjustedToContent())
-        performChildWindowLayout(false, true);
-}
-
-//----------------------------------------------------------------------------//
-void ScrolledContainer::notifyScreenAreaChanged(bool moved, bool adjustSize)
+void ScrolledContainer::notifyScreenAreaChanged(bool adjust_size_to_content)
 {
     d_clientChildContentArea.invalidateCache();
-    Window::notifyScreenAreaChanged(moved, adjustSize);
-}
+    Window::notifyScreenAreaChanged(adjust_size_to_content);
 
-//----------------------------------------------------------------------------//
-void ScrolledContainer::setArea(const UVector2& pos, const USize& size, bool adjustSize)
-{
-    d_clientChildContentArea.invalidateCache();
-    Window::setArea(pos, size, adjustSize);
+//!!!FIXME:
+// From notifyParentContentAreaChanged:
+
+    //Window::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
+
+    //// Autosized dimension has absolute size and therefore isn't resized with the
+    //// parent, but children are based on the viewport, so notify them anyway.
+    //if (isSizeAdjustedToContent())
+    //    performChildWindowLayout(false, true);
 }
 
 //----------------------------------------------------------------------------//
