@@ -109,7 +109,7 @@ void FrameWindow::initialiseComponents(void)
     // bind handler to close button 'Click' event
     closeButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::FrameWindow::closeClickHandler, this));
 
-    performChildWindowLayout();
+    performChildLayout(false, false);
 }
 
 
@@ -666,7 +666,7 @@ void FrameWindow::onTextChanged(WindowEventArgs& e)
     // pass this onto titlebar component.
     getTitlebar()->setText(getText());
     // maybe the user is using a fontdim for titlebar dimensions ;)
-    performChildWindowLayout();
+    performChildLayout(false, false);
 }
 
 

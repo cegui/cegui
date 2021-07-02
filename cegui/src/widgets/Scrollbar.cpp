@@ -101,7 +101,7 @@ void Scrollbar::initialiseComponents(void)
                                      this));
 
     // do initial layout
-    performChildWindowLayout();
+    performChildLayout(false, false);
 }
 
 //----------------------------------------------------------------------------//
@@ -207,7 +207,7 @@ void Scrollbar::onThumbTrackEnded(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Scrollbar::onScrollConfigChanged(WindowEventArgs& e)
 {
-    performChildWindowLayout();
+    performChildLayout(false, false);
     fireEvent(EventScrollConfigChanged, e, EventNamespace);
 }
 

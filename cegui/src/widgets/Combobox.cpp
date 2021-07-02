@@ -144,7 +144,7 @@ void Combobox::initialiseComponents(void)
         Event::Subscriber(&Combobox::listwidget_HorzScrollModeChangedHandler, this));
 
 	// put components in their initial positions
-	performChildWindowLayout();
+	performChildLayout(false, false);
 }
 
 

@@ -75,7 +75,7 @@ void ColourPicker::initialiseComponents(void)
         Event::Subscriber(&ColourPicker::colourRect_ColourRectClickedHandler,
                           this));
 
-    performChildWindowLayout();
+    performChildLayout(false, false);
 
     d_selectedColour =
         getProperty<ColourRect>("Colour").d_top_left;

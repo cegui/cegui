@@ -91,7 +91,7 @@ void Slider::initialiseComponents(void)
 	thumb->subscribeEvent(Thumb::EventThumbTrackStarted, Event::Subscriber(&CEGUI::Slider::handleThumbTrackStarted, this));
 	thumb->subscribeEvent(Thumb::EventThumbTrackEnded, Event::Subscriber(&CEGUI::Slider::handleThumbTrackEnded, this));
 
-	performChildWindowLayout();
+	performChildLayout(false, false);
 }
 
 

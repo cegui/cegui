@@ -1564,6 +1564,18 @@ public:
     //! Sets the default paragraph direction for the displayed text of this Element.
     void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);
 
+    /*!
+    \brief
+        Layout child widgets inside our content areas.
+
+    \param moved
+        - true if a widget moved on screen
+
+    \param sized
+        - true if a widget pixel size has changed
+    */
+    virtual void performChildLayout(bool moved, bool sized);
+
 protected:
     /*!
     \brief
@@ -1600,8 +1612,19 @@ protected:
     virtual Rectf getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const;
     //! Default implementation of function to return Element's inner rect area.
     virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
-    //! Invalidates all content rects.
-    virtual void invalidateRects();
+
+    /*!
+    \brief
+        Handles an actual screen area changes for this widget. This typically leads
+        to invalidation of cached imagery and areas.
+
+    \param moved
+        - true if a widget moved on screen
+
+    \param sized
+        - true if a widget pixel size has changed
+    */
+    virtual void handleAreaChanges(bool moved, bool sized);
 
     /*************************************************************************
         Event trigger methods

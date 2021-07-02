@@ -102,7 +102,7 @@ namespace CEGUI
         // final initialisation
         setTextInputMode(TextInputMode::Integer);
         setCurrentValue(0.0f);
-        performChildWindowLayout();
+        performChildLayout(false, false);
     }
 
     double Spinner::getCurrentValue(void) const
