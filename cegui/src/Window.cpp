@@ -2004,53 +2004,53 @@ void Window::setModalState(bool state)
 }
 
 //----------------------------------------------------------------------------//
-void Window::performChildWindowLayout(const bool nonclient_sized_hint,
-                                      const bool client_sized_hint)
+void Window::performChildWindowLayout(bool nonclient_sized_hint,
+                                      bool client_sized_hint)
 {
-    const Sizef old_size(d_pixelSize);
+//---invalidateRects() part
+
+    const Sizef oldOuterSize(d_pixelSize);
     d_pixelSize = calculatePixelSize();
+    const bool outer_changed = nonclient_sized_hint || d_pixelSize != oldOuterSize;
 
-    layoutLookNFeelChildWidgets();
-
-    const bool outer_changed = nonclient_sized_hint || d_pixelSize != old_size;
-
-    const Sizef old_sz(d_unclippedInnerRect.get().getSize());
+    const Sizef oldInnerSize(d_unclippedInnerRect.get().getSize());
     d_unclippedInnerRect.invalidateCache();
-    const bool inner_changed = client_sized_hint || (old_sz != d_unclippedInnerRect.get().getSize());
+    const bool inner_changed = client_sized_hint || (d_unclippedInnerRect.get().getSize() != oldInnerSize);
 
     d_outerRectClipperValid &= !outer_changed;
     d_innerRectClipperValid &= !inner_changed;
 
+//---
+
+//---performChildWindowLayout part
+
+    // Layout child widgets with LNF
+    if (!d_lookName.empty())
+    {
+        try
+        {
+            WidgetLookManager::getSingleton().getWidgetLook(d_lookName).layoutChildWidgets(*this);
+        }
+        catch (UnknownObjectException&)
+        {
+            Logger::getSingleton().logEvent(
+                "Window::layoutLookNFeelChildWidgets: "
+                "WidgetLook '" + d_lookName + "' was not found.", LoggingLevel::Error);
+        }
+    }
+
+    // Layout child widgets with a window renderer
     if (d_windowRenderer)
         d_windowRenderer->performChildWindowLayout();
 
-    if (outer_changed || inner_changed)
+    // Layout child widgets normally
+    if (outer_changed || inner_changed) //???need this check?! windows maycheck themselves inside notifyScreenAreaChanged
     {
         for (Element* child : d_children)
-        {
-            if (d_nonClient ? outer_changed : inner_changed)
-                child->notifyParentContentAreaChanged(true, true); // FIXME: calc flags!
-        }
+            child->notifyScreenAreaChanged(true);
     }
-}
 
-//----------------------------------------------------------------------------//
-void Window::layoutLookNFeelChildWidgets()
-{
-    if (d_lookName.empty())
-        return;
-
-    try
-    {
-        WidgetLookManager::getSingleton().
-            getWidgetLook(d_lookName).layoutChildWidgets(*this);
-    }
-    catch (UnknownObjectException&)
-    {
-        Logger::getSingleton().logEvent(
-            "Window::layoutLookNFeelChildWidgets: "
-            "WidgetLook '" + d_lookName + "' was not found.", LoggingLevel::Error);
-    }
+//---
 }
 
 //----------------------------------------------------------------------------//
@@ -3088,23 +3088,20 @@ void Window::notifyClippingChanged(void)
 }
 
 //----------------------------------------------------------------------------//
-void Window::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
-{
-    Element::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
-
-    // if we were not moved or sized, do child layout anyway!
-    // URGENT FIXME
-    //if (!(moved || sized))
-    performChildWindowLayout();
-}
-
-//----------------------------------------------------------------------------//
-void Window::notifyScreenAreaChanged(bool moved, bool adjustSize)
+void Window::notifyScreenAreaChanged(bool adjust_size_to_content)
 {
     markCachedWindowRectsInvalid();
-    Element::notifyScreenAreaChanged(moved, adjustSize);
+    Element::notifyScreenAreaChanged(adjust_size_to_content);
 
     updateGeometryRenderSettings();
+
+//!!!FIXME:
+// From notifyParentContentAreaChanged:
+
+    // if parent moved or sized but we are not, do child layout anyway!
+    // URGENT FIXME
+    //if (!(moved || sized))
+    //performChildWindowLayout();
 }
 
 //----------------------------------------------------------------------------//

@@ -371,7 +371,7 @@ void GridLayoutContainer::layout()
 
     // Trigger recalculation of children pixel sizes
     for (Element* child : d_children)
-        child->notifyParentContentAreaChanged(true, true);
+        child->notifyScreenAreaChanged(true);
 
     // First, we need to determine rowSizes and colSizes, this is
     // needed before any layouting work takes place

@@ -84,7 +84,7 @@ public:
     const CachedRectf& getClientChildContentArea() const override;
     const CachedRectf& getNonClientChildContentArea() const override;
 
-    void notifyScreenAreaChanged(bool moved, bool adjustSize) override;
+    void notifyScreenAreaChanged(bool adjust_size_to_content) override;
     
 protected:
     // Overridden from Window.
@@ -104,8 +104,6 @@ protected:
     void onChildAdded(ElementEventArgs& e) override;
     void onChildRemoved(ElementEventArgs& e) override;
     void cleanupChildren(void) override;
-    void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged) override;
-    void setArea(const UVector2& pos, const USize& size, bool adjustSize) override;
     bool moveToFront_impl(bool wasClicked) override;
 
     //! type definition for collection used to track event connections.

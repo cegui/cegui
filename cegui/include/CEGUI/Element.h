@@ -1192,21 +1192,7 @@ public:
           Element objects.
         - false to just process \e this Element.
     */
-    virtual void notifyScreenAreaChanged(bool moved, bool adjustSize);
-
-    /*!
-    \brief
-        Informs an element when its parent content area has changed. For
-        client elements it is an inner rect, and for non-clients it's outer rect.
-        If this element is the root / GUI Sheet element, this call will be made
-        when the display size changes.
-
-    \param offsetChanged
-        - true if content area has shifted, i.e. its left or top coord changed.
-    \param sizeChanged
-        - true if content area has changed its size.
-    */
-    virtual void notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged);
+    virtual void notifyScreenAreaChanged(bool adjust_size_to_content);
 
     /*!
     \brief Return the size of the root container (such as screen size).

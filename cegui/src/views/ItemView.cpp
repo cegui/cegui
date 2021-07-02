@@ -757,10 +757,11 @@ void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::notifyParentContentAreaChanged(bool offsetChanged, bool sizeChanged)
+void ItemView::notifyScreenAreaChanged(bool adjust_size_to_content)
 {
-    Window::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
+    Window::notifyScreenAreaChanged(adjust_size_to_content);
 
+    // FIXME: notifyScreenAreaChanged will call 'adjustSizeToContent' inside. Need this than?
     resizeToContent();
 }
 

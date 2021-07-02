@@ -117,7 +117,7 @@ void GUIContext::setRootWindow(Window* new_root)
     if (d_rootWindow)
     {
         d_rootWindow->setGUIContext(this);
-        d_rootWindow->notifyParentContentAreaChanged(true, true);
+        d_rootWindow->notifyScreenAreaChanged(true);
     }
 
     markAsDirty();
@@ -311,7 +311,7 @@ bool GUIContext::areaChangedHandler(const EventArgs&)
     d_cursor.notifyTargetSizeChanged(d_surfaceSize);
 
     if (d_rootWindow)
-        d_rootWindow->notifyParentContentAreaChanged(false, true);
+        d_rootWindow->notifyScreenAreaChanged(true);
 
     return true;
 }
