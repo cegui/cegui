@@ -170,7 +170,7 @@ void Element::setMinSize(const USize& size)
 
     // TODO: Perhaps we could be more selective and skip this if min size won't
     //       affect the size
-    setSize(getSize());
+    notifyScreenAreaChanged(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -180,7 +180,7 @@ void Element::setMaxSize(const USize& size)
 
     // TODO: Perhaps we could be more selective and skip this if min size won't
     //       affect the size
-    setSize(getSize());
+    notifyScreenAreaChanged(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -196,7 +196,7 @@ void Element::setAspectMode(AspectMode mode)
     // Ensure the area is calculated with the new aspect mode
     // TODO: This potentially wastes effort, we should just mark it as dirty
     //       and postpone the calculation for as long as possible
-    setArea(d_area);
+    notifyScreenAreaChanged(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -212,7 +212,7 @@ void Element::setAspectRatio(float ratio)
     // Ensure the area is calculated with the new aspect ratio
     // TODO: This potentially wastes effort, we should just mark it as dirty
     //       and postpone the calculation for as long as possible
-    setArea(d_area);
+    notifyScreenAreaChanged(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -228,7 +228,7 @@ void Element::setPixelAligned(const bool setting)
     // Ensure the area is calculated with the new pixel aligned setting
     // TODO: This potentially wastes effort, we should just mark it as dirty
     //       and postpone the calculation for as long as possible
-    setArea(d_area);
+    notifyScreenAreaChanged(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -1045,7 +1045,7 @@ void Element::onChildOrderChanged(ElementEventArgs& e)
 void Element::onNonClientChanged(ElementEventArgs& e)
 {
     // TODO: Be less wasteful with this update
-    setArea(d_area);
+    notifyScreenAreaChanged(true);
 
     fireEvent(EventNonClientChanged, e, EventNamespace);
 }
