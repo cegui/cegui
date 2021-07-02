@@ -648,11 +648,6 @@ public:
     */
     bool isClippedByParent(void) const {return d_clippedByParent;}
 
-    using NamedElement::setArea;
-
-    //! \copydoc Element::setArea
-    void setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content) override;
-
     /*!
     \brief
         return the ID code currently assigned to this Window by client code.
@@ -3681,7 +3676,7 @@ protected:
         Update position and clip region on this Windows geometry / rendering
         surface.
     */
-    void updateGeometryRenderSettings();
+    void updateGeometryTranslationAndClipping();
 
     //! transfer RenderingSurfaces to be owned by our target RenderingSurface.
     void transferChildSurfaces();
@@ -3716,9 +3711,6 @@ protected:
 
     //! handler function for when font render size changes.
     virtual bool handleFontRenderSizeChange(const EventArgs& args);
-
-    // mark the rect caches defined on Window invalid (does not affect Element)
-    void markCachedWindowRectsInvalid();
 
     Window* getChildAtPosition(const glm::vec2& position,
                                bool (Window::*hittestfunc)(const glm::vec2&, bool)

@@ -1925,31 +1925,6 @@ void Window::setInheritsTooltipText(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content)
-{
-    markCachedWindowRectsInvalid();
-    Element::setArea(pos, size, adjust_size_to_content);
-
-    //if (moved || sized)
-    // FIXME: This is potentially wasteful to update every time
-    if (GUIContext* context = getGUIContextPtr())
-        context->updateWindowContainingCursor();
-
-    // update geometry position and clipping if nothing from above appears to
-    // have done so already (NB: may be occasionally wasteful, but fixes bugs!)
-    if (!d_unclippedOuterRect.isCacheValid())
-        updateGeometryRenderSettings();
-}
-
-//----------------------------------------------------------------------------//
-void Window::markCachedWindowRectsInvalid()
-{
-    d_outerRectClipperValid = false;
-    d_innerRectClipperValid = false;
-    d_hitTestRectValid = false;
-}
-
-//----------------------------------------------------------------------------//
 void Window::setLookNFeel(const String& look)
 {
     if (d_lookName == look)
@@ -3001,7 +2976,9 @@ bool Window::isPropertyAtDefault(const Property* property) const
 //----------------------------------------------------------------------------//
 void Window::notifyClippingChanged(void)
 {
-    markCachedWindowRectsInvalid();
+    d_outerRectClipperValid = false;
+    d_innerRectClipperValid = false;
+    d_hitTestRectValid = false;
 
     // inform children that their clipped screen areas must be updated
     for (Element* child : d_children)
@@ -3014,18 +2991,17 @@ void Window::handleAreaChanges(bool moved, bool sized)
 {
     Element::handleAreaChanges(moved, sized);
 
-    markCachedWindowRectsInvalid();
+    if (moved || sized)
+        d_outerRectClipperValid = false;
 
-// TODO: is there a profit in updating d_unclippedInnerRect? Can skip updating children than? Can keep d_innerRectClipperValid?
-//!!!FIXME: Element::handleAreaChanges invalidates inner rect only if moved or sized, BUT e.g. FrameWindow may have inner
-//rect changed even without moving or sizing! We MUST NOT miss this update!
+    // Inner rect may change even if outer rect didn't change. E.g. if a ScrolledContainer shows
+    // or hides scrollbars, or a new FrameWindow recalculates its titlebar height.
+    // TODO: can exploit some external hint to avoid recalculating a rect each time?
+    d_unclippedInnerRect.invalidateCache();
+    d_innerRectClipperValid = false;
 
-    //const Sizef oldInnerSize(d_unclippedInnerRect.get().getSize());
-    //d_unclippedInnerRect.invalidateCache();
-    //const bool inner_changed = /*client_sized_hint ||*/ (d_unclippedInnerRect.get().getSize() != oldInnerSize);
-
-    //d_outerRectClipperValid &= !outer_changed;
-    //d_innerRectClipperValid &= !inner_changed;
+    // Always invalidate because we can't predict how it is calculated
+    d_hitTestRectValid = false;
 
     if (sized)
     {
@@ -3036,7 +3012,15 @@ void Window::handleAreaChanges(bool moved, bool sized)
         invalidate();
     }
 
-    updateGeometryRenderSettings();
+    if (moved || sized)
+    {
+        // Apply our scren area changes to rendering surface and geometry settings
+        updateGeometryTranslationAndClipping();
+
+        // Window under cursor might change due to our screen area change
+        if (GUIContext* context = getGUIContextPtr())
+            context->updateWindowContainingCursor();
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -3066,7 +3050,7 @@ void Window::performChildLayout(bool moved, bool sized)
 }
 
 //----------------------------------------------------------------------------//
-void Window::updateGeometryRenderSettings()
+void Window::updateGeometryTranslationAndClipping()
 {
     RenderingContext ctx;
     getRenderingContext(ctx);

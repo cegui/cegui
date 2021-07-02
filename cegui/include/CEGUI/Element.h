@@ -298,7 +298,7 @@ public:
 
     \see UDim
     */
-    virtual void setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content);
+    void setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content);
 
     //! \overload
     inline void setArea(const UDim& xpos, const UDim& ypos,
