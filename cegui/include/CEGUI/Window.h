@@ -3569,7 +3569,7 @@ protected:
         Recursively inform all children that the clipping has changed and screen rects
         need to be recached.
     */
-    void notifyClippingChanged(void);
+    void notifyClippingChanged();
 
     /*!
     \brief

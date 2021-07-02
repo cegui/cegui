@@ -406,7 +406,7 @@ protected:
     void onCursorMove(CursorInputEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;
 
-    virtual void notifyScreenAreaChanged(bool adjust_size_to_content) override;
+    virtual void handleAreaChanges(bool moved, bool sized) override;
     virtual void onTargetSurfaceChanged(RenderingSurface* newSurface) override;
 
     Event::Connection d_eventChildrenWillBeAddedConnection;

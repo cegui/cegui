@@ -757,9 +757,9 @@ void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::notifyScreenAreaChanged(bool adjust_size_to_content)
+void ItemView::handleAreaChanges(bool moved, bool sized)
 {
-    Window::notifyScreenAreaChanged(adjust_size_to_content);
+    Window::handleAreaChanges(moved, sized);
 
     // FIXME: notifyScreenAreaChanged will call 'adjustSizeToContent' inside. Need this than?
     resizeToContent();

@@ -98,10 +98,6 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
 
 // TODO:
 // 1. FrameWindow::onRollupToggled - need separate recursive invalidation? Check this method!
-// 2. Element::onSized aims to be only an event caller. Window::onSized is infrastructural, needs fixing!
-//    May make virtual notifyScreenAreaChanged and process children layouting there in Window, not in onSized!
-// 3. notifyScreenAreaChanged must always be recursive, now non-recursive is a hack.
-// 4. notifyScreenAreaChanged may be non-virtual, virtualize only internals.
 // 5. onHorizontalAlignmentChanged etc below - not always moved=true!!! Also should make them fire-only, move logic!
 // 6. Ensure LCs and other widgets with parent's client area are working correctly.
 // 7. Can make notifyScreenAreaChanged non-virtual!
@@ -120,6 +116,13 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
 //15. Check FrameWindow titlebar and ScrollablePane scrollbars inner-only updating!
 //16. Make setArea non-virtual?
 //17. Window::handleAreaChanges - some hint for inner rect recalculation?
+//19. Use cached rects for clippers and hit test in a Window
+//20. Animation is not smooth for texts in a first sample. Was the same before?
+//21. updateGeometryTranslationAndClipping !moved !sized FrameWindow still requires it! Why?! Check!
+//22. Second sample FrameWindow - check old version, is text clipped at right side?
+//23. ItemView::handleAreaChanges - need resizeToContent()?
+//24. ItemListBase::handleAreaChanges - how to handle sizeToContent()?
+//25. Window::handleAreaChanges - rethink order of calls! geomerty, surface invalidation etc etc.
 //----------------------------------------------------------------------------//
 void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
 {

@@ -1180,7 +1180,7 @@ public:
     }
 
     /*!
-    \brief Inform the element and (optionally) all children that screen area has changed
+    \brief Inform the element and all children that screen area has changed
 
     \note
         This will cause recomputation and recaching of various rectangles used.
@@ -1192,7 +1192,7 @@ public:
           Element objects.
         - false to just process \e this Element.
     */
-    virtual void notifyScreenAreaChanged(bool adjust_size_to_content);
+    void notifyScreenAreaChanged(bool adjust_size_to_content);
 
     /*!
     \brief Return the size of the root container (such as screen size).
