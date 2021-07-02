@@ -122,22 +122,6 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
         {
             WindowManager::getSingletonPtr()->destroyWindow(dlg);
         });
-        dlg->subscribeEvent(FrameWindow::EventCursorEntersArea, [dlg]()
-        {
-            static_cast<FrameWindow*>(dlg)->setRolledup(false);
-        });
-        dlg->subscribeEvent(FrameWindow::EventCursorLeavesArea, [dlg]()
-        {
-            static_cast<FrameWindow*>(dlg)->setRolledup(true);
-        });
-
-        // To see how window children behave
-        {
-            auto child = wm->createWindow("WindowsLook/Static");
-            child->setArea(URect(UDim(0.25f, 0), UDim(0.25f, 0), UDim(0.75f, 0), UDim(0.75f, 0)));
-            child->setProperty("BackgroundColours", "tl:FFFF00FF tr:FFFF00FF bl:FFFF00BB br:FFFF00BB");
-            dlg->addChild(child);
-        }
 
         d_pane->addChild(dlg);
     }
@@ -161,14 +145,35 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     panelAuto->addChild(pane);
 
     // add a dialog to the first pane so we have something to drag around :)
-    Window* dlg = wm->createWindow("WindowsLook/FrameWindow");
-    dlg->setSize(USize(UDim(0.2f,0),UDim(0.4f,0)));
-    dlg->setText("Drag me around");
-    dlg->subscribeEvent(FrameWindow::EventCloseClicked, [dlg]()
     {
-        WindowManager::getSingletonPtr()->destroyWindow(dlg);
-    });
-    pane->addChild(dlg);
+        Window* dlg = wm->createWindow("WindowsLook/FrameWindow", "FWWithContents");
+        dlg->setSize(USize(UDim(0.2f, 0), UDim(0.4f, 0)));
+        dlg->setText("Drag me around");
+        dlg->subscribeEvent(FrameWindow::EventCloseClicked, [dlg]()
+        {
+            WindowManager::getSingletonPtr()->destroyWindow(dlg);
+        });
+        dlg->subscribeEvent(FrameWindow::EventCursorEntersArea, [dlg]()
+        {
+            static_cast<FrameWindow*>(dlg)->setRolledup(false);
+        });
+        dlg->subscribeEvent(FrameWindow::EventCursorLeavesArea, [dlg]()
+        {
+            if (WindowManager::getSingletonPtr()->isAlive(dlg))
+                static_cast<FrameWindow*>(dlg)->setRolledup(true);
+        });
+
+        // To see how window children behave
+        {
+            auto child = wm->createWindow("WindowsLook/Static");
+            child->setArea(URect(UDim(0.25f, 0), UDim(0.25f, 0), UDim(0.75f, 0), UDim(0.75f, 0)));
+            child->setProperty("BackgroundColours", "tl:FF666666 tr:FF666666 bl:FFAAAAAA br:FFAAAAAA");
+            child->setProperty<bool>("FrameEnabled", false);
+            dlg->addChild(child);
+        }
+
+        pane->addChild(dlg);
+    }
 
     // Create another scrollable pane. It will autosize vertically, but will have fixed
     // width. Width of the content area is set to 100% of the ScrollablePane viewport,
@@ -208,7 +213,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     for (int i = 0; i < 5; ++i)
     {
-        dlg = wm->createWindow("WindowsLook/FrameWindow");
+        Window* dlg = wm->createWindow("WindowsLook/FrameWindow");
 
         if (!useLayout)
             dlg->setPosition(UVector2(UDim(0, 0), UDim(0.25f * i, 0)));
