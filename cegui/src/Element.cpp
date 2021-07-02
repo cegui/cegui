@@ -101,7 +101,7 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
 // 2. Element::onSized aims to be only an event caller. Window::onSized is infrastructural, needs fixing!
 //    May make virtual notifyScreenAreaChanged and process children layouting there in Window, not in onSized!
 // 3. notifyScreenAreaChanged must always be recursive, now non-recursive is a hack.
-// 4. notifyScreenAreaChanged may be non-virtual, virtualize only internals like invalidateRects.
+// 4. notifyScreenAreaChanged may be non-virtual, virtualize only internals.
 // 5. onHorizontalAlignmentChanged etc below - not always moved=true!!! Also should make them fire-only, move logic!
 // 6. Ensure LCs and other widgets with parent's client area are working correctly.
 // 7. Can make notifyScreenAreaChanged non-virtual!
@@ -118,6 +118,8 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
 //14. Consider passing client and non-client bools to performChildLayout? Or calculate inside?
 //    Or let children self-test in notifyScreenAreaChanged?
 //15. Check FrameWindow titlebar and ScrollablePane scrollbars inner-only updating!
+//16. Make setArea non-virtual?
+//17. Window::handleAreaChanges - some hint for inner rect recalculation?
 //----------------------------------------------------------------------------//
 void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
 {
