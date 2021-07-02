@@ -96,33 +96,6 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
     notifyScreenAreaChanged(adjust_size_to_content);
 }
 
-// TODO:
-// 1. FrameWindow::onRollupToggled - need separate recursive invalidation? Check this method!
-// 5. onHorizontalAlignmentChanged etc below - not always moved=true!!! Also should make them fire-only, move logic!
-// 6. Ensure LCs and other widgets with parent's client area are working correctly.
-// 7. Can make notifyScreenAreaChanged non-virtual!
-// 8. Ensure recalculation is delayed! notifyScreenAreaChanged only invalidated rects before!
-//    (but onParentSized calculated inner rect!). At least ensure that not sized content area will not
-//    trigger heavy sizing related things! Also note that recalculated rect can help detecting that no changes were
-//    made and therefore no invalidation of child rects will happen. But still must optimize for move-only case.
-//    Window::notifyScreenAreaChanged always re-caches outer rect, exactly to get new screen pos!
-//    !!!After optimization can simply check if we moved or not, by flag passed!
-// 9. Check ScrolledContainer, removed its setArea overload because notifyScreenAreaChanged will invalidate child area.
-//10. Search 'notifyParentContentAreaChanged', there are places when logic must be inserted into new architecture!
-//11. Update documentation comments, args.
-//12. ItemListBase::notifyScreenAreaChanged - sizeToContent() leads to recursion! How was working before?
-//14. Consider passing client and non-client bools to performChildLayout? Or calculate inside?
-//    Or let children self-test in notifyScreenAreaChanged?
-//15. Check FrameWindow titlebar and ScrollablePane scrollbars inner-only updating!
-//16. Make setArea non-virtual?
-//17. Window::handleAreaChanges - some hint for inner rect recalculation?
-//19. Use cached rects for clippers and hit test in a Window
-//20. Animation is not smooth for texts in a first sample. Was the same before?
-//21. updateGeometryTranslationAndClipping !moved !sized FrameWindow still requires it! Why?! Check!
-//22. Second sample FrameWindow - check old version, is text clipped at right side?
-//23. ItemView::handleAreaChanges - need resizeToContent()?
-//24. ItemListBase::handleAreaChanges - how to handle sizeToContent()?
-//25. Window::handleAreaChanges - rethink order of calls! geomerty, surface invalidation etc etc.
 //----------------------------------------------------------------------------//
 void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
 {
