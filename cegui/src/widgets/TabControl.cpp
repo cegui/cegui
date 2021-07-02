@@ -112,7 +112,7 @@ void TabControl::initialiseComponents(void)
         buttonScrollRight->banPropertyFromXML(Window::VisiblePropertyName);
     }
 
-	performChildWindowLayout();
+	performChildLayout(false, false);
 
     if (isChild(ButtonScrollLeft))
         getChild(ButtonScrollLeft)->subscribeEvent (
@@ -227,7 +227,7 @@ void TabControl::setTabHeight(const UDim& height)
 {
     d_tabHeight = height;
 
-    performChildWindowLayout();
+    performChildLayout(false, false);
 }
 
 /*************************************************************************
@@ -237,7 +237,7 @@ void TabControl::setTabTextPadding(const UDim& padding)
 {
     d_tabPadding = padding;
 
-    performChildWindowLayout();
+    performChildLayout(false, false);
 }
 
 /*************************************************************************
@@ -270,7 +270,7 @@ void TabControl::addTab(Window* wnd)
         d_tabHeight.d_offset = 8 + getFont()->getFontHeight ();
 
     // Just request redraw
-    performChildWindowLayout();
+    performChildLayout(false, false);
     invalidate();
     // Subscribe to text changed event so that we can resize as needed
     d_eventConnections[wnd] =
@@ -436,7 +436,7 @@ void TabControl::makeTabVisible_impl(Window* wnd)
         d_firstTabOffset += rx - (x + w);
     }
 
-    performChildWindowLayout ();
+    performChildLayout(false, false);
 }
 /*************************************************************************
 Add tab control properties
@@ -561,14 +561,13 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
 /*************************************************************************
 Layout the widgets
 *************************************************************************/
-void TabControl::performChildWindowLayout(bool nonclient_sized_hint,
-                                          bool client_sized_hint)
+void TabControl::performChildLayout(bool moved, bool sized)
+
 {
     Window* tabButtonPane = getTabButtonPane();
     Window* tabContentPane = getTabPane();
 
-    // Enable top/bottom edges of the tabPane control,
-    // if supported by looknfeel
+    // Enable top/bottom edges of the tabPane control, if supported by looknfeel
     if (tabContentPane->isPropertyPresent (EnableTop))
         tabContentPane->setProperty (EnableTop, (d_tabPanePos == TabPanePosition::Top) ? n0 : n1);
     if (tabContentPane->isPropertyPresent (EnableBottom))
@@ -578,8 +577,7 @@ void TabControl::performChildWindowLayout(bool nonclient_sized_hint,
     if (tabButtonPane->isPropertyPresent (EnableBottom))
         tabButtonPane->setProperty (EnableBottom, (d_tabPanePos == TabPanePosition::Top) ? n1 : n0);
 
-    Window::performChildWindowLayout(nonclient_sized_hint,
-                                     client_sized_hint);
+    Window::performChildLayout(moved, sized);
 
     // Calculate the size & position of the tab scroll buttons
     Window *scrollLeftBtn = nullptr, *scrollRightBtn = nullptr;
@@ -644,7 +642,7 @@ bool TabControl::handleContentWindowTextChanged(const EventArgs& args)
         makeButtonName(wargs.window));
     tabButton->setText(wargs.window->getText());
     // sort out the layout
-    performChildWindowLayout();
+    performChildLayout(false, false);
 	invalidate();
 
 	return true;
@@ -739,7 +737,7 @@ TabButton* TabControl::createTabButton(const String& name) const
 void TabControl::setTabPanePosition(TabPanePosition pos)
 {
 	d_tabPanePos = pos;
-    performChildWindowLayout();
+    performChildLayout(false, false);
 }
 
 /*************************************************************************
@@ -771,7 +769,7 @@ bool TabControl::handleScrollPane(const EventArgs& e)
         // scroll button pane to left
         d_firstTabOffset -= d_tabButtonVector [i]->getPixelSize ().d_width;
 
-    performChildWindowLayout();
+    performChildLayout(false, false);
 	return true;
 }
 
@@ -798,7 +796,7 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
             (new_to > d_firstTabOffset + 0.9))
         {
             d_firstTabOffset = new_to;
-            performChildWindowLayout();
+            performChildLayout(false, false);
         }
     }
 
@@ -813,7 +811,7 @@ bool TabControl::handleWheeledPane(const EventArgs& e)
     float delta = but_pane->getOuterRectClipper().getWidth () / 20;
 
     d_firstTabOffset += me.scroll * delta;
-    performChildWindowLayout();
+    performChildLayout(false, false);
 
     return true;
 }
@@ -838,7 +836,7 @@ void TabControl::removeTab_impl(Window* window)
         // Select another tab
         setSelectedTab(getTabPane()->getChildAtIndex(0)->getName());
 
-    performChildWindowLayout();
+    performChildLayout(false, false);
 
     invalidate();
 }

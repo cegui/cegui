@@ -1982,7 +1982,7 @@ void Window::setLookNFeel(const String& look)
     d_windowRenderer->onLookNFeelAssigned();
 
     invalidate();
-    performChildWindowLayout();
+    performChildLayout(false, false);
 }
 
 //----------------------------------------------------------------------------//
@@ -2001,56 +2001,6 @@ void Window::setModalState(bool state)
     // clear the modal target
     else
         getGUIContext().setModalWindow(nullptr);
-}
-
-//----------------------------------------------------------------------------//
-void Window::performChildWindowLayout(bool nonclient_sized_hint,
-                                      bool client_sized_hint)
-{
-//---invalidateRects() part
-
-    const Sizef oldOuterSize(d_pixelSize);
-    d_pixelSize = calculatePixelSize();
-    const bool outer_changed = nonclient_sized_hint || d_pixelSize != oldOuterSize;
-
-    const Sizef oldInnerSize(d_unclippedInnerRect.get().getSize());
-    d_unclippedInnerRect.invalidateCache();
-    const bool inner_changed = client_sized_hint || (d_unclippedInnerRect.get().getSize() != oldInnerSize);
-
-    d_outerRectClipperValid &= !outer_changed;
-    d_innerRectClipperValid &= !inner_changed;
-
-//---
-
-//---performChildWindowLayout part
-
-    // Layout child widgets with LNF
-    if (!d_lookName.empty())
-    {
-        try
-        {
-            WidgetLookManager::getSingleton().getWidgetLook(d_lookName).layoutChildWidgets(*this);
-        }
-        catch (UnknownObjectException&)
-        {
-            Logger::getSingleton().logEvent(
-                "Window::layoutLookNFeelChildWidgets: "
-                "WidgetLook '" + d_lookName + "' was not found.", LoggingLevel::Error);
-        }
-    }
-
-    // Layout child widgets with a window renderer
-    if (d_windowRenderer)
-        d_windowRenderer->performChildWindowLayout();
-
-    // Layout child widgets normally
-    if (outer_changed || inner_changed) //???need this check?! windows maycheck themselves inside notifyScreenAreaChanged
-    {
-        for (Element* child : d_children)
-            child->notifyScreenAreaChanged(true);
-    }
-
-//---
 }
 
 //----------------------------------------------------------------------------//
@@ -2308,34 +2258,6 @@ Window* Window::getActiveSibling()
 }
 
 //----------------------------------------------------------------------------//
-void Window::onSized(ElementEventArgs& e)
-{
-    /*
-     * Why are we not calling Element::onSized?  It's because that function
-     * always calls the notifyParentContentAreaChanged notification for all children
-     * - we really want that to be done via performChildWindowLayout instead and
-     * we definitely don't want it done twice.
-     *
-     * (The other option was to add an Element::performChildLayout function -
-     * maybe we should consider that).
-    */
-
-    // resize the underlying RenderingWindow if we're using such a thing
-    if (d_surface && d_surface->isRenderingWindow())
-        static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
-
-    // screen area changes when we're resized.
-    // NB: Called non-recursive since the performChildWindowLayout call should
-    // have dealt more selectively with child Window cases.
-    notifyScreenAreaChanged(true);
-    performChildWindowLayout(true, true);
-
-    invalidate();
-
-    fireEvent(EventSized, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
 void Window::onMoved(ElementEventArgs& e)
 {
     Element::onMoved(e);
@@ -2364,7 +2286,7 @@ void Window::onFontChanged(WindowEventArgs& e)
     // This was added to enable the Falagard FontDim to work
     // properly.  A better, more selective, solution would
     // probably be to do something funky with events ;)
-    performChildWindowLayout();
+    performChildLayout(false, false);
 
     invalidate();
     fireEvent(EventFontChanged, e, EventNamespace);
@@ -3088,20 +3010,59 @@ void Window::notifyClippingChanged(void)
 }
 
 //----------------------------------------------------------------------------//
-void Window::notifyScreenAreaChanged(bool adjust_size_to_content)
+void Window::handleAreaChanges(bool moved, bool sized)
 {
+    Element::handleAreaChanges(moved, sized);
+
     markCachedWindowRectsInvalid();
-    Element::notifyScreenAreaChanged(adjust_size_to_content);
+
+// TODO: is there a profit in updating d_unclippedInnerRect? Can skip updating children than? Can keep d_innerRectClipperValid?
+//!!!FIXME: Element::handleAreaChanges invalidates inner rect only if moved or sized, BUT e.g. FrameWindow may have inner
+//rect changed even without moving or sizing! We MUST NOT miss this update!
+
+    //const Sizef oldInnerSize(d_unclippedInnerRect.get().getSize());
+    //d_unclippedInnerRect.invalidateCache();
+    //const bool inner_changed = /*client_sized_hint ||*/ (d_unclippedInnerRect.get().getSize() != oldInnerSize);
+
+    //d_outerRectClipperValid &= !outer_changed;
+    //d_innerRectClipperValid &= !inner_changed;
+
+    if (sized)
+    {
+        // resize the underlying RenderingWindow if we're using such a thing
+        if (d_surface && d_surface->isRenderingWindow())
+            static_cast<RenderingWindow*>(d_surface)->setSize(d_pixelSize);
+
+        invalidate();
+    }
 
     updateGeometryRenderSettings();
+}
 
-//!!!FIXME:
-// From notifyParentContentAreaChanged:
+//----------------------------------------------------------------------------//
+void Window::performChildLayout(bool moved, bool sized)
+{
+    // Layout child widgets with LNF
+    if (!d_lookName.empty())
+    {
+        try
+        {
+            WidgetLookManager::getSingleton().getWidgetLook(d_lookName).layoutChildWidgets(*this);
+        }
+        catch (UnknownObjectException&)
+        {
+            Logger::getSingleton().logEvent(
+                "Window::layoutLookNFeelChildWidgets: "
+                "WidgetLook '" + d_lookName + "' was not found.", LoggingLevel::Error);
+        }
+    }
 
-    // if parent moved or sized but we are not, do child layout anyway!
-    // URGENT FIXME
-    //if (!(moved || sized))
-    //performChildWindowLayout();
+    // Layout child widgets with a window renderer
+    if (d_windowRenderer)
+        d_windowRenderer->performChildWindowLayout();
+
+    // Layout child widgets normally
+    Element::performChildLayout(moved, sized);
 }
 
 //----------------------------------------------------------------------------//

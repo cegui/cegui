@@ -590,7 +590,7 @@ void ColourPickerControls::initialiseComponents()
 
     initColourPicker();
 
-    performChildWindowLayout();
+    performChildLayout(false, false);
 }
 
 void ColourPickerControls::destroy( void )

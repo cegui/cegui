@@ -495,12 +495,11 @@ void ItemListBase::endInitialisation(void)
 }
 
 //----------------------------------------------------------------------------//
-void ItemListBase::performChildWindowLayout(bool nonclient_sized_hint,
-                                            bool client_sized_hint)
+void ItemListBase::performChildLayout(bool moved, bool sized)
 {
-	Window::performChildWindowLayout(nonclient_sized_hint,
-                                     client_sized_hint);
-	// if we are not currently initialising
+    Window::performChildLayout(moved, sized);
+
+    // if we are not currently initialising
 	if (!d_initialising)
 	{
 	    // Redo the item layout.

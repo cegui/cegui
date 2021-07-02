@@ -647,7 +647,7 @@ void MultiColumnList::initialiseComponents(void)
 
 	// Perform initial layout
 	configureScrollbars();
-	performChildWindowLayout();
+	performChildLayout(false, false);
 }
 
 

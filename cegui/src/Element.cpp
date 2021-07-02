@@ -97,7 +97,7 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
 }
 
 // TODO:
-// 1. FrameWindow::onRollupToggled - need separate recursive invalidation?
+// 1. FrameWindow::onRollupToggled - need separate recursive invalidation? Check this method!
 // 2. Element::onSized aims to be only an event caller. Window::onSized is infrastructural, needs fixing!
 //    May make virtual notifyScreenAreaChanged and process children layouting there in Window, not in onSized!
 // 3. notifyScreenAreaChanged must always be recursive, now non-recursive is a hack.
@@ -115,7 +115,9 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
 //10. Search 'notifyParentContentAreaChanged', there are places when logic must be inserted into new architecture!
 //11. Update documentation comments, args.
 //12. ItemListBase::notifyScreenAreaChanged - sizeToContent() leads to recursion! How was working before?
-//13. Add new FrameWindow in a scrollable pane demo -> until resized the new window is broken
+//14. Consider passing client and non-client bools to performChildLayout? Or calculate inside?
+//    Or let children self-test in notifyScreenAreaChanged?
+//15. Check FrameWindow titlebar and ScrollablePane scrollbars inner-only updating!
 //----------------------------------------------------------------------------//
 void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
 {
@@ -130,21 +132,8 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
     d_unclippedOuterRect.invalidateCache();
     const bool moved = (getUnclippedOuterRect().get().getPosition() != oldPos);
 
-    //???!!!whan if outer rect didn't change, but inner did? we will skip that here and lose changes?
-    //???just pass moved and sized to virtuals without early exit? Let descendants decide what will happen.
-    //E.g. Window will take into account child layouting with LNF.
-    if (!moved && !sized)
-        return;
-
-    //!!!no need to invalidate unclipped here! already recalculated above!
-    //???name it like onOuterAreaChanged / onSizedOrMoved etc?
-    invalidateRects();
-
-    //???virtualize to performChildWindowLayout?
-    // invalidateRects will invalidate our own rects
-    // performChildWindowLayout will trigger rect updates in children
-    for (Element* child : d_children)
-        child->notifyScreenAreaChanged(true); //???propagate adjust_size_to_content?
+    handleAreaChanges(moved, sized);
+    performChildLayout(moved, sized); //???propagate adjust_size_to_content?
 
     if (moved)
         onMoved(ElementEventArgs(this));
@@ -159,10 +148,17 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
 }
 
 //----------------------------------------------------------------------------//
-void Element::invalidateRects()
+void Element::handleAreaChanges(bool moved, bool sized)
 {
-    // Outer rect is already recalculated
-    d_unclippedInnerRect.invalidateCache();
+    if (moved || sized)
+        d_unclippedInnerRect.invalidateCache();
+}
+
+//----------------------------------------------------------------------------//
+void Element::performChildLayout(bool moved, bool sized)
+{
+    for (Element* child : d_children)
+        child->notifyScreenAreaChanged(true);
 }
 
 //----------------------------------------------------------------------------//

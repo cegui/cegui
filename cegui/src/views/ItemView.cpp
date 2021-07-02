@@ -233,7 +233,7 @@ void ItemView::initialiseComponents(void)
     getHorzScrollbar()->subscribeEvent(Scrollbar::EventScrollPositionChanged,
         Event::Subscriber(&ItemView::onScrollPositionChanged, this));
 
-    performChildWindowLayout();
+    performChildLayout(false, false);
 }
 
 //----------------------------------------------------------------------------//
@@ -772,7 +772,7 @@ void ItemView::onTargetSurfaceChanged(RenderingSurface* newSurface)
     Window::onTargetSurfaceChanged(newSurface);
     if (getGUIContextPtr())
     {
-        performChildWindowLayout();
+        performChildLayout(false, false);
         updateScrollbars();
         resizeToContent(); // call invalidateView(false) instead?
     }

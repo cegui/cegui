@@ -412,8 +412,7 @@ protected:
     */
     Window* getTabPane() const;
 
-    void performChildWindowLayout(bool nonclient_sized_hint = false,
-                                  bool client_sized_hint = false) override;
+    virtual void performChildLayout(bool moved, bool sized) override;
     int writeChildWindowsXML(XMLSerializer& xml_stream) const override;
 
     // validate window renderer
