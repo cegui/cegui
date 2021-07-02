@@ -346,11 +346,10 @@ public:
     */
     void endInitialisation(void) override;
 
+    virtual void handleAreaChanges(bool moved, bool sized) override;
 
     //! \copydoc Window::performChildWindowLayout(bool ,bool)
     virtual void performChildLayout(bool moved, bool sized) override;
-
-    virtual void notifyScreenAreaChanged(bool adjust_size_to_content) override;
 
     /*!
     \brief

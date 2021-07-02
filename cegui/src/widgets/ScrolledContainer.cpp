@@ -290,16 +290,12 @@ void ScrolledContainer::cleanupChildren(void)
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::notifyScreenAreaChanged(bool adjust_size_to_content)
+void ScrolledContainer::handleAreaChanges(bool moved, bool sized)
 {
     d_clientChildContentArea.invalidateCache();
-    Window::notifyScreenAreaChanged(adjust_size_to_content);
+    Window::handleAreaChanges(moved, sized);
 
-//!!!FIXME:
-// From notifyParentContentAreaChanged:
-
-    //Window::notifyParentContentAreaChanged(offsetChanged, sizeChanged);
-
+//!!!FIXME: logic for performChildLayout, now must happen automatically because we always layout children
     //// Autosized dimension has absolute size and therefore isn't resized with the
     //// parent, but children are based on the viewport, so notify them anyway.
     //if (isSizeAdjustedToContent())

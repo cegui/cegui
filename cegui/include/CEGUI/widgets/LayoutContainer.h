@@ -113,8 +113,6 @@ public:
 
     const CachedRectf& getClientChildContentArea() const override;
 
-    void notifyScreenAreaChanged(bool adjust_size_to_content) override;
-
 protected:
     /// @copydoc Window::getUnclippedInnerRect_impl
     Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const override;
@@ -124,6 +122,7 @@ protected:
     void addChild_impl(Element* element) override;
     void removeChild_impl(Element* element) override;
     void cleanupChildren(void) override;
+    void handleAreaChanges(bool moved, bool sized) override;
 
     /*************************************************************************
         Event trigger methods

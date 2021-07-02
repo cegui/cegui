@@ -2974,7 +2974,7 @@ bool Window::isPropertyAtDefault(const Property* property) const
 }
 
 //----------------------------------------------------------------------------//
-void Window::notifyClippingChanged(void)
+void Window::notifyClippingChanged()
 {
     d_outerRectClipperValid = false;
     d_innerRectClipperValid = false;
@@ -3012,9 +3012,11 @@ void Window::handleAreaChanges(bool moved, bool sized)
         invalidate();
     }
 
-    if (moved || sized)
+    // TODO: could try to optimize. Now FrameWindow requires updateGeometryTranslationAndClipping().
+    //       And updateWindowContainingCursor() is needed because hit test rect is invalidated.
+    //if (moved || sized)
     {
-        // Apply our scren area changes to rendering surface and geometry settings
+        // Apply our screen area changes to rendering surface and geometry settings
         updateGeometryTranslationAndClipping();
 
         // Window under cursor might change due to our screen area change

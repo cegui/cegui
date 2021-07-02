@@ -495,6 +495,17 @@ void ItemListBase::endInitialisation(void)
 }
 
 //----------------------------------------------------------------------------//
+void ItemListBase::handleAreaChanges(bool moved, bool sized)
+{
+    Window::handleAreaChanges(moved, sized);
+
+    // FIXME: notifyScreenAreaChanged will call 'adjustSizeToContent' inside. Need this than?
+    // FIXME: infinite recursion!
+    //if (d_autoResize)
+    //    sizeToContent();
+}
+
+//----------------------------------------------------------------------------//
 void ItemListBase::performChildLayout(bool moved, bool sized)
 {
     Window::performChildLayout(moved, sized);
@@ -508,17 +519,6 @@ void ItemListBase::performChildLayout(bool moved, bool sized)
 	    // It would also cause infinite recursion... so lets just avoid that :)
 	    layoutItemWidgets();
 	}
-}
-
-//----------------------------------------------------------------------------//
-void ItemListBase::notifyScreenAreaChanged(bool adjust_size_to_content)
-{
-    Window::notifyScreenAreaChanged(adjust_size_to_content);
-
-    // FIXME: notifyScreenAreaChanged will call 'adjustSizeToContent' inside. Need this than?
-    // FIXME: infinite recursion!
-    //if (d_autoResize)
-    //    sizeToContent();
 }
 
 //----------------------------------------------------------------------------//
