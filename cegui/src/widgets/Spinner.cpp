@@ -77,7 +77,7 @@ namespace CEGUI
         // Nothing to do here.
     }
 
-    void Spinner::initialiseComponents(void)
+    void Spinner::initialiseComponents()
     {
         // get all the component widgets
         PushButton* increaseButton = getIncreaseButton();
@@ -102,7 +102,7 @@ namespace CEGUI
         // final initialisation
         setTextInputMode(TextInputMode::Integer);
         setCurrentValue(0.0f);
-        performChildLayout(false, false);
+        Window::initialiseComponents();
     }
 
     double Spinner::getCurrentValue(void) const

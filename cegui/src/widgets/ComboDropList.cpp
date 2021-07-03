@@ -72,7 +72,7 @@ ComboDropList::~ComboDropList(void)
 /*************************************************************************
 	Initialise the Window based object ready for use.
 *************************************************************************/
-void ComboDropList::initialiseComponents(void)
+void ComboDropList::initialiseComponents()
 {
     ListWidget::initialiseComponents();
 

@@ -473,7 +473,7 @@ public:
     ~Scrollbar(void);
 
     // overrides
-    void initialiseComponents(void) override;
+    void initialiseComponents() override;
 
 protected:
     /*!

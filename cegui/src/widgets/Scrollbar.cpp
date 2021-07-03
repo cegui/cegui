@@ -72,7 +72,7 @@ Scrollbar::~Scrollbar(void)
 }
 
 //----------------------------------------------------------------------------//
-void Scrollbar::initialiseComponents(void)
+void Scrollbar::initialiseComponents()
 {
     // Set up thumb
     Thumb* const t = getThumb();
@@ -101,7 +101,7 @@ void Scrollbar::initialiseComponents(void)
                                      this));
 
     // do initial layout
-    performChildLayout(false, false);
+    Window::initialiseComponents();
 }
 
 //----------------------------------------------------------------------------//
@@ -207,7 +207,7 @@ void Scrollbar::onThumbTrackEnded(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Scrollbar::onScrollConfigChanged(WindowEventArgs& e)
 {
-    performChildLayout(false, false);
+    performChildLayout();
     fireEvent(EventScrollConfigChanged, e, EventNamespace);
 }
 

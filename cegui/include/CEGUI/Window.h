@@ -1530,7 +1530,7 @@ public:
     \return
         Nothing
     */
-    virtual void initialiseComponents(void) {}
+    virtual void initialiseComponents();
 
     /*!
     \brief
@@ -2968,7 +2968,7 @@ public:
     \param sized
         - true if a widget pixel size has changed
     */
-    virtual void performChildLayout(bool moved, bool sized) override;
+    virtual void performChildLayout() override;
 
 protected:
     // friend classes for construction / initialisation purposes (for now)

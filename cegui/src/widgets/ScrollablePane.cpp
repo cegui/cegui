@@ -239,7 +239,7 @@ void ScrollablePane::setVerticalScrollPosition(float position)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::initialiseComponents(void)
+void ScrollablePane::initialiseComponents()
 {
     // get horizontal scrollbar
     Scrollbar* horzScrollbar = getHorzScrollbar();
@@ -281,6 +281,8 @@ void ScrollablePane::initialiseComponents(void)
     
     // finalise setup
     configureScrollbars();
+
+    Window::initialiseComponents(); // FIXME: need here?
 }
 
 //----------------------------------------------------------------------------//
@@ -300,7 +302,7 @@ void ScrollablePane::configureScrollbars(void)
             vertScrollbar->setVisible(show);
 
             notifyScreenAreaChanged(true);
-            performChildLayout(false, false);
+            performChildLayout();
         }
     }
 
@@ -315,7 +317,7 @@ void ScrollablePane::configureScrollbars(void)
             horzScrollbar->setVisible(show);
 
             notifyScreenAreaChanged(true);
-            performChildLayout(false, false);
+            performChildLayout();
         }
     }
 
@@ -331,7 +333,7 @@ void ScrollablePane::configureScrollbars(void)
             vertScrollbar->setVisible(show);
 
             notifyScreenAreaChanged(true);
-            performChildLayout(false, false);
+            performChildLayout();
         }
     }
     

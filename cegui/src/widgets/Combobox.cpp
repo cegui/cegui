@@ -103,7 +103,7 @@ Combobox::~Combobox(void)
 /*************************************************************************
 	Initialise the Window based object ready for use.
 *************************************************************************/
-void Combobox::initialiseComponents(void)
+void Combobox::initialiseComponents()
 {
 	Editbox* editbox        = getEditbox();
 	ComboDropList* droplist = getDropList();
@@ -144,7 +144,7 @@ void Combobox::initialiseComponents(void)
         Event::Subscriber(&Combobox::listwidget_HorzScrollModeChangedHandler, this));
 
 	// put components in their initial positions
-	performChildLayout(false, false);
+    Window::initialiseComponents();
 }
 
 

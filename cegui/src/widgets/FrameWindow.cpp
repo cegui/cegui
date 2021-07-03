@@ -89,7 +89,7 @@ FrameWindow::~FrameWindow(void)
 /*************************************************************************
     Initialises the Window based object ready for use.
 *************************************************************************/
-void FrameWindow::initialiseComponents(void)
+void FrameWindow::initialiseComponents()
 {
     Titlebar* titlebar = getTitlebar();
     PushButton* closeButton = getCloseButton();
@@ -109,7 +109,7 @@ void FrameWindow::initialiseComponents(void)
     // bind handler to close button 'Click' event
     closeButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::FrameWindow::closeClickHandler, this));
 
-    performChildLayout(false, false);
+    Window::initialiseComponents();
 }
 
 
@@ -666,7 +666,7 @@ void FrameWindow::onTextChanged(WindowEventArgs& e)
     // pass this onto titlebar component.
     getTitlebar()->setText(getText());
     // maybe the user is using a fontdim for titlebar dimensions ;)
-    performChildLayout(false, false);
+    performChildLayout();
 }
 
 

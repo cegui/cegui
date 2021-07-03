@@ -111,8 +111,10 @@ ItemListBase::~ItemListBase(void)
 /*************************************************************************
 	Initialise components
 *************************************************************************/
-void ItemListBase::initialiseComponents(void)
+void ItemListBase::initialiseComponents()
 {
+    Window::initialiseComponents(); // FIXME: need here?
+
     // this pane may be ourselves, and in fact is by default...
     d_pane->subscribeEvent(Window::EventChildRemoved,
         Event::Subscriber(&ItemListBase::handle_PaneChildRemoved, this));
@@ -506,9 +508,9 @@ void ItemListBase::handleAreaChanges(bool moved, bool sized)
 }
 
 //----------------------------------------------------------------------------//
-void ItemListBase::performChildLayout(bool moved, bool sized)
+void ItemListBase::performChildLayout()
 {
-    Window::performChildLayout(moved, sized);
+    Window::performChildLayout();
 
     // if we are not currently initialising
 	if (!d_initialising)

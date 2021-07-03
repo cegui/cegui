@@ -386,7 +386,7 @@ protected:
     void updateScrollbarDisplayMode(ScrollbarDisplayMode& target_mode,
         ScrollbarDisplayMode new_mode, String change_event);
 
-    void initialiseComponents(void) override;
+    void initialiseComponents() override;
 
     virtual bool onChildrenWillBeAdded(const EventArgs& args);
     virtual bool onChildrenAdded(const EventArgs& args);

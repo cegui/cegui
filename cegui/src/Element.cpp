@@ -110,8 +110,15 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
     d_unclippedOuterRect.invalidateCache();
     const bool moved = (getUnclippedOuterRect().get().getPosition() != oldPos);
 
-    handleAreaChanges(moved, sized);
-    performChildLayout(moved, sized); //???propagate adjust_size_to_content?
+    //if (sized)
+    {
+        handleAreaChanges(moved, sized);
+        performChildLayout(); //???propagate adjust_size_to_content?
+    }
+    //else
+    //{
+    //    handlePositionChangeRecursively(moved);
+    //}
 
     if (moved)
         onMoved(ElementEventArgs(this));
@@ -133,7 +140,15 @@ void Element::handleAreaChanges(bool moved, bool sized)
 }
 
 //----------------------------------------------------------------------------//
-void Element::performChildLayout(bool moved, bool sized)
+void Element::handlePositionChangeRecursively(bool moved)
+{
+    handleAreaChanges(moved, false);
+    for (Element* child : d_children)
+        child->handlePositionChangeRecursively(moved);
+}
+
+//----------------------------------------------------------------------------//
+void Element::performChildLayout()
 {
     for (Element* child : d_children)
         child->notifyScreenAreaChanged(true);

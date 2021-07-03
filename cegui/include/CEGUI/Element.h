@@ -1574,7 +1574,7 @@ public:
     \param sized
         - true if a widget pixel size has changed
     */
-    virtual void performChildLayout(bool moved, bool sized);
+    virtual void performChildLayout();
 
 protected:
     /*!
@@ -1625,6 +1625,9 @@ protected:
         - true if a widget pixel size has changed
     */
     virtual void handleAreaChanges(bool moved, bool sized);
+
+    //! Lightweight child area updating path for not resized widgets
+    void handlePositionChangeRecursively(bool moved);
 
     /*************************************************************************
         Event trigger methods

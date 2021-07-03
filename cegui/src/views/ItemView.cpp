@@ -226,14 +226,14 @@ void ItemView::addItemViewProperties()
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::initialiseComponents(void)
+void ItemView::initialiseComponents()
 {
     getVertScrollbar()->subscribeEvent(Scrollbar::EventScrollPositionChanged,
         Event::Subscriber(&ItemView::onScrollPositionChanged, this));
     getHorzScrollbar()->subscribeEvent(Scrollbar::EventScrollPositionChanged,
         Event::Subscriber(&ItemView::onScrollPositionChanged, this));
 
-    performChildLayout(false, false);
+    Window::initialiseComponents();
 }
 
 //----------------------------------------------------------------------------//
@@ -772,7 +772,7 @@ void ItemView::onTargetSurfaceChanged(RenderingSurface* newSurface)
     Window::onTargetSurfaceChanged(newSurface);
     if (getGUIContextPtr())
     {
-        performChildLayout(false, false);
+        performChildLayout();
         updateScrollbars();
         resizeToContent(); // call invalidateView(false) instead?
     }

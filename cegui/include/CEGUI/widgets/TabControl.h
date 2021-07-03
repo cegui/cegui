@@ -280,7 +280,7 @@ public:
 	\return
 		Nothing
 	*/
-    void	initialiseComponents(void) override;
+    void	initialiseComponents() override;
 
     /*!
     \brief
@@ -412,7 +412,7 @@ protected:
     */
     Window* getTabPane() const;
 
-    virtual void performChildLayout(bool moved, bool sized) override;
+    virtual void performChildLayout() override;
     int writeChildWindowsXML(XMLSerializer& xml_stream) const override;
 
     // validate window renderer
