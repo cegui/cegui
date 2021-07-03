@@ -51,7 +51,7 @@ struct EventActionFunctor
             return true;
 
         case ChildEventAction::Layout:
-            window.performChildLayout(false, false);
+            window.performChildLayout();
             return true;
 
         default:

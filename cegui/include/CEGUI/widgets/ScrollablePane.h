@@ -410,7 +410,7 @@ public:
     Scrollbar* getHorzScrollbar() const;
 
     // Overridden from Window
-    void initialiseComponents(void) override;
+    void initialiseComponents() override;
     void destroy(void) override;
 
 protected:

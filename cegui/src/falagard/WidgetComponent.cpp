@@ -305,7 +305,7 @@ namespace CEGUI
     {
         if (d_area.handleFontRenderSizeChange(window, font))
         {
-            window.performChildLayout(false, false);
+            window.performChildLayout();
             return true;
         }
 

@@ -329,6 +329,12 @@ Window::~Window(void)
 }
 
 //----------------------------------------------------------------------------//
+void Window::initialiseComponents()
+{
+    performChildLayout();
+}
+
+//----------------------------------------------------------------------------//
 bool Window::isChild(unsigned int ID) const
 {
     const size_t child_count = getChildCount();
@@ -1959,7 +1965,7 @@ void Window::setLookNFeel(const String& look)
     d_windowRenderer->onLookNFeelAssigned();
 
     invalidate();
-    performChildLayout(false, false);
+    performChildLayout();
 }
 
 //----------------------------------------------------------------------------//
@@ -2263,7 +2269,7 @@ void Window::onFontChanged(WindowEventArgs& e)
     // This was added to enable the Falagard FontDim to work
     // properly.  A better, more selective, solution would
     // probably be to do something funky with events ;)
-    performChildLayout(false, false);
+    performChildLayout();
 
     invalidate();
     fireEvent(EventFontChanged, e, EventNamespace);
@@ -3019,6 +3025,7 @@ void Window::handleAreaChanges(bool moved, bool sized)
 
     // Apply our screen area changes to rendering surface and geometry settings
     // TODO: could try to optimize. Now FrameWindow requires this even when not moved or sized. Why?
+    //       Possibly because of getParent()->getClipRect / getOuterRectClipper. Optimize parts? E.g. rw->setPosition.
     //if (moved || sized)
     {
         RenderingContext ctx;
@@ -3061,7 +3068,7 @@ void Window::handleAreaChanges(bool moved, bool sized)
 }
 
 //----------------------------------------------------------------------------//
-void Window::performChildLayout(bool moved, bool sized)
+void Window::performChildLayout()
 {
     // Layout child widgets with LNF
     if (!d_lookName.empty())
@@ -3083,7 +3090,7 @@ void Window::performChildLayout(bool moved, bool sized)
         d_windowRenderer->performChildWindowLayout();
 
     // Layout child widgets normally
-    Element::performChildLayout(moved, sized);
+    Element::performChildLayout();
 }
 
 //----------------------------------------------------------------------------//

@@ -234,7 +234,7 @@ public:
     \return
         Nothing
     */
-    void initialiseComponents(void) override;
+    void initialiseComponents() override;
 
 
 	/*!
@@ -349,7 +349,7 @@ public:
     virtual void handleAreaChanges(bool moved, bool sized) override;
 
     //! \copydoc Window::performChildWindowLayout(bool ,bool)
-    virtual void performChildLayout(bool moved, bool sized) override;
+    virtual void performChildLayout() override;
 
     /*!
     \brief
