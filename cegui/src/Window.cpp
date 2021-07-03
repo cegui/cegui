@@ -3018,9 +3018,46 @@ void Window::handleAreaChanges(bool moved, bool sized)
     }
 
     // Apply our screen area changes to rendering surface and geometry settings
-    // TODO: could try to optimize. Now FrameWindow requires updateGeometryTranslationAndClipping(). Why?
+    // TODO: could try to optimize. Now FrameWindow requires this even when not moved or sized. Why?
     //if (moved || sized)
-    updateGeometryTranslationAndClipping();
+    {
+        RenderingContext ctx;
+        getRenderingContext(ctx);
+
+        const auto& pos = getUnclippedOuterRect().get().getPosition();
+
+        if (ctx.owner == this && ctx.surface->isRenderingWindow())
+        {
+            RenderingWindow* const rw = static_cast<RenderingWindow*>(ctx.surface);
+
+            // move the underlying RenderingWindow if we're using such a thing
+            rw->setPosition(pos);
+            updatePivot();
+            d_translation = glm::vec3(0.0f, 0.0f, 0.0f);
+
+            rw->setClippingRegion((d_clippedByParent && d_parent) ?
+                getParent()->getClipRect(d_nonClient) :
+                Rectf(glm::vec2(0, 0), getRootContainerSize()));
+
+            d_clippingRegion = Rectf(glm::vec2(0, 0), d_pixelSize);
+        }
+        else
+        {
+            // if we're not texture backed, update geometry position.
+            // position is the offset of the window on the dest surface.
+            d_translation = glm::vec3(pos - ctx.offset, 0.0f);
+
+            d_clippingRegion = getOuterRectClipper();
+            if (d_clippingRegion.getWidth() != 0.0f && d_clippingRegion.getHeight() != 0.0f)
+                d_clippingRegion.offset(-ctx.offset);
+        }
+
+        for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
+        {
+            currentBuffer->setTranslation(d_translation);
+            currentBuffer->setClippingRegion(d_clippingRegion);
+        }
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -3047,47 +3084,6 @@ void Window::performChildLayout(bool moved, bool sized)
 
     // Layout child widgets normally
     Element::performChildLayout(moved, sized);
-}
-
-//----------------------------------------------------------------------------//
-void Window::updateGeometryTranslationAndClipping()
-{
-    RenderingContext ctx;
-    getRenderingContext(ctx);
-
-    const auto& pos = getUnclippedOuterRect().get().getPosition();
-
-    if (ctx.owner == this && ctx.surface->isRenderingWindow())
-    {
-        RenderingWindow* const rw = static_cast<RenderingWindow*>(ctx.surface);
-
-        // move the underlying RenderingWindow if we're using such a thing
-        rw->setPosition(pos);
-        updatePivot();
-        d_translation = glm::vec3(0.0f, 0.0f, 0.0f);
-
-        rw->setClippingRegion((d_clippedByParent && d_parent)?
-            getParent()->getClipRect(d_nonClient) :
-            Rectf(glm::vec2(0, 0), getRootContainerSize()));
-
-        d_clippingRegion = Rectf(glm::vec2(0, 0), d_pixelSize);
-    }
-    else
-    {
-        // if we're not texture backed, update geometry position.
-        // position is the offset of the window on the dest surface.
-        d_translation = glm::vec3(pos - ctx.offset, 0.0f);
-
-        d_clippingRegion = getOuterRectClipper();
-        if (d_clippingRegion.getWidth() != 0.0f && d_clippingRegion.getHeight() != 0.0f)
-            d_clippingRegion.offset(-ctx.offset);
-    }
-
-    for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
-    {
-        currentBuffer->setTranslation(d_translation);
-        currentBuffer->setClippingRegion(d_clippingRegion);
-    }
 }
 
 //----------------------------------------------------------------------------//
