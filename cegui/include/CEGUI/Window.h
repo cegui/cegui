@@ -3526,20 +3526,6 @@ protected:
 
     /*!
     \brief
-        Fires off a repeated cursor press event for this window.
-        Update position and clip region on this Windows geometry / rendering
-        surface.
-    */
-    void updateGeometryBuffersTranslationAndClipping();
-
-    /*!
-    \brief
-        Updates this Window's geometry buffers alpha value
-    */
-    void updateGeometryBuffersAlpha();
-
-    /*!
-    \brief
     */
     void generateAutoRepeatEvent(CursorInputSource source);
 

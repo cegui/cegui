@@ -665,8 +665,7 @@ void Window::setEnabled(bool enabled)
         onDisabled(args);
     }
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
         context->updateWindowContainingCursor();
 }
 
@@ -681,8 +680,7 @@ void Window::setVisible(bool setting)
     WindowEventArgs args(this);
     d_visible ? onShown(args) : onHidden(args);
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
         context->updateWindowContainingCursor();
 }
 
@@ -1244,9 +1242,14 @@ void Window::bufferGeometry(const RenderingContext&, std::uint32_t drawModeMask)
         else
             populateGeometryBuffer();
 
-        updateGeometryBuffersTranslationAndClipping();
-
-        updateGeometryBuffersAlpha();
+        // Setup newly created geometry with our settings
+        const float finalAlpha = getEffectiveAlpha();
+        for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
+        {
+            currentBuffer->setTranslation(d_translation);
+            currentBuffer->setClippingRegion(d_clippingRegion);
+            currentBuffer->setAlpha(finalAlpha);
+        }
 
         // signal rendering ended
         args.handled = 0;
@@ -1348,8 +1351,7 @@ void Window::onZChange_impl(void)
 
     }
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
         context->updateWindowContainingCursor();
 }
 
@@ -2272,7 +2274,6 @@ void Window::onAlphaChanged(WindowEventArgs& e)
 {
     // scan child list and call this method for all children that inherit alpha
     const size_t child_count = getChildCount();
-
     for (size_t i = 0; i < child_count; ++i)
     {
         if (getChildAtIndex(i)->inheritsAlpha())
@@ -2283,11 +2284,13 @@ void Window::onAlphaChanged(WindowEventArgs& e)
 
     }
 
-    updateGeometryBuffersAlpha();
+    const float finalAlpha = getEffectiveAlpha();
+    for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
+        currentBuffer->setAlpha(finalAlpha);
+
     invalidateRenderingSurface();
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
         context->markAsDirty();
 
     fireEvent(EventAlphaChanged, e, EventNamespace);
@@ -3000,8 +3003,10 @@ void Window::handleAreaChanges(bool moved, bool sized)
     d_unclippedInnerRect.invalidateCache();
     d_innerRectClipperValid = false;
 
-    // Always invalidate because we can't predict how it is calculated
+    // Always invalidate hit rect because we can't predict how it is calculated
     d_hitTestRectValid = false;
+    if (GUIContext* context = getGUIContextPtr())
+        context->updateWindowContainingCursor();
 
     if (sized)
     {
@@ -3012,17 +3017,10 @@ void Window::handleAreaChanges(bool moved, bool sized)
         invalidate();
     }
 
-    // TODO: could try to optimize. Now FrameWindow requires updateGeometryTranslationAndClipping().
-    //       And updateWindowContainingCursor() is needed because hit test rect is invalidated.
+    // Apply our screen area changes to rendering surface and geometry settings
+    // TODO: could try to optimize. Now FrameWindow requires updateGeometryTranslationAndClipping(). Why?
     //if (moved || sized)
-    {
-        // Apply our screen area changes to rendering surface and geometry settings
-        updateGeometryTranslationAndClipping();
-
-        // Window under cursor might change due to our screen area change
-        if (GUIContext* context = getGUIContextPtr())
-            context->updateWindowContainingCursor();
-    }
+    updateGeometryTranslationAndClipping();
 }
 
 //----------------------------------------------------------------------------//
@@ -3085,7 +3083,11 @@ void Window::updateGeometryTranslationAndClipping()
             d_clippingRegion.offset(-ctx.offset);
     }
 
-    updateGeometryBuffersTranslationAndClipping();
+    for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
+    {
+        currentBuffer->setTranslation(d_translation);
+        currentBuffer->setClippingRegion(d_clippingRegion);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -3950,30 +3952,6 @@ void Window::destroyGeometryBuffers()
         System::getSingleton().getRenderer()->destroyGeometryBuffer(*d_geometryBuffers.at(i));
 
     d_geometryBuffers.clear();
-}
-
-//----------------------------------------------------------------------------//
-void Window::updateGeometryBuffersTranslationAndClipping()
-{
-    const size_t geom_buffer_count = d_geometryBuffers.size();
-    for (size_t i = 0; i < geom_buffer_count; ++i)
-    {
-        CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
-        currentBuffer->setTranslation(d_translation);
-        currentBuffer->setClippingRegion(d_clippingRegion);
-    }
-}
-
-void Window::updateGeometryBuffersAlpha()
-{
-    float final_alpha = getEffectiveAlpha();
-
-    const size_t geom_buffer_count = d_geometryBuffers.size();
-    for (size_t i = 0; i < geom_buffer_count; ++i)
-    {
-        CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
-        currentBuffer->setAlpha(final_alpha);
-    }
 }
 
 //----------------------------------------------------------------------------//
