@@ -1192,7 +1192,7 @@ public:
           Element objects.
         - false to just process \e this Element.
     */
-    void notifyScreenAreaChanged(bool adjust_size_to_content);
+    void notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLayoutChildren = false);
 
     /*!
     \brief Return the size of the root container (such as screen size).

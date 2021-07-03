@@ -97,7 +97,7 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
 }
 
 //----------------------------------------------------------------------------//
-void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
+void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLayoutChildren)
 {
     // Update pixel size and detect resizing
     const Sizef oldSize = d_pixelSize;
@@ -110,15 +110,15 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
     d_unclippedOuterRect.invalidateCache();
     const bool moved = (getUnclippedOuterRect().get().getPosition() != oldPos);
 
-    //if (sized)
+    if (sized || forceLayoutChildren)
     {
         handleAreaChanges(moved, sized);
         performChildLayout(); //???propagate adjust_size_to_content?
     }
-    //else
-    //{
-    //    handlePositionChangeRecursively(moved);
-    //}
+    else
+    {
+        handlePositionChangeRecursively(moved);
+    }
 
     if (moved)
         onMoved(ElementEventArgs(this));
@@ -150,8 +150,9 @@ void Element::handlePositionChangeRecursively(bool moved)
 //----------------------------------------------------------------------------//
 void Element::performChildLayout()
 {
+    // NB: we force recursive children layout even if at some point they are not sized
     for (Element* child : d_children)
-        child->notifyScreenAreaChanged(true);
+        child->notifyScreenAreaChanged(true, true);
 }
 
 //----------------------------------------------------------------------------//
