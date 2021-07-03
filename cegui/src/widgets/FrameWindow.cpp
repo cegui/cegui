@@ -199,8 +199,6 @@ void FrameWindow::toggleRollup(void)
         // event notification.
         WindowEventArgs args(this);
         onRollupToggled(args);
-
-        getGUIContext().updateWindowContainingCursor();
     }
 
 }
@@ -513,7 +511,7 @@ void FrameWindow::setCursorForSizingLocation(SizingLocation location) const
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
     invalidate(true);
-    notifyScreenAreaChanged(true); //???!!!TODO: adjust to content only if rolled down?
+    notifyScreenAreaChanged(true, true); //???!!!TODO: adjust to content only if rolled down?
 
     fireEvent(EventRollupToggled, e, EventNamespace);
 }
