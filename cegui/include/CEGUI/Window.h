@@ -3657,13 +3657,6 @@ protected:
     */
     bool isTopOfZOrder() const;
 
-    /*!
-    \brief
-        Update position and clip region on this Windows geometry / rendering
-        surface.
-    */
-    void updateGeometryTranslationAndClipping();
-
     //! transfer RenderingSurfaces to be owned by our target RenderingSurface.
     void transferChildSurfaces();
 
