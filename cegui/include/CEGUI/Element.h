@@ -1585,19 +1585,6 @@ protected:
 
     /*!
     \brief
-        Set the parent element for this element object.
-
-    \param parent
-        Pointer to a Element object that is to be assigned as the parent to this
-        Element.
-
-    \return
-        Nothing
-    */
-    virtual void setParent(Element* parent);
-
-    /*!
-    \brief
         Add given element to child list at an appropriate position
     */
     virtual void addChild_impl(Element* element);

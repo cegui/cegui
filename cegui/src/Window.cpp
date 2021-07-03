@@ -1274,13 +1274,6 @@ void Window::queueGeometry(const RenderingContext& ctx)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setParent(Element* parent)
-{
-    Element::setParent(parent);
-    onTargetSurfaceChanged(getTargetRenderingSurface());
-}
-
-//----------------------------------------------------------------------------//
 void Window::cleanupChildren(void)
 {
     while (getChildCount() != 0)
@@ -1308,6 +1301,8 @@ void Window::addChild_impl(Element* element)
 
     NamedElement::addChild_impl(wnd);
 
+    wnd->onTargetSurfaceChanged(getTargetRenderingSurface());
+
     addWindowToDrawList(*wnd);
 
     wnd->invalidate(true);
@@ -1328,6 +1323,8 @@ void Window::removeChild_impl(Element* element)
     removeWindowFromDrawList(*wnd);
 
     NamedElement::removeChild_impl(wnd);
+
+    wnd->onTargetSurfaceChanged(getTargetRenderingSurface());
 
     wnd->onZChange_impl();
 
@@ -3760,11 +3757,7 @@ void Window::onTargetSurfaceChanged(RenderingSurface* newSurface)
 
                 // Propagate our auto-window as a new host surface for our children
                 for (auto child : d_children)
-                {
-                    Window* childWnd = static_cast<Window*>(child);
-                    if (childWnd)
-                        childWnd->onTargetSurfaceChanged(d_surface);
-                }
+                    static_cast<Window*>(child)->onTargetSurfaceChanged(d_surface);
             }
         }
         else if (!newSurface)
@@ -3774,11 +3767,7 @@ void Window::onTargetSurfaceChanged(RenderingSurface* newSurface)
                 // We are about to destroy our auto-window, so enforce children that use it
                 // as a host surface to destroy their windows first.
                 for (auto child : d_children)
-                {
-                    Window* childWnd = static_cast<Window*>(child);
-                    if (childWnd)
-                        childWnd->onTargetSurfaceChanged(nullptr);
-                }
+                    static_cast<Window*>(child)->onTargetSurfaceChanged(nullptr);
 
                 releaseRenderingWindow();
             }
@@ -3795,11 +3784,7 @@ void Window::onTargetSurfaceChanged(RenderingSurface* newSurface)
         // If we do not have a surface, transfer any surfaces from our children to
         // whatever our target surface now is.
         for (auto child : d_children)
-        {
-            Window* childWnd = static_cast<Window*>(child);
-            if (childWnd)
-                childWnd->onTargetSurfaceChanged(newSurface);
-        }
+            static_cast<Window*>(child)->onTargetSurfaceChanged(newSurface);
     }
 }
 

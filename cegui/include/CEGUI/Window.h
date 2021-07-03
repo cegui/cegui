@@ -3513,19 +3513,7 @@ protected:
 
     /*!
     \brief
-        Set the parent window for this window object.
-
-    \param parent
-        Pointer to a Window object that is to be assigned as the parent to this
-        Window.
-
-    \return
-        Nothing
-    */
-    void setParent(Element* parent) override;
-
-    /*!
-    \brief
+        Fires off a repeated cursor press event for this window.
     */
     void generateAutoRepeatEvent(CursorInputSource source);
 
