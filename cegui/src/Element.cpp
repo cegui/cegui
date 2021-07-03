@@ -623,6 +623,10 @@ void Element::addChild(Element* element)
         return;
 
     addChild_impl(element);
+
+    // Update child rects after all class-specific child initialization
+    element->notifyScreenAreaChanged(true, true);
+
     ElementEventArgs args(element);
     onChildAdded(args);
 }
@@ -903,27 +907,17 @@ void Element::addElementProperties()
 }
 
 //----------------------------------------------------------------------------//
-void Element::setParent(Element* parent)
-{
-    d_parent = parent;
-}
-
-//----------------------------------------------------------------------------//
 void Element::addChild_impl(Element* element)
 {
     // if element is attached elsewhere, detach it first (will fire normal events)
-    if (Element* const oldParent = element->getParentElement())
+    if (Element* const oldParent = element->d_parent)
         oldParent->removeChild(element);
 
     // add element to child list
     if (std::find(d_children.cbegin(), d_children.cend(), element) == d_children.cend())
         d_children.push_back(element);
 
-    // set the parent element
-    element->setParent(this);
-
-    // update area rects and content for the added element
-    element->notifyScreenAreaChanged(true);
+    element->d_parent = this;
 }
 
 //----------------------------------------------------------------------------//
@@ -939,8 +933,8 @@ void Element::removeChild_impl(Element* element)
         d_children.erase(it);
 
     // reset element's parent so it's no longer this element
-    if (element->getParentElement() == this)
-        element->setParent(nullptr);
+    if (element->d_parent == this)
+        element->d_parent = nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -949,12 +943,10 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
     const Sizef pixel_size = skipAllPixelAlignment ?
         calculatePixelSize(true) : getPixelSize();
 
-    const Element* parent = getParentElement();
-
     Rectf parent_rect;
-    if (parent)
+    if (d_parent)
     {
-        const CachedRectf& base = parent->getChildContentArea(d_nonClient);
+        const CachedRectf& base = d_parent->getChildContentArea(d_nonClient);
         parent_rect = skipAllPixelAlignment ? base.getFresh(true) : base.get();
     }
     else
