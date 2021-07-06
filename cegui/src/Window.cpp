@@ -3077,7 +3077,7 @@ void Window::performChildLayout()
         catch (UnknownObjectException&)
         {
             Logger::getSingleton().logEvent(
-                "Window::layoutLookNFeelChildWidgets: "
+                "Window::performChildLayout: "
                 "WidgetLook '" + d_lookName + "' was not found.", LoggingLevel::Error);
         }
     }

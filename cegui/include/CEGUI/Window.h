@@ -2583,7 +2583,7 @@ public:
     \par
         Note that this setting really only controls whether the Window
         automatically creates and manages the RenderingSurface, as opposed to
-        the \e use of the RenderingSurface.  If a RenderingSurfaceis set for the
+        the \e use of the RenderingSurface. If a RenderingSurface is set for the
         Window it will be used regardless of this setting.
     \par
         Enabling this option will cause the Window to attempt to create a
