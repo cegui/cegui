@@ -974,7 +974,13 @@ public:
         - true to return the non-client clipping area (based on outer rect).
         - false to return the client clipping area (based on inner rect).
     */
-    const Rectf& getClipRect(const bool non_client = false) const;
+    const Rectf& getClipRect(const bool non_client = false) const
+    {
+        return non_client ? getOuterRectClipper() : getInnerRectClipper();
+    }
+
+    //! helper function for calculating a parent clipping rectangle.
+    Rectf getParentClipRect() const;
 
     /*!
     \brief
@@ -3647,9 +3653,6 @@ protected:
 
     //! transfer RenderingSurfaces to be owned by our target RenderingSurface.
     void transferChildSurfaces();
-
-    //! helper function for calculating clipping rectangles.
-    Rectf getParentElementClipIntersection(const Rectf& unclipped_area) const;
 
     //! helper function to invalidate window and optionally child windows.
     void invalidate_impl(const bool recursive);
