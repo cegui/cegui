@@ -928,52 +928,31 @@ void Element::removeChild_impl(Element* element)
 //----------------------------------------------------------------------------//
 Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 {
-    const Sizef pixel_size = skipAllPixelAlignment ?
-        calculatePixelSize(true) : getPixelSize();
-
-    Rectf parent_rect;
-    if (d_parent)
-    {
-        const CachedRectf& base = d_parent->getChildContentArea(d_nonClient);
-        parent_rect = skipAllPixelAlignment ? base.getFresh(true) : base.get();
-    }
-    else
-    {
-        parent_rect = Rectf(glm::vec2(0, 0), getRootContainerSize());
-    }
+    const Rectf parent_rect = (!d_parent) ?
+        Rectf(glm::vec2(0, 0), getRootContainerSize()) :
+        skipAllPixelAlignment ?
+            d_parent->getChildContentArea(d_nonClient).getFresh(true) :
+            d_parent->getChildContentArea(d_nonClient).get();
 
     const Sizef parent_size = parent_rect.getSize();
+    const Sizef pixel_size = skipAllPixelAlignment ? calculatePixelSize(true) : getPixelSize();
 
-    glm::vec2 offset = glm::vec2(parent_rect.d_min.x, parent_rect.d_min.y) + CoordConverter::asAbsolute(d_area.d_min, parent_size, false);
+    glm::vec2 offset = parent_rect.d_min + CoordConverter::asAbsolute(d_area.d_min, parent_size, false);
 
-    switch (d_horizontalAlignment)
-    {
-        case HorizontalAlignment::Centre:
-            offset.x += (parent_size.d_width - pixel_size.d_width) * 0.5f;
-            break;
-        case HorizontalAlignment::Right:
-            offset.x += parent_size.d_width - pixel_size.d_width;
-            break;
-        default:
-            break;
-    }
+    if (d_horizontalAlignment == HorizontalAlignment::Centre)
+        offset.x += (parent_size.d_width - pixel_size.d_width) * 0.5f;
+    else if (d_horizontalAlignment == HorizontalAlignment::Right)
+        offset.x += parent_size.d_width - pixel_size.d_width;
 
-    switch (d_verticalAlignment)
-    {
-        case VerticalAlignment::Centre:
-            offset.y += (parent_size.d_height - pixel_size.d_height) * 0.5f;
-            break;
-        case VerticalAlignment::Bottom:
-            offset.y += parent_size.d_height - pixel_size.d_height;
-            break;
-        default:
-            break;
-    }
+    if (d_verticalAlignment == VerticalAlignment::Centre)
+        offset.y += (parent_size.d_height - pixel_size.d_height) * 0.5f;
+    else if (d_verticalAlignment == VerticalAlignment::Bottom)
+        offset.y += parent_size.d_height - pixel_size.d_height;
 
     if (d_pixelAligned && !skipAllPixelAlignment)
     {
-        offset = glm::vec2(CoordConverter::alignToPixels(offset.x),
-                           CoordConverter::alignToPixels(offset.y));
+        offset.x = CoordConverter::alignToPixels(offset.x);
+        offset.y = CoordConverter::alignToPixels(offset.y);
     }
 
     return Rectf(offset, pixel_size);
