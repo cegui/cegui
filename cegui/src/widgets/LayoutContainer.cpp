@@ -103,7 +103,7 @@ void LayoutContainer::update(float elapsed)
 }
 
 //----------------------------------------------------------------------------//
-const Element::CachedRectf& LayoutContainer::getClientChildContentArea() const
+const Element::CachedRectf& LayoutContainer::getChildContentArea(const bool /*non_client*/) const
 {
     return d_clientChildContentArea;
 }
@@ -137,7 +137,7 @@ Rectf LayoutContainer::getClientChildContentArea_impl(bool skipAllPixelAlignment
 {
     if (!d_parent)
     {
-        return skipAllPixelAlignment ? Window::getClientChildContentArea().getFresh(true) : Window::getClientChildContentArea().get();
+        return skipAllPixelAlignment ? Window::getChildContentArea(false).getFresh(true) : Window::getChildContentArea(false).get();
     }
     else
     {

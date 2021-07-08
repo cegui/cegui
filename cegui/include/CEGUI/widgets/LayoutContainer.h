@@ -111,7 +111,7 @@ public:
     /// @copydoc Window::update
     void update(float elapsed) override;
 
-    const CachedRectf& getClientChildContentArea() const override;
+    const CachedRectf& getChildContentArea(const bool non_client = false) const override;
 
 protected:
     /// @copydoc Window::getUnclippedInnerRect_impl

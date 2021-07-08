@@ -87,13 +87,7 @@ Rectf ScrolledContainer::getContentPixelRect(void) const
 }
 
 //----------------------------------------------------------------------------//
-const Element::CachedRectf& ScrolledContainer::getClientChildContentArea() const
-{
-    return d_clientChildContentArea;
-}
-
-//----------------------------------------------------------------------------//
-const Element::CachedRectf& ScrolledContainer::getNonClientChildContentArea() const
+const Element::CachedRectf& ScrolledContainer::getChildContentArea(const bool /*non_client*/) const
 {
     return d_clientChildContentArea;
 }
@@ -109,7 +103,7 @@ Rectf ScrolledContainer::getChildExtentsArea(void) const
 
     Sizef baseSize = d_pixelSize;
 
-    const auto& parentRect = d_parent->getClientChildContentArea().get();
+    const auto& parentRect = d_parent->getChildContentArea().get();
     if (isWidthAdjustedToContent())
         baseSize.d_width = parentRect.getWidth();
     if (isHeightAdjustedToContent())
@@ -215,9 +209,7 @@ Rectf ScrolledContainer::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) 
 //----------------------------------------------------------------------------//
 Rectf ScrolledContainer::getInnerRectClipper_impl() const
 {
-    return d_parent ?
-        getParent()->getInnerRectClipper() :
-        Window::getInnerRectClipper_impl();
+    return d_parent ? getParent()->getInnerRectClipper() : Window::getInnerRectClipper_impl();
 }
 
 //----------------------------------------------------------------------------//
@@ -231,20 +223,13 @@ Rectf ScrolledContainer::getClientChildContentArea_impl(bool skipAllPixelAlignme
 {
     if (!d_parent)
     {
-        return skipAllPixelAlignment ? Window::getUnclippedInnerRect().getFresh(true) : Window::getUnclippedInnerRect().get();
+        return skipAllPixelAlignment ? Window::getChildContentArea(false).getFresh(true) : Window::getChildContentArea(false).get();
     }
     else
     {
-        if (skipAllPixelAlignment)
-        {
-            return Rectf(getUnclippedOuterRect().getFresh(true).getPosition(),
-                         d_parent->getUnclippedInnerRect().getFresh(true).getSize());
-        }
-        else
-        {
-            return Rectf(getUnclippedOuterRect().get().getPosition(),
-                         d_parent->getUnclippedInnerRect().get().getSize());
-        }
+        return skipAllPixelAlignment ?
+            Rectf(getUnclippedOuterRect().getFresh(true).getPosition(), d_parent->getUnclippedInnerRect().getFresh(true).getSize()) :
+            Rectf(getUnclippedOuterRect().get().getPosition(), d_parent->getUnclippedInnerRect().get().getSize());
     }
 }
 

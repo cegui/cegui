@@ -110,7 +110,7 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLay
     d_unclippedOuterRect.invalidateCache();
     const bool moved = (getUnclippedOuterRect().get().getPosition() != oldPos);
 
-    if (sized || forceLayoutChildren)
+    if (true) //sized || forceLayoutChildren)
     {
         handleAreaChanges(moved, sized);
         performChildLayout(); //???propagate adjust_size_to_content?
@@ -788,18 +788,6 @@ void Element::onIsSizeAdjustedToContentChanged(ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-const Element::CachedRectf& Element::getClientChildContentArea() const
-{
-    return getUnclippedInnerRect();
-}
-
-//----------------------------------------------------------------------------//
-const Element::CachedRectf& Element::getNonClientChildContentArea() const
-{
-    return getUnclippedOuterRect();
-}
-
-//----------------------------------------------------------------------------//
 void Element::addElementProperties()
 {
     const String propertyOrigin("Element");
@@ -958,7 +946,7 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 
     glm::vec2 offset = glm::vec2(parent_rect.d_min.x, parent_rect.d_min.y) + CoordConverter::asAbsolute(d_area.d_min, parent_size, false);
 
-    switch (getHorizontalAlignment())
+    switch (d_horizontalAlignment)
     {
         case HorizontalAlignment::Centre:
             offset.x += (parent_size.d_width - pixel_size.d_width) * 0.5f;
@@ -970,7 +958,7 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
             break;
     }
 
-    switch (getVerticalAlignment())
+    switch (d_verticalAlignment)
     {
         case VerticalAlignment::Centre:
             offset.y += (parent_size.d_height - pixel_size.d_height) * 0.5f;
