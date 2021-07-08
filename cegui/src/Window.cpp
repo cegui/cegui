@@ -504,12 +504,6 @@ const Rectf& Window::getInnerRectClipper() const
 }
 
 //----------------------------------------------------------------------------//
-const Rectf& Window::getClipRect(const bool non_client) const
-{
-    return non_client ? getOuterRectClipper() : getInnerRectClipper();
-}
-
-//----------------------------------------------------------------------------//
 const Rectf& Window::getHitTestRect() const
 {
     if (!d_hitTestRectValid)
@@ -522,19 +516,18 @@ const Rectf& Window::getHitTestRect() const
 }
 
 //----------------------------------------------------------------------------//
+Rectf Window::getParentClipRect() const
+{
+    return (d_parent && d_clippedByParent) ?
+        getParent()->getClipRect(d_nonClient) :
+        Rectf(glm::vec2(0.f, 0.f), getRootContainerSize());
+}
+
+//----------------------------------------------------------------------------//
 Window* Window::getCaptureWindow() const
 {
     GUIContext* context = getGUIContextPtr();
     return context ? context->getInputCaptureWindow() : nullptr;
-}
-
-//----------------------------------------------------------------------------//
-Rectf Window::getParentElementClipIntersection(const Rectf& unclipped_area) const
-{
-    return unclipped_area.getIntersection(
-        (d_parent && d_clippedByParent) ?
-            getParent()->getClipRect(d_nonClient) :
-            Rectf(glm::vec2(0, 0), getRootContainerSize()));
 }
 
 //----------------------------------------------------------------------------//
@@ -551,7 +544,7 @@ Rectf Window::getOuterRectClipper_impl() const
 {
     return (d_surface && d_surface->isRenderingWindow()) ?
         getUnclippedOuterRect().get() :
-        getParentElementClipIntersection(getUnclippedOuterRect().get());
+        getUnclippedOuterRect().get().getIntersection(getParentClipRect());
 }
 
 //----------------------------------------------------------------------------//
@@ -559,7 +552,7 @@ Rectf Window::getInnerRectClipper_impl() const
 {
     return (d_surface && d_surface->isRenderingWindow()) ?
         getUnclippedInnerRect().get() :
-        getParentElementClipIntersection(getUnclippedInnerRect().get());
+        getUnclippedInnerRect().get().getIntersection(getParentClipRect());
 }
 
 //----------------------------------------------------------------------------//
@@ -3040,9 +3033,7 @@ void Window::handleAreaChanges(bool moved, bool sized)
             updatePivot();
             d_translation = glm::vec3(0.0f, 0.0f, 0.0f);
 
-            rw->setClippingRegion((d_clippedByParent && d_parent) ?
-                getParent()->getClipRect(d_nonClient) :
-                Rectf(glm::vec2(0, 0), getRootContainerSize()));
+            rw->setClippingRegion(getParentClipRect());
 
             d_clippingRegion = Rectf(glm::vec2(0, 0), d_pixelSize);
         }
