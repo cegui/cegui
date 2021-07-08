@@ -540,9 +540,10 @@ Rectf Window::getParentElementClipIntersection(const Rectf& unclipped_area) cons
 //----------------------------------------------------------------------------//
 Rectf Window::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
 {
-    // TODO: skip all pixel alignment!
-    return d_windowRenderer ? d_windowRenderer->getUnclippedInnerRect() :
-                              (skipAllPixelAlignment ? getUnclippedOuterRect().getFresh(true) : getUnclippedOuterRect().get());
+    // TODO: handle skipAllPixelAlignment in a window renderer!
+    return d_windowRenderer ?
+        d_windowRenderer->getUnclippedInnerRect() :
+        Element::getUnclippedInnerRect_impl(skipAllPixelAlignment);
 }
 
 //----------------------------------------------------------------------------//
@@ -588,7 +589,7 @@ bool Window::isHit(const glm::vec2& position, const bool allow_disabled) const
     if (!allow_disabled && isEffectiveDisabled())
         return false;
 
-    const Rectf test_area(getHitTestRect());
+    const Rectf& test_area = getHitTestRect();
 
     if ((test_area.getWidth() == 0.0f) || (test_area.getHeight() == 0.0f))
         return false;

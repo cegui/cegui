@@ -1116,44 +1116,6 @@ public:
     }
 
     /*!
-    \brief Return a Rect that describes the unclipped area covered by the Element.
-
-    This function can return either the inner or outer area dependant upon
-    the boolean values passed in.
-
-    \param inner
-        - true if the inner rect area should be returned.
-        - false if the outer rect area should be returned.
-
-    \see Element::getUnclippedOuterRect
-    \see Element::getUnclippedInnerRect
-    */
-    inline const CachedRectf& getUnclippedRect(const bool inner) const
-    {
-        return inner ? getUnclippedInnerRect() : getUnclippedOuterRect();
-    }
-
-    /*!
-    \brief Return a Rect that is used by client child elements as content area
-
-    Client content area is used for relative sizing, positioning and clipping
-    of child elements that are client (their NonClient property is "false").
-
-    \see Element::getChildContentArea
-    */
-    virtual const CachedRectf& getClientChildContentArea() const;
-
-    /*!
-    \brief Return a Rect that is used by client child elements as content area
-
-    Client content area is used for relative sizing, positioning and clipping
-    of child elements that are non-client (their NonClient property is "true").
-
-    \see Element::getChildContentArea
-    */
-    virtual const CachedRectf& getNonClientChildContentArea() const;
-
-    /*!
     \brief Return a Rect that is used to position and size child elements
 
     It is used as the reference area for positioning and its size is used for
@@ -1165,18 +1127,13 @@ public:
         client content), although certain advanced uses will require
         alternative Rects to be returned.
 
-    \note
-        The behaviour of this function is modified by overriding the
-        protected Element::getClientChildContentArea and/or
-        Element::getNonClientChildContentArea functions.
-
     \param non_client
         - true to return the non-client child content area.
         - false to return the client child content area (default).
     */
-    inline const CachedRectf& getChildContentArea(const bool non_client = false) const
+    virtual const CachedRectf& getChildContentArea(const bool non_client = false) const
     {
-        return non_client ? getNonClientChildContentArea() : getClientChildContentArea();
+        return non_client ? d_unclippedOuterRect : d_unclippedInnerRect;
     }
 
     /*!

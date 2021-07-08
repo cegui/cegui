@@ -81,9 +81,8 @@ public:
 
     virtual void adjustSizeToContent() override;
     
-    const CachedRectf& getClientChildContentArea() const override;
-    const CachedRectf& getNonClientChildContentArea() const override;
-    
+    const CachedRectf& getChildContentArea(const bool non_client = false) const override;
+
 protected:
     // Overridden from Window.
     Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const override;

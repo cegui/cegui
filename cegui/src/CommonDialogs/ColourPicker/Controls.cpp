@@ -1414,24 +1414,20 @@ void ColourPickerControls::refreshColourPickerIndicatorPosition()
 void ColourPickerControls::refreshColourPickerIndicatorPosition(
     const CursorInputEventArgs& pointerEventArgs)
 {
-    const glm::vec2 position = pointerEventArgs.position;
-
-    const float x = CoordConverter::screenToWindowX(
-                  *pointerEventArgs.window, position.x);
-    const float y = CoordConverter::screenToWindowY(
-                  *pointerEventArgs.window, position.y);
-    positionColourPickerIndicatorAbsolute(x, y);
+    const glm::vec2 localPos = CoordConverter::screenToWindow(
+                  *pointerEventArgs.window, pointerEventArgs.position);
+    positionColourPickerIndicatorAbsolute(localPos.x, localPos.y);
 
     if (d_sliderMode &
         (LAB_L | LAB_A | SliderMode::LAB_B))
     {
-        Lab_Colour col = getColourPickingPositionColourLAB(x, y);
+        Lab_Colour col = getColourPickingPositionColourLAB(localPos.x, localPos.y);
         setColours(col);
     }
     else if (d_sliderMode &
              (SliderMode::HSV_H | SliderMode::HSV_S | SliderMode::HSV_V))
     {
-        HSV_Colour col = getColourPickingPositionColourHSV(x, y);
+        HSV_Colour col = getColourPickingPositionColourHSV(localPos.x, localPos.y);
         setColours(col);
     }
 
