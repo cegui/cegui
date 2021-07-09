@@ -454,13 +454,13 @@ ImageDim::ImageDim(const String& image_name, DimensionType dim) :
 }
 
 //----------------------------------------------------------------------------//
-const String& ImageDim::getSourceImage() const
+const String& ImageDim::getSourceImageName() const
 {
     return d_imageName;
 }
 
 //----------------------------------------------------------------------------//
-void ImageDim::setSourceImage(const String& image_name)
+void ImageDim::setSourceImageName(const String& image_name)
 {
     d_imageName = image_name;
 }
@@ -936,9 +936,9 @@ void PropertyDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) cons
 
 //----------------------------------------------------------------------------//
 Dimension::Dimension()
+    : d_value(nullptr)
+    , d_type(DimensionType::Invalid)
 {
-    d_value = nullptr;
-    d_type = DimensionType::Invalid;
 }
 
 //----------------------------------------------------------------------------//
