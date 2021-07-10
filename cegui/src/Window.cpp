@@ -3049,62 +3049,64 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
         }
     }
 
-    // Collect child base area changes
+    // Collect child base area changes, skip if we have no children
     uint8_t flags = 0;
-
-    // When check move, we can occasionally update an inner rect.
-    // To check sizing we must remember its old size here.
-    const Sizef innerRectOldSize = d_unclippedInnerRect.getCurrent().getSize();
-
-    if (moved)
+    if (!d_children.empty())
     {
-        // If we moved, consider all our children moved too
-        flags |= (NonClientMoved | ClientMoved);
-    }
-    else
-    {
-        // NB: if some of children use an outer rect, 'moved' flag already took care of them
+        // When check move, we can occasionally update an inner rect.
+        // To check sizing we must remember its old size here.
+        const Sizef innerRectOldSize = d_unclippedInnerRect.getCurrent().getSize();
 
-        const auto& clientArea = getChildContentArea(false);
-        if (&d_unclippedOuterRect != &clientArea)
+        if (moved)
         {
-            const Rectf oldClientContent = clientArea.getCurrent();
-            clientArea.invalidateCache();
-            if (oldClientContent != clientArea.get())
-                flags |= ClientMoved;
+            // If we moved, consider all our children moved too
+            flags |= (NonClientMoved | ClientMoved);
+        }
+        else
+        {
+            // NB: if some of children use an outer rect, 'moved' flag already took care of them
+
+            const auto& clientArea = getChildContentArea(false);
+            if (&d_unclippedOuterRect != &clientArea)
+            {
+                const Rectf oldClientContent = clientArea.getCurrent();
+                clientArea.invalidateCache();
+                if (oldClientContent != clientArea.get())
+                    flags |= ClientMoved;
+            }
+
+            const auto& nonClientArea = getChildContentArea(true);
+            if (&d_unclippedOuterRect != &nonClientArea)
+            {
+                if (&clientArea == &nonClientArea)
+                {
+                    // All children use the same area, reuse comparison results
+                    if (flags & ClientMoved)
+                        flags |= NonClientMoved;
+                }
+                else
+                {
+                    // Check a non-client area if it is not the same as client
+                    const Rectf oldNonClientContent = nonClientArea.getCurrent();
+                    nonClientArea.invalidateCache();
+                    if (oldNonClientContent != nonClientArea.get())
+                        flags |= NonClientMoved;
+                }
+            }
         }
 
-        const auto& nonClientArea = getChildContentArea(true);
-        if (&d_unclippedOuterRect != &nonClientArea)
+        if (sized)
         {
-            if (&clientArea == &nonClientArea)
-            {
-                // All children use the same area, reuse comparison results
-                if (flags & ClientMoved)
-                    flags |= NonClientMoved;
-            }
-            else
-            {
-                // Check a non-client area if it is not the same as client
-                const Rectf oldNonClientContent = nonClientArea.getCurrent();
-                nonClientArea.invalidateCache();
-                if (oldNonClientContent != nonClientArea.get())
-                    flags |= NonClientMoved;
-            }
+            // If we were resized, consider all our children are resized too
+            flags |= (NonClientSized | ClientSized);
         }
-    }
-
-    if (sized)
-    {
-        // If we were resized, consider all our children are resized too
-        flags |= (NonClientSized | ClientSized);
-    }
-    else
-    {
-        // Non-client size depends on the outer rect, and 'sized' flags handles it.
-        // Client size depends on the inner rect, and we check its resizing here.
-        if (innerRectOldSize != d_unclippedInnerRect.get().getSize())
-            flags |= ClientSized;
+        else
+        {
+            // Non-client size depends on the outer rect, and 'sized' flags handles it.
+            // Client size depends on the inner rect, and we check its resizing here.
+            if (innerRectOldSize != d_unclippedInnerRect.get().getSize())
+                flags |= ClientSized;
+        }
     }
 
     return flags;
