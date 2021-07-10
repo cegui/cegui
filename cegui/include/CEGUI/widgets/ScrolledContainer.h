@@ -66,7 +66,7 @@ public:
         Rect object that details the current pixel extents of the content
         pane represented by this ScrolledContainer.
     */
-    Rectf getContentPixelRect(void) const;
+    Rectf getContentPixelRect() const;
 
     /*!
     \brief
@@ -77,7 +77,7 @@ public:
         child windows.  This is effectively the smallest bounding box
         that could contain all the attached windows.
     */
-    Rectf getChildExtentsArea(void) const;
+    Rectf getChildExtentsArea() const;
 
     virtual void adjustSizeToContent() override;
     
@@ -87,7 +87,7 @@ protected:
     // Overridden from Window.
     Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const override;
     
-    Rectf getClientChildContentArea_impl(bool skipAllPixelAlignment) const;
+    Rectf getChildContentArea_impl(bool skipAllPixelAlignment) const;
 
     //! handles notifications about child windows being moved or sized.
     bool handleChildAreaChanged(const EventArgs& e);
@@ -113,7 +113,7 @@ protected:
     // It is intentionally not exposed to user. Use positive coords when possible.
     glm::vec2 d_contentOffset;
 
-    CachedRectf d_clientChildContentArea;
+    CachedRectf d_childContentArea;
 };
 
 } // End of  CEGUI namespace section

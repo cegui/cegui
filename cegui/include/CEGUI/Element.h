@@ -1144,10 +1144,11 @@ public:
         Such an action, especially if applied recursively, will impact performance
         before everything is cached again.
 
-    \param recursive
-        - true to recursively call notifyScreenAreaChanged on attached child
-          Element objects.
-        - false to just process \e this Element.
+    \param adjust_size_to_content
+        - true - call adjustSizeToContent() if our size is changed.
+
+    \param forceLayoutChildren
+        - true - call children layout code even if we are not resized.
     */
     void notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLayoutChildren = false);
 
@@ -1571,7 +1572,7 @@ protected:
     virtual void handleAreaChanges(bool moved, bool sized);
 
     //! Lightweight child area updating path for not resized widgets
-    void handlePositionChangeRecursively(bool moved);
+    void handlePositionChangeRecursively();
 
     /*************************************************************************
         Event trigger methods
