@@ -377,23 +377,17 @@ Window* Window::getChild(unsigned int id) const
 //----------------------------------------------------------------------------//
 Window* Window::getChildRecursive(unsigned int ID) const
 {
-    const size_t child_count = getChildCount();
-
     std::queue<Element*> ElementsToSearch;
 
-    for (size_t i = 0; i < child_count; ++i) // load all children into the queue
-    {
-        Element* child = getChildElementAtIndex(i);
+    for (Element* child : d_children) // load all children into the queue
         ElementsToSearch.push(child);
-    }
 
     while (!ElementsToSearch.empty()) // breadth-first search for the child to find
     {
         Element* child = ElementsToSearch.front();
         ElementsToSearch.pop();
 
-        Window* window = dynamic_cast<Window*>(child);
-        if (window)
+        if (Window* window = dynamic_cast<Window*>(child))
         {
             if (window->getID() == ID)
             {
@@ -1310,7 +1304,7 @@ void Window::removeChild_impl(Element* element)
     Window* wnd = static_cast<Window*>(element);
 
     Window* captureWnd = getCaptureWindow();
-    if (captureWnd && wnd && (captureWnd == wnd || captureWnd->isAncestor(wnd)))
+    if (captureWnd && (captureWnd == wnd || captureWnd->isAncestor(wnd)))
         captureWnd->releaseInput();
 
     // remove from draw list

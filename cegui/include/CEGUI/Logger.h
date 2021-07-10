@@ -73,12 +73,15 @@ public:
 	\brief
 		Constructor for Logger object.
 	*/
-	Logger(void);
+	Logger();
+
+    Logger(const Logger&) = delete;
+    Logger& operator=(const Logger&) = delete;
 
 	/*!
 	\brief Destructor for Logger object.
 	*/
-	virtual ~Logger(void);
+	virtual ~Logger();
 
 
 	/*!
@@ -140,14 +143,6 @@ public:
 
 protected:
 	LoggingLevel	d_level;		//!< Holds current logging level
-
-private:
-	/*************************************************************************
-		Copy constructor and assignment usage is denied.
-	*************************************************************************/
-	Logger(const Logger&) : Singleton <Logger>() {}
-	Logger& operator=(const Logger&) {return *this;}
-
 };
 
 /*************************************************************************

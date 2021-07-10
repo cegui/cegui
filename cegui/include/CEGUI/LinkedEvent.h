@@ -84,7 +84,7 @@ public:
 protected:
     bool handler(const EventArgs& args);
 
-    LinkedEvent(const LinkedEvent& e) : Event(e) {}
+    LinkedEvent(const LinkedEvent& e) : Event(e), d_owner(nullptr) {}
 
     typedef std::vector<Event::Connection> LinkedConnections;
     //! collection of connection to the linked Events.

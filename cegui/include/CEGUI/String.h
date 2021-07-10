@@ -500,7 +500,7 @@ public:
     \brief
         Move constructor. The String "other" is left in valid but unspecified state.
     */
-    String(CEGUI::String&& other)
+    String(CEGUI::String&& other) noexcept
         : d_string(other.d_string)
     {}
 
@@ -694,7 +694,7 @@ public:
         Replaces the contents with this String with those of str using move semantics. Leaves str in a valid but unspecified state.
         This function has no effect if *this and the supplied String "str" are the same object.
     */
-    String& operator=(String&& str)
+    String& operator=(String&& str) noexcept
     {
         d_string = str.d_string;
         return *this;

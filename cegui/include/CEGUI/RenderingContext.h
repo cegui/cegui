@@ -38,6 +38,8 @@ namespace CEGUI
 */
 struct RenderingContext
 {
+    RenderingContext() : surface(nullptr), owner(nullptr), queue(RenderQueueID::Base) {}
+
     //! RenderingSurface to be used for drawing
     RenderingSurface* surface;
     //! The Window object that owns the RenederingSurface (0 for default root)

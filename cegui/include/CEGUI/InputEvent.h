@@ -243,7 +243,11 @@ public:
 class CEGUIEXPORT SemanticEventArgs : public WindowEventArgs
 {
 public:
-    SemanticEventArgs(Window* wnd) : WindowEventArgs(wnd), d_semanticValue(SemanticValue::NoValue) {}
+    SemanticEventArgs(Window* wnd)
+        : WindowEventArgs(wnd)
+        , d_semanticValue(SemanticValue::NoValue)
+        , d_payload()
+    {}
 
     SemanticValue d_semanticValue;  //!< The type of the semantic value
     SemanticPayload d_payload;      //!< The payload of the event
@@ -272,7 +276,7 @@ public:
 class CEGUIEXPORT CursorInputEventArgs : public WindowEventArgs
 {
 public:
-    CursorInputEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+    CursorInputEventArgs(Window* wnd) : WindowEventArgs(wnd), source(CursorInputSource::NotSpecified), scroll(0.f) {}
 
     //!< holds current cursor position.
     glm::vec2 position;
@@ -295,7 +299,7 @@ public:
 class CEGUIEXPORT CursorEventArgs : public EventArgs
 {
 public:
-    CursorEventArgs(Cursor* cursor) : d_cursor(cursor) {}
+    CursorEventArgs(Cursor* cursor) : d_cursor(cursor), d_image(nullptr) {}
 
     Cursor* d_cursor;  //!< pointer to a Cursor object of relevance to the event.
     const Image* d_image; //!< pointer to an Image object of relevance to the event.
@@ -309,7 +313,7 @@ public:
 class CEGUIEXPORT TextEventArgs : public WindowEventArgs
 {
 public:
-	TextEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+	TextEventArgs(Window* wnd) : WindowEventArgs(wnd), d_character(0) {}
 
     //! char32_t codepoint representing the character of the text event.
 	char32_t d_character; 
@@ -322,7 +326,7 @@ public:
 class CEGUIEXPORT ActivationEventArgs : public WindowEventArgs
 {
 public:
-	ActivationEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+	ActivationEventArgs(Window* wnd) : WindowEventArgs(wnd), otherWindow(nullptr) {}
 
 	Window*	otherWindow;	//!< Pointer to the other window involved in the activation change.
 };
@@ -334,7 +338,7 @@ public:
 class CEGUIEXPORT DragDropEventArgs : public WindowEventArgs
 {
 public:
-	DragDropEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+	DragDropEventArgs(Window* wnd) : WindowEventArgs(wnd), dragDropItem(nullptr) {}
 	DragContainer*	dragDropItem; //!< pointer to the DragContainer window being dragged / dropped.
 };
 

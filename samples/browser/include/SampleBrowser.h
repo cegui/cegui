@@ -111,16 +111,16 @@ protected:
     SampleList              d_samples;
 
     MetaDataWindowManager*  d_metaDataWinMgr;
-    SampleBrowserManager*       d_samplesWinMgr;
+    SampleBrowserManager*   d_samplesWinMgr;
 
-    SampleHandler*             d_selectedSampleData;
+    SampleHandler*          d_selectedSampleData;
 
     CEGUI::ProgressBar*     d_loadingProgressBar;
     CEGUI::Window*          d_loadingScreenText;
     CEGUI::Window*          d_loadScreenChunkProgressText;
 
-    bool                            d_quittingSampleView;
-    CEGUI::InputAggregator*         d_systemInputAggregator;
+    bool                    d_quittingSampleView;
+    CEGUI::InputAggregator* d_systemInputAggregator;
 };
 
 #endif
