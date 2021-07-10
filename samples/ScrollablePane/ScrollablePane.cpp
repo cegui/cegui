@@ -64,7 +64,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     // load the default font
     FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
-    auto font = loadedFonts.empty() ? 0 : loadedFonts.front();
+    Font* font = loadedFonts.empty() ? nullptr : loadedFonts.front();
     guiContext->setDefaultFont(font);
 
     // set the cursor
@@ -83,7 +83,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     // create a menubar.
     // this will fit in the top of the screen and have options for the Sample
-    UDim bar_bottom(0, font->getLineSpacing(1.5f));
+    UDim bar_bottom(0.f, font ? font->getLineSpacing(1.5f) : 0.f);
 
     Window* bar = wm->createWindow("WindowsLook/Menubar");
     bar->setArea(UDim(0,0),UDim(0,0),UDim(1,0),bar_bottom);

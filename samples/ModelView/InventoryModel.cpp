@@ -32,7 +32,7 @@
 using namespace CEGUI;
 
 //----------------------------------------------------------------------------//
-InventoryItem::InventoryItem(String name) : GenericItem(name)
+InventoryItem::InventoryItem(String name) : GenericItem(name), d_weight(0.f)
 {
 }
 
@@ -85,10 +85,10 @@ void InventoryModel::load()
         prev_matryoshka = matryoshka;
     }
 
-    backpack->addItem(InventoryItem::make("Gepäckaufbewahrungsschein: Wiener Neustadt", 1.0f, backpack));
-    backpack->addItem(InventoryItem::make("Gepäckaufbewahrungsschein: Frankfurt am Main", 1.0f, backpack));
-    backpack->addItem(InventoryItem::make("Gepäckaufbewahrungsschein: Sankt Johann im Pongau", 1.0f, backpack));
-    backpack->addItem(InventoryItem::make("Gepäckaufbewahrungsschein: Seekirchen am Wallersee", 1.0f, backpack));
+    backpack->addItem(InventoryItem::make("GepÐ´ckaufbewahrungsschein: Wiener Neustadt", 1.0f, backpack));
+    backpack->addItem(InventoryItem::make("GepÐ´ckaufbewahrungsschein: Frankfurt am Main", 1.0f, backpack));
+    backpack->addItem(InventoryItem::make("GepÐ´ckaufbewahrungsschein: Sankt Johann im Pongau", 1.0f, backpack));
+    backpack->addItem(InventoryItem::make("GepÐ´ckaufbewahrungsschein: Seekirchen am Wallersee", 1.0f, backpack));
 
     InventoryItem* beans_can = InventoryItem::make("Beans can", 1.0f, backpack);
     beans_can->setIcon("DriveIcons/GlobalDrive");

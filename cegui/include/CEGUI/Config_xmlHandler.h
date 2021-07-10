@@ -131,6 +131,8 @@ private:
     //! struct to track a default resource group specification.
     struct DefaultResourceGroup
     {
+        DefaultResourceGroup() : type(ResourceType::Default) {}
+
         ResourceType type;
         String group;
     };
@@ -138,6 +140,8 @@ private:
     //! struct to track a set of resources to be auto-loaded.
     struct AutoLoadResource
     {
+        AutoLoadResource() : type(ResourceType::Default) {}
+
         String type_string;
         ResourceType type;
         String group;

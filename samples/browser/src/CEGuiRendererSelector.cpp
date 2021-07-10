@@ -65,7 +65,7 @@ CEGuiRendererType CEGuiRendererSelector::getSelectedRendererType()
 *************************************************************************/
 void CEGuiRendererSelector::setRendererAvailability(CEGuiRendererType rendererType, bool available)
 {
-    if (rendererType < RendererTypeCount)
+    if (rendererType >= 0 && rendererType < RendererTypeCount)
     {
         d_rendererAvailability[rendererType] = available;
     }

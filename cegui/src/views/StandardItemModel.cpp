@@ -30,7 +30,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-StandardItem::StandardItem() : GenericItem()
+StandardItem::StandardItem() : GenericItem(), d_id(0)
 {
 }
 

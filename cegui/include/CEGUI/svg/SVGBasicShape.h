@@ -1,4 +1,4 @@
-﻿/***********************************************************************
+/***********************************************************************
     created:    30th July 2013
     author:     Lukas Meindl
 *************************************************************************/
@@ -89,6 +89,12 @@ class CEGUIEXPORT SVGRect : public SVGBasicShape
 {
 public:
     SVGRect()
+        : d_x(0.f)
+        , d_y(0.f)
+        , d_width(0.f)
+        , d_height(0.f)
+        , d_rx(0.f)
+        , d_ry(0.f)
     {}
 
     SVGRect(const SVGPaintStyle& paint_style, const glm::mat3x3& transformation,
@@ -126,6 +132,9 @@ class CEGUIEXPORT SVGCircle : public SVGBasicShape
 {
 public:
     SVGCircle()
+        : d_cx(0.f)
+        , d_cy(0.f)
+        , d_r(0.f)
     {}
 
     SVGCircle(const SVGPaintStyle& paint_style,
@@ -158,6 +167,10 @@ class CEGUIEXPORT SVGEllipse : public SVGBasicShape
 {
 public:
     SVGEllipse()
+        : d_cx(0.f)
+        , d_cy(0.f)
+        , d_rx(0.f)
+        , d_ry(0.f)
     {}
 
     SVGEllipse(const SVGPaintStyle& paint_style,
@@ -201,6 +214,10 @@ public:
             const glm::vec2& line_start, const glm::vec2& line_end);
 
     SVGLine()
+        : d_x1(0.f)
+        , d_y1(0.f)
+        , d_x2(0.f)
+        , d_y2(0.f)
     {}
 
     //! Implementation of SVGBasicShape interface

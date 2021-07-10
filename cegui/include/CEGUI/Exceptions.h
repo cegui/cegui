@@ -49,7 +49,7 @@ class  CEGUIEXPORT Exception :
 {
 public:
     //! Virtual destructor.
-    virtual ~Exception(void) throw();
+    virtual ~Exception() noexcept;
 
     /*!
     \brief
@@ -109,7 +109,7 @@ public:
         { return d_function; }
 
     // override from std::exception.
-    const char* what() const throw() override;
+    const char* what() const override;
 
     /*!
     \brief

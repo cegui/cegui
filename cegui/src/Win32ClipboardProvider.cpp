@@ -62,30 +62,31 @@ void Win32ClipboardProvider::deallocateBuffer()
 
 void Win32ClipboardProvider::sendToClipboard(const String& mime_type, void* buffer, size_t size)
 {
-   if(mime_type == "text/plain")
-   {
-      if(OpenClipboard(nullptr))
-      {
-         // Transcode buffer to UTF-16
-         String str(static_cast<char*>(buffer), size);
+    if (mime_type != "text/plain")
+        return;
 
-         char16_t* utf16str = System::getSingleton().getStringTranscoder().stringToUTF16(str);
-         size_t size_in_bytes = (str.size() + 1) * sizeof(char16_t);
+    if (!::OpenClipboard(nullptr))
+        return;
 
-         // Copy to clipboard
-         EmptyClipboard();
-         HGLOBAL clipboard_data = GlobalAlloc(GMEM_DDESHARE,size_in_bytes);
-         LPWSTR clipboard = static_cast<LPWSTR>(GlobalLock(clipboard_data));
-         if(clipboard)
+    // Transcode buffer to UTF-16
+    String str(static_cast<char*>(buffer), size);
+
+    const char16_t* utf16str = System::getSingleton().getStringTranscoder().stringToUTF16(str);
+    const size_t size_in_bytes = (str.size() + 1) * sizeof(char16_t);
+
+    // Copy to clipboard
+    ::EmptyClipboard();
+    if (HGLOBAL clipboard_data = ::GlobalAlloc(GMEM_DDESHARE, size_in_bytes))
+    {
+        if (LPWSTR clipboard = static_cast<LPWSTR>(::GlobalLock(clipboard_data)))
             memcpy(clipboard, utf16str, size_in_bytes);
-         GlobalUnlock(clipboard_data);
-         // CF_UNICODETEXT is for UTF-16 encoded strings
-         SetClipboardData(CF_UNICODETEXT, clipboard_data);
-         CloseClipboard();
+        ::GlobalUnlock(clipboard_data);
+        // CF_UNICODETEXT is for UTF-16 encoded strings
+        ::SetClipboardData(CF_UNICODETEXT, clipboard_data);
+        ::CloseClipboard();
+    }
 
-         delete[] utf16str;
-      }
-   }
+    delete[] utf16str;
 }
 
 void Win32ClipboardProvider::retrieveFromClipboard(String& mime_type, void*& buffer, size_t& size)

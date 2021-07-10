@@ -124,7 +124,7 @@ ColourPickerControls::ColourPickerControls(const String& type, const String& nam
     Window(type, name),
     d_callingColourPicker(nullptr),
     d_colourPickerIndicator(nullptr),
-    d_sliderMode(LAB_L),
+    d_sliderMode(SliderMode::LAB_L),
     d_selectedColour(0.75f, 0.75f, 0.75f),
     d_colourPickerControlsTextureTarget(nullptr),
     d_colourPickerImageOffset(2),

@@ -141,6 +141,8 @@ public:
 */
 struct CEGUIEXPORT ModelIndexSelectionState
 {
+    ModelIndexSelectionState() : d_childId(0) {}
+
     ModelIndex d_parentIndex;
     size_t d_childId;
 
