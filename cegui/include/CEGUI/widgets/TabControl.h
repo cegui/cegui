@@ -412,7 +412,7 @@ protected:
     */
     Window* getTabPane() const;
 
-    virtual void performChildLayout() override;
+    virtual void performChildLayout(bool client, bool nonClient) override;
     int writeChildWindowsXML(XMLSerializer& xml_stream) const override;
 
     // validate window renderer

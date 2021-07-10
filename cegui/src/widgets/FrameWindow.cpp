@@ -667,7 +667,7 @@ void FrameWindow::onTextChanged(WindowEventArgs& e)
     // pass this onto titlebar component.
     getTitlebar()->setText(getText());
     // maybe the user is using a fontdim for titlebar dimensions ;)
-    performChildLayout();
+    performChildLayout(false, false);
 }
 
 

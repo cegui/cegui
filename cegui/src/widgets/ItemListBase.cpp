@@ -497,7 +497,7 @@ void ItemListBase::endInitialisation(void)
 }
 
 //----------------------------------------------------------------------------//
-void ItemListBase::handleAreaChanges(bool moved, bool sized)
+uint8_t ItemListBase::handleAreaChanges(bool moved, bool sized)
 {
     Window::handleAreaChanges(moved, sized);
 
@@ -508,9 +508,9 @@ void ItemListBase::handleAreaChanges(bool moved, bool sized)
 }
 
 //----------------------------------------------------------------------------//
-void ItemListBase::performChildLayout()
+void ItemListBase::performChildLayout(bool client, bool nonClient)
 {
-    Window::performChildLayout();
+    Window::performChildLayout(client, nonClient);
 
     // if we are not currently initialising
 	if (!d_initialising)

@@ -122,7 +122,7 @@ protected:
     void addChild_impl(Element* element) override;
     void removeChild_impl(Element* element) override;
     void cleanupChildren(void) override;
-    void handleAreaChanges(bool moved, bool sized) override;
+    uint8_t handleAreaChanges(bool moved, bool sized) override;
 
     /*************************************************************************
         Event trigger methods

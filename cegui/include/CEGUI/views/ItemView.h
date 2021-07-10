@@ -408,7 +408,7 @@ protected:
     void onCursorMove(CursorInputEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;
 
-    virtual void handleAreaChanges(bool moved, bool sized) override;
+    virtual uint8_t handleAreaChanges(bool moved, bool sized) override;
     virtual void onTargetSurfaceChanged(RenderingSurface* newSurface) override;
 
     Event::Connection d_eventChildrenWillBeAddedConnection;
