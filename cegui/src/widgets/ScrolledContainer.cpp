@@ -275,8 +275,12 @@ void ScrolledContainer::cleanupChildren(void)
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::handleAreaChanges(bool moved, bool sized)
+uint8_t ScrolledContainer::handleAreaChanges(bool moved, bool sized)
 {
+    // if child content area changed, mark client moved
+    // check only if not moved and not sized
+    // inner will be checked in Window::
+
     d_childContentArea.invalidateCache();
     Window::handleAreaChanges(moved, sized);
 

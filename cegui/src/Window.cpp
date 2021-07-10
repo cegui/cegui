@@ -331,7 +331,7 @@ Window::~Window(void)
 //----------------------------------------------------------------------------//
 void Window::initialiseComponents()
 {
-    performChildLayout();
+    performChildLayout(true, true);
 }
 
 //----------------------------------------------------------------------------//
@@ -1950,7 +1950,7 @@ void Window::setLookNFeel(const String& look)
     d_windowRenderer->onLookNFeelAssigned();
 
     invalidate();
-    performChildLayout();
+    performChildLayout(false, false);
 }
 
 //----------------------------------------------------------------------------//
@@ -2254,7 +2254,7 @@ void Window::onFontChanged(WindowEventArgs& e)
     // This was added to enable the Falagard FontDim to work
     // properly.  A better, more selective, solution would
     // probably be to do something funky with events ;)
-    performChildLayout();
+    performChildLayout(false, false);
 
     invalidate();
     fireEvent(EventFontChanged, e, EventNamespace);
@@ -2981,9 +2981,12 @@ void Window::notifyClippingChanged()
 }
 
 //----------------------------------------------------------------------------//
-void Window::handleAreaChanges(bool moved, bool sized)
+uint8_t Window::handleAreaChanges(bool moved, bool sized)
 {
-    Element::handleAreaChanges(moved, sized);
+    // NB: we don't call Element::handleAreaChanges because we completely override behaviour
+
+    // if moved || sized, automatically consider client moved || sized too
+    // if not moved and not sized, check inner rect change and child content rect change to detect client changes
 
     if (moved || sized)
         d_outerRectClipperValid = false;
@@ -3051,7 +3054,7 @@ void Window::handleAreaChanges(bool moved, bool sized)
 }
 
 //----------------------------------------------------------------------------//
-void Window::performChildLayout()
+void Window::performChildLayout(bool client, bool nonClient)
 {
     // Layout child widgets with LNF
     if (!d_lookName.empty())
@@ -3073,7 +3076,7 @@ void Window::performChildLayout()
         d_windowRenderer->performChildWindowLayout();
 
     // Layout child widgets normally
-    Element::performChildLayout();
+    Element::performChildLayout(client, nonClient);
 }
 
 //----------------------------------------------------------------------------//

@@ -40,9 +40,6 @@
 #   pragma warning(disable : 4355) // 'this' is used to init unclipped rects
 #endif
 
-//!!!DBG TMP!
-#include "CEGUI/widgets/VerticalLayoutContainer.h"
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -101,12 +98,6 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
 //----------------------------------------------------------------------------//
 void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLayoutChildren)
 {
-    //!!!DBG TMP!
-    if (dynamic_cast<VerticalLayoutContainer*>(this))
-    {
-        int xxx = 0;
-    }
-
     // Update pixel size and detect resizing
     const Sizef oldSize = d_pixelSize;
     d_pixelSize = calculatePixelSize();
@@ -118,38 +109,23 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLay
     d_unclippedOuterRect.invalidateCache();
     const bool moved = (getUnclippedOuterRect().get().getPosition() != oldPos);
 
-    if (!sized && !forceLayoutChildren)
-    {
-        //!!!must check inner (and client/nonclient content too?) area changes if not sized.
-        //if areas did change, we must force layout children
-        //!!!note that this will require rects invalidation, so should unify with handleAreaChanges where possible.
-        //else if no flags become true here, see early exit below
+    // Handle outer rect changes and check if child content rects changed
+    const uint8_t flags = handleAreaChanges(moved, sized);
 
-        // Don't waste effort if nothing has changed
-        if (!moved)
-            return;
+//???!!!FIXME: need forceLayoutChildren flag? Or could explicitly call performChildLayout where needed!
+
+    const bool needClientLayout = forceLayoutChildren || (flags & ClientSized);
+    const bool needNonClientLayout = forceLayoutChildren || (flags & NonClientSized);
+    if (needClientLayout || needNonClientLayout)
+    {
+        // We need full layouting when child area size changed or when explicitly requested
+        performChildLayout(needClientLayout, needNonClientLayout); //???propagate adjust_size_to_content?
     }
-
-    // if (handleAreaChanges(moved, sized))
-    //     pCL/recurse?
-
-    // then widgets who depend on parents can detect it inside and report us to continue layouting
-    // content areas / inner rect may be moved or sized, need to separately detect both?
-    // also need to check only if not sized and not forced
-
-    //???or always remember inner rect before handleAreaChanges and then check it for changes
-
-    // child content area is used only for child outer rect positioning inside a parent
-    // inner rect is used for getBasePixelSize which in turn is used only in abs pixel size calculation
-
-    if (sized || forceLayoutChildren)
+    else if (flags & (ClientMoved | NonClientMoved))
     {
-        handleAreaChanges(moved, sized);
-        performChildLayout(); //???propagate adjust_size_to_content?
-    }
-    else if (moved)
-    {
-        handlePositionChangeRecursively();
+        // When moved only, recursively invalidate rects and geometry settings without full layouting
+        for (Element* child : d_children)
+            child->handlePositionChangeRecursively(flags & ClientMoved, flags & NonClientMoved);
     }
 
     if (moved)
@@ -169,25 +145,37 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLay
 }
 
 //----------------------------------------------------------------------------//
-void Element::handleAreaChanges(bool moved, bool sized)
+uint8_t Element::handleAreaChanges(bool moved, bool sized)
 {
-    if (moved || sized)
+    // Element has inner == outer, so all children are affected by outer rect changes
+    const uint8_t flags =
+        (moved ? (NonClientMoved | ClientMoved) : 0) |
+        (sized ? (NonClientSized | ClientSized) : 0);
+
+    if (flags)
         d_unclippedInnerRect.invalidateCache();
+
+    return flags;
 }
 
 //----------------------------------------------------------------------------//
-void Element::handlePositionChangeRecursively()
+void Element::handlePositionChangeRecursively(bool client, bool nonClient)
 {
-    handleAreaChanges(true, false);
-    for (Element* child : d_children)
-        child->handlePositionChangeRecursively();
+    const uint8_t flags = handleAreaChanges(true, false);
+
+    if (client || nonClient)
+        for (Element* child : d_children)
+            if (child->isNonClient() ? nonClient : client)
+                child->handlePositionChangeRecursively(flags & ClientMoved, flags & NonClientMoved);
 }
 
 //----------------------------------------------------------------------------//
-void Element::performChildLayout()
+void Element::performChildLayout(bool client, bool nonClient)
 {
-    for (Element* child : d_children)
-        child->notifyScreenAreaChanged(true);
+    if (client || nonClient)
+        for (Element* child : d_children)
+            if (child->isNonClient() ? nonClient : client)
+                child->notifyScreenAreaChanged(true);
 }
 
 //----------------------------------------------------------------------------//

@@ -577,7 +577,7 @@ void FalagardStaticText::setNumOfTextLinesToShow(NumOfTextLinesToShow newValue)
             }
         }
 
-        getWindow()->performChildLayout();
+        getWindow()->performChildLayout(false, false);
 
         vertScrollbar->setDocumentSize(documentSize.d_height);
         vertScrollbar->setPageSize(renderAreaSize.d_height);
@@ -672,7 +672,7 @@ bool FalagardStaticText::onIsSizeAdjustedToContentChanged(const EventArgs&)
         vertScrollbar->hide();
         horzScrollbar->hide();
 
-        d_window->performChildLayout();
+        d_window->performChildLayout(false, false);
 
         // scrollbar events
         vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged,

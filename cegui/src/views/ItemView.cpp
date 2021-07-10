@@ -757,7 +757,7 @@ void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::handleAreaChanges(bool moved, bool sized)
+uint8_t ItemView::handleAreaChanges(bool moved, bool sized)
 {
     Window::handleAreaChanges(moved, sized);
 
@@ -772,7 +772,7 @@ void ItemView::onTargetSurfaceChanged(RenderingSurface* newSurface)
     Window::onTargetSurfaceChanged(newSurface);
     if (getGUIContextPtr())
     {
-        performChildLayout();
+        performChildLayout(true, true);
         updateScrollbars();
         resizeToContent(); // call invalidateView(false) instead?
     }

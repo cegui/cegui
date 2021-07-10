@@ -233,7 +233,7 @@ void Titlebar::onFontChanged(WindowEventArgs& e)
 
     if (d_parent)
     {
-        getParent()->performChildLayout();
+        getParent()->performChildLayout(false, false);
     }
 }
 

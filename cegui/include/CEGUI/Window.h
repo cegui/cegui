@@ -2965,8 +2965,14 @@ public:
 
         The system may call this at various times (like when a window is resized
         for example), and it may be invoked directly where required.
+
+    \param client
+        - true to process client children
+
+    \param nonClient
+        - true to process non-client children
     */
-    virtual void performChildLayout() override;
+    virtual void performChildLayout(bool client, bool nonClient) override;
 
 protected:
     // friend classes for construction / initialisation purposes (for now)
@@ -2977,7 +2983,8 @@ protected:
         Event trigger methods
     *************************************************************************/
 
-    virtual void handleAreaChanges(bool moved, bool sized) override;
+    //! \copydoc Element::handleAreaChanges
+    virtual uint8_t handleAreaChanges(bool moved, bool sized) override;
 
     /*!
     \brief

@@ -1526,13 +1526,13 @@ public:
     \brief
         Layout child widgets inside our content areas.
 
-    \param moved
-        - true if a widget moved on screen
+    \param client
+        - true to process client children
 
-    \param sized
-        - true if a widget pixel size has changed
+    \param nonClient
+        - true to process non-client children
     */
-    virtual void performChildLayout();
+    virtual void performChildLayout(bool client, bool nonClient);
 
 protected:
     /*!
@@ -1558,6 +1558,14 @@ protected:
     //! Default implementation of function to return Element's inner rect area.
     virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
 
+    enum
+    {
+        ClientMoved = 0x01,
+        ClientSized = 0x02,
+        NonClientMoved = 0x04,
+        NonClientSized = 0x08
+    };
+
     /*!
     \brief
         Handles an actual screen area changes for this widget. This typically leads
@@ -1568,11 +1576,15 @@ protected:
 
     \param sized
         - true if a widget pixel size has changed
+
+    \return
+        Flags that represent child area changes (ClientMoved, ClientSized,
+        NonClientMoved, NonClientSized)
     */
-    virtual void handleAreaChanges(bool moved, bool sized);
+    virtual uint8_t handleAreaChanges(bool moved, bool sized);
 
     //! Lightweight child area updating path for not resized widgets
-    void handlePositionChangeRecursively();
+    void handlePositionChangeRecursively(bool client, bool nonClient);
 
     /*************************************************************************
         Event trigger methods
