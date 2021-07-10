@@ -104,7 +104,7 @@ namespace CEGUI
         void addEventAction(const EventAction& event_action);
         void clearEventActions();
 
-        void layout(const Window& owner) const;
+        bool layout(const Window& owner) const;
 
         /*!
         \brief

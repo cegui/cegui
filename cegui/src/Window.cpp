@@ -3115,12 +3115,14 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
 //----------------------------------------------------------------------------//
 void Window::performChildLayout(bool client, bool nonClient)
 {
+    bool changed = false;
+
     // Layout child widgets with LNF
     if (!d_lookName.empty())
     {
         try
         {
-            WidgetLookManager::getSingleton().getWidgetLook(d_lookName).layoutChildWidgets(*this);
+            changed |= WidgetLookManager::getSingleton().getWidgetLook(d_lookName).layoutChildWidgets(*this);
         }
         catch (UnknownObjectException&)
         {
@@ -3132,7 +3134,15 @@ void Window::performChildLayout(bool client, bool nonClient)
 
     // Layout child widgets with a window renderer
     if (d_windowRenderer)
-        d_windowRenderer->performChildWindowLayout();
+        changed |= d_windowRenderer->performChildWindowLayout();
+
+    // Inner rect may depend on children, so recalculate if their areas changed
+    if (changed)
+    {
+        d_unclippedInnerRect.invalidateCache();
+        d_innerRectClipperValid = false;
+        d_hitTestRectValid = false;
+    }
 
     // Layout child widgets normally
     Element::performChildLayout(client, nonClient);
