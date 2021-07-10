@@ -114,25 +114,18 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLay
     // Handle outer rect changes and check if child content rects changed
     const uint8_t flags = handleAreaChanges(moved, sized);
 
-    if (0)
+    const bool needClientLayout = forceLayoutChildren || (flags & ClientSized);
+    const bool needNonClientLayout = forceLayoutChildren || (flags & NonClientSized);
+    if (needClientLayout || needNonClientLayout)
     {
-        performChildLayout(true, true);
+        // We need full layouting when child area size changed or when explicitly requested
+        performChildLayout(needClientLayout, needNonClientLayout); //???propagate adjust_size_to_content?
     }
-    else
+    else if (flags & (ClientMoved | NonClientMoved))
     {
-        const bool needClientLayout = forceLayoutChildren || (flags & ClientSized);
-        const bool needNonClientLayout = forceLayoutChildren || (flags & NonClientSized);
-        if (needClientLayout || needNonClientLayout)
-        {
-            // We need full layouting when child area size changed or when explicitly requested
-            performChildLayout(needClientLayout, needNonClientLayout); //???propagate adjust_size_to_content?
-        }
-        else if (flags & (ClientMoved | NonClientMoved))
-        {
-            // When moved only, recursively invalidate rects and geometry settings without full layouting
-            for (Element* child : d_children)
-                child->handlePositionChangeRecursively(flags & ClientMoved, flags & NonClientMoved);
-        }
+        // When moved only, recursively invalidate rects and geometry settings without full layouting
+        for (Element* child : d_children)
+            child->handlePositionChangeRecursively(flags & ClientMoved, flags & NonClientMoved);
     }
 
     if (moved)
