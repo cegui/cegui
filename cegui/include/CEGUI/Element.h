@@ -216,6 +216,14 @@ public:
         }
 
         /*!
+        \brief Retrieves cached Rectf even if the cache is invalid
+        */
+        inline const Rectf& getCurrent() const
+        {
+            return d_cachedData;
+        }
+
+        /*!
         \brief Invalidates the cached Rectf causing it to be regenerated
 
         The regeneration will not happen immediately, it will happen when user

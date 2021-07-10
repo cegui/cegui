@@ -111,18 +111,14 @@ const Element::CachedRectf& LayoutContainer::getChildContentArea(const bool /*no
 //----------------------------------------------------------------------------//
 uint8_t LayoutContainer::handleAreaChanges(bool moved, bool sized)
 {
-    // if child content area changed, mark client moved
-    // check only if not moved and not sized
-    // inner will be checked in Window::
-
     if (moved || sized)
     {
         // It is possible that children won't change, but we must re-layout them
-        markNeedsLayouting();
+        markNeedsLayouting(); //!!!FIXME: markNeedsLayouting was called in onParentSized! Check logic!
         d_childContentArea.invalidateCache();
     }
 
-    Window::handleAreaChanges(moved, sized);
+    return Window::handleAreaChanges(moved, sized);
 }
 
 //----------------------------------------------------------------------------//

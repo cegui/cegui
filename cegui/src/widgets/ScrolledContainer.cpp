@@ -277,12 +277,8 @@ void ScrolledContainer::cleanupChildren(void)
 //----------------------------------------------------------------------------//
 uint8_t ScrolledContainer::handleAreaChanges(bool moved, bool sized)
 {
-    // if child content area changed, mark client moved
-    // check only if not moved and not sized
-    // inner will be checked in Window::
-
     d_childContentArea.invalidateCache();
-    Window::handleAreaChanges(moved, sized);
+    return Window::handleAreaChanges(moved, sized);
 
 //!!!FIXME: logic for performChildLayout, now must happen automatically because we always layout children
     //// Autosized dimension has absolute size and therefore isn't resized with the

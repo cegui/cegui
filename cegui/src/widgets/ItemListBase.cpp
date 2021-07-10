@@ -499,12 +499,15 @@ void ItemListBase::endInitialisation(void)
 //----------------------------------------------------------------------------//
 uint8_t ItemListBase::handleAreaChanges(bool moved, bool sized)
 {
-    Window::handleAreaChanges(moved, sized);
+    const uint8_t flags = Window::handleAreaChanges(moved, sized);
 
+    //!!!FIXME: was in onParentSized! Check logic!
     // FIXME: notifyScreenAreaChanged will call 'adjustSizeToContent' inside. Need this than?
     // FIXME: infinite recursion!
     //if (d_autoResize)
     //    sizeToContent();
+
+    return flags;
 }
 
 //----------------------------------------------------------------------------//

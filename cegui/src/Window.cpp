@@ -2983,28 +2983,26 @@ void Window::notifyClippingChanged()
 //----------------------------------------------------------------------------//
 uint8_t Window::handleAreaChanges(bool moved, bool sized)
 {
-    // NB: we don't call Element::handleAreaChanges because we completely override behaviour
-
-    // if moved || sized, automatically consider client moved || sized too
-    // if not moved and not sized, check inner rect change and child content rect change to detect client changes
-
-    if (moved || sized)
-        d_outerRectClipperValid = false;
+    // NB: we don't call Element::handleAreaChanges because we completely override its behaviour
 
     // Inner rect may change even if outer rect didn't change. E.g. if a ScrolledContainer shows
     // or hides scrollbars, or a new FrameWindow recalculates its titlebar height.
     // TODO: can exploit some external hint to avoid recalculating a rect each time?
     d_unclippedInnerRect.invalidateCache();
+
+    // We can't guarantee that parent clip rect is unchanged
+    // TODO: can detect parentClipRectChanged?
+    d_outerRectClipperValid = false;
     d_innerRectClipperValid = false;
 
-    // Always invalidate hit rect because we can't predict how it is calculated
+    // Always invalidate hit rect because we can't guess how it is calculated
     d_hitTestRectValid = false;
     if (GUIContext* context = getGUIContextPtr())
         context->updateWindowContainingCursor();
 
     if (sized)
     {
-        // resize the underlying RenderingWindow if we're using such a thing
+        // Resize the underlying RenderingWindow if we're using such a thing
         if (d_surface && d_surface->isRenderingWindow())
             static_cast<RenderingWindow*>(d_surface)->setSize(d_pixelSize);
 
@@ -3012,9 +3010,8 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
     }
 
     // Apply our screen area changes to rendering surface and geometry settings
-    // TODO: could try to optimize. Now FrameWindow requires this even when not moved or sized. Why?
-    //       Possibly because of getParent()->getClipRect / getOuterRectClipper. Optimize parts? E.g. rw->setPosition.
-    //if (moved || sized)
+    // TODO: can detect parentClipRectChanged?
+    //if (moved || sized || parentClipRectChanged)
     {
         RenderingContext ctx;
         getRenderingContext(ctx);
@@ -3051,6 +3048,66 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
             currentBuffer->setClippingRegion(d_clippingRegion);
         }
     }
+
+    // Collect child base area changes
+    uint8_t flags = 0;
+
+    // When check move, we can occasionally update an inner rect.
+    // To check sizing we must remember its old size here.
+    const Sizef innerRectOldSize = d_unclippedInnerRect.getCurrent().getSize();
+
+    if (moved)
+    {
+        // If we moved, consider all our children moved too
+        flags |= (NonClientMoved | ClientMoved);
+    }
+    else
+    {
+        // NB: if some of children use an outer rect, 'moved' flag already took care of them
+
+        const auto& clientArea = getChildContentArea(false);
+        if (&d_unclippedOuterRect != &clientArea)
+        {
+            const Rectf oldClientContent = clientArea.getCurrent();
+            clientArea.invalidateCache();
+            if (oldClientContent != clientArea.get())
+                flags |= ClientMoved;
+        }
+
+        const auto& nonClientArea = getChildContentArea(true);
+        if (&d_unclippedOuterRect != &nonClientArea)
+        {
+            if (&clientArea == &nonClientArea)
+            {
+                // All children use the same area, reuse comparison results
+                if (flags & ClientMoved)
+                    flags |= NonClientMoved;
+            }
+            else
+            {
+                // Check a non-client area if it is not the same as client
+                const Rectf oldNonClientContent = nonClientArea.getCurrent();
+                nonClientArea.invalidateCache();
+                if (oldNonClientContent != nonClientArea.get())
+                    flags |= NonClientMoved;
+            }
+        }
+    }
+
+    if (sized)
+    {
+        // If we were resized, consider all our children are resized too
+        flags |= (NonClientSized | ClientSized);
+    }
+    else
+    {
+        // Non-client size depends on the outer rect, and 'sized' flags handles it.
+        // Client size depends on the inner rect, and we check its resizing here.
+        if (innerRectOldSize != d_unclippedInnerRect.get().getSize())
+            flags |= ClientSized;
+    }
+
+    return flags;
 }
 
 //----------------------------------------------------------------------------//
