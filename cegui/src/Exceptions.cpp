@@ -243,12 +243,12 @@ Exception::Exception(const String& message, const String& name,
 }
 
 //----------------------------------------------------------------------------//
-Exception::~Exception(void) throw()
+Exception::~Exception()  noexcept
 {
 }
 
 //----------------------------------------------------------------------------//
-const char* Exception::what() const throw()
+const char* Exception::what() const
 {
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     return d_what.c_str();

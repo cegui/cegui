@@ -1,4 +1,4 @@
-﻿/***********************************************************************
+/***********************************************************************
     created:    30th July 2013
     author:     Lukas Meindl
 *************************************************************************/
@@ -95,8 +95,10 @@ const String SVGLineAttributeX2( "x2" );
 const String SVGLineAttributeY2( "y2" );
 
 //----------------------------------------------------------------------------//
-SVGData::SVGData(const String& name) :
-    d_name(name)
+SVGData::SVGData(const String& name)
+    : d_name(name)
+    , d_width(0.f)
+    , d_height(0.f)
 {
 }
 

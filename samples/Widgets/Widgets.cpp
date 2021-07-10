@@ -608,6 +608,9 @@ void WidgetsSample::subscribeToAllEvents(CEGUI::Window* widgetWindow)
 
 CEGUI::Window* WidgetsSample::initialiseSpecialWidgets(CEGUI::Window* widgetWindow, const CEGUI::String &widgetType)
 {
+    if (!widgetWindow)
+        return nullptr;
+
     CEGUI::RadioButton* radioButton = dynamic_cast<CEGUI::RadioButton*>(widgetWindow);
     if (radioButton)
     {

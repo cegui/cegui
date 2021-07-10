@@ -49,7 +49,8 @@ const String TabButton::EventScrolled( "Scrolled" );
 TabButton::TabButton(const String& type, const String& name) :
 	ButtonBase(type, name),
     d_selected(false),
-    d_dragging(false)
+    d_dragging(false),
+    d_targetWindow(nullptr)
 {
 }
 
@@ -57,7 +58,7 @@ TabButton::TabButton(const String& type, const String& name) :
 /*************************************************************************
 	Destructor
 *************************************************************************/
-TabButton::~TabButton(void)
+TabButton::~TabButton()
 {
 }
 
