@@ -114,14 +114,14 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLay
 
     // Update outer rect to detect moving
     // NB: pixel size must be already updated
-    const glm::vec2 oldPos = getUnclippedOuterRect().get().getPosition();
+    const glm::vec2 oldPos = getUnclippedOuterRect().getCurrent().getPosition();
     d_unclippedOuterRect.invalidateCache();
     const bool moved = (getUnclippedOuterRect().get().getPosition() != oldPos);
 
     // Handle outer rect changes and check if child content rects changed
     const uint8_t flags = handleAreaChanges(moved, sized);
 
-    if (1)
+    if (0)
     {
         performChildLayout(true, true);
     }
@@ -175,6 +175,8 @@ uint8_t Element::handleAreaChanges(bool moved, bool sized)
 //----------------------------------------------------------------------------//
 void Element::handlePositionChangeRecursively(bool client, bool nonClient)
 {
+    d_unclippedOuterRect.invalidateCache();
+
     const uint8_t flags = handleAreaChanges(true, false);
 
     if (client || nonClient)
