@@ -3000,56 +3000,7 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
     if (GUIContext* context = getGUIContextPtr())
         context->updateWindowContainingCursor();
 
-    if (sized)
-    {
-        // Resize the underlying RenderingWindow if we're using such a thing
-        if (d_surface && d_surface->isRenderingWindow())
-            static_cast<RenderingWindow*>(d_surface)->setSize(d_pixelSize);
-
-        invalidate();
-    }
-
-    // Apply our screen area changes to rendering surface and geometry settings
-    // TODO: can detect parentClipRectChanged?
-    //if (moved || sized || parentClipRectChanged)
-    {
-        RenderingContext ctx;
-        getRenderingContext(ctx);
-
-        const auto& pos = getUnclippedOuterRect().get().getPosition();
-
-        if (ctx.owner == this && ctx.surface->isRenderingWindow())
-        {
-            RenderingWindow* const rw = static_cast<RenderingWindow*>(ctx.surface);
-
-            // move the underlying RenderingWindow if we're using such a thing
-            rw->setPosition(pos);
-            updatePivot();
-            d_translation = glm::vec3(0.0f, 0.0f, 0.0f);
-
-            rw->setClippingRegion(getParentClipRect());
-
-            d_clippingRegion = Rectf(glm::vec2(0, 0), d_pixelSize);
-        }
-        else
-        {
-            // if we're not texture backed, update geometry position.
-            // position is the offset of the window on the dest surface.
-            d_translation = glm::vec3(pos - ctx.offset, 0.0f);
-
-            d_clippingRegion = getOuterRectClipper();
-            if (d_clippingRegion.getWidth() != 0.0f && d_clippingRegion.getHeight() != 0.0f)
-                d_clippingRegion.offset(-ctx.offset);
-        }
-
-        for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
-        {
-            currentBuffer->setTranslation(d_translation);
-            currentBuffer->setClippingRegion(d_clippingRegion);
-        }
-    }
-
-    // Collect child base area changes, skip if we have no children
+    // Check base area changes to update our children
     uint8_t flags = 0;
     if (!d_children.empty())
     {
@@ -3106,6 +3057,55 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
             // Client size depends on the inner rect, and we check its resizing here.
             if (innerRectOldSize != d_unclippedInnerRect.get().getSize())
                 flags |= ClientSized;
+        }
+    }
+
+    if (sized)
+    {
+        // Resize the underlying RenderingWindow if we're using such a thing
+        if (d_surface && d_surface->isRenderingWindow())
+            static_cast<RenderingWindow*>(d_surface)->setSize(d_pixelSize);
+
+        invalidate();
+    }
+
+    // Apply our screen area changes to rendering surface and geometry settings
+    // TODO: can detect parentClipRectChanged?
+    //if (moved || sized || parentClipRectChanged)
+    {
+        RenderingContext ctx;
+        getRenderingContext(ctx);
+
+        const auto& pos = getUnclippedOuterRect().get().getPosition();
+
+        if (ctx.owner == this && ctx.surface->isRenderingWindow())
+        {
+            RenderingWindow* const rw = static_cast<RenderingWindow*>(ctx.surface);
+
+            // move the underlying RenderingWindow if we're using such a thing
+            rw->setPosition(pos);
+            updatePivot();
+            d_translation = glm::vec3(0.0f, 0.0f, 0.0f);
+
+            rw->setClippingRegion(getParentClipRect());
+
+            d_clippingRegion = Rectf(glm::vec2(0, 0), d_pixelSize);
+        }
+        else
+        {
+            // if we're not texture backed, update geometry position.
+            // position is the offset of the window on the dest surface.
+            d_translation = glm::vec3(pos - ctx.offset, 0.0f);
+
+            d_clippingRegion = getOuterRectClipper();
+            if (d_clippingRegion.getWidth() != 0.0f && d_clippingRegion.getHeight() != 0.0f)
+                d_clippingRegion.offset(-ctx.offset);
+        }
+
+        for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
+        {
+            currentBuffer->setTranslation(d_translation);
+            currentBuffer->setClippingRegion(d_clippingRegion);
         }
     }
 
