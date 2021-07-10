@@ -40,6 +40,9 @@
 #   pragma warning(disable : 4355) // 'this' is used to init unclipped rects
 #endif
 
+//!!!DBG TMP!
+#include "CEGUI/widgets/HorizontalLayoutContainer.h"
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -98,6 +101,12 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
 //----------------------------------------------------------------------------//
 void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLayoutChildren)
 {
+    //!!!DBG TMP!
+    if (dynamic_cast<HorizontalLayoutContainer*>(this))
+    {
+        int xxx = 0;
+    }
+
     // Update pixel size and detect resizing
     const Sizef oldSize = d_pixelSize;
     d_pixelSize = calculatePixelSize();
@@ -112,20 +121,25 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLay
     // Handle outer rect changes and check if child content rects changed
     const uint8_t flags = handleAreaChanges(moved, sized);
 
-//???!!!FIXME: need forceLayoutChildren flag? Or could explicitly call performChildLayout where needed!
-
-    const bool needClientLayout = forceLayoutChildren || (flags & ClientSized);
-    const bool needNonClientLayout = forceLayoutChildren || (flags & NonClientSized);
-    if (needClientLayout || needNonClientLayout)
+    if (1)
     {
-        // We need full layouting when child area size changed or when explicitly requested
-        performChildLayout(needClientLayout, needNonClientLayout); //???propagate adjust_size_to_content?
+        performChildLayout(true, true);
     }
-    else if (flags & (ClientMoved | NonClientMoved))
+    else
     {
-        // When moved only, recursively invalidate rects and geometry settings without full layouting
-        for (Element* child : d_children)
-            child->handlePositionChangeRecursively(flags & ClientMoved, flags & NonClientMoved);
+        const bool needClientLayout = forceLayoutChildren || (flags & ClientSized);
+        const bool needNonClientLayout = forceLayoutChildren || (flags & NonClientSized);
+        if (needClientLayout || needNonClientLayout)
+        {
+            // We need full layouting when child area size changed or when explicitly requested
+            performChildLayout(needClientLayout, needNonClientLayout); //???propagate adjust_size_to_content?
+        }
+        else if (flags & (ClientMoved | NonClientMoved))
+        {
+            // When moved only, recursively invalidate rects and geometry settings without full layouting
+            for (Element* child : d_children)
+                child->handlePositionChangeRecursively(flags & ClientMoved, flags & NonClientMoved);
+        }
     }
 
     if (moved)
