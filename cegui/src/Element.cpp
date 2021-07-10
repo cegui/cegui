@@ -40,9 +40,6 @@
 #   pragma warning(disable : 4355) // 'this' is used to init unclipped rects
 #endif
 
-//!!!DBG TMP!
-#include "CEGUI/widgets/HorizontalLayoutContainer.h"
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -94,6 +91,8 @@ Element::~Element() = default;
 //----------------------------------------------------------------------------//
 void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content)
 {
+    // TODO: early exit if equal? or return bool from notifyScreenAreaChanged?
+
     d_area.setPositionAndSize(pos, size);
     notifyScreenAreaChanged(adjust_size_to_content);
 }
@@ -101,12 +100,6 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
 //----------------------------------------------------------------------------//
 void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLayoutChildren)
 {
-    //!!!DBG TMP!
-    if (dynamic_cast<HorizontalLayoutContainer*>(this))
-    {
-        int xxx = 0;
-    }
-
     // Update pixel size and detect resizing
     const Sizef oldSize = d_pixelSize;
     d_pixelSize = calculatePixelSize();
