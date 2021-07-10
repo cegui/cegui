@@ -48,7 +48,7 @@ const String LayoutContainer::EventNamespace("LayoutContainer");
 LayoutContainer::LayoutContainer(const String& type, const String& name):
     Window(type, name),
     d_needsLayouting(false),
-    d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&LayoutContainer::getClientChildContentArea_impl))
+    d_childContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&LayoutContainer::getChildContentArea_impl))
 {
     // layout should take the whole window by default I think
     setSize(USize(cegui_reldim(1), cegui_reldim(1)));
@@ -105,7 +105,7 @@ void LayoutContainer::update(float elapsed)
 //----------------------------------------------------------------------------//
 const Element::CachedRectf& LayoutContainer::getChildContentArea(const bool /*non_client*/) const
 {
-    return d_clientChildContentArea;
+    return d_childContentArea;
 }
 
 //----------------------------------------------------------------------------//
@@ -115,7 +115,7 @@ void LayoutContainer::handleAreaChanges(bool moved, bool sized)
     {
         // It is possible that children won't change, but we must re-layout them
         markNeedsLayouting();
-        d_clientChildContentArea.invalidateCache();
+        d_childContentArea.invalidateCache();
     }
 
     Window::handleAreaChanges(moved, sized);
@@ -133,7 +133,7 @@ Rectf LayoutContainer::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) co
 }
 
 //----------------------------------------------------------------------------//
-Rectf LayoutContainer::getClientChildContentArea_impl(bool skipAllPixelAlignment) const
+Rectf LayoutContainer::getChildContentArea_impl(bool skipAllPixelAlignment) const
 {
     if (!d_parent)
     {

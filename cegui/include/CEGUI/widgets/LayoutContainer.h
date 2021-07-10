@@ -117,7 +117,7 @@ protected:
     /// @copydoc Window::getUnclippedInnerRect_impl
     Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const override;
     
-    Rectf getClientChildContentArea_impl(bool skipAllPixelAlignment) const;
+    Rectf getChildContentArea_impl(bool skipAllPixelAlignment) const;
 
     void addChild_impl(Element* element) override;
     void removeChild_impl(Element* element) override;
@@ -196,7 +196,7 @@ protected:
     //! Tracks event connections we make.
     ConnectionTracker d_eventConnections;
     
-    CachedRectf d_clientChildContentArea;
+    CachedRectf d_childContentArea;
 };
 
 } // End of  CEGUI namespace section

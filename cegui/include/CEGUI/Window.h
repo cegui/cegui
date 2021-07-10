@@ -2961,18 +2961,10 @@ public:
               rectangles sychronised.
             - assigned WindowRenderer given the opportunity to update child
               content areas as needed.
-            - All content is then potentially updated via the
-              notifyScreenAreaChanged notification as required by changes in
-              non-client and client area rectangles.
+            - All content is then updated recursively.
 
         The system may call this at various times (like when a window is resized
         for example), and it may be invoked directly where required.
-
-    \param moved
-        - true if a widget moved on screen
-
-    \param sized
-        - true if a widget pixel size has changed
     */
     virtual void performChildLayout() override;
 

@@ -300,9 +300,7 @@ void ScrollablePane::configureScrollbars(void)
         if (vertScrollbar->isVisible() != show)
         {
             vertScrollbar->setVisible(show);
-
-            notifyScreenAreaChanged(true);
-            performChildLayout();
+            notifyScreenAreaChanged(true, true);
         }
     }
 
@@ -315,9 +313,7 @@ void ScrollablePane::configureScrollbars(void)
         if (wasVisibleHorz != show)
         {
             horzScrollbar->setVisible(show);
-
-            notifyScreenAreaChanged(true);
-            performChildLayout();
+            notifyScreenAreaChanged(true, true);
         }
     }
 
@@ -331,9 +327,7 @@ void ScrollablePane::configureScrollbars(void)
         if (vertScrollbar->isVisible() != show)
         {
             vertScrollbar->setVisible(show);
-
-            notifyScreenAreaChanged(true);
-            performChildLayout();
+            notifyScreenAreaChanged(true, true);
         }
     }
     

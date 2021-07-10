@@ -42,7 +42,7 @@ const String ScrolledContainer::EventNamespace("ScrolledContainer");
 //----------------------------------------------------------------------------//
 ScrolledContainer::ScrolledContainer(const String& type, const String& name) :
     Window(type, name),
-    d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&ScrolledContainer::getClientChildContentArea_impl))
+    d_childContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&ScrolledContainer::getChildContentArea_impl))
 {
     setCursorInputPropagationEnabled(true);
     setRiseOnClickEnabled(false);
@@ -81,7 +81,7 @@ void ScrolledContainer::adjustSizeToContent()
 }
 
 //----------------------------------------------------------------------------//
-Rectf ScrolledContainer::getContentPixelRect(void) const
+Rectf ScrolledContainer::getContentPixelRect() const
 {
     return Rectf(d_contentOffset, d_pixelSize);
 }
@@ -89,11 +89,11 @@ Rectf ScrolledContainer::getContentPixelRect(void) const
 //----------------------------------------------------------------------------//
 const Element::CachedRectf& ScrolledContainer::getChildContentArea(const bool /*non_client*/) const
 {
-    return d_clientChildContentArea;
+    return d_childContentArea;
 }
 
 //----------------------------------------------------------------------------//
-Rectf ScrolledContainer::getChildExtentsArea(void) const
+Rectf ScrolledContainer::getChildExtentsArea() const
 {
     Rectf extents(0.f, 0.f, 0.f, 0.f);
 
@@ -219,7 +219,7 @@ Rectf ScrolledContainer::getHitTestRect_impl() const
 }
 
 //----------------------------------------------------------------------------//
-Rectf ScrolledContainer::getClientChildContentArea_impl(bool skipAllPixelAlignment) const
+Rectf ScrolledContainer::getChildContentArea_impl(bool skipAllPixelAlignment) const
 {
     if (!d_parent)
     {
@@ -277,7 +277,7 @@ void ScrolledContainer::cleanupChildren(void)
 //----------------------------------------------------------------------------//
 void ScrolledContainer::handleAreaChanges(bool moved, bool sized)
 {
-    d_clientChildContentArea.invalidateCache();
+    d_childContentArea.invalidateCache();
     Window::handleAreaChanges(moved, sized);
 
 //!!!FIXME: logic for performChildLayout, now must happen automatically because we always layout children

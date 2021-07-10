@@ -64,7 +64,7 @@ CEGUI::Window* SampleBrowserManager::getWindow()
 
 CEGUI::FrameWindow* SampleBrowserManager::createSampleWindow(const CEGUI::String& name, const CEGUI::Image& image)
 {
-    CEGUI::VerticalLayoutContainer* root = createPreviewLayoutContainer();
+    CEGUI::VerticalLayoutContainer* root = createPreviewLayoutContainer(name);
 
     CEGUI::HorizontalLayoutContainer* header = createPreviewHeader();
     root->addChild(header);
@@ -207,7 +207,7 @@ CEGUI::DefaultWindow* SampleBrowserManager::createPreviewHeaderNameWindow(const 
 {
     WindowManager& winMgr(WindowManager::getSingleton());
 
-    CEGUI::DefaultWindow* windowName = static_cast<DefaultWindow*>(winMgr.createWindow("SampleBrowserSkin/StaticText"));
+    CEGUI::DefaultWindow* windowName = static_cast<DefaultWindow*>(winMgr.createWindow("SampleBrowserSkin/StaticText", "SampleHeaderText_" + name));
     windowName->setSize(CEGUI::USize(cegui_reldim(0.6f), cegui_absdim(44.f)));
     windowName->setText(name);
     windowName->setFont("DejaVuSans-12");
@@ -217,11 +217,11 @@ CEGUI::DefaultWindow* SampleBrowserManager::createPreviewHeaderNameWindow(const 
     return windowName;
 }
 
-CEGUI::VerticalLayoutContainer* SampleBrowserManager::createPreviewLayoutContainer()
+CEGUI::VerticalLayoutContainer* SampleBrowserManager::createPreviewLayoutContainer(const CEGUI::String& name)
 {
     WindowManager& winMgr(WindowManager::getSingleton());
 
-    CEGUI::VerticalLayoutContainer* root = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
+    CEGUI::VerticalLayoutContainer* root = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer", "SampleVLC_" + name));
     root->setSize(CEGUI::USize(cegui_reldim(0.8f), cegui_reldim(1.0f)));
     root->setCursorInputPropagationEnabled(true);
     root->setMargin(CEGUI::UBox(UDim(0.0f, 0.0f),UDim(0.0f, 0.0f),UDim(0.0f, 8.f), UDim(0.0f, 0.0f)));
@@ -256,7 +256,7 @@ CEGUI::HorizontalLayoutContainer* SampleBrowserManager::createPreviewHeader()
 {
     WindowManager& winMgr(WindowManager::getSingleton());
 
-    CEGUI::HorizontalLayoutContainer* header = static_cast<HorizontalLayoutContainer*>(winMgr.createWindow("HorizontalLayoutContainer"));
+    CEGUI::HorizontalLayoutContainer* header = static_cast<HorizontalLayoutContainer*>(winMgr.createWindow("HorizontalLayoutContainer", "SampleHeaderHLC"));
     header->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_absdim(40.0f)));
     header->setCursorInputPropagationEnabled(true);
     header->setMargin(CEGUI::UBox(UDim(0.0f, 12.f),UDim(0.0f, 0.0f),UDim(0.0f, 0), UDim(0.0f, 0.0f)));

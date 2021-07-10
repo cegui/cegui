@@ -101,19 +101,12 @@ std::vector<GeometryBuffer*> RenderedStringWidgetComponent::createRenderGeometry
     std::vector<GeometryBuffer*> geomBuffers;
 
     if (!window)
-        std::vector<GeometryBuffer*>();
+        return std::vector<GeometryBuffer*>();
 
     // HACK: re-adjust for inner-rect of parent
-    float x_adj = 0, y_adj = 0;
-    Window* parent = window->getParent();
-    
-    if (parent)
-    {
-        const Rectf& outer(parent->getUnclippedOuterRect().get());
-        const Rectf& inner(parent->getUnclippedInnerRect().get());
-        x_adj = inner.d_min.x - outer.d_min.x;
-        y_adj = inner.d_min.y - outer.d_min.y;
-    }
+    glm::vec2 adj(0.f, 0.f);
+    if (const Window* parent = window->getParent())
+        adj = parent->getUnclippedInnerRect().get().d_min - parent->getUnclippedOuterRect().get().d_min;
     // HACK: re-adjust for inner-rect of parent (Ends)
 
     glm::vec2 final_pos(position);
@@ -153,8 +146,8 @@ std::vector<GeometryBuffer*> RenderedStringWidgetComponent::createRenderGeometry
     }
 
     // we do not actually draw the widget, we just move it into position.
-    const UVector2 wpos(UDim(0, final_pos.x + d_padding.d_min.x - x_adj),
-                        UDim(0, final_pos.y + d_padding.d_min.y - y_adj));
+    const glm::vec2 wposAbs = final_pos + d_padding.d_min - adj;
+    const UVector2 wpos(UDim(0, wposAbs.x), UDim(0, wposAbs.y));
 
     window->setPosition(wpos);
 

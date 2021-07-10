@@ -3230,7 +3230,7 @@ void Window::setRenderingSurface(RenderingSurface* surface)
     if (d_surface)
     {
         transferChildSurfaces();
-        notifyScreenAreaChanged(true);
+        notifyScreenAreaChanged(true, true); //???or only update geometry if size not changed?
     }
 }
 
@@ -3276,7 +3276,7 @@ void Window::setUsingAutoRenderingSurface(bool setting)
 
     // while the actual area on screen may not have changed, the arrangement of
     // surfaces and geometry did...
-    notifyScreenAreaChanged(true);
+    notifyScreenAreaChanged(true, true); //???or only update geometry if size not changed?
 }
 
 //----------------------------------------------------------------------------//

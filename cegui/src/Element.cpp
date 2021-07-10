@@ -40,6 +40,8 @@
 #   pragma warning(disable : 4355) // 'this' is used to init unclipped rects
 #endif
 
+//!!!DBG TMP!
+#include "CEGUI/widgets/VerticalLayoutContainer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -99,6 +101,12 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
 //----------------------------------------------------------------------------//
 void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLayoutChildren)
 {
+    //!!!DBG TMP!
+    if (dynamic_cast<VerticalLayoutContainer*>(this))
+    {
+        int xxx = 0;
+    }
+
     // Update pixel size and detect resizing
     const Sizef oldSize = d_pixelSize;
     d_pixelSize = calculatePixelSize();
@@ -110,22 +118,50 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLay
     d_unclippedOuterRect.invalidateCache();
     const bool moved = (getUnclippedOuterRect().get().getPosition() != oldPos);
 
-    if (true) //sized || forceLayoutChildren)
+    if (!sized && !forceLayoutChildren)
+    {
+        //!!!must check inner (and client/nonclient content too?) area changes if not sized.
+        //if areas did change, we must force layout children
+        //!!!note that this will require rects invalidation, so should unify with handleAreaChanges where possible.
+        //else if no flags become true here, see early exit below
+
+        // Don't waste effort if nothing has changed
+        if (!moved)
+            return;
+    }
+
+    // if (handleAreaChanges(moved, sized))
+    //     pCL/recurse?
+
+    // then widgets who depend on parents can detect it inside and report us to continue layouting
+    // content areas / inner rect may be moved or sized, need to separately detect both?
+    // also need to check only if not sized and not forced
+
+    //???or always remember inner rect before handleAreaChanges and then check it for changes
+
+    // child content area is used only for child outer rect positioning inside a parent
+    // inner rect is used for getBasePixelSize which in turn is used only in abs pixel size calculation
+
+    if (sized || forceLayoutChildren)
     {
         handleAreaChanges(moved, sized);
         performChildLayout(); //???propagate adjust_size_to_content?
     }
-    else
+    else if (moved)
     {
-        handlePositionChangeRecursively(moved);
+        handlePositionChangeRecursively();
     }
 
     if (moved)
-        onMoved(ElementEventArgs(this));
+    {
+        ElementEventArgs eventArgs(this);
+        onMoved(eventArgs);
+    }
 
     if (sized)
     {
-        onSized(ElementEventArgs(this));
+        ElementEventArgs eventArgs(this);
+        onSized(eventArgs);
 
         if (adjust_size_to_content)
             adjustSizeToContent();
@@ -140,19 +176,18 @@ void Element::handleAreaChanges(bool moved, bool sized)
 }
 
 //----------------------------------------------------------------------------//
-void Element::handlePositionChangeRecursively(bool moved)
+void Element::handlePositionChangeRecursively()
 {
-    handleAreaChanges(moved, false);
+    handleAreaChanges(true, false);
     for (Element* child : d_children)
-        child->handlePositionChangeRecursively(moved);
+        child->handlePositionChangeRecursively();
 }
 
 //----------------------------------------------------------------------------//
 void Element::performChildLayout()
 {
-    // NB: we force recursive children layout even if at some point they are not sized
     for (Element* child : d_children)
-        child->notifyScreenAreaChanged(true, true);
+        child->notifyScreenAreaChanged(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -183,9 +218,6 @@ void Element::setVerticalAlignment(const VerticalAlignment alignment)
 void Element::setMinSize(const USize& size)
 {
     d_minSize = size;
-
-    // TODO: Perhaps we could be more selective and skip this if min size won't
-    //       affect the size
     notifyScreenAreaChanged(true);
 }
 
@@ -193,9 +225,6 @@ void Element::setMinSize(const USize& size)
 void Element::setMaxSize(const USize& size)
 {
     d_maxSize = size;
-
-    // TODO: Perhaps we could be more selective and skip this if min size won't
-    //       affect the size
     notifyScreenAreaChanged(true);
 }
 
@@ -1019,7 +1048,6 @@ void Element::onChildOrderChanged(ElementEventArgs& e)
 //----------------------------------------------------------------------------//
 void Element::onNonClientChanged(ElementEventArgs& e)
 {
-    // TODO: Be less wasteful with this update
     notifyScreenAreaChanged(true);
 
     fireEvent(EventNonClientChanged, e, EventNamespace);
