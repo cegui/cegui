@@ -59,6 +59,13 @@ public:
         d_height(v.d_height)
     {}
 
+    inline Sizef& operator=(const Sizef& other)
+    {
+        d_width = other.d_width;
+        d_height = other.d_height;
+        return *this;
+    }
+
     bool operator==(const Sizef& other) const
     {
         return d_width == other.d_width && d_height == other.d_height;

@@ -62,6 +62,13 @@ public:
         d_y(v.d_y)
     {}
 
+    inline UVector2& operator=(const UVector2& other)
+    {
+        d_x = other.d_x;
+        d_y = other.d_y;
+        return *this;
+    }
+
     inline UVector2& operator*=(const UVector2& vec)
     {
         d_x *= vec.d_x;
@@ -230,6 +237,14 @@ public:
         d_y(v.d_y),
         d_z(v.d_z)
     {}
+
+    inline UVector3& operator=(const UVector3& other)
+    {
+        d_x = other.d_x;
+        d_y = other.d_y;
+        d_z = other.d_z;
+        return *this;
+    }
 
     inline UVector3& operator*=(const UVector3& vec)
     {
