@@ -30,15 +30,18 @@
 
 namespace CEGUI
 {
-RaqmTextData::RaqmTextData()
-    : d_raqmObject(nullptr)
-{
-    d_raqmObject = raqm_create();
 
-    if (d_raqmObject == nullptr)
-    {
+RaqmTextData::RaqmTextData()
+    : d_raqmObject(raqm_create())
+{
+    if (!d_raqmObject)
         throw InvalidRequestException("Could not create raqm object");
-    }
+}
+
+RaqmTextData::~RaqmTextData()
+{
+    if (d_raqmObject)
+        raqm_destroy(d_raqmObject);
 }
 
 void RaqmTextData::update(FT_Face fontFace, raqm_direction_t parseDirection)
@@ -56,24 +59,16 @@ void RaqmTextData::update(FT_Face fontFace, raqm_direction_t parseDirection)
     }
 }
 
-RaqmTextData::~RaqmTextData()
-{
-    if (d_raqmObject)
-    {
-        raqm_destroy(d_raqmObject);
-    }
-}
-
 void RaqmTextData::updateText(const String& newText)
 {
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
-    bool wasSuccess = raqm_set_text_utf8(d_raqmObject, newText.c_str(), newText.length());
+    const bool wasSuccess = raqm_set_text_utf8(d_raqmObject, newText.c_str(), newText.length());
 #elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) 
     const uint32_t* newTextPointer = reinterpret_cast<const std::uint32_t*>(newText.c_str());
-    bool wasSuccess = raqm_set_text(d_raqmObject, newTextPointer, newText.length());
+    const bool wasSuccess = raqm_set_text(d_raqmObject, newTextPointer, newText.length());
 #endif
 
-    if(!wasSuccess)
+    if (!wasSuccess)
     {
         throw InvalidRequestException("Setting raqm text was unsuccessful");
     }

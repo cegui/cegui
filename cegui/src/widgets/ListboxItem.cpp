@@ -64,7 +64,7 @@ ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_da
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
 #ifdef CEGUI_USE_RAQM
-    d_raqmTextData(nullptr),
+    d_raqmTextData(new RaqmTextData()),
 #endif 
 	d_itemID(item_id),
 	d_itemData(item_data),
@@ -75,20 +75,12 @@ ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_da
     d_selectCols(DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour),
 	d_selectBrush(nullptr)
 {
-#ifdef CEGUI_USE_RAQM
-    d_raqmTextData = new RaqmTextData();
-#endif
-
     ListboxItem::setText(text);
 }
 
 //----------------------------------------------------------------------------//
 ListboxItem::~ListboxItem(void)
 {
-#ifdef CEGUI_USE_RAQM
-    delete d_raqmTextData;
-#endif
-
 #ifdef CEGUI_BIDI_SUPPORT
     delete d_bidiVisualMapping;
 #endif

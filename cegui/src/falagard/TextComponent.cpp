@@ -58,7 +58,7 @@ namespace CEGUI
         #error "BIDI Configuration is inconsistant, check your config!"
 #endif
 #ifdef CEGUI_USE_RAQM
-        d_raqmTextData(nullptr),
+        d_raqmTextData(new RaqmTextData()),
         d_raqmTextNeedsUpdate(true),
 #endif 
         d_formattedRenderedString(new LeftAlignedRenderedString(d_renderedString)),
@@ -66,9 +66,6 @@ namespace CEGUI
         d_vertFormatting(VerticalTextFormatting::TopAligned),
         d_horzFormatting(HorizontalTextFormatting::LeftAligned)
     {
-#ifdef CEGUI_USE_RAQM
-        d_raqmTextData = new RaqmTextData();
-#endif        
     }
 
     TextComponent::~TextComponent()
@@ -92,7 +89,7 @@ namespace CEGUI
 #endif
 
 #ifdef CEGUI_USE_RAQM
-        d_raqmTextData(nullptr),
+        d_raqmTextData(new RaqmTextData()),
         d_raqmTextNeedsUpdate(true),
 #endif
 
