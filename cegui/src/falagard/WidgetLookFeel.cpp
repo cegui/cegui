@@ -601,17 +601,20 @@ void WidgetLookFeel::clearNamedAreas()
 }
 
 //---------------------------------------------------------------------------//
-void WidgetLookFeel::layoutChildWidgets(const Window& owner) const
+bool WidgetLookFeel::layoutChildWidgets(const Window& owner) const
 {
     WidgetComponentCollator wcc;
     appendChildWidgetComponents(wcc);
 
+    bool changed = false;
     for (WidgetComponentCollator::const_iterator wci = wcc.begin();
          wci != wcc.end();
          ++wci)
     {
-        (*wci)->layout(owner);
+        changed |= (*wci)->layout(owner);
     }
+
+    return changed;
 }
 
 //---------------------------------------------------------------------------//

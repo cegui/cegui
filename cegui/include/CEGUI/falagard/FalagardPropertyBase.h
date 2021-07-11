@@ -60,7 +60,7 @@ protected:
                         typename Helper::pass_type /*value*/) override
     {
         if (d_writeCausesLayout)
-            static_cast<Window*>(receiver)->performChildWindowLayout();
+            static_cast<Window*>(receiver)->performChildLayout(false, false);
 
         if (d_writeCausesRedraw)
             static_cast<Window*>(receiver)->invalidate();

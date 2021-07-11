@@ -68,19 +68,16 @@ void Menubar::layoutItemWidgets()
 	Rectf render_rect = getItemRenderArea();
 	float x0 = CoordConverter::alignToPixels(render_rect.left());
 
-	URect rect;
-
 	ItemEntryList::iterator item = d_listItems.begin();
 	while ( item != d_listItems.end() )
 	{
 		const Sizef optimal = (*item)->getItemPixelSize();
 
 		(*item)->setVerticalAlignment(VerticalAlignment::Centre);
-		rect.setPosition(UVector2(cegui_absdim(x0), cegui_absdim(0)) );
-		rect.setSize(USize(cegui_absdim(CoordConverter::alignToPixels(optimal.d_width)),
-                           cegui_absdim(CoordConverter::alignToPixels(optimal.d_height))));
 
-		(*item)->setArea(rect);
+		(*item)->setArea(UVector2(cegui_absdim(x0), cegui_absdim(0)),
+            USize(cegui_absdim(CoordConverter::alignToPixels(optimal.d_width)),
+                cegui_absdim(CoordConverter::alignToPixels(optimal.d_height))));
 
 		x0 += optimal.d_width + d_itemSpacing;
 		++item;

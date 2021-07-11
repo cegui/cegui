@@ -120,8 +120,11 @@ public:
     \brief
         Method called to perform extended laying out of the window's attached
         child windows.
+
+    \return
+        True if something changed after this call
     */
-    virtual void performChildWindowLayout() {}
+    virtual bool performChildWindowLayout() { return false; }
 
     /*!
     \brief

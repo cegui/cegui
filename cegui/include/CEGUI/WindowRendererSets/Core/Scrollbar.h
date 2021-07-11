@@ -76,7 +76,7 @@ namespace CEGUI
         void setVertical(bool setting);
 
         void createRenderGeometry() override;
-        void performChildWindowLayout() override;
+        bool performChildWindowLayout() override;
 
     protected:
         // data members

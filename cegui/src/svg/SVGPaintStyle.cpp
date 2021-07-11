@@ -1,4 +1,4 @@
-﻿/***********************************************************************
+/***********************************************************************
     created:    1st August 2013
     author:     Lukas Meindl
 *************************************************************************/
@@ -48,6 +48,7 @@ SVGPaintStyle::SVGPaintStyle() :
     d_strokeLinecap(SvgLinecap::Butt),
     d_strokeLinejoin(SVGLinejoin::Miter),
     d_strokeMiterlimit(4.0f),
+    d_strokeDashArrayNone(false),
     d_strokeDashArray(),
     d_strokeDashOffset(0.0f),
     d_strokeOpacity(1.0f)

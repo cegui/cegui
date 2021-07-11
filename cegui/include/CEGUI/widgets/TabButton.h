@@ -82,7 +82,7 @@ public:
 	\brief
 		Destructor for TabButton class
 	*/
-	virtual ~TabButton(void);
+	virtual ~TabButton();
 
     /*!
     \brief

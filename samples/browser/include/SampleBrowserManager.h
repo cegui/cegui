@@ -41,7 +41,8 @@ class SampleBrowserManager
 {
 public:
     SampleBrowserManager(SampleBrowser* owner, CEGUI::Window* samplesWindow);
-    virtual ~SampleBrowserManager() {}
+    SampleBrowserManager(const SampleBrowserManager&) = delete;
+    virtual ~SampleBrowserManager() = default;
 
     CEGUI::Window* getWindow();
 
@@ -52,7 +53,6 @@ public:
     void selectSampleWindow(CEGUI::Window* wnd);
 
 private:
-    SampleBrowserManager(const SampleBrowserManager&) {}
 
     void init();
     SampleBrowserManager& operator=(const SampleBrowserManager&) { return *this; }
@@ -68,7 +68,7 @@ private:
 
     bool handleSampleEnterButtonClicked(const CEGUI::EventArgs& args);
 
-    CEGUI::VerticalLayoutContainer* createPreviewLayoutContainer();
+    CEGUI::VerticalLayoutContainer* createPreviewLayoutContainer(const CEGUI::String& name);
     CEGUI::DefaultWindow* createPreviewHeaderNameWindow(const CEGUI::String& name);
     CEGUI::FrameWindow* createPreviewSampleWindow(const CEGUI::String& name, const CEGUI::Image &image);
     CEGUI::PushButton* createPreviewHeaderEnterButton();

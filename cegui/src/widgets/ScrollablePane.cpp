@@ -239,7 +239,7 @@ void ScrollablePane::setVerticalScrollPosition(float position)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::initialiseComponents(void)
+void ScrollablePane::initialiseComponents()
 {
     // get horizontal scrollbar
     Scrollbar* horzScrollbar = getHorzScrollbar();
@@ -281,6 +281,8 @@ void ScrollablePane::initialiseComponents(void)
     
     // finalise setup
     configureScrollbars();
+
+    Window::initialiseComponents(); // FIXME: need here?
 }
 
 //----------------------------------------------------------------------------//
@@ -298,9 +300,7 @@ void ScrollablePane::configureScrollbars(void)
         if (vertScrollbar->isVisible() != show)
         {
             vertScrollbar->setVisible(show);
-
-            notifyScreenAreaChanged(true);
-            performChildWindowLayout(false, true);
+            notifyScreenAreaChanged(true, true);
         }
     }
 
@@ -313,9 +313,7 @@ void ScrollablePane::configureScrollbars(void)
         if (wasVisibleHorz != show)
         {
             horzScrollbar->setVisible(show);
-
-            notifyScreenAreaChanged(true);
-            performChildWindowLayout(false, true);
+            notifyScreenAreaChanged(true, true);
         }
     }
 
@@ -329,9 +327,7 @@ void ScrollablePane::configureScrollbars(void)
         if (vertScrollbar->isVisible() != show)
         {
             vertScrollbar->setVisible(show);
-
-            notifyScreenAreaChanged(true);
-            performChildWindowLayout(false, true);
+            notifyScreenAreaChanged(true, true);
         }
     }
     
@@ -538,11 +534,11 @@ void ScrollablePane::removeChild_impl(Element* element)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onSized_impl(ElementEventArgs& e)
+void ScrollablePane::onSized(ElementEventArgs& e)
 {
     configureScrollbars();
     updateContainerPosition();
-    Window::onSized_impl(e);
+    Window::onSized(e);
     
     ++e.handled;
 }

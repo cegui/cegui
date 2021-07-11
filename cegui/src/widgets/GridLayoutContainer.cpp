@@ -370,7 +370,8 @@ void GridLayoutContainer::layout()
     const float absHeight = childContentArea.getHeight();
 
     // Trigger recalculation of children pixel sizes
-    notifyChildrenOfSizeChange(false, true);
+    for (Element* child : d_children)
+        child->notifyScreenAreaChanged(true);
 
     // First, we need to determine rowSizes and colSizes, this is
     // needed before any layouting work takes place
@@ -504,10 +505,6 @@ void GridLayoutContainer::endInitialisation(void)
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::addChild_impl(Element* element)
 {
-    // if the element is already a child of this Window, this is a NOOP
-    if (isChild(element))
-        return;
-
     // Custom logic for dummies. Allow to refresh children already in the list.
     // It is necessary for rearrangement optimization when resizing the grid.
     // Also skip LayoutContainer's subscriptions on child resizing and draw list

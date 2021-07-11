@@ -27,21 +27,15 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/Window.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/WindowManager.h"
-#include "CEGUI/System.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/ImageManager.h"
-#include "CEGUI/Cursor.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/WindowRendererManager.h"
 #include "CEGUI/WindowFactoryManager.h"
 #include "CEGUI/widgets/Tooltip.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
-#include "CEGUI/falagard/WidgetLookFeel.h"
-#include "CEGUI/falagard/WidgetComponent.h"
 #include "CEGUI/GeometryBuffer.h"
-#include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/RenderTarget.h"
@@ -56,15 +50,7 @@
     #include "CEGUI/RaqmTextData.h"
 #endif
 
-#include <algorithm>
-#include <iterator>
-#include <stdio.h>
 #include <queue>
-
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4355)
-#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -315,16 +301,17 @@ Window::Window(const String& type, const String& name):
 
     d_containsPointer(false),
     d_isFocused(false),
-    d_fontRenderSizeChangeConnection(
-        GlobalEventSet::getSingleton().subscribeEvent(
-            "Font/RenderSizeChanged",
-            Event::Subscriber(&Window::handleFontRenderSizeChange, this))),
 
     d_drawModeMask(DrawModeFlagWindowRegular)
 {
 #ifdef CEGUI_USE_RAQM
     d_raqmTextData = new RaqmTextData();
 #endif
+
+    d_fontRenderSizeChangeConnection =
+        GlobalEventSet::getSingleton().subscribeEvent(
+            "Font/RenderSizeChanged",
+            Event::Subscriber(&Window::handleFontRenderSizeChange, this));
 
     // add properties
     addWindowProperties();
@@ -342,45 +329,9 @@ Window::~Window(void)
 }
 
 //----------------------------------------------------------------------------//
-const String& Window::getType(void) const
+void Window::initialiseComponents()
 {
-    return d_falagardType.empty() ? d_type : d_falagardType;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isDisabled() const
-{
-    return !d_enabled;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isEffectiveDisabled() const
-{
-    const bool parent_disabled = !d_parent ? false : getParent()->isEffectiveDisabled();
-
-    return !d_enabled || parent_disabled;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isVisible() const
-{
-    return d_visible;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isEffectiveVisible() const
-{
-    const bool parent_visible = !d_parent ? true : getParent()->isEffectiveVisible();
-
-    return d_visible && parent_visible;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isActive(void) const
-{
-    const bool parent_active = !d_parent ? true : getParent()->isActive();
-
-    return d_active && parent_active;
+    performChildLayout(true, true);
 }
 
 //----------------------------------------------------------------------------//
@@ -426,23 +377,17 @@ Window* Window::getChild(unsigned int id) const
 //----------------------------------------------------------------------------//
 Window* Window::getChildRecursive(unsigned int ID) const
 {
-    const size_t child_count = getChildCount();
-
     std::queue<Element*> ElementsToSearch;
 
-    for (size_t i = 0; i < child_count; ++i) // load all children into the queue
-    {
-        Element* child = getChildElementAtIndex(i);
+    for (Element* child : d_children) // load all children into the queue
         ElementsToSearch.push(child);
-    }
 
     while (!ElementsToSearch.empty()) // breadth-first search for the child to find
     {
         Element* child = ElementsToSearch.front();
         ElementsToSearch.pop();
 
-        Window* window = dynamic_cast<Window*>(child);
-        if (window)
+        if (Window* window = dynamic_cast<Window*>(child))
         {
             if (window->getID() == ID)
             {
@@ -553,12 +498,6 @@ const Rectf& Window::getInnerRectClipper() const
 }
 
 //----------------------------------------------------------------------------//
-const Rectf& Window::getClipRect(const bool non_client) const
-{
-    return non_client ? getOuterRectClipper() : getInnerRectClipper();
-}
-
-//----------------------------------------------------------------------------//
 const Rectf& Window::getHitTestRect() const
 {
     if (!d_hitTestRectValid)
@@ -571,6 +510,14 @@ const Rectf& Window::getHitTestRect() const
 }
 
 //----------------------------------------------------------------------------//
+Rectf Window::getParentClipRect() const
+{
+    return (d_parent && d_clippedByParent) ?
+        getParent()->getClipRect(d_nonClient) :
+        Rectf(glm::vec2(0.f, 0.f), getRootContainerSize());
+}
+
+//----------------------------------------------------------------------------//
 Window* Window::getCaptureWindow() const
 {
     GUIContext* context = getGUIContextPtr();
@@ -578,20 +525,12 @@ Window* Window::getCaptureWindow() const
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getParentElementClipIntersection(const Rectf& unclipped_area) const
-{
-    return unclipped_area.getIntersection(
-        (d_parent && d_clippedByParent) ?
-            getParent()->getClipRect(isNonClient()) :
-            Rectf(glm::vec2(0, 0), getRootContainerSize()));
-}
-
-//----------------------------------------------------------------------------//
 Rectf Window::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
 {
-    // TODO: skip all pixel alignment!
-    return d_windowRenderer ? d_windowRenderer->getUnclippedInnerRect() :
-                              (skipAllPixelAlignment ? getUnclippedOuterRect().getFresh(true) : getUnclippedOuterRect().get());
+    // TODO: handle skipAllPixelAlignment in a window renderer!
+    return d_windowRenderer ?
+        d_windowRenderer->getUnclippedInnerRect() :
+        Element::getUnclippedInnerRect_impl(skipAllPixelAlignment);
 }
 
 //----------------------------------------------------------------------------//
@@ -599,7 +538,7 @@ Rectf Window::getOuterRectClipper_impl() const
 {
     return (d_surface && d_surface->isRenderingWindow()) ?
         getUnclippedOuterRect().get() :
-        getParentElementClipIntersection(getUnclippedOuterRect().get());
+        getUnclippedOuterRect().get().getIntersection(getParentClipRect());
 }
 
 //----------------------------------------------------------------------------//
@@ -607,7 +546,7 @@ Rectf Window::getInnerRectClipper_impl() const
 {
     return (d_surface && d_surface->isRenderingWindow()) ?
         getUnclippedInnerRect().get() :
-        getParentElementClipIntersection(getUnclippedInnerRect().get());
+        getUnclippedInnerRect().get().getIntersection(getParentClipRect());
 }
 
 //----------------------------------------------------------------------------//
@@ -620,7 +559,7 @@ Rectf Window::getHitTestRect_impl() const
     {
         return getUnclippedOuterRect().get().getIntersection(
             getParent()->getHitTestRect().getIntersection(
-                getParent()->getClipRect(isNonClient())));
+                getParent()->getClipRect(d_nonClient)));
     }
     // not clipped to parent wnd, so get intersection with screen area.
     else
@@ -637,7 +576,7 @@ bool Window::isHit(const glm::vec2& position, const bool allow_disabled) const
     if (!allow_disabled && isEffectiveDisabled())
         return false;
 
-    const Rectf test_area(getHitTestRect());
+    const Rectf& test_area = getHitTestRect();
 
     if ((test_area.getWidth() == 0.0f) || (test_area.getHeight() == 0.0f))
         return false;
@@ -720,8 +659,7 @@ void Window::setEnabled(bool enabled)
         onDisabled(args);
     }
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
         context->updateWindowContainingCursor();
 }
 
@@ -736,21 +674,20 @@ void Window::setVisible(bool setting)
     WindowEventArgs args(this);
     d_visible ? onShown(args) : onHidden(args);
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
         context->updateWindowContainingCursor();
 }
 
 //----------------------------------------------------------------------------//
 void Window::setActive(bool setting)
 {
-  if (isActive() == setting)
-    return;
+    if (isActive() == setting)
+        return;
 
-  if (setting)
-    activate();
-  else
-    deactivate();
+    if (setting)
+        activate();
+    else
+        deactivate();
 }
 
 //----------------------------------------------------------------------------//
@@ -1060,12 +997,6 @@ bool Window::isInFront(const Window& wnd) const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isBehind(const Window& wnd) const
-{
-    return !isInFront(wnd);
-}
-
-//----------------------------------------------------------------------------//
 size_t Window::getZIndex() const
 {
     if (!d_parent)
@@ -1219,8 +1150,7 @@ void Window::invalidate(const bool recursive)
 {
     invalidate_impl(recursive);
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
         context->markAsDirty();
 }
 
@@ -1235,9 +1165,8 @@ void Window::invalidate_impl(const bool recursive)
 
     if (recursive)
     {
-        const size_t child_count = getChildCount();
-        for (size_t i = 0; i < child_count; ++i)
-            getChildAtIndex(i)->invalidate_impl(true);
+        for (Element* child : d_children)
+            static_cast<Window*>(child)->invalidate_impl(true);
     }
 }
 
@@ -1279,11 +1208,6 @@ void Window::draw(std::uint32_t drawModeMask)
         ctx.surface->draw(drawModeMask);
 }
 
-bool Window::checkIfDrawMaskAllowsDrawing(std::uint32_t drawModeMask) const
-{
-    return (getDrawModeMask() & drawModeMask) != 0;
-}
-
 //----------------------------------------------------------------------------//
 void Window::drawSelf(const RenderingContext& ctx, std::uint32_t drawModeMask)
 {
@@ -1312,9 +1236,14 @@ void Window::bufferGeometry(const RenderingContext&, std::uint32_t drawModeMask)
         else
             populateGeometryBuffer();
 
-        updateGeometryBuffersTranslationAndClipping();
-
-        updateGeometryBuffersAlpha();
+        // Setup newly created geometry with our settings
+        const float finalAlpha = getEffectiveAlpha();
+        for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
+        {
+            currentBuffer->setTranslation(d_translation);
+            currentBuffer->setClippingRegion(d_clippingRegion);
+            currentBuffer->setAlpha(finalAlpha);
+        }
 
         // signal rendering ended
         args.handled = 0;
@@ -1330,13 +1259,6 @@ void Window::queueGeometry(const RenderingContext& ctx)
 {
     // add geometry so that it gets drawn to the target surface.
     ctx.surface->addGeometryBuffers(ctx.queue, d_geometryBuffers);
-}
-
-//----------------------------------------------------------------------------//
-void Window::setParent(Element* parent)
-{
-    Element::setParent(parent);
-    onTargetSurfaceChanged(getTargetRenderingSurface());
 }
 
 //----------------------------------------------------------------------------//
@@ -1365,11 +1287,9 @@ void Window::addChild_impl(Element* element)
             "Window can only have Elements of type Window added as children "
             "(Window path: " + getNamePath() + ").");
 
-    // if the element is already a child of this Window, this is a NOOP
-    if (isChild(element))
-        return;
-
     NamedElement::addChild_impl(wnd);
+
+    wnd->onTargetSurfaceChanged(getTargetRenderingSurface());
 
     addWindowToDrawList(*wnd);
 
@@ -1384,13 +1304,15 @@ void Window::removeChild_impl(Element* element)
     Window* wnd = static_cast<Window*>(element);
 
     Window* captureWnd = getCaptureWindow();
-    if (captureWnd && wnd && (captureWnd == wnd || captureWnd->isAncestor(wnd)))
+    if (captureWnd && (captureWnd == wnd || captureWnd->isAncestor(wnd)))
         captureWnd->releaseInput();
 
     // remove from draw list
     removeWindowFromDrawList(*wnd);
 
     NamedElement::removeChild_impl(wnd);
+
+    wnd->onTargetSurfaceChanged(getTargetRenderingSurface());
 
     wnd->onZChange_impl();
 
@@ -1420,8 +1342,7 @@ void Window::onZChange_impl(void)
 
     }
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
         context->updateWindowContainingCursor();
 }
 
@@ -1681,33 +1602,9 @@ void Window::addWindowProperties(void)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isZOrderingEnabled(void) const
-{
-    return d_zOrderingEnabled;
-}
-
-//----------------------------------------------------------------------------//
 void Window::setZOrderingEnabled(bool setting)
 {
     d_zOrderingEnabled = setting;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isCursorAutoRepeatEnabled(void) const
-{
-    return d_autoRepeat;
-}
-
-//----------------------------------------------------------------------------//
-float Window::getAutoRepeatDelay(void) const
-{
-    return d_repeatDelay;
-}
-
-//----------------------------------------------------------------------------//
-float Window::getAutoRepeatRate(void) const
-{
-    return d_repeatRate;
 }
 
 //----------------------------------------------------------------------------//
@@ -1838,12 +1735,6 @@ bool Window::performRedo()
 }
 
 //----------------------------------------------------------------------------//
-bool Window::distributesCapturedInputs(void) const
-{
-    return d_distCapturedInputs;
-}
-
-//----------------------------------------------------------------------------//
 void Window::setDistributesCapturedInputs(bool setting)
 {
     d_distCapturedInputs = setting;
@@ -1943,12 +1834,6 @@ void Window::destroy(void)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isUsingDefaultTooltip(void) const
-{
-    return d_customTip == nullptr;
-}
-
-//----------------------------------------------------------------------------//
 Tooltip* Window::getTooltip(void) const
 {
     if (!isUsingDefaultTooltip())
@@ -2018,12 +1903,6 @@ void Window::setTooltipText(const String& tip)
 }
 
 //----------------------------------------------------------------------------//
-const String& Window::getTooltipText(void) const
-{
-    return d_tooltipText;
-}
-
-//----------------------------------------------------------------------------//
 const String& Window::getTooltipTextIncludingInheritance(void) const
 {
     if (d_inheritsTipText && d_parent && d_tooltipText.empty())
@@ -2033,50 +1912,9 @@ const String& Window::getTooltipTextIncludingInheritance(void) const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::inheritsTooltipText(void) const
-{
-    return d_inheritsTipText;
-}
-
-//----------------------------------------------------------------------------//
 void Window::setInheritsTooltipText(bool setting)
 {
     d_inheritsTipText = setting;
-}
-
-//----------------------------------------------------------------------------//
-void Window::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing, bool fireEvents,
-                          bool adjust_size_to_content)
-{
-    markCachedWindowRectsInvalid();
-    Element::setArea_impl(pos, size, topLeftSizing, fireEvents, adjust_size_to_content);
-
-    GUIContext* context = getGUIContextPtr();
-    if (context)
-    {
-        //if (moved || sized)
-        // FIXME: This is potentially wasteful to update every time
-        context->updateWindowContainingCursor();
-    }
-
-    // update geometry position and clipping if nothing from above appears to
-    // have done so already (NB: may be occasionally wasteful, but fixes bugs!)
-    if (!d_unclippedOuterRect.isCacheValid())
-        updateGeometryRenderSettings();
-}
-
-//----------------------------------------------------------------------------//
-void Window::markCachedWindowRectsInvalid()
-{
-    d_outerRectClipperValid = false;
-    d_innerRectClipperValid = false;
-    d_hitTestRectValid = false;
-}
-
-//----------------------------------------------------------------------------//
-const String& Window::getLookNFeel() const
-{
-    return d_lookName;
 }
 
 //----------------------------------------------------------------------------//
@@ -2112,7 +1950,7 @@ void Window::setLookNFeel(const String& look)
     d_windowRenderer->onLookNFeelAssigned();
 
     invalidate();
-    performChildWindowLayout();
+    performChildLayout(false, false);
 }
 
 //----------------------------------------------------------------------------//
@@ -2131,46 +1969,6 @@ void Window::setModalState(bool state)
     // clear the modal target
     else
         getGUIContext().setModalWindow(nullptr);
-}
-
-//----------------------------------------------------------------------------//
-void Window::performChildWindowLayout(const bool nonclient_sized_hint,
-                                      const bool client_sized_hint)
-{
-    const Sizef old_size(d_pixelSize);
-    d_pixelSize = calculatePixelSize();
-
-    layoutLookNFeelChildWidgets();
-
-    const bool outer_changed = nonclient_sized_hint || d_pixelSize != old_size;
-    const bool inner_changed = client_sized_hint || isInnerRectSizeChanged();
-
-    d_outerRectClipperValid &= !outer_changed;
-    d_innerRectClipperValid &= !inner_changed;
-
-    if (d_windowRenderer)
-        d_windowRenderer->performChildWindowLayout();
-
-    notifyChildrenOfSizeChange(outer_changed, inner_changed);
-}
-
-//----------------------------------------------------------------------------//
-void Window::layoutLookNFeelChildWidgets()
-{
-    if (d_lookName.empty())
-        return;
-
-    try
-    {
-        WidgetLookManager::getSingleton().
-            getWidgetLook(d_lookName).layoutChildWidgets(*this);
-    }
-    catch (UnknownObjectException&)
-    {
-        Logger::getSingleton().logEvent(
-            "Window::layoutLookNFeelChildWidgets: "
-            "WidgetLook '" + d_lookName + "' was not found.", LoggingLevel::Error);
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -2428,34 +2226,6 @@ Window* Window::getActiveSibling()
 }
 
 //----------------------------------------------------------------------------//
-void Window::onSized_impl(ElementEventArgs& e)
-{
-    /*
-     * Why are we not calling Element::onSized_impl?  It's because that function
-     * always calls the onParentSized notification for all children - we really
-     * want that to be done via performChildWindowLayout instead and we
-     * definitely don't want it done twice.
-     *
-     * (The other option was to add an Element::performChildLayout function -
-     * maybe we should consider that).
-    */
-
-    // resize the underlying RenderingWindow if we're using such a thing
-    if (d_surface && d_surface->isRenderingWindow())
-        static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
-
-    // screen area changes when we're resized.
-    // NB: Called non-recursive since the performChildWindowLayout call should
-    // have dealt more selectively with child Window cases.
-    notifyScreenAreaChanged(true);
-    performChildWindowLayout(true, true);
-
-    invalidate();
-
-    fireEvent(EventSized, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
 void Window::onMoved(ElementEventArgs& e)
 {
     Element::onMoved(e);
@@ -2484,7 +2254,7 @@ void Window::onFontChanged(WindowEventArgs& e)
     // This was added to enable the Falagard FontDim to work
     // properly.  A better, more selective, solution would
     // probably be to do something funky with events ;)
-    performChildWindowLayout();
+    performChildLayout(false, false);
 
     invalidate();
     fireEvent(EventFontChanged, e, EventNamespace);
@@ -2495,7 +2265,6 @@ void Window::onAlphaChanged(WindowEventArgs& e)
 {
     // scan child list and call this method for all children that inherit alpha
     const size_t child_count = getChildCount();
-
     for (size_t i = 0; i < child_count; ++i)
     {
         if (getChildAtIndex(i)->inheritsAlpha())
@@ -2506,11 +2275,13 @@ void Window::onAlphaChanged(WindowEventArgs& e)
 
     }
 
-    updateGeometryBuffersAlpha();
+    const float finalAlpha = getEffectiveAlpha();
+    for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
+        currentBuffer->setAlpha(finalAlpha);
+
     invalidateRenderingSurface();
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
         context->markAsDirty();
 
     fireEvent(EventAlphaChanged, e, EventNamespace);
@@ -2705,17 +2476,6 @@ void Window::onDeactivated(ActivationEventArgs& e)
     d_active = false;
     invalidate();
     fireEvent(EventDeactivated, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-void Window::onParentSized(ElementEventArgs& e)
-{
-    Element::onParentSized(e);
-
-    // if we were not moved or sized, do child layout anyway!
-    // URGENT FIXME
-    //if (!(moved || sized))
-    performChildWindowLayout();
 }
 
 //----------------------------------------------------------------------------//
@@ -3025,12 +2785,6 @@ void Window::setWindowRenderer(const String& name)
 }
 
 //----------------------------------------------------------------------------//
-WindowRenderer* Window::getWindowRenderer(void) const
-{
-    return d_windowRenderer;
-}
-
-//----------------------------------------------------------------------------//
 void Window::onWindowRendererAttached(WindowEventArgs& e)
 {
     if (!validateWindowRenderer(d_windowRenderer))
@@ -3214,60 +2968,184 @@ bool Window::isPropertyAtDefault(const Property* property) const
 }
 
 //----------------------------------------------------------------------------//
-void Window::notifyClippingChanged(void)
+void Window::notifyClippingChanged()
 {
-    markCachedWindowRectsInvalid();
+    d_outerRectClipperValid = false;
+    d_innerRectClipperValid = false;
+    d_hitTestRectValid = false;
 
     // inform children that their clipped screen areas must be updated
-    const size_t num = d_children.size();
-    for (size_t i=0; i<num; ++i)
-        if (getChildAtIndex(i)->isClippedByParent())
-            getChildAtIndex(i)->notifyClippingChanged();
+    for (Element* child : d_children)
+        if (static_cast<Window*>(child)->isClippedByParent())
+            static_cast<Window*>(child)->notifyClippingChanged();
 }
 
 //----------------------------------------------------------------------------//
-void Window::notifyScreenAreaChanged(bool recursive /* = true */)
+uint8_t Window::handleAreaChanges(bool moved, bool sized)
 {
-    markCachedWindowRectsInvalid();
-    Element::notifyScreenAreaChanged(recursive);
+    // NB: we don't call Element::handleAreaChanges because we completely override its behaviour
 
-    updateGeometryRenderSettings();
-}
+    // Inner rect may change even if outer rect didn't change. E.g. if a ScrolledContainer shows
+    // or hides scrollbars, or a new FrameWindow recalculates its titlebar height.
+    // TODO: can exploit some external hint to avoid recalculating a rect each time?
+    d_unclippedInnerRect.invalidateCache();
 
-//----------------------------------------------------------------------------//
-void Window::updateGeometryRenderSettings()
-{
-    RenderingContext ctx;
-    getRenderingContext(ctx);
+    // We can't guarantee that parent clip rect is unchanged
+    // TODO: can detect parentClipRectChanged?
+    d_outerRectClipperValid = false;
+    d_innerRectClipperValid = false;
 
-    // move the underlying RenderingWindow if we're using such a thing
-    if (ctx.owner == this && ctx.surface->isRenderingWindow())
+    // Always invalidate hit rect because we can't guess how it is calculated
+    d_hitTestRectValid = false;
+    if (GUIContext* context = getGUIContextPtr())
+        context->updateWindowContainingCursor();
+
+    // Check base area changes to update our children
+    uint8_t flags = 0;
+    if (!d_children.empty())
     {
-        static_cast<RenderingWindow*>(ctx.surface)->
-            setPosition(getUnclippedOuterRect().get().getPosition());
-        updatePivot();
+        // When check move, we can occasionally update an inner rect.
+        // To check sizing we must remember its old size here.
+        const Sizef innerRectOldSize = d_unclippedInnerRect.getCurrent().getSize();
 
-        d_translation = glm::vec3(0, 0, 0);
+        if (moved)
+        {
+            // If we moved, consider all our children moved too
+            flags |= (NonClientMoved | ClientMoved);
+        }
+        else
+        {
+            // NB: if some of children use an outer rect, 'moved' flag already took care of them
+
+            const auto& clientArea = getChildContentArea(false);
+            if (&d_unclippedOuterRect != &clientArea)
+            {
+                const Rectf oldClientContent = clientArea.getCurrent();
+                clientArea.invalidateCache();
+                if (oldClientContent != clientArea.get())
+                    flags |= ClientMoved;
+            }
+
+            const auto& nonClientArea = getChildContentArea(true);
+            if (&d_unclippedOuterRect != &nonClientArea)
+            {
+                if (&clientArea == &nonClientArea)
+                {
+                    // All children use the same area, reuse comparison results
+                    if (flags & ClientMoved)
+                        flags |= NonClientMoved;
+                }
+                else
+                {
+                    // Check a non-client area if it is not the same as client
+                    const Rectf oldNonClientContent = nonClientArea.getCurrent();
+                    nonClientArea.invalidateCache();
+                    if (oldNonClientContent != nonClientArea.get())
+                        flags |= NonClientMoved;
+                }
+            }
+        }
+
+        if (sized)
+        {
+            // If we were resized, consider all our children are resized too
+            flags |= (NonClientSized | ClientSized);
+        }
+        else
+        {
+            // Non-client size depends on the outer rect, and 'sized' flags handles it.
+            // Client size depends on the inner rect, and we check its resizing here.
+            if (innerRectOldSize != d_unclippedInnerRect.get().getSize())
+                flags |= ClientSized;
+        }
     }
-    // if we're not texture backed, update geometry position.
-    else
+
+    if (sized)
     {
-        // position is the offset of the window on the dest surface.
-        const Rectf ucrect(getUnclippedOuterRect().get());
+        // Resize the underlying RenderingWindow if we're using such a thing
+        if (d_surface && d_surface->isRenderingWindow())
+            static_cast<RenderingWindow*>(d_surface)->setSize(d_pixelSize);
 
-        d_translation = glm::vec3(ucrect.d_min.x - ctx.offset.x,
-                                  ucrect.d_min.y - ctx.offset.y,
-                                  0.0f);
+        invalidate();
     }
-    initialiseClippers(ctx);
 
-    updateGeometryBuffersTranslationAndClipping();
+    // Apply our screen area changes to rendering surface and geometry settings
+    // TODO: can detect parentClipRectChanged?
+    //if (moved || sized || parentClipRectChanged)
+    {
+        RenderingContext ctx;
+        getRenderingContext(ctx);
+
+        const auto& pos = getUnclippedOuterRect().get().getPosition();
+
+        if (ctx.owner == this && ctx.surface->isRenderingWindow())
+        {
+            RenderingWindow* const rw = static_cast<RenderingWindow*>(ctx.surface);
+
+            // move the underlying RenderingWindow if we're using such a thing
+            rw->setPosition(pos);
+            updatePivot();
+            d_translation = glm::vec3(0.0f, 0.0f, 0.0f);
+
+            rw->setClippingRegion(getParentClipRect());
+
+            d_clippingRegion = Rectf(glm::vec2(0, 0), d_pixelSize);
+        }
+        else
+        {
+            // if we're not texture backed, update geometry position.
+            // position is the offset of the window on the dest surface.
+            d_translation = glm::vec3(pos - ctx.offset, 0.0f);
+
+            d_clippingRegion = getOuterRectClipper();
+            if (d_clippingRegion.getWidth() != 0.0f && d_clippingRegion.getHeight() != 0.0f)
+                d_clippingRegion.offset(-ctx.offset);
+        }
+
+        for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
+        {
+            currentBuffer->setTranslation(d_translation);
+            currentBuffer->setClippingRegion(d_clippingRegion);
+        }
+    }
+
+    return flags;
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isDragDropTarget() const
+void Window::performChildLayout(bool client, bool nonClient)
 {
-    return d_dragDropTarget;
+    bool changed = false;
+
+    // Layout child widgets with LNF
+    if (!d_lookName.empty())
+    {
+        try
+        {
+            changed |= WidgetLookManager::getSingleton().getWidgetLook(d_lookName).layoutChildWidgets(*this);
+        }
+        catch (UnknownObjectException&)
+        {
+            Logger::getSingleton().logEvent(
+                "Window::performChildLayout: "
+                "WidgetLook '" + d_lookName + "' was not found.", LoggingLevel::Error);
+        }
+    }
+
+    // Layout child widgets with a window renderer
+    if (d_windowRenderer)
+        changed |= d_windowRenderer->performChildWindowLayout();
+
+    // Inner rect may depend on children, so recalculate if their areas changed
+    if (changed)
+    {
+        d_unclippedInnerRect.invalidateCache();
+        d_innerRectClipperValid = false;
+        d_hitTestRectValid = false;
+    }
+
+    // Layout child widgets normally
+    Element::performChildLayout(client, nonClient);
 }
 
 //----------------------------------------------------------------------------//
@@ -3354,11 +3232,6 @@ void Window::appendText(const String& text)
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*>& Window::getGeometryBuffers()
-{
-    return d_geometryBuffers;
-}
-
 void Window::appendGeometryBuffers(std::vector<GeometryBuffer*>& geomBuffers)
 {
     d_geometryBuffers.insert(d_geometryBuffers.end(), geomBuffers.begin(),
@@ -3398,12 +3271,6 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
 }
 
 //----------------------------------------------------------------------------//
-RenderingSurface* Window::getRenderingSurface() const
-{
-    return d_surface;
-}
-
-//----------------------------------------------------------------------------//
 RenderingSurface* Window::getTargetRenderingSurface() const
 {
     if (d_surface)
@@ -3429,7 +3296,7 @@ void Window::setRenderingSurface(RenderingSurface* surface)
     if (d_surface)
     {
         transferChildSurfaces();
-        notifyScreenAreaChanged();
+        notifyScreenAreaChanged(true, true); //???or only update geometry if size not changed?
     }
 }
 
@@ -3458,18 +3325,6 @@ Window* Window::getRootWindow()
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isUsingAutoRenderingSurface() const
-{
-    return d_autoRenderingWindow;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isAutoRenderingSurfaceStencilEnabled() const
-{
-    return d_autoRenderingSurfaceStencilEnabled;
-}
-
-//----------------------------------------------------------------------------//
 void Window::setUsingAutoRenderingSurface(bool setting)
 {
     if (setting)
@@ -3487,7 +3342,7 @@ void Window::setUsingAutoRenderingSurface(bool setting)
 
     // while the actual area on screen may not have changed, the arrangement of
     // surfaces and geometry did...
-    notifyScreenAreaChanged();
+    notifyScreenAreaChanged(true, true); //???or only update geometry if size not changed?
 }
 
 //----------------------------------------------------------------------------//
@@ -3504,10 +3359,6 @@ void Window::setAutoRenderingSurfaceStencilEnabled(bool setting)
     // We need to recreate the auto rendering window since we just changed a crucial setting for it
     releaseRenderingWindow();
     allocateRenderingWindow(setting);
-
-    // while the actual area on screen may not have changed, the arrangement of
-    // surfaces and geometry did...
-    notifyScreenAreaChanged();
 }
 
 //----------------------------------------------------------------------------//
@@ -3549,8 +3400,7 @@ void Window::allocateRenderingWindow(bool addStencilBuffer)
     static_cast<RenderingWindow*>(d_surface)->setRotation(d_rotation);
     updatePivot();
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
         context->markAsDirty();
 }
 
@@ -3571,8 +3421,7 @@ void Window::releaseRenderingWindow()
     old_surface->getOwner().destroyRenderingWindow(*old_surface);
     System::getSingleton().getRenderer()->destroyTextureTarget(tt);
 
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (GUIContext* context = getGUIContextPtr())
         context->markAsDirty();
 }
 
@@ -3592,37 +3441,6 @@ void Window::transferChildSurfaces()
                 *static_cast<RenderingWindow*>(childWnd->d_surface));
         else
             childWnd->transferChildSurfaces();
-    }
-}
-
-//----------------------------------------------------------------------------//
-void Window::initialiseClippers(const RenderingContext& ctx)
-{
-    if (!ctx.surface)
-        return;
-
-    if (ctx.surface->isRenderingWindow() && ctx.owner == this)
-    {
-        RenderingWindow* const rendering_window =
-            static_cast<RenderingWindow*>(ctx.surface);
-
-        if (d_clippedByParent && d_parent)
-            rendering_window->setClippingRegion(
-                getParent()->getClipRect(d_nonClient));
-        else
-            rendering_window->setClippingRegion(
-                Rectf(glm::vec2(0, 0), getRootContainerSize()));
-
-        d_clippingRegion = Rectf(glm::vec2(0, 0), d_pixelSize);
-    }
-    else
-    {
-        Rectf geo_clip(getOuterRectClipper());
-
-        if (geo_clip.getWidth() != 0.0f && geo_clip.getHeight() != 0.0f)
-            geo_clip.offset(-ctx.offset);
-
-        d_clippingRegion = Rectf(geo_clip);
     }
 }
 
@@ -3690,12 +3508,6 @@ const RenderedString& Window::getRenderedString() const
     }
 
     return d_renderedString;
-}
-
-//----------------------------------------------------------------------------//
-RenderedStringParser* Window::getCustomRenderedStringParser() const
-{
-    return d_customStringParser;
 }
 
 //----------------------------------------------------------------------------//
@@ -3781,12 +3593,6 @@ const String& Window::getTextVisual() const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isTextParsingEnabled() const
-{
-    return d_textParsingEnabled;
-}
-
-//----------------------------------------------------------------------------//
 void Window::setTextParsingEnabled(const bool setting)
 {
     d_textParsingEnabled = setting;
@@ -3803,12 +3609,6 @@ void Window::setMargin(const UBox& margin)
 
     WindowEventArgs args(this);
     onMarginChanged(args);
-}
-
-//----------------------------------------------------------------------------//
-const UBox& Window::getMargin() const
-{
-    return d_margin;
 }
 
 //----------------------------------------------------------------------------//
@@ -3830,21 +3630,9 @@ void Window::setUpdateMode(const WindowUpdateMode mode)
 }
 
 //----------------------------------------------------------------------------//
-WindowUpdateMode Window::getUpdateMode() const
-{
-    return d_updateMode;
-}
-
-//----------------------------------------------------------------------------//
 void Window::setCursorInputPropagationEnabled(const bool enabled)
 {
     d_propagatePointerInputs = enabled;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isCursorInputPropagationEnabled() const
-{
-    return d_propagatePointerInputs;
 }
 
 //----------------------------------------------------------------------------//
@@ -3901,7 +3689,9 @@ void Window::clonePropertiesTo(Window& target) const
 //----------------------------------------------------------------------------//
 void Window::cloneChildWidgetsTo(Window& target) const
 {
-    // todo: ChildWindowIterator?
+    // TODO: need to check &target != this?
+
+    // TODO: ChildWindowIterator?
     for (size_t childI = 0; childI < getChildCount(); ++childI)
     {
         Window* child = getChildAtIndex(childI);
@@ -4025,11 +3815,7 @@ void Window::onTargetSurfaceChanged(RenderingSurface* newSurface)
 
                 // Propagate our auto-window as a new host surface for our children
                 for (auto child : d_children)
-                {
-                    Window* childWnd = static_cast<Window*>(child);
-                    if (childWnd)
-                        childWnd->onTargetSurfaceChanged(d_surface);
-                }
+                    static_cast<Window*>(child)->onTargetSurfaceChanged(d_surface);
             }
         }
         else if (!newSurface)
@@ -4039,11 +3825,7 @@ void Window::onTargetSurfaceChanged(RenderingSurface* newSurface)
                 // We are about to destroy our auto-window, so enforce children that use it
                 // as a host surface to destroy their windows first.
                 for (auto child : d_children)
-                {
-                    Window* childWnd = static_cast<Window*>(child);
-                    if (childWnd)
-                        childWnd->onTargetSurfaceChanged(nullptr);
-                }
+                    static_cast<Window*>(child)->onTargetSurfaceChanged(nullptr);
 
                 releaseRenderingWindow();
             }
@@ -4060,22 +3842,16 @@ void Window::onTargetSurfaceChanged(RenderingSurface* newSurface)
         // If we do not have a surface, transfer any surfaces from our children to
         // whatever our target surface now is.
         for (auto child : d_children)
-        {
-            Window* childWnd = static_cast<Window*>(child);
-            if (childWnd)
-                childWnd->onTargetSurfaceChanged(newSurface);
-        }
+            static_cast<Window*>(child)->onTargetSurfaceChanged(newSurface);
     }
 }
 
 //----------------------------------------------------------------------------//
 Sizef Window::getRootContainerSize() const
 {
-    auto root = getRootWindow();
-    if (root)
+    if (auto root = getRootWindow())
     {
-        GUIContext* context = root->getGUIContextPtr();
-        if (context)
+        if (GUIContext* context = root->getGUIContextPtr())
         {
             return context->getSurfaceSize();
         }
@@ -4179,23 +3955,8 @@ void Window::banPropertiesForAutoWindow()
 //----------------------------------------------------------------------------//
 bool Window::handleFontRenderSizeChange(const EventArgs& args)
 {
-    if (!d_windowRenderer)
-        return false;
-
-    return d_windowRenderer->handleFontRenderSizeChange(
+    return d_windowRenderer && d_windowRenderer->handleFontRenderSizeChange(
         static_cast<const FontEventArgs&>(args).font);
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isPointerContainedInArea() const
-{
-    return d_containsPointer;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isFocused() const
-{
-    return d_isFocused;
 }
 
 //----------------------------------------------------------------------------//
@@ -4223,7 +3984,7 @@ void Window::unfocus()
 }
 
 //----------------------------------------------------------------------------//
-bool Window::canFocus()
+bool Window::canFocus() const
 {
     // by default all widgets can be focused if they are not disabled
     return !isDisabled();
@@ -4240,30 +4001,6 @@ void Window::destroyGeometryBuffers()
 }
 
 //----------------------------------------------------------------------------//
-void Window::updateGeometryBuffersTranslationAndClipping()
-{
-    const size_t geom_buffer_count = d_geometryBuffers.size();
-    for (size_t i = 0; i < geom_buffer_count; ++i)
-    {
-        CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
-        currentBuffer->setTranslation(d_translation);
-        currentBuffer->setClippingRegion(d_clippingRegion);
-    }
-}
-
-void Window::updateGeometryBuffersAlpha()
-{
-    float final_alpha = getEffectiveAlpha();
-
-    const size_t geom_buffer_count = d_geometryBuffers.size();
-    for (size_t i = 0; i < geom_buffer_count; ++i)
-    {
-        CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
-        currentBuffer->setAlpha(final_alpha);
-    }
-}
-
-//----------------------------------------------------------------------------//
 void Window::setDrawModeMask(std::uint32_t drawModeMask)
 {
     if(d_drawModeMask == drawModeMask)
@@ -4276,15 +4013,5 @@ void Window::setDrawModeMask(std::uint32_t drawModeMask)
 }
 
 //----------------------------------------------------------------------------//
-std::uint32_t Window::getDrawModeMask() const
-{
-    return d_drawModeMask;
-}
-
-//----------------------------------------------------------------------------//
-
-#if defined(_MSC_VER)
-#   pragma warning(pop)
-#endif
 
 } // End of  CEGUI namespace section

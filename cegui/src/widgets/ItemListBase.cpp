@@ -111,8 +111,10 @@ ItemListBase::~ItemListBase(void)
 /*************************************************************************
 	Initialise components
 *************************************************************************/
-void ItemListBase::initialiseComponents(void)
+void ItemListBase::initialiseComponents()
 {
+    Window::initialiseComponents(); // FIXME: need here?
+
     // this pane may be ourselves, and in fact is by default...
     d_pane->subscribeEvent(Window::EventChildRemoved,
         Event::Subscriber(&ItemListBase::handle_PaneChildRemoved, this));
@@ -347,15 +349,6 @@ void ItemListBase::onListContentsChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ItemListBase::onParentSized(ElementEventArgs& e)
-{
-    Window::onParentSized(e);
-
-    if (d_autoResize)
-        sizeToContent();
-}
-
-//----------------------------------------------------------------------------//
 
 /************************************************************************
     Handler for when a child is removed
@@ -455,45 +448,42 @@ void ItemListBase::addItemListBaseProperties(void)
 void ItemListBase::addChild_impl(Element* element)
 {
     ItemEntry* item = dynamic_cast<ItemEntry*>(element);
-    
-    // if this is an ItemEntry we add it like one, but only if it is not already in the list!
-    if (item)
-    {
-        // add to the pane if we have one
-        if (d_pane != this)
-        {
-            d_pane->addChild(item);
-        }
-        // add item directly to us
-        else
-        {
-            Window::addChild_impl(item);
-        }
-
-	    if (item->d_ownerList != this)
-	    {
-	        // perform normal addItem
-	        // if sorting is enabled, re-sort the list
-            if (d_sortEnabled)
-            {
-                d_listItems.insert(
-                    std::upper_bound(d_listItems.begin(), d_listItems.end(), item, getRealSortCallback()),
-                    item);
-            }
-            // just stick it on the end.
-            else
-            {
-                d_listItems.push_back(item);
-            }
-	        item->d_ownerList = this;
-		    handleUpdatedItemData();
-	    }
-	}
-	// otherwise it's base class processing
-    else
+    if (!item)
     {
         Window::addChild_impl(element);
+        return;
     }
+    
+    // if this is an ItemEntry we add it like one, but only if it is not already in the list!
+    // add to the pane if we have one
+    if (d_pane != this)
+    {
+        d_pane->addChild(item);
+    }
+    // add item directly to us
+    else
+    {
+        Window::addChild_impl(item);
+    }
+
+	if (item->d_ownerList != this)
+	{
+	    // perform normal addItem
+	    // if sorting is enabled, re-sort the list
+        if (d_sortEnabled)
+        {
+            d_listItems.insert(
+                std::upper_bound(d_listItems.begin(), d_listItems.end(), item, getRealSortCallback()),
+                item);
+        }
+        // just stick it on the end.
+        else
+        {
+            d_listItems.push_back(item);
+        }
+	    item->d_ownerList = this;
+		handleUpdatedItemData();
+	}
 }
 
 
@@ -506,16 +496,26 @@ void ItemListBase::endInitialisation(void)
     handleUpdatedItemData(true);
 }
 
-
-/************************************************************************
-	Perform child window layout
-************************************************************************/
-void ItemListBase::performChildWindowLayout(bool nonclient_sized_hint,
-                                            bool client_sized_hint)
+//----------------------------------------------------------------------------//
+uint8_t ItemListBase::handleAreaChanges(bool moved, bool sized)
 {
-	Window::performChildWindowLayout(nonclient_sized_hint,
-                                     client_sized_hint);
-	// if we are not currently initialising
+    const uint8_t flags = Window::handleAreaChanges(moved, sized);
+
+    //!!!FIXME: was in onParentSized! Check logic!
+    // FIXME: notifyScreenAreaChanged will call 'adjustSizeToContent' inside. Need this than?
+    // FIXME: infinite recursion!
+    //if (d_autoResize)
+    //    sizeToContent();
+
+    return flags;
+}
+
+//----------------------------------------------------------------------------//
+void ItemListBase::performChildLayout(bool client, bool nonClient)
+{
+    Window::performChildLayout(client, nonClient);
+
+    // if we are not currently initialising
 	if (!d_initialising)
 	{
 	    // Redo the item layout.
@@ -526,9 +526,7 @@ void ItemListBase::performChildWindowLayout(bool nonclient_sized_hint,
 	}
 }
 
-/************************************************************************
-    Resize to fit content
-************************************************************************/
+//----------------------------------------------------------------------------//
 void ItemListBase::sizeToContent_impl(void)
 {
     Rectf renderArea(getItemRenderArea());

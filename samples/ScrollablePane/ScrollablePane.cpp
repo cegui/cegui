@@ -64,7 +64,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     // load the default font
     FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
-    auto font = loadedFonts.empty() ? 0 : loadedFonts.front();
+    Font* font = loadedFonts.empty() ? nullptr : loadedFonts.front();
     guiContext->setDefaultFont(font);
 
     // set the cursor
@@ -83,7 +83,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     // create a menubar.
     // this will fit in the top of the screen and have options for the Sample
-    UDim bar_bottom(0, font->getLineSpacing(1.5f));
+    UDim bar_bottom(0.f, font ? font->getLineSpacing(1.5f) : 0.f);
 
     Window* bar = wm->createWindow("WindowsLook/Menubar");
     bar->setArea(UDim(0,0),UDim(0,0),UDim(1,0),bar_bottom);
@@ -114,14 +114,17 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     panelFixed->addChild(d_pane);
 
     // add a dialog to the first pane so we have something to drag around :)
-    Window* dlg = wm->createWindow("WindowsLook/FrameWindow");
-    dlg->setSize(USize(UDim(0.04f,0),UDim(0.02f,0)));
-    dlg->setText("Drag me around");
-    dlg->subscribeEvent(FrameWindow::EventCloseClicked, [dlg]()
     {
-        WindowManager::getSingletonPtr()->destroyWindow(dlg);
-    });
-    d_pane->addChild(dlg);
+        Window* dlg = wm->createWindow("WindowsLook/FrameWindow");
+        dlg->setSize(USize(UDim(0.04f, 0), UDim(0.02f, 0)));
+        dlg->setText("Drag me around");
+        dlg->subscribeEvent(FrameWindow::EventCloseClicked, [dlg]()
+        {
+            WindowManager::getSingletonPtr()->destroyWindow(dlg);
+        });
+
+        d_pane->addChild(dlg);
+    }
 
     // Create next, auto-sized scrollable pane.
 
@@ -142,14 +145,35 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     panelAuto->addChild(pane);
 
     // add a dialog to the first pane so we have something to drag around :)
-    dlg = wm->createWindow("WindowsLook/FrameWindow");
-    dlg->setSize(USize(UDim(0.2f,0),UDim(0.4f,0)));
-    dlg->setText("Drag me around");
-    dlg->subscribeEvent(FrameWindow::EventCloseClicked, [dlg]()
     {
-        WindowManager::getSingletonPtr()->destroyWindow(dlg);
-    });
-    pane->addChild(dlg);
+        Window* dlg = wm->createWindow("WindowsLook/FrameWindow", "FWWithContents");
+        dlg->setSize(USize(UDim(0.2f, 0), UDim(0.4f, 0)));
+        dlg->setText("Drag me around");
+        dlg->subscribeEvent(FrameWindow::EventCloseClicked, [dlg]()
+        {
+            WindowManager::getSingletonPtr()->destroyWindow(dlg);
+        });
+        dlg->subscribeEvent(FrameWindow::EventCursorEntersArea, [dlg]()
+        {
+            static_cast<FrameWindow*>(dlg)->setRolledup(false);
+        });
+        dlg->subscribeEvent(FrameWindow::EventCursorLeavesArea, [dlg]()
+        {
+            if (WindowManager::getSingletonPtr()->isAlive(dlg))
+                static_cast<FrameWindow*>(dlg)->setRolledup(true);
+        });
+
+        // To see how window children behave
+        {
+            auto child = wm->createWindow("WindowsLook/Static");
+            child->setArea(URect(UDim(0.25f, 0), UDim(0.25f, 0), UDim(0.75f, 0), UDim(0.75f, 0)));
+            child->setProperty("BackgroundColours", "tl:FF666666 tr:FF666666 bl:FFAAAAAA br:FFAAAAAA");
+            child->setProperty<bool>("FrameEnabled", false);
+            dlg->addChild(child);
+        }
+
+        pane->addChild(dlg);
+    }
 
     // Create another scrollable pane. It will autosize vertically, but will have fixed
     // width. Width of the content area is set to 100% of the ScrollablePane viewport,
@@ -189,7 +213,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     for (int i = 0; i < 5; ++i)
     {
-        dlg = wm->createWindow("WindowsLook/FrameWindow");
+        Window* dlg = wm->createWindow("WindowsLook/FrameWindow");
 
         if (!useLayout)
             dlg->setPosition(UVector2(UDim(0, 0), UDim(0.25f * i, 0)));
@@ -264,6 +288,10 @@ bool ScrollablePaneSample::addNewChild(const CEGUI::EventArgs&)
     dlg->setMinSize(USize(UDim(0,200),UDim(0,100)));
     dlg->setSize(USize(UDim(0,200),UDim(0,100)));
     dlg->setText("Drag me around too!");
+
+    //!!!DBG TMP!
+    dlg->setHorizontalAlignment(HorizontalAlignment::Right);
+    dlg->setVerticalAlignment(VerticalAlignment::Bottom);
 
     // Move the new dialog to the center of the viewable area
     const glm::vec2 offset = d_pane->getContentPane()->getPixelPosition();

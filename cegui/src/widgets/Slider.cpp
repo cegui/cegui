@@ -81,7 +81,7 @@ Slider::~Slider(void)
 /*************************************************************************
 	Initialises the Window based object ready for use.
 *************************************************************************/
-void Slider::initialiseComponents(void)
+void Slider::initialiseComponents()
 {
 	// get thumb
 	Thumb* thumb = getThumb();
@@ -91,7 +91,7 @@ void Slider::initialiseComponents(void)
 	thumb->subscribeEvent(Thumb::EventThumbTrackStarted, Event::Subscriber(&CEGUI::Slider::handleThumbTrackStarted, this));
 	thumb->subscribeEvent(Thumb::EventThumbTrackEnded, Event::Subscriber(&CEGUI::Slider::handleThumbTrackEnded, this));
 
-	performChildWindowLayout();
+    Window::initialiseComponents();
 }
 
 

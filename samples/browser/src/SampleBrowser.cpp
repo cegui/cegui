@@ -98,12 +98,16 @@ int main(int argc, char* argv[])
 
 //----------------------------------------------------------------------------//
 SampleBrowser::SampleBrowser() :
+    d_root(nullptr),
     d_sampleExitButton(nullptr),
     d_metaDataWinMgr(nullptr),
     d_samplesWinMgr(nullptr),
     d_selectedSampleData(nullptr),
     d_loadingProgressBar(nullptr),
-    d_quittingSampleView(false)
+    d_loadingScreenText(nullptr),
+    d_loadScreenChunkProgressText(nullptr),
+    d_quittingSampleView(false),
+    d_systemInputAggregator(nullptr)
 {
 }
 

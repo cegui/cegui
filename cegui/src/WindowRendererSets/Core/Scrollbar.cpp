@@ -62,9 +62,10 @@ namespace CEGUI
         imagery->render(*d_window);
     }
 
-    void FalagardScrollbar::performChildWindowLayout()
+    bool FalagardScrollbar::performChildWindowLayout()
     {
         updateThumb();
+        return true;
     }
 
     void FalagardScrollbar::updateThumb(void)

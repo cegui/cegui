@@ -97,7 +97,7 @@ MultiLineEditbox::~MultiLineEditbox(void)
 }
 
 
-void MultiLineEditbox::initialiseComponents(void)
+void MultiLineEditbox::initialiseComponents()
 {
 	// create the component sub-widgets
 	Scrollbar* vertScrollbar = getVertScrollbar();
@@ -115,7 +115,7 @@ void MultiLineEditbox::initialiseComponents(void)
     horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&MultiLineEditbox::handle_scrollChange, this));
 
 	formatText(true);
-	performChildWindowLayout();
+    Window::initialiseComponents();
 }
 
 
@@ -885,7 +885,7 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
     // layout new text
     formatText(true);
     // layout child windows (scrollbars) since text layout may have changed
-    performChildWindowLayout();
+    performChildLayout(false, false);
     // ensure caret is still within the text
     setCaretIndex(getCaretIndex());
     // ensure caret is visible
@@ -897,12 +897,12 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
 }
 
 
-void MultiLineEditbox::onSized_impl(ElementEventArgs& e)
+void MultiLineEditbox::onSized(ElementEventArgs& e)
 {
 	formatText(true);
 
 	// base class handling
-	Window::onSized_impl(e);
+	Window::onSized(e);
 
 	++e.handled;
 }
@@ -949,7 +949,7 @@ void MultiLineEditbox::onTargetSurfaceChanged(RenderingSurface* newSurface)
     if (getGUIContextPtr())
     {
         formatText(true);
-        performChildWindowLayout();
+        performChildLayout(false, false);
         setCaretIndex(getCaretIndex());
         //ensureCaretIsVisible();
     }

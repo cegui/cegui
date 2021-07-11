@@ -42,7 +42,7 @@ const String ScrolledContainer::EventNamespace("ScrolledContainer");
 //----------------------------------------------------------------------------//
 ScrolledContainer::ScrolledContainer(const String& type, const String& name) :
     Window(type, name),
-    d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&ScrolledContainer::getClientChildContentArea_impl))
+    d_childContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&ScrolledContainer::getChildContentArea_impl))
 {
     setCursorInputPropagationEnabled(true);
     setRiseOnClickEnabled(false);
@@ -81,25 +81,19 @@ void ScrolledContainer::adjustSizeToContent()
 }
 
 //----------------------------------------------------------------------------//
-Rectf ScrolledContainer::getContentPixelRect(void) const
+Rectf ScrolledContainer::getContentPixelRect() const
 {
     return Rectf(d_contentOffset, d_pixelSize);
 }
 
 //----------------------------------------------------------------------------//
-const Element::CachedRectf& ScrolledContainer::getClientChildContentArea() const
+const Element::CachedRectf& ScrolledContainer::getChildContentArea(const bool /*non_client*/) const
 {
-    return d_clientChildContentArea;
+    return d_childContentArea;
 }
 
 //----------------------------------------------------------------------------//
-const Element::CachedRectf& ScrolledContainer::getNonClientChildContentArea() const
-{
-    return d_clientChildContentArea;
-}
-
-//----------------------------------------------------------------------------//
-Rectf ScrolledContainer::getChildExtentsArea(void) const
+Rectf ScrolledContainer::getChildExtentsArea() const
 {
     Rectf extents(0.f, 0.f, 0.f, 0.f);
 
@@ -109,7 +103,7 @@ Rectf ScrolledContainer::getChildExtentsArea(void) const
 
     Sizef baseSize = d_pixelSize;
 
-    const auto& parentRect = d_parent->getClientChildContentArea().get();
+    const auto& parentRect = d_parent->getChildContentArea().get();
     if (isWidthAdjustedToContent())
         baseSize.d_width = parentRect.getWidth();
     if (isHeightAdjustedToContent())
@@ -215,9 +209,7 @@ Rectf ScrolledContainer::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) 
 //----------------------------------------------------------------------------//
 Rectf ScrolledContainer::getInnerRectClipper_impl() const
 {
-    return d_parent ?
-        getParent()->getInnerRectClipper() :
-        Window::getInnerRectClipper_impl();
+    return d_parent ? getParent()->getInnerRectClipper() : Window::getInnerRectClipper_impl();
 }
 
 //----------------------------------------------------------------------------//
@@ -227,24 +219,17 @@ Rectf ScrolledContainer::getHitTestRect_impl() const
 }
 
 //----------------------------------------------------------------------------//
-Rectf ScrolledContainer::getClientChildContentArea_impl(bool skipAllPixelAlignment) const
+Rectf ScrolledContainer::getChildContentArea_impl(bool skipAllPixelAlignment) const
 {
     if (!d_parent)
     {
-        return skipAllPixelAlignment ? Window::getUnclippedInnerRect().getFresh(true) : Window::getUnclippedInnerRect().get();
+        return skipAllPixelAlignment ? Window::getChildContentArea(false).getFresh(true) : Window::getChildContentArea(false).get();
     }
     else
     {
-        if (skipAllPixelAlignment)
-        {
-            return Rectf(getUnclippedOuterRect().getFresh(true).getPosition(),
-                         d_parent->getUnclippedInnerRect().getFresh(true).getSize());
-        }
-        else
-        {
-            return Rectf(getUnclippedOuterRect().get().getPosition(),
-                         d_parent->getUnclippedInnerRect().get().getSize());
-        }
+        return skipAllPixelAlignment ?
+            Rectf(getUnclippedOuterRect().getFresh(true).getPosition(), d_parent->getUnclippedInnerRect().getFresh(true).getSize()) :
+            Rectf(getUnclippedOuterRect().get().getPosition(), d_parent->getUnclippedInnerRect().get().getSize());
     }
 }
 
@@ -290,29 +275,16 @@ void ScrolledContainer::cleanupChildren(void)
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::onParentSized(ElementEventArgs& e)
+uint8_t ScrolledContainer::handleAreaChanges(bool moved, bool sized)
 {
-    Window::onParentSized(e);
+    d_childContentArea.invalidateCache();
+    return Window::handleAreaChanges(moved, sized);
 
-    // Autosized dimension has absolute size and therefore isn't resized with the
-    // parent, but children are based on the viewport, so notify them anyway.
-    if (isSizeAdjustedToContent())
-        performChildWindowLayout(false, true);
-}
-
-//----------------------------------------------------------------------------//
-void ScrolledContainer::notifyScreenAreaChanged(bool recursive)
-{
-    d_clientChildContentArea.invalidateCache();
-    Window::notifyScreenAreaChanged(recursive);
-}
-
-//----------------------------------------------------------------------------//
-void ScrolledContainer::setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing, bool fireEvents,
-                                     bool adjust_size)
-{
-    d_clientChildContentArea.invalidateCache();
-    Window::setArea_impl(pos, size, topLeftSizing, fireEvents, adjust_size);
+//!!!FIXME: logic for performChildLayout, now must happen automatically because we always layout children
+    //// Autosized dimension has absolute size and therefore isn't resized with the
+    //// parent, but children are based on the viewport, so notify them anyway.
+    //if (isSizeAdjustedToContent())
+    //    performChildWindowLayout(false, true);
 }
 
 //----------------------------------------------------------------------------//

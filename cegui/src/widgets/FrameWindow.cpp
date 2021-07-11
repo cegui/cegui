@@ -29,13 +29,8 @@
 #include "CEGUI/widgets/FrameWindow.h"
 #include "CEGUI/widgets/Titlebar.h"
 #include "CEGUI/widgets/PushButton.h"
-#include "CEGUI/Cursor.h"
-#include "CEGUI/WindowManager.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/CoordConverter.h"
-
-// URGENT FIXME: I commented instances of PixelAligned in here, I think they are not necessary but it should be checked!
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -94,7 +89,7 @@ FrameWindow::~FrameWindow(void)
 /*************************************************************************
     Initialises the Window based object ready for use.
 *************************************************************************/
-void FrameWindow::initialiseComponents(void)
+void FrameWindow::initialiseComponents()
 {
     Titlebar* titlebar = getTitlebar();
     PushButton* closeButton = getCloseButton();
@@ -114,7 +109,7 @@ void FrameWindow::initialiseComponents(void)
     // bind handler to close button 'Click' event
     closeButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::FrameWindow::closeClickHandler, this));
 
-    performChildWindowLayout();
+    Window::initialiseComponents();
 }
 
 
@@ -204,8 +199,6 @@ void FrameWindow::toggleRollup(void)
         // event notification.
         WindowEventArgs args(this);
         onRollupToggled(args);
-
-        getGUIContext().updateWindowContainingCursor();
     }
 
 }
@@ -291,7 +284,7 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const glm::vec2&
     move the window's left edge by 'delta'.  The rest of the window
     does not move, thus this changes the size of the Window.
 *************************************************************************/
-bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
+void FrameWindow::moveLeftEdge(float delta, URect& outArea)
 {
     float newWidth = d_pixelSize.d_width - delta;
 
@@ -300,8 +293,8 @@ bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
     const float rootWidth = getRootContainerSize().d_width;
-    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, rootWidth));
-    float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, rootWidth));
+    const float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, rootWidth));
+    const float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, rootWidth));
 
     if (maxWidth != 0.0f && newWidth > maxWidth)
         newWidth = maxWidth;
@@ -309,32 +302,31 @@ bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
         newWidth = minWidth;
 
     // Calculate size delta from what our size would be without limitations
-    const float unlimitedWidth = CoordConverter::asAbsolute(getSize(), getBasePixelSize()).d_width;
+    const float unlimitedWidth = CoordConverter::asAbsolute(getSize().d_width, getBasePixelSize().d_width);
+    if (unlimitedWidth == newWidth) return;
 
     // ensure adjustment will be whole pixel
-    float adjustment = /*PixelAligned(*/unlimitedWidth - newWidth/*)*/;
+    const float adjustment = unlimitedWidth - newWidth;
 
     if (d_horizontalAlignment == HorizontalAlignment::Right)
     {
-        out_area.d_max.d_x.d_offset -= adjustment;
+        outArea.d_max.d_x.d_offset -= adjustment;
     }
     else if (d_horizontalAlignment == HorizontalAlignment::Centre)
     {
-        out_area.d_max.d_x.d_offset -= adjustment * 0.5f;
-        out_area.d_min.d_x.d_offset += adjustment * 0.5f;
+        outArea.d_max.d_x.d_offset -= adjustment * 0.5f;
+        outArea.d_min.d_x.d_offset += adjustment * 0.5f;
     }
     else
     {
-        out_area.d_min.d_x.d_offset += adjustment;
+        outArea.d_min.d_x.d_offset += adjustment;
     }
-
-    return d_horizontalAlignment == HorizontalAlignment::Left;
 }
 /*************************************************************************
     move the window's right edge by 'delta'.  The rest of the window
     does not move, thus this changes the size of the Window.
 *************************************************************************/
-bool FrameWindow::moveRightEdge(float delta, URect& out_area)
+void FrameWindow::moveRightEdge(float delta, URect& outArea)
 {
     float newWidth = d_pixelSize.d_width + delta;
 
@@ -343,8 +335,8 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
     const float rootWidth = getRootContainerSize().d_width;
-    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, rootWidth));
-    float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, rootWidth));
+    const float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, rootWidth));
+    const float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, rootWidth));
 
     if (maxWidth != 0.0f && newWidth > maxWidth)
         newWidth = maxWidth;
@@ -352,35 +344,34 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
         newWidth = minWidth;
 
     // Calculate size delta from what our size would be without limitations
-    const float unlimitedWidth = CoordConverter::asAbsolute(getSize(), getBasePixelSize()).d_width;
+    const float unlimitedWidth = CoordConverter::asAbsolute(getSize().d_width, getBasePixelSize().d_width);
+    if (unlimitedWidth == newWidth) return;
 
     // ensure adjustment will be whole pixel
-    float adjustment = /*PixelAligned(*/newWidth - unlimitedWidth/*)*/;
+    const float adjustment = newWidth - unlimitedWidth;
 
-    out_area.d_max.d_x.d_offset += adjustment;
+    outArea.d_max.d_x.d_offset += adjustment;
 
     if (d_horizontalAlignment == HorizontalAlignment::Right)
     {
-        out_area.d_max.d_x.d_offset += adjustment;
-        out_area.d_min.d_x.d_offset += adjustment;
+        outArea.d_max.d_x.d_offset += adjustment;
+        outArea.d_min.d_x.d_offset += adjustment;
     }
     else if (d_horizontalAlignment == HorizontalAlignment::Centre)
     {
-        out_area.d_max.d_x.d_offset += adjustment * 0.5f;
-        out_area.d_min.d_x.d_offset += adjustment * 0.5f;
+        outArea.d_max.d_x.d_offset += adjustment * 0.5f;
+        outArea.d_min.d_x.d_offset += adjustment * 0.5f;
     }
 
     // move the dragging point so cursor remains 'attached' to edge of window
     d_dragPoint.x += (newWidth - d_pixelSize.d_width);
-
-    return d_horizontalAlignment == HorizontalAlignment::Right;
 }
 
 /*************************************************************************
     move the window's top edge by 'delta'.  The rest of the window
     does not move, thus this changes the size of the Window.
 *************************************************************************/
-bool FrameWindow::moveTopEdge(float delta, URect& out_area)
+void FrameWindow::moveTopEdge(float delta, URect& outArea)
 {
     float newHeight = d_pixelSize.d_height - delta;
 
@@ -389,8 +380,8 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
     const float rootHeight = getRootContainerSize().d_height;
-    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_height, rootHeight));
-    float minHeight(CoordConverter::asAbsolute(d_minSize.d_height, rootHeight));
+    const float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_height, rootHeight));
+    const float minHeight(CoordConverter::asAbsolute(d_minSize.d_height, rootHeight));
 
     if (maxHeight != 0.0f && newHeight > maxHeight)
         newHeight = maxHeight;
@@ -398,26 +389,25 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
         newHeight = minHeight;
 
     // Calculate size delta from what our size would be without limitations
-    const float unlimitedHeight = CoordConverter::asAbsolute(getSize(), getBasePixelSize()).d_height;
+    const float unlimitedHeight = CoordConverter::asAbsolute(getSize().d_height, getBasePixelSize().d_height);
+    if (unlimitedHeight == newHeight) return;
 
     // ensure adjustment will be whole pixel
-    float adjustment = /*PixelAligned(*/unlimitedHeight - newHeight/*)*/;
+    const float adjustment = unlimitedHeight - newHeight;
 
     if (d_verticalAlignment == VerticalAlignment::Bottom)
     {
-        out_area.d_max.d_y.d_offset -= adjustment;
+        outArea.d_max.d_y.d_offset -= adjustment;
     }
     else if (d_verticalAlignment == VerticalAlignment::Centre)
     {
-        out_area.d_max.d_y.d_offset -= adjustment * 0.5f;
-        out_area.d_min.d_y.d_offset += adjustment * 0.5f;
+        outArea.d_max.d_y.d_offset -= adjustment * 0.5f;
+        outArea.d_min.d_y.d_offset += adjustment * 0.5f;
     }
     else
     {
-        out_area.d_min.d_y.d_offset += adjustment;
+        outArea.d_min.d_y.d_offset += adjustment;
     }
-
-    return d_verticalAlignment == VerticalAlignment::Top;
 }
 
 
@@ -425,7 +415,7 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
     move the window's bottom edge by 'delta'.  The rest of the window
     does not move, thus this changes the size of the Window.
 *************************************************************************/
-bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
+void FrameWindow::moveBottomEdge(float delta, URect& outArea)
 {
     float newHeight = d_pixelSize.d_height + delta;
 
@@ -434,8 +424,8 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
     const float rootHeight = getRootContainerSize().d_height;
-    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_height, rootHeight));
-    float minHeight(CoordConverter::asAbsolute(d_minSize.d_height, rootHeight));
+    const float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_height, rootHeight));
+    const float minHeight(CoordConverter::asAbsolute(d_minSize.d_height, rootHeight));
 
     if (maxHeight != 0.0f && newHeight > maxHeight)
         newHeight = maxHeight;
@@ -443,28 +433,27 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
         newHeight = minHeight;
 
     // Calculate size delta from what our size would be without limitations
-    const float unlimitedHeight = CoordConverter::asAbsolute(getSize(), getBasePixelSize()).d_height;
+    const float unlimitedHeight = CoordConverter::asAbsolute(getSize().d_height, getBasePixelSize().d_height);
+    if (unlimitedHeight == newHeight) return;
 
     // ensure adjustment will be whole pixel
-    float adjustment = /*PixelAligned(*/newHeight - unlimitedHeight/*)*/;
+    const float adjustment = newHeight - unlimitedHeight;
 
-    out_area.d_max.d_y.d_offset += adjustment;
+    outArea.d_max.d_y.d_offset += adjustment;
 
     if (d_verticalAlignment == VerticalAlignment::Bottom)
     {
-        out_area.d_max.d_y.d_offset += adjustment;
-        out_area.d_min.d_y.d_offset += adjustment;
+        outArea.d_max.d_y.d_offset += adjustment;
+        outArea.d_min.d_y.d_offset += adjustment;
     }
     else if (d_verticalAlignment == VerticalAlignment::Centre)
     {
-        out_area.d_max.d_y.d_offset += adjustment * 0.5f;
-        out_area.d_min.d_y.d_offset += adjustment * 0.5f;
+        outArea.d_max.d_y.d_offset += adjustment * 0.5f;
+        outArea.d_min.d_y.d_offset += adjustment * 0.5f;
     }
 
     // move the dragging point so cursor remains 'attached' to edge of window
     d_dragPoint.y += (newHeight - d_pixelSize.d_height);
-
-    return d_verticalAlignment == VerticalAlignment::Bottom;
 }
 
 
@@ -522,9 +511,10 @@ void FrameWindow::setCursorForSizingLocation(SizingLocation location) const
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
     invalidate(true);
-    notifyScreenAreaChanged();
-    ElementEventArgs size_args(e.window);
-    onSized(size_args);
+
+    //???!!!TODO: adjust to content only if rolled down?
+    //???!!!TODO: change pixel size when rolled up?
+    notifyScreenAreaChanged(true, true);
 
     fireEvent(EventRollupToggled, e, EventNamespace);
 }
@@ -563,33 +553,23 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
         {
             dragEdge = getSizingBorderAtPoint(d_dragPoint);
 
-            // calculate sizing deltas...
-            const float deltaX = localCursorPos.x - d_dragPoint.x;
-            const float deltaY = localCursorPos.y - d_dragPoint.y;
+            URect newArea(d_area);
 
-            URect new_area(d_area);
-            bool top_left_sizing = false;
             // size left or right edges
+            const float deltaX = localCursorPos.x - d_dragPoint.x;
             if (isLeftSizingLocation(dragEdge))
-            {
-                top_left_sizing |= moveLeftEdge(deltaX, new_area);
-            }
+                moveLeftEdge(deltaX, newArea);
             else if (isRightSizingLocation(dragEdge))
-            {
-                top_left_sizing |= moveRightEdge(deltaX, new_area);
-            }
+                moveRightEdge(deltaX, newArea);
 
             // size top or bottom edges
+            const float deltaY = localCursorPos.y - d_dragPoint.y;
             if (isTopSizingLocation(dragEdge))
-            {
-                top_left_sizing |= moveTopEdge(deltaY, new_area);
-            }
+                moveTopEdge(deltaY, newArea);
             else if (isBottomSizingLocation(dragEdge))
-            {
-                top_left_sizing |= moveBottomEdge(deltaY, new_area);
-            }
+                moveBottomEdge(deltaY, newArea);
 
-            setArea_impl(new_area.d_min, new_area.getSize(), top_left_sizing);
+            setArea(newArea.d_min, newArea.getSize(), true);
         }
         else
         {
@@ -687,7 +667,7 @@ void FrameWindow::onTextChanged(WindowEventArgs& e)
     // pass this onto titlebar component.
     getTitlebar()->setText(getText());
     // maybe the user is using a fontdim for titlebar dimensions ;)
-    performChildWindowLayout();
+    performChildLayout(false, false);
 }
 
 
@@ -795,70 +775,6 @@ void FrameWindow::addFrameWindowProperties(void)
 }
 
 /*************************************************************************
-    return the image used for the north-south sizing cursor.
-*************************************************************************/
-const Image* FrameWindow::getNSSizingIndicatorImage() const
-{
-    return d_nsSizingCursor;
-}
-
-/*************************************************************************
-    return the image used for the east-west sizing cursor.
-*************************************************************************/
-const Image* FrameWindow::getEWSizingIndicatorImage() const
-{
-    return d_ewSizingCursor;
-}
-
-/*************************************************************************
-    return the image used for the northwest-southeast sizing cursor.
-*************************************************************************/
-const Image* FrameWindow::getNWSESizingIndicatorImage() const
-{
-    return d_nwseSizingCursor;
-}
-
-/*************************************************************************
-    return the image used for the northeast-southwest sizing cursor.
-*************************************************************************/
-const Image* FrameWindow::getNESWSizingIndicatorImage() const
-{
-    return d_neswSizingCursor;
-}
-
-/*************************************************************************
-    set the image used for the north-south sizing cursor.
-*************************************************************************/
-void FrameWindow::setNSSizingIndicatorImage(const Image* image)
-{
-    d_nsSizingCursor = image;
-}
-
-/*************************************************************************
-    set the image used for the east-west sizing cursor.
-*************************************************************************/
-void FrameWindow::setEWSizingIndicatorImage(const Image* image)
-{
-    d_ewSizingCursor = image;
-}
-
-/*************************************************************************
-    set the image used for the northwest-southeast sizing cursor.
-*************************************************************************/
-void FrameWindow::setNWSESizingIndicatorImage(const Image* image)
-{
-    d_nwseSizingCursor = image;
-}
-
-/*************************************************************************
-    set the image used for the northeast-southwest sizing cursor.
-*************************************************************************/
-void FrameWindow::setNESWSizingIndicatorImage(const Image* image)
-{
-    d_neswSizingCursor = image;
-}
-
-/*************************************************************************
     set the image used for the north-south sizing cursor.
 *************************************************************************/
 void FrameWindow::setNSSizingIndicatorImage(const String& name)
@@ -927,4 +843,3 @@ void FrameWindow::onDragSizingEnded(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
-

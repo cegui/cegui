@@ -239,13 +239,6 @@ protected:
 
     //! The name of the element, unique in the parent of this element
     String d_name;
-
-private:
-    /*************************************************************************
-        May not copy or assign Element objects
-    *************************************************************************/
-    NamedElement(const Element&) {}
-    NamedElement& operator=(const NamedElement&) {return *this;}
 };
 
 } // End of  CEGUI namespace section

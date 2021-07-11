@@ -96,12 +96,6 @@ public:
      * ElementEventArgs::element set to the Element whose size was changed.
      */
     static const String EventSized;
-    /** Event fired when the parent of this Element has been re-sized.
-     * Handlers are passed a const ElementEventArgs reference with
-     * ElementEventArgs::element pointing to the <em>parent element</em> that
-     * was resized, not the element whose parent was resized.
-     */
-    static const String EventParentSized;
     /** Event fired when the Element position has changed.
      * Handlers are passed a const ElementEventArgs reference with
      * ElementEventArgs::element set to the Element whose position was changed.
@@ -222,6 +216,14 @@ public:
         }
 
         /*!
+        \brief Retrieves cached Rectf even if the cache is invalid
+        */
+        inline const Rectf& getCurrent() const
+        {
+            return d_cachedData;
+        }
+
+        /*!
         \brief Invalidates the cached Rectf causing it to be regenerated
 
         The regeneration will not happen immediately, it will happen when user
@@ -258,6 +260,9 @@ public:
     \brief Constructor
     */
     Element();
+
+    Element(const Element&) = delete;
+    Element& operator=(const Element&) = delete;
 
     /*!
     \brief Destructor
@@ -301,13 +306,19 @@ public:
 
     \see UDim
     */
-    virtual void setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content=true);
+    void setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content);
 
     //! \overload
     inline void setArea(const UDim& xpos, const UDim& ypos,
                         const UDim& width, const UDim& height)
     {
         setArea(UVector2(xpos, ypos), USize(width, height));
+    }
+
+    //! \overload
+    inline void setArea(const UVector2& pos, const USize& size)
+    {
+        setArea(pos, size, true);
     }
 
     //! \overload
@@ -352,7 +363,7 @@ public:
     */
     inline void setPosition(const UVector2& pos)
     {
-        setArea_impl(pos, getSize());
+        setArea(pos, getSize(), true);
     }
 
     //! \overload
@@ -779,7 +790,10 @@ public:
     \see Element::setPivot
     \see Element::getRotation
     */
-    UVector3 getPivot() const;
+    inline UVector3 getPivot() const
+    {
+        return d_pivot;
+    }
 
     /*!
     \brief
@@ -809,6 +823,9 @@ public:
     \exception InvalidRequestException
         thrown if Element \a element is an ancestor of this Element, to prevent
         cyclic Element structures.
+
+    \see
+        Element::removeChild
     */
     void addChild(Element* element);
 
@@ -933,7 +950,11 @@ public:
           parent, etc) of this Element.
         - false if \a element is not an ancestor of this element.
     */
-    bool isAncestor(const Element* element) const;
+    inline bool isAncestor(const Element* element) const
+    {
+        // no parent - no ancestor at all
+        return d_parent && (d_parent == element || d_parent->isAncestor(element));
+    }
 
     /*!
     \brief Set whether the Element is non-client.
@@ -1015,7 +1036,10 @@ public:
     \see onIsSizeAdjustedToContentChanged
     \see onSized
     */
-    bool isWidthAdjustedToContent() const;
+    inline bool isWidthAdjustedToContent() const
+    {
+        return d_isWidthAdjustedToContent;
+    }
 
     /*!
     \brief
@@ -1045,7 +1069,10 @@ public:
     \see onIsSizeAdjustedToContentChanged
     \see onSized
     */
-    bool isHeightAdjustedToContent() const;
+    inline bool isHeightAdjustedToContent() const
+    {
+        return d_isHeightAdjustedToContent;
+    }
 
     /*!
     \brief
@@ -1055,7 +1082,10 @@ public:
     \see isWidthAdjustedToContent
     \see isHeightAdjustedToContent
     */
-    bool isSizeAdjustedToContent() const;
+    inline bool isSizeAdjustedToContent() const
+    {
+        return isWidthAdjustedToContent() || isHeightAdjustedToContent();
+    }
 
     /*!
     \brief Return a Rect that describes the unclipped outer rect area of the Element
@@ -1094,44 +1124,6 @@ public:
     }
 
     /*!
-    \brief Return a Rect that describes the unclipped area covered by the Element.
-
-    This function can return either the inner or outer area dependant upon
-    the boolean values passed in.
-
-    \param inner
-        - true if the inner rect area should be returned.
-        - false if the outer rect area should be returned.
-
-    \see Element::getUnclippedOuterRect
-    \see Element::getUnclippedInnerRect
-    */
-    inline const CachedRectf& getUnclippedRect(const bool inner) const
-    {
-        return inner ? getUnclippedInnerRect() : getUnclippedOuterRect();
-    }
-
-    /*!
-    \brief Return a Rect that is used by client child elements as content area
-
-    Client content area is used for relative sizing, positioning and clipping
-    of child elements that are client (their NonClient property is "false").
-
-    \see Element::getChildContentArea
-    */
-    virtual const CachedRectf& getClientChildContentArea() const;
-
-    /*!
-    \brief Return a Rect that is used by client child elements as content area
-
-    Client content area is used for relative sizing, positioning and clipping
-    of child elements that are non-client (their NonClient property is "true").
-
-    \see Element::getChildContentArea
-    */
-    virtual const CachedRectf& getNonClientChildContentArea() const;
-
-    /*!
     \brief Return a Rect that is used to position and size child elements
 
     It is used as the reference area for positioning and its size is used for
@@ -1143,34 +1135,30 @@ public:
         client content), although certain advanced uses will require
         alternative Rects to be returned.
 
-    \note
-        The behaviour of this function is modified by overriding the
-        protected Element::getClientChildContentArea and/or
-        Element::getNonClientChildContentArea functions.
-
     \param non_client
         - true to return the non-client child content area.
         - false to return the client child content area (default).
     */
-    inline const CachedRectf& getChildContentArea(const bool non_client = false) const
+    virtual const CachedRectf& getChildContentArea(const bool non_client = false) const
     {
-        return non_client ? getNonClientChildContentArea() : getClientChildContentArea();
+        return non_client ? d_unclippedOuterRect : d_unclippedInnerRect;
     }
 
     /*!
-    \brief Inform the element and (optionally) all children that screen area has changed
+    \brief Inform the element and all children that screen area has changed
 
     \note
         This will cause recomputation and recaching of various rectangles used.
         Such an action, especially if applied recursively, will impact performance
         before everything is cached again.
 
-    \param recursive
-        - true to recursively call notifyScreenAreaChanged on attached child
-          Element objects.
-        - false to just process \e this Element.
+    \param adjust_size_to_content
+        - true - call adjustSizeToContent() if our size is changed.
+
+    \param forceLayoutChildren
+        - true - call children layout code even if we are not resized.
     */
-    virtual void notifyScreenAreaChanged(bool recursive = true);
+    void notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLayoutChildren = false);
 
     /*!
     \brief Return the size of the root container (such as screen size).
@@ -1534,10 +1522,25 @@ public:
     virtual bool contentFits() const;
 
     //! Gets the default paragraph direction for the displayed text of this Element.
-    DefaultParagraphDirection getDefaultParagraphDirection() const;
+    inline DefaultParagraphDirection getDefaultParagraphDirection() const
+    {
+        return d_defaultParagraphDirection;
+    }
 
     //! Sets the default paragraph direction for the displayed text of this Element.
     void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);
+
+    /*!
+    \brief
+        Layout child widgets inside our content areas.
+
+    \param client
+        - true to process client children
+
+    \param nonClient
+        - true to process non-client children
+    */
+    virtual void performChildLayout(bool client, bool nonClient);
 
 protected:
     /*!
@@ -1545,66 +1548,6 @@ protected:
         Add standard CEGUI::Element properties.
     */
     void addElementProperties();
-
-    /*!
-    \brief
-        Implementation method to modify element area while correctly applying
-        min / max size processing, and firing any appropriate events.
-
-    \note
-        This is the implementation function for setting size and position.
-        In order to simplify area management, from this point on, all
-        modifications to element size and position (area rect) should come
-        through here.
-
-    \param pos
-        UVector2 object describing the new area position.
-
-    \param size
-        USize object describing the new area size.
-
-    \param topLeftSizing
-        - true to indicate the operation is a sizing operation on the top
-          and/or left edges of the area, and so element movement should be
-          inhibited if size is at max or min.
-        - false to indicate the operation is not a strict sizing operation on
-          the top and/or left edges and that the element position may change as
-          required
-
-    \param fireEvents
-        - true if events should be fired as normal.
-        - false to inhibit firing of events (required, for example, if you need
-          to call this from the onSize/onMove handlers).
-
-    \param adjust_size_to_content
-        If the size actually changes, should we call "AdjustSizeToContent"?
-        Normally, this should be true. However, if this function is called from
-        inside "AdjustSizeToContent", you must set this to false to prevent
-        infinite recursion.
-     */
-    virtual void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing=false, bool fireEvents=true,
-                              bool adjust_size_to_content=true);
-
-    //! helper to return whether the inner rect size has changed
-    inline bool isInnerRectSizeChanged() const
-    {
-        const Sizef old_sz(d_unclippedInnerRect.get().getSize());
-        d_unclippedInnerRect.invalidateCache();
-        return old_sz != d_unclippedInnerRect.get().getSize();
-    }
-
-    /*!
-    \brief
-        Set the parent element for this element object.
-
-    \param parent
-        Pointer to a Element object that is to be assigned as the parent to this
-        Element.
-
-    \return
-        Nothing
-    */
-    virtual void setParent(Element* parent);
 
     /*!
     \brief
@@ -1623,40 +1566,37 @@ protected:
     //! Default implementation of function to return Element's inner rect area.
     virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
 
+    enum
+    {
+        ClientMoved = 0x01,
+        ClientSized = 0x02,
+        NonClientMoved = 0x04,
+        NonClientSized = 0x08
+    };
+
     /*!
     \brief
-        Helper to fire events based on changes to area rect.
-    
-    \param adjust_size_to_content
-        If the size actually changes, should we call "AdjustSizeToContent"?
-        Normally, this should be true. However, if this function is called from
-        inside "AdjustSizeToContent", you must set this to false to prevent
-        infinite recursion.  
-    */
-    void fireAreaChangeEvents(const bool moved, const bool sized, bool adjust_size_to_content=true);
+        Handles an actual screen area changes for this widget. This typically leads
+        to invalidation of cached imagery and areas.
 
-    void notifyChildrenOfSizeChange(const bool non_client,
-                                    const bool client);
+    \param moved
+        - true if a widget moved on screen
+
+    \param sized
+        - true if a widget pixel size has changed
+
+    \return
+        Flags that represent child area changes (ClientMoved, ClientSized,
+        NonClientMoved, NonClientSized)
+    */
+    virtual uint8_t handleAreaChanges(bool moved, bool sized);
+
+    //! Lightweight child area updating path for not resized widgets
+    void handlePositionChangeRecursively(bool client, bool nonClient);
 
     /*************************************************************************
         Event trigger methods
-    *************************************************************************/
-    /*!
-    \brief
-        Handler called when the element's size changes.
-
-    \param e
-        ElementEventArgs object whose 'element' pointer field is set to the element
-        that triggered the event.
-
-    \param adjust_size_to_content
-        If the size actually changes, should we call "AdjustSizeToContent"?
-        Normally, this should be true. However, if this function is called from
-        inside "AdjustSizeToContent", you must set this to false to prevent
-        infinite recursion.  
-    */
-    virtual void onSized(ElementEventArgs& e, bool adjust_size_to_content=true);
-    
+    *************************************************************************/    
     /*!
     \brief
         Handler called when the element's size changes.
@@ -1665,20 +1605,7 @@ protected:
         ElementEventArgs object whose 'element' pointer field is set to the element
         that triggered the event.
     */
-    virtual void onSized_impl(ElementEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when this element's parent element has been resized.  If
-        this element is the root / GUI Sheet element, this call will be made when
-        the display size changes.
-
-    \param e
-        ElementEventArgs object whose 'element' pointer field is set the the
-        element that caused the event; this is typically either this element's
-        parent element, or NULL to indicate the screen size has changed.
-    */
-    virtual void onParentSized(ElementEventArgs& e);
+    virtual void onSized(ElementEventArgs& e);
 
     /*!
     \brief
@@ -1850,13 +1777,6 @@ protected:
     \see DefaultParagraphDirection
     */
     DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
-private:
-    /*************************************************************************
-        May not copy or assign Element objects
-    *************************************************************************/
-    Element(const Element&);
-
-    Element& operator=(const Element&) {return *this;}
 };
 
 } // End of  CEGUI namespace section

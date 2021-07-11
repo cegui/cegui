@@ -624,7 +624,7 @@ MultiColumnList::SelectionMode MultiColumnList::getSelectionMode(void) const
 /*************************************************************************
 	Initialise the Window based object ready for use.
 *************************************************************************/
-void MultiColumnList::initialiseComponents(void)
+void MultiColumnList::initialiseComponents()
 {
 	// get the component sub-widgets
 	Scrollbar* vertScrollbar = getVertScrollbar();
@@ -647,7 +647,7 @@ void MultiColumnList::initialiseComponents(void)
 
 	// Perform initial layout
 	configureScrollbars();
-	performChildWindowLayout();
+    Window::initialiseComponents();
 }
 
 
@@ -1902,10 +1902,10 @@ void MultiColumnList::onFontChanged(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when we are sized
 *************************************************************************/
-void MultiColumnList::onSized_impl(ElementEventArgs& e)
+void MultiColumnList::onSized(ElementEventArgs& e)
 {
 	// base class handling
-	Window::onSized_impl(e);
+	Window::onSized(e);
 
 	configureScrollbars();
 

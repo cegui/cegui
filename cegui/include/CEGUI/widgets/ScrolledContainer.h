@@ -66,7 +66,7 @@ public:
         Rect object that details the current pixel extents of the content
         pane represented by this ScrolledContainer.
     */
-    Rectf getContentPixelRect(void) const;
+    Rectf getContentPixelRect() const;
 
     /*!
     \brief
@@ -77,20 +77,17 @@ public:
         child windows.  This is effectively the smallest bounding box
         that could contain all the attached windows.
     */
-    Rectf getChildExtentsArea(void) const;
+    Rectf getChildExtentsArea() const;
 
     virtual void adjustSizeToContent() override;
     
-    const CachedRectf& getClientChildContentArea() const override;
-    const CachedRectf& getNonClientChildContentArea() const override;
+    const CachedRectf& getChildContentArea(const bool non_client = false) const override;
 
-    void notifyScreenAreaChanged(bool recursive) override;
-    
 protected:
     // Overridden from Window.
     Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const override;
     
-    Rectf getClientChildContentArea_impl(bool skipAllPixelAlignment) const;
+    Rectf getChildContentArea_impl(bool skipAllPixelAlignment) const;
 
     //! handles notifications about child windows being moved or sized.
     bool handleChildAreaChanged(const EventArgs& e);
@@ -104,10 +101,8 @@ protected:
     void onChildAdded(ElementEventArgs& e) override;
     void onChildRemoved(ElementEventArgs& e) override;
     void cleanupChildren(void) override;
-    void onParentSized(ElementEventArgs& e) override;
-    void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing,
-                      bool fireEvents, bool adjust_size) override;
     bool moveToFront_impl(bool wasClicked) override;
+    uint8_t handleAreaChanges(bool moved, bool sized) override;
 
     //! type definition for collection used to track event connections.
     typedef std::multimap<Window*, Event::Connection> ConnectionTracker;
@@ -118,7 +113,7 @@ protected:
     // It is intentionally not exposed to user. Use positive coords when possible.
     glm::vec2 d_contentOffset;
 
-    CachedRectf d_clientChildContentArea;
+    CachedRectf d_childContentArea;
 };
 
 } // End of  CEGUI namespace section

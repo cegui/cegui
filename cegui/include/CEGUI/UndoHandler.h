@@ -70,6 +70,8 @@ public:
     */
     struct UndoAction
     {
+        UndoAction() : d_type(UndoActionType::Insert), d_startIdx(0) {}
+
         UndoActionType  d_type;     //!< Undo type
         size_t          d_startIdx; //!< Starting index for this line.
         String          d_text;

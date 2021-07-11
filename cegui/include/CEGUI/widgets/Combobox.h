@@ -511,7 +511,7 @@ public:
 	\return
 		Nothing
 	*/
-    void	initialiseComponents(void) override;
+    void	initialiseComponents() override;
 
 
 	/*!
@@ -1029,7 +1029,7 @@ protected:
     void	onFontChanged(WindowEventArgs& e) override;
     void	onTextChanged(WindowEventArgs& e) override;
     void	onActivated(ActivationEventArgs& e) override;
-    void onSized_impl(ElementEventArgs& e) override;
+    void onSized(ElementEventArgs& e) override;
 
 
 	/*************************************************************************

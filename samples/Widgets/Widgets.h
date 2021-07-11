@@ -50,6 +50,8 @@ class WidgetsSample : public Sample
 //----------------------------------------------------------------------------//
 struct WidgetPropertiesObject
 {
+    WidgetPropertiesObject() : d_widget(nullptr) {}
+
     std::vector<const CEGUI::Property*> d_propertyList;
     const CEGUI::Window* d_widget;
 };

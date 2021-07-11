@@ -130,7 +130,7 @@ namespace CEGUI
 	    \return
 		    Nothing
 	    */
-        void initialiseComponents(void) override;
+        void initialiseComponents() override;
 
 
         /*************************************************************************

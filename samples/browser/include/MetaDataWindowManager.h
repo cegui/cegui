@@ -38,6 +38,8 @@ class MetaDataWindowManager
 {
 public:
     MetaDataWindowManager(CEGUI::Window* metaDataWindow);
+    MetaDataWindowManager(const MetaDataWindowManager&) = delete;
+    MetaDataWindowManager& operator=(const MetaDataWindowManager&) = delete;
     virtual ~MetaDataWindowManager() {}
 
     void setSampleInfo(SampleHandler* sampleData);
@@ -45,8 +47,6 @@ public:
     CEGUI::Window* getWindow();
 
 private:
-    MetaDataWindowManager(const MetaDataWindowManager&) {}
-    MetaDataWindowManager& operator=(const MetaDataWindowManager&) { return *this; }
 
     void init();
 

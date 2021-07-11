@@ -223,22 +223,40 @@ namespace CEGUI
         d_eventActions.clear();
     }
 
-    void WidgetComponent::layout(const Window& owner) const
+    bool WidgetComponent::layout(const Window& owner) const
     {
         try
         {
-            Rectf pixelArea(d_area.getPixelRect(owner));
-            URect window_area(cegui_absdim(pixelArea.left()),
-                                cegui_absdim(pixelArea.top()),
-                                cegui_absdim(pixelArea.right()),
-                                cegui_absdim(pixelArea.bottom()));
+            Window* child = owner.getChild(d_name);
 
-            Window* wnd = owner.getChild(d_name);
-            wnd->setArea(window_area);
-            wnd->notifyScreenAreaChanged();
+            const Rectf pixelArea = d_area.getPixelRect(owner);
+
+            // TODO: check equality inside Element::setArea?
+            const URect& currArea = child->getArea();
+            if (currArea.d_min.d_x.d_scale == 0.f &&
+                currArea.d_min.d_y.d_scale == 0.f &&
+                currArea.d_max.d_x.d_scale == 0.f &&
+                currArea.d_max.d_y.d_scale == 0.f &&
+                currArea.d_min.d_x.d_offset == pixelArea.left() &&
+                currArea.d_min.d_y.d_offset == pixelArea.top() &&
+                currArea.d_max.d_x.d_offset == pixelArea.right() &&
+                currArea.d_max.d_y.d_offset == pixelArea.bottom())
+            {
+                return false;
+            }
+
+            child->setArea(
+                cegui_absdim(pixelArea.left()),
+                cegui_absdim(pixelArea.top()),
+                cegui_absdim(pixelArea.getWidth()),
+                cegui_absdim(pixelArea.getHeight()));
         }
         catch (UnknownObjectException&)
-        {}
+        {
+            return false;
+        }
+
+        return true;
     }
 
     void WidgetComponent::writeXMLToStream(XMLSerializer& xml_stream) const
@@ -308,7 +326,7 @@ namespace CEGUI
     {
         if (d_area.handleFontRenderSizeChange(window, font))
         {
-            window.performChildWindowLayout();
+            window.performChildLayout(false, false);
             return true;
         }
 

@@ -38,12 +38,16 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name) :
+    d_ogltexture(0),
     d_size(0, 0),
     d_grabBuffer(nullptr),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),
     d_owner(owner),
-    d_name(name)
+    d_name(name),
+    d_pixelDataFormat(GL_RGB),
+    d_pixelDataType(GL_UNSIGNED_BYTE),
+    d_isCompressed(false)
 {
 }
 

@@ -90,7 +90,12 @@ namespace CEGUI
 #elif defined (CEGUI_BIDI_SUPPORT)
         #error "BIDI Configuration is inconsistant, check your config!"
 #endif
-        
+
+#ifdef CEGUI_USE_RAQM
+        d_raqmTextData(nullptr),
+        d_raqmTextNeedsUpdate(true),
+#endif
+
         d_renderedString(obj.d_renderedString),
         d_formattedRenderedString(obj.d_formattedRenderedString),
         d_lastHorzFormatting(obj.d_lastHorzFormatting),

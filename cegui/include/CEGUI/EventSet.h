@@ -174,6 +174,9 @@ public:
     */
     EventSet();
 
+    EventSet(const EventSet&) = delete;
+    EventSet& operator=(const EventSet&) = delete;
+
     /*!
     \brief
         Destructor for EventSet objects
@@ -427,10 +430,6 @@ protected:
     void fireEvent_impl(const String& name, EventArgs& args);
     //! Helper to return the script module pointer or throw.
     ScriptModule* getScriptModule() const;
-
-    // Do not allow copying, assignment, or any other usage than simple creation.
-    EventSet(const EventSet&) {}
-    EventSet& operator=(const EventSet&) { return *this; }
 
     typedef std::unordered_map<String, Event*> EventMap;
     EventMap    d_events;

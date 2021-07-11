@@ -163,7 +163,7 @@ public:
         If something is already in given grid cell, it gets removed!
 
     \see
-        Window::addChild
+        Element::addChild
     */
     void addChildToCell(Window* window, size_t gridX, size_t gridY, bool replace = false);
 
@@ -172,7 +172,7 @@ public:
         Removes the child window that is currently at given grid position
 
     \see
-        Window::removeChild
+        Element::removeChild
     */
     void removeChildFromCell(size_t gridX, size_t gridY);
 

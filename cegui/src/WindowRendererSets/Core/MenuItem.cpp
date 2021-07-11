@@ -127,7 +127,7 @@ bool FalagardMenuItem::handleFontRenderSizeChange(const Font* const font)
     if (getContentNamedArea().handleFontRenderSizeChange(*d_window, font))
     {
         if (Window* const parent = d_window->getParent())
-            parent->performChildWindowLayout();
+            parent->performChildLayout(false, false);
 
         return true;
     }

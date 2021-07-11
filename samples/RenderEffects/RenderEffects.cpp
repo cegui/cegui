@@ -234,6 +234,7 @@ const float OldWobblyWindowEffect::tess_y = 8;
 //----------------------------------------------------------------------------//
 OldWobblyWindowEffect::OldWobblyWindowEffect(CEGUI::Window* window) :
     initialised(false),
+    lastX(0), lastY(0),
     dragX(0), dragY(0),
     elasX(0), elasY(0),
     d_window(window)

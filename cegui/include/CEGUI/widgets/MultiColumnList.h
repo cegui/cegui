@@ -1656,7 +1656,7 @@ protected:
 		Overridden Event handlers
 	*************************************************************************/
     void	onFontChanged(WindowEventArgs& e) override;
-    void	onSized_impl(ElementEventArgs& e) override;
+    void	onSized(ElementEventArgs& e) override;
     void    onCursorPressHold(CursorInputEventArgs& e) override;
     void    onScroll(CursorInputEventArgs& e) override;
     void    onSemanticInputEvent(SemanticEventArgs& e) override;

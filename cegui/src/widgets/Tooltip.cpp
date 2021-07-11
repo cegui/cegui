@@ -160,6 +160,8 @@ namespace CEGUI
         {
             if (d_target != wnd)
             {
+                if (d_parent)
+                    d_parent->removeChild(this);
                 wnd->getGUIContext().getRootWindow()->addChild(this);
                 d_target = wnd;
             }
@@ -351,10 +353,8 @@ namespace CEGUI
         // NOTE: There has to be a fadeout animation! Even if it's a 0 second
         //       immediate hide animation.
 
-        if (getParent())
-        {
-            getParent()->removeChild(this);
-        }
+        if (d_parent)
+            d_parent->removeChild(this);
     }
 
     void Tooltip::onCursorEnters(CursorInputEventArgs& e)

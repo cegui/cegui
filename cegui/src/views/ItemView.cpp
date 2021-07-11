@@ -226,14 +226,14 @@ void ItemView::addItemViewProperties()
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::initialiseComponents(void)
+void ItemView::initialiseComponents()
 {
     getVertScrollbar()->subscribeEvent(Scrollbar::EventScrollPositionChanged,
         Event::Subscriber(&ItemView::onScrollPositionChanged, this));
     getHorzScrollbar()->subscribeEvent(Scrollbar::EventScrollPositionChanged,
         Event::Subscriber(&ItemView::onScrollPositionChanged, this));
 
-    performChildWindowLayout();
+    Window::initialiseComponents();
 }
 
 //----------------------------------------------------------------------------//
@@ -757,11 +757,15 @@ void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onParentSized(ElementEventArgs& e)
+uint8_t ItemView::handleAreaChanges(bool moved, bool sized)
 {
-    Window::onParentSized(e);
+    const uint8_t flags = Window::handleAreaChanges(moved, sized);
 
+    //!!!FIXME: was in onParentSized! Check logic!
+    // FIXME: notifyScreenAreaChanged will call 'adjustSizeToContent' inside. Need this than?
     resizeToContent();
+
+    return flags;
 }
 
 //----------------------------------------------------------------------------//
@@ -771,7 +775,7 @@ void ItemView::onTargetSurfaceChanged(RenderingSurface* newSurface)
     Window::onTargetSurfaceChanged(newSurface);
     if (getGUIContextPtr())
     {
-        performChildWindowLayout();
+        performChildLayout(true, true);
         updateScrollbars();
         resizeToContent(); // call invalidateView(false) instead?
     }

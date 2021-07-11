@@ -65,15 +65,15 @@ public:
         typedef typename EnsureRef<typename Helper::safe_method_return_type>::result (C::*RefGetter)() const;
 
         GetterFunctor(PlainGetter getter):
-            d_plainGetter(getter)
-            //d_constRefGetter(0), no need to initialise these, we will never use them
-            //d_refGetter(0)
+            d_plainGetter(getter),
+            d_constRefGetter(nullptr),
+            d_refGetter(nullptr)
         {}
 
         GetterFunctor(ConstRefGetter getter):
             d_plainGetter(nullptr),
-            d_constRefGetter(getter)
-            //d_refGetter(0) // no need to initialise this, we will never use it
+            d_constRefGetter(getter),
+            d_refGetter(nullptr)
         {}
 
         GetterFunctor(RefGetter getter):

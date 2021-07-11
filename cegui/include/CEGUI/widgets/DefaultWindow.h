@@ -73,7 +73,7 @@ public:
     */
     virtual ~DefaultWindow(void) {}
 
-    bool canFocus() override;
+    bool canFocus() const override;
 
 protected:
     //! helper to update cursor input handled state

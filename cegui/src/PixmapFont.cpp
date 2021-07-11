@@ -117,8 +117,7 @@ void PixmapFont::updateFont()
 
         Image* img = i->second->getImage();
 
-        BitmapImage* bi = dynamic_cast<BitmapImage*>(img);
-        if (bi)
+        if (BitmapImage* bi = dynamic_cast<BitmapImage*>(img))
         {
             bi->setAutoScaled(d_autoScaled);
             bi->setNativeResolution(d_nativeResolution);

@@ -90,17 +90,17 @@ void GeometryBuffer::appendGeometry(const ColouredVertex* vertex_array,
                                     std::size_t vertex_count)
 {
     // Create a temporary array to contain our data
-    static const std::size_t vertexDataSize = 7;
-    std::size_t fullArraySize = vertexDataSize * vertex_count;
+    constexpr std::size_t VERTEX_FLOAT_COUNT = 7;
+    const std::size_t fullArraySize = VERTEX_FLOAT_COUNT * vertex_count;
     float* vertexData = new float[fullArraySize];
 
     // Add the vertex data in their default order into an array
     const ColouredVertex* vs = vertex_array;
     for (std::size_t i = 0; i < vertex_count; ++i, ++vs)
     {
-        // Add all the elements in the default order for textured and coloured
+        // Add all the elements in the default order for coloured
         // geometry into the vector
-        std::size_t currentIndex = i * vertexDataSize;
+        const std::size_t currentIndex = i * VERTEX_FLOAT_COUNT;
 
         vertexData[currentIndex + 0] = vs->d_position.x;
         vertexData[currentIndex + 1] = vs->d_position.y;
@@ -131,8 +131,8 @@ void GeometryBuffer::appendGeometry(const TexturedColouredVertex* vertex_array,
                                     std::size_t vertex_count)
 {
     // Create a temporary array to contain our data
-    static const std::size_t vertexDataSize = 9;
-    std::size_t fullArraySize = vertexDataSize * vertex_count;
+    constexpr std::size_t VERTEX_FLOAT_COUNT = 9;
+    const std::size_t fullArraySize = VERTEX_FLOAT_COUNT * vertex_count;
     float* vertexData = new float[fullArraySize];
 
     // Add the vertex data in their default order into an array
@@ -141,7 +141,7 @@ void GeometryBuffer::appendGeometry(const TexturedColouredVertex* vertex_array,
     {
         // Add all the elements in the default order for textured and coloured
         // geometry into the vector
-        std::size_t currentIndex = i * vertexDataSize;
+        const std::size_t currentIndex = i * VERTEX_FLOAT_COUNT;
         
         vertexData[currentIndex + 0] = vs->d_position.x;
         vertexData[currentIndex + 1] = vs->d_position.y;

@@ -669,12 +669,9 @@ void MenuItem::addChild_impl(Element* element)
 
     ItemEntry::addChild_impl(wnd);
 
-    PopupMenu* pop = dynamic_cast<PopupMenu*>(wnd);
     // if this is a PopupMenu we add it like one
-    if (pop)
-    {
+    if (PopupMenu* pop = dynamic_cast<PopupMenu*>(wnd))
         setPopupMenu_impl(pop, false);
-    }
 }
 
 /*************************************************************************

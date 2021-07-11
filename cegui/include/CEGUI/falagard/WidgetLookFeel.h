@@ -442,8 +442,11 @@ public:
 
     \param owner
         Window object that has the child widgets that require laying out.
+
+    \return
+        True if something changed after this call
     */
-    void layoutChildWidgets(const Window& owner) const;
+    bool layoutChildWidgets(const Window& owner) const;
 
     /*!
     \brief

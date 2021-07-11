@@ -225,7 +225,6 @@ public:
     void setWindowNavigator(WindowNavigator* navigator);
 
 protected:
-    void updateRootWindowAreaRects() const;
     void drawWindowContentToTarget(std::uint32_t drawModeMask);
     void renderWindowHierarchyToSurfaces(std::uint32_t drawModeMask);
 

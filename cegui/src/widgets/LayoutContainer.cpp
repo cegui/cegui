@@ -48,7 +48,7 @@ const String LayoutContainer::EventNamespace("LayoutContainer");
 LayoutContainer::LayoutContainer(const String& type, const String& name):
     Window(type, name),
     d_needsLayouting(false),
-    d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&LayoutContainer::getClientChildContentArea_impl))
+    d_childContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&LayoutContainer::getChildContentArea_impl))
 {
     // layout should take the whole window by default I think
     setSize(USize(cegui_reldim(1), cegui_reldim(1)));
@@ -67,8 +67,6 @@ LayoutContainer::~LayoutContainer(void)
 void LayoutContainer::markNeedsLayouting()
 {
     d_needsLayouting = true;
-
-    //invalidate();
 }
 
 //----------------------------------------------------------------------------//
@@ -105,17 +103,22 @@ void LayoutContainer::update(float elapsed)
 }
 
 //----------------------------------------------------------------------------//
-const Element::CachedRectf& LayoutContainer::getClientChildContentArea() const
+const Element::CachedRectf& LayoutContainer::getChildContentArea(const bool /*non_client*/) const
 {
-    return d_clientChildContentArea;
+    return d_childContentArea;
 }
 
 //----------------------------------------------------------------------------//
-void LayoutContainer::notifyScreenAreaChanged(bool recursive)
+uint8_t LayoutContainer::handleAreaChanges(bool moved, bool sized)
 {
-    d_clientChildContentArea.invalidateCache();
+    if (moved || sized)
+    {
+        // It is possible that children won't change, but we must re-layout them
+        markNeedsLayouting(); //!!!FIXME: markNeedsLayouting was called in onParentSized! Check logic!
+        d_childContentArea.invalidateCache();
+    }
 
-    Window::notifyScreenAreaChanged(recursive);
+    return Window::handleAreaChanges(moved, sized);
 }
 
 //----------------------------------------------------------------------------//
@@ -130,11 +133,11 @@ Rectf LayoutContainer::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) co
 }
 
 //----------------------------------------------------------------------------//
-Rectf LayoutContainer::getClientChildContentArea_impl(bool skipAllPixelAlignment) const
+Rectf LayoutContainer::getChildContentArea_impl(bool skipAllPixelAlignment) const
 {
     if (!d_parent)
     {
-        return skipAllPixelAlignment ? Window::getClientChildContentArea().getFresh(true) : Window::getClientChildContentArea().get();
+        return skipAllPixelAlignment ? Window::getChildContentArea(false).getFresh(true) : Window::getChildContentArea(false).get();
     }
     else
     {
@@ -239,20 +242,6 @@ UVector2 LayoutContainer::getBoundingSizeForWindow(Window* window) const
                margin.d_left + size.d_x + margin.d_right,
                margin.d_top + size.d_y + margin.d_bottom
            );
-}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::onParentSized(ElementEventArgs& e)
-{
-    // This is intentionally not Window::onParentSized.
-    Element::onParentSized(e);
-
-    // force update of child positioning.
-    notifyScreenAreaChanged(true);
-    performChildWindowLayout(true, true);
-
-    // It is possible that children didn't change, but we must re-layout them
-    markNeedsLayouting();
 }
 
 //----------------------------------------------------------------------------//

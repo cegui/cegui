@@ -215,7 +215,7 @@ void FreeTypeFont::resizeAndUpdateTexture(Texture* texture, int newSize) const
 {
     if(d_lastTextureSize >= newSize)
     {
-        InvalidRequestException("Must supply a larger than previous size when "
+        throw InvalidRequestException("Must supply a larger than previous size when "
             "resizing the glyph atlas");
     }
 
@@ -247,7 +247,7 @@ void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, int
 
     if(glyphWidth > maxTextureSize || glyphHeight > maxTextureSize)
     {
-        InvalidRequestException("Can not rasterise a glyph that is larger "
+        throw InvalidRequestException("Can not rasterise a glyph that is larger "
             "than the maximum supported texture size.");
     }
         
@@ -465,39 +465,30 @@ std::vector<argb_t> FreeTypeFont::createGlyphTextureData(FT_Bitmap& glyphBitmap)
 
 //----------------------------------------------------------------------------//
 FT_Stroker_LineCap FreeTypeFont::getLineCap(FreeTypeLineCap line_cap) {
-    FT_Stroker_LineCap  ft_line_cap;
     switch (line_cap) {
         case FreeTypeLineCap::Round:
-            ft_line_cap = FT_STROKER_LINECAP_ROUND;
-            break;
+            return FT_STROKER_LINECAP_ROUND;
         case FreeTypeLineCap::Butt:
-            ft_line_cap = FT_STROKER_LINECAP_BUTT;
-            break;
+            return FT_STROKER_LINECAP_BUTT;
         case FreeTypeLineCap::Square:
-            ft_line_cap = FT_STROKER_LINECAP_SQUARE;
-            break;
+            return FT_STROKER_LINECAP_SQUARE;
     }
-    return ft_line_cap;
+    return FT_STROKER_LINECAP_SQUARE;
 }
 
 //----------------------------------------------------------------------------//
 FT_Stroker_LineJoin FreeTypeFont::getLineJoin(FreeTypeLineJoin line_join) {
-    FT_Stroker_LineJoin ft_line_join;
     switch (line_join) {
         case FreeTypeLineJoin::Round:
-            ft_line_join = FT_STROKER_LINEJOIN_ROUND;
-            break;
+            return FT_STROKER_LINEJOIN_ROUND;
         case FreeTypeLineJoin::Bevel:
-            ft_line_join = FT_STROKER_LINEJOIN_BEVEL;
-            break;
+            return FT_STROKER_LINEJOIN_BEVEL;
         case FreeTypeLineJoin::MiterFixed:
-            ft_line_join = FT_STROKER_LINEJOIN_MITER_FIXED;
-            break;
+            return FT_STROKER_LINEJOIN_MITER_FIXED;
         case FreeTypeLineJoin::MiterVariable:
-            ft_line_join = FT_STROKER_LINEJOIN_MITER_VARIABLE;
-            break;
+            return FT_STROKER_LINEJOIN_MITER_VARIABLE;
     }
-    return ft_line_join;
+    return FT_STROKER_LINEJOIN_ROUND;
 }
 
 //----------------------------------------------------------------------------//

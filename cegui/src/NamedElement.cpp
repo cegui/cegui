@@ -159,9 +159,7 @@ NamedElement* NamedElement::getChildElementRecursive(const String& name_path) co
 //----------------------------------------------------------------------------//
 void NamedElement::removeChild(const String& name_path)
 {
-    NamedElement* e = getChildByNamePath_impl(name_path);
-
-    if (e)
+    if (NamedElement* e = getChildByNamePath_impl(name_path))
         removeChild(e);
     else
         throw UnknownObjectException("The Element object "
@@ -172,9 +170,7 @@ void NamedElement::removeChild(const String& name_path)
 //----------------------------------------------------------------------------//
 void NamedElement::addChild_impl(Element* element)
 {
-    NamedElement* named_element = dynamic_cast<NamedElement*>(element);
-
-    if (named_element)
+    if (NamedElement* named_element = dynamic_cast<NamedElement*>(element))
     {
         const NamedElement* const existing = getChildByNamePath_impl(named_element->getName());
 

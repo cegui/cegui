@@ -75,7 +75,7 @@ public:
 class CEGUIEXPORT TextInputEvent : public InputEvent
 {
 public:
-    TextInputEvent() : InputEvent(InputEventType::TextInputEventType) {}
+    TextInputEvent() : InputEvent(InputEventType::TextInputEventType), d_character(0) {}
 
     //! The input character
     char32_t d_character;         

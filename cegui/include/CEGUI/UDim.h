@@ -109,6 +109,13 @@ public:
         d_offset(v.d_offset)
     {}
 
+    inline UDim& operator=(const UDim& other)
+    {
+        d_scale = other.d_scale;
+        d_offset = other.d_offset;
+        return *this;
+    }
+
     inline UDim operator+(const UDim& other) const
     {
         return UDim(d_scale + other.d_scale, d_offset + other.d_offset);

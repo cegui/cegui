@@ -141,6 +141,8 @@ public:
 */
 struct CEGUIEXPORT ModelIndexSelectionState
 {
+    ModelIndexSelectionState() : d_childId(0) {}
+
     ModelIndex d_parentIndex;
     size_t d_childId;
 
@@ -386,7 +388,7 @@ protected:
     void updateScrollbarDisplayMode(ScrollbarDisplayMode& target_mode,
         ScrollbarDisplayMode new_mode, String change_event);
 
-    void initialiseComponents(void) override;
+    void initialiseComponents() override;
 
     virtual bool onChildrenWillBeAdded(const EventArgs& args);
     virtual bool onChildrenAdded(const EventArgs& args);
@@ -405,8 +407,8 @@ protected:
     void onCursorPressHold(CursorInputEventArgs& e) override;
     void onCursorMove(CursorInputEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;
-    void onParentSized(ElementEventArgs& e) override;
 
+    virtual uint8_t handleAreaChanges(bool moved, bool sized) override;
     virtual void onTargetSurfaceChanged(RenderingSurface* newSurface) override;
 
     Event::Connection d_eventChildrenWillBeAddedConnection;

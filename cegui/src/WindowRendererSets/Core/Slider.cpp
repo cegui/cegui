@@ -68,9 +68,10 @@ namespace CEGUI
         imagery->render(*d_window);
     }
 
-    void FalagardSlider::performChildWindowLayout()
+    bool FalagardSlider::performChildWindowLayout()
     {
         updateThumb();
+        return true;
     }
 
     void FalagardSlider::updateThumb(void)

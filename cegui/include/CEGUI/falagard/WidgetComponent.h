@@ -46,7 +46,7 @@ namespace CEGUI
     class CEGUIEXPORT WidgetComponent
     {
     public:
-        WidgetComponent() {}
+        WidgetComponent() : d_autoWindow(false), d_vertAlign(VerticalAlignment::Top), d_horzAlign(HorizontalAlignment::Left) {}
         WidgetComponent(const String& targetType,
                         const String& suffix,
                         const String& renderer,
@@ -104,7 +104,7 @@ namespace CEGUI
         void addEventAction(const EventAction& event_action);
         void clearEventActions();
 
-        void layout(const Window& owner) const;
+        bool layout(const Window& owner) const;
 
         /*!
         \brief

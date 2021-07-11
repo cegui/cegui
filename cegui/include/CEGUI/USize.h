@@ -57,6 +57,13 @@ public:
         d_height(v.d_height)
     {}
 
+    inline USize& operator=(const USize& other)
+    {
+        d_width = other.d_width;
+        d_height = other.d_height;
+        return *this;
+    }
+
     inline bool operator==(const USize& other) const
     {
         return d_width == other.d_width && d_height == other.d_height;

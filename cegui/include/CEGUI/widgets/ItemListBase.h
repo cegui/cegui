@@ -234,7 +234,7 @@ public:
     \return
         Nothing
     */
-    void initialiseComponents(void) override;
+    void initialiseComponents() override;
 
 
 	/*!
@@ -346,11 +346,11 @@ public:
     */
     void endInitialisation(void) override;
 
+    //! \copydoc Element::handleAreaChanges
+    virtual uint8_t handleAreaChanges(bool moved, bool sized) override;
 
-    //! \copydoc Window::performChildWindowLayout(bool ,bool)
-    void performChildWindowLayout(bool nonclient_sized_hint = false,
-                                  bool client_sized_hint = false) override;
-
+    //! \copydoc Element::performChildLayout
+    virtual void performChildLayout(bool client, bool nonClient) override;
 
     /*!
     \brief
@@ -540,14 +540,6 @@ protected:
         Handler called internally when the sorting mode is changed.
     */
     virtual void onSortModeChanged(WindowEventArgs& e);
-
-	/*************************************************************************
-		Overridden Event handlers
-	*************************************************************************/
-    void onParentSized(ElementEventArgs& e) override;
-	//virtual void    onChildRemoved(WindowEventArgs& e);
-    //virtual void    onDestructionStarted(WindowEventArgs& e);
-
 
     /*!
     \brief

@@ -65,8 +65,8 @@ struct CEGUIEXPORT ListViewItemRenderingState
     ListViewItemRenderingState(ListView* list_view);
     ~ListViewItemRenderingState();
 
-    ListViewItemRenderingState(ListViewItemRenderingState&&);
-    ListViewItemRenderingState& operator=(ListViewItemRenderingState&&);
+    ListViewItemRenderingState(ListViewItemRenderingState&&) noexcept;
+    ListViewItemRenderingState& operator=(ListViewItemRenderingState&&) noexcept;
 
     ListViewItemRenderingState(const ListViewItemRenderingState&) = delete;
     ListViewItemRenderingState& operator=(const ListViewItemRenderingState&) = delete;
