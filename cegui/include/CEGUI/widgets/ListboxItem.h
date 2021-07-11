@@ -463,7 +463,7 @@ protected:
 
 #ifdef CEGUI_USE_RAQM
     //! raqm text object
-    RaqmTextData* d_raqmTextData;
+    std::unique_ptr<RaqmTextData> d_raqmTextData;
     /*! Stores whether raqm text is up-to-date or if the logical text has changed since
      the last update
     */

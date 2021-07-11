@@ -243,9 +243,9 @@ Window::Window(const String& type, const String& name):
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
 #ifdef CEGUI_USE_RAQM
-    d_raqmTextData(nullptr),
-#endif 
-    
+    d_raqmTextData(new RaqmTextData()),
+#endif
+
     d_renderedStringValid(false),
     d_customStringParser(nullptr),
     d_textParsingEnabled(true),
@@ -304,9 +304,6 @@ Window::Window(const String& type, const String& name):
 
     d_drawModeMask(DrawModeFlagWindowRegular)
 {
-#ifdef CEGUI_USE_RAQM
-    d_raqmTextData = new RaqmTextData();
-#endif
 
     d_fontRenderSizeChangeConnection =
         GlobalEventSet::getSingleton().subscribeEvent(
