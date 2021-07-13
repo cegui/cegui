@@ -757,15 +757,14 @@ void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-uint8_t ItemView::handleAreaChanges(bool moved, bool sized)
+void ItemView::onSized(ElementEventArgs& e)
 {
-    const uint8_t flags = Window::handleAreaChanges(moved, sized);
+    Window::onSized(e);
+    updateScrollbars();
 
-    //!!!FIXME: was in onParentSized! Check logic!
-    // FIXME: notifyScreenAreaChanged will call 'adjustSizeToContent' inside. Need this than?
+    // FIXME: adjustSizeToContent is called after onSized. Can override it instead of this?
+    // FIXME: previously was called onParentSized. Needs rethinking.
     resizeToContent();
-
-    return flags;
 }
 
 //----------------------------------------------------------------------------//
@@ -987,7 +986,11 @@ void ItemView::ensureIndexIsVisible(const ModelIndex& index)
 //----------------------------------------------------------------------------//
 void ItemView::setAutoResizeHeightEnabled(bool enabled)
 {
-    updateAutoResizeFlag(d_isAutoResizeHeightEnabled, enabled);
+    if (d_isAutoResizeHeightEnabled != enabled)
+        return;
+
+    d_isAutoResizeHeightEnabled = enabled;
+    resizeToContent();
 }
 
 //----------------------------------------------------------------------------//
@@ -999,25 +1002,17 @@ bool ItemView::isAutoResizeHeightEnabled() const
 //----------------------------------------------------------------------------//
 void ItemView::setAutoResizeWidthEnabled(bool enabled)
 {
-    updateAutoResizeFlag(d_isAutoResizeWidthEnabled, enabled);
+    if (d_isAutoResizeWidthEnabled != enabled)
+        return;
+
+    d_isAutoResizeWidthEnabled = enabled;
+    resizeToContent();
 }
 
 //----------------------------------------------------------------------------//
 bool ItemView::isAutoResizeWidthEnabled() const
 {
     return d_isAutoResizeWidthEnabled;
-}
-
-//----------------------------------------------------------------------------//
-void ItemView::updateAutoResizeFlag(bool& flag, bool enabled)
-{
-    if (flag != enabled)
-    {
-        return;
-    }
-
-    flag = enabled;
-    resizeToContent();
 }
 
 //----------------------------------------------------------------------------//
@@ -1032,10 +1027,10 @@ void ItemView::resizeToContent()
 }
 
 //----------------------------------------------------------------------------//
-ItemViewEventArgs::ItemViewEventArgs(ItemView* wnd, ModelIndex index) :
-WindowEventArgs(wnd),
-d_index(index)
+ItemViewEventArgs::ItemViewEventArgs(ItemView* wnd, ModelIndex index)
+    : WindowEventArgs(wnd)
+    , d_index(index)
 {
-
 }
+
 }

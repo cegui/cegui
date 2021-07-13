@@ -159,6 +159,9 @@ glm::vec2 ItemViewRenderer::getItemRenderStartPosition(ItemView* view,
 void ItemViewRenderer::resizeViewToContent(ItemView* view, bool fit_width,
     bool fit_height) const
 {
+    if (!fit_width && !fit_height)
+        return;
+
     const Rectf totalArea(view->getUnclippedOuterRect().get());
     const Rectf contentArea(getViewRenderArea(view,
         fit_width ? false : view->getHorzScrollbar()->isVisible(),
@@ -196,10 +199,11 @@ void ItemViewRenderer::resizeViewToContent(ItemView* view, bool fit_width,
             requiredSize.d_height - frameSize.d_height + withScrollFrameSize.d_height);
     }
 
+    URect area = view->getArea();
     if (fit_height)
-        view->setHeight(UDim(0, requiredSize.d_height));
-
+        area.setHeight(UDim(0, requiredSize.d_height));
     if (fit_width)
-        view->setWidth(UDim(0, requiredSize.d_width));
+        area.setWidth(UDim(0, requiredSize.d_width));
+    view->setArea(area);
 }
 }

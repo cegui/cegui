@@ -408,7 +408,7 @@ protected:
     void onCursorMove(CursorInputEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;
 
-    virtual uint8_t handleAreaChanges(bool moved, bool sized) override;
+    virtual void onSized(ElementEventArgs& e) override;
     virtual void onTargetSurfaceChanged(RenderingSurface* newSurface) override;
 
     Event::Connection d_eventChildrenWillBeAddedConnection;
@@ -434,7 +434,6 @@ protected:
     //! Returns the Rectf that contains the specified \a index.
     virtual Rectf getIndexRect(const ModelIndex& index) = 0;
 
-    void updateAutoResizeFlag(bool& flag, bool enabled);
     void resizeToContent();
 };
 

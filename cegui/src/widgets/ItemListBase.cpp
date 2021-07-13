@@ -497,17 +497,14 @@ void ItemListBase::endInitialisation(void)
 }
 
 //----------------------------------------------------------------------------//
-uint8_t ItemListBase::handleAreaChanges(bool moved, bool sized)
+void ItemListBase::onSized(ElementEventArgs& e)
 {
-    const uint8_t flags = Window::handleAreaChanges(moved, sized);
+    Window::onSized(e);
 
-    //!!!FIXME: was in onParentSized! Check logic!
-    // FIXME: notifyScreenAreaChanged will call 'adjustSizeToContent' inside. Need this than?
-    // FIXME: infinite recursion!
-    //if (d_autoResize)
-    //    sizeToContent();
-
-    return flags;
+    // FIXME: adjustSizeToContent is called after onSized. Can override it instead of this?
+    // FIXME: previously was called onParentSized. Needs rethinking.
+    if (d_autoResize)
+        sizeToContent();
 }
 
 //----------------------------------------------------------------------------//

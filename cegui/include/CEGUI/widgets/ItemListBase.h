@@ -346,10 +346,7 @@ public:
     */
     void endInitialisation(void) override;
 
-    //! \copydoc Element::handleAreaChanges
-    virtual uint8_t handleAreaChanges(bool moved, bool sized) override;
-
-    //! \copydoc Element::performChildLayout
+    virtual void onSized(ElementEventArgs& e) override;
     virtual void performChildLayout(bool client, bool nonClient) override;
 
     /*!
