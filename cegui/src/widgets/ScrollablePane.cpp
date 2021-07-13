@@ -286,7 +286,7 @@ void ScrollablePane::initialiseComponents()
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::configureScrollbars(void)
+void ScrollablePane::configureScrollbars()
 {
     // controls should all be valid by this stage
     Scrollbar* const vertScrollbar = getVertScrollbar();
@@ -300,7 +300,7 @@ void ScrollablePane::configureScrollbars(void)
         if (vertScrollbar->isVisible() != show)
         {
             vertScrollbar->setVisible(show);
-            notifyScreenAreaChanged(true, true);
+            notifyScreenAreaChanged(true);
         }
     }
 
@@ -313,7 +313,7 @@ void ScrollablePane::configureScrollbars(void)
         if (wasVisibleHorz != show)
         {
             horzScrollbar->setVisible(show);
-            notifyScreenAreaChanged(true, true);
+            notifyScreenAreaChanged(true);
         }
     }
 
@@ -327,7 +327,7 @@ void ScrollablePane::configureScrollbars(void)
         if (vertScrollbar->isVisible() != show)
         {
             vertScrollbar->setVisible(show);
-            notifyScreenAreaChanged(true, true);
+            notifyScreenAreaChanged(true);
         }
     }
     

@@ -470,26 +470,18 @@ void OpenGL3Renderer::uploadBuffers(const std::vector<GeometryBuffer*>& buffers)
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::addGeometry(const std::vector<GeometryBuffer*>& buffers)
 {
-    for(auto buffer : buffers)
+    for (auto buffer : buffers)
     {
-        auto gl3buffer = static_cast<OpenGL3GeometryBuffer*>(buffer);
-        auto& data = gl3buffer->getVertexData();
-        if(data.empty())
-        {
+        const auto& data = buffer->getVertexData();
+        if (data.empty())
             continue;
-        }
-        auto element_count = gl3buffer->getVertexAttributeElementCount();
-        if(element_count == 9)
-        {
-            gl3buffer->d_verticesVBOPosition = d_vertex_data_textured.size() / element_count;
-            std::copy(data.begin(), data.end(), std::back_inserter(d_vertex_data_textured));
 
-        }
-        else
-        {
-            gl3buffer->d_verticesVBOPosition = d_vertex_data_solid.size() / element_count;
-            std::copy(data.begin(), data.end(), std::back_inserter(d_vertex_data_solid));
-        }
+        const auto element_count = buffer->getVertexAttributeElementCount();
+        auto& destBuffer = (element_count == 9) ? d_vertex_data_textured : d_vertex_data_solid;
+
+        static_cast<OpenGL3GeometryBuffer*>(buffer)->d_verticesVBOPosition = destBuffer.size() / element_count;
+        destBuffer.reserve(destBuffer.size() + data.size());
+        std::copy(data.begin(), data.end(), std::back_inserter(destBuffer));
     }
 }
 
