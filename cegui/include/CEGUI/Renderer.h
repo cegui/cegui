@@ -539,10 +539,8 @@ protected:
     //! The currently active view projection matrix 
     glm::mat4 d_viewProjectionMatrix;
 private:
-    //! container type used to hold GeometryBuffers created.
-    typedef std::set<GeometryBuffer*> GeometryBufferSet;
     //! Container used to track geometry buffers.
-    GeometryBufferSet d_geometryBuffers;
+    std::set<GeometryBuffer*> d_geometryBuffers;
     //! The Font scale factor to be used when rendering Fonts (except Bitmap Fonts).
     float d_fontScale;
 };

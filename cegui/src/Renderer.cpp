@@ -24,8 +24,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/Renderer.h"
-#include "CEGUI/RenderMaterial.h"
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/FontManager.h"
 
@@ -46,8 +44,7 @@ void Renderer::addGeometryBuffer(GeometryBuffer& buffer)
 //----------------------------------------------------------------------------//
 void Renderer::destroyGeometryBuffer(GeometryBuffer& buffer)
 {
-    GeometryBufferSet::const_iterator findIter = d_geometryBuffers.find(&buffer);
-
+    auto findIter = d_geometryBuffers.find(&buffer);
     if (findIter != d_geometryBuffers.end())
     {
         d_geometryBuffers.erase(findIter);
@@ -81,15 +78,9 @@ GeometryBuffer& Renderer::createGeometryBufferColoured()
 //----------------------------------------------------------------------------//
 void Renderer::invalidateGeomBufferMatrices(const CEGUI::RenderTarget* renderTarget)
 {
-    GeometryBufferSet::iterator currentIter = d_geometryBuffers.begin();
-    GeometryBufferSet::iterator iterEnd = d_geometryBuffers.end();
-
-    for(; currentIter != iterEnd; ++currentIter)
-    {
-        GeometryBuffer* geomBuffer = *currentIter;
+    for (auto geomBuffer : d_geometryBuffers)
         if(geomBuffer->getLastRenderTarget() == renderTarget)
             geomBuffer->invalidateMatrix();
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -98,7 +89,6 @@ void Renderer::setActiveRenderTarget(RenderTarget* renderTarget)
     d_activeRenderTarget = renderTarget;
 }
         
-
 //----------------------------------------------------------------------------//
 RenderTarget* Renderer::getActiveRenderTarget()
 {
