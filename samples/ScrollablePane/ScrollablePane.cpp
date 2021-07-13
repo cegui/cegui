@@ -170,6 +170,12 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
             child->setProperty("BackgroundColours", "tl:FF666666 tr:FF666666 bl:FFAAAAAA br:FFAAAAAA");
             child->setProperty<bool>("FrameEnabled", false);
             dlg->addChild(child);
+
+            auto child2 = wm->createWindow("WindowsLook/Static");
+            child2->setArea(URect(UDim(0.15f, 0), UDim(0.15f, 0), UDim(0.85f, 0), UDim(0.2f, 0)));
+            child2->setProperty("BackgroundColours", "tl:FF222222 tr:FFAAAAAA bl:FF222222 br:FFAAAAAA");
+            child2->setProperty<bool>("FrameEnabled", false);
+            dlg->addChild(child2);
         }
 
         pane->addChild(dlg);
@@ -288,10 +294,6 @@ bool ScrollablePaneSample::addNewChild(const CEGUI::EventArgs&)
     dlg->setMinSize(USize(UDim(0,200),UDim(0,100)));
     dlg->setSize(USize(UDim(0,200),UDim(0,100)));
     dlg->setText("Drag me around too!");
-
-    //!!!DBG TMP!
-    dlg->setHorizontalAlignment(HorizontalAlignment::Right);
-    dlg->setVerticalAlignment(VerticalAlignment::Bottom);
 
     // Move the new dialog to the center of the viewable area
     const glm::vec2 offset = d_pane->getContentPane()->getPixelPosition();

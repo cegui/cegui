@@ -428,7 +428,7 @@ protected:
         the ScrollablePane view area and the size of the attached
         ScrolledContainer.
     */
-    void configureScrollbars(void);
+    void configureScrollbars();
 
     /*!
     \brief

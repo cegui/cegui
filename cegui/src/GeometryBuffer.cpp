@@ -466,11 +466,8 @@ void GeometryBuffer::updateTextureCoordinates(const Texture* texture, const floa
 {
     const Texture* geomBuffTex0 = getTexture("texture0");
  
-    if (geomBuffTex0 == nullptr || geomBuffTex0 != texture)
-    {
+    if (!geomBuffTex0 || geomBuffTex0 != texture)
         return;
-    }
-
 
     size_t vertexCount = d_vertexData.size() / 9;
     for(size_t i = 0; i < vertexCount; ++i)
@@ -479,8 +476,8 @@ void GeometryBuffer::updateTextureCoordinates(const Texture* texture, const floa
         d_vertexData[i * 9 + 8] *= scaleFactor;
     }
 
-    VertexData tempVertexData = d_vertexData;
-    d_vertexData.clear();
+    std::vector<float> tempVertexData;
+    std::swap(tempVertexData, d_vertexData);
     appendGeometry(tempVertexData.data(), tempVertexData.size());
 }
 

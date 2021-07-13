@@ -510,11 +510,8 @@ void FrameWindow::setCursorForSizingLocation(SizingLocation location) const
 *************************************************************************/
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
-    invalidate(true);
-
-    //???!!!TODO: adjust to content only if rolled down?
-    //???!!!TODO: change pixel size when rolled up?
-    notifyScreenAreaChanged(true, true);
+    invalidate(!d_rolledup);
+    notifyScreenAreaChanged(false, false);
 
     fireEvent(EventRollupToggled, e, EventNamespace);
 }
