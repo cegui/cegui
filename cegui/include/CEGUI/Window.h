@@ -2961,7 +2961,7 @@ public:
               rectangles sychronised.
             - assigned WindowRenderer given the opportunity to update child
               content areas as needed.
-            - All content is then updated recursively.
+            - Children are then updated recursively depending on flags passed.
 
         The system may call this at various times (like when a window is resized
         for example), and it may be invoked directly where required.
@@ -3780,7 +3780,7 @@ protected:
     //! RenderingSurface owned by this window (may be 0)
     RenderingSurface* d_surface;
     //! true if window geometry cache needs to be regenerated.
-    mutable bool d_needsRedraw;
+    bool d_needsRedraw;
     //! holds setting for automatic creation of of surface (RenderingWindow)
     bool d_autoRenderingWindow;
     //! holds setting for stencil buffer usage in texture caching

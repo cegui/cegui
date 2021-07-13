@@ -102,7 +102,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
         Event::Subscriber(&ScrollablePaneSample::semanticEventHandler, this));
     root->addChild(panelFixed);
 
-    d_pane = static_cast<ScrollablePane*>(wm->createWindow("WindowsLook/ScrollablePane"));
+    d_pane = static_cast<ScrollablePane*>(wm->createWindow("WindowsLook/ScrollablePane", "FixedSizeScrollablePane"));
     d_pane->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
     d_pane->setSwipeScrollingEnabled(true);
    
@@ -115,7 +115,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     // add a dialog to the first pane so we have something to drag around :)
     {
-        Window* dlg = wm->createWindow("WindowsLook/FrameWindow");
+        Window* dlg = wm->createWindow("WindowsLook/FrameWindow", "FWOnFixedSizePane");
         dlg->setSize(USize(UDim(0.04f, 0), UDim(0.02f, 0)));
         dlg->setText("Drag me around");
         dlg->subscribeEvent(FrameWindow::EventCloseClicked, [dlg]()
@@ -135,7 +135,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
         Event::Subscriber(&ScrollablePaneSample::semanticEventHandler, this));
     root->addChild(panelAuto);
 
-    auto pane = static_cast<ScrollablePane*>(wm->createWindow("WindowsLook/ScrollablePane"));
+    auto pane = static_cast<ScrollablePane*>(wm->createWindow("WindowsLook/ScrollablePane", "AutoSizeScrollablePane"));
     pane->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
     pane->setSwipeScrollingEnabled(true);
 
@@ -187,7 +187,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
         Event::Subscriber(&ScrollablePaneSample::semanticEventHandler, this));
     root->addChild(panelVertical);
 
-    pane = static_cast<ScrollablePane*>(wm->createWindow("WindowsLook/ScrollablePane"));
+    pane = static_cast<ScrollablePane*>(wm->createWindow("WindowsLook/ScrollablePane", "FixedWidthScrollablePane"));
     pane->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
     pane->setSwipeScrollingEnabled(true);
 
