@@ -279,12 +279,6 @@ uint8_t ScrolledContainer::handleAreaChanges(bool moved, bool sized)
 {
     d_childContentArea.invalidateCache();
     return Window::handleAreaChanges(moved, sized);
-
-//!!!FIXME: logic for performChildLayout, now must happen automatically because we always layout children
-    //// Autosized dimension has absolute size and therefore isn't resized with the
-    //// parent, but children are based on the viewport, so notify them anyway.
-    //if (isSizeAdjustedToContent())
-    //    performChildWindowLayout(false, true);
 }
 
 //----------------------------------------------------------------------------//

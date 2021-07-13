@@ -111,14 +111,14 @@ const Element::CachedRectf& LayoutContainer::getChildContentArea(const bool /*no
 //----------------------------------------------------------------------------//
 uint8_t LayoutContainer::handleAreaChanges(bool moved, bool sized)
 {
-    if (moved || sized)
-    {
-        // It is possible that children won't change, but we must re-layout them
-        markNeedsLayouting(); //!!!FIXME: markNeedsLayouting was called in onParentSized! Check logic!
-        d_childContentArea.invalidateCache();
-    }
+    d_childContentArea.invalidateCache();
+    const uint8_t flags = Window::handleAreaChanges(moved, sized);
 
-    return Window::handleAreaChanges(moved, sized);
+    // If content areas resized, relatively sized children may break layout
+    if (flags & (ClientSized | NonClientSized))
+        markNeedsLayouting();
+
+    return flags;
 }
 
 //----------------------------------------------------------------------------//
