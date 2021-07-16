@@ -54,6 +54,17 @@ LookNFeelOverviewSample::LookNFeelOverviewSample()
     Sample::d_priority = 99;
 }
 
+static void fillList(Element* listBase)
+{
+    if (auto list = dynamic_cast<ListWidget*>(listBase))
+    {
+        list->addItem("Item 1");
+        list->addItem("Item 2");
+        list->addItem("Item 3");
+        list->setIndexSelectionState(0u, true);
+    }
+}
+
 /*************************************************************************
 Sample specific initialisation goes here.
 *************************************************************************/
@@ -83,6 +94,13 @@ bool LookNFeelOverviewSample::initialise(CEGUI::GUIContext* guiContext)
     // load all layouts we want to use later
     d_taharezOverviewLayout = winMgr.loadLayoutFromFile("TaharezLookOverview.layout");
     d_vanillaOverviewLayout = winMgr.loadLayoutFromFile("VanillaLookOverview.layout");
+
+    // model-based list do not support child adding from the layout
+    // TODO: can override ListWidget::addChild_impl to work as addItem!
+    fillList(d_taharezOverviewLayout->getChild("listbox"));
+    fillList(d_taharezOverviewLayout->getChild("disabledListbox"));
+    fillList(d_vanillaOverviewLayout->getChild("StaticImage/listWidget"));
+    fillList(d_vanillaOverviewLayout->getChild("StaticImage/disabledListWidget"));
 
     // create a root window
     Window* root = winMgr.createWindow("DefaultWindow", "root");

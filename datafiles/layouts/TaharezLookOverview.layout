@@ -11,28 +11,9 @@
         <Window type="TaharezLook/ListWidget" name="disabledListbox" >
             <Property name="Area" value="{{0.00390625,0},{0.583333,0},{0.160156,0},{0.666666,0}}" />
             <Property name="Disabled" value="true" />
-            <Window type="TaharezLook/ListboxItem" name="ListboxItem" >
-                <Property name="Text" value="Item 1" />
-                <Property name="Selected" value="true" />
-            </Window>
-            <Window type="TaharezLook/ListboxItem" name="ListboxItem2" >
-                <Property name="Text" value="Item 2" />
-            </Window>
-            <Window type="TaharezLook/ListboxItem" name="ListboxItem3" >
-                <Property name="Text" value="Item 3" />
-            </Window>
         </Window>
         <Window type="TaharezLook/ListWidget" name="listbox" >
             <Property name="Area" value="{{0.00390625,0},{0.465278,0},{0.160156,0},{0.576389,0}}" />
-            <Window type="TaharezLook/ListboxItem" name="ListboxItem" >
-                <Property name="Text" value="Item 1" />
-            </Window>
-            <Window type="TaharezLook/ListboxItem" name="ListboxItem2" >
-                <Property name="Text" value="Item 2" />
-            </Window>
-            <Window type="TaharezLook/ListboxItem" name="ListboxItem3" >
-                <Property name="Text" value="Item 3" />
-            </Window>
         </Window>
         <Window type="TaharezLook/HorizontalScrollbar" name="disabledScrollbar" >
             <Property name="Area" value="{{0.164063,0},{0.388889,0},{0.320313,0},{0.409722,0}}" />
