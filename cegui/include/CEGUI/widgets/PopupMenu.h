@@ -29,8 +29,6 @@
 #ifndef _CEGUIPopupMenu_h_
 #define _CEGUIPopupMenu_h_
 
-#include "../Base.h"
-#include "../Window.h"
 #include "./MenuBase.h"
 
 
@@ -58,6 +56,16 @@ public:
     static const String WidgetTypeName;             //!< Window factory name
 
     /*************************************************************************
+        Construction and Destruction
+    *************************************************************************/
+    /*!
+    \brief
+        Constructor for PopupMenu objects
+    */
+    PopupMenu(const String& type, const String& name);
+
+
+    /*************************************************************************
         Accessor type functions
     *************************************************************************/
     /*!
@@ -68,7 +76,7 @@ public:
         The time in seconds that it takes for the popup to fade in.
         0 if fading is disabled.
     */
-    float getFadeInTime(void) const      {return d_fadeInTime;}
+    float getFadeInTime() const { return d_fadeInTime; }
 
 
     /*!
@@ -79,14 +87,14 @@ public:
         The time in seconds that it takes for the popup to fade out.
         0 if fading is disabled.
     */
-    float getFadeOutTime(void) const     {return d_fadeOutTime;}
+    float getFadeOutTime() const { return d_fadeOutTime; }
 
 
     /*!
     \brief
         Find out if this popup menu is open or closed;
     */
-    bool isPopupMenuOpen(void) const     {return d_isOpen;}
+    bool isPopupMenuOpen() const { return d_isOpen; }
 
 
     /*************************************************************************
@@ -100,7 +108,7 @@ public:
         The time in seconds that it takes for the popup to fade in.
         If this parameter is zero, fading is disabled.
     */
-    void    setFadeInTime(float fadetime)         {d_fadeInTime=fadetime;}
+    void setFadeInTime(float fadetime) { d_fadeInTime = fadetime; }
 
 
     /*!
@@ -111,7 +119,7 @@ public:
         The time in seconds that it takes for the popup to fade out.
         If this parameter is zero, fading is disabled.
     */
-    void    setFadeOutTime(float fadetime)        {d_fadeOutTime=fadetime;}
+    void setFadeOutTime(float fadetime) { d_fadeOutTime = fadetime; }
 
 
     /*!
@@ -121,7 +129,7 @@ public:
     \param notify
         true if the parent menu item (if any) is to handle the opening. false if not.
     */
-    void    openPopupMenu(bool notify=true);
+    void openPopupMenu(bool notify = true);
 
 
     /*!
@@ -131,24 +139,7 @@ public:
     \param notify
         true if the parent menu item (if any) is to handle the closing. false if not.
     */
-    void    closePopupMenu(bool notify=true);
-
-
-    /*************************************************************************
-        Construction and Destruction
-    *************************************************************************/
-    /*!
-    \brief
-        Constructor for PopupMenu objects
-    */
-    PopupMenu(const String& type, const String& name);
-
-
-    /*!
-    \brief
-        Destructor for PopupMenu objects
-    */
-    virtual ~PopupMenu(void);
+    void closePopupMenu(bool notify = true);
 
 
 protected:
@@ -165,7 +156,7 @@ protected:
     \return
     Nothing.
     */
-    void    updateSelf(float elapsed) override;
+    void updateSelf(float elapsed) override;
 
 
     /*!
@@ -175,7 +166,7 @@ protected:
     \return
         Nothing.
     */
-    void    layoutItemWidgets(void) override;
+    void layoutItemWidgets() override;
 
 
     /*!
@@ -185,7 +176,7 @@ protected:
     \return
         Nothing.
     */
-    Sizef getContentSize(void) const override;
+    Sizef getContentSize() const override;
 
     /*************************************************************************
         Overridden event handlers
@@ -211,10 +202,8 @@ protected:
 
 
 private:
-    /*************************************************************************
-    Private methods
-    *************************************************************************/
-    void    addPopupMenuProperties(void);
+
+    void addPopupMenuProperties(void);
 };
 
 

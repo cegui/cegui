@@ -29,11 +29,8 @@
 #ifndef _CEGUIItemListBase_h_
 #define _CEGUIItemListBase_h_
 
-#include "../Base.h"
 #include "../Window.h"
 #include "./ItemEntry.h"
-
-#include <vector>
 #include <CEGUI/WindowRendererSets/Core/ItemViewRenderer.h>
 
 

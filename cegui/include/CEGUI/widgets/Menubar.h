@@ -29,8 +29,6 @@
 #ifndef _CEGUIMenubar_h_
 #define _CEGUIMenubar_h_
 
-#include "../Base.h"
-#include "../Window.h"
 #include "./MenuBase.h"
 
 
@@ -54,22 +52,7 @@ public:
 	static const String EventNamespace;				//!< Namespace for global events
     static const String WidgetTypeName;             //!< Window factory name
 
-	/*************************************************************************
-		Construction and Destruction
-	*************************************************************************/
-	/*!
-	\brief
-		Constructor for Menubar objects
-	*/
 	Menubar(const String& type, const String& name);
-
-
-	/*!
-	\brief
-		Destructor for Menubar objects
-	*/
-	virtual ~Menubar(void);
-
 
 protected:
 	/*************************************************************************
