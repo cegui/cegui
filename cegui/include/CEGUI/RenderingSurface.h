@@ -377,8 +377,8 @@ protected:
     //! draw a rendering queue, firing events before and after.
     void draw(const RenderQueue& queue, RenderQueueEventArgs& args, std::uint32_t drawModeMask);
 
-    //! detatch ReneringWindow from this RenderingSurface
-    void detatchWindow(RenderingWindow& w);
+    //! detach ReneringWindow from this RenderingSurface
+    void detachWindow(RenderingWindow& w);
 
     //! attach ReneringWindow from this RenderingSurface
     void attachWindow(RenderingWindow& w);

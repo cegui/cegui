@@ -226,7 +226,6 @@ public:
 
 protected:
     void drawWindowContentToTarget(std::uint32_t drawModeMask);
-    void renderWindowHierarchyToSurfaces(std::uint32_t drawModeMask);
 
     void createDefaultTooltipWindowInstance() const;
     void destroyDefaultTooltipWindowInstance();
