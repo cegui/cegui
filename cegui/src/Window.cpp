@@ -1286,6 +1286,7 @@ void Window::addChild_impl(Element* element)
 
     NamedElement::addChild_impl(wnd);
 
+    // TODO: also propagate GUI context, see setGUIContext
     wnd->onTargetSurfaceChanged(getTargetRenderingSurface());
 
     addWindowToDrawList(*wnd);
@@ -1309,7 +1310,8 @@ void Window::removeChild_impl(Element* element)
 
     NamedElement::removeChild_impl(wnd);
 
-    wnd->onTargetSurfaceChanged(getTargetRenderingSurface());
+    // TODO: also propagate GUI context, see setGUIContext
+    wnd->onTargetSurfaceChanged(nullptr);
 
     wnd->onZChange_impl();
 
@@ -1803,9 +1805,7 @@ void Window::destroy(void)
         tip->setTargetWindow(nullptr);
 
     // ensure custom tooltip is cleaned up
-    setTooltip(static_cast<Tooltip*>(nullptr));
-
-
+    setTooltip(nullptr);
 
     // clean up looknfeel related things
     if (!d_lookName.empty())
@@ -1816,7 +1816,7 @@ void Window::destroy(void)
     }
 
     // free any assigned WindowRenderer
-    if (d_windowRenderer != nullptr)
+    if (d_windowRenderer)
     {
         d_windowRenderer->onDetach();
         WindowRendererManager::getSingleton().
@@ -2492,13 +2492,11 @@ void Window::onChildRemoved(ElementEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
-    GUIContext* context = getGUIContextPtr();
-    if (context)
+    if (auto context = getGUIContextPtr())
         context->markAsDirty();
 
     // Though we do need to invalidate the rendering surface!
-    CEGUI::RenderingSurface* rs = getTargetRenderingSurface();
-    if (rs)
+    if (auto rs = getTargetRenderingSurface())
         rs->invalidate();
 
     Element::onChildRemoved(e);
@@ -3331,10 +3329,7 @@ void Window::setUsingAutoRenderingSurface(bool setting)
     else
     {
         releaseRenderingWindow();
-
-        // make sure we set this because releaseRenderingWindow won't do it
-        // unless the surface was already initialised
-        d_autoRenderingWindow = setting;
+        d_autoRenderingWindow = false;
     }
 
     // while the actual area on screen may not have changed, the arrangement of
@@ -3350,7 +3345,7 @@ void Window::setAutoRenderingSurfaceStencilEnabled(bool setting)
 
     d_autoRenderingSurfaceStencilEnabled = setting;
 
-    if (!d_autoRenderingWindow)
+    if (!d_autoRenderingWindow || !d_surface)
         return;
 
     // We need to recreate the auto rendering window since we just changed a crucial setting for it
@@ -3391,10 +3386,11 @@ void Window::allocateRenderingWindow(bool addStencilBuffer)
     transferChildSurfaces();
 
     // set size and position of RenderingWindow
-    static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
-    static_cast<RenderingWindow*>(d_surface)->
-        setPosition(getUnclippedOuterRect().get().getPosition());
-    static_cast<RenderingWindow*>(d_surface)->setRotation(d_rotation);
+    auto rw = static_cast<RenderingWindow*>(d_surface);
+    rw->setSize(getPixelSize());
+    rw->setPosition(getUnclippedOuterRect().get().getPosition());
+    rw->setClippingRegion(getParentClipRect());
+    rw->setRotation(d_rotation);
     updatePivot();
 
     if (GUIContext* context = getGUIContextPtr())
@@ -3409,7 +3405,6 @@ void Window::releaseRenderingWindow()
 
     RenderingWindow* const old_surface =
         static_cast<RenderingWindow*>(d_surface);
-    d_autoRenderingWindow = false;
     d_surface = nullptr;
     // detach child surfaces prior to destroying the owning surface
     transferChildSurfaces();
@@ -3563,7 +3558,7 @@ glm::vec2 Window::getUnprojectedPosition(const glm::vec2& pos) const
 
         // get next rendering window, if any
         rw = (rs = &rw->getOwner())->isRenderingWindow() ?
-                static_cast<RenderingWindow*>(rs) : 0;
+                static_cast<RenderingWindow*>(rs) : nullptr;
     }
 
     return out_pos;
@@ -3798,6 +3793,7 @@ void Window::onTargetSurfaceChanged(RenderingSurface* newSurface)
     // Surface was set manually, we don't control it
     //???if (d_surface && !d_surface->isRenderingWindow())?
     //???any window must be processed, even the one that was set externally?
+    //!!!transferRenderingWindow!
     if (d_surface && !d_autoRenderingWindow)
         return;
 
@@ -3829,7 +3825,7 @@ void Window::onTargetSurfaceChanged(RenderingSurface* newSurface)
         }
         else if (newSurface != d_surface)
         {
-            // Since we have a surface, child surfaces stay with us.  Though we
+            // Since we have a surface, child surfaces stay with us. Though we
             // must now ensure /our/ surface is transferred.
             newSurface->transferRenderingWindow(static_cast<RenderingWindow&>(*d_surface));
         }
