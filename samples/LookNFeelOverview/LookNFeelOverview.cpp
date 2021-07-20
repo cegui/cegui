@@ -95,7 +95,7 @@ bool LookNFeelOverviewSample::initialise(CEGUI::GUIContext* guiContext)
     d_taharezOverviewLayout = winMgr.loadLayoutFromFile("TaharezLookOverview.layout");
     d_vanillaOverviewLayout = winMgr.loadLayoutFromFile("VanillaLookOverview.layout");
 
-    // model-based list do not support child adding from the layout
+    // model-based lists do not support child adding from the layout
     // TODO: can override ListWidget::addChild_impl to work as addItem!
     fillList(d_taharezOverviewLayout->getChild("listbox"));
     fillList(d_taharezOverviewLayout->getChild("disabledListbox"));
@@ -161,16 +161,15 @@ bool LookNFeelOverviewSample::handleSkinSelectionAccepted(const CEGUI::EventArgs
     const CEGUI::WindowEventArgs& winEventArgs = static_cast<const CEGUI::WindowEventArgs&>(args);
     CEGUI::Combobox* skinSelectionCombobox = static_cast<CEGUI::Combobox*>(winEventArgs.window);
 
-    StandardItem* selectedItem = skinSelectionCombobox->getSelectedItem();
+    const StandardItem* selectedItem = skinSelectionCombobox->getSelectedItem();
 
-    while(d_loadedLayoutContainer->getChildCount() > 0)
+    // TODO: need removeAllChildren!
+    while (d_loadedLayoutContainer->getChildCount() > 0)
         d_loadedLayoutContainer->removeChild(d_loadedLayoutContainer->getChildAtIndex(0));
 
-    if(selectedItem == d_taharezLookListboxItem)
+    if (selectedItem == d_taharezLookListboxItem)
     {
         d_loadedLayoutContainer->addChild(d_taharezOverviewLayout);
-        
-        // Set default font for the gui context
         d_guiContext->setDefaultFont(d_fontForTaharez);
     }
     else if(selectedItem == d_vanillaLookListboxItem)

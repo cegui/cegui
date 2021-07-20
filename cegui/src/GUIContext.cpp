@@ -268,27 +268,25 @@ void GUIContext::drawWindowContentToTarget(std::uint32_t drawModeMask)
         return;
 
     if (d_rootWindow)
-        renderWindowHierarchyToSurfaces(drawModeMask);
+    {
+        // Draw the window hierarchy to surfaces
+        if (RenderingSurface* rs = d_rootWindow->getTargetRenderingSurface())
+        {
+            rs->clearGeometry();
+
+            if (rs->isRenderingWindow())
+                static_cast<RenderingWindow*>(rs)->getOwner().clearGeometry();
+
+            d_rootWindow->draw(drawModeMask);
+        }
+    }
     else
+    {
         clearGeometry();
+    }
 
     // Mark all rendered modes as not dirty (cursor is always redrawn anyway)
     d_dirtyDrawModeMask &= (~drawModeMask);
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::renderWindowHierarchyToSurfaces(std::uint32_t drawModeMask)
-{
-    RenderingSurface* rs = d_rootWindow->getTargetRenderingSurface();
-    if (!rs)
-        return;
-
-    rs->clearGeometry();
-
-    if (rs->isRenderingWindow())
-        static_cast<RenderingWindow*>(rs)->getOwner().clearGeometry();
-
-    d_rootWindow->draw(drawModeMask);
 }
 
 //----------------------------------------------------------------------------//

@@ -243,7 +243,7 @@ bool FontsSample::handleFontSelectionChanged(const EventArgs&)
         d_languageToFontMap[LangList[index].language] = d_fontSelector->getFirstSelectedItem()->getText();
     }
 
-    //Change the font creatore fields according to the font
+    //Change the font creator fields according to the font
     if (d_fontSelector->getFirstSelectedItem())
     {
         CEGUI::String fontName = d_fontSelector->getFirstSelectedItem()->getText();
@@ -257,7 +257,7 @@ bool FontsSample::handleFontSelectionChanged(const EventArgs&)
             d_fontNameEditbox->setText(font.getName());
 
             const int autoScaleIndex = static_cast<int>(font.getAutoScaled());
-            CEGUI::String autoScaleString = d_autoScaleOptionsArray.at(autoScaleIndex);
+            const CEGUI::String& autoScaleString = d_autoScaleOptionsArray.at(autoScaleIndex);
             d_fontAutoScaleCombobox->getEditbox()->setText(autoScaleString);
             d_fontAutoScaleCombobox->selectListItemWithEditboxText();
 

@@ -175,7 +175,7 @@ void RenderingSurface::destroyRenderingWindow(RenderingWindow& window)
 {
     if (&window.getOwner() == this)
     {
-        detatchWindow(window);
+        detachWindow(window);
         delete &window;
     }
 }
@@ -186,7 +186,7 @@ void RenderingSurface::transferRenderingWindow(RenderingWindow& window)
     if (&window.getOwner() != this)
     {
         // detach window from it's current owner
-        window.getOwner().detatchWindow(window);
+        window.getOwner().detachWindow(window);
         // add window to this surface.
         attachWindow(window);
 
@@ -195,7 +195,7 @@ void RenderingSurface::transferRenderingWindow(RenderingWindow& window)
 }
 
 //----------------------------------------------------------------------------//
-void RenderingSurface::detatchWindow(RenderingWindow& w)
+void RenderingSurface::detachWindow(RenderingWindow& w)
 {
     RenderingWindowList::iterator i =
         std::find(d_windows.begin(), d_windows.end(), &w);
