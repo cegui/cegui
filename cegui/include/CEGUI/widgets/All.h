@@ -34,7 +34,6 @@
 #include "./Editbox.h"
 #include "./FrameWindow.h"
 #include "./GridLayoutContainer.h"
-#include "./GroupBox.h"
 #include "./HorizontalLayoutContainer.h"
 #include "./ItemEntry.h"
 #include "./ListboxItem.h"
