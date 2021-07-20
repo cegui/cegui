@@ -69,14 +69,6 @@ PopupMenu::PopupMenu(const String& type, const String& name)
 
 
 /*************************************************************************
-	Destructor for PopupMenu base class.
-*************************************************************************/
-PopupMenu::~PopupMenu(void)
-{
-}
-
-
-/*************************************************************************
 	Tells the popup menu to open.
 *************************************************************************/
 void PopupMenu::openPopupMenu(bool notify)
@@ -249,22 +241,16 @@ void PopupMenu::layoutItemWidgets()
 	UVector2 sz(cegui_absdim(CoordConverter::alignToPixels(render_rect.getWidth())), cegui_absdim(0)); // set item width
 
 	// iterate through all items attached to this window
-	ItemEntryList::iterator item = d_listItems.begin();
-	while ( item != d_listItems.end() )
-	{
+    for (auto item : d_listItems)
+    {
 		// get the "optimal" height of the item and use that!
-		sz.d_y.d_offset = CoordConverter::alignToPixels((*item)->getItemPixelSize().d_height); // rounding errors ?
+		sz.d_y.d_offset = CoordConverter::alignToPixels(item->getItemPixelSize().d_height); // rounding errors ?
 
 		// set destination rect
-		rect.setPosition(UVector2(cegui_absdim(x0), cegui_absdim(y0)) );
-        // todo: vector vs size
-		rect.setSize(USize(sz.d_x, sz.d_y));
-		(*item)->setArea(rect);
+		item->setArea(UVector2(cegui_absdim(x0), cegui_absdim(y0)), USize(sz.d_x, sz.d_y));
 
 		// next position
 		y0 += CoordConverter::alignToPixels(sz.d_y.d_offset + d_itemSpacing);
-
-	    ++item; // next item
 	}
 }
 
@@ -279,7 +265,7 @@ Sizef PopupMenu::getContentSize() const
 	float total_height = 0;
 
 	size_t i = 0;
-	size_t max = d_listItems.size();
+	const size_t max = d_listItems.size();
 	while (i < max)
 	{
 		const Sizef sz = d_listItems[i]->getItemPixelSize();

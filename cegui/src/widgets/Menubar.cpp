@@ -27,75 +27,49 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/Menubar.h"
-#include "CEGUI/widgets/PopupMenu.h"
-#include "CEGUI/widgets/MenuItem.h"
 #include "CEGUI/CoordConverter.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-
-/*************************************************************************
-	Constants
-*************************************************************************/
 const String Menubar::EventNamespace("Menubar");
 const String Menubar::WidgetTypeName("CEGUI/Menubar");
 
-
-/*************************************************************************
-	Constructor for Menubar base class.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 Menubar::Menubar(const String& type, const String& name)
 	: MenuBase(type, name)
 {
 	d_itemSpacing = 10;
 }
 
-
-/*************************************************************************
-	Destructor for Menubar base class.
-*************************************************************************/
-Menubar::~Menubar(void)
-{
-}
-
-
-/*************************************************************************
-	Sets up sizes and positions for attached ItemEntry children.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Menubar::layoutItemWidgets()
 {
 	Rectf render_rect = getItemRenderArea();
 	float x0 = CoordConverter::alignToPixels(render_rect.left());
 
-	ItemEntryList::iterator item = d_listItems.begin();
-	while ( item != d_listItems.end() )
+	for (auto item : d_listItems)
 	{
-		const Sizef optimal = (*item)->getItemPixelSize();
+		const Sizef optimal = item->getItemPixelSize();
 
-		(*item)->setVerticalAlignment(VerticalAlignment::Centre);
+		item->setVerticalAlignment(VerticalAlignment::Centre);
 
-		(*item)->setArea(UVector2(cegui_absdim(x0), cegui_absdim(0)),
+		item->setArea(UVector2(cegui_absdim(x0), cegui_absdim(0)),
             USize(cegui_absdim(CoordConverter::alignToPixels(optimal.d_width)),
                 cegui_absdim(CoordConverter::alignToPixels(optimal.d_height))));
 
 		x0 += optimal.d_width + d_itemSpacing;
-		++item;
 	}
 }
 
-
-/*************************************************************************
-	Returns the "optimal" size for the content in unclipped pixels
-*************************************************************************/
+//----------------------------------------------------------------------------//
 Sizef Menubar::getContentSize() const
 {
 	// find the content sizes
-	float tallest = 0;
-	float total_width = 0;
+	float tallest = 0.f;
+	float total_width = 0.f;
 
 	size_t i = 0;
-	size_t max = d_listItems.size();
+	const size_t max = d_listItems.size();
 	while (i < max)
 	{
 		const Sizef sz = d_listItems[i]->getItemPixelSize();

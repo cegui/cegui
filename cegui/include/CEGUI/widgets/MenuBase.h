@@ -29,8 +29,6 @@
 #ifndef _CEGUIMenuBase_h_
 #define _CEGUIMenuBase_h_
 
-#include "../Base.h"
-#include "../Window.h"
 #include "./ItemListBase.h"
 
 
