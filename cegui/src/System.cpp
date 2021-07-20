@@ -681,7 +681,6 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<Titlebar>();
     WindowFactoryManager::addWindowType<ToggleButton>();
     WindowFactoryManager::addWindowType<Tooltip>();
-    WindowFactoryManager::addWindowType<GroupBox>();
     WindowFactoryManager::addWindowType<TreeWidget>();
     WindowFactoryManager::addWindowType<HorizontalLayoutContainer>();
     WindowFactoryManager::addWindowType<VerticalLayoutContainer>();
