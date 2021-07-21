@@ -313,7 +313,7 @@ namespace CEGUI
         try
         {
             return d_fontPropertyName.empty() ?
-                (d_font.empty() ? window.getFont() : &FontManager::getSingleton().get(d_font))
+                (d_font.empty() ? window.getActualFont() : &FontManager::getSingleton().get(d_font))
                 : &FontManager::getSingleton().get(window.getProperty(d_fontPropertyName));
         }
         catch (UnknownObjectException&)
@@ -482,7 +482,7 @@ namespace CEGUI
             d_renderedString = srcWindow.getRenderedStringParser().
                 parse(getTextVisual(), font, nullptr);
         // do we have to override the font?
-        else if (font != srcWindow.getFont())
+        else if (font != srcWindow.getActualFont())
             d_renderedString = srcWindow.getRenderedStringParser().
                 parse(srcWindow.getTextVisual(), font, nullptr);
         // use ready-made RenderedString from the Window itself

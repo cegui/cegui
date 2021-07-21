@@ -422,7 +422,7 @@ public:
         This parameter defaults to true and should generally not be
         used in client code.
     */
-    void sortList(bool relayout=true);
+    void sortList();
 
 	/*************************************************************************
 		Construction and Destruction

@@ -149,7 +149,7 @@ const Font* RenderedStringTextComponent::getEffectiveFont(
         return d_font;
 
     if (window)
-        return window->getFont();
+        return window->getActualFont();
 
     return nullptr;
 }

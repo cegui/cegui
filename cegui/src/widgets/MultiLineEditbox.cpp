@@ -147,7 +147,7 @@ void MultiLineEditbox::ensureCaretIsVisible(void)
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
 	// calculate the location of the caret
-	const Font* fnt = getFont();
+	const Font* fnt = getActualFont();
 	size_t caretLine = getLineNumberFromIndex(d_caretPos);
 
 	if (caretLine < d_lines.size())
@@ -223,7 +223,7 @@ void MultiLineEditbox::configureScrollbars(void)
 {
     Scrollbar* const vertScrollbar = getVertScrollbar();
     Scrollbar* const horzScrollbar = getHorzScrollbar();
-    const Font* font = getFont();
+    const Font* font = getActualFont();
     if (!font)
         return;
     const float lspc = font->getLineSpacing();
@@ -280,7 +280,7 @@ void MultiLineEditbox::formatText(const bool update_scrollbars)
 
 	String paraText;
 
-	const Font* fnt = getFont();
+	const Font* fnt = getActualFont();
 
 	if (fnt)
 	{
@@ -431,7 +431,7 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
     wndPt.y += getVertScrollbar()->getScrollPosition();
 
 	size_t lineNumber = static_cast<size_t>(
-        std::max(0.0f, wndPt.y) / getFont()->getLineSpacing());
+        std::max(0.0f, wndPt.y) / getActualFont()->getLineSpacing());
 
 	if (lineNumber >= d_lines.size())
 	{
@@ -440,7 +440,7 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 
     const String lineText(getText().substr(d_lines[lineNumber].d_startIdx, d_lines[lineNumber].d_length));
 
-    size_t lineIdx = getFont()->getCharAtPixel(lineText, wndPt.x);
+    size_t lineIdx = getActualFont()->getCharAtPixel(lineText, wndPt.x);
 
 	if (lineIdx >= lineText.length() - 1)
 	{
@@ -694,11 +694,11 @@ void MultiLineEditbox::handleLineUp(bool select)
 
 	if (caretLine > 0)
 	{
-        float caretPixelOffset = getFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
+        float caretPixelOffset = getActualFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
 
 		--caretLine;
 
-        size_t newLineIndex = getFont()->getCharAtPixel(getText().substr(d_lines[caretLine].d_startIdx, d_lines[caretLine].d_length), caretPixelOffset);
+        size_t newLineIndex = getActualFont()->getCharAtPixel(getText().substr(d_lines[caretLine].d_startIdx, d_lines[caretLine].d_length), caretPixelOffset);
 
 		setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
 	}
@@ -720,11 +720,11 @@ void MultiLineEditbox::handleLineDown(bool select)
 
 	if ((d_lines.size() > 1) && (caretLine < (d_lines.size() - 1)))
 	{
-        float caretPixelOffset = getFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
+        float caretPixelOffset = getActualFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
 
 		++caretLine;
 
-        size_t newLineIndex = getFont()->getCharAtPixel(getText().substr(d_lines[caretLine].d_startIdx, d_lines[caretLine].d_length), caretPixelOffset);
+        size_t newLineIndex = getActualFont()->getCharAtPixel(getText().substr(d_lines[caretLine].d_startIdx, d_lines[caretLine].d_length), caretPixelOffset);
 
 		setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
 	}
@@ -769,7 +769,7 @@ void MultiLineEditbox::handleNewLine()
 void MultiLineEditbox::handlePageUp(bool select)
 {
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    size_t nbLine = static_cast<size_t>(getTextRenderArea().getHeight() / getFont()->getLineSpacing());
+    size_t nbLine = static_cast<size_t>(getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
     size_t newline = 0;
     if (nbLine < caretLine)
     {
@@ -794,7 +794,7 @@ void MultiLineEditbox::handlePageUp(bool select)
 void MultiLineEditbox::handlePageDown(bool select)
 {
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    size_t nbLine =  static_cast<size_t>(getTextRenderArea().getHeight() / getFont()->getLineSpacing());
+    size_t nbLine =  static_cast<size_t>(getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
     size_t newline = caretLine + nbLine;
     if (!d_lines.empty())
     {
@@ -825,7 +825,7 @@ void MultiLineEditbox::onCharacter(TextEventArgs& e)
 
     // only need to take notice if we have focus
     if (e.handled == 0 && hasInputFocus() && !isReadOnly() &&
-        getFont()->isCodepointAvailable(e.d_character))
+        getActualFont()->isCodepointAvailable(e.d_character))
     {
         // erase selected text
         String newText(getText());

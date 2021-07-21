@@ -297,14 +297,12 @@ void ItemListBase::removeItem(ItemEntry* item)
 *************************************************************************/
 void ItemListBase::setAutoResizeEnabled(bool setting)
 {
-	bool old = d_autoResize;
+	const bool old = d_autoResize;
 	d_autoResize = setting;
 
 	// if not already enabled, trigger a resize - only if not currently initialising
-	if ( d_autoResize && !old && !d_initialising)
-	{
+	if (d_autoResize && !old && !d_initialising)
 		sizeToContent();
-	}
 }
 
 
@@ -339,11 +337,12 @@ void ItemListBase::onListContentsChanged(WindowEventArgs& e)
 
 	    // resort list if requested and enabled
         if (d_resort && d_sortEnabled)
-            sortList(false);
+            sortList();
+        else
+            layoutItemWidgets();
+
         d_resort = false;
 
-	    // redo the item layout and fire our event
-	    layoutItemWidgets();
 	    fireEvent(EventListContentsChanged, e, EventNamespace);
 	}
 }
@@ -503,8 +502,8 @@ void ItemListBase::onSized(ElementEventArgs& e)
 
     // FIXME: adjustSizeToContent is called after onSized. Can override it instead of this?
     // FIXME: previously was called onParentSized. Needs rethinking.
-    if (d_autoResize)
-        sizeToContent();
+    //if (d_autoResize)
+    //    sizeToContent();
 }
 
 //----------------------------------------------------------------------------//
@@ -520,7 +519,10 @@ void ItemListBase::performChildLayout(bool client, bool nonClient)
 	    // which is not what is being requested.
 	    // It would also cause infinite recursion... so lets just avoid that :)
 	    layoutItemWidgets();
-	}
+
+        //if (d_autoResize)
+        //    sizeToContent();
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -638,13 +640,10 @@ void ItemListBase::onSortModeChanged(WindowEventArgs& e)
 /************************************************************************
     Sort list
 ************************************************************************/
-void ItemListBase::sortList(bool relayout)
+void ItemListBase::sortList()
 {
     std::sort(d_listItems.begin(), d_listItems.end(), getRealSortCallback());
-    if (relayout)
-    {
-        layoutItemWidgets();
-    }
+    layoutItemWidgets();
 }
 
 bool ItemListBase::validateWindowRenderer(const WindowRenderer* renderer) const

@@ -223,7 +223,7 @@ namespace CEGUI
         if (getGUIContextPtr())
         {
             getGUIContext().getCursor().
-                setImage(d_dragging ? getDragIndicatorImage() : getCursor());
+                setImage(d_dragging ? getDragIndicatorImage() : getActualCursor());
         }
     }
 

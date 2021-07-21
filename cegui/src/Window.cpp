@@ -447,13 +447,10 @@ bool Window::isAncestor(unsigned int ID) const
 }
 
 //----------------------------------------------------------------------------//
-const Font* Window::getFont(bool useDefault) const
+const Font* Window::getActualFont() const
 {
     if (!d_font)
     {
-        if (!useDefault)
-            return nullptr;
-
         GUIContext* context = getGUIContextPtr();
         return context ? context->getDefaultFont() : nullptr;
     }
@@ -1294,6 +1291,9 @@ void Window::addChild_impl(Element* element)
     wnd->invalidate(true);
 
     wnd->onZChange_impl();
+
+    // If window uses default font, handle its possible change
+    wnd->notifyDefaultFontChanged();
 }
 
 //----------------------------------------------------------------------------//
@@ -1346,18 +1346,15 @@ void Window::onZChange_impl(void)
 }
 
 //----------------------------------------------------------------------------//
-const Image* Window::getCursor(bool useDefault) const
+const Image* Window::getActualCursor() const
 {
-    if (d_cursor)
+    if (!d_cursor)
     {
-        return d_cursor;
+        GUIContext* context = getGUIContextPtr();
+        return context ? context->getCursor().getDefaultImage() : nullptr;
     }
-    else if (useDefault)
-    {
-        GUIContext* ctx = getGUIContextPtr();
-        return ctx ? ctx->getCursor().getDefaultImage() : nullptr;
-    }
-    return nullptr;
+
+    return d_cursor;
 }
 
 //----------------------------------------------------------------------------//
@@ -1445,7 +1442,7 @@ void Window::addWindowProperties(void)
 
     CEGUI_DEFINE_PROPERTY(Window, Font*,
         FontPropertyName,"Property to get/set the font for the Window.  Value is the name of the font to use (must be loaded already).",
-        &Window::setFont, &Window::property_getFont, nullptr
+        &Window::setFont, &Window::getFont, nullptr
     );
 
     CEGUI_DEFINE_PROPERTY(Window, unsigned int,
@@ -1460,7 +1457,7 @@ void Window::addWindowProperties(void)
 
     CEGUI_DEFINE_PROPERTY(Window, Image*,
         CursorImagePropertyName,"Property to get/set the mouse cursor image for the Window.  Value should be \"<image name>\".",
-        &Window::setCursor, &Window::property_getCursor, nullptr
+        &Window::setCursor, &Window::getCursor, nullptr
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
@@ -1947,7 +1944,6 @@ void Window::setLookNFeel(const String& look)
     d_windowRenderer->onLookNFeelAssigned();
 
     invalidate();
-    performChildLayout(false, false);
 }
 
 //----------------------------------------------------------------------------//
@@ -2249,9 +2245,10 @@ void Window::onTextChanged(WindowEventArgs& e)
 void Window::onFontChanged(WindowEventArgs& e)
 {
     // This was added to enable the Falagard FontDim to work
-    // properly.  A better, more selective, solution would
+    // properly. A better, more selective, solution would
     // probably be to do something funky with events ;)
-    performChildLayout(false, false);
+    if (!d_initialising)
+        performChildLayout(false, false);
 
     invalidate();
     fireEvent(EventFontChanged, e, EventNamespace);
@@ -2520,9 +2517,8 @@ void Window::onCursorLeavesArea(CursorInputEventArgs& e)
 void Window::onCursorEnters(CursorInputEventArgs& e)
 {
     // set the cursor
-    GUIContext* context = getGUIContextPtr();
-    if (context)
-        context->getCursor().setImage(getCursor());
+    if (GUIContext* context = getGUIContextPtr())
+        context->getCursor().setImage(getActualCursor());
 
     // perform tooltip control
     Tooltip* const tip = getTooltip();
@@ -2973,6 +2969,20 @@ void Window::notifyClippingChanged()
     for (Element* child : d_children)
         if (static_cast<Window*>(child)->isClippedByParent())
             static_cast<Window*>(child)->notifyClippingChanged();
+}
+
+//----------------------------------------------------------------------------//
+void Window::notifyDefaultFontChanged()
+{
+    if (!d_font)
+    {
+        d_renderedStringValid = false;
+        WindowEventArgs args(this);
+        onFontChanged(args);
+    }
+
+    for (Element* child : d_children)
+        static_cast<Window*>(child)->notifyDefaultFontChanged();
 }
 
 //----------------------------------------------------------------------------//
@@ -3726,23 +3736,6 @@ const Window* Window::getWindowAttachedToCommonAncestor(const Window& wnd) const
     }
 
     return tmp ? w : 0;
-}
-
-//----------------------------------------------------------------------------//
-const Font* Window::property_getFont() const
-{
-    // This is changed behaviour when compared to 0.7, we return the Font set
-    // for this window but we don't return name of the default font when
-    // no font is set. This is IMO more practical. User can always use
-    // getFont() directly to get 0.7 behaviour.
-
-    return getFont(false);
-}
-
-//----------------------------------------------------------------------------//
-const Image* Window::property_getCursor() const
-{
-    return getCursor();
 }
 
 //----------------------------------------------------------------------------//

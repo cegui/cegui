@@ -854,22 +854,15 @@ public:
     \brief
         return the active Font object for the Window.
 
-    \param useDefault
-        Specifies whether to return the default font if this Window has no
-        preferred font set. This is typically set to true but whenever we
-        want to know if a default font would be used, this will be set to
-        false, and if the returned Font is a zero pointer we know that this
-        means a default font would be used otherwise.
-
     \return
         Pointer to the Font being used by this Window.  If the window has no
         assigned font, and \a useDefault is true, then the default system font
         is returned.
     */
-    /*!  \deprecated This function is deprecated, as the parameter will be removed in the next major version. Separate functions
-         will be added with proper function names to replicate the functionality for useDefault=false.
-    */
-    const Font* getFont(bool useDefault = true) const;
+    const Font* getActualFont() const;
+
+    //! Returns the font set for this window, nullptr means that a default font will be used
+    const Font* getFont() const { return d_font; }
 
     /*!
     \brief
@@ -1107,16 +1100,15 @@ public:
         Return a pointer to the cursor image to use when the cursor
         indicator is within this window's area.
 
-    \param useDefault
-        Specifies whether to return the default cursor image if this
-        window specifies no preferred cursor image.
-
     \return
         Pointer to the cursor image that will be used when the cursor
-        enters this window's area.  May return NULL indicating no indicator will
+        enters this window's area. May return NULL indicating no indicator will
         be drawn for this window.
     */
-    const Image* getCursor(bool useDefault = true) const;
+    const Image* getActualCursor() const;
+
+    //! Returns the cursor set for this window, nullptr means that a default cursor will be used
+    const Image* getCursor() const { return d_cursor; }
 
     /*!
     \brief
@@ -2452,6 +2444,8 @@ public:
     */
     virtual void endInitialisation(void) { d_initialising = false; }
 
+    bool isInitializing() const { return d_initialising; }
+
     /*!
     \brief
         Returns an auto window with given name. Auto windows are created by
@@ -3550,6 +3544,9 @@ protected:
     */
     void notifyClippingChanged();
 
+    //! notify windows in a hierarchy when the default font changes
+    void notifyDefaultFontChanged();
+
     /*!
     \brief
         Recursively updates all rendering surfaces and windows to work with a new host surface.
@@ -3924,10 +3921,6 @@ protected:
 
 
 private:
-    //! Not intended for public use, only used as a "Font" property getter
-    const Font* property_getFont() const;
-    //! Not intended for public use, only used as a "Cursor" property getter
-    const Image* property_getCursor() const;
 
     void updatePivot();
 
