@@ -166,6 +166,13 @@ void OperatorDim::setNextOperand(const BaseDim* operand)
 }
 
 //----------------------------------------------------------------------------//
+bool OperatorDim::handleFontRenderSizeChange(Window& window, const Font* font) const
+{
+    return (d_left && d_left->handleFontRenderSizeChange(window, font)) ||
+        (d_right && d_right->handleFontRenderSizeChange(window, font));
+}
+
+//----------------------------------------------------------------------------//
 float OperatorDim::getValue(const Window& wnd) const
 {
     const float lval = d_left ? d_left->getValue(wnd) : 0.0f;

@@ -3,7 +3,7 @@ created:    18/4/2015
 author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
-*   Copyright (C) 2004 - 2015 Paul D Turner & Thce CEGUI Development Team
+*   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
 *
 *   Permission is hereby granted, free of charge, to any person obtaining
 *   a copy of this software and associated documentation files (the
@@ -28,8 +28,6 @@ author:     Lukas E Meindl
 
 #include "CEGUI/CEGUI.h"
 
-#include <cmath>
-
 
 using namespace CEGUI;
 
@@ -41,7 +39,6 @@ LookNFeelOverviewSample class
 *************************************************************************/
 
 LookNFeelOverviewSample::LookNFeelOverviewSample()
-    : d_fontForTaharez(nullptr)
 {
     Sample::d_name = "LookNFeelOverviewSample";
     Sample::d_credits = "Lukas \"Ident\" Meindl";
@@ -49,7 +46,7 @@ LookNFeelOverviewSample::LookNFeelOverviewSample()
         "This sample gives a quick overview of the available stock LookNFeels (Skins) and their skinned widgets."
         "Most widgets and most skins are shown here and can be directly interacted with.";
     Sample::d_summary =
-        "The demo uses loads several layouts, each showing a set of widgets from a single skin. "
+        "The demo loads several layouts, each showing a set of widgets from a single skin. "
         "A combobox is used for selection. It also shows how font and widget scaling works on different resolutions";
     Sample::d_priority = 99;
 }
@@ -85,11 +82,9 @@ bool LookNFeelOverviewSample::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("OgreTray.scheme");
     guiContext->getCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
-    // load all Fonts we are going to use and which are not loaded via scheme
+    // load the font we are going to use and which is not loaded via scheme
     FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("Jura-10.font");
-    d_fontForTaharez = loadedFonts.empty() ? 0 : loadedFonts.front();
-    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
-
+    d_guiContext->setDefaultFont(loadedFonts.empty() ? nullptr : loadedFonts.front());
 
     // load all layouts we want to use later
     d_taharezOverviewLayout = winMgr.loadLayoutFromFile("TaharezLookOverview.layout");
@@ -170,12 +165,10 @@ bool LookNFeelOverviewSample::handleSkinSelectionAccepted(const CEGUI::EventArgs
     if (selectedItem == d_taharezLookListboxItem)
     {
         d_loadedLayoutContainer->addChild(d_taharezOverviewLayout);
-        d_guiContext->setDefaultFont(d_fontForTaharez);
     }
     else if(selectedItem == d_vanillaLookListboxItem)
     {
         d_loadedLayoutContainer->addChild(d_vanillaOverviewLayout);
-        d_guiContext->setDefaultFont(d_fontForTaharez); 
     }
 
     return false;
