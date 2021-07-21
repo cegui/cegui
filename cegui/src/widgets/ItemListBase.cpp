@@ -496,14 +496,12 @@ void ItemListBase::endInitialisation(void)
 }
 
 //----------------------------------------------------------------------------//
-void ItemListBase::onSized(ElementEventArgs& e)
+void ItemListBase::onFontChanged(WindowEventArgs& e)
 {
-    Window::onSized(e);
+    Window::onFontChanged(e);
 
-    // FIXME: adjustSizeToContent is called after onSized. Can override it instead of this?
-    // FIXME: previously was called onParentSized. Needs rethinking.
-    //if (d_autoResize)
-    //    sizeToContent();
+    if (d_autoResize)
+        sizeToContent();
 }
 
 //----------------------------------------------------------------------------//
@@ -519,9 +517,6 @@ void ItemListBase::performChildLayout(bool client, bool nonClient)
 	    // which is not what is being requested.
 	    // It would also cause infinite recursion... so lets just avoid that :)
 	    layoutItemWidgets();
-
-        //if (d_autoResize)
-        //    sizeToContent();
     }
 }
 

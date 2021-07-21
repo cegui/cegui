@@ -44,9 +44,7 @@ Menubar::Menubar(const String& type, const String& name)
 //----------------------------------------------------------------------------//
 void Menubar::layoutItemWidgets()
 {
-	Rectf render_rect = getItemRenderArea();
-	float x0 = CoordConverter::alignToPixels(render_rect.left());
-
+	float x0 = CoordConverter::alignToPixels(getItemRenderArea().left());
 	for (auto item : d_listItems)
 	{
 		const Sizef optimal = item->getItemPixelSize();

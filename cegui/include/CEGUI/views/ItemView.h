@@ -409,6 +409,7 @@ protected:
     void onSemanticInputEvent(SemanticEventArgs& e) override;
 
     virtual void onSized(ElementEventArgs& e) override;
+    virtual void onFontChanged(WindowEventArgs& e) override;
     virtual void onTargetSurfaceChanged(RenderingSurface* newSurface) override;
 
     Event::Connection d_eventChildrenWillBeAddedConnection;
