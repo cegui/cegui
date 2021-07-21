@@ -343,7 +343,7 @@ public:
     */
     void endInitialisation(void) override;
 
-    virtual void onSized(ElementEventArgs& e) override;
+    void onFontChanged(WindowEventArgs& e) override;
     virtual void performChildLayout(bool client, bool nonClient) override;
 
     /*!

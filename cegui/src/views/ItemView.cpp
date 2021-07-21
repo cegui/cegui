@@ -761,9 +761,12 @@ void ItemView::onSized(ElementEventArgs& e)
 {
     Window::onSized(e);
     updateScrollbars();
+}
 
-    // FIXME: adjustSizeToContent is called after onSized. Can override it instead of this?
-    // FIXME: previously was called onParentSized. Needs rethinking.
+//----------------------------------------------------------------------------//
+void ItemView::onFontChanged(WindowEventArgs& e)
+{
+    Window::onFontChanged(e);
     resizeToContent();
 }
 
