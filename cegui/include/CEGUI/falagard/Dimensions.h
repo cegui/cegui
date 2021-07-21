@@ -173,7 +173,7 @@ public:
     OperatorDim();
     OperatorDim(DimensionOperator op);
     OperatorDim(DimensionOperator op, BaseDim* left, BaseDim* right);
-    ~OperatorDim();
+    ~OperatorDim() override;
 
     //! set the left hand side operand (passed object is cloned)
     void setLeftOperand(const BaseDim* operand);
@@ -195,6 +195,8 @@ public:
 
     //! helper to set the next free operand, will throw after 2 are set
     void setNextOperand(const BaseDim* operand);
+
+    bool handleFontRenderSizeChange(Window& window, const Font* font) const override;
 
     // Implementation of the base class interface
     float getValue(const Window& wnd) const override;
@@ -594,9 +596,7 @@ public:
     //! Set the current padding of the FontDim.
     void setPadding(float padding);
 
-    // overridden from BaseDim.
-    bool handleFontRenderSizeChange(Window& window,
-                                    const Font* font) const override;
+    bool handleFontRenderSizeChange(Window& window, const Font* font) const override;
 
     // Implementation of the base class interface
     float getValue(const Window& wnd) const override;
