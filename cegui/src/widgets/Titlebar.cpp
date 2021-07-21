@@ -231,7 +231,7 @@ void Titlebar::onFontChanged(WindowEventArgs& e)
 {
     Window::onFontChanged(e);
 
-    if (d_parent)
+    if (d_parent && !getParent()->isInitializing())
     {
         getParent()->performChildLayout(false, false);
     }

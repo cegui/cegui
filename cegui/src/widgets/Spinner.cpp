@@ -330,7 +330,7 @@ namespace CEGUI
     void Spinner::onFontChanged(WindowEventArgs& e)
     {
         // Propagate to children
-        getEditbox()->setFont(getFont());
+        getEditbox()->setFont(getActualFont());
         // Call base class handler
         Window::onFontChanged(e);
     }

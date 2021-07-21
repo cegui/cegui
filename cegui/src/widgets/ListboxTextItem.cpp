@@ -73,7 +73,7 @@ const Font* ListboxTextItem::getFont(void) const
 	// try our owner window's font setting (may be null if owner uses no existant default font)
 	else if (d_owner)
 	{
-		return d_owner->getFont();
+		return d_owner->getActualFont();
 	}
     // no owner, so the default font is ambiguous (it could be of any context)
     else

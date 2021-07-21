@@ -296,7 +296,7 @@ void Editbox::onCharacter(TextEventArgs& e)
 
     // only need to take notice if we have focus
     if (e.handled == 0 && hasInputFocus() && !isReadOnly() &&
-        getFont()->isCodepointAvailable(e.d_character))
+        getActualFont()->isCodepointAvailable(e.d_character))
     {
         // backup current text
         String tmp(getText());

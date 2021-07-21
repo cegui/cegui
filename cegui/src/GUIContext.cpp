@@ -626,21 +626,9 @@ Font* GUIContext::getDefaultFont() const
 void GUIContext::onDefaultFontChanged(EventArgs& args)
 {
     if (d_rootWindow)
-        notifyDefaultFontChanged(d_rootWindow);
+        d_rootWindow->notifyDefaultFontChanged();
 
     fireEvent(EventDefaultFontChanged, args, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::notifyDefaultFontChanged(Window* hierarchy_root) const
-{
-    WindowEventArgs evt_args(hierarchy_root);
-
-    if (!hierarchy_root->getFont(false))
-        hierarchy_root->onFontChanged(evt_args);
-
-    for (size_t i = 0; i < hierarchy_root->getChildCount(); ++i)
-        notifyDefaultFontChanged(hierarchy_root->getChildAtIndex(i));
 }
 
 //----------------------------------------------------------------------------//

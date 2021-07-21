@@ -267,7 +267,7 @@ void TabControl::addTab(Window* wnd)
 
 	// when adding the 1st page, autosize tab pane height
     if (d_tabHeight.d_scale == 0 && d_tabHeight.d_offset == -1)
-        d_tabHeight.d_offset = 8 + getFont()->getFontHeight ();
+        d_tabHeight.d_offset = 8 + getActualFont()->getFontHeight ();
 
     // Just request redraw
     performChildLayout(false, false);
@@ -304,7 +304,7 @@ void TabControl::addButtonForTabContent(Window* wnd)
     // Create the button
     TabButton* tb = createTabButton(makeButtonName(wnd));
     // Copy font
-    tb->setFont(getFont());
+    tb->setFont(getActualFont());
     // Set target window
     tb->setTargetWindow(wnd);
     // Instert into map
@@ -519,14 +519,14 @@ void TabControl::onFontChanged(WindowEventArgs&)
 {
     // Propagate font change to buttons
     for (size_t i = 0; i < d_tabButtonVector.size(); ++i)
-        d_tabButtonVector [i]->setFont (getFont ());
+        d_tabButtonVector[i]->setFont(getActualFont());
 }
 /*************************************************************************
 	Calculate size and position for a tab button
 *************************************************************************/
 void TabControl::calculateTabButtonSizePosition(size_t index)
 {
-    TabButton* btn = d_tabButtonVector [index];
+    TabButton* btn = d_tabButtonVector[index];
     // relative height is always 1.0 for buttons since they are embedded in a
     // panel of the correct height already
     UVector2 position(cegui_absdim(0.0f), cegui_absdim(0.0f));

@@ -281,7 +281,7 @@ void TreeView::fillRenderingState(TreeViewItemRenderingState& item,
 {
     String text = d_itemModel->getData(index);
     RenderedString rendered_string = getRenderedStringParser().parse(
-        text, getFont(), &d_textColourRect);
+        text, getActualFont(), &d_textColourRect);
     item.d_string = rendered_string;
     item.d_text = text;
     item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);

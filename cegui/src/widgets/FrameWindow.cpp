@@ -498,7 +498,7 @@ void FrameWindow::setCursorForSizingLocation(SizingLocation location) const
         break;
 
     default:
-        getGUIContext().getCursor().setImage(getCursor());
+        getGUIContext().getCursor().setImage(getActualCursor());
         break;
     }
 }

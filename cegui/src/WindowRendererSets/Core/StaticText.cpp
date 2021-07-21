@@ -838,13 +838,13 @@ void FalagardStaticText::setUnitIntervalVerticalScrollPosition(float position)
 //----------------------------------------------------------------------------//
 float FalagardStaticText::getLineHeight() const
 {
-    return d_window->getFont()->getFontHeight();
+    return d_window->getActualFont()->getFontHeight();
 }
 
 //----------------------------------------------------------------------------//
 float FalagardStaticText::getVerticalAdvance() const
 {
-    return d_window->getFont()->getFontHeight();
+    return d_window->getActualFont()->getFontHeight();
 }
 
 //----------------------------------------------------------------------------//
@@ -890,7 +890,7 @@ bool FalagardStaticText::handleFontRenderSizeChange(const Font* const font)
 {
     const bool res = WindowRenderer::handleFontRenderSizeChange(font);
 
-    if (d_window->getFont() == font)
+    if (d_window->getActualFont() == font)
     {
         invalidateFormatting();
         getWindow()->adjustSizeToContent();

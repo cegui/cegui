@@ -129,7 +129,7 @@ void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
 void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
 {
     MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
-    const Font* fnt = w->getFont();
+    const Font* fnt = w->getActualFont();
 
     // require a font so that we can calculate caret position.
     if (fnt)
@@ -191,7 +191,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
     float vertScrollPos = w->getVertScrollbar()->getScrollPosition();
     drawArea.offset(-glm::vec2(w->getHorzScrollbar()->getScrollPosition(), vertScrollPos));
 
-    const Font* fnt = w->getFont();
+    const Font* fnt = w->getActualFont();
 
     if (fnt == nullptr)
     {
@@ -457,7 +457,7 @@ bool FalagardMultiLineEditbox::handleFontRenderSizeChange(const Font* const font
 {
     const bool res = WindowRenderer::handleFontRenderSizeChange(font);
 
-    if (d_window->getFont() == font)
+    if (d_window->getActualFont() == font)
     {
         d_window->invalidate();
         static_cast<MultiLineEditbox*>(d_window)->formatText(true);

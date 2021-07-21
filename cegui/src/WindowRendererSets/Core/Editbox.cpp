@@ -84,7 +84,7 @@ void FalagardEditbox::createRenderGeometry()
     renderBaseImagery(wlf);
 
     // no font == no more rendering
-    const Font* font = d_window->getFont();
+    const Font* font = d_window->getActualFont();
     if (!font)
         return;
 
@@ -270,7 +270,7 @@ void FalagardEditbox::createRenderGeometryForTextWithoutBidi(
     const Rectf& text_area,
     float text_offset)
 {
-    const Font* font = d_window->getFont();
+    const Font* font = d_window->getActualFont();
 
     // setup initial rect for text formatting
     Rectf text_part_rect(text_area);
@@ -464,7 +464,7 @@ void FalagardEditbox::renderCaret(const ImagerySection& imagery,
 size_t FalagardEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
     Editbox* w = static_cast<Editbox*>(d_window);
-    const Font* font = w->getFont();
+    const Font* font = w->getActualFont();
     if (!font)
         return w->getText().length();
     float wndx = CoordConverter::screenToWindowX(*w, pt.x);
@@ -473,7 +473,7 @@ size_t FalagardEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
     const Rectf text_area(getLookNFeel().getNamedArea("TextArea").getArea().getPixelRect(*d_window));
     const float text_extent = font->getTextExtent(visual_text);
     wndx -= textOffsetVisual(text_area, text_extent);
-    return w->getFont()->getCharAtPixel(visual_text, wndx);
+    return w->getActualFont()->getCharAtPixel(visual_text, wndx);
 }
 
 //----------------------------------------------------------------------------//
@@ -579,7 +579,7 @@ bool FalagardEditbox::handleFontRenderSizeChange(const Font* const font)
 {
     const bool res = WindowRenderer::handleFontRenderSizeChange(font);
 
-    if (d_window->getFont() == font)
+    if (d_window->getActualFont() == font)
     {
         d_window->invalidate();
         return true;
