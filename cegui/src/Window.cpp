@@ -2990,10 +2990,8 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
 {
     // NB: we don't call Element::handleAreaChanges because we completely override its behaviour
 
-    // Inner rect may change even if outer rect didn't change. E.g. if a ScrolledContainer shows
-    // or hides scrollbars, or a new FrameWindow recalculates its titlebar height.
-    // TODO: can exploit some external hint to avoid recalculating a rect each time?
-    d_unclippedInnerRect.invalidateCache();
+    if (moved || sized)
+        d_unclippedInnerRect.invalidateCache();
 
     // We can't guarantee that parent clip rect is unchanged
     // TODO: can detect parentClipRectChanged?
