@@ -760,7 +760,7 @@ void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
 void ItemView::onSized(ElementEventArgs& e)
 {
     Window::onSized(e);
-    updateScrollbars();
+    invalidateView(false);
 }
 
 //----------------------------------------------------------------------------//
