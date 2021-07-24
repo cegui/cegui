@@ -45,8 +45,9 @@ public:
 
     VerticalLayoutContainer(const String& type, const String& name);
 
-    //! @copydoc LayoutContainer::layout
-    virtual void layout() override;
+protected:
+
+    virtual void layout_impl() override;
 };
 
 }

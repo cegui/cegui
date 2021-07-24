@@ -73,27 +73,15 @@ public:
 
     /*!
     \brief
-        Destructor for Window base class
-    */
-    virtual ~LayoutContainer(void) override;
-
-    /*!
-    \brief
         marks this layout container for relayouting before drawing
     */
-    void markNeedsLayouting();
+    void markNeedsLayouting() { d_needsLayouting = true; }
 
     /*!
     \brief
         returns true if this layout container will be relayouted before drawing
     */
-    bool needsLayouting() const;
-
-    /*!
-    \brief
-        (re)layouts all windows inside this layout container immediately
-    */
-    virtual void layout() = 0;
+    bool needsLayouting() const { return d_needsLayouting; }
 
     /*!
     \brief
@@ -106,17 +94,16 @@ public:
     \brief
         Returns an actual layout child count not including auxiliary items
     */
-    virtual size_t getActualChildCount() const;
+    virtual size_t getActualChildCount() const { return getChildCount(); }
 
     /// @copydoc Window::update
     void update(float elapsed) override;
 
-    const CachedRectf& getChildContentArea(const bool non_client = false) const override;
+    const CachedRectf& getChildContentArea(const bool non_client = false) const override { return d_childContentArea; }
 
 protected:
     /// @copydoc Window::getUnclippedInnerRect_impl
-    Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const override;
-    
+    Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const override;    
     Rectf getChildContentArea_impl(bool skipAllPixelAlignment) const;
 
     void addChild_impl(Element* element) override;
@@ -182,6 +169,12 @@ protected:
         returns bounding size for window, including margins
     */
     virtual UVector2 getBoundingSizeForWindow(Window* window) const;
+
+    /*!
+    \brief
+        (re)layouts all windows inside this layout container immediately
+    */
+    virtual void layout_impl() = 0;
 
     // overridden from parent class
     void onChildOrderChanged(ElementEventArgs& e) override;

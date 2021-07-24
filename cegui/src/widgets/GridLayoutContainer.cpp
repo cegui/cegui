@@ -358,7 +358,7 @@ Window* GridLayoutContainer::getChildAtCell(size_t gridX, size_t gridY) const
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::layout()
+void GridLayoutContainer::layout_impl()
 {
     // Used to compare UDims
     const Rectf& childContentArea = getChildContentArea().get();

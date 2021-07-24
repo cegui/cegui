@@ -189,9 +189,6 @@ public:
     */
     Window* getChildAtCell(size_t gridX, size_t gridY) const;
 
-    //! @copydoc LayoutContainer::layout
-    virtual void layout() override;
-
     void onChildOrderChanged(ElementEventArgs& e) override;
 
     //! converts from grid cell position to idx
@@ -210,6 +207,8 @@ protected:
     void removeChild_impl(Element* element) override;
     Window* getChildAutoWindow(const String& name) override;
     int writeChildWindowsXML(XMLSerializer& xml_stream) const override;
+
+    virtual void layout_impl() override;
 
     size_t d_gridWidth = 0;
     size_t d_gridHeight = 0;
