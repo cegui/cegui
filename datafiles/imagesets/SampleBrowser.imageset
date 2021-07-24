@@ -1,77 +1,77 @@
-<Imageset autoScaled="vertical" imagefile="SampleBrowser.png" name="SampleBrowserSkin" nativeHorzRes="1920" nativeVertRes="1080" version="2">
-    <Image height="3" name="GenericFiller" width="3" xPos="1" yPos="49" />
-    <Image height="45" name="MouseArrow" width="36" xPos="0" yPos="0" />
-    <Image height="45" name="MouseArrowHover" width="36" xPos="94" yPos="102" />
-    <Image height="29" name="SampleFrameBottom" width="690" xPos="185" yPos="416" />
-    <Image height="29" name="SampleFrameBottomRight" width="28" xPos="875" yPos="416" />
-    <Image height="29" name="SampleFrameBottomLeft" width="28" xPos="157" yPos="416" />
-    <Image height="389" name="SampleFrameLeft" width="28" xPos="157" yPos="27" />
-    <Image height="27" name="SampleFrameTopRight" width="28" xPos="875" yPos="0" />
-    <Image height="389" name="SampleFrameRight" width="28" xPos="875" yPos="27" />
-    <Image height="27" name="SampleFrameTop" width="690" xPos="185" yPos="0" />
-    <Image height="27" name="SampleFrameTopLeft" width="28" xPos="157" yPos="0" />
-    <Image height="13" name="TextBoxB" width="6" xPos="13" yPos="116" />
-    <Image height="13" name="TextBoxTR" width="13" xPos="19" yPos="97" />
-    <Image height="13" name="TextBoxT" width="6" xPos="13" yPos="97" />
-    <Image height="13" name="TextBoxTL" width="13" xPos="0" yPos="97" />
-    <Image height="6" name="TextBoxR" width="13" xPos="19" yPos="110" />
-    <Image height="13" name="TextBoxBR" width="13" xPos="19" yPos="116" />
-    <Image height="6" name="TextBoxM" width="6" xPos="13" yPos="110" />
-    <Image height="13" name="TextBoxBL" width="13" xPos="0" yPos="116" />
-    <Image height="6" name="TextBoxL" width="13" xPos="0" yPos="110" />
-    <Image height="26" name="CaptionM" width="7" xPos="51" yPos="102" />
-    <Image height="26" name="CaptionL" width="12" xPos="39" yPos="102" />
-    <Image height="26" name="CaptionR" width="12" xPos="58" yPos="102" />
-    <Image height="15" name="TrayBL" width="15" xPos="90" yPos="49" />
-    <Image height="34" name="TrayM" width="34" xPos="105" yPos="15" />
-    <Image height="15" name="TrayB" width="34" xPos="105" yPos="49" />
-    <Image height="15" name="TrayTR" width="15" xPos="139" yPos="0" />
-    <Image height="34" name="TrayL" width="15" xPos="90" yPos="15" />
-    <Image height="15" name="TrayTL" width="15" xPos="90" yPos="0" />
-    <Image height="15" name="TrayT" width="34" xPos="105" yPos="0" />
-    <Image height="15" name="TrayBR" width="15" xPos="139" yPos="49" />
-    <Image height="34" name="TrayR" width="15" xPos="139" yPos="15" />
-    <Image height="16" name="Handle" width="16" xPos="0" yPos="130" />
-    <Image height="15" name="HorzTrackR" width="5" xPos="54" yPos="130" />
-    <Image height="15" name="HorzTrackM" width="14" xPos="40" yPos="130" />
-    <Image height="5" name="VertTrackT" width="14" xPos="19" yPos="130" />
-    <Image height="15" name="HorzTrackL" width="5" xPos="35" yPos="130" />
-    <Image height="14" name="VertTrackM" width="14" xPos="19" yPos="135" />
-    <Image height="5" name="VertTrackB" width="14" xPos="19" yPos="149" />
-    <Image height="8" name="MiniTrayM" width="8" xPos="102" yPos="77" />
-    <Image height="12" name="MiniTrayTR" width="12" xPos="110" yPos="65" />
-    <Image height="12" name="MiniTrayTL" width="12" xPos="90" yPos="65" />
-    <Image height="8" name="MiniTrayL" width="12" xPos="90" yPos="77" />
-    <Image height="12" name="MiniTrayB" width="8" xPos="102" yPos="85" />
-    <Image height="12" name="MiniTrayBR" width="12" xPos="110" yPos="85" />
-    <Image height="12" name="MiniTrayT" width="8" xPos="102" yPos="65" />
-    <Image height="12" name="MiniTrayBL" width="12" xPos="90" yPos="85" />
-    <Image height="8" name="MiniTrayR" width="12" xPos="110" yPos="77" />
-    <Image height="389" name="SamplesForeground" width="690" xPos="185" yPos="479" />
-    <Image height="94" name="ExitButtonNormal" width="94" xPos="0" yPos="155" />
-    <Image height="94" name="EntryButtonNormal" width="94" xPos="0" yPos="440" />
-    <Image height="94" name="ExitButtonHover" width="94" xPos="0" yPos="250" />
-    <Image height="94" name="ExitButtonClicked" width="94" xPos="0" yPos="345" />
-    <Image height="94" name="EntryButtonHover" width="94" xPos="0" yPos="535" />
-    <Image height="94" name="EntryButtonClicked" width="94" xPos="0" yPos="630" />
-    <Image height="18" name="ProgessBarTop" width="16" xPos="113" yPos="150" />
-    <Image height="16" name="ProgessBarMiddle" width="16" xPos="113" yPos="168" />
-    <Image height="18" name="ProgessBarBot" width="16" xPos="113" yPos="184" />
-    <Image height="18" name="ProgessBarTopLeft" width="18" xPos="95" yPos="150" />
-    <Image height="18" name="ProgessBarBotLeft" width="18" xPos="95" yPos="184" />
-    <Image height="16" name="ProgessBarRight" width="18" xPos="129" yPos="168" />
-    <Image height="16" name="ProgessBarLeft" width="18" xPos="95" yPos="168" />
-    <Image height="18" name="ProgessBarTopRight" width="18" xPos="129" yPos="150" />
-    <Image height="18" name="ProgessBarBotRight" width="18" xPos="129" yPos="184" />
-    <Image height="18" name="ProgessBarOverTop" width="16" xPos="113" yPos="211" />
-    <Image height="16" name="ProgessBarOverLeft" width="18" xPos="95" yPos="229" />
-    <Image height="18" name="ProgessBarOverTopLeft" width="18" xPos="95" yPos="211" />
-    <Image height="18" name="ProgessBarOverBotRight" width="18" xPos="129" yPos="245" />
-    <Image height="18" name="ProgessBarOverBot" width="16" xPos="113" yPos="245" />
-    <Image height="16" name="ProgessBarOverMiddle" width="16" xPos="113" yPos="229" />
-    <Image height="18" name="ProgessBarOverBotLeft" width="18" xPos="95" yPos="245" />
-    <Image height="16" name="ProgessBarOverRight" width="18" xPos="129" yPos="229" />
-    <Image height="18" name="ProgessBarOverTopRight" width="18" xPos="129" yPos="211" />
-    <Image height="117" name="LightBackground" width="117" xPos="1" yPos="725" />
-    <Image height="117" name="LightOverlay" width="117" xPos="1" yPos="875" />
+<Imageset imagefile="SampleBrowser.png" nativeVertRes="1080" nativeHorzRes="1920" autoScaled="vertical" version="2" name="SampleBrowserSkin">
+    <Image xPos="1" width="3" yPos="49" name="GenericFiller" height="3"/>
+    <Image xPos="0" width="36" yPos="0" name="MouseArrow" height="45"/>
+    <Image xPos="94" width="36" yPos="102" name="MouseArrowHover" height="45"/>
+    <Image xPos="185" width="690" yPos="416" name="SampleFrameBottom" height="29"/>
+    <Image xPos="875" width="28" yPos="416" name="SampleFrameBottomRight" height="29"/>
+    <Image xPos="157" width="28" yPos="416" name="SampleFrameBottomLeft" height="29"/>
+    <Image xPos="157" width="28" yPos="27" name="SampleFrameLeft" height="389"/>
+    <Image xPos="875" width="28" yPos="0" name="SampleFrameTopRight" height="27"/>
+    <Image xPos="875" width="28" yPos="27" name="SampleFrameRight" height="389"/>
+    <Image xPos="185" width="690" yPos="0" name="SampleFrameTop" height="27"/>
+    <Image xPos="157" width="28" yPos="0" name="SampleFrameTopLeft" height="27"/>
+    <Image xPos="13" width="6" yPos="116" name="TextBoxB" height="13"/>
+    <Image xPos="19" width="13" yPos="97" name="TextBoxTR" height="13"/>
+    <Image xPos="13" width="6" yPos="97" name="TextBoxT" height="13"/>
+    <Image xPos="0" width="13" yPos="97" name="TextBoxTL" height="13"/>
+    <Image xPos="19" width="13" yPos="110" name="TextBoxR" height="6"/>
+    <Image xPos="19" width="13" yPos="116" name="TextBoxBR" height="13"/>
+    <Image xPos="13" width="6" yPos="110" name="TextBoxM" height="6"/>
+    <Image xPos="0" width="13" yPos="116" name="TextBoxBL" height="13"/>
+    <Image xPos="0" width="13" yPos="110" name="TextBoxL" height="6"/>
+    <Image xPos="51" width="7" yPos="102" name="CaptionM" height="19"/>
+    <Image xPos="39" width="12" yPos="102" name="CaptionL" height="19"/>
+    <Image xPos="58" width="12" yPos="102" name="CaptionR" height="19"/>
+    <Image xPos="90" width="15" yPos="49" name="TrayBL" height="15"/>
+    <Image xPos="105" width="34" yPos="15" name="TrayM" height="34"/>
+    <Image xPos="105" width="34" yPos="49" name="TrayB" height="15"/>
+    <Image xPos="139" width="15" yPos="0" name="TrayTR" height="15"/>
+    <Image xPos="90" width="15" yPos="15" name="TrayL" height="34"/>
+    <Image xPos="90" width="15" yPos="0" name="TrayTL" height="15"/>
+    <Image xPos="105" width="34" yPos="0" name="TrayT" height="15"/>
+    <Image xPos="139" width="15" yPos="49" name="TrayBR" height="15"/>
+    <Image xPos="139" width="15" yPos="15" name="TrayR" height="34"/>
+    <Image xPos="0" width="16" yPos="130" name="Handle" height="16"/>
+    <Image xPos="54" width="5" yPos="130" name="HorzTrackR" height="15"/>
+    <Image xPos="40" width="14" yPos="130" name="HorzTrackM" height="15"/>
+    <Image xPos="19" width="14" yPos="130" name="VertTrackT" height="5"/>
+    <Image xPos="35" width="5" yPos="130" name="HorzTrackL" height="15"/>
+    <Image xPos="19" width="14" yPos="135" name="VertTrackM" height="14"/>
+    <Image xPos="19" width="14" yPos="149" name="VertTrackB" height="5"/>
+    <Image xPos="102" width="8" yPos="77" name="MiniTrayM" height="8"/>
+    <Image xPos="110" width="12" yPos="65" name="MiniTrayTR" height="12"/>
+    <Image xPos="90" width="12" yPos="65" name="MiniTrayTL" height="12"/>
+    <Image xPos="90" width="12" yPos="77" name="MiniTrayL" height="8"/>
+    <Image xPos="102" width="8" yPos="85" name="MiniTrayB" height="12"/>
+    <Image xPos="110" width="12" yPos="85" name="MiniTrayBR" height="12"/>
+    <Image xPos="102" width="8" yPos="65" name="MiniTrayT" height="12"/>
+    <Image xPos="90" width="12" yPos="85" name="MiniTrayBL" height="12"/>
+    <Image xPos="110" width="12" yPos="77" name="MiniTrayR" height="8"/>
+    <Image xPos="185" width="690" yPos="479" name="SamplesForeground" height="389"/>
+    <Image xPos="0" width="94" yPos="155" name="ExitButtonNormal" height="94"/>
+    <Image xPos="0" width="94" yPos="440" name="EntryButtonNormal" height="94"/>
+    <Image xPos="0" width="94" yPos="250" name="ExitButtonHover" height="94"/>
+    <Image xPos="0" width="94" yPos="345" name="ExitButtonClicked" height="94"/>
+    <Image xPos="0" width="94" yPos="535" name="EntryButtonHover" height="94"/>
+    <Image xPos="0" width="94" yPos="630" name="EntryButtonClicked" height="94"/>
+    <Image xPos="113" width="16" yPos="150" name="ProgessBarTop" height="18"/>
+    <Image xPos="113" width="16" yPos="168" name="ProgessBarMiddle" height="16"/>
+    <Image xPos="113" width="16" yPos="184" name="ProgessBarBot" height="18"/>
+    <Image xPos="95" width="18" yPos="150" name="ProgessBarTopLeft" height="18"/>
+    <Image xPos="95" width="18" yPos="184" name="ProgessBarBotLeft" height="18"/>
+    <Image xPos="129" width="18" yPos="168" name="ProgessBarRight" height="16"/>
+    <Image xPos="95" width="18" yPos="168" name="ProgessBarLeft" height="16"/>
+    <Image xPos="129" width="18" yPos="150" name="ProgessBarTopRight" height="18"/>
+    <Image xPos="129" width="18" yPos="184" name="ProgessBarBotRight" height="18"/>
+    <Image xPos="113" width="16" yPos="211" name="ProgessBarOverTop" height="18"/>
+    <Image xPos="95" width="18" yPos="229" name="ProgessBarOverLeft" height="16"/>
+    <Image xPos="95" width="18" yPos="211" name="ProgessBarOverTopLeft" height="18"/>
+    <Image xPos="129" width="18" yPos="245" name="ProgessBarOverBotRight" height="18"/>
+    <Image xPos="113" width="16" yPos="245" name="ProgessBarOverBot" height="18"/>
+    <Image xPos="113" width="16" yPos="229" name="ProgessBarOverMiddle" height="16"/>
+    <Image xPos="95" width="18" yPos="245" name="ProgessBarOverBotLeft" height="18"/>
+    <Image xPos="129" width="18" yPos="229" name="ProgessBarOverRight" height="16"/>
+    <Image xPos="129" width="18" yPos="211" name="ProgessBarOverTopRight" height="18"/>
+    <Image xPos="1" width="117" yPos="725" name="LightBackground" height="117"/>
+    <Image xPos="1" width="117" yPos="875" name="LightOverlay" height="117"/>
 </Imageset>
