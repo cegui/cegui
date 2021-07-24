@@ -112,6 +112,7 @@ const Element::CachedRectf& LayoutContainer::getChildContentArea(const bool /*no
 uint8_t LayoutContainer::handleAreaChanges(bool moved, bool sized)
 {
     d_childContentArea.invalidateCache();
+    d_unclippedInnerRect.invalidateCache();
     const uint8_t flags = Window::handleAreaChanges(moved, sized);
 
     // If content areas resized, relatively sized children may break layout
