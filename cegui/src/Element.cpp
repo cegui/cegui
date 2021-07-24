@@ -91,7 +91,7 @@ Element::~Element() = default;
 //----------------------------------------------------------------------------//
 void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content)
 {
-    // TODO: early exit if equal? or return bool from notifyScreenAreaChanged?
+    // TODO: early exit if equal? or return false from notifyScreenAreaChanged if unchanged?
 
     d_area.setPositionAndSize(pos, size);
     notifyScreenAreaChanged(adjust_size_to_content);

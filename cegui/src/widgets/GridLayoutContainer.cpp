@@ -492,7 +492,7 @@ void GridLayoutContainer::growByOneLine()
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::endInitialisation(void)
+void GridLayoutContainer::endInitialisation()
 {
     // After we loaded children from XML, fill remaining free cells with dummies
     const size_t capacity = d_gridWidth * d_gridHeight;

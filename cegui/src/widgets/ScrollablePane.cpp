@@ -282,7 +282,7 @@ void ScrollablePane::initialiseComponents()
     // finalise setup
     configureScrollbars();
 
-    Window::initialiseComponents(); // FIXME: need here?
+    Window::initialiseComponents();
 }
 
 //----------------------------------------------------------------------------//

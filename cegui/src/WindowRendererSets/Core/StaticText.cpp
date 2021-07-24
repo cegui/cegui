@@ -672,8 +672,6 @@ bool FalagardStaticText::onIsSizeAdjustedToContentChanged(const EventArgs&)
         vertScrollbar->hide();
         horzScrollbar->hide();
 
-        d_window->performChildLayout(false, false);
-
         // scrollbar events
         vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged,
             Event::Subscriber(&FalagardStaticText::handleScrollbarChange, this));
@@ -702,7 +700,6 @@ bool FalagardStaticText::onIsSizeAdjustedToContentChanged(const EventArgs&)
                 Event::Subscriber(&FalagardStaticText::onIsSizeAdjustedToContentChanged, this)));
 
         invalidateFormatting();
-        getWindow()->adjustSizeToContent();
     }
 
     void FalagardStaticText::onLookNFeelUnassigned()

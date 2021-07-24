@@ -333,7 +333,7 @@ public:
 	\return
 	Nothing
 	*/
-	virtual	void	sizeToContent(void)		{sizeToContent_impl();}
+	virtual	void sizeToContent() { sizeToContent_impl(); }
 
 
     /*!
@@ -341,7 +341,7 @@ public:
         Triggers a ListContentsChanged event.
         These are not fired during initialisation for optimization purposes.
     */
-    void endInitialisation(void) override;
+    void endInitialisation() override;
 
     void onFontChanged(WindowEventArgs& e) override;
     virtual void performChildLayout(bool client, bool nonClient) override;
