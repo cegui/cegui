@@ -39,7 +39,7 @@ HorizontalLayoutContainer::HorizontalLayoutContainer(const String& type,
 {}
 
 //----------------------------------------------------------------------------//
-void HorizontalLayoutContainer::layout()
+void HorizontalLayoutContainer::layout_impl()
 {
     // used to compare UDims
     const float absHeight = getChildContentArea().get().getHeight();

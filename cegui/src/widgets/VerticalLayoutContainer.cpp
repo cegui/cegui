@@ -39,7 +39,7 @@ VerticalLayoutContainer::VerticalLayoutContainer(const String& type,
 {}
 
 //----------------------------------------------------------------------------//
-void VerticalLayoutContainer::layout()
+void VerticalLayoutContainer::layout_impl()
 {
     // used to compare UDims
     const float absWidth = getChildContentArea().get().getWidth();

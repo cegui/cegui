@@ -31,17 +31,9 @@
 #endif
 
 #include "CEGUI/widgets/LayoutContainer.h"
-#include "CEGUI/RenderingSurface.h"
 
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4355)
-#endif
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-
 const String LayoutContainer::EventNamespace("LayoutContainer");
 
 //----------------------------------------------------------------------------//
@@ -60,52 +52,23 @@ LayoutContainer::LayoutContainer(const String& type, const String& name):
 }
 
 //----------------------------------------------------------------------------//
-LayoutContainer::~LayoutContainer(void)
-{}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::markNeedsLayouting()
-{
-    d_needsLayouting = true;
-}
-
-//----------------------------------------------------------------------------//
-bool LayoutContainer::needsLayouting() const
-{
-    return d_needsLayouting;
-}
-
-//----------------------------------------------------------------------------//
 void LayoutContainer::layoutIfNecessary()
 {
     if (d_needsLayouting)
     {
-        // Sometimes layout() triggers subsequent layouting, for example when
+        // Sometimes layout_impl() triggers subsequent layouting, for example when
         // the final size calculation changes parent ScrollablePane scrollbars.
         // This is why the flag is cleared before layouting, not after it.
         d_needsLayouting = false;
-        layout();
+        layout_impl();
     }
-}
-
-//----------------------------------------------------------------------------//
-size_t LayoutContainer::getActualChildCount() const
-{
-    return getChildCount();
 }
 
 //----------------------------------------------------------------------------//
 void LayoutContainer::update(float elapsed)
 {
     Window::update(elapsed);
-
     layoutIfNecessary();
-}
-
-//----------------------------------------------------------------------------//
-const Element::CachedRectf& LayoutContainer::getChildContentArea(const bool /*non_client*/) const
-{
-    return d_childContentArea;
 }
 
 //----------------------------------------------------------------------------//
@@ -238,8 +201,7 @@ UVector2 LayoutContainer::getBoundingSizeForWindow(Window* window) const
     const UBox& margin = window->getMargin();
     return UVector2(
                margin.d_left + UDim(0, pixelSize.d_width) + margin.d_right,
-               margin.d_top + UDim(0, pixelSize.d_height) + margin.d_bottom
-           );
+               margin.d_top + UDim(0, pixelSize.d_height) + margin.d_bottom);
 }
 
 //----------------------------------------------------------------------------//
@@ -251,9 +213,4 @@ void LayoutContainer::onChildOrderChanged(ElementEventArgs& e)
 
 //----------------------------------------------------------------------------//
 
-#if defined(_MSC_VER)
-#   pragma warning(pop)
-#endif
-
-} // End of  CEGUI namespace section
-
+}
