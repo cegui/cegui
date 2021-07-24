@@ -193,7 +193,7 @@ void SampleBrowserManager::init()
 {
     WindowManager& winMgr(WindowManager::getSingleton());
 
-    d_verticalLayoutContainerSamples = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
+    d_verticalLayoutContainerSamples = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer", "SampleList"));
     d_verticalLayoutContainerSamples->setSize(USize::zero());
 
     d_verticalLayoutContainerSamples->setMargin(CEGUI::UBox(cegui_reldim(0.0f), cegui_reldim(0.1f), cegui_absdim(14.f), cegui_reldim(0.1f)));
@@ -233,7 +233,7 @@ CEGUI::FrameWindow* SampleBrowserManager::createPreviewSampleWindow(const CEGUI:
 {
     WindowManager& winMgr(WindowManager::getSingleton());
 
-    FrameWindow* sampleWindow = static_cast<FrameWindow*>(winMgr.createWindow("SampleBrowserSkin/SampleWindow", name));
+    FrameWindow* sampleWindow = static_cast<FrameWindow*>(winMgr.createWindow("SampleBrowserSkin/SampleWindow", "SampleFW_" + name));
     CEGUI::String imageName = image.getName();
     sampleWindow->setProperty("Image", imageName);
 
