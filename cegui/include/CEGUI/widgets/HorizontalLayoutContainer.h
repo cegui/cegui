@@ -29,10 +29,8 @@
 #ifndef _CEGUIHorizontalLayoutContainer_h_
 #define _CEGUIHorizontalLayoutContainer_h_
 
-#include "./LayoutContainer.h"
-#include "../WindowFactory.h"
+#include "LayoutContainer.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
@@ -42,33 +40,15 @@ namespace CEGUI
 class CEGUIEXPORT HorizontalLayoutContainer : public LayoutContainer
 {
 public:
-    /*************************************************************************
-        Constants
-    *************************************************************************/
     //! The unique typename of this widget
     static const String WidgetTypeName;
 
-    /*************************************************************************
-        Construction and Destruction
-    *************************************************************************/
-    /*!
-    \brief
-        Constructor for GUISheet windows.
-    */
     HorizontalLayoutContainer(const String& type, const String& name);
-
-    /*!
-    \brief
-        Destructor for GUISheet windows.
-    */
-    virtual ~HorizontalLayoutContainer(void) override;
 
     /// @copydoc LayoutContainer::layout
     virtual void layout() override;
 };
 
-} // End of  CEGUI namespace section
+}
 
-
-#endif  // end of guard _CEGUIHorizontalLayoutContainer_h_
-
+#endif
