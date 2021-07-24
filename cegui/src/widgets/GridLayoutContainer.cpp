@@ -55,10 +55,6 @@ GridLayoutContainer::GridLayoutContainer(const String& type, const String& name)
 }
 
 //----------------------------------------------------------------------------//
-GridLayoutContainer::~GridLayoutContainer(void)
-{}
-
-//----------------------------------------------------------------------------//
 void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
 {
     if (width == d_gridWidth && height == d_gridHeight)
@@ -368,10 +364,6 @@ void GridLayoutContainer::layout()
     const Rectf& childContentArea = getChildContentArea().get();
     const float absWidth = childContentArea.getWidth();
     const float absHeight = childContentArea.getHeight();
-
-    // Trigger recalculation of children pixel sizes
-    for (Element* child : d_children)
-        child->notifyScreenAreaChanged(true);
 
     // First, we need to determine rowSizes and colSizes, this is
     // needed before any layouting work takes place
@@ -687,4 +679,4 @@ void GridLayoutContainer::addGridLayoutContainerProperties(void)
 
 //----------------------------------------------------------------------------//
 
-} // End of CEGUI namespace section
+}

@@ -29,13 +29,7 @@
 #ifndef _CEGUIGridLayoutContainer_h_
 #define _CEGUIGridLayoutContainer_h_
 
-#include "./LayoutContainer.h"
-#include "../WindowFactory.h"
-
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4251)
-#endif
+#include "LayoutContainer.h"
 
 namespace CEGUI
 {
@@ -56,7 +50,6 @@ public:
     static const String DummyName;
 
     GridLayoutContainer(const String& type, const String& name);
-    virtual ~GridLayoutContainer(void) override;
 
     /*!
     \brief
@@ -231,13 +224,9 @@ protected:
 
 private:
 
-    void addGridLayoutContainerProperties(void);
+    void addGridLayoutContainerProperties();
 };
 
-} // End of  CEGUI namespace section
+}
 
-#if defined(_MSC_VER)
-#   pragma warning(pop)
 #endif
-
-#endif  // end of guard _CEGUIGridLayoutContainer_h_

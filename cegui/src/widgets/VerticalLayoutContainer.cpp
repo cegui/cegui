@@ -26,27 +26,16 @@
  ***************************************************************************/
 #include "CEGUI/widgets/VerticalLayoutContainer.h"
 #include "CEGUI/CoordConverter.h"
-#include <algorithm>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-/*************************************************************************
-    Constants
-*************************************************************************/
 // type name for this widget
 const String VerticalLayoutContainer::WidgetTypeName("VerticalLayoutContainer");
 
-/*************************************************************************
-    Constructor
-*************************************************************************/
+//----------------------------------------------------------------------------//
 VerticalLayoutContainer::VerticalLayoutContainer(const String& type,
                                                  const String& name) :
     LayoutContainer(type, name)
-{}
-
-//----------------------------------------------------------------------------//
-VerticalLayoutContainer::~VerticalLayoutContainer(void)
 {}
 
 //----------------------------------------------------------------------------//
@@ -60,9 +49,9 @@ void VerticalLayoutContainer::layout()
     UDim topOffset(0, 0);
     UDim layoutWidth(0, 0);
 
-    for (ChildList::iterator it = d_children.begin(); it != d_children.end(); ++it)
+    for (auto child : d_children)
     {
-        Window* window = static_cast<Window*>(*it);
+        Window* window = static_cast<Window*>(child);
 
         const UVector2 offset = getOffsetForWindow(window);
         window->setPosition(offset + UVector2(UDim(0, 0), topOffset));
@@ -86,5 +75,4 @@ void VerticalLayoutContainer::layout()
 }
 //----------------------------------------------------------------------------//
 
-} // End of  CEGUI namespace section
-
+}
