@@ -326,9 +326,10 @@ Window::~Window(void)
 }
 
 //----------------------------------------------------------------------------//
-void Window::initialiseComponents()
+void Window::endInitialisation()
 {
-    performChildLayout(true, true);
+    d_initialising = false;
+    performChildLayout(false, false);
 }
 
 //----------------------------------------------------------------------------//
@@ -1926,23 +1927,26 @@ void Window::setLookNFeel(const String& look)
     if (!d_lookName.empty())
     {
         d_windowRenderer->onLookNFeelUnassigned();
-        const WidgetLookFeel& wlf = wlMgr.getWidgetLook(d_lookName);
-        wlf.cleanUpWidget(*this);
+        wlMgr.getWidgetLook(d_lookName).cleanUpWidget(*this);
     }
 
     d_lookName = look;
     Logger::getSingleton().logEvent("Assigning LookNFeel '" + look +
         "' to window '" + d_name + "'.", LoggingLevel::Informative);
 
-    // Work to initialise the look and feel...
-    const WidgetLookFeel& wlf = wlMgr.getWidgetLook(look);
     // Get look and feel to initialise the widget as it needs.
-    wlf.initialiseWidget(*this);
+    // Set init flag to prevent premature child layouting by LNF.
+    const bool prevInit = d_initialising;
+    d_initialising = true;
+    wlMgr.getWidgetLook(look).initialiseWidget(*this);
+    d_initialising = prevInit;
+
     // do the necessary binding to the stuff added by the look and feel
     initialiseComponents();
     // let the window renderer know about this
     d_windowRenderer->onLookNFeelAssigned();
 
+    performChildLayout(false, false);
     invalidate();
 }
 
@@ -3118,6 +3122,10 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
 //----------------------------------------------------------------------------//
 void Window::performChildLayout(bool client, bool nonClient)
 {
+    // Will call it once after init in endInitialisation() / setLookNFeel()
+    if (d_initialising)
+        return;
+
     bool changed = false;
 
     // Layout child widgets with LNF

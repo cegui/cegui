@@ -1528,7 +1528,7 @@ public:
     \return
         Nothing
     */
-    virtual void initialiseComponents();
+    virtual void initialiseComponents() {}
 
     /*!
     \brief
@@ -2433,7 +2433,7 @@ public:
         That is just after the window has been created, but before any children or
         properties are read.
     */
-    virtual void beginInitialisation(void) { d_initialising = true; }
+    virtual void beginInitialisation() { d_initialising = true; }
 
     /*!
     \brief
@@ -2442,7 +2442,7 @@ public:
         creating a window. That is after all properties and children have been
         loaded and just before the next sibling gets created.
     */
-    virtual void endInitialisation(void) { d_initialising = false; }
+    virtual void endInitialisation();
 
     bool isInitializing() const { return d_initialising; }
 

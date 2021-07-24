@@ -212,7 +212,7 @@ protected:
     void validateGridCell(size_t gridX, size_t gridY);
     void growByOneLine();
 
-    void endInitialisation(void) override;
+    void endInitialisation() override;
     void addChild_impl(Element* element) override;
     void removeChild_impl(Element* element) override;
     Window* getChildAutoWindow(const String& name) override;

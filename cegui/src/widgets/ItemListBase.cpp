@@ -113,7 +113,7 @@ ItemListBase::~ItemListBase(void)
 *************************************************************************/
 void ItemListBase::initialiseComponents()
 {
-    Window::initialiseComponents(); // FIXME: need here?
+    Window::initialiseComponents();
 
     // this pane may be ourselves, and in fact is by default...
     d_pane->subscribeEvent(Window::EventChildRemoved,
@@ -489,7 +489,7 @@ void ItemListBase::addChild_impl(Element* element)
 /************************************************************************
     Initialisation done
 *************************************************************************/
-void ItemListBase::endInitialisation(void)
+void ItemListBase::endInitialisation()
 {
     Window::endInitialisation();
     handleUpdatedItemData(true);

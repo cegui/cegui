@@ -320,9 +320,6 @@ void WidgetLookFeel::clearPropertyInitialisers()
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::initialiseWidget(Window& widget) const
 {
-    // Our widget is under construction, new children may be added
-    widget.beginInitialisation();
-
     // add new property definitions
     PropertyDefinitionCollator pdc;
     appendPropertyDefinitions(pdc);
@@ -389,8 +386,6 @@ void WidgetLookFeel::initialiseWidget(Window& widget) const
         d_animationInstances.insert(AnimationInstanceMap::value_type(&widget, instance));
         instance->setTargetWindow(&widget);
     }
-
-    widget.endInitialisation();
 }
 
 //---------------------------------------------------------------------------//
