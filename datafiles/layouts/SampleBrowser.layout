@@ -78,7 +78,7 @@
             <Window type="SampleBrowserSkin/StaticText" name="Summary" >
                 <Property name="Area" value="{{0,8},{0,8},{1.0,-8},{0.33,-8}}" />
                 <Property name="Font" value="DejaVuSans-12" />
-                <Property name="Text" value="Summary : " />
+                <Property name="Text" value="Summary:" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="VertScrollbar" value="True" />
                 <Property name="HorzScrollPageSize" value="313.667" />
