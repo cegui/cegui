@@ -3153,6 +3153,14 @@ void Window::performChildLayout(bool client, bool nonClient)
         d_unclippedInnerRect.invalidateCache();
         d_innerRectClipperValid = false;
         d_hitTestRectValid = false;
+
+        // Relayout client children if an inner rect size has changed
+        if (!client)
+        {
+            const Sizef innerRectOldSize = d_unclippedInnerRect.getCurrent().getSize();
+            if (innerRectOldSize != d_unclippedInnerRect.get().getSize())
+                client = true;
+        }
     }
 
     // Layout child widgets normally
