@@ -777,7 +777,7 @@ void ItemView::onTargetSurfaceChanged(RenderingSurface* newSurface)
     Window::onTargetSurfaceChanged(newSurface);
     if (getGUIContextPtr())
     {
-        performChildLayout(true, true);
+        performChildLayout(false, false);
         updateScrollbars();
         resizeToContent(); // call invalidateView(false) instead?
     }
