@@ -278,6 +278,7 @@ void ScrolledContainer::cleanupChildren(void)
 uint8_t ScrolledContainer::handleAreaChanges(bool moved, bool sized)
 {
     d_childContentArea.invalidateCache();
+    d_unclippedInnerRect.invalidateCache();
     return Window::handleAreaChanges(moved, sized);
 }
 
