@@ -73,7 +73,7 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
     if (d_initialising)
         return;
 
-    ChildList oldChildren;
+    std::vector<Element*> oldChildren;
     std::swap(oldChildren, d_children);
 
     d_children.reserve(width * height);

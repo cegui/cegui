@@ -1702,13 +1702,44 @@ protected:
     /*************************************************************************
         Implementation Data
     *************************************************************************/
-    //! definition of type used for the list of attached child elements.
-    typedef std::vector<Element*> ChildList;
 
     //! The list of child element objects attached to this.
-    ChildList d_children;
+    std::vector<Element*> d_children;
     //! Holds pointer to the parent element.
     Element* d_parent;
+
+    URect d_area;
+    //! current minimum size for the element.
+    USize d_minSize;
+    //! current maximum size for the element.
+    USize d_maxSize;
+    //! Current constrained pixel size of the element.
+    Sizef d_pixelSize;
+    //! Rotation of this element (relative to the parent)
+    glm::quat d_rotation;
+    //! Pivot point (the point around which the widget is rotated).
+    UVector3 d_pivot;
+    //! The target aspect ratio
+    float d_aspectRatio;
+
+    //! Specifies the base for horizontal alignment.
+    HorizontalAlignment d_horizontalAlignment;
+    //! Specifies the base for vertical alignment.
+    VerticalAlignment d_verticalAlignment;
+    //! How to satisfy current aspect ratio
+    AspectMode d_aspectMode;
+
+    /*!
+    \brief
+        Default direction of the paragraph, relevant for bidirectional text.
+    \see DefaultParagraphDirection
+    */
+    DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
+
+    //! outer area rect in screen pixels
+    CachedRectf d_unclippedOuterRect;
+    //! inner area rect in screen pixels
+    CachedRectf d_unclippedInnerRect;
 
     //! true if element is in non-client (outside InnerRect) area of parent.
     bool d_nonClient;
@@ -1743,40 +1774,8 @@ protected:
     */
     bool d_isHeightAdjustedToContent;
 
-    URect d_area;
-    //! Specifies the base for horizontal alignment.
-    HorizontalAlignment d_horizontalAlignment;
-    //! Specifies the base for vertical alignment.
-    VerticalAlignment d_verticalAlignment;
-    //! current minimum size for the element.
-    USize d_minSize;
-    //! current maximum size for the element.
-    USize d_maxSize;
-    //! How to satisfy current aspect ratio
-    AspectMode d_aspectMode;
-    //! The target aspect ratio
-    float d_aspectRatio;
     //! If true, the position and size are pixel aligned
     bool d_pixelAligned;
-    //! Current constrained pixel size of the element.
-    Sizef d_pixelSize;
-    //! Rotation of this element (relative to the parent)
-    glm::quat d_rotation;
-    //! Pivot point (the point around which the widget is rotated).
-    UVector3 d_pivot;
-
-    //! outer area rect in screen pixels
-    CachedRectf d_unclippedOuterRect;
-    //! inner area rect in screen pixels
-    CachedRectf d_unclippedInnerRect;
-
-    
-    /*!
-    \brief
-        Default direction of the paragraph, relevant for bidirectional text.
-    \see DefaultParagraphDirection
-    */
-    DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
 };
 
 } // End of  CEGUI namespace section

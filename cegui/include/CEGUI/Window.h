@@ -3735,151 +3735,39 @@ protected:
     /*************************************************************************
         Implementation Data
     *************************************************************************/
-    //! definition of type used for the list of child windows to be drawn
-    typedef std::vector<Window*> ChildDrawList;
-    //! definition of type used for the UserString dictionary.
-    typedef std::unordered_map<String, String> UserStringMap;
-    //! definition of type used to track properties banned from writing XML.
-    typedef std::unordered_set<String> BannedXMLPropertySet;
 
-    //! type of Window (also the name of the WindowFactory that created us)
-    const String d_type;
-    //! Type name of the window as defined in a Falagard mapping.
-    String d_falagardType;
-    //! true when this window is an auto-window
-    bool d_autoWindow;
-
-    //! true when this window is currently being initialised (creating children etc)
-    bool d_initialising;
-    //! true when this window is being destroyed.
-    bool d_destructionStarted;
-    //! true when Window is enabled
-    bool d_enabled;
-    //! is window visible (i.e. it will be rendered, but may still be obscured)
-    bool d_visible;
-    //! true when Window is the active Window (receiving inputs).
-    bool d_active;
-
-    //! Child window objects arranged in rendering order.
-    ChildDrawList d_drawList;
-    //! true when Window will be auto-destroyed by parent.
-    bool d_destroyedByParent;
-
-    //! true when Window will be clipped by parent Window area Rect.
-    bool d_clippedByParent;
-
-    //! Name of the Look assigned to this window (if any).
-    String d_lookName;
+    //! GUIContext.  Set when this window is used as a root window.
+    GUIContext* d_guiContext;
     //! The WindowRenderer module that implements the Look'N'Feel specification
     WindowRenderer* d_windowRenderer;
-    //! List of geometry buffers that cache the geometry drawn by this Window.
-    std::vector<GeometryBuffer*> d_geometryBuffers;
     //! RenderingSurface owned by this window (may be 0)
     RenderingSurface* d_surface;
-    //! true if window geometry cache needs to be regenerated.
-    bool d_needsRedraw;
-    //! holds setting for automatic creation of of surface (RenderingWindow)
-    bool d_autoRenderingWindow;
-    //! holds setting for stencil buffer usage in texture caching
-    bool d_autoRenderingSurfaceStencilEnabled;
-
     //! Holds pointer to the Window objects current cursor image.
     const Image* d_cursor;
-
-    //! Alpha transparency setting for the Window
-    float d_alpha;
-    //! true if the Window inherits alpha from the parent Window
-    bool d_inheritsAlpha;
-
-    //! The Window that previously had capture (used for restoreOldCapture mode)
-    Window* d_oldCapture;
-    //! Restore capture to the previous capture window when releasing capture.
-    bool d_restoreOldCapture;
-    //! Whether to distribute captured inputs to child windows.
-    bool d_distCapturedInputs;
-
+    //! Possible custom Tooltip for this window.
+    Tooltip* d_customTip;
     //! Holds pointer to the Window objects current Font.
     const Font* d_font;
-    //! Holds the text / label / caption for this Window.
-    String d_textLogical;
+    //! Pointer to a custom (user assigned) RenderedStringParser object.
+    RenderedStringParser* d_customStringParser;
+    //! The Window that previously had capture (used for restoreOldCapture mode)
+    Window* d_oldCapture;
+    //! Holds pointer to some user assigned data.
+    void* d_userData;
 
 #ifdef CEGUI_BIDI_SUPPORT
     //! pointer to bidirection support object
     BidiVisualMapping* d_bidiVisualMapping;
-    //! whether bidi visual mapping has been updated since last text change.
-    mutable bool d_bidiDataValid;
 #endif
 
 #ifdef CEGUI_USE_RAQM
     //! raqm text object
     std::unique_ptr<RaqmTextData> d_raqmTextData;
-    /*! Stores whether raqm text is up-to-date or if the logical text has changed since
-     the last update
-    */
-    mutable bool d_raqmTextNeedsUpdate;
 #endif
 
-    //! RenderedString representation of text string as ouput from a parser.
-    mutable RenderedString d_renderedString;
-    //! true if d_renderedString is valid, false if needs re-parse.
-    mutable bool d_renderedStringValid;
-    //! Shared instance of a parser to be used in most instances.
-    static BasicRenderedStringParser d_basicStringParser;
-    //! Shared instance of a parser to be used when rendering text verbatim.
-    static DefaultRenderedStringParser d_defaultStringParser;
-    //! Pointer to a custom (user assigned) RenderedStringParser object.
-    RenderedStringParser* d_customStringParser;
-    //! true if use of parser other than d_defaultStringParser is enabled
-    bool d_textParsingEnabled;
-
-    //! Margin, only used when the Window is inside LayoutContainer class
-    UBox d_margin;
-
-    //! User ID assigned to this Window
-    unsigned int d_ID;
-    //! Holds pointer to some user assigned data.
-    void* d_userData;
-    //! Holds a collection of named user string values.
-    UserStringMap d_userStrings;
-
-    //! true if Window will be drawn on top of all other Windows
-    bool d_alwaysOnTop;
-    //! whether window should rise in the z order when left cursor source is activated.
-    bool d_riseOnPointerActivation;
-    //! true if the Window responds to z-order change requests.
-    bool d_zOrderingEnabled;
-
-    //! whether (most) cursor events pass through this window
-    bool d_cursorPassThroughEnabled;
-    //! whether pressed cursor will auto-repeat the down event.
-    bool d_autoRepeat;
-    //! seconds before first repeat event is fired
-    float d_repeatDelay;
-    //! seconds between further repeats after delay has expired.
-    float d_repeatRate;
-    //! Cursor source we're tracking for auto-repeat purposes.
-    CursorInputSource d_repeatPointerSource;
-    //! implements repeating - is true after delay has elapsed,
-    bool d_repeating;
-    //! implements repeating - tracks time elapsed.
-    float d_repeatElapsed;
-
-    //! true if window will receive drag and drop related notifications
-    bool d_dragDropTarget;
-
-    //! Text string used as tip for this window.
-    String d_tooltipText;
-    //! Possible custom Tooltip for this window.
-    Tooltip* d_customTip;
-    //! true if this Window created the custom Tooltip.
-    bool d_weOwnTip;
-    //! whether tooltip text may be inherited from parent.
-    bool d_inheritsTipText;
-
-    //! true if this window is allowed to write XML, false if not
-    bool d_allowWriteXML;
-    //! collection of properties not to be written to XML for this window.
-    BannedXMLPropertySet d_bannedXMLProperties;
+    // FIXME: why GUI context doesn't propagate this to its window hierarchy?
+    //! connection for event listener for font render size changes.
+    Event::ScopedConnection d_fontRenderSizeChangeConnection;
 
     //! outer area clipping rect in screen pixels
     mutable Rectf d_outerRectClipper;
@@ -3887,45 +3775,149 @@ protected:
     mutable Rectf d_innerRectClipper;
     //! area rect used for hit-testing against this window
     mutable Rectf d_hitTestRect;
-
-    mutable bool d_outerRectClipperValid;
-    mutable bool d_innerRectClipperValid;
-    mutable bool d_hitTestRectValid;
-
-    //! The mode to use for calling Window::update
-    WindowUpdateMode d_updateMode;
-
-    //! specifies whether cursor inputs should be propagated to parent(s)
-    bool d_propagatePointerInputs;
-
-    //! GUIContext.  Set when this window is used as a root window.
-    GUIContext* d_guiContext;
-
-    //! true when cursor is contained within this Window's area.
-    bool d_containsPointer;
-
-    //! The translation which was set for this window.
-    glm::vec3 d_translation;
-    //! true when this window is focused.
-    bool d_isFocused;
-
     //! The clipping region which was set for this window.
     Rectf d_clippingRegion;
-    
+    //! Margin, only used when the Window is inside LayoutContainer class
+    //!!!FIXME: move to LC? Too much memory wasted.
+    UBox d_margin;
     /*!
-        Contains the draw mode mask, for this window, specifying 
-        a the bit flags that determine if the Window will be drawn or not 
+        Contains the draw mode mask, for this window, specifying
+        a the bit flags that determine if the Window will be drawn or not
         in the draw calls, depending on the bitmask passed to the calls.
     */
     std::uint32_t d_drawModeMask;
+    //! User ID assigned to this Window
+    unsigned int d_ID;
+    //! Cursor source we're tracking for auto-repeat purposes.
+    CursorInputSource d_repeatPointerSource;
+    //! The mode to use for calling Window::update
+    WindowUpdateMode d_updateMode;
+    //! The translation which was set for this window.
+    glm::vec3 d_translation;
+    //! Alpha transparency setting for the Window
+    float d_alpha;
+    //! seconds before first repeat event is fired
+    float d_repeatDelay;
+    //! seconds between further repeats after delay has expired.
+    float d_repeatRate;
+    //! implements repeating - tracks time elapsed.
+    float d_repeatElapsed;
 
+    //! Holds a collection of named user string values.
+    std::unordered_map<String, String> d_userStrings;
+    //! collection of properties not to be written to XML for this window.
+    std::unordered_set<String> d_bannedXMLProperties;
+    //! List of geometry buffers that cache the geometry drawn by this Window.
+    std::vector<GeometryBuffer*> d_geometryBuffers;
+    //! Child window objects arranged in rendering order.
+    std::vector<Window*> d_drawList;
+
+    //! RenderedString representation of text string as ouput from a parser.
+    mutable RenderedString d_renderedString;
+    //! Shared instance of a parser to be used in most instances.
+    static BasicRenderedStringParser d_basicStringParser;
+    //! Shared instance of a parser to be used when rendering text verbatim.
+    static DefaultRenderedStringParser d_defaultStringParser;
+
+    //! type of Window (also the name of the WindowFactory that created us)
+    const String d_type;
+    //! Type name of the window as defined in a Falagard mapping.
+    String d_falagardType;
+    //! Name of the Look assigned to this window (if any).
+    String d_lookName;
+
+    //! Holds the text / label / caption for this Window.
+    String d_textLogical;
+    //! Text string used as tip for this window.
+    String d_tooltipText;
+
+    //! true when this window is an auto-window
+    bool d_autoWindow : 1;
+    //! true when this window is currently being initialised (creating children etc)
+    bool d_initialising : 1;
+    //! true when this window is being destroyed.
+    bool d_destructionStarted : 1;
+    //! true when Window is enabled
+    bool d_enabled : 1;
+    //! is window visible (i.e. it will be rendered, but may still be obscured)
+    bool d_visible : 1;
+    //! true when Window is the active Window (receiving inputs).
+    bool d_active : 1;
+    //! true when Window will be auto-destroyed by parent.
+    bool d_destroyedByParent : 1;
+    //! true when Window will be clipped by parent Window area Rect.
+    bool d_clippedByParent : 1;
+    //! true if window geometry cache needs to be regenerated.
+    bool d_needsRedraw : 1;
+    //! holds setting for automatic creation of of surface (RenderingWindow)
+    bool d_autoRenderingWindow : 1;
+    //! holds setting for stencil buffer usage in texture caching
+    bool d_autoRenderingSurfaceStencilEnabled : 1;
+    //! true if the Window inherits alpha from the parent Window
+    bool d_inheritsAlpha : 1;
+    //! Restore capture to the previous capture window when releasing capture.
+    bool d_restoreOldCapture : 1;
+    //! Whether to distribute captured inputs to child windows.
+    bool d_distCapturedInputs : 1;
+
+    //! true if d_renderedString is valid, false if needs re-parse.
+    mutable bool d_renderedStringValid : 1;
+    //! true if use of parser other than d_defaultStringParser is enabled
+    bool d_textParsingEnabled : 1;
+
+    //! true if Window will be drawn on top of all other Windows
+    bool d_alwaysOnTop : 1;
+    //! whether window should rise in the z order when left cursor source is activated.
+    bool d_riseOnPointerActivation : 1;
+    //! true if the Window responds to z-order change requests.
+    bool d_zOrderingEnabled : 1;
+
+    //! whether (most) cursor events pass through this window
+    bool d_cursorPassThroughEnabled : 1;
+    //! whether pressed cursor will auto-repeat the down event.
+    bool d_autoRepeat : 1;
+    //! implements repeating - is true after delay has elapsed,
+    bool d_repeating : 1;
+
+    //! true if window will receive drag and drop related notifications
+    bool d_dragDropTarget : 1;
+
+    //! true if this Window created the custom Tooltip.
+    bool d_weOwnTip : 1;
+    //! whether tooltip text may be inherited from parent.
+    bool d_inheritsTipText : 1;
+
+    //! true if this window is allowed to write XML, false if not
+    bool d_allowWriteXML : 1;
+
+    mutable bool d_outerRectClipperValid : 1;
+    mutable bool d_innerRectClipperValid : 1;
+    mutable bool d_hitTestRectValid : 1;
+
+    //! specifies whether cursor inputs should be propagated to parent(s)
+    bool d_propagatePointerInputs : 1;
+
+    //! true when cursor is contained within this Window's area.
+    bool d_containsPointer : 1;
+
+    //! true when this window is focused.
+    bool d_isFocused : 1;
+
+#ifdef CEGUI_BIDI_SUPPORT
+    //! whether bidi visual mapping has been updated since last text change.
+    mutable bool d_bidiDataValid : 1;
+#endif
+
+#ifdef CEGUI_USE_RAQM
+    /*! Stores whether raqm text is up-to-date or if the logical text has changed since
+     the last update
+    */
+    mutable bool d_raqmTextNeedsUpdate : 1;
+#endif
 
 private:
 
     void updatePivot();
-
-    //! connection for event listener for font render size changes.
-    Event::ScopedConnection d_fontRenderSizeChangeConnection;
 };
 
 } // End of  CEGUI namespace section

@@ -690,7 +690,7 @@ void Element::moveChildToIndex(size_t indexFrom, size_t indexTo)
     }
 
     // we get the iterator of the old position
-    ChildList::iterator it = d_children.begin();
+    std::vector<Element*>::iterator it = d_children.begin();
     std::advance(it, indexFrom);
 
     Element* child = *it;
@@ -936,7 +936,7 @@ void Element::removeChild_impl(Element* element)
     // NB: it is intentionally valid to remove an element that is not in the list
 
     // find this element in the child list
-    ChildList::iterator it = std::find(d_children.begin(), d_children.end(), element);
+    std::vector<Element*>::iterator it = std::find(d_children.begin(), d_children.end(), element);
 
     // if the element was found in the child list, remove it from there
     if (it != d_children.end())

@@ -417,7 +417,7 @@ const Window* Window::getActiveChild(void) const
     if (!isActive())
         return nullptr;
 
-    for (ChildDrawList::const_reverse_iterator it = d_drawList.rbegin(); it != d_drawList.rend(); ++it)
+    for (auto it = d_drawList.crbegin(); it != d_drawList.crend(); ++it)
     {
         // don't need full backward scan for activeness as we already know
         // 'this' is active.  NB: This uses the draw-ordered child list, as that
@@ -597,10 +597,8 @@ Window* Window::getChildAtPosition(const glm::vec2& position,
     else
         p = position;
 
-    const ChildDrawList::const_reverse_iterator end = d_drawList.rend();
-    ChildDrawList::const_reverse_iterator child;
-
-    for (child = d_drawList.rbegin(); child != end; ++child)
+    const auto end = d_drawList.crend();
+    for (auto child = d_drawList.rbegin(); child != end; ++child)
     {
         if ((*child)->isEffectiveVisible())
         {
@@ -913,9 +911,9 @@ void Window::moveInFront(const Window* const window)
         return;
 
     // find our position in the parent child draw list
-    const ChildDrawList::iterator p(std::find(getParent()->d_drawList.begin(),
+    const auto p = std::find(getParent()->d_drawList.begin(),
         getParent()->d_drawList.end(),
-        this));
+        this);
     // sanity checK that we were attached to our parent.
     assert(p != getParent()->d_drawList.end());
 
@@ -923,9 +921,9 @@ void Window::moveInFront(const Window* const window)
     getParent()->d_drawList.erase(p);
 
     // find window we're to be moved in front of in parent's draw list
-    ChildDrawList::iterator i(std::find(getParent()->d_drawList.begin(),
+    auto i = std::find(getParent()->d_drawList.begin(),
         getParent()->d_drawList.end(),
-        window));
+        window);
     // sanity check that target window was also attached to correct parent.
     assert(i != getParent()->d_drawList.end());
 
@@ -945,9 +943,9 @@ void Window::moveBehind(const Window* const window)
         return;
 
     // find our position in the parent child draw list
-    const ChildDrawList::iterator p(std::find(getParent()->d_drawList.begin(),
+    const auto p = std::find(getParent()->d_drawList.begin(),
         getParent()->d_drawList.end(),
-        this));
+        this);
     // sanity checK that we were attached to our parent.
     assert(p != getParent()->d_drawList.end());
 
@@ -955,9 +953,9 @@ void Window::moveBehind(const Window* const window)
     getParent()->d_drawList.erase(p);
 
     // find window we're to be moved in front of in parent's draw list
-    const ChildDrawList::iterator i(std::find(getParent()->d_drawList.begin(),
+    const auto i = std::find(getParent()->d_drawList.begin(),
         getParent()->d_drawList.end(),
-        window));
+        window);
     // sanity check that target window was also attached to correct parent.
     assert(i != getParent()->d_drawList.end());
 
@@ -1180,22 +1178,20 @@ void Window::draw(std::uint32_t drawModeMask)
     if (ctx.owner == this)
         ctx.surface->clearGeometry();
 
-    bool allowDrawing = checkIfDrawMaskAllowsDrawing(drawModeMask);
+    const bool allowDrawing = checkIfDrawMaskAllowsDrawing(drawModeMask);
 
     // redraw if no surface set, or if surface is invalidated
     if (!d_surface || d_surface->isInvalidated())
     {
-        if(allowDrawing)
+        if (allowDrawing)
         {
             // perform drawing for 'this' Window
             drawSelf(ctx, drawModeMask);
         }
 
         // render any child windows
-        for (ChildDrawList::iterator it = d_drawList.begin(); it != d_drawList.end(); ++it)
-        {
-            (*it)->draw(drawModeMask);
-        }
+        for (auto wnd : d_drawList)
+            wnd->draw(drawModeMask);
     }
 
     // do final rendering for surface if it's ours
@@ -1971,7 +1967,7 @@ void Window::setModalState(bool state)
 //----------------------------------------------------------------------------//
 const String& Window::getUserString(const String& name) const
 {
-    UserStringMap::const_iterator iter = d_userStrings.find(name);
+    auto iter = d_userStrings.find(name);
 
     if (iter == d_userStrings.end())
         throw UnknownObjectException(
@@ -2013,26 +2009,21 @@ void Window::writeXMLToStream(XMLSerializer& xml_stream) const
     writePropertiesXML(xml_stream);
     // user strings
     const String UserStringXMLElementName("UserString");
-    for (UserStringMap::const_iterator iter = d_userStrings.begin(); iter != d_userStrings.end(); ++iter)
+    for (const auto& pair : d_userStrings)
     {
-        const String& name = iter->first;
+        const String& name = pair.first;
         // ignore auto props
         if (name.rfind("_auto_prop__") != CEGUI::String::npos)
-        {
             continue;
-        }
+
         xml_stream.openTag(UserStringXMLElementName)
             .attribute(Property::NameXMLAttributeName, name);
         // Detect whether it is a long property or not
-        const String& value = iter->second;
-        if (value.find((String::value_type)'\n') != String::npos)
-        {
+        const String& value = pair.second;
+        if (value.find(static_cast<String::value_type>('\n')) != String::npos)
             xml_stream.text(value);
-        }
         else
-        {
-            xml_stream.attribute(Property::ValueXMLAttributeName, iter->second);
-        }
+            xml_stream.attribute(Property::ValueXMLAttributeName, value);
         xml_stream.closeTag();
     }
     // write out attached child windows.
@@ -2150,8 +2141,8 @@ void Window::addWindowToDrawList(Window& wnd, bool at_back)
     // add behind other windows in same group
     if (at_back)
     {
-         // calculate position where window should be added for drawing
-        ChildDrawList::iterator pos = d_drawList.begin();
+        // calculate position where window should be added for drawing
+        auto pos = d_drawList.begin();
         if (wnd.isAlwaysOnTop())
         {
             // find first topmost window
@@ -2165,7 +2156,7 @@ void Window::addWindowToDrawList(Window& wnd, bool at_back)
     else
     {
         // calculate position where window should be added for drawing
-        ChildDrawList::reverse_iterator position = d_drawList.rbegin();
+        auto position = d_drawList.rbegin();
         if (!wnd.isAlwaysOnTop())
         {
             // find last non-topmost window
@@ -2184,7 +2175,7 @@ void Window::removeWindowFromDrawList(const Window& wnd)
     if (!d_drawList.empty())
     {
         // attempt to find the window in the draw list
-        const ChildDrawList::iterator position =
+        const auto position =
             std::find(d_drawList.begin(), d_drawList.end(), &wnd);
 
         // remove the window if it was found in the draw list
@@ -2204,7 +2195,7 @@ Window* Window::getActiveSibling()
     {
         // scan backwards through the draw list, as this will
         // usually result in the fastest result.
-        for (ChildDrawList::reverse_iterator it = getParent()->d_drawList.rbegin(); it != getParent()->d_drawList.rend(); ++it)
+        for (auto it = getParent()->d_drawList.rbegin(); it != getParent()->d_drawList.rend(); ++it)
         {
             Window* wnd = *it;
             // if this child is active
@@ -2870,12 +2861,11 @@ void Window::unbanPropertyFromXMLRecursive(const String& property_name)
 //----------------------------------------------------------------------------//
 bool Window::isPropertyBannedFromXML(const String& property_name) const
 {
-    const BannedXMLPropertySet::const_iterator i =
-        d_bannedXMLProperties.find(property_name);
+    const auto it = d_bannedXMLProperties.find(property_name);
 
     // generally, there will always less banned properties than all properties,
     // so it makes sense to check that first before querying the property instance
-    if (i != d_bannedXMLProperties.end())
+    if (it != d_bannedXMLProperties.end())
     {
         return true;
     }
@@ -3210,7 +3200,7 @@ bool Window::isTopOfZOrder() const
         return true;
 
     // get position of window at top of z-order in same group as this window
-    ChildDrawList::reverse_iterator pos = getParent()->d_drawList.rbegin();
+    auto pos = getParent()->d_drawList.rbegin();
     if (!d_alwaysOnTop)
     {
         // find last non-topmost window
