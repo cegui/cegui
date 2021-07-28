@@ -67,17 +67,20 @@ void OpenGL3GeometryBuffer::draw(std::uint32_t drawModeMask) const
 {
     CEGUI_UNUSED(drawModeMask);
     
-    if(d_vertexData.empty())
+    if (d_vertexData.empty())
         return;
-
-    CEGUI::Rectf viewPort = d_owner.getActiveViewPort();
 
     if (d_clippingActive)
     {
+        // Skip completely clipped geometry
+        const GLint w = static_cast<GLint>(d_preparedClippingRegion.getWidth());
+        const GLint h = static_cast<GLint>(d_preparedClippingRegion.getHeight());
+        if (!w || !h)
+            return;
+
         d_glStateChanger->scissor(static_cast<GLint>(d_preparedClippingRegion.left()),
-            static_cast<GLint>(viewPort.getHeight() - d_preparedClippingRegion.bottom()),
-            static_cast<GLint>(d_preparedClippingRegion.getWidth()),
-            static_cast<GLint>(d_preparedClippingRegion.getHeight()));
+            static_cast<GLint>(d_owner.getActiveViewPort().getHeight() - d_preparedClippingRegion.bottom()),
+            w, h);
 
         d_glStateChanger->enable(GL_SCISSOR_TEST);
     }
