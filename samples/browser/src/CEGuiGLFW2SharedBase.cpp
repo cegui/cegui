@@ -92,10 +92,12 @@ void CEGuiGLFWSharedBase::setGLFWAppConfiguration()
     //Deactivate VSYNC
     glfwSwapInterval(0);
 
+/* FIXME: GLFW cursor position callback is bugged when the cursor is disabled
     // Disable the mouse position in Non_Debug mode
 #ifndef DEBUG
     glfwDisable(GLFW_MOUSE_CURSOR);
 #endif
+*/
     // Clear Errors by GLFW, even if Setup is correct.
     glGetError();
 }
@@ -252,6 +254,7 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwMousePosCallback(int x, int y)
         d_mouseDisableCalled = false;
     }
 
+/* FIXME: GLFW cursor position callback is bugged when the cursor is disabled
 #ifndef DEBUG
     if (x < 0 || y < 0
         || x > d_newWindowWidth
@@ -291,6 +294,7 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwMousePosCallback(int x, int y)
         }
     }
 #endif
+*/
 }
 
 //----------------------------------------------------------------------------//
