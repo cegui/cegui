@@ -72,9 +72,6 @@ function CEGUI.toToggleButton(w)
     return tolua.cast(w,"CEGUI::ToggleButton")
 end
 
---Deprecated, but kept for backwards compatibility; remove at suitable place in time 
-CEGUI.toCheckbox = CEGUI.toToggleButton
-
 function CEGUI.toCombobox(w)
     return tolua.cast(w,"CEGUI::Combobox")
 end
@@ -228,8 +225,6 @@ function CEGUI.toVerticalLayoutContainer(w)
 end
 
 CEGUI.Window.toButtonBase = CEGUI.toButtonBase
---Deprecated, but kept for backwards compatibility; remove at suitable place in time
-CEGUI.Window.toCheckbox = CEGUI.toToggleButton
 CEGUI.Window.toCombobox = CEGUI.toCombobox
 CEGUI.Window.toComboDropList = CEGUI.toComboDropList
 CEGUI.Window.toDragContainer = CEGUI.toDragContainer
