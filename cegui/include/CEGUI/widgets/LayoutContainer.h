@@ -99,7 +99,7 @@ public:
     /// @copydoc Window::update
     void update(float elapsed) override;
 
-    const CachedRectf& getChildContentArea(const bool non_client = false) const override { return d_childContentArea; }
+    const CachedRectf& getChildContentArea(const bool non_client = false) const override { (void)non_client; return d_childContentArea; }
 
 protected:
     /// @copydoc Window::getUnclippedInnerRect_impl

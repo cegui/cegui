@@ -87,12 +87,6 @@ Rectf ScrolledContainer::getContentPixelRect() const
 }
 
 //----------------------------------------------------------------------------//
-const Element::CachedRectf& ScrolledContainer::getChildContentArea(const bool /*non_client*/) const
-{
-    return d_childContentArea;
-}
-
-//----------------------------------------------------------------------------//
 Rectf ScrolledContainer::getChildExtentsArea() const
 {
     Rectf extents(0.f, 0.f, 0.f, 0.f);

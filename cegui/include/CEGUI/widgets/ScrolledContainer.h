@@ -81,7 +81,7 @@ public:
 
     virtual void adjustSizeToContent() override;
     
-    const CachedRectf& getChildContentArea(const bool non_client = false) const override;
+    const CachedRectf& getChildContentArea(const bool non_client = false) const override { (void)non_client; return d_childContentArea; }
 
 protected:
     // Overridden from Window.
