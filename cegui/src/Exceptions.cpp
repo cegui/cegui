@@ -248,7 +248,7 @@ Exception::~Exception()  noexcept
 }
 
 //----------------------------------------------------------------------------//
-const char* Exception::what() const
+const char* Exception::what() const noexcept
 {
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     return d_what.c_str();
