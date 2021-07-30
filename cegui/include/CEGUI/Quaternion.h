@@ -50,9 +50,6 @@ class QuaternionSlerpInterpolator : public Interpolator
 {
 public:
     typedef PropertyHelper<glm::quat> Helper;
-    
-    //! destructor
-    virtual ~QuaternionSlerpInterpolator() {}
 
     //! \copydoc Interpolator::getType
     const String& getType() const override;

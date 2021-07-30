@@ -944,7 +944,8 @@ PropertyHelper<glm::quat>::fromString(const String& str)
             throwParsingException(getDataTypeName(), str);
 
         // glm::radians converts from degrees to radians
-        return glm::quat(glm::vec3(glm::radians(x), glm::radians(y), glm::radians(z)));
+        // Angles are negated to be consistent with pre-GLM rotation directions
+        return glm::quat(glm::vec3(glm::radians(-x), glm::radians(-y), glm::radians(-z)));
     }
 }
 
