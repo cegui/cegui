@@ -110,13 +110,13 @@ void ScrollablePane::setContentSize(const USize& size)
 }
 
 //----------------------------------------------------------------------------//
-bool ScrollablePane::isVertScrollbarAlwaysShown(void) const
+bool ScrollablePane::isVerticalScrollbarAlwaysShown() const
 {
     return d_forceVertScroll;
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::setShowVertScrollbar(bool setting)
+void ScrollablePane::setAlwaysShowVerticalScrollbar(bool setting)
 {
     if (d_forceVertScroll != setting)
     {
@@ -124,18 +124,18 @@ void ScrollablePane::setShowVertScrollbar(bool setting)
         
         configureScrollbars();
         WindowEventArgs args(this);
-        onVertScrollbarModeChanged(args);
+        onVerticalScrollbarModeChanged(args);
     }
 }
 
 //----------------------------------------------------------------------------//
-bool ScrollablePane::isHorzScrollbarAlwaysShown(void) const
+bool ScrollablePane::isHorizontalScrollbarAlwaysShown(void) const
 {
     return d_forceHorzScroll;
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::setShowHorzScrollbar(bool setting)
+void ScrollablePane::setAlwaysShowHorizontalScrollbar(bool setting)
 {
     if (d_forceHorzScroll != setting)
     {
@@ -143,7 +143,7 @@ void ScrollablePane::setShowHorzScrollbar(bool setting)
         
         configureScrollbars();
         WindowEventArgs args(this);
-        onHorzScrollbarModeChanged(args);
+        onHorizontalScrollbarModeChanged(args);
     }
 }
 
@@ -191,13 +191,13 @@ void ScrollablePane::setHorizontalOverlapSize(float overlap)
 //----------------------------------------------------------------------------//
 float ScrollablePane::getHorizontalScrollPosition(void) const
 {
-    return getHorzScrollbar()->getUnitIntervalScrollPosition();
+    return getHorizontalScrollbar()->getUnitIntervalScrollPosition();
 }
 
 //----------------------------------------------------------------------------//
 void ScrollablePane::setHorizontalScrollPosition(float position)
 {
-    getHorzScrollbar()->setUnitIntervalScrollPosition(position);
+    getHorizontalScrollbar()->setUnitIntervalScrollPosition(position);
 }
 
 //----------------------------------------------------------------------------//
@@ -229,23 +229,23 @@ void ScrollablePane::setVerticalOverlapSize(float overlap)
 //----------------------------------------------------------------------------//
 float ScrollablePane::getVerticalScrollPosition(void) const
 {
-    return getVertScrollbar()->getUnitIntervalScrollPosition();
+    return getVerticalScrollbar()->getUnitIntervalScrollPosition();
 }
 
 //----------------------------------------------------------------------------//
 void ScrollablePane::setVerticalScrollPosition(float position)
 {
-    getVertScrollbar()->setUnitIntervalScrollPosition(position);
+    getVerticalScrollbar()->setUnitIntervalScrollPosition(position);
 }
 
 //----------------------------------------------------------------------------//
 void ScrollablePane::initialiseComponents()
 {
     // get horizontal scrollbar
-    Scrollbar* horzScrollbar = getHorzScrollbar();
+    Scrollbar* horzScrollbar = getHorizontalScrollbar();
     
     // get vertical scrollbar
-    Scrollbar* vertScrollbar = getVertScrollbar();
+    Scrollbar* vertScrollbar = getVerticalScrollbar();
     
     // get scrolled container widget
     ScrolledContainer* container = getScrolledContainer();
@@ -289,8 +289,8 @@ void ScrollablePane::initialiseComponents()
 void ScrollablePane::configureScrollbars()
 {
     // controls should all be valid by this stage
-    Scrollbar* const vertScrollbar = getVertScrollbar();
-    Scrollbar* const horzScrollbar = getHorzScrollbar();
+    Scrollbar* const vertScrollbar = getVerticalScrollbar();
+    Scrollbar* const horzScrollbar = getHorizontalScrollbar();
 
     // update vertical scrollbar state
     {
@@ -353,8 +353,8 @@ void ScrollablePane::configureScrollbars()
 //----------------------------------------------------------------------------//
 void ScrollablePane::scrollContentPane(float dx, float dy, ScrollablePane::ScrollSource source)
 {
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    Scrollbar* horzScrollbar = getHorzScrollbar();
+    Scrollbar* vertScrollbar = getVerticalScrollbar();
+    Scrollbar* horzScrollbar = getHorizontalScrollbar();
 
     if (dy != 0.f && vertScrollbar->isEffectiveVisible() &&
         (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
@@ -374,8 +374,8 @@ void ScrollablePane::updateContainerPosition(void)
 {
     // basePos is the position represented by the scrollbars
     // (these are negated so pane is scrolled in the correct directions)
-    UVector2 basePos(cegui_absdim(-getHorzScrollbar()->getScrollPosition()),
-                     cegui_absdim(-getVertScrollbar()->getScrollPosition()));
+    UVector2 basePos(cegui_absdim(-getHorizontalScrollbar()->getScrollPosition()),
+                     cegui_absdim(-getVerticalScrollbar()->getScrollPosition()));
     
     // this bias is the absolute position that 0 on the scrollbars represent.
     // Allows the pane to function correctly with negatively positioned content.
@@ -400,13 +400,13 @@ void ScrollablePane::onContentPaneChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onVertScrollbarModeChanged(WindowEventArgs& e)
+void ScrollablePane::onVerticalScrollbarModeChanged(WindowEventArgs& e)
 {
     fireEvent(EventVertScrollbarModeChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onHorzScrollbarModeChanged(WindowEventArgs& e)
+void ScrollablePane::onHorizontalScrollbarModeChanged(WindowEventArgs& e)
 {
     fireEvent(EventHorzScrollbarModeChanged, e, EventNamespace);
 }
@@ -449,9 +449,9 @@ bool ScrollablePane::handleContentAreaChange(const EventArgs&)
     d_contentRect = contentRect;
 
     // update scrollbar positions (which causes container pane to be moved as needed).
-    Scrollbar* const horzScrollbar = getHorzScrollbar();
+    Scrollbar* const horzScrollbar = getHorizontalScrollbar();
     horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() - xChange);
-    Scrollbar* const vertScrollbar = getVertScrollbar();
+    Scrollbar* const vertScrollbar = getVerticalScrollbar();
     vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() - yChange);
     
     // this call may already have been made if the scroll positions changed. The call
@@ -552,8 +552,8 @@ void ScrollablePane::onScroll(CursorInputEventArgs& e)
     float dx = 0.f;
     float dy = 0.f;
 
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    Scrollbar* horzScrollbar = getHorzScrollbar();
+    Scrollbar* vertScrollbar = getVerticalScrollbar();
+    Scrollbar* horzScrollbar = getHorizontalScrollbar();
     
     if (vertScrollbar->isEffectiveVisible() &&
         (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
@@ -604,13 +604,13 @@ void ScrollablePane::addScrollablePaneProperties(void)
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
         "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll "
         "bar of the pane.  Value is either \"true\" or \"false\".",
-        &ScrollablePane::setShowVertScrollbar, &ScrollablePane::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency */
+        &ScrollablePane::setAlwaysShowVerticalScrollbar, &ScrollablePane::isVerticalScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
     
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
         "ForceHorzScrollbar", "Property to get/set the 'always show' setting for the horizontal "
         "scroll bar of the pane.  Value is either \"true\" or \"false\".",
-        &ScrollablePane::setShowHorzScrollbar, &ScrollablePane::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency */
+        &ScrollablePane::setAlwaysShowHorizontalScrollbar, &ScrollablePane::isHorizontalScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, float,
@@ -645,13 +645,13 @@ void ScrollablePane::addScrollablePaneProperties(void)
 }
 
 //----------------------------------------------------------------------------//
-Scrollbar* ScrollablePane::getVertScrollbar() const
+Scrollbar* ScrollablePane::getVerticalScrollbar() const
 {
     return static_cast<Scrollbar*>(getChild(VertScrollbarName));
 }
 
 //----------------------------------------------------------------------------//
-Scrollbar* ScrollablePane::getHorzScrollbar() const
+Scrollbar* ScrollablePane::getHorizontalScrollbar() const
 {
     return static_cast<Scrollbar*>(getChild(HorzScrollbarName));
 }

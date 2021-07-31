@@ -53,7 +53,7 @@ public:
     \return
         Rect object describing the ScrollablePane's viewable area.
     */
-    virtual Rectf getViewableArea(void) const = 0;
+    virtual Rectf getViewableArea() const = 0;
 };
 
 /*!
@@ -110,7 +110,7 @@ public:
     ScrollablePane(const String& type, const String& name);
 
     //! Destructor for the ScrollablePane base class.
-    ~ScrollablePane(void) override;
+    ~ScrollablePane() override;
 
     int writeChildWindowsXML(XMLSerializer& xml_stream) const override;
 
@@ -126,7 +126,7 @@ public:
         scrollable pane content.  The returned window is const, client code
         should not modify the ScrolledContainer settings directly.
     */
-    const ScrolledContainer* getContentPane(void) const;
+    const ScrolledContainer* getContentPane() const;
 
     /*!
     \brief
@@ -136,7 +136,7 @@ public:
         Rect object that details the current pixel extents of the content
         pane attached to this ScrollablePane.
     */
-    Rectf getContentPixelRect(void) const;
+    Rectf getContentPixelRect() const;
 
     /*!
     \brief
@@ -146,7 +146,7 @@ public:
         USize object that details the current size of the content
         pane attached to this ScrollablePane.
     */
-    USize getContentSize(void) const;
+    USize getContentSize() const;
 
     /*!
     \brief
@@ -170,7 +170,7 @@ public:
     \return
         Rect object describing the ScrollablePane's viewable area.
     */
-    Rectf getViewableArea(void) const;
+    Rectf getViewableArea() const;
 
     /*!
     \brief
@@ -180,7 +180,7 @@ public:
         - true if the scroll bar will be shown even if it is not required.
         - false if the scroll bar will only be shown when it is required.
     */
-    bool isVertScrollbarAlwaysShown(void) const;
+    bool isVerticalScrollbarAlwaysShown() const;
 
     /*!
     \brief
@@ -195,7 +195,7 @@ public:
     \return
         Nothing.
     */
-    void setShowVertScrollbar(bool setting);
+    void setAlwaysShowVerticalScrollbar(bool setting);
 
     /*!
     \brief
@@ -205,7 +205,7 @@ public:
         - true if the scroll bar will be shown even if it is not required.
         - false if the scroll bar will only be shown when it is required.
     */
-    bool isHorzScrollbarAlwaysShown(void) const;
+    bool isHorizontalScrollbarAlwaysShown() const;
 
     /*!
     \brief
@@ -220,7 +220,7 @@ public:
     \return
         Nothing.
     */
-    void setShowHorzScrollbar(bool setting);
+    void setAlwaysShowHorizontalScrollbar(bool setting);
 
     /*!
     \brief
@@ -246,7 +246,7 @@ public:
         float value specifying the step size where 1.0f would be the width of
         the viewing area.
     */
-    float getHorizontalStepSize(void) const;
+    float getHorizontalStepSize() const;
 
     /*!
     \brief
@@ -271,7 +271,7 @@ public:
         float value specifying the overlap size where 1.0f would be the width of
         the viewing area.
     */
-    float getHorizontalOverlapSize(void) const;
+    float getHorizontalOverlapSize() const;
 
     /*!
     \brief
@@ -295,7 +295,7 @@ public:
     \return
         float value specifying the scroll position.
     */
-    float getHorizontalScrollPosition(void) const;
+    float getHorizontalScrollPosition() const;
 
     /*!
     \brief
@@ -319,7 +319,7 @@ public:
         float value specifying the step size where 1.0f would be the height of
         the viewing area.
     */
-    float getVerticalStepSize(void) const;
+    float getVerticalStepSize() const;
 
     /*!
     \brief
@@ -344,7 +344,7 @@ public:
         float value specifying the overlap size where 1.0f would be the height
         of the viewing area.
     */
-    float getVerticalOverlapSize(void) const;
+    float getVerticalOverlapSize() const;
 
     /*!
     \brief
@@ -368,7 +368,7 @@ public:
     \return
         float value specifying the scroll position.
     */
-    float getVerticalScrollPosition(void) const;
+    float getVerticalScrollPosition() const;
 
     /*!
     \brief
@@ -394,7 +394,7 @@ public:
     \exception UnknownObjectException
         Thrown if the vertical Scrollbar component does not exist.
     */
-    Scrollbar* getVertScrollbar() const;
+    Scrollbar* getVerticalScrollbar() const;
 
     /*!
     \brief
@@ -407,11 +407,11 @@ public:
     \exception UnknownObjectException
         Thrown if the horizontal Scrollbar component does not exist.
     */
-    Scrollbar* getHorzScrollbar() const;
+    Scrollbar* getHorizontalScrollbar() const;
 
     // Overridden from Window
     void initialiseComponents() override;
-    void destroy(void) override;
+    void destroy() override;
 
 protected:
 
@@ -452,7 +452,7 @@ protected:
         Update the content container position according to the current 
         state of the widget (like scrollbar positions, etc).
     */
-    void updateContainerPosition(void);
+    void updateContainerPosition();
 
     /*!
     \brief
@@ -496,7 +496,7 @@ protected:
     \return
         Nothing.
     */
-    virtual void onVertScrollbarModeChanged(WindowEventArgs& e);
+    virtual void onVerticalScrollbarModeChanged(WindowEventArgs& e);
 
     /*!
     \brief
@@ -509,7 +509,7 @@ protected:
     \return
         Nothing.
     */
-    virtual void onHorzScrollbarModeChanged(WindowEventArgs& e);
+    virtual void onHorizontalScrollbarModeChanged(WindowEventArgs& e);
 
     /*!
     \brief
@@ -593,7 +593,7 @@ protected:
     glm::vec2 d_swipeStartPoint;
 
 private:
-    void addScrollablePaneProperties(void);
+    void addScrollablePaneProperties();
 };
 
 } // End of  CEGUI namespace section

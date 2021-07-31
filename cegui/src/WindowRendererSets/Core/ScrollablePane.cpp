@@ -48,8 +48,8 @@ namespace CEGUI
         ScrollablePane* w = static_cast<ScrollablePane*>(d_window);
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
-        bool v_visible = w->getVertScrollbar()->isVisible();
-        bool h_visible = w->getHorzScrollbar()->isVisible();
+        const bool v_visible = w->getVerticalScrollbar()->isVisible();
+        const bool h_visible = w->getHorizontalScrollbar()->isVisible();
 
         // if either of the scrollbars are visible, we might want to use another text rendering area
         if (v_visible || h_visible)
