@@ -68,7 +68,7 @@ namespace CEGUI
         return true;
     }
 
-    void FalagardScrollbar::updateThumb(void)
+    void FalagardScrollbar::updateThumb()
     {
         Scrollbar* w = static_cast<Scrollbar*>(d_window);
         const WidgetLookFeel& wlf = getLookNFeel();
@@ -76,17 +76,18 @@ namespace CEGUI
 
         Thumb* theThumb = w->getThumb();
 
-        float posExtent = w->getDocumentSize() - w->getPageSize();
-        float slideExtent;
+        const float posExtent = w->getDocumentSize() - w->getPageSize();
 
         if (d_vertical)
         {
-            if(w->getPixelSize().d_height != 0.0f && posExtent != 0.0f)
+            const float wndSize = w->getPixelSize().d_height;
+            if (wndSize != 0.0f && posExtent != 0.0f)
             {
-                slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
-                theThumb->setVertRange(area.top() / w->getPixelSize().d_height, (area.top() + slideExtent) / w->getPixelSize().d_height);
-                theThumb->setPosition(UVector2(cegui_absdim(area.left()),
-                    cegui_reldim((area.top() + (w->getScrollPosition() * (slideExtent / posExtent))) / w->getPixelSize().d_height)));
+                const float slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
+                theThumb->setVertRange(area.top() / wndSize, (area.top() + slideExtent) / wndSize);
+                theThumb->setPosition(UVector2(
+                    cegui_absdim(area.left()),
+                    cegui_reldim((area.top() + (w->getScrollPosition() * (slideExtent / posExtent))) / wndSize)));
             }
             else
             {
@@ -96,12 +97,14 @@ namespace CEGUI
         }
         else
         {
-            if(w->getPixelSize().d_width != 0.0f && posExtent != 0.0f)
+            const float wndSize = w->getPixelSize().d_width;
+            if (wndSize != 0.0f && posExtent != 0.0f)
             {
-                slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
-                theThumb->setHorzRange(area.left() / w->getPixelSize().d_width, (area.left() + slideExtent)  / w->getPixelSize().d_width);
-                theThumb->setPosition(UVector2(cegui_reldim((area.left() + (w->getScrollPosition() * (slideExtent / posExtent))) / w->getPixelSize().d_width),
-                                                     cegui_absdim(area.top())));
+                const float slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
+                theThumb->setHorzRange(area.left() / wndSize, (area.left() + slideExtent) / wndSize);
+                theThumb->setPosition(UVector2(
+                    cegui_reldim((area.left() + (w->getScrollPosition() * (slideExtent / posExtent))) / wndSize),
+                    cegui_absdim(area.top())));
             }
             else
             {
@@ -111,14 +114,16 @@ namespace CEGUI
         }
     }
 
-    float FalagardScrollbar::getValueFromThumb(void) const
+    float FalagardScrollbar::getValueFromThumb() const
     {
         Scrollbar* w = static_cast<Scrollbar*>(d_window);
         const WidgetLookFeel& wlf = getLookNFeel();
         const Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
 
         Thumb* theThumb = w->getThumb();
-        float posExtent = w->getDocumentSize() - w->getPageSize();
+        const float posExtent = w->getDocumentSize() - w->getPageSize();
+        if (posExtent == 0.f)
+            return 0.f;
 
         if (d_vertical)
         {
