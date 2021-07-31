@@ -30,14 +30,17 @@
 namespace CEGUI
 {
 
-float FreeTypeFontGlyph::getRenderedAdvance(
-) const
+float FreeTypeFontGlyph::getRenderedAdvance() const
 {
+    const Image* img = getImage();
+    if (!img)
+        return 0.f;
+
 #ifdef CEGUI_USE_RAQM
     //TODO: This is incorrect, the estimate based on the advance should not be used when raqm is on
-    float sizeX = getImage()->getRenderedSize().d_width + getImage()->getRenderedOffset().x;
+    float sizeX = img->getRenderedSize().d_width + img->getRenderedOffset().x;
 #else
-    float sizeX = getImage()->getRenderedSize().d_width + getImage()->getRenderedOffset().x;
+    float sizeX = img->getRenderedSize().d_width + img->getRenderedOffset().x;
 #endif
 
     return sizeX;
