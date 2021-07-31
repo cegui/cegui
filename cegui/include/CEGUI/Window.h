@@ -1655,7 +1655,7 @@ public:
     \return
         Nothing
     */
-    void activate(void);
+    void activate();
 
     /*!
     \brief
