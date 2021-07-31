@@ -121,8 +121,6 @@ $pfile "elements/MenuItem.pkg"
 $pfile "elements/ScrolledItemListBase.pkg"
 $pfile "elements/ItemListbox.pkg"
 
-$pfile "elements/GroupBox.pkg"
-
 $pfile "elements/LayoutContainer.pkg"
 $pfile "elements/SequentialLayoutContainer.pkg"
 $pfile "elements/HorizontalLayoutContainer.pkg"

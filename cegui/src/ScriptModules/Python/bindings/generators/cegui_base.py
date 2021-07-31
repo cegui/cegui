@@ -900,10 +900,6 @@ void Iterator_previous(::CEGUI::%s& t)
     # FIXME: Temporary, this should work with transformations
     gridLayoutContainer.mem_fun("mapFromIdxToGrid").exclude()
 
-    # elements/GroupBox.h
-    groupBox = CEGUI_ns.class_("GroupBox")
-    groupBox.include()
-
     # elements/HorizontalLayoutContainer.h
     horizontalLayoutContainer = CEGUI_ns.class_("HorizontalLayoutContainer")
     horizontalLayoutContainer.include()

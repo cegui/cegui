@@ -228,8 +228,6 @@
 
 #include "GridLayoutContainer.pypp.hpp"
 
-#include "GroupBox.pypp.hpp"
-
 #include "HeaderSequenceEventArgs.pypp.hpp"
 
 #include "HorizontalLayoutContainer.pypp.hpp"
@@ -1199,8 +1197,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_LayoutContainer_class();
 
     register_GridLayoutContainer_class();
-
-    register_GroupBox_class();
 
     register_HeaderSequenceEventArgs_class();
 

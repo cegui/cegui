@@ -261,7 +261,6 @@ using namespace CEGUI;
 %include "CEGUI/widgets/Combobox.h"
 %include "CEGUI/widgets/ComboDropList.h"
 %include "CEGUI/widgets/DragContainer.h"
-%include "CEGUI/widgets/GroupBox.h"
 %include "CEGUI/widgets/ItemEntry.h"
 %include "CEGUI/widgets/ListboxItem.h"
 %include "CEGUI/widgets/ListboxTextItem.h"
@@ -311,7 +310,6 @@ WINDOW_CONVERTER(FrameWindow)
 WINDOW_CONVERTER(Combobox)
 WINDOW_CONVERTER(ComboDropList)
 WINDOW_CONVERTER(DragContainer)
-WINDOW_CONVERTER(GroupBox)
 WINDOW_CONVERTER(ItemEntry)
 
 // ListboxItem is not derived from Window
