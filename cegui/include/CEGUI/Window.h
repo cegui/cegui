@@ -1164,14 +1164,11 @@ public:
 
     /*!
     \brief
-        Return whether cursor press event autorepeat is enabled for this
+        Return whether cursor down event autorepeat is enabled for this
         window.
 
-    \return
-        - true if autorepeat of cursor press events is enabled for this
-          window.
-        - false if autorepeat of cursor press events is not enabled for
-          this window.
+    \note
+        Clicks are not repeated because they require down & up.
     */
     inline bool isCursorAutoRepeatEnabled() const
     {
@@ -2086,12 +2083,11 @@ public:
 
     /*!
     \brief
-        Set whether cursor press event autorepeat is enabled for this
+        Set whether cursor down event autorepeat is enabled for this
         window.
 
-    \param setting
-        - true to enable autorepeat of cursor press events.
-        - false to disable autorepeat of cursor press events.
+    \note
+        Clicks are not repeated because they require down & up.
 
     \return
         Nothing.

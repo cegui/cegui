@@ -1460,7 +1460,8 @@ void Window::addWindowProperties()
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        CursorAutoRepeatEnabledPropertyName, "Property to get/set whether the window will receive autorepeat cursor press events. Value is either \"true\" or \"false\".",
+        CursorAutoRepeatEnabledPropertyName, "Property to get/set whether the window will receive autorepeat cursor down events."
+        "Note: clicks are not repeated because they require down & up. Value is either \"true\" or \"false\".",
         &Window::setCursorAutoRepeatEnabled, &Window::isCursorAutoRepeatEnabled, false
     );
 
@@ -1591,7 +1592,7 @@ void Window::setCursorAutoRepeatEnabled(bool setting)
     // FIXME: the 'captured' state of input could get messed up.
     // FIXME: The alternative is to always release here, but that
     // FIXME: has a load of side effects too - so for now nothing
-    // FIXME: is done.  This whole aspect of the system needs a
+    // FIXME: is done. This whole aspect of the system needs a
     // FIXME: review an reworking - though such a change was
     // FIXME: beyond the scope of the bug-fix that originated this
     // FIXME: comment block.  PDT - 30/10/06
