@@ -280,9 +280,9 @@ uint8_t ScrolledContainer::handleAreaChanges(bool moved, bool sized)
 }
 
 //----------------------------------------------------------------------------//
-bool ScrolledContainer::moveToFront_impl(bool wasClicked)
+bool ScrolledContainer::moveToFront_impl(bool byClick)
 {
-    Window::moveToFront_impl(wasClicked);
+    Window::moveToFront_impl(byClick);
 
     // Improves swipe scrolling experience in a ScrollablePane
     return false;

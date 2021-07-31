@@ -80,7 +80,7 @@ protected:
     void updatePointerEventHandled(CursorInputEventArgs& e) const;
 
     // overridden functions from Window base class
-    bool moveToFront_impl(bool wasClicked) override;
+    bool moveToFront_impl(bool byClick) override;
 
     // override the cursor event handlers
     void onCursorMove(CursorInputEventArgs& e) override;

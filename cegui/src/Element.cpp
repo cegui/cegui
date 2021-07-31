@@ -900,7 +900,7 @@ void Element::addElementProperties()
 
     CEGUI_DEFINE_PROPERTY(Element, DefaultParagraphDirection,
         "DefaultParagraphDirection", "Property to get/set the default paragraph direction. "
-        "This is only in effect if raqm is linked and activate. It sets the default order of the "
+        "This is only in effect if raqm is linked and activated. It sets the default order of the "
         "words in a paragraph, which is relevant when having sentences in a RightToLeft language that "
         "may start with a word (or to be specific: first character of a word) from a LeftToRight language. "
         "Example: If the mode is set to Automatic and the first word of a paragraph in Hebrew is a German "

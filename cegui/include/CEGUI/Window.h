@@ -506,7 +506,7 @@ public:
     \brief
         Destructor for Window base class
     */
-    virtual ~Window(void);
+    virtual ~Window() override;
 
     /*!
     \brief
@@ -529,7 +529,7 @@ public:
         - true if the Window will be destroyed when its parent is destroyed.
         - false if the Window will remain when its parent is destroyed.
     */
-    bool    isDestroyedByParent(void) const    {return d_destroyedByParent;}
+    bool isDestroyedByParent() const {return d_destroyedByParent;}
 
     /*!
     \brief
@@ -540,7 +540,7 @@ public:
         - true if this Window is always drawn on top of other normal windows.
         - false if the Window has normal z-order behaviour.
     */
-    bool isAlwaysOnTop(void) const  {return d_alwaysOnTop;}
+    bool isAlwaysOnTop() const {return d_alwaysOnTop;}
 
     /*!
     \brief
@@ -646,7 +646,7 @@ public:
         - true if the window will be clipped by its parent Window.
         - false if the windows rendering may pass outside its parents area
     */
-    bool isClippedByParent(void) const {return d_clippedByParent;}
+    bool isClippedByParent() const { return d_clippedByParent; }
 
     /*!
     \brief
@@ -655,7 +655,7 @@ public:
     \return
         unsigned int value equal to the currently assigned ID code for this Window.
     */
-    unsigned int getID(void) const {return d_ID;}
+    unsigned int getID() const { return d_ID; }
 
     using NamedElement::isChild;
     /*!
@@ -831,8 +831,8 @@ public:
         are active.  Returns NULL if this Window (and therefore all children)
         are not active.
     */
-    Window* getActiveChild(void);
-    const Window* getActiveChild(void) const;
+    Window* getActiveChild();
+    const Window* getActiveChild() const;
 
     using NamedElement::isAncestor;
     /*!
@@ -871,7 +871,7 @@ public:
     \return
         The String object that holds the current text for this Window.
     */
-    const String& getText(void) const {return d_textLogical;}
+    const String& getText() const { return d_textLogical; }
 
     /*!
     \brief
@@ -889,7 +889,7 @@ public:
         - true if the Window inherits alpha from its parent(s)
         - false if the alpha for this Window is independant from its parents.
     */
-    bool inheritsAlpha(void) const  {return d_inheritsAlpha;}
+    bool inheritsAlpha() const  {return d_inheritsAlpha;}
 
     /*!
     \brief
@@ -908,7 +908,7 @@ public:
         the currently set alpha value for this Window.  The value returned Will
         be between 0.0f and 1.0f.
     */
-    float getAlpha(void) const  {return d_alpha;}
+    float getAlpha() const { return d_alpha; }
 
     /*!
     \brief
@@ -919,7 +919,7 @@ public:
         the effective alpha that will be applied to this Window when rendering.
         The value returned Will be between 0.0f and 1.0f.
     */
-    float getEffectiveAlpha(void) const;
+    float getEffectiveAlpha() const;
 
     /*!
     \brief
@@ -1005,7 +1005,7 @@ public:
         - true if this Window has captured inputs.
         - false if some other Window, or no Window, has captured inputs.
     */
-    bool isCapturedByThis(void) const   {return getCaptureWindow() == this;}
+    bool isCapturedByThis() const { return getCaptureWindow() == this; }
 
     /*!
     \brief
@@ -1016,8 +1016,7 @@ public:
           parent of parent, etc) of this Window.
         - false if no ancestor of this window has captured input.
     */
-    bool isCapturedByAncestor(void) const
-    {return isAncestor(getCaptureWindow());}
+    bool isCapturedByAncestor() const { return isAncestor(getCaptureWindow()); }
 
     /*!
     \brief
@@ -1027,7 +1026,7 @@ public:
         - true if input is captured by a Window that is a child of this Window.
         - false if no child of this window has not captured input.
     */
-    bool isCapturedByChild(void) const  {return isChild(getCaptureWindow());}
+    bool isCapturedByChild() const  {return isChild(getCaptureWindow());}
 
     /*!
     \brief
@@ -1121,7 +1120,7 @@ public:
     \return
         pointer to the user data that is currently set for this window.
     */
-    void* getUserData(void) const   {return d_userData;}
+    void* getUserData() const { return d_userData; }
 
     /*!
     \brief
@@ -1137,7 +1136,7 @@ public:
         - false if the window will set the capture window to NULL when it loses
           input capture (this is the default behaviour).
     */
-    bool restoresOldCapture(void) const     {return d_restoreOldCapture;}
+    bool restoresOldCapture() const { return d_restoreOldCapture; }
 
     /*!
     \brief
@@ -1242,7 +1241,7 @@ public:
     \return
         Pointer to a Tooltip based object, or NULL.
     */
-    Tooltip* getTooltip(void) const;
+    Tooltip* getTooltip() const;
 
     /*!
     \brief
@@ -1252,7 +1251,7 @@ public:
         String object holding the current custom tooltip window type, or an
         empty string if no custom tooltip is set.
      */
-    String getTooltipType(void) const;
+    String getTooltipType() const;
 
     /*!
     \brief
@@ -1276,7 +1275,7 @@ public:
         String object holding the current tooltip text of this window or the 
         tooltip text this window inherited.
      */
-    const String& getTooltipTextIncludingInheritance(void) const;
+    const String& getTooltipTextIncludingInheritance() const;
 
     /*!
     \brief
@@ -1314,7 +1313,7 @@ public:
         - false if the window does not change z-order position when the left
           cursor source is activated within its area.
      */
-    bool isRiseOnPointerActivationEnabled(void) const   { return d_riseOnPointerActivation; }
+    bool isRiseOnPointerActivationEnabled() const { return d_riseOnPointerActivation; }
 
     /*!
     \brief
@@ -1357,8 +1356,7 @@ public:
     \return
         Returns true if this Window is the modal target, otherwise false.
     */
-    bool getModalState(void) const
-    {return(getGUIContext().getModalWindow() == this);}
+    bool getModalState() const { return getGUIContext().getModalWindow() == this; }
 
     /*!
     \brief
@@ -1415,7 +1413,7 @@ public:
         true if cursor pass through is enabled.
         false if cursor pass through is not enabled.
     */
-    bool isCursorPassThroughEnabled(void) const  {return d_cursorPassThroughEnabled;}
+    bool isCursorPassThroughEnabled() const { return d_cursorPassThroughEnabled; }
 
     /*!
     \brief
@@ -1424,13 +1422,13 @@ public:
         An auto window is typically a Window object created automatically by
         CEGUI - for example to form part of a multi-element 'compound' widget.
     */
-    bool isAutoWindow(void) const   {return d_autoWindow;}
+    bool isAutoWindow() const { return d_autoWindow; }
 
     /*!
     \brief
         Returns whether this window is allowed to write XML.
     */
-    bool isWritingXMLAllowed(void) const    {return d_allowWriteXML;}
+    bool isWritingXMLAllowed() const { return d_allowWriteXML; }
 
     /*!
     \brief
@@ -1613,7 +1611,7 @@ public:
     \return
         Nothing
     */
-    void show(void)     {setVisible(true);}
+    void show() { setVisible(true); }
 
     /*!
     \brief
@@ -1625,7 +1623,7 @@ public:
     \return
         Nothing
     */
-    void hide(void)     {setVisible(false);}
+    void hide() { setVisible(false); }
 
     /*!
     \brief
@@ -1655,7 +1653,7 @@ public:
     \return
         Nothing
     */
-    void activate();
+    void activate() { activate_impl(false); }
 
     /*!
     \brief
@@ -1933,7 +1931,7 @@ public:
         - false if input could not be captured to this window
           (maybe because the window is not active).
     */
-    bool captureInput(void);
+    bool captureInput();
 
     /*!
     \brief
@@ -1943,7 +1941,7 @@ public:
     \return
         Nothing
     */
-    void releaseInput(void);
+    void releaseInput();
 
     /*!
     \brief
@@ -2171,7 +2169,7 @@ public:
         You never have to call this method yourself, use WindowManager to
         destroy your Window objects (which will call this for you).
     */
-    virtual void destroy(void);
+    virtual void destroy();
 
     /*!
     \brief
@@ -3566,7 +3564,7 @@ protected:
     \brief
         Cleanup child windows
     */
-    virtual void cleanupChildren(void);
+    virtual void cleanupChildren();
 
     /*!
     \copydoc Element::addChild_impl
@@ -3582,13 +3580,19 @@ protected:
     \brief
         Notify 'this' and all siblings of a ZOrder change event
     */
-    virtual void onZChange_impl(void);
+    virtual void onZChange_impl();
 
     /*!
     \brief
         Add standard CEGUI::Window properties.
     */
-    void    addWindowProperties(void);
+    void    addWindowProperties();
+
+    /*!
+    \brief
+        A helper function for internal activation logic.
+    */
+    bool activate_impl(bool byClick);
 
     /*!
     \brief
@@ -3598,7 +3602,7 @@ protected:
         Should return true if some action was taken, or false if there was
         nothing to be done.
     */
-    virtual bool moveToFront_impl(bool wasClicked);
+    virtual bool moveToFront_impl(bool byClick);
 
     /*!
     \brief

@@ -315,7 +315,7 @@ Window::Window(const String& type, const String& name):
 }
 
 //----------------------------------------------------------------------------//
-Window::~Window(void)
+Window::~Window()
 {
     // most cleanup actually happened earlier in Window::destroy.
     destroyGeometryBuffers();
@@ -404,14 +404,14 @@ Window* Window::getChildRecursive(unsigned int ID) const
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::getActiveChild(void)
+Window* Window::getActiveChild()
 {
     return const_cast<Window*>(
         static_cast<const Window*>(this)->getActiveChild());
 }
 
 //----------------------------------------------------------------------------//
-const Window* Window::getActiveChild(void) const
+const Window* Window::getActiveChild() const
 {
     // are children can't be active if we are not
     if (!isActive())
@@ -460,7 +460,7 @@ const Font* Window::getActualFont() const
 }
 
 //----------------------------------------------------------------------------//
-float Window::getEffectiveAlpha(void) const
+float Window::getEffectiveAlpha() const
 {
     if (!d_parent || !inheritsAlpha())
         return d_alpha;
@@ -684,26 +684,47 @@ void Window::setActive(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::activate(void)
+bool Window::activate_impl(bool byClick)
 {
     // exit if the window is not visible, since a hidden window may not be the
     // active window.
     if (!isEffectiveVisible())
-        return;
+        return false;
 
     // force complete release of input capture.
     // NB: This is not done via releaseCapture() because that has
     // different behaviour depending on the restoreOldCapture setting.
-    if (getCaptureWindow() && getCaptureWindow() != this)
+    Window* const tmpCapture = getCaptureWindow();
+    if (tmpCapture && tmpCapture != this)
     {
-        Window* const tmpCapture = getCaptureWindow();
         getGUIContext().setInputCaptureWindow(nullptr);
 
         WindowEventArgs args(nullptr);
         tmpCapture->onCaptureLost(args);
     }
 
-    moveToFront();
+    // get immediate child of parent that is currently active (if any)
+    Window* const activeWnd = getActiveSibling();
+    if (activeWnd == this)
+        return false;
+
+    const bool handled = moveToFront_impl(byClick);
+
+    // notify ourselves that we have become active
+    ActivationEventArgs args(this);
+    args.otherWindow = activeWnd;
+    onActivated(args);
+
+    // notify any previously active window that it is no longer active
+    if (activeWnd)
+    {
+        args.window = activeWnd;
+        args.otherWindow = this;
+        args.handled = 0;
+        activeWnd->onDeactivated(args);
+    }
+
+    return handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -807,54 +828,18 @@ void Window::moveToFront()
 }
 
 //----------------------------------------------------------------------------//
-bool Window::moveToFront_impl(bool wasClicked)
+bool Window::moveToFront_impl(bool byClick)
 {
-    bool took_action = false;
-
-    // if the window has no parent then we can have no siblings
+    // no siblings - no Z-ordering
     if (!d_parent)
-    {
-        // perform initial activation if required.
-        if (!isActive())
-        {
-            took_action = true;
-            ActivationEventArgs args(this);
-            args.otherWindow = nullptr;
-            onActivated(args);
-        }
-
-        return took_action;
-    }
+        return false;
 
     // bring parent window to front of it's siblings
-    took_action = getParent()->moveToFront_impl(wasClicked);
-
-    // get immediate child of parent that is currently active (if any)
-    Window* const activeWnd = getActiveSibling();
-
-    // if a change in active window has occurred
-    if (activeWnd != this)
-    {
-        took_action = true;
-
-        // notify ourselves that we have become active
-        ActivationEventArgs args(this);
-        args.otherWindow = activeWnd;
-        onActivated(args);
-
-        // notify any previously active window that it is no longer active
-        if (activeWnd)
-        {
-            args.window = activeWnd;
-            args.otherWindow = this;
-            args.handled = 0;
-            activeWnd->onDeactivated(args);
-        }
-    }
+    bool took_action = getParent()->moveToFront_impl(byClick);
 
     // bring us to the front of our siblings
     if (d_zOrderingEnabled &&
-        (!wasClicked || d_riseOnPointerActivation) &&
+        (!byClick || d_riseOnPointerActivation) &&
         !isTopOfZOrder())
     {
         took_action = true;
@@ -875,13 +860,7 @@ bool Window::moveToFront_impl(bool wasClicked)
 //----------------------------------------------------------------------------//
 void Window::moveToBack()
 {
-    // if the window is active, de-activate it.
-    if (isActive())
-    {
-        ActivationEventArgs args(this);
-        args.otherWindow = nullptr;
-        onDeactivated(args);
-    }
+    deactivate();
 
     // we only proceed if we have a parent (otherwise we can have no siblings)
     if (d_parent)
@@ -898,6 +877,7 @@ void Window::moveToBack()
             onZChange_impl();
         }
 
+        // FIXME: what for?
         getParent()->moveToBack();
     }
 }
@@ -910,15 +890,12 @@ void Window::moveInFront(const Window* const window)
         !d_zOrderingEnabled)
         return;
 
-    // find our position in the parent child draw list
+    // erase us from our current position
     const auto p = std::find(getParent()->d_drawList.begin(),
         getParent()->d_drawList.end(),
         this);
-    // sanity checK that we were attached to our parent.
-    assert(p != getParent()->d_drawList.end());
-
-    // erase us from our current position
-    getParent()->d_drawList.erase(p);
+    if (p != getParent()->d_drawList.end())
+        getParent()->d_drawList.erase(p);
 
     // find window we're to be moved in front of in parent's draw list
     auto i = std::find(getParent()->d_drawList.begin(),
@@ -1034,7 +1011,7 @@ void Window::setAlwaysOnTop(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::captureInput(void)
+bool Window::captureInput()
 {
     // we can only capture if we are the active window (LEAVE THIS ALONE!)
     if (!isActive())
@@ -1060,7 +1037,7 @@ bool Window::captureInput(void)
 }
 
 //----------------------------------------------------------------------------//
-void Window::releaseInput(void)
+void Window::releaseInput()
 {
     // if we are not the window that has capture, do nothing
     if (!isCapturedByThis())
@@ -1253,7 +1230,7 @@ void Window::queueGeometry(const RenderingContext& ctx)
 }
 
 //----------------------------------------------------------------------------//
-void Window::cleanupChildren(void)
+void Window::cleanupChildren()
 {
     while (getChildCount() != 0)
     {
@@ -1319,7 +1296,7 @@ void Window::removeChild_impl(Element* element)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onZChange_impl(void)
+void Window::onZChange_impl()
 {
     if (!d_parent)
     {
@@ -1408,7 +1385,7 @@ void Window::generateAutoRepeatEvent(CursorInputSource source)
 }
 
 //----------------------------------------------------------------------------//
-void Window::addWindowProperties(void)
+void Window::addWindowProperties()
 {
     const String propertyOrigin("Window");
 
@@ -1767,7 +1744,7 @@ void Window::notifyDragDropItemDropped(DragContainer* item)
 }
 
 //----------------------------------------------------------------------------//
-void Window::destroy(void)
+void Window::destroy()
 {
     // because we know that people do not read the API ref properly,
     // here is some protection to ensure that WindowManager does the
@@ -1825,7 +1802,7 @@ void Window::destroy(void)
 }
 
 //----------------------------------------------------------------------------//
-Tooltip* Window::getTooltip(void) const
+Tooltip* Window::getTooltip() const
 {
     if (!isUsingDefaultTooltip())
         return d_customTip;
@@ -1877,7 +1854,7 @@ void Window::setTooltipType(const String& tooltipType)
 }
 
 //----------------------------------------------------------------------------//
-String Window::getTooltipType(void) const
+String Window::getTooltipType() const
 {
     return isUsingDefaultTooltip() ? String("") : d_customTip->getType();
 }
@@ -1894,7 +1871,7 @@ void Window::setTooltipText(const String& tip)
 }
 
 //----------------------------------------------------------------------------//
-const String& Window::getTooltipTextIncludingInheritance(void) const
+const String& Window::getTooltipTextIncludingInheritance() const
 {
     if (d_inheritsTipText && d_parent && d_tooltipText.empty())
         return getParent()->getTooltipText();
@@ -2187,8 +2164,7 @@ void Window::removeWindowFromDrawList(const Window& wnd)
 //----------------------------------------------------------------------------//
 Window* Window::getActiveSibling()
 {
-    // initialise with this if we are active, else 0
-    Window* activeWnd = isActive() ? this : 0;
+    Window* activeWnd = isActive() ? this : nullptr;
 
     // if active window not already known, and we have a parent window
     if (!activeWnd && d_parent)
@@ -2383,7 +2359,8 @@ void Window::onCaptureLost(WindowEventArgs& e)
     d_repeatPointerSource = CursorInputSource::NotSpecified;
 
     // handle restore of previous capture window as required.
-    if (d_restoreOldCapture && (d_oldCapture != nullptr)) {
+    if (d_restoreOldCapture && d_oldCapture)
+    {
         d_oldCapture->onCaptureGained(e);
         d_oldCapture = nullptr;
     }
@@ -2442,6 +2419,18 @@ void Window::onActivated(ActivationEventArgs& e)
 {
     d_active = true;
     invalidate();
+
+    // activate all ancestors
+    auto ancestor = getParent();
+    while (ancestor)
+    {
+        ActivationEventArgs parent_e(ancestor);
+        parent_e.otherWindow = e.otherWindow;
+        ancestor->onActivated(parent_e);
+
+        ancestor = ancestor->getParent();
+    }
+
     fireEvent(EventActivated, e, EventNamespace);
 }
 
@@ -2449,17 +2438,15 @@ void Window::onActivated(ActivationEventArgs& e)
 void Window::onDeactivated(ActivationEventArgs& e)
 {
     // first de-activate all children
-    const size_t child_count = getChildCount();
-    for (size_t i = 0; i < child_count; ++i)
+    for (Element* child : d_children)
     {
-        if (getChildAtIndex(i)->isActive())
+        auto childWnd = static_cast<Window*>(child);
+        if (childWnd->isActive())
         {
-            // make sure the child gets itself as the .window member
-            ActivationEventArgs child_e(getChildAtIndex(i));
+            ActivationEventArgs child_e(childWnd);
             child_e.otherWindow = e.otherWindow;
-            getChildAtIndex(i)->onDeactivated(child_e);
+            childWnd->onDeactivated(child_e);
         }
-
     }
 
     d_active = false;
@@ -2585,11 +2572,10 @@ void Window::onScroll(CursorInputEventArgs& e)
 void Window::onCursorPressHold(CursorInputEventArgs& e)
 {
     // perform tooltip control
-    Tooltip* const tip = getTooltip();
-    if (tip)
+    if (auto tip = getTooltip())
         tip->setTargetWindow(nullptr);
 
-    if ((e.source == CursorInputSource::Left) && moveToFront_impl(true))
+    if ((e.source == CursorInputSource::Left) && activate_impl(true))
         ++e.handled;
 
     // if auto repeat is enabled and we are not currently tracking
@@ -2603,7 +2589,7 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
         if ((d_repeatPointerSource != e.source) && isCapturedByThis())
         {
             d_repeatPointerSource = e.source;
-            d_repeatElapsed = 0;
+            d_repeatElapsed = 0.f;
             d_repeating = false;
         }
     }

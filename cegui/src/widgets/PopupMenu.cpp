@@ -121,7 +121,7 @@ void PopupMenu::openPopupMenu(bool notify)
 	}
 
 	show();
-	moveToFront();
+	activate();
 }
 
 

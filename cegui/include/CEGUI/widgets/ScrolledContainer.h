@@ -101,7 +101,7 @@ protected:
     void onChildAdded(ElementEventArgs& e) override;
     void onChildRemoved(ElementEventArgs& e) override;
     void cleanupChildren(void) override;
-    bool moveToFront_impl(bool wasClicked) override;
+    bool moveToFront_impl(bool byClick) override;
     uint8_t handleAreaChanges(bool moved, bool sized) override;
 
     //! type definition for collection used to track event connections.

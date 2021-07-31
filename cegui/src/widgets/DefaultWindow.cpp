@@ -103,14 +103,10 @@ void DefaultWindow::updatePointerEventHandled(CursorInputEventArgs& e) const
 }
 
 //----------------------------------------------------------------------------//
-bool DefaultWindow::moveToFront_impl(bool wasClicked)
+bool DefaultWindow::moveToFront_impl(bool byClick)
 {
-    const bool took_action = Window::moveToFront_impl(wasClicked);
-
-    if (!d_parent && d_cursorPassThroughEnabled)
-        return false;
-    else
-        return took_action;
+    const bool took_action = Window::moveToFront_impl(byClick);
+    return took_action && (d_parent || !d_cursorPassThroughEnabled);
 }
 
 //----------------------------------------------------------------------------//
