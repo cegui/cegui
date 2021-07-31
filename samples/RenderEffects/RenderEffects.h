@@ -36,9 +36,9 @@ public:
     WobblyWindowEffect(CEGUI::Window* window);
 
     // implement required functions from RenderEffect interface.
-    int getPassCount() const override;
-    void performPreRenderFunctions(const int pass) override;
-    void performPostRenderFunctions() override;
+    int getPassCount() const override { return 1; }
+    void performPreRenderFunctions(const int pass) override {}
+    void performPostRenderFunctions() override {}
     bool realiseGeometry(CEGUI::RenderingWindow& window, CEGUI::GeometryBuffer& geometry) override;
     bool update(const float elapsed, CEGUI::RenderingWindow& window) override;
 
@@ -81,9 +81,9 @@ public:
     OldWobblyWindowEffect(CEGUI::Window* window);
 
     // implement required functions from RenderEffect interface.
-    int getPassCount() const override;
-    void performPreRenderFunctions(const int pass) override;
-    void performPostRenderFunctions() override;
+    int getPassCount() const override { return 1; }
+    void performPreRenderFunctions(const int pass) override {}
+    void performPostRenderFunctions() override {}
     bool realiseGeometry(CEGUI::RenderingWindow& window, CEGUI::GeometryBuffer& geometry) override;
     bool update(const float elapsed, CEGUI::RenderingWindow& window) override;
 
@@ -110,9 +110,9 @@ public:
     ElasticWindowEffect(CEGUI::Window* window);
 
     // implement required functions from RenderEffect interface.
-    int getPassCount() const override;
-    void performPreRenderFunctions(const int pass) override;
-    void performPostRenderFunctions() override;
+    int getPassCount() const override { return 1; }
+    void performPreRenderFunctions(const int pass) override {}
+    void performPostRenderFunctions() override {}
     bool realiseGeometry(CEGUI::RenderingWindow& window, CEGUI::GeometryBuffer& geometry) override;
     bool update(const float elapsed, CEGUI::RenderingWindow& window) override;
 

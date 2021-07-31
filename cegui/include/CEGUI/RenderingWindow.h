@@ -279,6 +279,8 @@ public:
     */
     void unprojectPoint(const glm::vec2& p_in, glm::vec2& p_out);
 
+    Rectf getTextureRect() const;
+
     // overrides from base
     void draw(std::uint32_t drawModeMask = DrawModeMaskAll) override;
     void invalidate() override;

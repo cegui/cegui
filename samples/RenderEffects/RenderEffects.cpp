@@ -25,11 +25,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "RenderEffects.h"
-#include "CEGUI/CEGUI.h"
-
-#include "CEGUI/RenderingWindow.h"
-
-#include <stddef.h>
 
 //----------------------------------------------------------------------------//
 WobblyWindowEffect::WobblyWindowEffect(CEGUI::Window* window) :
@@ -38,24 +33,6 @@ WobblyWindowEffect::WobblyWindowEffect(CEGUI::Window* window) :
 {
     if (!d_window)
         throw CEGUI::InvalidRequestException("This effect is only applicable to FrameWindows!");
-}
-
-//----------------------------------------------------------------------------//
-int WobblyWindowEffect::getPassCount() const
-{
-    return 1;
-}
-
-//----------------------------------------------------------------------------//
-void WobblyWindowEffect::performPreRenderFunctions(const int /*pass*/)
-{
-    // nothing we need here
-}
-
-//----------------------------------------------------------------------------//
-void WobblyWindowEffect::performPostRenderFunctions()
-{
-    // nothing we need here
 }
 
 void WobblyWindowEffect::syncPivots(CEGUI::RenderingWindow& window)
@@ -242,24 +219,6 @@ OldWobblyWindowEffect::OldWobblyWindowEffect(CEGUI::Window* window) :
 }
 
 //----------------------------------------------------------------------------//
-int OldWobblyWindowEffect::getPassCount() const
-{
-    return 1;
-}
-
-//----------------------------------------------------------------------------//
-void OldWobblyWindowEffect::performPreRenderFunctions(const int /*pass*/)
-{
-    // nothing we need here
-}
-
-//----------------------------------------------------------------------------//
-void OldWobblyWindowEffect::performPostRenderFunctions()
-{
-    // nothing we need here
-}
-
-//----------------------------------------------------------------------------//
 bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
                                CEGUI::GeometryBuffer& geometry)
 {
@@ -442,24 +401,6 @@ ElasticWindowEffect::ElasticWindowEffect(CEGUI::Window* window) :
 {}
 
 //----------------------------------------------------------------------------//
-int ElasticWindowEffect::getPassCount() const
-{
-    return 1;
-}
-
-//----------------------------------------------------------------------------//
-void ElasticWindowEffect::performPreRenderFunctions(const int /*pass*/)
-{
-    // nothing we need here
-}
-
-//----------------------------------------------------------------------------//
-void ElasticWindowEffect::performPostRenderFunctions()
-{
-    // nothing we need here
-}
-
-//----------------------------------------------------------------------------//
 bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
                                CEGUI::GeometryBuffer& geometry)
 {
@@ -469,13 +410,10 @@ bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
 
     static const glm::vec4 colour(1.0f, 1.0f, 1.0f, 1.0f);
 
-    bool isTexCoordSysFlipped = textarget.getOwner().isTexCoordSystemFlipped();
-
-    float uvTop = isTexCoordSysFlipped ? 1.0f : 0.0f;
-    float uvBot = isTexCoordSysFlipped ? 0.0f : 1.0f;
+    const Rectf tex_rect = window.getTextureRect();
 
     const glm::vec3 windowPosition = glm::vec3(window.getPosition(), 0);
-    const glm::vec2& currentTopLeft = d_currentPosition ;
+    const glm::vec2& currentTopLeft = d_currentPosition;
     const glm::vec2 currentBottomRight = d_currentPosition +
         glm::vec2(window.getSize().d_width, window.getSize().d_height);
 
@@ -485,34 +423,34 @@ bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
         // vertex 0 - top left
         d_vertices[0].d_position = glm::vec3(currentTopLeft, 0) - windowPosition;
         d_vertices[0].d_colour = colour;
-        d_vertices[0].d_texCoords = glm::vec2(0.0f, uvTop);
+        d_vertices[0].d_texCoords = glm::vec2(tex_rect.d_min.x, tex_rect.d_min.y);
 
         // vertex 1 - bottom left
         d_vertices[1].d_position = glm::vec3(currentTopLeft.x, currentBottomRight.y, 0) - windowPosition;
         d_vertices[1].d_colour = colour;
-        d_vertices[1].d_texCoords = glm::vec2(0.0f, uvBot);
+        d_vertices[1].d_texCoords = glm::vec2(tex_rect.d_min.x, tex_rect.d_max.y);
 
         // vertex 2 - bottom right
         d_vertices[2].d_position = glm::vec3(currentBottomRight, 0) - windowPosition;
         d_vertices[2].d_colour = colour;
-        d_vertices[2].d_texCoords = glm::vec2(1.0f, uvBot);
+        d_vertices[2].d_texCoords = glm::vec2(tex_rect.d_max.x, tex_rect.d_max.y);
 
         // second triangle
 
         // vertex 3 - bottom right
         d_vertices[3].d_position = glm::vec3(currentBottomRight, 0) - windowPosition;
         d_vertices[3].d_colour = colour;
-        d_vertices[3].d_texCoords = glm::vec2(1.0f, uvBot);
+        d_vertices[3].d_texCoords = glm::vec2(tex_rect.d_max.x, tex_rect.d_max.y);
 
         // vertex 4 - top right
         d_vertices[4].d_position = glm::vec3(currentBottomRight.x, currentTopLeft.y, 0) - windowPosition;
         d_vertices[4].d_colour = colour;
-        d_vertices[4].d_texCoords = glm::vec2(1.0f, uvTop);
+        d_vertices[4].d_texCoords = glm::vec2(tex_rect.d_max.x, tex_rect.d_min.y);
 
         // vertex 5 - top left
         d_vertices[5].d_position = glm::vec3(currentTopLeft, 0) - windowPosition;
         d_vertices[5].d_colour = colour;
-        d_vertices[5].d_texCoords = glm::vec2(0.0f, uvTop);
+        d_vertices[5].d_texCoords = glm::vec2(tex_rect.d_min.x, tex_rect.d_min.y);
     }
 
     geometry.setTexture("texture0", &tex);
@@ -690,20 +628,20 @@ bool RenderEffectsSample::initialise(CEGUI::GUIContext* guiContext)
     sheet->addChild(aliasingFrameWnd);
 
     // We will add an image to it using a StaticImage window
-    Window* aliasingWnd = WindowManager::getSingleton().createWindow("Vanilla/StaticImage", "AliasingTestImage");
-    aliasingFrameWnd->addChild(aliasingWnd);
+    Window* aliasingStaticImage = WindowManager::getSingleton().createWindow("Vanilla/StaticImage", "AliasingTestImage");
+    aliasingFrameWnd->addChild(aliasingStaticImage);
     aliasingFrameWnd->setPosition(CEGUI::UVector2(cegui_reldim(0.05f), cegui_reldim(0.15f)));
     aliasingFrameWnd->setSize(CEGUI::USize(cegui_reldim(0.2f), cegui_reldim(0.28f)));
     aliasingFrameWnd->setSizingEnabled(true);
     aliasingFrameWnd->setCloseButtonEnabled(false);
     aliasingFrameWnd->setTitleBarEnabled(true);
-    aliasingFrameWnd->setText("Elastic Window Effect");
+    aliasingFrameWnd->setText("Elastic Window With Aliasing");
 
     // Image window setup
-    aliasingWnd->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
-    aliasingWnd->setProperty("FrameEnabled", "false");
-    aliasingWnd->setProperty("BackgroundEnabled", "false");
-    aliasingWnd->setProperty("Image", "AliasingTestImage");
+    aliasingStaticImage->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
+    aliasingStaticImage->setProperty("FrameEnabled", "false");
+    aliasingStaticImage->setProperty("BackgroundEnabled", "false");
+    aliasingStaticImage->setProperty("Image", "AliasingTestImage");
 
     // success!
     return true;

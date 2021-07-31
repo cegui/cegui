@@ -107,11 +107,22 @@ void Direct3D11TextureTarget::declareRenderSize(const Sizef& sz)
 //----------------------------------------------------------------------------//
 void Direct3D11TextureTarget::initialiseRenderTexture()
 {
+    // Some drivers (hint: Intel) segfault when CreateTexture2D is called with
+    // any of the dimensions being 0. The downside of this workaround is very
+    // small. We waste a tiny bit of VRAM on cards with sane drivers and
+    // prevent insane drivers from crashing CEGUI.
+    Sizef sz(d_area.getSize());
+    if (sz.d_width < 1.0f || sz.d_height < 1.0f)
+    {
+        sz.d_width = 1.0f;
+        sz.d_height = 1.0f;
+    }
+
     // Create the render target texture
     D3D11_TEXTURE2D_DESC tex_desc;
     ZeroMemory(&tex_desc, sizeof(tex_desc));
-    tex_desc.Width = static_cast<UINT>(d_area.getSize().d_width);
-    tex_desc.Height = static_cast<UINT>(d_area.getSize().d_height);
+    tex_desc.Width = static_cast<UINT>(sz.d_width);
+    tex_desc.Height = static_cast<UINT>(sz.d_height);
     tex_desc.MipLevels = 1;
     tex_desc.ArraySize = 1;
     tex_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -121,14 +132,17 @@ void Direct3D11TextureTarget::initialiseRenderTexture()
     d_device.CreateTexture2D(&tex_desc, 0, &d_texture);
 
     // create render target view, so we can render to the thing
-    D3D11_RENDER_TARGET_VIEW_DESC rtv_desc;
-    rtv_desc.Format = tex_desc.Format;
-    rtv_desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-    rtv_desc.Texture2D.MipSlice = 0;
-    d_device.CreateRenderTargetView(d_texture, &rtv_desc, &d_renderTargetView);
+    if (d_texture)
+    {
+        D3D11_RENDER_TARGET_VIEW_DESC rtv_desc;
+        rtv_desc.Format = tex_desc.Format;
+        rtv_desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+        rtv_desc.Texture2D.MipSlice = 0;
+        d_device.CreateRenderTargetView(d_texture, &rtv_desc, &d_renderTargetView);
+    }
 
     d_CEGUITexture->setDirect3DTexture(d_texture);
-    d_CEGUITexture->setOriginalDataSize(d_area.getSize());
+    d_CEGUITexture->setOriginalDataSize(sz);
 }
 
 //----------------------------------------------------------------------------//

@@ -255,14 +255,7 @@ void RenderingWindow::realiseGeometry_impl()
 {
     Texture& tex = d_textarget.getTexture();
     
-    bool isTexCoordSysFlipped = d_textarget.getOwner().isTexCoordSystemFlipped();
-
-    const float tu = d_size.d_width * tex.getTexelScaling().x;
-    const float tv = d_size.d_height * tex.getTexelScaling().y;
-    const Rectf tex_rect(isTexCoordSysFlipped ?
-                          Rectf(0, 1, tu, 1 - tv) :
-                          Rectf(0, 0, tu, tv));
-
+    const Rectf tex_rect = getTextureRect();
     const Rectf area(0, 0, d_size.d_width, d_size.d_height);
     const glm::vec4 colour(1.0, 1.0, 1.0, 1.0);
     TexturedColouredVertex vbuffer[6];
@@ -319,6 +312,17 @@ void RenderingWindow::unprojectPoint(const glm::vec2& p_in, glm::vec2& p_out)
 
     d_owner->getRenderTarget().unprojectPoint(d_geometryBuffer, in, p_out);
     p_out += d_position;
+}
+
+//----------------------------------------------------------------------------//
+Rectf RenderingWindow::getTextureRect() const
+{
+    const bool isTexCoordSysFlipped = d_textarget.getOwner().isTexCoordSystemFlipped();
+    const float tu = d_size.d_width * d_textarget.getTexture().getTexelScaling().x;
+    const float tv = d_size.d_height * d_textarget.getTexture().getTexelScaling().y;
+    return isTexCoordSysFlipped ?
+        Rectf(0, 1, tu, 1 - tv) :
+        Rectf(0, 0, tu, tv);
 }
 
 //----------------------------------------------------------------------------//
