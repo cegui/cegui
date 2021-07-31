@@ -62,18 +62,13 @@ Affector::~Affector(void)
 size_t Affector::getIndexInParent() const
 {
     const Animation* parent = getParent();
-    assert(getParent() && "No parent, no index in parent!");
+    if (!parent)
+        throw UnknownObjectException(
+            "Affector hasn't a parent, therefore its index is unknown!");
 
-    size_t i = 0;
-    while (i < parent->getNumAffectors())
-    {
+    for (size_t i = 0; i < parent->getNumAffectors(); ++i)
         if (parent->getAffectorAtIndex(i) == this)
-        {
             return i;
-        }
-
-        ++i;
-    }
 
     throw UnknownObjectException(
         "Affector wasn't found in parent, therefore its index is unknown!");
@@ -386,7 +381,8 @@ void Affector::apply(AnimationInstance* instance)
     // todo: more application methods?
     else
     {
-        assert(0);
+        throw InvalidRequestException(
+            "Invalid animation application method.");
     }
 }
 
@@ -408,7 +404,8 @@ void Affector::writeXMLToStream(XMLSerializer& xml_stream) const
         break;
 
     default:
-        assert(0 && "How did we get here?");
+        throw InvalidRequestException(
+            "Invalid animation application method.");
         break;
     }
 

@@ -52,7 +52,7 @@ namespace CEGUI
 \todo
     moveKeyFrame, this will be vital for any animation editing tools
 */
-class CEGUIEXPORT Affector
+class CEGUIEXPORT Affector final
 {
 public:
     //! enumerates the possible methods of application

@@ -64,14 +64,14 @@ public:
     // that it is worth it
 
     /** this is used when Affector is set to apply values in absolute mode
-     * (application method == ApplicationMethod::ABSOLUTE)
+     * (application method == ApplicationMethod::ApplyAbsolute)
      */
     virtual String interpolateAbsolute(const String& value1,
                                        const String& value2,
                                        float position) = 0;
 
     /** this is used when Affector is set to apply values in relative mode
-     * (application method == ApplicationMethod::RELATIVE)
+     * (application method == ApplicationMethod::ApplyRelative)
      */
     virtual String interpolateRelative(const String& base,
                                        const String& value1,
@@ -79,7 +79,7 @@ public:
                                        float position) = 0;
 
     /** this is used when Affector is set to apply values in relative multiply
-     * mode (application method == ApplicationMethod::RELATIVE_MULTIPLY)
+     * mode (application method == ApplicationMethod::ApplyRelativeMultiply)
      */
     virtual String interpolateRelativeMultiply(const String& base,
             const String& value1,
