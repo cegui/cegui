@@ -59,11 +59,17 @@ Direct3D11Shader::Direct3D11Shader(Direct3D11Renderer& owner,
 //----------------------------------------------------------------------------//
 Direct3D11Shader::~Direct3D11Shader()
 {
-    if(d_vertexShaderBuffer)
+    if (d_vertShader)
+        d_vertShader->Release();
+
+    if (d_vertexShaderBuffer)
         d_vertexShaderBuffer->Release();
 
     if(d_vertexShaderReflection)
         d_vertexShaderReflection->Release();
+
+    if (d_pixelShader)
+        d_pixelShader->Release();
 
     if(d_pixelShaderBuffer)
         d_pixelShaderBuffer->Release(); 

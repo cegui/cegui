@@ -65,12 +65,25 @@ void Direct3D11GeometryBuffer::draw(std::uint32_t drawModeMask) const
 {
     CEGUI_UNUSED(drawModeMask);
 
-    if(d_vertexData.empty())
+    if (d_vertexData.empty())
         return;
 
     // setup clip region
-    if(d_clippingActive)
-        setScissorRects();
+    if (d_clippingActive)
+    {
+        // Skip completely clipped geometry
+        const LONG w = static_cast<LONG>(d_preparedClippingRegion.getWidth());
+        const LONG h = static_cast<LONG>(d_preparedClippingRegion.getHeight());
+        if (!w || !h)
+            return;
+
+        D3D11_RECT clip;
+        clip.left = static_cast<LONG>(d_preparedClippingRegion.left());
+        clip.top = static_cast<LONG>(d_preparedClippingRegion.top());
+        clip.right = static_cast<LONG>(d_preparedClippingRegion.right());
+        clip.bottom = static_cast<LONG>(d_preparedClippingRegion.bottom());
+        d_deviceContext->RSSetScissorRects(1, &clip);
+    }
 
     // Update the model view projection matrix
     updateMatrix();
@@ -270,17 +283,6 @@ void Direct3D11GeometryBuffer::finaliseVertexAttributes()
         throw RendererException(
             "Failed to create D3D InputLayout.");
     }
-}
-
-//----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setScissorRects() const
-{
-    D3D11_RECT clip;
-    clip.left   = static_cast<LONG>(d_preparedClippingRegion.left());
-    clip.top    = static_cast<LONG>(d_preparedClippingRegion.top());
-    clip.right  = static_cast<LONG>(d_preparedClippingRegion.right());
-    clip.bottom = static_cast<LONG>(d_preparedClippingRegion.bottom());
-    d_deviceContext->RSSetScissorRects(1, &clip);
 }
 
 //----------------------------------------------------------------------------//

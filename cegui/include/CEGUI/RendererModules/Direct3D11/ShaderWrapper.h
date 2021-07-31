@@ -60,7 +60,7 @@ struct Direct3D11ParamDesc
 class D3D11_GUIRENDERER_API Direct3D11ShaderWrapper : public ShaderWrapper
 {
 public:
-    Direct3D11ShaderWrapper(Direct3D11Shader& shader, Direct3D11Renderer* renderer);
+    Direct3D11ShaderWrapper(Direct3D11ShaderPtr&& shader, Direct3D11Renderer* renderer);
 
     ~Direct3D11ShaderWrapper();
 
@@ -95,7 +95,7 @@ protected:
     ID3D11Buffer* d_perObjectUniformVarBufferPixel;
 
     //! The underlying HLSL shader program, consisting of a vertex and fragment shader, that this class wraps the access to
-    Direct3D11Shader& d_shader;
+    Direct3D11ShaderPtr d_shader;
 
     //! A map of parameter names and the related constant variables
     std::map<std::string, Direct3D11ParamDesc> d_uniformVariables;

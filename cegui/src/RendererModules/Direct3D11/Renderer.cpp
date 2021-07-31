@@ -56,13 +56,13 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,
     , d_deviceContext(deviceContext)
     , d_blendStateNormal(nullptr)
     , d_blendStatePreMultiplied(nullptr)
-    , d_currentBlendState(0)
+    , d_currentBlendState(nullptr)
     , d_rasterizerStateScissorEnabled(nullptr)
     , d_rasterizerStateScissorDisabled(nullptr)
-    , d_currentRasterizerState(0)
+    , d_currentRasterizerState(nullptr)
     , d_depthStencilStateDefault(nullptr)
-    , d_defaultTarget(0)
-    , d_samplerState(0)
+    , d_defaultTarget(nullptr)
+    , d_samplerState(nullptr)
 {
  
 	if(!device || !deviceContext) 
@@ -90,13 +90,23 @@ Direct3D11Renderer::~Direct3D11Renderer()
     destroyAllTextures();
     destroyAllGeometryBuffers();
 
-    d_blendStateNormal->Release();
-    d_blendStatePreMultiplied->Release();
-
     delete d_defaultTarget;
 
     delete d_shaderWrapperTextured;
     delete d_shaderWrapperSolid;
+
+    if (d_blendStateNormal)
+       d_blendStateNormal->Release();
+    if (d_blendStatePreMultiplied)
+        d_blendStatePreMultiplied->Release();
+    if (d_rasterizerStateScissorEnabled)
+        d_rasterizerStateScissorEnabled->Release();
+    if (d_rasterizerStateScissorDisabled)
+        d_rasterizerStateScissorDisabled->Release();
+    if (d_depthStencilStateDefault)
+        d_depthStencilStateDefault->Release();
+    if (d_samplerState)
+        d_samplerState->Release();
 }
 
 //----------------------------------------------------------------------------//
@@ -439,8 +449,8 @@ RefCounted<RenderMaterial> Direct3D11Renderer::createRenderMaterial(const Defaul
 //----------------------------------------------------------------------------//
 void Direct3D11Renderer::initialiseStandardTexturedShaderWrapper()
 {
-    Direct3D11Shader* shader_standard_textured = new Direct3D11Shader(*this, VertexShaderTextured, PixelShaderTextured);
-    d_shaderWrapperTextured = new Direct3D11ShaderWrapper(*shader_standard_textured, this);
+    Direct3D11ShaderPtr shader_standard_textured(new Direct3D11Shader(*this, VertexShaderTextured, PixelShaderTextured));
+    d_shaderWrapperTextured = new Direct3D11ShaderWrapper(std::move(shader_standard_textured), this);
 
     d_shaderWrapperTextured->addUniformVariable("texture0", ShaderType::PIXEL, ShaderParamType::Texture);
 
@@ -452,8 +462,8 @@ void Direct3D11Renderer::initialiseStandardTexturedShaderWrapper()
 //----------------------------------------------------------------------------//
 void Direct3D11Renderer::initialiseStandardColouredShaderWrapper()
 {
-    Direct3D11Shader* shader_standard_solid = new Direct3D11Shader(*this, VertexShaderColoured, PixelShaderColoured);
-    d_shaderWrapperSolid = new Direct3D11ShaderWrapper(*shader_standard_solid, this);
+    Direct3D11ShaderPtr shader_standard_solid(new Direct3D11Shader(*this, VertexShaderColoured, PixelShaderColoured));
+    d_shaderWrapperSolid = new Direct3D11ShaderWrapper(std::move(shader_standard_solid), this);
 
     d_shaderWrapperSolid->addUniformVariable("modelViewProjMatrix", ShaderType::VERTEX, ShaderParamType::Matrix4X4);
     d_shaderWrapperSolid->addUniformVariable("alphaPercentage", ShaderType::PIXEL, 

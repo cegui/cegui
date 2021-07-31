@@ -117,6 +117,8 @@ private:
     ID3D11ShaderReflection* d_pixelShaderReflection;
 };
 
+typedef std::unique_ptr<Direct3D11Shader> Direct3D11ShaderPtr;
+
 }
 
 #endif

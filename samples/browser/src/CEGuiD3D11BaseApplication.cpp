@@ -247,12 +247,8 @@ bool CEGuiD3D11BaseApplication::initialiseDirect3D(unsigned int width,
                  d3dInfoQueue->Release();
              }
 
-             d3dDebug->ReportLiveDeviceObjects(static_cast<D3D11_RLDO_FLAGS>(D3D11_RLDO_SUMMARY | D3D11_RLDO_DETAIL));
-
              d3dDebug->Release();
          }
-
-
 
         // obtain handle to thr back buffer of the swap chain
         ID3D11Texture2D* back_buffer;
@@ -298,8 +294,8 @@ bool CEGuiD3D11BaseApplication::initialiseDirect3D(unsigned int width,
 
         pimpl->d_swapChain->Release();
         pimpl->d_device->Release();
-        pimpl->d_swapChain = 0;
-        pimpl->d_device = 0;
+        pimpl->d_swapChain = nullptr;
+        pimpl->d_device = nullptr;
     }
 
     MessageBox(0, "Failed to correctly initialise Direct3D 11",
@@ -315,7 +311,7 @@ void CEGuiD3D11BaseApplication::cleanupDirect3D()
     {
         // get render target view
         ID3D11RenderTargetView* rtview;
-        pimpl->d_context->OMGetRenderTargets(1, &rtview, 0);
+        pimpl->d_context->OMGetRenderTargets(1, &rtview, nullptr);
 
         if (rtview)
         {
@@ -326,10 +322,25 @@ void CEGuiD3D11BaseApplication::cleanupDirect3D()
         }
 
         pimpl->d_swapChain->Release();
+
+        // Uncomment to debug D3D11 resource releasing:
+        //pimpl->d_context->ClearState();
+        //pimpl->d_context->Flush();
+
+        pimpl->d_context->Release();
+
+        // Uncomment to debug D3D11 resource releasing:
+        //ID3D11Debug* d3dDebug = nullptr;
+        //if (SUCCEEDED(pimpl->d_device->QueryInterface(__uuidof(ID3D11Debug), (void**)&d3dDebug)))
+        //{
+        //    d3dDebug->ReportLiveDeviceObjects(static_cast<D3D11_RLDO_FLAGS>(D3D11_RLDO_SUMMARY | D3D11_RLDO_DETAIL));
+        //    d3dDebug->Release();
+        //}
+
         pimpl->d_device->Release();
 
-        pimpl->d_swapChain = 0;
-        pimpl->d_device = 0;
+        pimpl->d_swapChain = nullptr;
+        pimpl->d_device = nullptr;
     }
 }
 

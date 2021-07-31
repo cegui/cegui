@@ -37,13 +37,13 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-Direct3D11ShaderWrapper::Direct3D11ShaderWrapper(Direct3D11Shader& shader,
+Direct3D11ShaderWrapper::Direct3D11ShaderWrapper(Direct3D11ShaderPtr&& shader,
                                                  Direct3D11Renderer* renderer)
     : d_deviceContext(renderer->getDirect3DDeviceContext())
     , d_device(renderer->getDirect3DDevice())
     , d_perObjectUniformVarBufferVert(0)
     , d_perObjectUniformVarBufferPixel(0)
-    , d_shader(shader)
+    , d_shader(std::move(shader))
 {
     createPerObjectBuffer(ShaderType::VERTEX);
     createPerObjectBuffer(ShaderType::PIXEL);
@@ -67,13 +67,13 @@ void Direct3D11ShaderWrapper::addUniformVariable(const std::string& variableName
 
     if(paramType == ShaderParamType::Texture)
     {
-        D3D11_SHADER_INPUT_BIND_DESC variableDesc = d_shader.getTextureBindingDesc(variableName, shaderType);
+        D3D11_SHADER_INPUT_BIND_DESC variableDesc = d_shader->getTextureBindingDesc(variableName, shaderType);
         variableBindingLoc = variableDesc.BindPoint;
         size = variableDesc.BindCount;
     }
     else
     {
-        D3D11_SHADER_VARIABLE_DESC variableDesc = d_shader.getUniformVariableDescription(variableName, shaderType);
+        D3D11_SHADER_VARIABLE_DESC variableDesc = d_shader->getUniformVariableDescription(variableName, shaderType);
         variableBindingLoc = variableDesc.StartOffset;
         size = variableDesc.Size;
     }
@@ -86,7 +86,7 @@ void Direct3D11ShaderWrapper::addUniformVariable(const std::string& variableName
 //----------------------------------------------------------------------------//
 void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings* shaderParameterBindings)
 {
-    d_shader.bind();
+    d_shader->bind();
 
     // The pointers to the mapped resource data
     unsigned char* resourceDataVS = 0;
@@ -196,7 +196,7 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 //----------------------------------------------------------------------------//
 void* Direct3D11ShaderWrapper::getVertShaderBufferPointer() const
 {
-    ID3D10Blob* vertexShaderBuffer = d_shader.getVertexShaderBuffer();
+    ID3D10Blob* vertexShaderBuffer = d_shader->getVertexShaderBuffer();
 
     return vertexShaderBuffer->GetBufferPointer();
 }
@@ -204,7 +204,7 @@ void* Direct3D11ShaderWrapper::getVertShaderBufferPointer() const
 //----------------------------------------------------------------------------//
 SIZE_T Direct3D11ShaderWrapper::getVertShaderBufferSize() const
 {
-    ID3D10Blob* vertexShaderBuffer = d_shader.getVertexShaderBuffer();
+    ID3D10Blob* vertexShaderBuffer = d_shader->getVertexShaderBuffer();
 
     return vertexShaderBuffer->GetBufferSize();
 }
@@ -214,7 +214,7 @@ void Direct3D11ShaderWrapper::createPerObjectBuffer(ShaderType shaderType)
 {
     HRESULT result;
 
-    ID3D11ShaderReflectionConstantBuffer* shaderReflectionConstBuff = d_shader.getShaderReflectionConstBuffer(shaderType);
+    ID3D11ShaderReflectionConstantBuffer* shaderReflectionConstBuff = d_shader->getShaderReflectionConstBuffer(shaderType);
 
     D3D11_SHADER_BUFFER_DESC shaderBufferDesc;
     result = shaderReflectionConstBuff->GetDesc(&shaderBufferDesc);

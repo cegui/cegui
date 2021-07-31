@@ -76,8 +76,6 @@ protected:
     void cleanupVertexBuffer() const;
     //! Draws the vertex data depending on the fill rule that was set for this object.
     void drawDependingOnFillRule() const;
-    //! Calls the D3D11 function fot setting the scissor rectangle
-    void setScissorRects() const;
     // Direct3D11Renderer object that created and owns this GeometryBuffer.
     Direct3D11Renderer& d_owner;
     //! The D3D Device
