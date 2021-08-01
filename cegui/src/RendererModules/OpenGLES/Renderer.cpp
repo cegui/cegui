@@ -39,6 +39,7 @@
 
 #include <sstream>
 #include <algorithm>
+#include <string.h>
 
 #include "CEGUI/RendererModules/OpenGLES/FBOTextureTarget.h"
 
