@@ -522,6 +522,15 @@ public:
 
     /*!
     \brief
+        return a String object holding the factory type name for this Window without Falagard mapping.
+    */
+    inline const String& getFactoryType() const
+    {
+        return d_type;
+    }
+
+    /*!
+    \brief
         returns whether or not this Window is set to be destroyed when its
         parent window is destroyed.
 
