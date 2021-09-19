@@ -1267,6 +1267,7 @@ void Window::addChild_impl(Element* element)
     wnd->onZChange_impl();
 
     // If window uses default font, handle its possible change
+    // TODO: remove if GUI context will be propagated, setGUIContext will have to handle this!
     wnd->notifyDefaultFontChanged();
 }
 
@@ -3779,6 +3780,7 @@ void Window::setGUIContext(GUIContext* context)
 
     // TODO: store context recursively in children? Field exists anyway.
 
+    notifyDefaultFontChanged(); // TODO: can check if font really changed? Move to GUIContext::setRootWindow?
     onTargetSurfaceChanged(getTargetRenderingSurface());
 }
 

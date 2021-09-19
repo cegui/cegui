@@ -519,7 +519,10 @@ void TabControl::onFontChanged(WindowEventArgs&)
 {
     // Propagate font change to buttons
     for (size_t i = 0; i < d_tabButtonVector.size(); ++i)
+    {
         d_tabButtonVector[i]->setFont(getActualFont());
+        calculateTabButtonSizePosition(i);
+    }
 }
 /*************************************************************************
 	Calculate size and position for a tab button
