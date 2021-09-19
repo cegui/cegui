@@ -2974,8 +2974,8 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
     if (moved || sized)
         d_unclippedInnerRect.invalidateCache();
 
-    // We can't guarantee that parent clip rect is unchanged
-    // TODO: can detect parentClipRectChanged?
+    // Either our position, size or parent clip rects changed.
+    // In any case we need to recalculate our clipping rects.
     d_outerRectClipperValid = false;
     d_innerRectClipperValid = false;
 
@@ -2995,7 +2995,7 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
         if (moved)
         {
             // If we moved, consider all our children moved too
-            flags |= (NonClientMoved | ClientMoved);
+            flags |= (NonClientMoved | ClientMoved | NonClientClippingChanged | ClientClippingChanged);
         }
         else
         {
@@ -3033,7 +3033,7 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
         if (sized)
         {
             // If we were resized, consider all our children are resized too
-            flags |= (NonClientSized | ClientSized);
+            flags |= (NonClientSized | ClientSized | NonClientClippingChanged | ClientClippingChanged);
         }
         else
         {
@@ -3041,6 +3041,19 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
             // Client size depends on the inner rect, and we check its resizing here.
             if (innerRectOldSize != d_unclippedInnerRect.get().getSize())
                 flags |= ClientSized;
+        }
+
+        // Even if our area didn't change our clippers could still be changed
+        // due to changes in the parent clipper
+        if (!moved && !sized)
+        {
+            const Rectf oldOuterClipper = d_outerRectClipper;
+            if (oldOuterClipper != getOuterRectClipper())
+                flags |= NonClientClippingChanged;
+
+            const Rectf oldInnerClipper = d_innerRectClipper;
+            if (oldInnerClipper != getInnerRectClipper())
+                flags |= ClientClippingChanged;
         }
     }
 
@@ -3054,8 +3067,6 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
     }
 
     // Apply our screen area changes to rendering surface and geometry settings
-    // TODO: can detect parentClipRectChanged?
-    //if (moved || sized || parentClipRectChanged)
     {
         RenderingContext ctx;
         getRenderingContext(ctx);
@@ -3124,7 +3135,7 @@ void Window::performChildLayout(bool client, bool nonClient)
     if (d_windowRenderer)
         changed |= d_windowRenderer->performChildWindowLayout();
 
-    // Inner rect may depend on children, so recalculate if their areas changed
+    // Inner rect may depend on children (e.g. Titlebar), so recalculate if their areas changed
     if (changed)
     {
         d_unclippedInnerRect.invalidateCache();

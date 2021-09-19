@@ -1570,8 +1570,10 @@ protected:
     {
         ClientMoved = 0x01,
         ClientSized = 0x02,
-        NonClientMoved = 0x04,
-        NonClientSized = 0x08
+        ClientClippingChanged = 0x04,
+        NonClientMoved = 0x08,
+        NonClientSized = 0x10,
+        NonClientClippingChanged = 0x20
     };
 
     /*!
@@ -1586,13 +1588,22 @@ protected:
         - true if a widget pixel size has changed
 
     \return
-        Flags that represent child area changes (ClientMoved, ClientSized,
-        NonClientMoved, NonClientSized)
+        Flags that represent child area changes (ClientMoved, ClientSized, ClientClippingChanged
+        NonClientMoved, NonClientSized, NonClientClippingChanged)
     */
     virtual uint8_t handleAreaChanges(bool moved, bool sized);
 
-    //! Lightweight child area updating path for not resized widgets
-    void handlePositionChangeRecursively(bool client, bool nonClient);
+    /*!
+    \brief
+        Handles area changes for the widget and its sub-hierarchy without child layouting
+
+    \note
+        This is a lighter version of notifyScreenAreaChanged for widgets whose parent's size didn't change
+
+    \param moved
+        - notification from the parent that this child could be moved
+    */
+    void handleAreaChangesRecursively(bool moved);
 
     /*************************************************************************
         Event trigger methods

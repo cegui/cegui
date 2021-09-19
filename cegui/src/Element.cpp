@@ -123,11 +123,16 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLay
             // We need full layouting when child area size changed or when explicitly requested
             performChildLayout(needClientLayout, needNonClientLayout); //???propagate adjust_size_to_content?
         }
-        else if (flags & (ClientMoved | NonClientMoved))
+        else if (flags)
         {
-            // When moved only, recursively invalidate rects and geometry settings without full layouting
+            // Lightweight code path for non-resized widgets
+            const bool client = flags & (ClientMoved | ClientClippingChanged);
+            const bool nonClient = flags & (NonClientMoved | NonClientClippingChanged);
+            const bool clientMoved = flags & ClientMoved;
+            const bool nonClientMoved = flags & NonClientMoved;
             for (Element* child : d_children)
-                child->handlePositionChangeRecursively(flags & ClientMoved, flags & NonClientMoved);
+                if (child->isNonClient() ? nonClient : client)
+                    child->handleAreaChangesRecursively(child->isNonClient() ? nonClientMoved : clientMoved);
         }
     }
 
@@ -162,16 +167,31 @@ uint8_t Element::handleAreaChanges(bool moved, bool sized)
 }
 
 //----------------------------------------------------------------------------//
-void Element::handlePositionChangeRecursively(bool client, bool nonClient)
+// Lightweight version of notifyScreenAreaChanged
+// TODO: can somehow merge with notifyScreenAreaChanged or at least rename consistently?
+void Element::handleAreaChangesRecursively(bool moved)
 {
     d_unclippedOuterRect.invalidateCache();
 
-    const uint8_t flags = handleAreaChanges(true, false);
+    // There is a guarantee that the parent size didn't change so our size didn't change too
+    const uint8_t flags = handleAreaChanges(moved, false);
 
-    if (client || nonClient)
+    if (flags)
+    {
+        const bool client = flags & (ClientMoved | ClientClippingChanged);
+        const bool nonClient = flags & (NonClientMoved | NonClientClippingChanged);
+        const bool clientMoved = flags & ClientMoved;
+        const bool nonClientMoved = flags & NonClientMoved;
         for (Element* child : d_children)
             if (child->isNonClient() ? nonClient : client)
-                child->handlePositionChangeRecursively(flags & ClientMoved, flags & NonClientMoved);
+                child->handleAreaChangesRecursively(child->isNonClient() ? nonClientMoved : clientMoved);
+    }
+
+    if (moved)
+    {
+        ElementEventArgs eventArgs(this);
+        onMoved(eventArgs);
+    }
 }
 
 //----------------------------------------------------------------------------//
