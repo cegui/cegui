@@ -2201,9 +2201,12 @@ void Window::onMoved(ElementEventArgs& e)
     {
         getParent()->invalidateRenderingSurface();
         // need to redraw some geometry if parent uses a caching surface
-        CEGUI::RenderingSurface* rs = getParent()->getTargetRenderingSurface();
-        if (rs && rs->isRenderingWindow())
-            getGUIContext().markAsDirty();
+        if (auto ctx = getGUIContextPtr())
+        {
+            CEGUI::RenderingSurface* rs = getParent()->getTargetRenderingSurface();
+            if (rs && rs->isRenderingWindow())
+                ctx->markAsDirty();
+        }
     }
 }
 
@@ -3993,13 +3996,12 @@ void Window::destroyGeometryBuffers()
 //----------------------------------------------------------------------------//
 void Window::setDrawModeMask(std::uint32_t drawModeMask)
 {
-    if(d_drawModeMask == drawModeMask)
-    {
+    if (d_drawModeMask == drawModeMask)
         return;
-    }
 
     d_drawModeMask = drawModeMask;
-    getGUIContext().markAsDirty();
+    if (auto ctx = getGUIContextPtr())
+        ctx->markAsDirty();
 }
 
 //----------------------------------------------------------------------------//
