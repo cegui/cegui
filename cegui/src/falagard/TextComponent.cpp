@@ -222,47 +222,47 @@ namespace CEGUI
         switch(horzFormatting)
         {
         case HorizontalTextFormatting::LeftAligned:
-            d_formattedRenderedString =
-                new LeftAlignedRenderedString(rendered_string);
+            d_formattedRenderedString.reset(
+                new LeftAlignedRenderedString(rendered_string));
             break;
 
         case HorizontalTextFormatting::CentreAligned:
-            d_formattedRenderedString =
-                new CentredRenderedString(rendered_string);
+            d_formattedRenderedString.reset(
+                new CentredRenderedString(rendered_string));
             break;
 
         case HorizontalTextFormatting::RightAligned:
-            d_formattedRenderedString =
-                new RightAlignedRenderedString(rendered_string);
+            d_formattedRenderedString.reset(
+                new RightAlignedRenderedString(rendered_string));
             break;
 
         case HorizontalTextFormatting::Justified:
-            d_formattedRenderedString =
-                new JustifiedRenderedString(rendered_string);
+            d_formattedRenderedString.reset(
+                new JustifiedRenderedString(rendered_string));
             break;
 
         case HorizontalTextFormatting::WordWrapLeftAligned:
-            d_formattedRenderedString =
+            d_formattedRenderedString.reset(
                 new RenderedStringWordWrapper
-                    <LeftAlignedRenderedString>(rendered_string);
+                    <LeftAlignedRenderedString>(rendered_string));
             break;
 
         case HorizontalTextFormatting::WordWrapCentreAligned:
-            d_formattedRenderedString =
+            d_formattedRenderedString.reset(
                 new RenderedStringWordWrapper
-                    <CentredRenderedString>(rendered_string);
+                    <CentredRenderedString>(rendered_string));
             break;
 
         case HorizontalTextFormatting::WordWrapRightAligned:
-            d_formattedRenderedString =
+            d_formattedRenderedString.reset(
                 new RenderedStringWordWrapper
-                    <RightAlignedRenderedString>(rendered_string);
+                    <RightAlignedRenderedString>(rendered_string));
             break;
 
         case HorizontalTextFormatting::WordWraperJustified:
-            d_formattedRenderedString =
+            d_formattedRenderedString.reset(
                 new RenderedStringWordWrapper
-                    <JustifiedRenderedString>(rendered_string);
+                    <JustifiedRenderedString>(rendered_string));
             break;
         }
     }

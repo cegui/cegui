@@ -87,19 +87,37 @@ public:
         Event::Connection wrapper that automatically disconnects the connection
         when the object is deleted (or goes out of scope).
     */
-    class ScopedConnection : public Connection
+    class ScopedConnection final
     {
     public:
-        ScopedConnection() {}
+        ScopedConnection() = default;
 
         ~ScopedConnection()
         {
             disconnect();
         }
 
+        ScopedConnection(const ScopedConnection& other) :
+            d_connection(other.d_connection)
+        {}
+
+        ScopedConnection(ScopedConnection&& other) noexcept :
+            d_connection(std::move(other.d_connection))
+        {}
+
         ScopedConnection(const Event::Connection& connection) :
             d_connection(connection)
         {}
+
+        ScopedConnection(Event::Connection&& connection) :
+            d_connection(std::move(connection))
+        {}
+
+        ScopedConnection& operator=(const ScopedConnection& other)
+        {
+            d_connection = other.d_connection;
+            return *this;
+        }
 
         ScopedConnection& operator=(const Event::Connection& connection)
         {
@@ -107,14 +125,26 @@ public:
             return *this;
         }
 
+        ScopedConnection& operator=(Event::Connection&& connection)
+        {
+            d_connection = std::move(connection);
+            return *this;
+        }
+
+        ScopedConnection& operator=(ScopedConnection&& other) noexcept
+        {
+            d_connection = std::move(other.d_connection);
+            return *this;
+        }
+
         bool connected() const
         {
-            return d_connection.isValid() ? d_connection->connected() : false;
+            return d_connection ? d_connection->connected() : false;
         }
 
         void disconnect()
         {
-            if (d_connection.isValid()) d_connection->disconnect();
+            if (d_connection) d_connection->disconnect();
         }
 
     private:
