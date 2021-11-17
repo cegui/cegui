@@ -257,11 +257,7 @@ namespace CEGUI
         {
             if (d_dragging)
             {
-                // release picked up state
-                if (d_pickedUp)
-                    d_pickedUp = false;
-
-                // fire off event
+                d_pickedUp = false;
                 WindowEventArgs args(this);
                 onDragEnded(args);
             }
@@ -270,7 +266,8 @@ namespace CEGUI
             {
                 WindowEventArgs args(this);
                 onDragStarted(args);
-                d_pickedUp = true;
+                if (d_dragging)
+                    d_pickedUp = true;
                 // in this case, do not proceed to release inputs.
                 return;
             }
@@ -557,7 +554,8 @@ bool DragContainer::pickUp(const bool force_sticky /*= false*/)
             // initialise the dragging state
             WindowEventArgs args(this);
             onDragStarted(args);
-            d_pickedUp = true;
+            if (d_dragging)
+                d_pickedUp = true;
         }
     }
 
@@ -571,6 +569,7 @@ void DragContainer::cancelDrag()
     {
         releaseInput();
         d_dragging = false; // In case this window is not captured and onCaptureLost() is not called
+        d_pickedUp = false;
     }
 }
 
