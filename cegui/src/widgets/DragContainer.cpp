@@ -385,6 +385,10 @@ namespace CEGUI
 
         fireEvent(EventDragStarted, e, EventNamespace);
 
+        // Handle cancel from event handlers
+        if (!d_dragging)
+            return;
+
         // Immediately update position relative to the cursor
         const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this,
             getGUIContext().getCursor().getPosition()));
@@ -446,10 +450,8 @@ namespace CEGUI
         fireEvent(EventDragEnabledChanged, e, EventNamespace);
 
         // abort current drag operation if dragging gets disabled part way through
-        if (!d_draggingEnabled && d_dragging)
-        {
-            releaseInput();
-        }
+        if (!d_draggingEnabled)
+            cancelDrag();
     }
 
     void DragContainer::onDragAlphaChanged(WindowEventArgs& e)
@@ -560,6 +562,16 @@ bool DragContainer::pickUp(const bool force_sticky /*= false*/)
     }
 
     return d_pickedUp;
+}
+
+//----------------------------------------------------------------------------//
+void DragContainer::cancelDrag()
+{
+    if (d_dragging)
+    {
+        releaseInput();
+        d_dragging = false; // In case this window is not captured and onCaptureLost() is not called
+    }
 }
 
 //----------------------------------------------------------------------------//

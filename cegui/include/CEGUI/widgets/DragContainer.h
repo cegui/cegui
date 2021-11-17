@@ -304,6 +304,12 @@ namespace CEGUI
 
         /*!
         \brief
+            Cancels dragging of this container
+        */
+        void cancelDrag();
+
+        /*!
+        \brief
             Set the fixed cursor dragging offset to be used for this
             DragContainer.
 
