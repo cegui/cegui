@@ -229,15 +229,15 @@ public:
     bool injectCutRequest() override;
     bool injectPasteRequest() override;
 
+    virtual bool isControlPressed() const;
+    virtual bool isAltPressed() const;
+    virtual bool isShiftPressed() const;
+
 protected:
     virtual void onMouseButtonClickTimeoutChanged(InputAggregatorEventArgs& args);
     virtual void onMouseButtonMultiClickTimeoutChanged(InputAggregatorEventArgs& args);
     virtual void onMouseButtonMultiClickToleranceChanged(InputAggregatorEventArgs& args);
     virtual void onMouseMoveScalingFactorChanged(InputAggregatorEventArgs& args);
-
-    virtual bool isControlPressed();
-    virtual bool isAltPressed();
-    virtual bool isShiftPressed();
 
     void recomputeMultiClickAbsoluteTolerance();
     virtual bool onDisplaySizeChanged(const EventArgs& args);

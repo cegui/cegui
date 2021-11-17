@@ -539,19 +539,19 @@ void InputAggregator::initialise(bool handle_on_keyup /*= true*/)
     d_keyValuesMappings[static_cast<unsigned char>(Key::Scan::PageUp)] = SemanticValue::GoToPreviousPage;
 }
 
-bool InputAggregator::isShiftPressed()
+bool InputAggregator::isShiftPressed() const
 {
     return d_keysPressed[static_cast<unsigned char>(Key::Scan::LeftShift)] ||
         d_keysPressed[static_cast<unsigned char>(Key::Scan::RightShift)];
 }
 
-bool InputAggregator::isAltPressed()
+bool InputAggregator::isAltPressed() const
 {
     return d_keysPressed[static_cast<unsigned char>(Key::Scan::LeftAlt)] ||
         d_keysPressed[static_cast<unsigned char>(Key::Scan::RightAlt)];
 }
 
-bool InputAggregator::isControlPressed()
+bool InputAggregator::isControlPressed() const
 {
     return d_keysPressed[static_cast<unsigned char>(Key::Scan::LeftControl)] ||
         d_keysPressed[static_cast<unsigned char>(Key::Scan::RightControl)];
