@@ -128,12 +128,6 @@ namespace CEGUI
          */
         Tooltip(const String& type, const String& name);
 
-        /*!
-        \brief
-            Destructor for the Tooltip base class.
-         */
-        ~Tooltip(void);
-
         /************************************************************************
             Public interface
         ************************************************************************/
@@ -167,7 +161,7 @@ namespace CEGUI
         \return
             Nothing.
          */
-        void resetTimer(void);
+        void resetTimer();
 
         /*!
         \brief
@@ -177,7 +171,7 @@ namespace CEGUI
         \return
             float value representing a number of seconds.
          */
-        float getHoverTime(void) const;
+        float getHoverTime() const;
 
         /*!
         \brief
@@ -213,7 +207,7 @@ namespace CEGUI
         \return
             float value representing a number of seconds.
          */
-        float getDisplayTime(void) const;
+        float getDisplayTime() const;
 
         /*!
         \brief
@@ -222,7 +216,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void positionSelf(void);
+        void positionSelf();
 
         /*!
         \brief
@@ -231,7 +225,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void sizeSelf(void);
+        void sizeSelf();
 
         /*!
         \brief
@@ -257,13 +251,16 @@ namespace CEGUI
         /*************************************************************************
             Implementation Methods
         *************************************************************************/
+
+        bool needTooltip() const;
+
         // methods to perform processing for each of the widget states
         void doActiveState(float elapsed);
         void doInactiveState(float elapsed);
 
         // methods to switch widget states
-        void switchToInactiveState(void);
-        void switchToActiveState(void);
+        void switchToInactiveState();
+        void switchToActiveState();
 
         // validate window renderer
         bool validateWindowRenderer(const WindowRenderer* renderer) const override;
@@ -328,12 +325,12 @@ namespace CEGUI
         /************************************************************************
             Data fields
         ************************************************************************/
-        bool        d_active;       //!< true if the tooltip is active
-        float       d_elapsed;      //!< Used to track state change timings
         const Window* d_target;     //!< Current target Window for this Tooltip.
+        float       d_elapsed;      //!< Used to track state change timings
         float       d_hoverTime;    //!< tool-tip hover time (seconds cursor must stay stationary before tip shows).
         float       d_displayTime;  //!< tool-tip display time (seconds that tip is showsn for).
         float       d_fadeTime;     //!< tool-tip fade time (seconds it takes for tip to fade in and/or out).
+        bool        d_active;       //!< true if the tooltip is active
         //! are in positionSelf function? (to avoid infinite recursion issues)
         bool d_inPositionSelf;
 
@@ -341,7 +338,7 @@ namespace CEGUI
         /*************************************************************************
             Private methods
         *************************************************************************/
-        void addTooltipProperties(void);
+        void addTooltipProperties();
     };
 } // End of  CEGUI namespace section
 

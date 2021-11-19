@@ -75,10 +75,7 @@ namespace CEGUI
         hide();
     }
 
-    Tooltip::~Tooltip(void)
-    {}
-
-    void Tooltip::positionSelf(void)
+    void Tooltip::positionSelf()
     {
         GUIContext* context = getGUIContextPtr();
         if (!context)
@@ -142,7 +139,7 @@ namespace CEGUI
         d_inPositionSelf = false;
     }
 
-    void Tooltip::sizeSelf(void)
+    void Tooltip::sizeSelf()
     {
         Sizef textSize(getTextSize());
 
@@ -218,12 +215,12 @@ namespace CEGUI
         return sz;
     }
 
-    void Tooltip::resetTimer(void)
+    void Tooltip::resetTimer()
     {
-        d_elapsed = 0;
+        d_elapsed = 0.f;
     }
 
-    float Tooltip::getHoverTime(void) const
+    float Tooltip::getHoverTime() const
     {
         return d_hoverTime;
     }
@@ -239,7 +236,7 @@ namespace CEGUI
         }
     }
 
-    float Tooltip::getDisplayTime(void) const
+    float Tooltip::getDisplayTime() const
     {
         return d_displayTime;
     }
@@ -255,36 +252,42 @@ namespace CEGUI
         }
     }
 
+    bool Tooltip::needTooltip() const
+    {
+        return d_target && d_target->isTooltipEnabled() && !d_target->getTooltipTextIncludingInheritance().empty();
+    }
+
     void Tooltip::doActiveState(float elapsed)
     {
-        // if no target, switch immediately to inactive state.
-        if (!d_target || d_target->getTooltipTextIncludingInheritance().empty())
+        // if no tooltip must be shown, switch immediately to inactive state
+        if (!needTooltip())
         {
-            // hide immediately since the text is empty
             hide();
-
             switchToInactiveState();
         }
         // else see if display timeout has been reached
-        else if ((d_displayTime > 0) && ((d_elapsed += elapsed) >= d_displayTime))
+        else if (d_displayTime > 0.f)
         {
-            // display time is up, switch states
-            switchToInactiveState();
+            d_elapsed += elapsed;
+            if (d_elapsed >= d_displayTime)
+                switchToInactiveState();
         }
     }
 
     void Tooltip::doInactiveState(float elapsed)
     {
-        if (d_target && !d_target->getTooltipTextIncludingInheritance().empty() && ((d_elapsed += elapsed) >= d_hoverTime))
+        if (needTooltip())
         {
-            switchToActiveState();
+            d_elapsed += elapsed;
+            if (d_elapsed >= d_hoverTime)
+                switchToActiveState();
         }
     }
 
-    void Tooltip::switchToInactiveState(void)
+    void Tooltip::switchToInactiveState()
     {
         d_active = false;
-        d_elapsed = 0;
+        d_elapsed = 0.f;
 
         // fire event before target gets reset in case that information is required in handler.
         WindowEventArgs args(this);
@@ -293,13 +296,13 @@ namespace CEGUI
         d_target = nullptr;
     }
 
-    void Tooltip::switchToActiveState(void)
+    void Tooltip::switchToActiveState()
     {
         positionSelf();
         show();
 
         d_active = true;
-        d_elapsed = 0;
+        d_elapsed = 0.f;
 
         WindowEventArgs args(this);
         onTooltipActive(args);
@@ -326,7 +329,7 @@ namespace CEGUI
         }
     }
 
-    void Tooltip::addTooltipProperties(void)
+    void Tooltip::addTooltipProperties()
     {
         const String& propertyOrigin = WidgetTypeName;
 

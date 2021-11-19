@@ -2226,6 +2226,9 @@ public:
     */
     void setTooltipText(const String& tip);
 
+    void setTooltipEnabled(bool enable) { d_tooltipEnabled = enable; }
+    bool isTooltipEnabled() const { return d_tooltipEnabled; }
+
     /*!
     \brief
         Set whether this window inherits Tooltip text from its parent when its
@@ -3895,6 +3898,7 @@ protected:
     bool d_weOwnTip : 1;
     //! whether tooltip text may be inherited from parent.
     bool d_inheritsTipText : 1;
+    bool d_tooltipEnabled : 1;
 
     //! true if this window is allowed to write XML, false if not
     bool d_allowWriteXML : 1;

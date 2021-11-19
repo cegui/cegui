@@ -277,6 +277,7 @@ Window::Window(const String& type, const String& name):
     d_customTip(nullptr),
     d_weOwnTip(false),
     d_inheritsTipText(true),
+    d_tooltipEnabled(true),
 
     // XML writing options
     d_allowWriteXML(true),
