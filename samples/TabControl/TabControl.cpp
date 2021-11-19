@@ -209,14 +209,8 @@ bool TabControlSample::handleTabPanePos(const EventArgs& e)
         return false;
     }
 
-    // Check if the window exists
-    Window* root = d_guiContext->getRootWindow();
-
-    if (root->isChild("Frame/TabControl"))
-    {
-        static_cast<TabControl*>(root->getChild(
-            "Frame/TabControl"))->setTabPanePosition(tpp);
-    }
+    if (auto tc = d_guiContext->getRootWindow()->findChild("Frame/TabControl"))
+        static_cast<TabControl*>(tc)->setTabPanePosition(tpp);
 
     return true;
 }
@@ -226,15 +220,8 @@ bool TabControlSample::handleTabHeight(const EventArgs& e)
     Scrollbar* sb = static_cast<Scrollbar*>(
         static_cast<const WindowEventArgs&>(e).window);
 
-    // Check if the window exists
-    Window* root = d_guiContext->getRootWindow();
-
-    if (root->isChild("Frame/TabControl"))
-    {
-        static_cast<TabControl*>(root->getChild(
-            "Frame/TabControl"))->setTabHeight(
-            UDim(0, sb->getScrollPosition()));
-    }
+    if (auto tc = d_guiContext->getRootWindow()->findChild("Frame/TabControl"))
+        static_cast<TabControl*>(tc)->setTabHeight(UDim(0, sb->getScrollPosition()));
 
     // The return value mainly says that we handled it, not if something failed.
     return true;
@@ -245,28 +232,17 @@ bool TabControlSample::handleTabPadding(const EventArgs& e)
     Scrollbar* sb = static_cast<Scrollbar*>(
         static_cast<const WindowEventArgs&>(e).window);
 
-    // Check if the window exists
-    Window* root = d_guiContext->getRootWindow();
-
-    if (root->isChild("Frame/TabControl"))
-    {
-        static_cast<TabControl*>(root->getChild(
-            "Frame/TabControl"))->setTabTextPadding(
-            UDim(0, sb->getScrollPosition()));
-    }
+    if (auto tc = d_guiContext->getRootWindow()->findChild("Frame/TabControl"))
+        static_cast<TabControl*>(tc)->setTabTextPadding(UDim(0, sb->getScrollPosition()));
 
     return true;
 }
 
 bool TabControlSample::handleAddTab(const EventArgs&)
 {
-    Window* root = d_guiContext->getRootWindow();
-
-    // Check if the window exists
-    if (root->isChild("Frame/TabControl"))
+    if (auto wnd = d_guiContext->getRootWindow()->findChild("Frame/TabControl"))
     {
-        TabControl* tc = static_cast<TabControl*>(root->getChild(
-            "Frame/TabControl"));
+        TabControl* tc = static_cast<TabControl*>(wnd);
 
         // Add some tab buttons once
         for (int num = 3; num <= 16; num++)
@@ -274,17 +250,15 @@ bool TabControlSample::handleAddTab(const EventArgs&)
             std::stringstream pgNameStream;
             pgNameStream << "Page" << num;
 
-            if (root->isChild(String("Frame/TabControl/") + pgNameStream.str()))
-                // Next
+            if (tc->isChild(pgNameStream.str()))
                 continue;
 
             Window* pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
             pg->setName(String(pgNameStream.str()));
 
             // This window has just been created while loading the layout
-            if (pg->isChild("Text"))
+            if (Window* txt = pg->findChild("Text"))
             {
-                Window* txt = pg->getChild("Text");
                 txt->setText(PageText[num - 3]);
 
                 pg->setText(pgNameStream.str());
@@ -366,20 +340,10 @@ bool TabControlSample::handleDel(const EventArgs&)
 
 TabControl* TabControlSample::getTabControl(Window* root)
 {
-    String control_id("Frame/TabControl");
-    if (root->isChild(control_id))
-    {
-        return static_cast<TabControl*>(root->getChild(control_id));
-    }
-    return nullptr;
+    return static_cast<TabControl*>(root->findChild("Frame/TabControl"));
 }
 
 ListWidget* TabControlSample::getPageListWidget(Window* root)
 {
-    String page_list_id("Frame/TabControl/Page1/PageList");
-    if (root->isChild(page_list_id))
-    {
-        return static_cast<ListWidget*>(root->getChild(page_list_id));
-    }
-    return nullptr;
+    return static_cast<ListWidget*>(root->findChild("Frame/TabControl/Page1/PageList"));
 }

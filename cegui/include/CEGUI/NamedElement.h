@@ -93,11 +93,6 @@ public:
     NamedElement(const String& name = "");
 
     /*!
-    \brief Destructor
-    */
-    virtual ~NamedElement();
-
-    /*!
     \brief Renames the element.
 
     \param name
@@ -184,6 +179,18 @@ public:
     NamedElement* getChildElement(const String& name_path) const;
 
     /*!
+    \brief Return the attached child element that the given name path references.
+
+    \param name_path
+        String object holding the name path of the child element to return.
+
+    \return
+        the NamedElement object referenced by \a name_path.
+        If no child is found with the name \a name, 0 is returned.
+    */
+    NamedElement* findChildElement(const String& name_path) const { return getChildByNamePath_impl(name_path); }
+
+    /*!
     \brief Find the first child with the given name, recursively and breadth-first.
 
     \param name
@@ -193,7 +200,7 @@ public:
         Pointer to the (first) Element object attached to this Element that has
         the name \a name
     */
-    NamedElement* getChildElementRecursive(const String& name) const;
+    NamedElement* getChildElementRecursive(const String& name) const { return getChildByNameRecursive_impl(name); }
 
     using Element::removeChild;
     /*!

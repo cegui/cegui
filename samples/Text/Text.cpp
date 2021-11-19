@@ -120,15 +120,15 @@ void TextSample::initStaticText()
 void TextSample::initSingleLineEdit()
 {
     Window* root = d_guiContext->getRootWindow();
+
     // Only accepts digits for the age field
-    if (root->isChild("Root/TextSample/SingleLineGroup/editAge"))
-    {
-        static_cast<Editbox*>(root->getChild("Root/TextSample/SingleLineGroup/editAge"))->setValidationString("[0-9]*");
-    }
+    if (Window* wnd = root->findChild("Root/TextSample/SingleLineGroup/editAge"))
+        static_cast<Editbox*>(wnd)->setValidationString("[0-9]*");
+
     // Set password restrictions
-    if (root->isChild("Root/TextSample/SingleLineGroup/editPasswd"))
+    if (Window* wnd = root->findChild("Root/TextSample/SingleLineGroup/editPasswd"))
     {
-        Editbox* passwd = static_cast<Editbox*>(root->getChild("Root/TextSample/SingleLineGroup/editPasswd"));
+        Editbox* passwd = static_cast<Editbox*>(wnd);
         passwd->setValidationString("[A-Za-z0-9]*");
         // Render masked
         passwd->setTextMaskingEnabled(true);
@@ -143,10 +143,9 @@ void TextSample::initMultiLineEdit()
 
 void TextSample::initRadio(const CEGUI::String& radio, int group, bool selected)
 {
-    Window* root = d_guiContext->getRootWindow();
-    if (root->isChild(radio))
+    if (Window* wnd = d_guiContext->getRootWindow()->findChild(radio))
     {
-        RadioButton* button = static_cast<RadioButton*>(root->getChild(radio));
+        RadioButton* button = static_cast<RadioButton*>(wnd);
         button->setGroupID(group);
         button->setSelected(selected);
     }
@@ -154,47 +153,28 @@ void TextSample::initRadio(const CEGUI::String& radio, int group, bool selected)
 
 void TextSample::subscribeEvent(const String& widget, const String& event, const Event::Subscriber& method)
 {
-    Window* root = d_guiContext->getRootWindow();
-    if (root->isChild(widget))
-    {
-        Window* window = root->getChild(widget);
+    if (Window* window = d_guiContext->getRootWindow()->findChild(widget))
         window->subscribeEvent(event, method);
-    }
 }
 
 bool TextSample::isRadioSelected(const CEGUI::String& radio)
 {
-    Window* root = d_guiContext->getRootWindow();
-    // Check
-    if (root->isChild(radio))
-    {
-        RadioButton* button = static_cast<RadioButton*>(root->getChild(radio));
-        return button->isSelected();
-    }
+    if (Window* wnd = d_guiContext->getRootWindow()->findChild(radio))
+        return static_cast<RadioButton*>(wnd)->isSelected();
     return false;
 }
 
 bool TextSample::isCheckboxSelected(const CEGUI::String& checkbox)
 {
-    Window* root = d_guiContext->getRootWindow();
-    // Check
-    if (root->isChild(checkbox))
-    {
-        ToggleButton* button = static_cast<ToggleButton*>(root->getChild(checkbox));
-        return button->isSelected();
-    }
+    if (Window* wnd = d_guiContext->getRootWindow()->findChild(checkbox))
+        return static_cast<ToggleButton*>(wnd)->isSelected();
     return false;
 }
 
 bool TextSample::formatChangedHandler(const CEGUI::EventArgs&)
 {
-    Window* root = d_guiContext->getRootWindow();
-
-    if (root->isChild("Root/TextSample/StaticGroup/StaticText"))
+    if (Window* st = d_guiContext->getRootWindow()->findChild("Root/TextSample/StaticGroup/StaticText"))
     {
-        // and also the static text for which we will set the formatting options
-        Window* st = root->getChild("Root/TextSample/StaticGroup/StaticText");
-
         // handle vertical formatting settings
         if (isRadioSelected("Root/TextSample/StaticGroup/VertTop"))
             st->setProperty("VertFormatting", "TopAligned");
@@ -204,7 +184,7 @@ bool TextSample::formatChangedHandler(const CEGUI::EventArgs&)
             st->setProperty("VertFormatting", "CentreAligned");
 
         // handle horizontal formatting settings
-        bool wrap = isCheckboxSelected("Root/TextSample/StaticGroup/Wrap");
+        const bool wrap = isCheckboxSelected("Root/TextSample/StaticGroup/Wrap");
 
         if (isRadioSelected("Root/TextSample/StaticGroup/HorzLeft"))
             st->setProperty("HorzFormatting", wrap ? "WordWrapLeftAligned" : "LeftAligned");
@@ -220,14 +200,8 @@ bool TextSample::formatChangedHandler(const CEGUI::EventArgs&)
 
 bool TextSample::vertScrollChangedHandler(const CEGUI::EventArgs&)
 {
-    Window* root = d_guiContext->getRootWindow();
-
-    if (root->isChild("Root/TextSample/MultiLineGroup/editMulti"))
-    {
-        MultiLineEditbox* multiEdit = static_cast<MultiLineEditbox*>(root->getChild("Root/TextSample/MultiLineGroup/editMulti"));
-        // Use setter for a change
-        multiEdit->setShowVertScrollbar(isCheckboxSelected("Root/TextSample/MultiLineGroup/forceScroll"));
-    }
+    if (Window* wnd = d_guiContext->getRootWindow()->findChild("Root/TextSample/MultiLineGroup/editMulti"))
+        static_cast<MultiLineEditbox*>(wnd)->setShowVertScrollbar(isCheckboxSelected("Root/TextSample/MultiLineGroup/forceScroll"));
 
     // event was handled
     return true;

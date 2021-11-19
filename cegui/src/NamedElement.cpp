@@ -52,20 +52,14 @@ NamedElement::NamedElement(const String& name):
 }
 
 //----------------------------------------------------------------------------//
-NamedElement::~NamedElement()
-{}
-
-//----------------------------------------------------------------------------//
 void NamedElement::setName(const String& name)
 {
     if (d_name == name)
         return;
 
-    if (getParentElement())
+    if (NamedElement* parent = dynamic_cast<NamedElement*>(d_parent))
     {
-        NamedElement* parent = dynamic_cast<NamedElement*>(getParentElement());
-
-        if (parent && parent->isChild(name))
+        if (parent->isChild(name))
         {
             throw AlreadyExistsException("Failed to rename "
                 "NamedElement at: " + getNamePath() + " as: " + name + ". A Window "
@@ -148,12 +142,6 @@ NamedElement* NamedElement::getChildElement(const String& name_path) const
     throw UnknownObjectException("The Element object "
         "referenced by '" + name_path + "' is not attached to Element at '"
         + getNamePath() + "'.");
-}
-
-//----------------------------------------------------------------------------//
-NamedElement* NamedElement::getChildElementRecursive(const String& name_path) const
-{
-    return getChildByNameRecursive_impl(name_path);
 }
 
 //----------------------------------------------------------------------------//

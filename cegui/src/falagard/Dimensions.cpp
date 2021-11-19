@@ -590,15 +590,14 @@ float WidgetDim::getValue(const Window& wnd) const
     // name not empty, so find window with required name
     else
     {
-        if (wnd.isChild(d_widgetName))
-            widget = wnd.getChild(d_widgetName);
-        else
+        widget = wnd.findChild(d_widgetName);
+        if (!widget)
             throw InvalidRequestException(
                 "A WidgetDim in window \"" + wnd.getName() + "\" requested window \"" + d_widgetName + "\" as WidgetDim-source, but this is not a child of the window");
     }
 
     // get size of parent; required to extract pixel values
-    Sizef parentSize(widget->getParentPixelSize());
+    const Sizef parentSize(widget->getParentPixelSize());
 
     switch (d_dimensionType)
     {

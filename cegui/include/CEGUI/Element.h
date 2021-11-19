@@ -265,21 +265,13 @@ public:
     Element& operator=(const Element&) = delete;
 
     /*!
-    \brief Destructor
-    */
-    virtual ~Element();
-
-    /*!
     \brief Retrieves parent of this element
    
     \returns
         pointer to parent or 0, 0 means that this Element is a root of
         the subtree it represents
     */
-    inline Element* getParentElement() const
-    {
-        return d_parent;
-    }
+    Element* getParentElement() const { return d_parent; }
 
     /*!
     \brief

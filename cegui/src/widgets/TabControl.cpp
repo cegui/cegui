@@ -101,26 +101,22 @@ TabControl::~TabControl(void)
 void TabControl::initialiseComponents()
 {
     // ban properties forwarded from here
-    if (isChild(ButtonScrollLeft))
-    {
-        CEGUI::Window* buttonScrollLeft = getChild(ButtonScrollLeft);
+    CEGUI::Window* buttonScrollLeft = findChild(ButtonScrollLeft);
+    CEGUI::Window* buttonScrollRight = findChild(ButtonScrollRight);
+    if (buttonScrollLeft)
         buttonScrollLeft->banPropertyFromXML(Window::VisiblePropertyName);
-    }
-    if (isChild(ButtonScrollRight))
-    {
-        CEGUI::Window* buttonScrollRight = getChild(ButtonScrollRight);
+    if (buttonScrollRight)
         buttonScrollRight->banPropertyFromXML(Window::VisiblePropertyName);
-    }
 
     Window::initialiseComponents();
 
-    if (isChild(ButtonScrollLeft))
-        getChild(ButtonScrollLeft)->subscribeEvent (
+    if (buttonScrollLeft)
+        buttonScrollLeft->subscribeEvent (
             PushButton::EventClicked, Event::Subscriber(
                 &CEGUI::TabControl::handleScrollPane, this));
 
-    if (isChild(ButtonScrollRight))
-        getChild(ButtonScrollRight)->subscribeEvent (
+    if (buttonScrollRight)
+        buttonScrollRight->subscribeEvent (
             PushButton::EventClicked, Event::Subscriber(
                 &CEGUI::TabControl::handleScrollPane, this));
 }
@@ -284,8 +280,8 @@ Remove a tab
 void TabControl::removeTab(const String& name)
 {
     // do nothing if given window is not attached as a tab.
-    if (getTabPane()->isChild(name))
-        removeTab_impl(getTabPane()->getChild(name));
+    if (auto tab = getTabPane()->findChild(name))
+        removeTab_impl(tab);
 }
 /*************************************************************************
 Remove a tab by ID
@@ -293,8 +289,8 @@ Remove a tab by ID
 void TabControl::removeTab(unsigned int ID)
 {
     // do nothing if given window is not attached as a tab.
-    if (getTabPane()->isChild(ID))
-        removeTab_impl(getTabPane()->getChild(ID));
+    if (auto tab = getTabPane()->findChild(ID))
+        removeTab_impl(tab);
 }
 /*************************************************************************
 Add tab button
@@ -413,18 +409,11 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     float w = tb->getPixelSize().d_width;
     float lx = 0, rx = ww;
 
-    Window *scrollLeftBtn = nullptr, *scrollRightBtn = nullptr;
-    if (isChild(ButtonScrollLeft))
-    {
-        scrollLeftBtn = getChild(ButtonScrollLeft);
+    if (Window* scrollLeftBtn = findChild(ButtonScrollLeft))
         lx = CoordConverter::asAbsolute(scrollLeftBtn->getArea().d_max.d_x, ww);
-    }
 
-    if (isChild(ButtonScrollRight))
-    {
-        scrollRightBtn = getChild(ButtonScrollRight);
+    if (Window* scrollRightBtn = findChild(ButtonScrollRight))
         rx = CoordConverter::asAbsolute(scrollRightBtn->getPosition().d_x, ww);
-    }
 
     if (x < lx)
         d_firstTabOffset += lx - x;
@@ -583,12 +572,8 @@ void TabControl::performChildLayout(bool client, bool nonClient)
     Window::performChildLayout(client, nonClient);
 
     // Calculate the size & position of the tab scroll buttons
-    Window *scrollLeftBtn = nullptr, *scrollRightBtn = nullptr;
-    if (isChild(ButtonScrollLeft))
-        scrollLeftBtn = getChild(ButtonScrollLeft);
-
-    if (isChild(ButtonScrollRight))
-        scrollRightBtn = getChild(ButtonScrollRight);
+    Window* scrollLeftBtn = findChild(ButtonScrollLeft);
+    Window* scrollRightBtn = findChild(ButtonScrollRight);
 
     // Calculate the positions and sizes of the tab buttons
     if (d_firstTabOffset > 0)

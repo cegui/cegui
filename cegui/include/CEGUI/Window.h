@@ -723,10 +723,7 @@ public:
     \return
         Pointer to the child window currently attached at index position \a idx
     */
-    inline Window* getChildAtIndex(size_t idx) const
-    {
-        return static_cast<Window*>(getChildElementAtIndex(idx));
-    }
+    Window* getChildAtIndex(size_t idx) const { return static_cast<Window*>(getChildElementAtIndex(idx)); }
 
     /*!
     \brief
@@ -751,10 +748,29 @@ public:
         thrown if \a name_path does not reference a Window attached to this
         Window.
     */
-    inline Window* getChild(const String& name_path) const
-    {
-        return static_cast<Window*>(getChildElement(name_path));
-    }
+    Window* getChild(const String& name_path) const { return static_cast<Window*>(getChildElement(name_path)); }
+
+    /*!
+    \brief
+        return the attached child window that the given name path references.
+
+        A name path is a string that describes a path down the window
+        hierarchy using window names and the forward slash '/' as a separator.
+        \par
+        For example, if this window has a child attached to it named "Panel"
+        which has its own children attached named "Okay" and "Cancel",
+        you can access the window "Okay" from this window by using the
+        name path "Panel/Okay".  To access "Panel", you would simply pass the
+        name "Panel".
+
+    \param name_path
+        String object holding the name path of the child window to return.
+
+    \return
+        Pointer to the Window object referenced by \a name_path.
+        If no child is found with the name \a name, 0 is returned.
+    */
+    Window* findChild(const String& name_path) const { return static_cast<Window*>(findChildElement(name_path)); }
 
     /*!
     \brief
@@ -777,10 +793,7 @@ public:
         the name \a name.
         If no child is found with the name \a name, 0 is returned.
     */
-    inline Window* getChildRecursive(const String& name) const
-    {
-        return static_cast<Window*>(getChildElementRecursive(name));
-    }
+    Window* getChildRecursive(const String& name) const { return static_cast<Window*>(getChildElementRecursive(name)); }
 
     /*!
     \brief
@@ -790,8 +803,8 @@ public:
         This function will throw an exception if no child object with the given
         ID is attached.  This decision was made (over returning NULL if no
         window was found) so that client code can assume that if the call
-        returns it has a valid window pointer.  We provide the isChild()
-        functions for checking if a given window is attached.
+        returns it has a valid window pointer.  We provide the findChild()
+        functions for exception free code.
 
     \param ID
         unsigned int value specifying the ID code of the window to return a pointer to.
@@ -804,6 +817,21 @@ public:
         thrown if no window with the ID code \a id is attached to this Window.
     */
     Window* getChild(unsigned int id) const;
+
+    /*!
+    \brief
+        return a pointer to the first attached child window with the specified
+        ID value.
+
+    \param ID
+        unsigned int value specifying the ID code of the window to return a pointer to.
+
+    \return
+        Pointer to the (first) Window object attached to this window that has
+        the ID code \a ID.
+        If no child is found with the ID code \a ID, 0 is returned.
+    */
+    Window* findChild(unsigned int id) const;
 
     /*!
     \brief

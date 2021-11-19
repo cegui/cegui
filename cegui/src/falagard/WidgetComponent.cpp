@@ -89,10 +89,10 @@ namespace CEGUI
 
     void WidgetComponent::cleanup(Window& parent) const
     {
-        if (!parent.isChild(getWidgetName()))
+        Window* widget = parent.findChild(getWidgetName());
+        if (!widget)
             return;
 
-        Window* widget = parent.getChild(getWidgetName());
         // clean up up the event actions
         for (EventActionList::const_iterator i = d_eventActions.begin();
                 i != d_eventActions.end();
