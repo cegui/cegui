@@ -348,6 +348,7 @@ namespace CEGUI
         void onFontChanged(WindowEventArgs& e) override;
         void onTextChanged(WindowEventArgs& e) override;
         void onActivated(ActivationEventArgs& e) override;
+        void onScroll(CursorInputEventArgs& e) override;
 
         /*************************************************************************
         	New Event handler methods

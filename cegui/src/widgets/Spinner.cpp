@@ -87,6 +87,7 @@ namespace CEGUI
         // ban properties forwarded from here
         editbox->banPropertyFromXML(Window::TextPropertyName);
         editbox->banPropertyFromXML("ValidationString");
+        editbox->setCursorInputPropagationEnabled(true); // for wheel scrolling
         increaseButton->banPropertyFromXML(Window::CursorAutoRepeatEnabledPropertyName);
         decreaseButton->banPropertyFromXML(Window::CursorAutoRepeatEnabledPropertyName);
 
@@ -364,6 +365,15 @@ namespace CEGUI
                 editbox->activate();
             }
         }
+    }
+
+    void Spinner::onScroll(CursorInputEventArgs& e)
+    {
+        Window::onScroll(e);
+        double prevValue = d_currentValue;
+        setCurrentValue(d_currentValue + d_stepSize * e.scroll);
+        if (prevValue != d_currentValue)
+            ++e.handled;
     }
 
     void Spinner::onValueChanged(WindowEventArgs& e)
