@@ -30,8 +30,7 @@
 #include "CEGUI/ImageCodecModules/STB/ImageCodec.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Sizef.h"
-#define STBI_HEADER_FILE_ONLY
-#include "stb_image.cpp"
+#include "stb_image.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
