@@ -244,14 +244,19 @@ void DragContainer::onCursorActivate(CursorInputEventArgs& e)
         }
         else
         {
-            // did we drop over a window?
-            if (d_dragging && d_dropTarget)
+            if (d_dragging)
             {
-                // we need to detect if the position changed in a DragDropItemDropped
-                d_moved = false;
-                d_dropTarget->notifyDragDropItemDropped(this);
-                if (d_moved)
-                    d_startPosition = getPosition();
+                // Target could change even if we didn't move. Ensure we drop correctly.
+                updateDropTarget();
+
+                if (d_dropTarget)
+                {
+                    // we need to detect if the position changed in a DragDropItemDropped
+                    d_moved = false;
+                    d_dropTarget->notifyDragDropItemDropped(this);
+                    if (d_moved)
+                        d_startPosition = getPosition();
+                }
             }
 
             // Release input capture anyway
@@ -304,6 +309,7 @@ void DragContainer::onCaptureLost(WindowEventArgs& e)
     }
 
     d_leftPointerHeld = false;
+    d_targetDestroyConnection.disconnect();
     d_dropTarget = nullptr;
 
     ++e.handled;
@@ -390,22 +396,22 @@ void DragContainer::onDragPositionChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void DragContainer::updateDropTarget()
 {
-    Window* root = getGUIContext().getRootWindow();
-    if (!root)
+    GUIContext* ctx = getGUIContextPtr();
+    if (!ctx || !ctx->getRootWindow())
         return;
 
     // find out which child of root window has the cursor in it
-    Window* eventWindow = root->getTargetChildAtPosition(
-        getGUIContext().getCursor().getPosition(), false, this);
+    Window* target = ctx->getRootWindow()->getTargetChildAtPosition(
+        ctx->getCursor().getPosition(), false, this);
 
     // use root itself if no child was hit
-    if (!eventWindow)
-        eventWindow = root;
+    if (!target)
+        target = ctx->getRootWindow();
 
     // if the window with the cursor is different to current drop target
-    if (eventWindow != d_dropTarget)
+    if (target != d_dropTarget)
     {
-        DragDropEventArgs args(eventWindow);
+        DragDropEventArgs args(target);
         args.dragDropItem = this;
         onDragDropTargetChanged(args);
     }
@@ -450,21 +456,34 @@ void DragContainer::onDragThresholdChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void DragContainer::onDragDropTargetChanged(DragDropEventArgs& e)
 {
-    fireEvent(EventDragDropTargetChanged, e, EventNamespace);
-
     // Notify old target that drop item has left
     if (d_dropTarget)
         d_dropTarget->notifyDragDropItemLeaves(this);
 
     // update to new target
     d_dropTarget = e.window;
-
     while (d_dropTarget && !d_dropTarget->isDragDropTarget())
         d_dropTarget = d_dropTarget->getParent();
 
     // Notify new target window that someone has dragged a DragContainer over it
     if (d_dropTarget)
+    {
+        d_targetDestroyConnection = d_dropTarget->subscribeEvent(EventDestructionStarted, [this]()
+        {
+            d_targetDestroyConnection.disconnect();
+            d_dropTarget = nullptr;
+            updateDropTarget();
+        });
+
         d_dropTarget->notifyDragDropItemEnters(this);
+    }
+    else
+    {
+        d_targetDestroyConnection.disconnect();
+    }
+
+    e.window = d_dropTarget;
+    fireEvent(EventDragDropTargetChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//

@@ -406,6 +406,9 @@ protected:
     /*************************************************************************
         Data
     *************************************************************************/
+
+    Event::ScopedConnection d_targetDestroyConnection;
+
     Window*      d_dropTarget;               //!< Target window for possible drop operation.
     const Image* d_dragIndicatorImage;       //!< Image to use for cursor when dragging.
     UVector2     d_dragPoint;                //!< point we are being dragged at.
