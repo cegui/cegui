@@ -56,7 +56,6 @@ DragContainer::DragContainer(const String& type, const String& name) :
     d_draggingEnabled(true),
     d_leftPointerHeld(false),
     d_dragging(false),
-    d_dropflag(false),
     d_stickyMode(false),
     d_pickedUp(false),
     d_usingFixedDragOffset(false)
@@ -248,12 +247,11 @@ void DragContainer::onCursorActivate(CursorInputEventArgs& e)
             // did we drop over a window?
             if (d_dragging && d_dropTarget)
             {
-                // set flag - we need to detect if the position changed in a DragDropItemDropped
-                d_dropflag = true;
-                // Notify that item was dropped in the target window
+                // we need to detect if the position changed in a DragDropItemDropped
+                d_moved = false;
                 d_dropTarget->notifyDragDropItemDropped(this);
-                // reset flag
-                d_dropflag = false;
+                if (d_moved)
+                    d_startPosition = getPosition();
             }
 
             // Release input capture anyway
@@ -341,8 +339,7 @@ void DragContainer::onClippingChanged(WindowEventArgs& e)
 void DragContainer::onMoved(ElementEventArgs& e)
 {
     Window::onMoved(e);
-    if (d_dropflag)
-        d_startPosition = getPosition();
+    d_moved = true;
 }
 
 //----------------------------------------------------------------------------//
