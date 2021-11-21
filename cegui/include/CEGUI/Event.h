@@ -144,7 +144,11 @@ public:
 
         void disconnect()
         {
-            if (d_connection) d_connection->disconnect();
+            if (d_connection)
+            {
+                d_connection->disconnect();
+                d_connection = nullptr;
+            }
         }
 
     private:
@@ -171,10 +175,7 @@ public:
     \return
         String object containing the name of the Event object.
     */
-    const String& getName(void) const
-    {
-        return d_name;
-    }
+    const String& getName() const { return d_name; }
 
     /*!
     \brief
@@ -228,7 +229,6 @@ public:
     */
     void operator()(EventArgs& args);
 
-
 protected:
     friend void CEGUI::BoundSlot::disconnect();
     /*!
@@ -245,14 +245,11 @@ protected:
 
     // Copy constructor and assignment are not allowed for events
     Event(const Event&) {}
-    Event& operator=(const Event&)
-    {
-        return *this;
-    }
+    Event& operator =(const Event&) { return *this; }
 
-    typedef std::multimap<Group, Connection, std::less<Group> > SlotContainer;
-    SlotContainer d_slots;  //!< Collection holding ref-counted bound slots
+    std::multimap<Group, Connection, std::less<Group>> d_slots;  //!< Collection holding ref-counted bound slots
     const String d_name;    //!< Name of this event
+    bool d_isBeingInvoked = false;
 };
 
 } // End of  CEGUI namespace section

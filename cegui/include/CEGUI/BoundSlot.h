@@ -30,7 +30,6 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/SubscriberSlot.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
@@ -41,7 +40,7 @@ namespace CEGUI
     reference counted pointer.  When a BoundSlot is deleted, the connection is
     unsubscribed and the SubscriberSlot is deleted.
 */
-class CEGUIEXPORT BoundSlot
+class CEGUIEXPORT BoundSlot final
 {
 public:
     typedef unsigned int Group;
@@ -61,28 +60,17 @@ public:
     */
     BoundSlot(Group group, const SubscriberSlot& subscriber, Event& event);
 
-    /*!
-    \brief
-        Copy constructor.
-    */
-    BoundSlot(const BoundSlot& other);
+    BoundSlot(const BoundSlot&) = delete;
+    BoundSlot& operator =(const BoundSlot&) = delete;
 
-    /*!
-    \brief
-        Destructor
-    */
     ~BoundSlot();
 
     /*!
     \brief
         Returns whether the slot which this object is tracking is still
-        internally connected to the signal / event mechanism.
-
-    \return
-        - true to indicate that the slot is still connected.
-        - false to indicate that the slot has been disconnected.
+        internally connected to the event.
     */
-    bool connected() const;
+    bool connected() const { return d_subscriber && d_subscriber->connected(); }
 
     /*!
     \brief
@@ -90,9 +78,6 @@ public:
         called when the associated signal / event fires.  There is no way to
         re-connect a slot once it has been disconnected, a new subscription to
         the signal / event is required.
-
-    \return
-        Nothing.
     */
     void disconnect();
 
@@ -107,7 +92,7 @@ public:
         - true if the BoundSlot objects represent the same connection.
         - false if the BoundSlot objects represent different connections.
     */
-    bool operator==(const BoundSlot& other) const;
+    bool operator ==(const BoundSlot& other) const { return d_subscriber == other.d_subscriber; }
 
     /*!
     \brief
@@ -120,15 +105,15 @@ public:
         - true if the BoundSlot objects represent different connections.
         - false if the BoundSlot objects represent the same connection.
     */
-    bool operator!=(const BoundSlot& other) const;
+    bool operator !=(const BoundSlot& other) const { return !(*this == other); }
 
 private:
+
     friend class Event;
-    // no assignment.
-    BoundSlot& operator=(const BoundSlot& other);
-    Group d_group;                  //! The group the slot subscription used.
+
+    Group           d_group;        //! The group the slot subscription used.
     SubscriberSlot* d_subscriber;   //! The actual slot object.
-    Event* d_event;                 //! The event to which the slot was attached
+    Event*          d_event;        //! The event to which the slot was attached
 };
 
 } // End of  CEGUI namespace section
