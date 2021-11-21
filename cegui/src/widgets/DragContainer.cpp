@@ -192,6 +192,13 @@ void DragContainer::doDragging(const glm::vec2& local_cursor)
 }
 
 //----------------------------------------------------------------------------//
+void DragContainer::cancelDragging()
+{
+    if (d_dragging)
+        releaseInput();
+}
+
+//----------------------------------------------------------------------------//
 void DragContainer::updateActiveCursorImage() const
 {
     if (auto ctx = getGUIContextPtr())
@@ -228,24 +235,31 @@ void DragContainer::onCursorActivate(CursorInputEventArgs& e)
 
     if (e.source == CursorInputSource::Left)
     {
-        if (d_dragging)
+        if (!d_dragging && d_stickyMode && !d_pickedUp)
         {
-            d_pickedUp = false;
-            WindowEventArgs args(this);
-            onDragEnded(args);
-        }
-        else if (d_stickyMode && !d_pickedUp)
-        {
+            // Perform picking up in a sticky mode
             WindowEventArgs args(this);
             onDragStarted(args);
             if (d_dragging)
                 d_pickedUp = true;
-            // in this case, do not proceed to release inputs.
-            return;
+        }
+        else
+        {
+            // did we drop over a window?
+            if (d_dragging && d_dropTarget)
+            {
+                // set flag - we need to detect if the position changed in a DragDropItemDropped
+                d_dropflag = true;
+                // Notify that item was dropped in the target window
+                d_dropTarget->notifyDragDropItemDropped(this);
+                // reset flag
+                d_dropflag = false;
+            }
+
+            // Release input capture anyway
+            releaseInput();
         }
 
-        // release our capture on the input data
-        releaseInput();
         ++e.handled;
     }
 }
@@ -255,25 +269,16 @@ void DragContainer::onCursorMove(CursorInputEventArgs& e)
 {
     Window::onCursorMove(e);
 
-    // get position of cursor as co-ordinates local to this window.
+    // get position of cursor in coordinates local to this window.
     const glm::vec2 localPointerPos = CoordConverter::screenToWindow(*this, e.position);
-
     if (d_dragging)
     {
         doDragging(localPointerPos);
     }
-    else
+    else if (d_leftPointerHeld && isDraggingThresholdExceeded(localPointerPos))
     {
-        // if cursor is held pressed (but we're not yet being dragged)
-        if (d_leftPointerHeld)
-        {
-            if (isDraggingThresholdExceeded(localPointerPos))
-            {
-                // Trigger the event
-                WindowEventArgs args(this);
-                onDragStarted(args);
-            }
-        }
+        WindowEventArgs args(this);
+        onDragStarted(args);
     }
 }
 
@@ -282,11 +287,16 @@ void DragContainer::onCaptureLost(WindowEventArgs& e)
 {
     Window::onCaptureLost(e);
 
-    // reset state
+    d_pickedUp = false;
+
     if (d_dragging)
     {
-        // restore windows 'normal' state.
+        // restore normal state of the window
         d_dragging = false;
+
+        WindowEventArgs args(this);
+        onDragEnded(args);
+
         setClippedByParent(d_storedClipState);
         setPosition(d_startPosition);
         setAlpha(d_storedAlpha);
@@ -369,17 +379,6 @@ void DragContainer::onDragStarted(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void DragContainer::onDragEnded(WindowEventArgs& e)
 {
-    // did we drop over a window?
-    if (d_dropTarget)
-    {
-        // set flag - we need to detect if the position changed in a DragDropItemDropped
-        d_dropflag = true;
-        // Notify that item was dropped in the target window
-        d_dropTarget->notifyDragDropItemDropped(this);
-        // reset flag
-        d_dropflag = false;
-    }
-
     fireEvent(EventDragEnded, e, EventNamespace);
 }
 
@@ -422,7 +421,7 @@ void DragContainer::onDragEnabledChanged(WindowEventArgs& e)
 
     // abort current drag operation if dragging gets disabled part way through
     if (!d_draggingEnabled)
-        cancelDrag();
+        cancelDragging();
 }
 
 //----------------------------------------------------------------------------//
@@ -530,17 +529,6 @@ bool DragContainer::pickUp(bool force_sticky /*= false*/)
     }
 
     return d_pickedUp;
-}
-
-//----------------------------------------------------------------------------//
-void DragContainer::cancelDrag()
-{
-    if (d_dragging)
-    {
-        releaseInput();
-        d_dragging = false; // In case this window is not captured and onCaptureLost() is not called
-        d_pickedUp = false;
-    }
 }
 
 } // End of  CEGUI namespace section

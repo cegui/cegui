@@ -236,7 +236,7 @@ public:
     \brief
         Cancels dragging of this container without dropping it
     */
-    void cancelDrag();
+    void cancelDragging();
 
     /*!
     \brief
