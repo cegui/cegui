@@ -1111,6 +1111,9 @@ public:
         - true specifies that a disabled window may be returned as the target.
         - false specifies that only enabled windows may be returned.
 
+    \param exclude
+        if not null, excludes the specified window and its children from the test
+
     \return
         Pointer to the child Window that was hit according to the location
         \a position, or 0 if no child of this window was hit.
