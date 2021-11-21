@@ -313,6 +313,8 @@ protected:
 
     void updateActiveCursorImage() const;
 
+    void updateDropTarget();
+
     /*************************************************************************
         Overrides for Event handler methods
     *************************************************************************/

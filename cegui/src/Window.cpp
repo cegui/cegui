@@ -598,7 +598,8 @@ Window* Window::getChildAtPosition(const glm::vec2& position) const
 //----------------------------------------------------------------------------//
 Window* Window::getChildAtPosition(const glm::vec2& position,
                     bool (Window::*hittestfunc)(const glm::vec2&, bool) const,
-                    bool allow_disabled) const
+                    bool allow_disabled,
+                    const Window* const exclude) const
 {
     glm::vec2 p;
     // if the window has RenderingWindow backing
@@ -613,10 +614,10 @@ Window* Window::getChildAtPosition(const glm::vec2& position,
         if ((*child)->isEffectiveVisible())
         {
             // recursively scan for hit on children of this child window...
-            if (Window* const wnd = (*child)->getChildAtPosition(p, hittestfunc, allow_disabled))
+            if (Window* const wnd = (*child)->getChildAtPosition(p, hittestfunc, allow_disabled, exclude))
                 return wnd;
             // see if this child is hit and return it's cursor if it is
-            else if (((*child)->*hittestfunc)(p, allow_disabled))
+            else if ((*child) != exclude && ((*child)->*hittestfunc)(p, allow_disabled))
                 return *child;
         }
     }
@@ -627,9 +628,10 @@ Window* Window::getChildAtPosition(const glm::vec2& position,
 
 //----------------------------------------------------------------------------//
 Window* Window::getTargetChildAtPosition(const glm::vec2& position,
-                                         const bool allow_disabled) const
+                                         const bool allow_disabled,
+                                         const Window* const exclude) const
 {
-    return getChildAtPosition(position, &Window::isHitTargetWindow, allow_disabled);
+    return getChildAtPosition(position, &Window::isHitTargetWindow, allow_disabled, exclude);
 }
 
 //----------------------------------------------------------------------------//

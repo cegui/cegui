@@ -1116,7 +1116,8 @@ public:
         \a position, or 0 if no child of this window was hit.
     */
     Window* getTargetChildAtPosition(const glm::vec2& position,
-                                     const bool allow_disabled = false) const;
+                                     const bool allow_disabled = false,
+                                     const Window* const exclude = nullptr) const;
 
     /*!
     \brief
@@ -3724,7 +3725,8 @@ protected:
                                const
                                #endif
                                ,
-                               bool allow_disabled = false) const;
+                               bool allow_disabled = false,
+                               const Window* const exclude = nullptr) const;
 
     bool isHitTargetWindow(const glm::vec2& position, bool allow_disabled) const;
 

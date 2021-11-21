@@ -384,19 +384,19 @@ void DragContainer::onDragPositionChanged(WindowEventArgs& e)
 {
     fireEvent(EventDragPositionChanged, e, EventNamespace);
 
+    updateDropTarget();
+}
+
+//----------------------------------------------------------------------------//
+void DragContainer::updateDropTarget()
+{
     Window* root = getGUIContext().getRootWindow();
     if (!root)
         return;
 
-    // this hack with the 'enabled' state is so that getChildAtPosition
-    // returns something useful instead of a cursor back to 'this'.
-    // This hack is only acceptable because I am CrazyEddie!
-    const bool wasEnabled = d_enabled;
-    d_enabled = false;
     // find out which child of root window has the cursor in it
     Window* eventWindow = root->getTargetChildAtPosition(
-        getGUIContext().getCursor().getPosition());
-    d_enabled = wasEnabled;
+        getGUIContext().getCursor().getPosition(), false, this);
 
     // use root itself if no child was hit
     if (!eventWindow)
