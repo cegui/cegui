@@ -132,7 +132,7 @@ Rectf ScrolledContainer::getChildExtentsArea() const
 }
 
 //----------------------------------------------------------------------------//
-bool ScrolledContainer::handleChildAreaChanged(const EventArgs& e)
+bool ScrolledContainer::handleChildAreaChanged(const EventArgs& /*e*/)
 {
     adjustSizeToContent();
     return true;

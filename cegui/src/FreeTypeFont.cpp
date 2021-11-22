@@ -951,6 +951,7 @@ std::vector<GeometryBuffer*> FreeTypeFont::layoutAndCreateGlyphRenderGeometry(
     return layoutUsingRaqmAndCreateRenderGeometry(text, clip_rect, colours,
         space_extra, imgRenderSettings, defaultParagraphDir, penPosition);
 #else
+    CEGUI_UNUSED(defaultParagraphDir);
     return layoutUsingFreetypeAndCreateRenderGeometry(text, clip_rect, colours,
         space_extra, imgRenderSettings, penPosition);
 #endif

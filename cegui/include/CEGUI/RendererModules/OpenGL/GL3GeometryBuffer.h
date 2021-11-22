@@ -53,7 +53,7 @@ public:
     // Implementation/overrides of member functions inherited from OpenGLGeometryBufferBase
     void finaliseVertexAttributes() const override;
 
-    std::size_t d_verticesVBOPosition;
+    std::size_t d_verticesVBOPosition = 0;
 
 protected:
     void initialiseVertexBuffers();
@@ -69,7 +69,7 @@ protected:
     //! OpenGL vbo containing all vertex data
     GLuint d_verticesVBO;
     //! Size of the buffer that is currently in use
-    GLuint d_bufferSize;
+    GLuint d_bufferSize = 0;
 #endif
     //! Pointer to the OpenGL state changer wrapper that was created inside the Renderer
     OpenGLBaseStateChangeWrapper* d_glStateChanger;

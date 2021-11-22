@@ -273,25 +273,25 @@ protected:
     bool handleUndoRequest(const SemanticInputEvent& event);
     bool handleRedoRequest(const SemanticInputEvent& event);
 
-    Window* d_rootWindow;
+    Window* d_rootWindow = nullptr;
     Cursor d_cursor;
 
-    mutable Tooltip* d_defaultTooltipObject;
-    mutable bool d_weCreatedTooltipObject;
+    mutable Tooltip* d_defaultTooltipObject = nullptr;
+    mutable bool d_weCreatedTooltipObject = false;
     String d_defaultTooltipType;
 
-    Font* d_defaultFont;
+    Font* d_defaultFont = nullptr;
 
     //! a cache of the target surface size, allows returning by ref.
     Sizef d_surfaceSize;
 
     mutable Window* d_windowContainingCursor;
     mutable bool d_windowContainingCursorIsUpToDate;
-    Window* d_modalWindow;
-    Window* d_captureWindow;
+    Window* d_modalWindow = nullptr;
+    Window* d_captureWindow = nullptr;
 
     //! The mask of draw modes that must be redrawn
-    std::uint32_t d_dirtyDrawModeMask;
+    std::uint32_t d_dirtyDrawModeMask = 0;
 
     CursorsState d_cursorsState;
 
@@ -300,7 +300,7 @@ protected:
     std::map<SemanticValue, SlotFunctorBase<InputEvent>*> d_semanticEventHandlers;
 
     //! the window navigator (if any) used to navigate the GUI
-    WindowNavigator* d_windowNavigator;
+    WindowNavigator* d_windowNavigator = nullptr;
 };
 
 }

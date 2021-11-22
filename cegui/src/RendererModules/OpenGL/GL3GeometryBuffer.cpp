@@ -47,11 +47,7 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 OpenGL3GeometryBuffer::OpenGL3GeometryBuffer(OpenGL3Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial) :
     OpenGLGeometryBufferBase(owner, renderMaterial),
-    d_glStateChanger(owner.getOpenGLStateChanger()),
-#ifndef CEGUI_OPENGL_BIG_BUFFER
-    d_bufferSize(0),
-#endif
-    d_verticesVBOPosition(0)
+    d_glStateChanger(owner.getOpenGLStateChanger())
 {
     initialiseVertexBuffers();
 }

@@ -49,13 +49,11 @@ namespace CEGUI
 */
 struct CEGUIEXPORT MCLGridRef
 {
-	MCLGridRef(unsigned int r, unsigned int c) : row(r), column(c) {}
+    MCLGridRef(unsigned int r, unsigned int c) : row(r), column(c) {}
 
 	unsigned int	row;		//!< Zero based row index.
 	unsigned int	column;		//!< Zero based column index.
 
-	// operators
-	MCLGridRef& operator=(const MCLGridRef& rhs);
 	bool operator<(const MCLGridRef& rhs) const;
 	bool operator<=(const MCLGridRef& rhs) const;
 	bool operator>(const MCLGridRef& rhs) const;

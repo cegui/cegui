@@ -44,8 +44,7 @@ namespace CEGUI
 class Rectf
 {
 public:
-    inline Rectf()
-    {}
+    Rectf() = default;
 
     inline Rectf(float left, float top, float right, float bottom):
         d_min(left, top),
@@ -62,18 +61,8 @@ public:
         d_max(pos.x + size.d_width, pos.y + size.d_height)
     {}
 
-    inline Rectf(const Rectf& r):
-        d_min(r.d_min),
-        d_max(r.d_max)
-    {}
-
-    inline Rectf& operator=(const Rectf& rhs)
-    {
-        d_min = rhs.d_min;
-        d_max = rhs.d_max;
-
-        return *this;
-    }
+    Rectf(const Rectf& r) = default;
+    Rectf& operator =(const Rectf& rhs) = default;
 
     inline void left(float v)
     {

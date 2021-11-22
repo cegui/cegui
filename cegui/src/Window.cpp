@@ -1196,7 +1196,7 @@ void Window::drawSelf(const RenderingContext& ctx, std::uint32_t drawModeMask)
 }
 
 //----------------------------------------------------------------------------//
-void Window::bufferGeometry(const RenderingContext&, std::uint32_t drawModeMask)
+void Window::bufferGeometry(const RenderingContext&, std::uint32_t /*drawModeMask*/)
 {
     if (d_needsRedraw)
     {

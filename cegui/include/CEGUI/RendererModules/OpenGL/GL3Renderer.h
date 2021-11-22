@@ -181,14 +181,14 @@ public:
 
 #ifdef CEGUI_OPENGL_BIG_BUFFER
     //! OpenGL vao used for the vertices
-    GLuint d_verticesSolidVAO;
-    GLuint d_verticesTexturedVAO;
+    GLuint d_verticesSolidVAO = 0;
+    GLuint d_verticesTexturedVAO = 0;
     //! OpenGL vbo containing all vertex data
-    GLuint d_verticesSolidVBO;
-    GLuint d_verticesTexturedVBO;
+    GLuint d_verticesSolidVBO = 0;
+    GLuint d_verticesTexturedVBO = 0;
     //! Size of the vertex data buffer that is currently in use
-    GLuint d_verticesSolidVBOSize;
-    GLuint d_verticesTexturedVBOSize;
+    GLuint d_verticesSolidVBOSize = 0;
+    GLuint d_verticesTexturedVBOSize = 0;
 #endif
 
 protected:
@@ -248,16 +248,16 @@ private:
     void uploadVertexData(std::vector<float>& vertex_data, GLuint vbo_id, GLuint& vbo_max_size);
 
     //! Wrapper of the OpenGL shader we will use for textured geometry
-    OpenGLBaseShaderWrapper* d_shaderWrapperTextured;
+    OpenGLBaseShaderWrapper* d_shaderWrapperTextured = nullptr;
     //! Wrapper of the OpenGL shader we will use for solid geometry
-    OpenGLBaseShaderWrapper* d_shaderWrapperSolid;
+    OpenGLBaseShaderWrapper* d_shaderWrapperSolid = nullptr;
 
     //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
-    OpenGLBaseStateChangeWrapper* d_openGLStateChanger;
+    OpenGLBaseStateChangeWrapper* d_openGLStateChanger = nullptr;
     //! Wrapper for creating and handling shaders
-    OpenGLBaseShaderManager* d_shaderManager;
+    OpenGLBaseShaderManager* d_shaderManager = nullptr;
     //! pointer to a helper that creates TextureTargets supported by the system.
-    OGLTextureTargetFactory* d_textureTargetFactory;
+    OGLTextureTargetFactory* d_textureTargetFactory = nullptr;
 
     std::vector<float> d_vertex_data_solid;
     std::vector<float> d_vertex_data_textured;

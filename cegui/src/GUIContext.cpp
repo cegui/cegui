@@ -48,14 +48,8 @@ const String GUIContext::EventDefaultFontChanged("DefaultFontChanged");
 //----------------------------------------------------------------------------//
 GUIContext::GUIContext(RenderTarget& target) :
     RenderingSurface(target),
-    d_rootWindow(nullptr),
-    d_defaultTooltipObject(nullptr),
-    d_weCreatedTooltipObject(false),
-    d_defaultFont(nullptr),
+    d_cursor(*this),
     d_surfaceSize(target.getArea().getSize()),
-    d_modalWindow(nullptr),
-    d_captureWindow(nullptr),
-    d_dirtyDrawModeMask(0),
     d_areaChangedEventConnection(
         target.subscribeEvent(
             RenderTarget::EventAreaChanged,
@@ -63,10 +57,7 @@ GUIContext::GUIContext(RenderTarget& target) :
     d_windowDestroyedEventConnection(
         WindowManager::getSingleton().subscribeEvent(
             WindowManager::EventWindowDestroyed,
-            Event::Subscriber(&GUIContext::windowDestroyedHandler, this))),
-    d_semanticEventHandlers(),
-    d_windowNavigator(nullptr),
-    d_cursor(*this)
+            Event::Subscriber(&GUIContext::windowDestroyedHandler, this)))
 {
     d_cursor.resetPositionToDefault();
     resetWindowContainingCursor();

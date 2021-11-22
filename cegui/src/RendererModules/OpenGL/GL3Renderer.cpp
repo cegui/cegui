@@ -49,9 +49,10 @@
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
+#ifdef DEBUG
 #ifdef GLEW_VERSION_4_3
 // The function must be a C method with the same calling convention as the GL API functions, here this is done using the GLAPIENTRY function prefix
-static void GLAPIENTRY OpenGlDebugCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam )
+static void GLAPIENTRY OpenGlDebugCallback(GLenum /*source*/, GLenum type, GLuint id, GLenum severity, GLsizei /*length*/, const GLchar* message, const void* /*userParam*/)
 {
     std::string str_type;
     switch(type)
@@ -104,6 +105,7 @@ static void GLAPIENTRY OpenGlDebugCallback( GLenum source, GLenum type, GLuint i
     }
 #   endif
 }
+#endif
 #endif
 
 // Start of CEGUI namespace section
@@ -196,36 +198,14 @@ void OpenGL3Renderer::destroy(OpenGL3Renderer& renderer)
 
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::OpenGL3Renderer() :
-    OpenGLRendererBase(true),
-    d_shaderWrapperTextured(nullptr),
-#ifdef CEGUI_OPENGL_BIG_BUFFER
-    d_verticesTexturedVAO(0),
-    d_verticesSolidVAO(0),
-    d_verticesSolidVBO(0),
-    d_verticesTexturedVBO(0),
-    d_verticesSolidVBOSize(0),
-    d_verticesTexturedVBOSize(0),
-#endif
-    d_openGLStateChanger(nullptr),
-    d_shaderManager(nullptr)
+    OpenGLRendererBase(true)
 {
     init();
 }
 
 //----------------------------------------------------------------------------//
 OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
-    OpenGLRendererBase(display_size, true),
-    d_shaderWrapperTextured(nullptr),
-#ifdef CEGUI_OPENGL_BIG_BUFFER
-    d_verticesTexturedVAO(0),
-    d_verticesSolidVAO(0),
-    d_verticesSolidVBO(0),
-    d_verticesTexturedVBO(0),
-    d_verticesSolidVBOSize(0),
-    d_verticesTexturedVBOSize(0),
-#endif
-    d_openGLStateChanger(nullptr),
-    d_shaderManager(nullptr)
+    OpenGLRendererBase(display_size, true)
 {
     init();
 }

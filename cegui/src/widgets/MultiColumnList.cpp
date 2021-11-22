@@ -2722,17 +2722,6 @@ void MultiColumnList::resortList()
 *************************************************************************/
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
-	Assignment operator
-*************************************************************************/
-MCLGridRef& MCLGridRef::operator=(const MCLGridRef& rhs)
-{
-	column = rhs.column;
-	row = rhs.row;
-	return *this;
-}
-
-
-/*************************************************************************
 	return true if this is less than (appears before) 'rhs' in grid.
 *************************************************************************/
 bool MCLGridRef::operator<(const MCLGridRef& rhs) const

@@ -351,7 +351,7 @@ void ScrollablePane::configureScrollbars()
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::scrollContentPane(float dx, float dy, ScrollablePane::ScrollSource source)
+void ScrollablePane::scrollContentPane(float dx, float dy, ScrollablePane::ScrollSource /*source*/)
 {
     Scrollbar* vertScrollbar = getVerticalScrollbar();
     Scrollbar* horzScrollbar = getHorizontalScrollbar();
@@ -572,7 +572,7 @@ void ScrollablePane::onScroll(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onIsSizeAdjustedToContentChanged(ElementEventArgs& e)
+void ScrollablePane::onIsSizeAdjustedToContentChanged(ElementEventArgs& /*e*/)
 {
     // Forward to the container. handleAutoSizePaneChanged will be called
     // from the inside.

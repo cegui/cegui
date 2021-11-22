@@ -210,9 +210,7 @@ char32_t String::convertCodePoint(const char firstCodeUnit, const char secondCod
 
 bool String::isContinuingUTF8CodeUnit(const char codeUnit)
 {
-    const unsigned char unsignedCodeUnit = static_cast<const unsigned char>(codeUnit);
-
-    return (unsignedCodeUnit & 0xC0) == 0x80;
+    return (static_cast<unsigned char>(codeUnit) & 0xC0) == 0x80;
 }
 
 char32_t String::getCodePointFromCodeUnits(const char* firstCodeUnit,

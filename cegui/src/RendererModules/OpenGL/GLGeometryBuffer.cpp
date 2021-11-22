@@ -43,7 +43,7 @@ OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGLRenderer& owner, CEGUI::RefCoun
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::draw(std::uint32_t drawModeMask) const
+void OpenGLGeometryBuffer::draw(std::uint32_t /*drawModeMask*/) const
 {
     if (d_vertexData.empty())
         return;

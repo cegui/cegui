@@ -277,10 +277,7 @@ template <typename T>
 ModelIndex GenericItemModel<TGenericItem>::makeValidIndex(size_t id,
     std::vector<T>& vector)
 {
-    if (id >= 0 && id < vector.size())
-        return ModelIndex(vector.at(id));
-
-    return ModelIndex();
+    return (id < vector.size()) ? ModelIndex(vector.at(id)) : ModelIndex();
 }
 
 template <typename TGenericItem>
