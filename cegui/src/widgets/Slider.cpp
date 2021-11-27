@@ -72,17 +72,46 @@ void Slider::initialiseComponents()
 }
 
 //----------------------------------------------------------------------------//
+Slider::value_type Slider::roundToStep(value_type value) const
+{
+    const auto rem = std::fmod(value - d_minValue, d_stepSize);
+    value -= rem;
+    if (rem > 0.5 * d_stepSize)
+        value += d_stepSize;
+    return value;
+}
+
+//----------------------------------------------------------------------------//
 void Slider::setCurrentValue(value_type value)
 {
+    bool needUpdateThumb = false;
+    if (d_discrete)
+    {
+        const auto srcValue = value;
+        value = roundToStep(value);
+        needUpdateThumb = (value != srcValue);
+    }
+
     value = std::max(std::min(value, d_maxValue), d_minValue);
 
     if (value != d_currentValue)
     {
         d_currentValue = value;
-        updateThumb();
+        needUpdateThumb = true;
 
         WindowEventArgs args(this);
         onValueChanged(args);
+    }
+
+    if (needUpdateThumb)
+    {
+        Thumb* thumb = getThumb();
+        const bool prevMuted = thumb->isMuted();
+        thumb->setMutedState(true);
+
+        updateThumb();
+
+        thumb->setMutedState(prevMuted);
     }
 }
 
@@ -118,6 +147,18 @@ void Slider::setMaximumValue(value_type maxValue)
         WindowEventArgs args(this);
         onMaximumValueChanged(args);
     }
+}
+
+//----------------------------------------------------------------------------//
+void Slider::setDiscrete(bool discrete)
+{
+    if (d_discrete == discrete)
+        return;
+
+    d_discrete = discrete;
+
+    if (discrete)
+        setCurrentValue(d_currentValue);
 }
 
 //----------------------------------------------------------------------------//
@@ -165,7 +206,6 @@ void Slider::onThumbTrackEnded(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Slider::onCursorPressHold(CursorInputEventArgs& e)
 {
-	// base class processing
     Window::onCursorPressHold(e);
 
     if (e.source == CursorInputSource::Left)
@@ -274,9 +314,21 @@ void Slider::addSliderProperties()
         &Slider::setMaximumValue, &Slider::getMaximumValue, 1.0
     );
 
+    // TODO: remove when most of users resave their sliders with StepSize
     CEGUI_DEFINE_PROPERTY(Slider, value_type,
-        "ClickStepSize", "Property to get/set the click step size of the slider.  Value is a float.",
+        "ClickStepSize", "DEPRECATED, use StepSize instead",
         &Slider::setStepSize, &Slider::getStepSize, 0.01
+    );
+    banPropertyFromXML("ClickStepSize"); // Read only, resaved as StepSize
+
+    CEGUI_DEFINE_PROPERTY(Slider, value_type,
+        "StepSize", "Property to get/set the step size of the slider.  Value is a float.",
+        &Slider::setStepSize, &Slider::getStepSize, 0.01
+    );
+
+    CEGUI_DEFINE_PROPERTY(Slider, bool,
+        "Discrete", "When true, the value will change only by discrete steps.",
+        &Slider::setDiscrete, &Slider::isDiscrete, false
     );
 }
 

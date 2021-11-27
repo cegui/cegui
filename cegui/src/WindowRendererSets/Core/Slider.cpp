@@ -131,7 +131,7 @@ void FalagardSlider::updateThumb()
 }
 
 //----------------------------------------------------------------------------//
-FalagardSlider::value_type FalagardSlider::getValueFromThumb() const
+FalagardSlider::value_type FalagardSlider::getValueAtPoint(float pt) const
 {
     const Slider* w = static_cast<Slider*>(d_window);
     const Thumb* theThumb = w->getThumb();
@@ -143,14 +143,14 @@ FalagardSlider::value_type FalagardSlider::getValueFromThumb() const
     float thumbMaxOffset;
     if (d_vertical)
     {
-        thumbCurrOffset = CoordConverter::asAbsolute(theThumb->getYPosition(), w->getPixelSize().d_height) - area.top();
+        thumbCurrOffset = pt - area.top();
         thumbMaxOffset = area.getHeight() - theThumb->getPixelSize().d_height;
         if (!d_reversed)
             thumbCurrOffset = thumbMaxOffset - thumbCurrOffset;
     }
     else
     {
-        thumbCurrOffset = CoordConverter::asAbsolute(theThumb->getXPosition(), w->getPixelSize().d_width) - area.left();
+        thumbCurrOffset = pt - area.left();
         thumbMaxOffset = area.getWidth() - theThumb->getPixelSize().d_width;
         if (d_reversed)
             thumbCurrOffset = thumbMaxOffset - thumbCurrOffset;
@@ -162,23 +162,61 @@ FalagardSlider::value_type FalagardSlider::getValueFromThumb() const
 }
 
 //----------------------------------------------------------------------------//
+FalagardSlider::value_type FalagardSlider::getValueFromThumb() const
+{
+    const Slider* w = static_cast<Slider*>(d_window);
+    const Thumb* theThumb = static_cast<Slider*>(d_window)->getThumb();
+    const float pt = d_vertical ?
+        CoordConverter::asAbsolute(theThumb->getYPosition(), w->getPixelSize().d_height) :
+        CoordConverter::asAbsolute(theThumb->getXPosition(), w->getPixelSize().d_width);
+    return getValueAtPoint(pt);
+}
+
+//----------------------------------------------------------------------------//
 float FalagardSlider::getAdjustDirectionFromPoint(const glm::vec2& pt) const
 {
-    const Rectf absrect(static_cast<Slider*>(d_window)->getThumb()->getUnclippedOuterRect().get());
+    Slider* w = static_cast<Slider*>(d_window);
+    const Rectf& thumbRect = w->getThumb()->getUnclippedOuterRect().get();
 
-    if ((d_vertical && (pt.y < absrect.top())) ||
-        (!d_vertical && (pt.x > absrect.right())))
+    // Work with coords here to stop moving as soon as the cursor is over the thumb
+    float dir;
+    if ((d_vertical && (pt.y < thumbRect.top())) ||
+        (!d_vertical && (pt.x > thumbRect.right())))
     {
-        return d_reversed ? -1.0f : 1.0f;
+        dir = d_reversed ? -1.0f : 1.0f;
     }
-    else if ((d_vertical && (pt.y > absrect.bottom())) ||
-        (!d_vertical && (pt.x < absrect.left())))
+    else if ((d_vertical && (pt.y > thumbRect.bottom())) ||
+        (!d_vertical && (pt.x < thumbRect.left())))
     {
-        return d_reversed ? 1.0f : -1.0f;
+        dir = d_reversed ? 1.0f : -1.0f;
     }
     else
     {
-        return 0;
+        return 0.f;
+    }
+
+    const auto& sliderPos = w->getUnclippedOuterRect().get().getPosition();
+    const value_type ptValue = getValueAtPoint(d_vertical ? (pt.y - sliderPos.y) : (pt.x - sliderPos.x));
+    const value_type currValue = w->getCurrentValue();
+    value_type nextValue = currValue + dir * w->getStepSize();
+
+    if (w->isDiscrete())
+    {
+        // Stop at the nearest value to avoid thumb oscillation
+        nextValue = w->roundToStep(nextValue);
+        return (std::abs(nextValue - ptValue) < std::abs(currValue - ptValue)) ? dir : 0.f;
+    }
+    else if (nextValue == currValue)
+    {
+        // If no step size is specified, jump to the cursor immediately
+        w->setCurrentValue(ptValue);
+        return 0.f;
+    }
+    else
+    {
+        // Magnet exactly to the cursor stepwise
+        const float factor = static_cast<float>((ptValue - currValue) / (nextValue - currValue));
+        return (factor > 1.f) ? dir : dir * factor;
     }
 }
 

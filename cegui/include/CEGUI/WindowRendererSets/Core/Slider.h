@@ -79,6 +79,8 @@ protected:
     value_type getValueFromThumb() const override;
     float getAdjustDirectionFromPoint(const glm::vec2& pt) const override;
 
+    value_type getValueAtPoint(float pt) const;
+
     bool d_vertical = false; //!< True if slider operates in vertical direction.
     bool d_reversed = false; //!< True if slider operates in reversed direction to 'normal'.
 };

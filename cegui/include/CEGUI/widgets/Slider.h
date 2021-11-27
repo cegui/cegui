@@ -151,6 +151,9 @@ public:
     //! \brief Return the fraction of the current value between min (0) and max (1).
     float getValueFraction() const { return static_cast<float>(d_currentValue - d_minValue) / static_cast<float>(d_maxValue - d_minValue); }
 
+    //! \brief Round the value passed to the nearest step
+    value_type roundToStep(value_type value) const;
+
     //! \brief Set the current slider value.
     void setCurrentValue(value_type value);
 
@@ -171,6 +174,24 @@ public:
 		value representing the click step setting to use.
 	*/
 	void setStepSize(value_type step) { d_stepSize = step; }
+
+    /*!
+    \brief
+        Return whether this slider changes the value discretely between steps
+
+    \see
+        Slider::setStepSize
+    */
+    bool isDiscrete() const { return d_discrete; }
+
+    /*!
+    \brief
+        Set true for discrete mode and false for continuous
+
+    \see
+        Slider::setStepSize
+    */
+    void setDiscrete(bool discrete);
 
     /*!
     \brief
@@ -231,6 +252,7 @@ protected:
     value_type d_minValue = 0.0;     //!< slider minimum value
     value_type d_maxValue = 1.0;	 //!< slider maximum value
     value_type d_stepSize = 0.01;    //!< amount to adjust slider by when clicked (and not dragged).
+    bool       d_discrete = false;   //!< the value will change only by step
 
 private:
 

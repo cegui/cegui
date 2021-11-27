@@ -28,21 +28,39 @@
             <Property name="StepSize" value="0.01" />
             <Property name="CurrentProgress" value="0.5" />
         </Window>
-        <Window type="TaharezLook/Slider" name="disabledSlider" >
+        <Window type="TaharezLook/Slider" name="slider" >
+            <Property name="Area" value="{{0.205469,0},{0.461111,0},{0.221094,0},{0.738889,0}}" />
+            <Property name="CurrentValue" value="1" />
+        </Window>
+        <Window type="TaharezLook/Slider" name="discreteSlider" >
             <Property name="Area" value="{{0.225,0},{0.461111,0},{0.240625,0},{0.738889,0}}" />
+            <Property name="Discrete" value="true" />
+            <Property name="CurrentValue" value="0" />
+            <Property name="MaximumValue" value="3" />
+            <Property name="StepSize" value="0.6" />
+        </Window>
+        <Window type="TaharezLook/Slider" name="disabledSlider" >
+            <Property name="Area" value="{{0.244532,0},{0.461111,0},{0.256251,0},{0.738889,0}}" />
             <Property name="Disabled" value="true" />
             <Property name="CurrentValue" value="1" />
+        </Window>
+        <Window type="TaharezLook/VerticalScrollbar" name="scrollbar2" >
+            <Property name="Area" value="{{0.260157,0},{0.461111,0},{0.271876,0},{0.738889,0}}" />
+        </Window>
+        <Window type="TaharezLook/VerticalScrollbar" name="disabledScrollbar2" >
+            <Property name="Area" value="{{0.276,0},{0.461111,0},{0.288,0},{0.738889,0}}" />
+            <Property name="Disabled" value="true" />
+        </Window>
+        <Window type="TaharezLook/ProgressBar" name="progressBar" >
+            <Property name="Area" value="{{0.164063,0},{0.291667,0},{0.320313,0},{0.319445,0}}" />
+            <Property name="StepSize" value="0.01" />
+            <Property name="CurrentProgress" value="0.5" />
         </Window>
         <Window type="TaharezLook/ProgressBar" name="disabledProgressBar" >
             <Property name="Area" value="{{0.164063,0},{0.326389,0},{0.320313,0},{0.354167,0}}" />
             <Property name="Disabled" value="true" />
             <Property name="StepSize" value="0.01" />
             <Property name="CurrentProgress" value="0.11" />
-        </Window>
-        <Window type="TaharezLook/ProgressBar" name="progressBar" >
-            <Property name="Area" value="{{0.164063,0},{0.291667,0},{0.320313,0},{0.319445,0}}" />
-            <Property name="StepSize" value="0.01" />
-            <Property name="CurrentProgress" value="0.5" />
         </Window>
         <Window type="TaharezLook/GroupBox" name="disabledGroupBox" >
             <Property name="Area" value="{{0.00390625,0},{0.375,-1},{0.160156,0},{0.444444,-1}}" />
@@ -77,10 +95,6 @@
             <Property name="Area" value="{{0.166407,0},{0.461111,0},{0.182032,0},{0.738889,0}}" />
             <Property name="StepSize" value="0.01" />
             <Property name="CurrentProgress" value="0.5" />
-        </Window>
-        <Window type="TaharezLook/Slider" name="slider" >
-            <Property name="Area" value="{{0.205469,0},{0.461111,0},{0.221094,0},{0.738889,0}}" />
-            <Property name="CurrentValue" value="1" />
         </Window>
         <Window type="TaharezLook/Checkbox" name="checkBox2" >
             <Property name="Area" value="{{0.00390625,0},{0.180556,0},{0.0976563,0},{0.208334,0}}" />
@@ -123,13 +137,6 @@
             <Property name="Text" value="Group Box" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="RiseOnClickEnabled" value="false" />
-        </Window>
-        <Window type="TaharezLook/VerticalScrollbar" name="scrollbar2" >
-            <Property name="Area" value="{{0.244532,0},{0.461111,0},{0.256251,0},{0.738889,0}}" />
-        </Window>
-        <Window type="TaharezLook/VerticalScrollbar" name="disabledScrollbar2" >
-            <Property name="Area" value="{{0.260157,0},{0.461111,0},{0.271876,0},{0.738889,0}}" />
-            <Property name="Disabled" value="true" />
         </Window>
         <Window type="TaharezLook/Editbox" name="editbox" >
             <Property name="Area" value="{{0.199219,0},{0.00694444,0},{0.292969,0},{0.0347222,0}}" />
