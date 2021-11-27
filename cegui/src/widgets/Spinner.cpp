@@ -27,242 +27,180 @@
 #include "CEGUI/widgets/Spinner.h"
 #include "CEGUI/widgets/PushButton.h"
 #include "CEGUI/widgets/Editbox.h"
-#include "CEGUI/Exceptions.h"
-#include "CEGUI/WindowManager.h"
 #include "CEGUI/SharedStringStream.h"
 
-#include <stdio.h>
-#include <sstream>
-#include <iomanip>
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String Spinner::WidgetTypeName("CEGUI/Spinner");
+const String Spinner::WidgetTypeName("CEGUI/Spinner");
 
-    //////////////////////////////////////////////////////////////////////////
-    // event strings
-    const String Spinner::EventNamespace("Spinner");
-    const String Spinner::EventValueChanged("ValueChanged");
-    const String Spinner::EventStepChanged("StepChanged");
-    const String Spinner::EventMaximumValueChanged("MaximumValueChanged");
-    const String Spinner::EventMinimumValueChanged("MinimumValueChanged");
-    const String Spinner::EventTextInputModeChanged("TextInputModeChanged");
-    // Validator strings
-    const String Spinner::FloatValidator("-?\\d*\\.?\\d*");
-    const String Spinner::IntegerValidator("-?\\d*");
-    const String Spinner::HexValidator("[0-9a-fA-F]*");
-    const String Spinner::OctalValidator("[0-7]*");
-    // component widget name strings
-    const String Spinner::EditboxName( "__auto_editbox__" );
-    const String Spinner::IncreaseButtonName( "__auto_incbtn__" );
-    const String Spinner::DecreaseButtonName( "__auto_decbtn__" );
-    //////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// event strings
+const String Spinner::EventNamespace("Spinner");
+const String Spinner::EventValueChanged("ValueChanged");
+const String Spinner::EventMinimumValueChanged("MinimumValueChanged");
+const String Spinner::EventMaximumValueChanged("MaximumValueChanged");
+const String Spinner::EventStepChanged("StepChanged");
+const String Spinner::EventTextInputModeChanged("TextInputModeChanged");
+// Validator strings
+const String Spinner::FloatValidator("-?\\d*\\.?\\d*");
+const String Spinner::IntegerValidator("-?\\d*");
+const String Spinner::HexValidator("[0-9a-fA-F]*");
+const String Spinner::OctalValidator("[0-7]*");
+// component widget name strings
+const String Spinner::EditboxName( "__auto_editbox__" );
+const String Spinner::IncreaseButtonName( "__auto_incbtn__" );
+const String Spinner::DecreaseButtonName( "__auto_decbtn__" );
+//////////////////////////////////////////////////////////////////////////
 
+//----------------------------------------------------------------------------//
+Spinner::Spinner(const String& type, const String& name) :
+    Window(type, name)
+{
+    addSpinnerProperties();
+}
 
-    Spinner::Spinner(const String& type, const String& name) :
-        Window(type, name),
-        d_stepSize(1.0f),
-        d_currentValue(1.0f),
-        d_maxValue(32767.0f),
-        d_minValue(-32768.0f),
-        d_precision(6),
-        d_inputMode(static_cast<TextInputMode>(-1))
+//----------------------------------------------------------------------------//
+void Spinner::initialiseComponents()
+{
+    // get all the component widgets
+    PushButton* increaseButton = getIncreaseButton();
+    PushButton* decreaseButton = getDecreaseButton();
+    Editbox* editbox = getEditbox();
+
+    // ban properties forwarded from here
+    editbox->banPropertyFromXML(Window::TextPropertyName);
+    editbox->banPropertyFromXML("ValidationString");
+    editbox->setCursorInputPropagationEnabled(true); // for wheel scrolling
+    increaseButton->banPropertyFromXML(Window::CursorAutoRepeatEnabledPropertyName);
+    decreaseButton->banPropertyFromXML(Window::CursorAutoRepeatEnabledPropertyName);
+
+    // setup component controls
+    increaseButton->setCursorAutoRepeatEnabled(true);
+    decreaseButton->setCursorAutoRepeatEnabled(true);
+
+    // perform event subscriptions.
+    increaseButton->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&Spinner::handleIncreaseButton, this));
+    decreaseButton->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&Spinner::handleDecreaseButton, this));
+    editbox->subscribeEvent(Window::EventTextChanged, Event::Subscriber(&Spinner::handleEditTextChange, this));
+
+    // final initialisation
+    setTextInputMode(TextInputMode::Integer); // here to setup editbox validation
+    setCurrentValue(0.0f);
+
+    Window::initialiseComponents();
+}
+
+//----------------------------------------------------------------------------//
+void Spinner::setCurrentValue(value_type value)
+{
+    value = std::max(std::min(value, d_maxValue), d_minValue);
+
+    if (value != d_currentValue)
     {
-        addSpinnerProperties();
-    }
+        d_currentValue = value;
 
-    Spinner::~Spinner(void)
+        WindowEventArgs args(this);
+        onValueChanged(args);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Spinner::setMinimumValue(value_type minValue)
+{
+    // FIXME: correctness vs freedom in the order of calls
+    //if (minValue > d_maxValue)
+    //    minValue = d_maxValue;
+
+    if (minValue != d_minValue)
     {
-        // Nothing to do here.
-    }
+        d_minValue = minValue;
 
-    void Spinner::initialiseComponents()
+        WindowEventArgs args(this);
+        onMinimumValueChanged(args);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Spinner::setMaximumValue(value_type maxValue)
+{
+    // FIXME: correctness vs freedom in the order of calls
+    //if (maxValue < d_minValue)
+    //    maxValue = d_minValue;
+
+    if (maxValue != d_maxValue)
     {
-        // get all the component widgets
-        PushButton* increaseButton = getIncreaseButton();
-        PushButton* decreaseButton = getDecreaseButton();
-        Editbox* editbox = getEditbox();
+        d_maxValue = maxValue;
 
-        // ban properties forwarded from here
-        editbox->banPropertyFromXML(Window::TextPropertyName);
-        editbox->banPropertyFromXML("ValidationString");
-        editbox->setCursorInputPropagationEnabled(true); // for wheel scrolling
-        increaseButton->banPropertyFromXML(Window::CursorAutoRepeatEnabledPropertyName);
-        decreaseButton->banPropertyFromXML(Window::CursorAutoRepeatEnabledPropertyName);
-
-        // setup component controls
-        increaseButton->setCursorAutoRepeatEnabled(true);
-        decreaseButton->setCursorAutoRepeatEnabled(true);
-
-        // perform event subscriptions.
-        increaseButton->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&Spinner::handleIncreaseButton, this));
-        decreaseButton->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&Spinner::handleDecreaseButton, this));
-        editbox->subscribeEvent(Window::EventTextChanged, Event::Subscriber(&Spinner::handleEditTextChange, this));
-
-        // final initialisation
-        setTextInputMode(TextInputMode::Integer);
-        setCurrentValue(0.0f);
-        Window::initialiseComponents();
+        WindowEventArgs args(this);
+        onMaximumValueChanged(args);
     }
+}
 
-    double Spinner::getCurrentValue(void) const
+//----------------------------------------------------------------------------//
+void Spinner::setStepSize(value_type step)
+{
+    if (step != d_stepSize)
     {
-        return d_currentValue;
+        d_stepSize = step;
+
+        WindowEventArgs args(this);
+        onStepChanged(args);
     }
+}
 
-    double Spinner::getStepSize(void) const
-    {
-        return d_stepSize;
-    }
-
-    double Spinner::getMaximumValue(void) const
-    {
-        return d_maxValue;
-    }
-
-    double Spinner::getMinimumValue(void) const
-    {
-        return d_minValue;
-    }
-
-    int Spinner::getPrecision(void) const
-    {
-        return d_precision;
-    }
-
-    Spinner::TextInputMode Spinner::getTextInputMode(void) const
-    {
-        return d_inputMode;
-    }
-
-    void Spinner::setCurrentValue(double value)
-    {
-        if (value != d_currentValue)
-        {
-            // limit input value to within valid range for spinner
-            value = std::max(std::min(value, d_maxValue), d_minValue);
-
-            d_currentValue = value;
-
-            WindowEventArgs args(this);
-            onValueChanged(args);
-        }
-    }
-
-    void Spinner::setStepSize(double step)
-    {
-        if (step != d_stepSize)
-        {
-            d_stepSize = step;
-
-            WindowEventArgs args(this);
-            onStepChanged(args);
-        }
-    }
-
-    void Spinner::setMaximumValue(double maxValue)
-    {
-        if (maxValue != d_maxValue)
-        {
-            d_maxValue = maxValue;
-
-            WindowEventArgs args(this);
-            onMaximumValueChanged(args);
-        }
-    }
-
-    void Spinner::setMinimumValue(double minVaue)
-    {
-        if (minVaue != d_minValue)
-        {
-            d_minValue = minVaue;
-
-            WindowEventArgs args(this);
-            onMinimumValueChanged(args);
-        }
-    }
-
-    void Spinner::setPrecision(int val)
+//----------------------------------------------------------------------------//
+void Spinner::setPrecision(int val)
+{
+    if (d_precision != val)
     {
         d_precision = val;
+        if (d_inputMode == TextInputMode::FloatingPoint)
+            updateEditboxText();
     }
+}
 
-    void Spinner::setTextInputMode(TextInputMode mode)
+//----------------------------------------------------------------------------//
+void Spinner::setTextInputMode(TextInputMode mode)
+{
+    if (mode == d_inputMode)
+        return;
+
+    switch (mode)
     {
-        if (mode != d_inputMode)
-        {
-            switch (mode)
-            {
-            case TextInputMode::FloatingPoint:
-                getEditbox()->setValidationString(FloatValidator);
-                break;
-            case TextInputMode::Integer:
-                getEditbox()->setValidationString(IntegerValidator);
-                break;
-            case TextInputMode::Hexadecimal:
-                getEditbox()->setValidationString(HexValidator);
-                break;
-            case TextInputMode::Octal:
-                getEditbox()->setValidationString(OctalValidator);
-                break;
-            default:
-                throw InvalidRequestException(
-                    "An unknown TextInputMode was specified.");
-            }
-
-            d_inputMode = mode;
-
-            WindowEventArgs args(this);
-            onTextInputModeChanged(args);
-        }
-    }
-
-    void Spinner::addSpinnerProperties(void)
-    {
-        const String& propertyOrigin = WidgetTypeName;
-
-        CEGUI_DEFINE_PROPERTY(Spinner, double,
-            "CurrentValue", "Property to get/set the current value of the spinner.  Value is a float.",
-            &Spinner::setCurrentValue, &Spinner::getCurrentValue, 0.0f
-        );
-
-        CEGUI_DEFINE_PROPERTY(Spinner, double,
-            "StepSize", "Property to get/set the step size of the spinner.  Value is a float.",
-            &Spinner::setStepSize, &Spinner::getStepSize, 1.0f
-        );
-
-        CEGUI_DEFINE_PROPERTY(Spinner, double,
-            "MinimumValue", "Property to get/set the minimum value setting of the spinner.  Value is a float.",
-            &Spinner::setMinimumValue, &Spinner::getMinimumValue, -32768.000000f
-        );
-
-        CEGUI_DEFINE_PROPERTY(Spinner, double,
-            "MaximumValue", "Property to get/set the maximum value setting of the spinner.  Value is a float.",
-            &Spinner::setMaximumValue, &Spinner::getMaximumValue, 32767.000000f
-        );
-
-        CEGUI_DEFINE_PROPERTY(Spinner, Spinner::TextInputMode,
-            "TextInputMode", "Property to get/set the TextInputMode setting for the spinner.  Value is \"FloatingPoint\", \"Integer\", \"Hexadecimal\", or \"Octal\".",
-            &Spinner::setTextInputMode, &Spinner::getTextInputMode, Spinner::TextInputMode::Integer
-        );
-
-        CEGUI_DEFINE_PROPERTY(Spinner, int,
-            "Precision", "Property to get/set the precision of display the floating point values.  Value is a int.",
-            &Spinner::setPrecision, &Spinner::getPrecision, 6
-        );
-    }
-
-    double Spinner::getValueFromText(void) const
-    {
-        const String& text = getEditbox()->getText();
-
-        switch (d_inputMode)
-        {
         case TextInputMode::FloatingPoint:
-            return static_cast<double>(PropertyHelper<float>::fromString(text));
+            getEditbox()->setValidationString(FloatValidator);
+            break;
         case TextInputMode::Integer:
-            return static_cast<double>(PropertyHelper<int>::fromString(text));
+            getEditbox()->setValidationString(IntegerValidator);
+            break;
+        case TextInputMode::Hexadecimal:
+            getEditbox()->setValidationString(HexValidator);
+            break;
+        case TextInputMode::Octal:
+            getEditbox()->setValidationString(OctalValidator);
+            break;
+        default:
+            throw InvalidRequestException(
+                "An unknown TextInputMode was specified.");
+    }
+
+    d_inputMode = mode;
+
+    WindowEventArgs args(this);
+    onTextInputModeChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+Spinner::value_type Spinner::getValueFromText() const
+{
+    const String& text = getEditbox()->getText();
+
+    switch (d_inputMode)
+    {
+        case TextInputMode::FloatingPoint:
+            return static_cast<value_type>(PropertyHelper<float>::fromString(text));
+        case TextInputMode::Integer:
+            return static_cast<value_type>(PropertyHelper<int>::fromString(text));
         case TextInputMode::Hexadecimal:
         {
             unsigned int tempUint;
@@ -271,12 +209,10 @@ namespace CEGUI
             sstream >> tempUint;
             sstream << std::dec;
             if (sstream.fail())
-            {
                 throw InvalidRequestException("The string '" + getEditbox()->getText() +
                     "' could not be converted to numerical representation.");
-            }
             
-            return static_cast<double>(tempUint);
+            return static_cast<value_type>(tempUint);
         }
         case TextInputMode::Octal:
         {
@@ -286,25 +222,24 @@ namespace CEGUI
             sstream >> tempUint;
             sstream << std::dec;
             if (sstream.fail())
-            {
                 throw InvalidRequestException("The string '" + getEditbox()->getText() +
                     "' could not be converted to numerical representation.");
-            }
             
-            return static_cast<double>(tempUint);
+            return static_cast<value_type>(tempUint);
         }
         default:
             throw InvalidRequestException(
                 "An unknown TextInputMode was encountered.");
-        }
     }
+}
 
-    String Spinner::getTextFromValue(void) const
+//----------------------------------------------------------------------------//
+String Spinner::getTextFromValue() const
+{
+    std::stringstream& tmp = SharedStringstream::GetPreparedStream();
+
+    switch (d_inputMode)
     {
-        std::stringstream& tmp = SharedStringstream::GetPreparedStream();
-
-        switch (d_inputMode)
-        {
         case TextInputMode::FloatingPoint:
         {
             std::streamsize defPrec = tmp.precision();
@@ -323,167 +258,199 @@ namespace CEGUI
         default:
             throw InvalidRequestException(
                 "An unknown TextInputMode was encountered.");
-        }
-
-        return String(tmp.str().c_str());
     }
 
-    void Spinner::onFontChanged(WindowEventArgs& e)
-    {
-        // Propagate to children
-        getEditbox()->setFont(getActualFont());
-        // Call base class handler
-        Window::onFontChanged(e);
-    }
+    return String(tmp.str().c_str());
+}
 
-    void Spinner::onTextChanged(WindowEventArgs& e)
+//----------------------------------------------------------------------------//
+void Spinner::onFontChanged(WindowEventArgs& e)
+{
+    getEditbox()->setFont(getActualFont());
+    Window::onFontChanged(e);
+}
+
+//----------------------------------------------------------------------------//
+void Spinner::onTextChanged(WindowEventArgs& e)
+{
+    Editbox* editbox = getEditbox();
+
+    // update only if needed
+    if (editbox->getText() != getText())
     {
+        // done before doing base class processing so event subscribers see
+        // 'updated' version.
+        editbox->setText(getText());
+        ++e.handled;
+
+        Window::onTextChanged(e);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Spinner::onActivated(ActivationEventArgs& e)
+{
+    if (!isActive())
+    {
+        Window::onActivated(e);
+
         Editbox* editbox = getEditbox();
+        if (!editbox->isActive())
+            editbox->activate();
+    }
+}
 
-        // update only if needed
-        if (editbox->getText() != getText())
-        {
-            // done before doing base class processing so event subscribers see
-            // 'updated' version.
-            editbox->setText(getText());
-            ++e.handled;
+//----------------------------------------------------------------------------//
+void Spinner::onScroll(CursorInputEventArgs& e)
+{
+    Window::onScroll(e);
+    value_type prevValue = d_currentValue;
+    setCurrentValue(d_currentValue + d_stepSize * e.scroll);
+    if (prevValue != d_currentValue)
+        ++e.handled;
+}
 
-            Window::onTextChanged(e);
-        }
+//----------------------------------------------------------------------------//
+void Spinner::onValueChanged(WindowEventArgs& e)
+{
+    // Update editbox and spinner text with new value.
+    // (allow empty and '-'/'+' cases to equal 0 with no text change required)
+    Editbox* editbox = getEditbox();
+    if (d_currentValue != 0 || !ParserHelper::IsEmptyOrContainingSign(editbox->getText()))
+    {
+        updateEditboxText();
+        setText(editbox->getText());
     }
 
-    void Spinner::onActivated(ActivationEventArgs& e)
+    fireEvent(EventValueChanged, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Spinner::onMinimumValueChanged(WindowEventArgs& e)
+{
+    fireEvent(EventMinimumValueChanged, e, EventNamespace);
+
+    if (d_currentValue < d_minValue)
+        setCurrentValue(d_minValue);
+}
+
+//----------------------------------------------------------------------------//
+void Spinner::onMaximumValueChanged(WindowEventArgs& e)
+{
+    fireEvent(EventMaximumValueChanged, e, EventNamespace);
+
+    if (d_currentValue > d_maxValue)
+        setCurrentValue(d_maxValue);
+}
+
+//----------------------------------------------------------------------------//
+void Spinner::onStepChanged(WindowEventArgs& e)
+{
+    fireEvent(EventStepChanged, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Spinner::onTextInputModeChanged(WindowEventArgs& e)
+{
+    updateEditboxText();
+    fireEvent(EventTextInputModeChanged, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Spinner::updateEditboxText()
+{
+    // Mute to disable events for this change
+    Editbox* editbox = getEditbox();
+    const bool wasMuted = editbox->isMuted();
+    editbox->setMutedState(true);
+    editbox->setText(getTextFromValue());
+    editbox->setMutedState(wasMuted);
+}
+
+//----------------------------------------------------------------------------//
+bool Spinner::handleIncreaseButton(const EventArgs& e)
+{
+    if (static_cast<const CursorInputEventArgs&>(e).source == CursorInputSource::Left)
     {
-        if (!isActive())
-        {
-            Window::onActivated(e);
-
-            Editbox* editbox = getEditbox();
-
-            if (!editbox->isActive())
-            {
-                editbox->activate();
-            }
-        }
-    }
-
-    void Spinner::onScroll(CursorInputEventArgs& e)
-    {
-        Window::onScroll(e);
-        double prevValue = d_currentValue;
-        setCurrentValue(d_currentValue + d_stepSize * e.scroll);
-        if (prevValue != d_currentValue)
-            ++e.handled;
-    }
-
-    void Spinner::onValueChanged(WindowEventArgs& e)
-    {
-        Editbox* editbox = getEditbox();
-
-        // mute to save doing unnecessary events work.
-        bool wasMuted = editbox->isMuted();
-        editbox->setMutedState(true);
-
-        // Update editbox and spinner text with new value.
-        // (allow empty and '-'/'+' cases to equal 0 with no text change required)
-        if(d_currentValue != 0 || !ParserHelper::IsEmptyOrContainingSign(editbox->getText()))
-        {
-            const CEGUI::String& valueString = getTextFromValue();
-            editbox->setText(valueString);
-            setText(valueString);
-        }
-        // restore previous mute state.
-        editbox->setMutedState(wasMuted);
-
-        fireEvent(EventValueChanged, e, EventNamespace);
-    }
-
-    void Spinner::onStepChanged(WindowEventArgs& e)
-    {
-        fireEvent(EventStepChanged, e, EventNamespace);
-    }
-
-    void Spinner::onMaximumValueChanged(WindowEventArgs& e)
-    {
-        fireEvent(EventMaximumValueChanged, e, EventNamespace);
-
-        if (d_currentValue > d_maxValue)
-        {
-            setCurrentValue(d_maxValue);
-        }
-    }
-
-    void Spinner::onMinimumValueChanged(WindowEventArgs& e)
-    {
-        fireEvent(EventMinimumValueChanged, e, EventNamespace);
-
-        if (d_currentValue < d_minValue)
-        {
-            setCurrentValue(d_minValue);
-        }
-    }
-
-    void Spinner::onTextInputModeChanged(WindowEventArgs& e)
-    {
-        Editbox* editbox = getEditbox();
-        // update edit box text to reflect new mode.
-        // mute to save doing unnecessary events work.
-        bool wasMuted = editbox->isMuted();
-        editbox->setMutedState(true);
-        // Update text with new value.
-        editbox->setText(getTextFromValue());
-        // restore previous mute state.
-        editbox->setMutedState(wasMuted);
-
-        fireEvent(EventTextInputModeChanged, e, EventNamespace);
-    }
-
-    bool Spinner::handleIncreaseButton(const EventArgs& e)
-    {
-        if (static_cast<const CursorInputEventArgs&>(e).source == CursorInputSource::Left)
-        {
-            setCurrentValue(d_currentValue + d_stepSize);
-            return true;
-        }
-
-        return false;
-    }
-
-    bool Spinner::handleDecreaseButton(const EventArgs& e)
-    {
-        if (static_cast<const CursorInputEventArgs&>(e).source == CursorInputSource::Left)
-        {
-            setCurrentValue(d_currentValue - d_stepSize);
-            return true;
-        }
-
-        return false;
-    }
-
-    bool Spinner::handleEditTextChange(const EventArgs&)
-    {
-        // set this windows text to match
-        setText(getEditbox()->getText());
-        // update value
-        setCurrentValue(getValueFromText());
+        setCurrentValue(d_currentValue + d_stepSize);
         return true;
     }
 
-    PushButton* Spinner::getIncreaseButton() const
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool Spinner::handleDecreaseButton(const EventArgs& e)
+{
+    if (static_cast<const CursorInputEventArgs&>(e).source == CursorInputSource::Left)
     {
-        return static_cast<PushButton*>(getChild(IncreaseButtonName));
+        setCurrentValue(d_currentValue - d_stepSize);
+        return true;
     }
 
-    PushButton* Spinner::getDecreaseButton() const
-    {
-        return static_cast<PushButton*>(getChild(DecreaseButtonName));
-    }
+    return false;
+}
 
-    Editbox* Spinner::getEditbox() const
-    {
-        return static_cast<Editbox*>(getChild(EditboxName));
-    }
+//----------------------------------------------------------------------------//
+bool Spinner::handleEditTextChange(const EventArgs&)
+{
+    setText(getEditbox()->getText());
+    setCurrentValue(getValueFromText());
+    return true;
+}
 
-//////////////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------------------//
+PushButton* Spinner::getIncreaseButton() const
+{
+    return static_cast<PushButton*>(getChild(IncreaseButtonName));
+}
+
+//----------------------------------------------------------------------------//
+PushButton* Spinner::getDecreaseButton() const
+{
+    return static_cast<PushButton*>(getChild(DecreaseButtonName));
+}
+
+//----------------------------------------------------------------------------//
+Editbox* Spinner::getEditbox() const
+{
+    return static_cast<Editbox*>(getChild(EditboxName));
+}
+
+//----------------------------------------------------------------------------//
+void Spinner::addSpinnerProperties()
+{
+    const String& propertyOrigin = WidgetTypeName;
+
+    CEGUI_DEFINE_PROPERTY(Spinner, value_type,
+        "CurrentValue", "Property to get/set the current value of the spinner.  Value is a float.",
+        &Spinner::setCurrentValue, &Spinner::getCurrentValue, 0.0
+    );
+
+    CEGUI_DEFINE_PROPERTY(Spinner, value_type,
+        "MinimumValue", "Property to get/set the minimum value of the spinner.  Value is a float.",
+        &Spinner::setMinimumValue, &Spinner::getMinimumValue, -32768.0
+    );
+
+    CEGUI_DEFINE_PROPERTY(Spinner, value_type,
+        "MaximumValue", "Property to get/set the maximum value of the spinner.  Value is a float.",
+        &Spinner::setMaximumValue, &Spinner::getMaximumValue, 32767.0
+    );
+
+    CEGUI_DEFINE_PROPERTY(Spinner, value_type,
+        "StepSize", "Property to get/set the step size of the spinner.  Value is a float.",
+        &Spinner::setStepSize, &Spinner::getStepSize, 1.0
+    );
+
+    CEGUI_DEFINE_PROPERTY(Spinner, int,
+        "Precision", "Property to get/set the precision of display the floating point values.  Value is a int.",
+        &Spinner::setPrecision, &Spinner::getPrecision, 6
+    );
+
+    CEGUI_DEFINE_PROPERTY(Spinner, Spinner::TextInputMode,
+        "TextInputMode", "Property to get/set the TextInputMode setting for the spinner.  Value is \"FloatingPoint\", \"Integer\", \"Hexadecimal\", or \"Octal\".",
+        &Spinner::setTextInputMode, &Spinner::getTextInputMode, Spinner::TextInputMode::Integer
+    );
+}
 
 } // End of  CEGUI namespace section

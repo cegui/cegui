@@ -30,72 +30,59 @@
 #include "CEGUI/WindowRendererSets/Core/Module.h"
 #include "CEGUI/widgets/Slider.h"
 
-#if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4251)
-#endif
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-    /*!
-    \brief
-        Slider class for the FalagardBase module.
+/*!
+\brief
+    Slider class for the FalagardBase module.
 
-        This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
+    This class requires LookNFeel to be assigned.
+    The LookNFeel should provide the following:
 
-        States:
-            - Enabled
-            - EnabledFocused
-            - Disabled
+    States:
+        - Enabled
+        - EnabledFocused
+        - Disabled
 
-        Named Areas:
-            - ThumbTrackArea
+    Named Areas:
+        - ThumbTrackArea
 
-        Child Widgets:
-            Thumb based widget with name suffix "__auto_thumb__"
+    Child Widgets:
+        Thumb based widget with name suffix "__auto_thumb__"
 
-        Property initialiser definitions:
-            - VerticalSlider - boolean property.
-              Indicates whether this slider will operate in the vertical or
-              horizontal direction.  Default is for horizontal.  Optional.
-    */
-    class COREWRSET_API FalagardSlider : public SliderWindowRenderer
-    {
-    public:
-        static const String TypeName;     //! type name for this widget.
+    Property initialiser definitions:
+        - VerticalSlider - boolean property.
+            Indicates whether this slider will operate in the vertical or
+            horizontal direction. Default is for horizontal. Optional.
+*/
+class COREWRSET_API FalagardSlider : public SliderWindowRenderer
+{
+public:
 
-        /*!
-        \brief
-            Constructor
-        */
-        FalagardSlider(const String& type);
+    static const String TypeName;     //! type name for this widget.
 
-        bool isVertical() const;
-        void setVertical(bool setting);
+    FalagardSlider(const String& type);
 
-        bool isReversedDirection() const;
-        void setReversedDirection(bool setting);
+    bool isVertical() const { return d_vertical; }
+    void setVertical(bool setting) { d_vertical = setting; }
 
-        void createRenderGeometry() override;
-        bool performChildWindowLayout() override;
+    bool isReversedDirection() const { return d_reversed; }
+    void setReversedDirection(bool setting) { d_reversed = setting; }
 
-    protected:
-        // data members
-        bool    d_vertical;     //!< True if slider operates in vertical direction.
-        bool    d_reversed;     //!< true if slider operates in reversed direction to 'normal'.
+    void createRenderGeometry() override;
+    bool performChildWindowLayout() override;
 
-        // overridden from Slider base class.
-        void updateThumb(void) override;
-        float getValueFromThumb(void) const override;
-        float getAdjustDirectionFromPoint(const glm::vec2& pt) const override;
-    };
+protected:
+
+    // overridden from Slider base class.
+    void updateThumb() override;
+    value_type getValueFromThumb() const override;
+    float getAdjustDirectionFromPoint(const glm::vec2& pt) const override;
+
+    bool d_vertical = false; //!< True if slider operates in vertical direction.
+    bool d_reversed = false; //!< True if slider operates in reversed direction to 'normal'.
+};
 
 } // End of  CEGUI namespace section
-
-
-#if defined(_MSC_VER)
-#	pragma warning(pop)
-#endif
 
 #endif  // end of guard _FalSlider_h_

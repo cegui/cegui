@@ -29,47 +29,25 @@
 #ifndef _CEGUISlider_h_
 #define _CEGUISlider_h_
 
-#include "../Base.h"
 #include "../Window.h"
 
-
-#if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4251)
-#endif
-
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
-/*!
-\brief
-    Base class for ItemEntry window renderer objects.
-*/
 class CEGUIEXPORT SliderWindowRenderer : public WindowRenderer
 {
 public:
-    /*!
-    \brief
-        Constructor
-    */
+
+    // For easier changing or templating in the future
+    using value_type = double;
+
     SliderWindowRenderer(const String& name);
 
-    /*!
-    \brief
-        update the size and location of the thumb to properly represent the current state of the slider
-    */
-    virtual void    updateThumb(void)   = 0;
+    //! \brief update the size and location of the thumb to properly represent the current state of the slider
+    virtual void updateThumb() = 0;
 
-    /*!
-    \brief
-        return value that best represents current slider value given the current location of the thumb.
-
-    \return
-        float value that, given the thumb widget position, best represents the current value for the slider.
-    */
-    virtual float   getValueFromThumb(void) const   = 0;
+    //! \brief return value that best represents current slider value given the current location of the thumb.
+    virtual value_type getValueFromThumb() const = 0;
 
     /*!
     \brief
@@ -84,9 +62,8 @@ public:
         -  0 to indicate slider should not be moved.
         - +1 to indicate slider should be moved to a higher setting.
     */
-    virtual float   getAdjustDirectionFromPoint(const glm::vec2& pt) const  = 0;
+    virtual float getAdjustDirectionFromPoint(const glm::vec2& pt) const = 0;
 };
-
 
 /*!
 \brief
@@ -98,7 +75,11 @@ public:
 class CEGUIEXPORT Slider : public Window
 {
 public:
-	static const String EventNamespace;				//!< Namespace for global events
+
+    // For easier changing or templating in the future
+    using value_type = double;
+
+    static const String EventNamespace;				//!< Namespace for global events
     static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
@@ -109,6 +90,24 @@ public:
      * WindowEventArgs::window set to the Slider whose value has changed.
      */
 	static const String EventValueChanged;
+    /** Event fired when the minimum slider value is changed.
+        * Handlers are passed a const WindowEventArgs reference with
+        * WindowEventArgs::windows set to the slider whose minimum value has
+        * been changed.
+        */
+    static const String EventMinimumValueChanged;
+    /** Event fired when the maximum slider value is changed.
+        * Handlers are passed a const WindowEventArgs reference with
+        * WindowEventArgs::window set to the slider whose maximum value has
+        * been changed.
+        */
+    static const String EventMaximumValueChanged;
+    /** Event fired when the slider step value is changed.
+        * Handlers area passed a const WindowEventArgs reference with
+        * WindowEventArgs::window set to the slider whose step value has
+        * changed.
+        */
+    static const String EventStepChanged;
     /** Event fired when the user begins dragging the thumb.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Slider whose thumb has started to
@@ -126,41 +125,52 @@ public:
     *************************************************************************/
     static const String ThumbName;            //!< Widget name for the thumb component.
 
-	/*************************************************************************
-		Accessors
-	*************************************************************************/
+
+    Slider(const String& type, const String& name);
+
+    void initialiseComponents() override;
+
+    //! \brief Return the current slider value.
+    value_type getCurrentValue() const { return d_currentValue; }
+
+    //! \brief Return the current minimum limit value for this widget.
+    value_type getMinimumValue() const { return d_minValue; }
+
+    //! \brief Return the current maximum limit value for this widget.
+    value_type getMaximumValue() const { return d_maxValue; }
+
+    /*!
+    \brief
+        Return the current click step setting for the slider.
+
+        The click step size is the amount the slider value will be adjusted when the widget
+        is clicked wither side of the slider thumb.
+    */
+    value_type getStepSize() const { return d_stepSize; }
+
+    //! \brief Return the fraction of the current value between min (0) and max (1).
+    float getValueFraction() const { return static_cast<float>(d_currentValue - d_minValue) / static_cast<float>(d_maxValue - d_minValue); }
+
+    //! \brief Set the current slider value.
+    void setCurrentValue(value_type value);
+
+    //! \brief Set the minimum value for the slider.
+    void setMinimumValue(value_type minValue);
+
+    //! \brief Set the maximum value for the slider.
+    void setMaximumValue(value_type maxValue);
+
 	/*!
 	\brief
-		return the current slider value.
-
-	\return
-		float value equal to the sliders current value.
-	*/
-	float	getCurrentValue(void) const			{return d_value;}
-
-
-	/*!
-	\brief
-		return the maximum value set for this widget
-
-	\return
-		float value equal to the currently set maximum value for this slider.
-	*/
-	float	getMaxValue(void) const				{return d_maxValue;}
-
-
-	/*!
-	\brief
-		return the current click step setting for the slider.
+		Set the current click step setting for the slider.
 
 		The click step size is the amount the slider value will be adjusted when the widget
 		is clicked wither side of the slider thumb.
 
-	\return
-		float value representing the current click step setting.
+	\param step
+		value representing the click step setting to use.
 	*/
-	float	getClickStep(void) const		{return d_step;}
-
+	void setStepSize(value_type step) { d_stepSize = step; }
 
     /*!
     \brief
@@ -174,225 +184,59 @@ public:
     */
     Thumb* getThumb() const;
 
-
-	/*************************************************************************
-		Manipulators
-	*************************************************************************/
-	/*!
-	\brief
-		Initialises the Window based object ready for use.
-
-	\note
-		This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
-
-	\return
-		Nothing
-	*/
-    void initialiseComponents() override;
-
-
-	/*!
-	\brief
-		set the maximum value for the slider.  Note that the minimum value is fixed at 0.
-
-	\param maxVal
-		float value specifying the maximum value for this slider widget.
-
-	\return
-		Nothing.
-	*/
-	void	setMaxValue(float maxVal);
-
-
-	/*!
-	\brief
-		set the current slider value.
-
-	\param value
-		float value specifying the new value for this slider widget.
-
-	\return
-		Nothing.
-	*/
-	void	setCurrentValue(float value);
-
-
-	/*!
-	\brief
-		set the current click step setting for the slider.
-
-		The click step size is the amount the slider value will be adjusted when the widget
-		is clicked wither side of the slider thumb.
-
-	\param step
-		float value representing the click step setting to use.
-
-	\return
-		Nothing.
-	*/
-	void	setClickStep(float step)		{d_step = step;}
-
-
-	/*************************************************************************
-		Construction / Destruction
-	*************************************************************************/
-	/*!
-	\brief
-		Slider base class constructor
-	*/
-	Slider(const String& type, const String& name);
-
-
-	/*!
-	\brief
-		Slider base class destructor
-	*/
-	virtual ~Slider(void);
-
-
 protected:
-	/*************************************************************************
-		Implementation Functions
-	*************************************************************************/
-	/*!
-	\brief
-		update the size and location of the thumb to properly represent the current state of the slider
-	*/
-	virtual void	updateThumb(void);
 
+    // Delegated to the window renderer
+    virtual void updateThumb();
+	virtual value_type getValueFromThumb() const;
+    virtual float getAdjustDirectionFromPoint(const glm::vec2& pt) const;
 
-	/*!
-	\brief
-		return value that best represents current slider value given the current location of the thumb.
-
-	\return
-		float value that, given the thumb widget position, best represents the current value for the slider.
-	*/
-	virtual float	getValueFromThumb(void) const;
-
-
-	/*!
-	\brief
-		Given window location \a pt, return a value indicating what change should be 
-		made to the slider.
-
-	\param pt
-		Point object describing a pixel position in window space.
-
-	\return
-		- -1 to indicate slider should be moved to a lower setting.
-		-  0 to indicate slider should not be moved.
-		- +1 to indicate slider should be moved to a higher setting.
-	*/
-    virtual float	getAdjustDirectionFromPoint(const glm::vec2& pt) const;
-
-
-    /*!
-    \brief
-        update the size and location of the thumb to properly represent the current state of the slider
-    */
-    //virtual void    updateThumb_impl(void)   = 0;
-
-
-    /*!
-    \brief
-        return value that best represents current slider value given the current location of the thumb.
-
-    \return
-        float value that, given the thumb widget position, best represents the current value for the slider.
-    */
-    //virtual float   getValueFromThumb_impl(void) const   = 0;
-
-
-    /*!
-    \brief
-        Given window location \a pt, return a value indicating what change should be 
-        made to the slider.
-
-    \param pt
-        Point object describing a pixel position in window space.
-
-    \return
-        - -1 to indicate slider should be moved to a lower setting.
-        -  0 to indicate slider should not be moved.
-        - +1 to indicate slider should be moved to a higher setting.
-    */
-    //virtual float   getAdjustDirectionFromPoint_impl(const Point& pt) const  = 0;
-
-	/*!
-	\brief
-		handler function for when thumb moves.
-	*/
-	bool	handleThumbMoved(const EventArgs& e);
-
-
-	/*!
-	\brief
-		handler function for when thumb tracking begins
-	*/
-	bool	handleThumbTrackStarted(const EventArgs& e);
-
-
-	/*!
-	\brief
-		handler function for when thumb tracking begins
-	*/
-	bool	handleThumbTrackEnded(const EventArgs& e);
-
-    // validate window renderer
     bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
+	bool handleThumbMoved(const EventArgs& e);
+	bool handleThumbTrackStarted(const EventArgs& e);
+	bool handleThumbTrackEnded(const EventArgs& e);
 
 	/*************************************************************************
 		New event handlers for slider widget
 	*************************************************************************/
-	/*!
-	\brief
-		Handler triggered when the slider value changes
-	*/
-	virtual void	onValueChanged(WindowEventArgs& e);
+	//! \brief Handler triggered when the slider value changes
+	virtual void onValueChanged(WindowEventArgs& e);
 
+    //! \brief Method called when the minimum value setting changes.
+    virtual void onMinimumValueChanged(WindowEventArgs& e);
 
-	/*!
-	\brief
-		Handler triggered when the user begins to drag the slider thumb. 
-	*/
-	virtual void	onThumbTrackStarted(WindowEventArgs& e);
+    //! \brief Method called when the maximum value setting changes.
+    virtual void onMaximumValueChanged(WindowEventArgs& e);
 
+    //! \brief Method called when the step value changes.
+    virtual void onStepChanged(WindowEventArgs& e);
 
-	/*!
-	\brief
-		Handler triggered when the slider thumb is released
-	*/
-	virtual void	onThumbTrackEnded(WindowEventArgs& e);
+	//! \brief Handler triggered when the user begins to drag the slider thumb. 
+	virtual void onThumbTrackStarted(WindowEventArgs& e);
 
+	//! \brief Handler triggered when the slider thumb is released
+	virtual void onThumbTrackEnded(WindowEventArgs& e);
 
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-    void    onCursorPressHold(CursorInputEventArgs& e) override;
-    void    onScroll(CursorInputEventArgs& e) override;
-
+    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onScroll(CursorInputEventArgs& e) override;
 
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	float	d_value;		//!< current slider value
-	float	d_maxValue;		//!< slider maximum value (minimum is fixed at 0)
-	float	d_step;			//!< amount to adjust slider by when clicked (and not dragged).
+    value_type d_currentValue = 0.0; //!< current slider value
+    value_type d_minValue = 0.0;     //!< slider minimum value
+    value_type d_maxValue = 1.0;	 //!< slider maximum value
+    value_type d_stepSize = 0.01;    //!< amount to adjust slider by when clicked (and not dragged).
 
 private:
 
-	/*************************************************************************
-		Private methods
-	*************************************************************************/
-	void	addSliderProperties(void);
+	void addSliderProperties();
 };
 
 } // End of  CEGUI namespace section
-
-#if defined(_MSC_VER)
-#	pragma warning(pop)
-#endif
 
 #endif	// end of guard _CEGUISlider_h_

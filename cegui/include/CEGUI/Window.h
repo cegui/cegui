@@ -1560,9 +1560,6 @@ public:
     \note
         This must be called for every window created.  Normally this is handled
         automatically by the WindowManager.
-
-    \return
-        Nothing
     */
     virtual void initialiseComponents() {}
 

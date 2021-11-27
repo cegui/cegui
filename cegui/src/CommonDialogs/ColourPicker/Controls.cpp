@@ -1075,7 +1075,7 @@ bool ColourPickerControls::handleColourPickerSliderValueChanged(
     Slider* imageSlider = static_cast<Slider*>(
         static_cast<const WindowEventArgs&>(args).window);
 
-    float sliderValue = imageSlider->getCurrentValue();
+    const float sliderValue = static_cast<float>(imageSlider->getCurrentValue());
 
     Lab_Colour colourLAB = d_selectedColourLAB;
     HSV_Colour colourHSV = d_selectedColourHSV;
@@ -1129,7 +1129,7 @@ bool ColourPickerControls::handleAlphaSliderValueChanged(const EventArgs& args)
 
     Slider* imageSlider = static_cast<Slider*>(
         static_cast<const WindowEventArgs&>(args).window);
-    float sliderValue = 1.0f - imageSlider->getCurrentValue();
+    const float sliderValue = 1.0f - static_cast<float>(imageSlider->getCurrentValue());
 
     setColourAlpha(sliderValue);
 
