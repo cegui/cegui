@@ -32,77 +32,31 @@
 #include "CEGUI/ScriptModule.h"
 #include "CEGUI/System.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-EventSet::EventSet() :
-    d_muted(false)
-{
-}
-
-//----------------------------------------------------------------------------//
-EventSet::~EventSet(void)
-{
-    removeAllEvents();
-}
 
 //----------------------------------------------------------------------------//
 void EventSet::addEvent(const String& name)
 {
-    addEvent(*new Event(name));
+    if (isEventPresent(name))
+        throw AlreadyExistsException(
+            "An event named '" + name + "' already exists in the EventSet.");
+
+    d_events.emplace(name, new Event(name));
 }
 
 //----------------------------------------------------------------------------//
 void EventSet::addEvent(Event& event)
 {
-    const String name(event.getName());
-
-    if (isEventPresent(name))
+    if (isEventPresent(event.getName()))
     {
         delete &event;
 
         throw AlreadyExistsException(
-            "An event named '" + name + "' already exists in the EventSet.");
+            "An event named '" + event.getName() + "' already exists in the EventSet.");
     }
 
-    d_events.insert(std::make_pair(name, &event));
-}
-
-//----------------------------------------------------------------------------//
-void EventSet::removeEvent(const String& name)
-{
-    EventMap::iterator pos = d_events.find(name);
-
-	if (pos != d_events.end())
-	{
-		delete pos->second;
-		d_events.erase(pos);
-	}
-}
-
-//----------------------------------------------------------------------------//
-void EventSet::removeEvent(Event& event)
-{
-    removeEvent(event.getName());
-}
-
-//----------------------------------------------------------------------------//
-void EventSet::removeAllEvents(void)
-{
-	EventMap::const_iterator pos = d_events.begin();
-	EventMap::const_iterator end = d_events.end()	;
-
-	for (; pos != end; ++pos)
-		delete pos->second;
-
-    d_events.clear();
-}
-
-//----------------------------------------------------------------------------//
-bool EventSet::isEventPresent(const String& name) const
-{
-    return (d_events.find(name) != d_events.end());
+    d_events.emplace(event.getName(), &event);
 }
 
 //----------------------------------------------------------------------------//
@@ -123,9 +77,7 @@ Event::Connection EventSet::subscribeScriptedEvent(const String& name,
 //----------------------------------------------------------------------------//
 ScriptModule* EventSet::getScriptModule() const
 {
-    ScriptModule* sm = System::getSingletonPtr()->getScriptingModule();
-
-    if (sm)
+    if (ScriptModule* sm = System::getSingletonPtr()->getScriptingModule())
         return sm;
 
     throw InvalidRequestException(
@@ -159,51 +111,21 @@ void EventSet::fireEvent(const String& name,
 }
 
 //----------------------------------------------------------------------------//
-bool EventSet::isMuted(void) const
-{
-    return d_muted;
-}
-
-//----------------------------------------------------------------------------//
-void EventSet::setMutedState(bool setting)
-{
-    d_muted = setting;
-}
-
-//----------------------------------------------------------------------------//
 Event* EventSet::getEventObject(const String& name, bool autoAdd)
 {
-    EventMap::const_iterator pos = d_events.find(name);
+    auto it = d_events.find(name);
+    if (it != d_events.end())
+        return it->second.get();
 
-    // if event did not exist, add it as needed and then find it.
-    if (pos == d_events.end())
-    {
-        if (!autoAdd)
-            return nullptr;
-
-        addEvent(name);
-        pos = d_events.find(name);
-    }
-
-    return pos->second;
+    return autoAdd ? d_events.emplace(name, new Event(name)).first->second.get() : nullptr;
 }
 
 //----------------------------------------------------------------------------//
 void EventSet::fireEvent_impl(const String& name, EventArgs& args)
 {
-    Event* ev = getEventObject(name);
-
-    if ((ev != nullptr) && !d_muted)
-        (*ev)(args);
+    if (!d_muted)
+        if (Event* ev = getEventObject(name))
+            (*ev)(args);
 }
 
-//----------------------------------------------------------------------------//
-EventSet::EventIterator EventSet::getEventIterator(void) const
-{
-    return EventIterator(d_events.begin(), d_events.end());
 }
-
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section
-

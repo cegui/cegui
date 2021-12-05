@@ -29,13 +29,9 @@
 #ifndef _CEGUIEventSet_h_
 #define _CEGUIEventSet_h_
 
-#include "CEGUI/Base.h"
-#include "CEGUI/String.h"
 #include "CEGUI/Event.h"
 #include "CEGUI/IteratorBase.h"
 #include <unordered_map>
-
-#include <iostream>
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -168,12 +164,8 @@ void example()
 class CEGUIEXPORT EventSet
 {
 public:
-    /*!
-    \brief
-        Constructor for EventSet objects
-    */
-    EventSet();
 
+    EventSet() = default;
     EventSet(const EventSet&) = delete;
     EventSet& operator=(const EventSet&) = delete;
 
@@ -181,7 +173,7 @@ public:
     \brief
         Destructor for EventSet objects
     */
-    virtual ~EventSet(void);
+    virtual ~EventSet() { removeAllEvents(); }
 
     /*!
     \brief
@@ -223,7 +215,7 @@ public:
         String object containing the name of the Event to remove.  If no such
         Event exists, nothing happens.
     */
-    void removeEvent(const String& name);
+    void removeEvent(const String& name) { d_events.erase(name); }
 
     /*!
     \brief
@@ -234,14 +226,14 @@ public:
         Reference to the Event or Event based object to be removed from the
         EventSet.
     */
-    void removeEvent(Event& event);
+    void removeEvent(Event& event) { removeEvent(event.getName()); }
 
     /*!
     \brief
         Remove all Event objects from the EventSet.  Add connections will be
         disconnected, and all Event objects destroyed.
     */
-    void removeAllEvents(void);
+    void removeAllEvents() { d_events.clear(); }
 
     /*!
     \brief
@@ -252,7 +244,7 @@ public:
         - true if an Event named \a name is defined for this EventSet.
         - false if no Event named \a name is defined for this EventSet.
     */
-    bool isEventPresent(const String& name) const;
+    bool isEventPresent(const String& name) const { return d_events.find(name) != d_events.end(); }
 
     /*!
     \brief
@@ -390,7 +382,7 @@ public:
         - false if the EventSet is not muted.  Requests to fire events are
           processed as normal.
     */
-    bool isMuted(void) const;
+    bool isMuted() const { return d_muted; }
 
     /*!
     \brief
@@ -402,7 +394,7 @@ public:
         - false if the EventSet is not to be muted and all events should fired
           as requested.
     */
-    void    setMutedState(bool setting);
+    void setMutedState(bool setting) { d_muted = setting; }
 
     /*!
     \brief
@@ -431,23 +423,22 @@ protected:
     //! Helper to return the script module pointer or throw.
     ScriptModule* getScriptModule() const;
 
-    typedef std::unordered_map<String, Event*> EventMap;
-    EventMap    d_events;
+    std::unordered_map<String, std::unique_ptr<Event>> d_events;
 
-    bool d_muted;    //!< true if events for this EventSet have been muted.
+    bool d_muted = false;    //!< true if events for this EventSet have been muted.
 
 public:
     /*************************************************************************
         Iterator stuff
     *************************************************************************/
-    typedef ConstMapIterator<EventMap> EventIterator;
+    typedef ConstMapIterator<std::unordered_map<String, std::unique_ptr<Event>>> EventIterator;
 
     /*!
     \brief
         Return a EventSet::EventIterator object to iterate over the events currently
         added to the EventSet.
     */
-    EventIterator getEventIterator(void) const;
+    EventIterator getEventIterator() const { return EventIterator(d_events.begin(), d_events.end()); }
 };
 
 } // End of  CEGUI namespace section

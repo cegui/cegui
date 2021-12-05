@@ -38,6 +38,7 @@
 #include "CEGUI/Logger.h"
 
 #include <sstream>
+#include <iostream>
 #include <algorithm>
 
 namespace CEGUI

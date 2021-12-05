@@ -27,15 +27,11 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/FreeTypeFont.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/Texture.h"
-#include "CEGUI/ImageManager.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Font_xmlHandler.h"
 #include "CEGUI/SharedStringStream.h"
-#include "CEGUI/FreeTypeFontGlyph.h"
 
 #ifdef CEGUI_USE_RAQM
 #include <raqm.h>
@@ -43,6 +39,7 @@
 
 #include <cmath>
 #include <utility>
+#include <iostream>
 
 namespace
 {

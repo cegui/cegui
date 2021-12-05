@@ -105,7 +105,7 @@ public:
 	\brief
 		Return the value for the item at the current iterator position.
 	*/
-	virtual value_type	getCurrentValue(void) const = 0;
+	virtual const value_type&	getCurrentValue(void) const = 0;
 
 
 	/*!
@@ -151,7 +151,7 @@ public:
 	\brief
 		Return the value for the current iterator position.
 	*/
-	value_type	operator*() const
+	const value_type&	operator*() const
 	{
 		return getCurrentValue();
 	}
@@ -200,7 +200,7 @@ public:
         ConstBaseIterator<T, typename T::mapped_type>(start_iter, end_iter)
     {}
 
-    typename ConstBaseIterator<T, typename T::mapped_type>::value_type
+    typename const ConstBaseIterator<T, typename T::mapped_type>::value_type&
     getCurrentValue() const override
     {
         return this->d_currIter->second;
@@ -291,7 +291,7 @@ public:
         ConstBaseIterator<T>(start_iter, end_iter)
     {}
 
-    typename ConstBaseIterator<T>::value_type
+    typename const ConstBaseIterator<T>::value_type&
     getCurrentValue() const override
     {
         return *this->d_currIter;
