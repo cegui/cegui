@@ -1747,14 +1747,16 @@ void Window::notifyDragDropItemLeaves(DragContainer* item)
 }
 
 //----------------------------------------------------------------------------//
-void Window::notifyDragDropItemDropped(DragContainer* item)
+bool Window::notifyDragDropItemDropped(DragContainer* item)
 {
     if (!item)
-        return;
+        return false;
 
     DragDropEventArgs args(this);
     args.dragDropItem = item;
     onDragDropItemDropped(args);
+
+    return args.handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -2739,6 +2741,16 @@ void Window::onDragDropItemLeaves(DragDropEventArgs& e)
 void Window::onDragDropItemDropped(DragDropEventArgs& e)
 {
     fireEvent(EventDragDropItemDropped, e, EventNamespace);
+
+    // FIXME: this hack ensures that dragging can be cancelled by dropping on
+    // the target that doesn't have a drop handler. Otherwise it could be tricky
+    // to cancel dragging by mouse clicks. Still a better way should exist.
+    if (!e.handled && !d_muted)
+    {
+        Event* ev = getEventObject(EventDragDropItemDropped);
+        if (!ev || !ev->getConnectionCount())
+            ++e.handled;
+    }
 }
 
 //----------------------------------------------------------------------------//

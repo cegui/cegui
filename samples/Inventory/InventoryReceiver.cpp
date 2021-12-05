@@ -186,6 +186,9 @@ void InventoryReceiver::onDragDropItemDropped(DragDropEventArgs &e)
     const int drop_y = gridYLocationFromPixelPosition(item_area.top());
 
     addItemAtLocation(*item, drop_x, drop_y);
+
+    // Accept drop operation
+    ++e.handled;
 }
 
 //------------------------------------------------------------------------------//

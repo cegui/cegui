@@ -31,6 +31,7 @@
 namespace CEGUI
 {
 
+//----------------------------------------------------------------------------//
 Event::Event(const String& name) :
     d_name(name)
 {
@@ -112,5 +113,4 @@ void Event::unsubscribe(const BoundSlot& slot)
 
 //----------------------------------------------------------------------------//
 
-} // End of  CEGUI namespace section
-
+}

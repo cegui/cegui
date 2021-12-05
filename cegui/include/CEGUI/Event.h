@@ -223,11 +223,11 @@ public:
         An object derived from EventArgs to be passed to each event subscriber.
         The 'handled' field will be set to true if any of the called subscribers
         return that they handled the event.
-
-    \return
-        Nothing.
     */
     void operator()(EventArgs& args);
+
+    //! \brief Returns the number of connections to this event
+    bool getConnectionCount() const { return d_slots.size(); }
 
 protected:
     friend void CEGUI::BoundSlot::disconnect();
@@ -243,9 +243,9 @@ protected:
     */
     void unsubscribe(const BoundSlot& slot);
 
-    // Copy constructor and assignment are not allowed for events
-    Event(const Event&) {}
-    Event& operator =(const Event&) { return *this; }
+    // Copy constructor is used only by subclasses
+    Event(const Event&) = default;
+    Event& operator =(const Event&) = delete;
 
     std::multimap<Group, Connection, std::less<Group>> d_slots;  //!< Collection holding ref-counted bound slots
     const String d_name;    //!< Name of this event

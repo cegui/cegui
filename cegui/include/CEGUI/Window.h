@@ -1951,9 +1951,6 @@ public:
     \param setting
         - true to have the Window appear on top of all normal (non-topmost) windows.
         - false to allow the window to be covered by other normal windows.
-
-    \return
-        Nothing
     */
     void setAlwaysOnTop(bool setting);
 
@@ -1972,9 +1969,6 @@ public:
     \brief
         Releases input capture from this Window. If this Window does not have
         inputs captured, nothing happens.
-
-    \return
-        Nothing
     */
     void releaseInput();
 
@@ -1992,9 +1986,6 @@ public:
         - false: Input capture works as normal, each window losing capture is
           signalled via CaptureLost, and upon the final release of capture, no
           previous setting is restored (this is the default behaviour).
-
-    \return
-        Nothing
     */
     void setRestoreOldCapture(bool setting);
 
@@ -2014,9 +2005,6 @@ public:
     \param alpha
         The new alpha value for the window.
         Value should be between 0.0f and 1.0f.
-
-    \return
-        Nothing
     */
     void setAlpha(const float alpha);
 
@@ -2027,9 +2015,6 @@ public:
     \param setting
         - true if the Window should use inherited alpha.
         - false if the Window should have an independant alpha value.
-
-    \return
-        Nothing
     */
     void setInheritsAlpha(bool setting);
 
@@ -2054,9 +2039,6 @@ public:
     \param image
         Pointer to the Image object to use as the cursor image when the
         cursor enters the area for this Window.
-
-    \return
-        Nothing.
     */
     void setCursor(const Image* image);
 
@@ -2070,9 +2052,6 @@ public:
 
     \param name
         String object that contains the name of the Image to use.
-
-    \return
-        Nothing.
 
     \exception UnknownObjectException
         thrown if no Image named \a name exists.
@@ -2089,9 +2068,6 @@ public:
 
     \param user_data
         pointer to the user data that is to be set for this window.
-
-    \return
-        Nothing.
     */
     void setUserData(void* user_data)   {d_userData = user_data;}
 
@@ -2113,9 +2089,6 @@ public:
           moveToFront, moveToBack, moveInFront and moveBehind work normally.
         - false: z-order changes are disabled for this window.
           moveToFront, moveToBack, moveInFront and moveBehind are ignored.
-
-    \return
-        Nothing.
     */
     void    setZOrderingEnabled(bool setting);
 
@@ -2126,9 +2099,6 @@ public:
 
     \note
         Clicks are not repeated because they require down & up.
-
-    \return
-        Nothing.
     */
     void setCursorAutoRepeatEnabled(bool setting);
 
@@ -2139,9 +2109,6 @@ public:
     \param delay
         float value indicating the delay, in seconds, before the first repeat
         cursor press event should be triggered when autorepeat is enabled.
-
-    \return
-        Nothing.
     */
     void setAutoRepeatDelay(float delay);
 
@@ -2152,9 +2119,6 @@ public:
     \param rate
         float value indicating the rate, in seconds, at which repeat cursor press
         events should be generated after the initial delay has expired.
-
-    \return
-        Nothing.
     */
     void setAutoRepeatRate(float rate);
 
@@ -2187,8 +2151,12 @@ public:
     \brief
         Internal support method for drag & drop.  You do not normally call
         this directly from client code.  See the DragContainer class.
+
+    \return
+        true if dropping is accepted, false otherwise. When false and sticky
+        mode is active, dragging will not be terminated.
     */
-    void notifyDragDropItemDropped(DragContainer* item);
+    bool notifyDragDropItemDropped(DragContainer* item);
 
     /*!
     \brief
@@ -3408,7 +3376,7 @@ protected:
 
     /*!
     \brief
-        Handler called when a DragContainer is dragged over this window.
+        Handler called when a DragContainer is started being dragged over this window.
 
     \param e
         DragDropEventArgs object initialised as follows:
@@ -3420,7 +3388,7 @@ protected:
 
     /*!
     \brief
-        Handler called when a DragContainer is dragged over this window.
+        Handler called when a DragContainer is ended being dragged over this window.
 
     \param e
         DragDropEventArgs object initialised as follows:
@@ -3432,7 +3400,7 @@ protected:
 
     /*!
     \brief
-        Handler called when a DragContainer is dragged over this window.
+        Handler called when a DragContainer is dropped on this window.
 
     \param e
         DragDropEventArgs object initialised as follows:

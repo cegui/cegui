@@ -234,6 +234,8 @@ void DragContainer::onCursorActivate(CursorInputEventArgs& e)
 
     if (e.source == CursorInputSource::Left)
     {
+        ++e.handled;
+
         if (!d_dragging && d_stickyMode && !d_pickedUp)
         {
             // Perform picking up in a sticky mode
@@ -251,9 +253,13 @@ void DragContainer::onCursorActivate(CursorInputEventArgs& e)
 
                 if (d_dropTarget)
                 {
-                    // we need to detect if the position changed in a DragDropItemDropped
+                    // We need to detect if the position changed in a DragDropItemDropped
                     d_moved = false;
-                    d_dropTarget->notifyDragDropItemDropped(this);
+
+                    // Try dropping. Continue sticky dragging if it is not accepted by the target.
+                    if (!d_dropTarget->notifyDragDropItemDropped(this) && d_pickedUp)
+                        return;
+
                     if (d_moved)
                         d_startPosition = getPosition();
                 }
@@ -262,8 +268,6 @@ void DragContainer::onCursorActivate(CursorInputEventArgs& e)
             // Release input capture anyway
             releaseInput();
         }
-
-        ++e.handled;
     }
 }
 
