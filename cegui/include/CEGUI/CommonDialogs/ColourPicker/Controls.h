@@ -31,6 +31,7 @@
 
 #include "CEGUI/CommonDialogs/Module.h"
 #include "CEGUI/Window.h"
+#include "CEGUI/Colour.h"
 #include "CEGUI/CommonDialogs/ColourPicker/Types.h"
 
 #if defined(_MSC_VER)

@@ -27,7 +27,6 @@
 #ifndef _CEGUIRenderTarget_h_
 #define _CEGUIRenderTarget_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/Rectf.h"

@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/falagard/ComponentBase.h"
 #include "CEGUI/falagard/XMLHandler.h"
+#include "CEGUI/XMLSerializer.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Colour.h"
 namespace CEGUI

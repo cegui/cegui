@@ -25,15 +25,12 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/DefaultResourceProvider.h"
+#include "CEGUI/DataContainer.h"
 #include "CEGUI/Exceptions.h"
-
-#include <stdio.h>
 
 #if defined(__WIN32__) || defined(_WIN32)
 #   include "CEGUI/System.h"
 #   include <io.h>
-#   include <windows.h>
-#   include <string>
 #elif defined(__ANDROID__)
 #   include "CEGUI/AndroidUtils.h" 
 #   include <android/asset_manager.h>

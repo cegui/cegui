@@ -28,12 +28,12 @@
 #define _CEGUIXMLHandler_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/String.h"
 #include "CEGUI/XmlResourceExistsAction.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+class String;
+
 class CEGUIEXPORT XMLHandler
 {
 public:

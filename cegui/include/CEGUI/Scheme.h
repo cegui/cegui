@@ -29,22 +29,15 @@
 #ifndef _CEGUIScheme_h_
 #define _CEGUIScheme_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/String.h"
-#include "CEGUI/SchemeManager.h"
 #include "CEGUI/IteratorBase.h"
-
-
 #include <vector>
-
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
 #	pragma warning(disable : 4251)
 #endif
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

@@ -29,9 +29,8 @@
 #ifndef _CEGUIWindowNavigator_h_
 #define _CEGUIWindowNavigator_h_
 
-#include <map>
-#include "CEGUI/String.h"
 #include "CEGUI/SemanticInputEvent.h"
+#include <map>
 
 #if defined (_MSC_VER)
 #   pragma warning(push)

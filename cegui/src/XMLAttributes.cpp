@@ -27,10 +27,7 @@
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/SharedStringStream.h"
-#include <sstream>
-#include <iterator>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
     XMLAttributes::XMLAttributes(void)

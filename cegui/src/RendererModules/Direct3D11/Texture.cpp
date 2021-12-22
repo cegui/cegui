@@ -26,9 +26,12 @@
  ***************************************************************************/
 
 #include "CEGUI/RendererModules/Direct3D11/Texture.h"
+#include "CEGUI/DataContainer.h"
 #include "CEGUI/System.h"
+#include "CEGUI/ResourceProvider.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
+#include "CEGUI/Rectf.h"
 
 #include <cstdint>
 

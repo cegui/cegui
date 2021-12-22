@@ -30,12 +30,8 @@
 #define _CEGUIRenderer_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/String.h"
 #include "CEGUI/RefCounted.h"
-#include "CEGUI/Sizef.h"
-
 #include <glm/glm.hpp>
-
 #include <set>
 #include <vector>
 
@@ -47,7 +43,9 @@
 
 namespace CEGUI
 {
-    class RenderMaterial;
+class RenderMaterial;
+class String;
+class Sizef;
 
 //----------------------------------------------------------------------------//
 

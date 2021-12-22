@@ -32,7 +32,6 @@
 #include "CEGUI/Interpolator.h"
 #include "CEGUI/PropertyHelper.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 

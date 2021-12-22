@@ -28,14 +28,12 @@
 #define _CEGUIVertex_h_
 
 #include "CEGUI/Colour.h"
-
 #include <glm/glm.hpp>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
 #	pragma warning(disable : 4251)
 #endif
-
 
 namespace CEGUI
 {

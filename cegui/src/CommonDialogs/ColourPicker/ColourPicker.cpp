@@ -36,6 +36,7 @@
 
 #include "CEGUI/TextureTarget.h"
 #include "CEGUI/PropertyHelper.h"
+#include "CEGUI/ColourRect.h"
 
 namespace CEGUI
 {

@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/falagard/StateImagery.h"
 #include "CEGUI/falagard/XMLHandler.h"
+#include "CEGUI/XMLSerializer.h"
 #include <algorithm> // sort
 
 namespace CEGUI

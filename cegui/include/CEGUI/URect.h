@@ -31,11 +31,7 @@
 
 #include "CEGUI/UVector.h"
 #include "CEGUI/USize.h"
-#include "CEGUI/UDim.h"
 
-#include <glm/glm.hpp>
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

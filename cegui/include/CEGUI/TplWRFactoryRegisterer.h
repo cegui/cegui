@@ -30,7 +30,6 @@
 #include "CEGUI/FactoryRegisterer.h"
 #include "CEGUI/WindowRendererManager.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

@@ -28,11 +28,9 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/Scheme.h"
 #include "CEGUI/XMLAttributes.h"
-#include "CEGUI/XMLParser.h"
-#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/Exceptions.h"
 #include "CEGUI/SharedStringStream.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//

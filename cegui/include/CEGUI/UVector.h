@@ -30,12 +30,7 @@
 #define _CEGUIUVector_h_
 
 #include "CEGUI/UDim.h"
-#include "CEGUI/StreamHelper.h"
 
-#include <typeinfo>
-#include <ostream>
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 

@@ -27,11 +27,11 @@
 #include "CEGUI/RenderedStringWordWrapper.h"
 #include "CEGUI/JustifiedRenderedString.h"
 #include "CEGUI/LeftAlignedRenderedString.h"
+#include "CEGUI/Sizef.h"
 
 // The purpose of this file is to define a specialised RenderedStringWordWrapper
 // for Justified formatting so that the last line is handled correctly.
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//

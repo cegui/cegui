@@ -27,12 +27,10 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/WindowFactoryManager.h"
-#include "CEGUI/WindowFactory.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/SharedStringStream.h"
-#include <algorithm>
+#include "CEGUI/Logger.h"
+#include "CEGUI/Exceptions.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*************************************************************************
@@ -44,7 +42,33 @@ template<> WindowFactoryManager* Singleton<WindowFactoryManager>::ms_Singleton	=
 WindowFactoryManager::OwnedWindowFactoryList WindowFactoryManager::d_ownedFactories;
 
 //----------------------------------------------------------------------------//
-WindowFactoryManager::WindowFactoryManager(void)
+void WindowFactoryManager::addFactoryInternal(WindowFactory* factory)
+{
+    // only do the actual add now if our singleton has already been created
+    if (WindowFactoryManager::getSingletonPtr())
+    {
+        Logger::getSingleton().logEvent("[WindowFactoryManager] Created WindowFactory "
+            "for '" + factory->getTypeName() + "' windows.");
+        // add the factory we just created
+        try
+        {
+            WindowFactoryManager::getSingleton().addFactory(factory);
+        }
+        catch (Exception&)
+        {
+            Logger::getSingleton().logEvent("[WindowFactoryManager] Deleted WindowFactory "
+                "for '" + factory->getTypeName() + "' windows.");
+            // delete the factory object
+            delete factory;
+            throw;
+        }
+    }
+
+    d_ownedFactories.push_back(factory);
+}
+
+//----------------------------------------------------------------------------//
+WindowFactoryManager::WindowFactoryManager()
 {
     String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 
@@ -63,6 +87,12 @@ WindowFactoryManager::WindowFactoryManager(void)
         for (; d_ownedFactories.end() != i; ++i)
             addFactory(*i);
     }
+}
+
+//----------------------------------------------------------------------------//
+WindowFactoryManager::~WindowFactoryManager()
+{
+    Logger::getSingleton().logEvent("CEGUI::WindowFactoryManager singleton destroyed");
 }
 
 /*************************************************************************
@@ -92,7 +122,6 @@ void WindowFactoryManager::addFactory(WindowFactory* factory)
 	Logger::getSingleton().logEvent("[WindowFactoryManager] WindowFactory for '" +
        factory->getTypeName() +"' windows added. (" + addressStr + ")");
 }
-
 
 /*************************************************************************
 	removes a WindowFactory from the registry (by name)

@@ -27,11 +27,8 @@
 #ifndef _CEGUIRegexMatcher_h_
 #define _CEGUIRegexMatcher_h_
 
-#include "CEGUI/Base.h"
-#include "CEGUI/String.h"
 #include "CEGUI/InputEvent.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 

@@ -27,10 +27,9 @@
 #ifndef _CEGUIRenderedString_h_
 #define _CEGUIRenderedString_h_
 
-#include "CEGUI/Sizef.h"
-#include "CEGUI/Rectf.h"
+#include "CEGUI/Base.h"
 #include <vector>
-#include <utility>
+#include <glm/glm.hpp>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -40,6 +39,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class Rectf;
+
 /*!
 \brief
     Class representing a rendered string of entities.

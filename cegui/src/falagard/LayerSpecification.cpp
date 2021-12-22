@@ -26,9 +26,8 @@
  ***************************************************************************/
 #include "CEGUI/falagard/LayerSpecification.h"
 #include "CEGUI/falagard/XMLHandler.h"
-#include <iostream>
-#include "CEGUI/PropertyHelper.h"
-// Start of CEGUI namespace section
+#include "CEGUI/XMLSerializer.h"
+
 namespace CEGUI
 {
 

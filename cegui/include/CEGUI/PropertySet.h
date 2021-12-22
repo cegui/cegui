@@ -29,16 +29,9 @@
 #ifndef _CEGUIPropertySet_h_
 #define _CEGUIPropertySet_h_
 
-#include "CEGUI/Base.h"
-#include "CEGUI/String.h"
-#include "CEGUI/IteratorBase.h"
 #include "CEGUI/Property.h"
-#include "CEGUI/PropertyHelper.h"
-#include "CEGUI/TypedProperty.h"
-// not needed in this header but you are likely to use it if you include this,
-// we also define the CEGUI_DEFINE_PROPERTY macro that relies on this here
-#include "CEGUI/TplWindowProperty.h"
-#include "CEGUI/Exceptions.h"
+#include "CEGUI/IteratorBase.h"
+#include "CEGUI/TplWindowProperty.h" // for CEGUI_DEFINE_PROPERTY, see below //???move both out of here?
 #include <unordered_map>
 
 #if defined(_MSC_VER)
@@ -46,7 +39,6 @@
 #	pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

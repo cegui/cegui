@@ -29,6 +29,7 @@
 #include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/WindowManager.h"
+#include "CEGUI/XMLSerializer.h"
 
 namespace CEGUI
 {

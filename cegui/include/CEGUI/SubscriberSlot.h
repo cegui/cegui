@@ -27,15 +27,13 @@
 #ifndef _CEGUISubscriberSlot_h_
 #define _CEGUISubscriberSlot_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/FreeFunctionSlot.h"
-#include "CEGUI/FunctorCopySlot.h"
-#include "CEGUI/FunctorReferenceSlot.h"
-#include "CEGUI/FunctorPointerSlot.h"
 #include "CEGUI/MemberFunctionSlot.h"
+#include "CEGUI/FunctorCopySlot.h"
+#include "CEGUI/FunctorPointerSlot.h"
+#include "CEGUI/FunctorReferenceSlot.h"
 #include "CEGUI/FunctorReferenceBinder.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 

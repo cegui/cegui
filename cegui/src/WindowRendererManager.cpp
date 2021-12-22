@@ -25,11 +25,10 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/WindowRendererManager.h"
+#include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/SharedStringStream.h"
-#include <algorithm>
 
-// Start CEGUI namespace
 namespace CEGUI
 {
 
@@ -38,6 +37,34 @@ namespace CEGUI
 *************************************************************************/
 template<> WindowRendererManager* Singleton<WindowRendererManager>::ms_Singleton = nullptr;
 WindowRendererManager::OwnedFactoryList WindowRendererManager::d_ownedFactories;
+
+//----------------------------------------------------------------------------//
+void WindowRendererManager::addFactoryInternal(WindowRendererFactory* factory)
+{
+    // only do the actual add now if our singleton has already been created
+    if (WindowRendererManager::getSingletonPtr())
+    {
+        Logger::getSingleton().logEvent("Created WindowRendererFactory for '" +
+            factory->getName() +
+            "' WindowRenderers.");
+        // add the factory we just created
+        try
+        {
+            WindowRendererManager::getSingleton().addFactory(factory);
+        }
+        catch (Exception&)
+        {
+            Logger::getSingleton().logEvent("Deleted WindowRendererFactory for "
+                "'" + factory->getName() +
+                "' WindowRenderers.");
+            // delete the factory object
+            delete factory;
+            throw;
+        }
+    }
+
+    d_ownedFactories.push_back(factory);
+}
 
 /*************************************************************************
     Singleton functions

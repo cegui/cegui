@@ -30,7 +30,6 @@
 #include "CEGUI/EventSet.h"
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/RenderQueue.h"
-
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -38,8 +37,6 @@
 #   pragma warning(disable : 4251)
 #endif
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//

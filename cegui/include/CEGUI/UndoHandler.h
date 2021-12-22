@@ -29,9 +29,7 @@
 #ifndef _CEGUIUndoHandler_h_
 #define _CEGUIUndoHandler_h_
 
-#include "Base.h"
-#include "Window.h"
-
+#include "String.h"
 #include <deque>
 
 #if defined(_MSC_VER)
@@ -39,16 +37,15 @@
 #   pragma warning(disable : 4251)
 #endif
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+class Window;
+
 /*!
 \brief
 	Handler class for undo support
 
 */
-
 class CEGUIEXPORT UndoHandler
 {
 public:

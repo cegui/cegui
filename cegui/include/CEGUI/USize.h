@@ -30,11 +30,8 @@
 #define _CEGUIUSize_h_
 
 #include "CEGUI/UDim.h"
-#include <typeinfo>
-
 #include <glm/glm.hpp>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

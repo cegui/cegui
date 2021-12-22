@@ -27,6 +27,7 @@
 #include "CEGUI/falagard/PropertyInitialiser.h"
 #include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/XMLSerializer.h"
 #include <iostream>
 
 // Start of CEGUI namespace section

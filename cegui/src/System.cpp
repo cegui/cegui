@@ -27,7 +27,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/System.h"
-#include "CEGUI/Clipboard.h"
+#include "CEGUI/Renderer.h"
 #include "CEGUI/DefaultLogger.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/FontManager.h"
@@ -36,23 +36,18 @@
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/RenderEffectManager.h"
 #include "CEGUI/AnimationManager.h"
-#include "CEGUI/Window.h"
-#include "CEGUI/Exceptions.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/ScriptModule.h"
 #include "CEGUI/Config_xmlHandler.h"
-#include "CEGUI/ResourceProvider.h"
 #include "CEGUI/GlobalEventSet.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
-#include "CEGUI/PropertyHelper.h"
 #include "CEGUI/WindowRendererManager.h"
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/XMLParser.h"
-#include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/widgets/All.h"
-#include "CEGUI/RegexMatcher.h"
 #include "CEGUI/SharedStringStream.h"
 #include "CEGUI/svg/SVGDataManager.h"
 #if defined(CEGUI_HAS_PCRE_REGEX)
@@ -63,8 +58,6 @@
 #if defined(__WIN32__) || defined(_WIN32)
 #    include "CEGUI/Win32ClipboardProvider.h"
 #endif
-#include <ctime>
-#include <clocale>
 
 // declare create / destroy functions used for XMLParser and ImageCodec
 // modules as extern when static linking

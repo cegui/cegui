@@ -26,8 +26,8 @@
  ***************************************************************************/
 #include "CEGUI/CentredRenderedString.h"
 #include "CEGUI/RenderedString.h"
+#include "CEGUI/Sizef.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//

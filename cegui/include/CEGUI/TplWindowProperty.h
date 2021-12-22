@@ -29,7 +29,6 @@
 
 #include "CEGUI/TplProperty.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 

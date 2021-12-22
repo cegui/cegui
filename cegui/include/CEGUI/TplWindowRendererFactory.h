@@ -29,7 +29,6 @@
 
 #include "CEGUI/WindowRenderer.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

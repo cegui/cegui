@@ -30,13 +30,11 @@
 #ifndef _CEGUIProperty_h_
 #define _CEGUIProperty_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/String.h"
-#include "CEGUI/XMLSerializer.h" 
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+class XMLSerializer;
 
 /*!
 \brief
@@ -45,8 +43,7 @@ namespace CEGUI
 class CEGUIEXPORT PropertyReceiver
 {
 public:
-	PropertyReceiver() {}
-	virtual ~PropertyReceiver() {}
+    virtual ~PropertyReceiver() = default;
 };
 
 

@@ -32,17 +32,13 @@
 
 #include "CEGUI/Base.h"
 
-#include <string>
-
-#include <stdexcept>
-
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
 
 //Set a definition to determine if the compiler fully supports C++11's
 //basic_string definition
-    #if defined (_MSC_VER)
-    #define CEGUI_STRING_CPP_11
-    #endif
+#if defined (_MSC_VER)
+#define CEGUI_STRING_CPP_11
+#endif
 
 namespace CEGUI
 {
@@ -50,7 +46,6 @@ namespace CEGUI
 #if defined (_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
-#	pragma warning(disable : 4996)
 #endif
 
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)

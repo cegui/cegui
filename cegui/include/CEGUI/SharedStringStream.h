@@ -28,7 +28,6 @@
 #define _SharedStringstream_h_
 
 #include "CEGUI/String.h"
-
 #include <sstream>
 
 namespace CEGUI

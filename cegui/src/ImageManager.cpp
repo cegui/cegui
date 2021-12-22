@@ -28,6 +28,7 @@
 #include "CEGUI/SharedStringStream.h"
 #include "CEGUI/ImageFactory.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/Renderer.h"
 
 // for the XML parsing part.
 #include "CEGUI/XMLParser.h"

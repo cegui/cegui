@@ -29,11 +29,12 @@
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
+#include "CEGUI/ResourceProvider.h"
 #include "CEGUI/ImageCodec.h"
+#include "CEGUI/DataContainer.h"
 
 #include <cmath>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//

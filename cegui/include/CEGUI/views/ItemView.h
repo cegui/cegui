@@ -31,6 +31,7 @@
 
 #include "CEGUI/Window.h"
 #include "CEGUI/WindowRenderer.h"
+#include "CEGUI/ColourRect.h"
 #include "CEGUI/views/ItemModel.h"
 
 #if defined (_MSC_VER)

@@ -27,10 +27,8 @@
 #ifndef _CEGUIRenderedStringComponent_h_
 #define _CEGUIRenderedStringComponent_h_
 
-#include "CEGUI/Sizef.h"
 #include "CEGUI/Rectf.h"
 #include "CEGUI/falagard/Enums.h"
-
 #include <vector>
 
 #if defined(_MSC_VER)

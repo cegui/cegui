@@ -27,9 +27,8 @@
 #ifndef _CEGUIRenderingContext_h_
 #define _CEGUIRenderingContext_h_
 
-#include "CEGUI/RenderingSurface.h"
+#include "RenderingSurface.h" // FIXME: for RenderQueueID, otherwise could be forward declared
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
@@ -38,16 +37,14 @@ namespace CEGUI
 */
 struct RenderingContext
 {
-    RenderingContext() : surface(nullptr), owner(nullptr), queue(RenderQueueID::Base) {}
-
     //! RenderingSurface to be used for drawing
-    RenderingSurface* surface;
+    RenderingSurface* surface = nullptr;
     //! The Window object that owns the RenederingSurface (0 for default root)
-    const Window* owner;
+    const Window* owner = nullptr;
     //! The offset of the owning window on the root RenderingSurface.
     glm::vec2 offset;
     //! The queue that rendering should be added to.
-    RenderQueueID queue;
+    RenderQueueID queue = RenderQueueID::Base;
 };
 
 } // End of  CEGUI namespace section

@@ -29,15 +29,13 @@
 #ifndef _CEGUIResourceProvider_h_
 #define _CEGUIResourceProvider_h_
 
-#include "CEGUI/Base.h"
-#include "CEGUI/DataContainer.h"
 #include "CEGUI/String.h"
 #include <vector>
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+class RawDataContainer;
+
 /*!
 \brief
 	Abstract class that defines the required interface for all resource provider sub-classes.

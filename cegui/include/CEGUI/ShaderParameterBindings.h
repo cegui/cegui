@@ -28,9 +28,9 @@
 #define _CEGUIShaderParameterBindings_h_
 
 #include "CEGUI/Base.h"
-
 #include "CEGUI/ModuleConfig.h"
 #include <glm/glm.hpp>
+#include <map>
 
 #ifdef CEGUI_BUILD_RENDERER_OGRE
 namespace Ogre
@@ -38,9 +38,6 @@ namespace Ogre
     class Matrix4;
 }
 #endif
-
-#include <map>
-#include <string>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

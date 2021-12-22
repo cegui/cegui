@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "CEGUI/TextUtils.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*************************************************************************
@@ -37,8 +36,6 @@ namespace CEGUI
 const String    TextUtils::DefaultWhitespace(" \n\t\r");
 const String    TextUtils::DefaultAlphanumerical("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
 const String    TextUtils::DefaultWrapDelimiters(" \n\t\r");
-
-
 
 /*************************************************************************
     return a String containing the the next word in a String.

@@ -27,6 +27,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/AnimationManager.h"
+#include "CEGUI/ColourRect.h"
+#include "CEGUI/Rectf.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Animation.h"
 #include "CEGUI/AnimationInstance.h"
@@ -34,6 +36,7 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/XMLParser.h"
+#include "CEGUI/XMLSerializer.h"
 #include "CEGUI/Animation_xmlHandler.h"
 #include "CEGUI/Quaternion.h"
 #include "CEGUI/SharedStringStream.h"

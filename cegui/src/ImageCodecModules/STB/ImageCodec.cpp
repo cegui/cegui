@@ -29,6 +29,7 @@
 #include "CEGUI/ImageCodecModules/STB/ImageCodec.h"
 #include "CEGUI/DataContainer.h"
 #include "CEGUI/Texture.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/Logger.h"
 #include "stb_image.h"
 

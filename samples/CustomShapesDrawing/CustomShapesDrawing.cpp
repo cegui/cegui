@@ -26,6 +26,8 @@
  ***************************************************************************/
 #include "CustomShapesDrawing.h"
 
+#include "CEGUI/System.h"
+#include "CEGUI/Renderer.h"
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/WindowManager.h"

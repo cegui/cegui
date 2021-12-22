@@ -28,9 +28,7 @@
 #define _CEGUIScheme_xmlHandler_h_
 
 #include "CEGUI/XMLHandler.h"
-#include "CEGUI/String.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //! Handler class used to parse the Scheme XML files using SAX2

@@ -38,7 +38,6 @@
 #include "CEGUI/Base.h"
 #include <cassert>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /* Copyright (C) Scott Bilas, 2000.

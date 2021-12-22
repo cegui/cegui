@@ -27,6 +27,7 @@
 #include "CEGUI/widgets/GridLayoutContainer.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/XMLSerializer.h"
 
 namespace CEGUI
 {

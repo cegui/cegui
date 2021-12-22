@@ -30,22 +30,14 @@
 #define _CEGUIPropertyHelper_h_
 
 #include "CEGUI/String.h"
-#include "CEGUI/Sizef.h"
-#include "CEGUI/USize.h"
 #include "CEGUI/UVector.h"
-#include "CEGUI/Colour.h"
-#include "CEGUI/ColourRect.h"
-#include "CEGUI/UDim.h"
-#include "CEGUI/Rectf.h"
 #include "CEGUI/URect.h"
 #include "CEGUI/FontSizeUnit.h"
+#include "CEGUI/AspectMode.h"
 #include "CEGUI/HorizontalAlignment.h"
 #include "CEGUI/VerticalAlignment.h"
 #include "CEGUI/DefaultParagraphDirection.h"
-
-
 #include <glm/gtc/quaternion.hpp>
-
 
 namespace CEGUI
 {

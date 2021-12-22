@@ -29,6 +29,7 @@ author:     Lukas E Meindl
 
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/System.h"
+#include "CEGUI/Renderer.h"
 #include "CEGUI/TextureTarget.h"
 #include "CEGUI/BitmapImage.h"
 #include "CEGUI/GUIContext.h"

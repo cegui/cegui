@@ -27,20 +27,13 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/Scheme.h"
-#include "CEGUI/Exceptions.h"
-#include "CEGUI/SchemeManager.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/FontManager.h"
-#include "CEGUI/Font.h"
 #include "CEGUI/WindowFactoryManager.h"
 #include "CEGUI/WindowRendererManager.h"
-#include "CEGUI/FactoryModule.h"
-#include "CEGUI/Scheme_xmlHandler.h"
-#include "CEGUI/DataContainer.h"
-#include "CEGUI/System.h"
-#include "CEGUI/XMLParser.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/FactoryModule.h"
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/SharedStringStream.h"
 

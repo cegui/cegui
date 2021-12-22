@@ -29,7 +29,6 @@
 
 #include "CEGUI/RenderTarget.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

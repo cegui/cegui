@@ -27,6 +27,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/Affector.h"
+#include "CEGUI/XMLSerializer.h"
 #include "CEGUI/KeyFrame.h"
 #include "CEGUI/Animation.h"
 #include "CEGUI/AnimationManager.h"

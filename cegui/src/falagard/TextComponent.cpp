@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/falagard/TextComponent.h"
 #include "CEGUI/falagard/XMLHandler.h"
+#include "CEGUI/XMLSerializer.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/LeftAlignedRenderedString.h"
 #include "CEGUI/RightAlignedRenderedString.h"

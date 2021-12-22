@@ -28,7 +28,6 @@
 #define _CEGUIStdRegexMatcher_h_
 
 #include "CEGUI/RegexMatcher.h"
-#include "CEGUI/String.h"
 
 #if (__cplusplus >= 201103L) || (_MSC_VER >= 1600)
 #include <regex>
@@ -37,7 +36,6 @@
 namespace std { using namespace tr1; }
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //! Implementation of RegexMatcher using std::regex

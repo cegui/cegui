@@ -26,7 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/XMLSerializer.h"
 #include <iostream>
-// Start of CEGUI namespace section 
+
 namespace CEGUI 
 {
 XMLSerializer::XMLSerializer(OutStream& out, size_t indentSpace)
@@ -36,7 +36,6 @@ XMLSerializer::XMLSerializer(OutStream& out, size_t indentSpace)
     d_stream << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
     d_error = ! d_stream;
 }
-
 
 XMLSerializer::~XMLSerializer(void)
 {

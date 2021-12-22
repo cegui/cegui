@@ -30,10 +30,6 @@
 #include "CEGUI/ResourceProvider.h"
 #include "CEGUI/Logger.h"
 
-#include <locale.h>  
-#include <cstring>
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 

@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "CEGUI/Window.h"
 #include "CEGUI/System.h"
+#include "CEGUI/Renderer.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/ImageManager.h"
@@ -46,6 +47,7 @@
 #include "CEGUI/SharedStringStream.h"
 #include "CEGUI/BasicRenderedStringParser.h"
 #include "CEGUI/DefaultRenderedStringParser.h"
+#include "CEGUI/Logger.h"
 #if defined (CEGUI_USE_FRIBIDI)
 #include "CEGUI/FribidiVisualMapping.h"
 #elif defined (CEGUI_USE_MINIBIDI)

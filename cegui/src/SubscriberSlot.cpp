@@ -26,7 +26,6 @@
  ***************************************************************************/
 #include "CEGUI/SubscriberSlot.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 

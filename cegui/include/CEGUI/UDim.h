@@ -27,9 +27,7 @@
 #ifndef _CEGUIUDim_h_
 #define _CEGUIUDim_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/StreamHelper.h"
-
 #include <ostream>
 
 #if defined(_MSC_VER)
@@ -41,8 +39,6 @@
 #define cegui_absdim(x)     CEGUI::UDim(0,(x))
 #define cegui_reldim(x)     CEGUI::UDim((x),0)
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

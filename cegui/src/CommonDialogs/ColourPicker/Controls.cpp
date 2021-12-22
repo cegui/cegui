@@ -34,6 +34,7 @@
 #include "CEGUI/widgets/Thumb.h"
 
 #include "CEGUI/System.h"
+#include "CEGUI/Renderer.h"
 #include "CEGUI/Cursor.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"

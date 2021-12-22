@@ -29,7 +29,6 @@
 
 #include "CEGUI/WindowFactory.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

@@ -28,10 +28,14 @@
  ***************************************************************************/
 #include "CEGUI/FreeTypeFont.h"
 #include "CEGUI/Texture.h"
+#include "CEGUI/InputEvent.h"
 #include "CEGUI/System.h"
+#include "CEGUI/Renderer.h"
+#include "CEGUI/ResourceProvider.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/BitmapImage.h"
 #include "CEGUI/Font_xmlHandler.h"
+#include "CEGUI/XMLSerializer.h"
 #include "CEGUI/SharedStringStream.h"
 
 #ifdef CEGUI_USE_RAQM

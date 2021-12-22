@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "CEGUI/ImageCodecModules/SILLY/ImageCodec.h"
 #include "CEGUI/DataContainer.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/Texture.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"

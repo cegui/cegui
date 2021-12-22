@@ -37,8 +37,6 @@
 #	pragma warning(disable : 4251)
 #endif
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

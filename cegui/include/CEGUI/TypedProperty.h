@@ -34,7 +34,7 @@
 #include "CEGUI/Property.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Exceptions.h"
-// Start of CEGUI namespace section
+
 namespace CEGUI
 {
 

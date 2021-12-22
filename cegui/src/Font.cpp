@@ -26,10 +26,13 @@
  ***************************************************************************/
 #include "CEGUI/Font.h"
 #include "CEGUI/Font_xmlHandler.h"
+#include "CEGUI/XMLSerializer.h"
 #include "CEGUI/System.h"
+#include "CEGUI/Renderer.h"
 #include "CEGUI/FontGlyph.h"
 #include "CEGUI/BitmapImage.h"
 #include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/InputEvent.h"
 
 namespace CEGUI
 {

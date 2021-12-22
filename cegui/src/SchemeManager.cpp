@@ -25,10 +25,15 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/SchemeManager.h"
+#include "CEGUI/Scheme.h"
+#include "CEGUI/Scheme_xmlHandler.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/InputEvent.h"
+#include "CEGUI/System.h"
+#include "CEGUI/ResourceProvider.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/SharedStringStream.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//

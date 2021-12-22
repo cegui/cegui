@@ -34,6 +34,7 @@
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/ScriptModule.h"
 #include "CEGUI/XMLParser.h"
+#include "CEGUI/Scheme.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/falagard/WidgetLookManager.h"

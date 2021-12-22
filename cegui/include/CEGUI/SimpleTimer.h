@@ -28,7 +28,6 @@
 #define _CEGUISimpleTimer_h_
 
 #include "CEGUI/Base.h"
-
 #include <chrono>
 
 #if defined (_MSC_VER)

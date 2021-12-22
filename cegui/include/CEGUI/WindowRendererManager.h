@@ -30,12 +30,8 @@
 #define _CEGUIWindowRendererManager_h_
 
 #include "CEGUI/Singleton.h"
-#include "CEGUI/WindowRenderer.h"
-#include "CEGUI/Logger.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/TplWindowRendererFactory.h"
 #include <unordered_map>
-#include <vector>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -84,7 +80,7 @@ public:
         for.
     */
     template <typename T>
-    static void addFactory();
+    static void addFactory() { addFactoryInternal(new T()); }
 
     /*!
     \brief
@@ -116,6 +112,7 @@ private:
     /*************************************************************************
         Private implementation
     *************************************************************************/
+    static void addFactoryInternal(WindowRendererFactory* factory);
 
     /*************************************************************************
         Implementation data
@@ -128,38 +125,6 @@ private:
     //! Container that tracks WindowFactory objects we created ourselves.
     static OwnedFactoryList d_ownedFactories;
 };
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void WindowRendererManager::addFactory()
-{
-    // create the factory object
-    WindowRendererFactory* factory = new T;
-
-    // only do the actual add now if our singleton has already been created
-    if (WindowRendererManager::getSingletonPtr())
-    {
-        Logger::getSingleton().logEvent("Created WindowRendererFactory for '" +
-                                        factory->getName() +
-                                        "' WindowRenderers.");
-        // add the factory we just created
-        try
-        {
-            WindowRendererManager::getSingleton().addFactory(factory);
-        }
-        catch (Exception&)
-        {
-            Logger::getSingleton().logEvent("Deleted WindowRendererFactory for "
-                                            "'" + factory->getName() +
-                                            "' WindowRenderers.");
-            // delete the factory object
-            delete factory;
-            throw;
-        }
-    }
-
-    d_ownedFactories.push_back(factory);
-}
 
 //----------------------------------------------------------------------------//
 template <typename T>

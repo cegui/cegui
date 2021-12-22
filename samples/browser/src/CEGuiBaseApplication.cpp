@@ -32,6 +32,7 @@
 #include "CEGuiBaseApplication.h"
 #include "SampleBrowser.h"
 #include "CEGUI/System.h"
+#include "CEGUI/Renderer.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"

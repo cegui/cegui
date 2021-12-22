@@ -28,6 +28,7 @@
 #define _CEGUIFreeFunctionSlot_h_
 
 #include "CEGUI/SlotFunctorBase.h"
+#include "CEGUI/EventArgs.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

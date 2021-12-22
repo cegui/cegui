@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/BitmapImage.h"
 #include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/Renderer.h"
 #include "CEGUI/Texture.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/ColourRect.h"

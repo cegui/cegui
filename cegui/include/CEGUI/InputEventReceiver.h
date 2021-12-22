@@ -29,17 +29,15 @@
 #ifndef _CEGUIInputEventReceiver_h_
 #define _CEGUIInputEventReceiver_h_
 
-#include "CEGUI/InputEvents.h"
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+class InputEvent;
 
 //!	Interface to be implemented by classes that handle input events
 class CEGUIEXPORT InputEventReceiver
 {
 public:
-    virtual ~InputEventReceiver() {}
+    virtual ~InputEventReceiver() = default;
 
     /*!
     \brief 

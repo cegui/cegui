@@ -29,13 +29,12 @@
 #ifndef _CEGUIWindowFactory_h_
 #define _CEGUIWindowFactory_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Window.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+class Window;
+
 /*!
 \brief
     Abstract class that defines the required interface for all WindowFactory

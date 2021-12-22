@@ -27,27 +27,15 @@
 #ifndef _CEGUISchemeManager_h_
 #define _CEGUISchemeManager_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/Singleton.h"
-#include "CEGUI/Scheme.h"
-#include "CEGUI/Scheme_xmlHandler.h"
-#include "CEGUI/IteratorBase.h"
-#include "CEGUI/EventSet.h"
-#include "CEGUI/String.h"
-#include "CEGUI/Exceptions.h"
-#include "CEGUI/Logger.h"
-#include "CEGUI/InputEvent.h"
-#include "CEGUI/System.h"
+#include "CEGUI/XmlResourceExistsAction.h"
 #include "CEGUI/ResourceEventSet.h"
 #include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
-#   pragma warning(disable : 4275)
 #   pragma warning(disable : 4251)
 #endif
-
-
 
 namespace CEGUI
 {

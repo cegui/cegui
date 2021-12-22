@@ -33,7 +33,6 @@
 #include "CEGUI/Texture.h"
 #include "CEGUI/RenderEffect.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//

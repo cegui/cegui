@@ -29,25 +29,16 @@
 #ifndef _CEGUIWindowFactoryManager_h_
 #define _CEGUIWindowFactoryManager_h_
 
-#include "CEGUI/Base.h"
-#include "CEGUI/String.h"
 #include "CEGUI/Singleton.h"
-#include "CEGUI/Logger.h"
 #include "CEGUI/IteratorBase.h"
-#include "CEGUI/WindowFactory.h"
 #include "CEGUI/TplWindowFactory.h"
-#include "CEGUI/Exceptions.h"
 #include <unordered_map>
-#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
-#	pragma warning(disable : 4275)
 #	pragma warning(disable : 4251)
 #endif
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*! 
@@ -131,17 +122,14 @@ public:
 	\brief
 		Constructs a new WindowFactoryManager object.
 	*/
-	WindowFactoryManager(void);
+	WindowFactoryManager();
 
 
 	/*!
 	\brief
 		Destructor for WindowFactoryManager objects
 	*/
-	~WindowFactoryManager(void)
-	{
-		Logger::getSingleton().logEvent("CEGUI::WindowFactoryManager singleton destroyed");
-	}
+    ~WindowFactoryManager();
 
 
 	/*************************************************************************
@@ -176,7 +164,7 @@ public:
         Nothing
     */
     template <typename T>
-    static void addFactory();
+    static void addFactory() { addFactoryInternal(new T()); }
 
     /*!
     \brief
@@ -461,6 +449,8 @@ private:
     //! Type used for list of WindowFacory objects that we created ourselves
     typedef std::vector<WindowFactory*> OwnedWindowFactoryList;
 
+    static void addFactoryInternal(WindowFactory* factory);
+
 	WindowFactoryRegistry	d_factoryRegistry;			//!< The container that forms the WindowFactory registry
 	TypeAliasRegistry		d_aliasRegistry;			//!< The container that forms the window type alias registry.
     FalagardMapRegistry     d_falagardRegistry;         //!< Container that hold all the falagard window mappings.
@@ -495,36 +485,6 @@ public:
     */
     FalagardMappingIterator getFalagardMappingIterator() const;
 };
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void WindowFactoryManager::addFactory()
-{
-    // create the factory object
-    WindowFactory* factory = new T;
-
-    // only do the actual add now if our singleton has already been created
-    if (WindowFactoryManager::getSingletonPtr())
-    {
-        Logger::getSingleton().logEvent("[WindowFactoryManager] Created WindowFactory "
-                                        "for '" + factory->getTypeName() + "' windows.");
-        // add the factory we just created
-        try
-        {
-            WindowFactoryManager::getSingleton().addFactory(factory);
-        }
-        catch (Exception&)
-        {
-            Logger::getSingleton().logEvent("[WindowFactoryManager] Deleted WindowFactory "
-                                            "for '" + factory->getTypeName() + "' windows.");
-            // delete the factory object
-            delete factory;
-            throw;
-        }
-    }
-
-    d_ownedFactories.push_back(factory);
-}
 
 //----------------------------------------------------------------------------//
 template <typename T>

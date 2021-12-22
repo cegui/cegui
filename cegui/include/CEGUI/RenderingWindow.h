@@ -28,10 +28,7 @@
 #define _CEGUIRenderingWindow_h_
 
 #include "CEGUI/RenderingSurface.h"
-#include "CEGUI/Sizef.h"
 #include "CEGUI/Rectf.h"
-
-#include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
 #if defined(_MSC_VER)

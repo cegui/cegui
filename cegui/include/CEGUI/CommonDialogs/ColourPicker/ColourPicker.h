@@ -32,6 +32,7 @@
 #include "CEGUI/CommonDialogs/Module.h"
 #include "CEGUI/CommonDialogs/ColourPicker/Controls.h"
 #include "CEGUI/Window.h"
+#include "CEGUI/Colour.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/falagard/FormattingSetting.h"
 #include "CEGUI/falagard/XMLHandler.h"
+#include "CEGUI/XMLSerializer.h"
 
 namespace CEGUI
 {

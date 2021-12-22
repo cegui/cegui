@@ -31,12 +31,9 @@
 
 #include "CEGUI/StreamHelper.h"
 #include "CEGUI/Exceptions.h"
-
 #include "AspectMode.h"
-
 #include <glm/glm.hpp>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 

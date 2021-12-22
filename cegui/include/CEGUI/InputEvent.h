@@ -29,6 +29,7 @@
 #ifndef _CEGUIInputEvent_h_
 #define _CEGUIInputEvent_h_
 
+#include "CEGUI/EventArgs.h"
 #include "CEGUI/Sizef.h"
 #include "CEGUI/SemanticInputEvent.h"
 

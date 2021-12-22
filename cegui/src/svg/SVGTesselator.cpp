@@ -1,4 +1,4 @@
-﻿/***********************************************************************
+/***********************************************************************
     created:    1st August 2013
     author:     Lukas Meindl
 *************************************************************************/
@@ -29,6 +29,7 @@
 #include "CEGUI/svg/SVGBasicShape.h"
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/System.h"
+#include "CEGUI/Renderer.h"
 #include "CEGUI/Vertex.h"
 #include <glm/glm.hpp>
 #if (GLM_VERSION_MAJOR == 0 && GLM_VERSION_MINOR <= 9 && GLM_VERSION_PATCH <= 3)

@@ -111,7 +111,7 @@ public:
     virtual String stringFromStdWString(const std::wstring& input) const = 0;
 
 protected:
-    virtual ~StringTranscoder() {}
+    virtual ~StringTranscoder() = default;
 };
 
 }

@@ -29,10 +29,7 @@
 #include "CEGUI/ScriptModule.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/String.h"
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 // holds the default resource group ID for loading script files.

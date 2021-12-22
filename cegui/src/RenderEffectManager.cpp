@@ -26,8 +26,9 @@
  ***************************************************************************/
 #include "CEGUI/RenderEffectManager.h"
 #include "CEGUI/SharedStringStream.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Exceptions.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //---------------------------------------------------------------------------//

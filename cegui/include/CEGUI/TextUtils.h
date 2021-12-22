@@ -30,11 +30,8 @@
 #ifndef _CEGUITextUtils_h_
 #define _CEGUITextUtils_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/String.h"
-#include <vector>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

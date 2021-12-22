@@ -28,7 +28,6 @@
 #define _StreamHelper_h_
 
 #include "CEGUI/Base.h"
-
 #include <istream>
 
 namespace CEGUI

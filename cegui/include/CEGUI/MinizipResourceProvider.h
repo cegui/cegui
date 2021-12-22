@@ -29,13 +29,7 @@
 #ifndef _CEGUIMinizipResourceProvider_h_
 #define _CEGUIMinizipResourceProvider_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/DefaultResourceProvider.h"
-
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4251)
-#endif
 
 // NOTE: While the DefaultResourceProvider (DRP) was not originally intended
 // to be derived from, the purpose of this class is to extend the behavior of
@@ -83,10 +77,6 @@ protected:
 };
 
 } // End of  CEGUI namespace section
-
-#if defined(_MSC_VER)
-#   pragma warning(pop)
-#endif
 
 #endif
 

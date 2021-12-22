@@ -31,13 +31,14 @@
 #define _CEGUITexture_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/String.h"
-#include "CEGUI/Sizef.h"
-#include "CEGUI/Rectf.h"
+#include <glm/glm.hpp>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+class String;
+class Sizef;
+class Rectf;
+
 /*!
 \brief
     Abstract base class specifying the required interface for Texture objects.
@@ -84,7 +85,7 @@ public:
     \brief
         Destructor for Texture base class.
     */
-    virtual ~Texture() {}
+    virtual ~Texture() = default;
 
     /*!
     \brief

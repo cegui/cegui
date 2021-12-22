@@ -28,6 +28,7 @@
 #include "CEGUI/Rectf.h"
 #include "CEGUI/SimpleTimer.h"
 #include "CEGUI/System.h"
+#include "CEGUI/Renderer.h"
 #include "CEGUI/InputEventReceiver.h"
 
 namespace CEGUI

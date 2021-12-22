@@ -29,6 +29,7 @@
 #include "CEGUI/Cursor.h"
 #include "CEGUI/System.h"
 #include "CEGUI/GUIContext.h"
+#include "CEGUI/Renderer.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/ImageManager.h"

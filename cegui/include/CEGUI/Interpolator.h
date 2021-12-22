@@ -29,10 +29,8 @@
 #ifndef _CEGUIInterpolator_h_
 #define _CEGUIInterpolator_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/String.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 

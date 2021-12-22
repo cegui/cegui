@@ -29,13 +29,8 @@
 #ifndef _CEGUISystem_h_
 #define _CEGUISystem_h_
 
-#include "CEGUI/Base.h"
-#include "CEGUI/String.h"
 #include "CEGUI/Singleton.h"
 #include "CEGUI/EventSet.h"
-#include "CEGUI/Renderer.h"
-#include "CEGUI/InputEvent.h"
-#include "CEGUI/ResourceProvider.h"
 #include <vector>
 
 #if defined(__WIN32__) || defined(_WIN32)
@@ -46,12 +41,9 @@
 
 #if defined(_MSC_VER)
 #    pragma warning(push)
-#    pragma warning(disable : 4275)
 #    pragma warning(disable : 4251)
 #endif
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

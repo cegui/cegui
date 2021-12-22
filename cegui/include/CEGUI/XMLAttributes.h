@@ -27,7 +27,6 @@
 #ifndef _CEGUIXMLAttributes_h_
 #define _CEGUIXMLAttributes_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/String.h"
 #include <unordered_map>
 
@@ -36,7 +35,6 @@
 #	pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
     /*!
