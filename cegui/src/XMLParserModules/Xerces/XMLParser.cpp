@@ -29,6 +29,7 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/ResourceProvider.h"
+#include "CEGUI/DataContainer.h"
 #include "CEGUI/System.h"
 #include "CEGUI/XMLHandler.h"
 #include "CEGUI/XMLAttributes.h"

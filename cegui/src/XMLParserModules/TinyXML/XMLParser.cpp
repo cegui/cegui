@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/XMLParserModules/TinyXML/XMLParser.h"
 #include "CEGUI/ResourceProvider.h"
+#include "CEGUI/DataContainer.h"
 #include "CEGUI/System.h"
 #include "CEGUI/XMLHandler.h"
 #include "CEGUI/XMLAttributes.h"
