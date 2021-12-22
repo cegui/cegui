@@ -30,10 +30,7 @@
 #define _CEGUIGUILayout_xmlHandler_h_
 
 #include "CEGUI/WindowManager.h"
-#include "CEGUI/Window.h"
 #include "CEGUI/XMLHandler.h"
-
-#include <vector>
 
 // Start of CEGUI namespace section
 namespace CEGUI

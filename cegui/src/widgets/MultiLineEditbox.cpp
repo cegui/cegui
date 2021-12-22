@@ -29,19 +29,15 @@
 #include "CEGUI/widgets/MultiLineEditbox.h"
 #include "CEGUI/widgets/Scrollbar.h"
 #include "CEGUI/TextUtils.h"
-#include "CEGUI/Image.h"
-#include "CEGUI/Exceptions.h"
+#include "CEGUI/Font.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/WindowManager.h"
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/UndoHandler.h"
-
 
 namespace CEGUI
 {
 const String MultiLineEditbox::EventNamespace("MultiLineEditbox");
 const String MultiLineEditbox::WidgetTypeName("CEGUI/MultiLineEditbox");
-
 
 MultiLineEditboxWindowRenderer::MultiLineEditboxWindowRenderer(const String& name) :
     WindowRenderer(name, MultiLineEditbox::EventNamespace)

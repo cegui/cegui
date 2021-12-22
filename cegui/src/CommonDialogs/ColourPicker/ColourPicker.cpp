@@ -29,6 +29,7 @@
 #include "CEGUI/widgets/Editbox.h"
 
 #include "CEGUI/WindowManager.h"
+#include "CEGUI/GUIContext.h"
 
 #include "CEGUI/CommonDialogs/ColourPicker/ColourPicker.h"
 #include "CEGUI/CommonDialogs/ColourPicker/Conversions.h"

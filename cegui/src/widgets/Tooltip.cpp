@@ -25,11 +25,9 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/Tooltip.h"
-#include "CEGUI/Logger.h"
-#include "CEGUI/Font.h"
 #include "CEGUI/Image.h"
+#include "CEGUI/GUIContext.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
     const String Tooltip::WidgetTypeName("CEGUI/Tooltip");

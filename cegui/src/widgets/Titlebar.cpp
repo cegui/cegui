@@ -28,8 +28,8 @@
  ***************************************************************************/
 #include "CEGUI/widgets/Titlebar.h"
 #include "CEGUI/widgets/FrameWindow.h"
-#include "CEGUI/Cursor.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/GUIContext.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

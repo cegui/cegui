@@ -30,6 +30,7 @@
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/FontManager.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/widgets/ScrollablePane.h"
 #include "CEGUI/widgets/ScrolledContainer.h"
 #include "CEGUI/widgets/FrameWindow.h"

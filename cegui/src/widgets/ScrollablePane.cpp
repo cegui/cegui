@@ -28,11 +28,8 @@
 #include "CEGUI/widgets/ScrolledContainer.h"
 #include "CEGUI/widgets/Scrollbar.h"
 #include "CEGUI/WindowManager.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/CoordConverter.h"
-#include <math.h>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//

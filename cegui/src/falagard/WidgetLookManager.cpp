@@ -25,14 +25,13 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/falagard/XMLHandler.h"
-#include "CEGUI/ResourceProvider.h"
+#include "CEGUI/System.h"
 #include "CEGUI/XMLParser.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/SharedStringStream.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
     ////////////////////////////////////////////////////////////////////////////////

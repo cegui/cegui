@@ -30,7 +30,7 @@
 #include "CEGUI/widgets/Editbox.h"
 #include "CEGUI/widgets/PushButton.h"
 #include "CEGUI/widgets/ComboDropList.h"
-#include "CEGUI/WindowManager.h"
+#include "CEGUI/GUIContext.h"
 
 /*************************************************************************
 	General information.

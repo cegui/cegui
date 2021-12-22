@@ -38,6 +38,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+enum class HorizontalTextFormatting : int;
+
 /*!
 \brief
     Editbox class for the FalagardBase module.

@@ -29,14 +29,9 @@
 #ifndef _CEGUIItemView_h_
 #define _CEGUIItemView_h_
 
-#include "CEGUI/Base.h"
-#include "CEGUI/Colour.h"
-#include "CEGUI/ColourRect.h"
-#include "CEGUI/InputEvent.h"
-#include "CEGUI/Rectf.h"
 #include "CEGUI/Window.h"
+#include "CEGUI/WindowRenderer.h"
 #include "CEGUI/views/ItemModel.h"
-#include "CEGUI/widgets/Scrollbar.h"
 
 #if defined (_MSC_VER)
 #   pragma warning(push)

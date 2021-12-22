@@ -30,7 +30,6 @@
 #define _CEGUIListView_h_
 
 #include "CEGUI/views/ItemView.h"
-#include <vector>
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -39,6 +38,7 @@
 
 namespace CEGUI
 {
+enum class HorizontalTextFormatting : int;
 
 /*!
 \brief

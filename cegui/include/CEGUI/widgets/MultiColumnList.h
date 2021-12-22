@@ -29,9 +29,8 @@
 #ifndef _CEGUIMultiColumnList_h_
 #define _CEGUIMultiColumnList_h_
 
-#include "../Base.h"
 #include "../Window.h"
-#include "./ListHeader.h"
+#include "./ListHeader.h" // FIXME: ListHeaderSegment::SortDirection
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

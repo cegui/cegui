@@ -27,13 +27,9 @@ author:     Lukas E Meindl
 #ifndef _SampleBrowserManager_h_
 #define _SampleBrowserManager_h_
 
+#include "CEGUI/Base.h"
 #include <vector>
 #include <map>
-
-#include "CEGUI/Base.h"
-#include "CEGUI/String.h"
-
-#include "CEGUI/ForwardRefs.h"
 
 class SampleBrowser;
 

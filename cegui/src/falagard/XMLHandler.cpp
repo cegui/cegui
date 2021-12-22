@@ -24,34 +24,24 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/ColourRect.h"
-
 #include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
-#include "CEGUI/falagard/WidgetComponent.h"
-#include "CEGUI/falagard/TextComponent.h"
-#include "CEGUI/falagard/FrameComponent.h"
-#include "CEGUI/falagard/NamedArea.h"
 #include "CEGUI/falagard/PropertyDefinition.h"
 #include "CEGUI/falagard/PropertyLinkDefinition.h"
-#include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Animation_xmlHandler.h"
 #include "CEGUI/AnimationManager.h"
 #include "CEGUI/SharedStringStream.h"
 
-#include "CEGUI/widgets/Thumb.h"
+// FIXME: mostly for internal enums
 #include "CEGUI/widgets/TabControl.h"
 #include "CEGUI/widgets/Spinner.h"
 #include "CEGUI/widgets/ItemListBase.h"
 #include "CEGUI/widgets/ListHeaderSegment.h"
 #include "CEGUI/widgets/MultiColumnList.h"
 
-#include <sstream>
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
     // note: The assets' versions aren't usually the same as CEGUI version, they are versioned from version 1 onwards!
@@ -152,6 +142,19 @@ namespace CEGUI
                                                                              "defined on one or more child windows, or "
                                                                              "the parent window.");
 
+
+    /*************************************************************************
+        Convert a hex string "AARRGGBB" to type argb_t
+    *************************************************************************/
+    static argb_t hexStringToARGB(const String& str)
+    {
+        argb_t val;
+        std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);
+        sstream >> std::hex >> val;
+        sstream << std::dec;
+
+        return val;
+    }
 
     //! Helper function for throwing exception strings. Adds introductory text andi s attempting to specify where the issue occured.
     CEGUI::String getStartTextForException(const WidgetLookFeel* widgetLook)
@@ -345,19 +348,6 @@ namespace CEGUI
         if (iter != d_endHandlersMap.end())
             // call the handler for this element
             (this->*(iter->second))();
-    }
-
-    /*************************************************************************
-        Convert a hex string "AARRGGBB" to type argb_t
-    *************************************************************************/
-    argb_t Falagard_xmlHandler::hexStringToARGB(const String& str)
-    {
-        argb_t val;
-        std::stringstream& sstream = SharedStringstream::GetPreparedStream(str);
-        sstream >> std::hex >> val;
-        sstream << std::dec;
-
-        return val;
     }
 
     /*************************************************************************

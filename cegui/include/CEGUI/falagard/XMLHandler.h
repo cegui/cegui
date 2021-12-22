@@ -29,8 +29,6 @@
 
 #include "../ChainedXMLHandler.h"
 #include "./Dimensions.h"
-#include "../Window.h"
-#include <vector>
 #include <unordered_map>
 
 #if defined(_MSC_VER)
@@ -38,7 +36,6 @@
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
     // forward refs
@@ -211,11 +208,6 @@ namespace CEGUI
         typedef std::unordered_map<String, ElementStartHandler> ElementStartHandlerMap;
         //! Map of handlers for closing xml elements.
         typedef std::unordered_map<String, ElementEndHandler> ElementEndHandlerMap;
-
-        /*************************************************************************
-            helper methods
-        **************************************************************************/
-        static argb_t hexStringToARGB(const String& str);
 
         /*************************************************************************
             implementation methods

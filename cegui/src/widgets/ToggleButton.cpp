@@ -25,6 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/ToggleButton.h"
+#include "CEGUI/GUIContext.h"
 
 namespace CEGUI
 {

@@ -29,7 +29,6 @@
 #ifndef _CEGUIPushButton_h_
 #define _CEGUIPushButton_h_
 
-#include "../Base.h"
 #include "./ButtonBase.h"
 
 #if defined(_MSC_VER)

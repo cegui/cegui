@@ -28,9 +28,6 @@
 #define _CEGUIFalTextComponent_h_
 
 #include "./ComponentBase.h"
-#include "../RenderedString.h"
-#include "../RefCounted.h"
-#include "../FormattedRenderedString.h"
 #include "CEGUI/falagard/FormattingSetting.h"
 
 #if defined(_MSC_VER)

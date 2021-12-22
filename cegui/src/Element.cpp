@@ -32,7 +32,7 @@
 
 #include "CEGUI/Element.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/System.h"
+#include "CEGUI/System.h" // FIXME: only for root container size - display size
 #include "CEGUI/Logger.h"
 
 #if defined(_MSC_VER)

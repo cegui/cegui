@@ -30,19 +30,13 @@
 #define _CEGUIMultiLineEditbox_h_
 
 #include "CEGUI/widgets/EditboxBase.h"
-
-#include "../Font.h"
-
-#include <vector>
-#include <deque>
+#include "CEGUI/WindowRenderer.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
 #	pragma warning(disable : 4251)
 #endif
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 // forward declaration

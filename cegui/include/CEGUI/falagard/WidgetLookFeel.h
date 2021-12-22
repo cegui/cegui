@@ -29,16 +29,16 @@
 #define _CEGUIFalWidgetLookFeel_h_
 
 #include "./StateImagery.h"
-#include "./WidgetComponent.h"
 #include "./ImagerySection.h"
+#include "./WidgetComponent.h"
 #include "./PropertyInitialiser.h"
-#include "./PropertyDefinition.h"
-#include "./PropertyLinkDefinition.h"
 #include "./EventLinkDefinition.h"
 #include "./NamedArea.h"
 #include "./NamedDefinitionCollator.h"
+#include "../String.h"
 #include <unordered_map>
 #include <unordered_set>
+#include <map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -48,6 +48,8 @@
 
 namespace CEGUI
 {
+class PropertyDefinitionBase;
+
 /*!
 \brief
     Class that encapsulates Look N' Feel information for a widget.

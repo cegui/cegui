@@ -26,14 +26,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "CEGUI/CoordConverter.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/views/TreeView.h"
-
-#if defined (_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4355)
-#endif
+#include "CEGUI/CoordConverter.h"
+#include "CEGUI/RenderedStringParser.h"
+#include "CEGUI/widgets/Scrollbar.h"
 
 //TODO: handle semantic event for up/down and left/right (open/close subtree)
 
@@ -586,9 +582,5 @@ Rectf TreeView::getIndexRect(const ModelIndex&)
     //TODO: implement for tree view. What do we do for indices in closed subtrees?
     throw InvalidRequestException("Not implemented for tree view yet.");
 }
-
-#if defined(_MSC_VER)
-#   pragma warning(pop)
-#endif
 
 }

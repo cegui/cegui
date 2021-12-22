@@ -29,9 +29,9 @@
 #ifndef _CEGUIListHeader_h_
 #define _CEGUIListHeader_h_
 
-#include "../Base.h"
 #include "../Window.h"
-#include "./ListHeaderSegment.h"
+#include "../WindowRenderer.h"
+#include "ListHeaderSegment.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

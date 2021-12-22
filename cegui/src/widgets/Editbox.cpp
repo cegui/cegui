@@ -27,14 +27,11 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/Editbox.h"
+#include "CEGUI/System.h"
 #include "CEGUI/TextUtils.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/Clipboard.h"
-#include "CEGUI/BidiVisualMapping.h"
 #include "CEGUI/UndoHandler.h"
-
-#include <string.h>
 
 namespace CEGUI
 {

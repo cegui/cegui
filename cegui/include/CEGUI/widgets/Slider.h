@@ -30,6 +30,7 @@
 #define _CEGUISlider_h_
 
 #include "../Window.h"
+#include "../WindowRenderer.h"
 
 namespace CEGUI
 {

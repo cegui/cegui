@@ -26,8 +26,10 @@
  ***************************************************************************/
 #include "CEGUI/falagard/Dimensions.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
-#include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/XMLHandler.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/falagard/NamedArea.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/WindowManager.h"

@@ -25,7 +25,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/falagard/SectionSpecification.h"
-#include "CEGUI/falagard/ImagerySection.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/XMLHandler.h"

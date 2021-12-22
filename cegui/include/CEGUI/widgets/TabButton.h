@@ -29,7 +29,6 @@
 #ifndef _CEGUITabButton_h_
 #define _CEGUITabButton_h_
 
-#include "../Base.h"
 #include "./ButtonBase.h"
 
 // Start of CEGUI namespace section

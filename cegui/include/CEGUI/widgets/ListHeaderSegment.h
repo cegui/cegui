@@ -29,7 +29,6 @@
 #ifndef _CEGUIListHeaderSegment_h_
 #define _CEGUIListHeaderSegment_h_
 
-#include "../Base.h"
 #include "../Window.h"
 
 

@@ -29,19 +29,9 @@
 #ifndef _CEGUICombobox_h_
 #define _CEGUICombobox_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/Window.h"
-#include "CEGUI/RegexMatcher.h"
-#include "CEGUI/views/ItemView.h"
-#include "CEGUI/views/StandardItemModel.h"
+#include "CEGUI/RegexMatcher.h" // FIXME: RegexMatcher::MatchState requires this here
 
-#if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4251)
-#endif
-
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
@@ -1047,9 +1037,5 @@ private:
 };
 
 } // End of  CEGUI namespace section
-
-#if defined(_MSC_VER)
-#	pragma warning(pop)
-#endif
 
 #endif	// end of guard _CEGUICombobox_h_

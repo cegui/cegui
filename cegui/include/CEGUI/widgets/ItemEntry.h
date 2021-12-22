@@ -31,6 +31,7 @@
 
 #include "../Base.h"
 #include "../Window.h"
+#include "../WindowRenderer.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

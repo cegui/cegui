@@ -25,22 +25,17 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/WindowRendererSets/Core/StaticText.h"
-#include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
-#include "CEGUI/WindowManager.h"
 #include "CEGUI/widgets/Scrollbar.h"
-#include "CEGUI/Event.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/LeftAlignedRenderedString.h"
 #include "CEGUI/RightAlignedRenderedString.h"
 #include "CEGUI/CentredRenderedString.h"
-#include "CEGUI/JustifiedRenderedString.h"
 #include "CEGUI/RenderedStringWordWrapper.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 #include "CEGUI/CoordConverter.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
     const String FalagardStaticText::TypeName("Core/StaticText");

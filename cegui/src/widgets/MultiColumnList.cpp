@@ -27,19 +27,12 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/MultiColumnList.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/widgets/Scrollbar.h"
-#include "CEGUI/widgets/ListHeader.h"
 #include "CEGUI/widgets/ListboxItem.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/TextUtils.h"
-#include "CEGUI/PropertyHelper.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/WindowManager.h"
-#include <algorithm>
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 const String MultiColumnList::EventNamespace("MultiColumnList");

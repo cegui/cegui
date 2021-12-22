@@ -29,8 +29,8 @@
 #include "CEGUI/widgets/MenuItem.h"
 #include "CEGUI/widgets/Menubar.h"
 #include "CEGUI/widgets/PopupMenu.h"
-
 #include "CEGUI/WindowManager.h"
+#include "CEGUI/GUIContext.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

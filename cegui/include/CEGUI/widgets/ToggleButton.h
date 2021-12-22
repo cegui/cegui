@@ -29,11 +29,6 @@
 
 #include "CEGUI/widgets/ButtonBase.h"
 
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4251)
-#endif
-
 namespace CEGUI
 {
 //! Class providing logic buttons that can have their selected state toggled.

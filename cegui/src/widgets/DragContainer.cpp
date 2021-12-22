@@ -28,6 +28,7 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/ImageManager.h"
+#include "CEGUI/GUIContext.h"
 
 namespace CEGUI
 {

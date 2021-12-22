@@ -27,9 +27,11 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/WindowRenderer.h"
+#include "CEGUI/Window.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/falagard/NamedArea.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 

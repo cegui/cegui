@@ -28,8 +28,8 @@
 #define _CEGUIFalStateImagery_h_
 
 #include "./LayerSpecification.h"
-#include "../Window.h"
-#include <set>
+#include "../String.h"
+#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -39,6 +39,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class LayerSpecification;
+
     /*!
     \brief
         Class the encapsulates imagery for a given widget state.

@@ -26,16 +26,11 @@
  ***************************************************************************/
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
-#include "CEGUI/falagard/XMLHandler.h"
-#include "CEGUI/Exceptions.h"
+#include "CEGUI/falagard/PropertyDefinition.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/WindowManager.h"
 #include "CEGUI/AnimationManager.h"
 #include "CEGUI/AnimationInstance.h"
-#include <iostream>
-#include <algorithm>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //---------------------------------------------------------------------------//

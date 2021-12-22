@@ -29,9 +29,8 @@
 #ifndef _CEGUITabControl_h_
 #define _CEGUITabControl_h_
 
-#include "../Base.h"
 #include "../Window.h"
-#include <vector>
+#include "../WindowRenderer.h"
 
 
 #if defined(_MSC_VER)

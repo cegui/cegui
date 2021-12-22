@@ -26,8 +26,11 @@
  ***************************************************************************/
 #include "CEGUI/WindowRendererSets/Core/ItemViewRenderer.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/widgets/Scrollbar.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/Font.h"
+#include "CEGUI/FormattedRenderedString.h"
 
 namespace CEGUI
 {

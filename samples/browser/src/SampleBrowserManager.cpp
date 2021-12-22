@@ -25,13 +25,10 @@ author:     Lukas E Meindl
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 #include "SampleBrowserManager.h"
-
 #include "SampleBrowser.h"
 
-#include "CEGUI/Window.h"
-#include "CEGUI/SchemeManager.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/WindowManager.h"
-#include "CEGUI/EventArgs.h"
 #include "CEGUI/widgets/DefaultWindow.h"
 #include "CEGUI/widgets/VerticalLayoutContainer.h"
 #include "CEGUI/widgets/HorizontalLayoutContainer.h"
@@ -40,6 +37,7 @@ author:     Lukas E Meindl
 #include "CEGUI/Image.h"
 #include "CEGUI/InputAggregator.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
 
 using namespace CEGUI;
 

@@ -25,6 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/falagard/PropertyDefinitionBase.h"
+#include "CEGUI/PropertyHelper.h"
 #include "CEGUI/XMLSerializer.h"
 #include "CEGUI/falagard/XMLHandler.h"
 

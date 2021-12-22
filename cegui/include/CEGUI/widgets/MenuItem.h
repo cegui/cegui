@@ -29,9 +29,7 @@
 #ifndef _CEGUIMenuItem_h_
 #define _CEGUIMenuItem_h_
 
-#include "../Base.h"
-#include "../Window.h"
-#include "./ItemEntry.h"
+#include "ItemEntry.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

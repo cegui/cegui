@@ -30,23 +30,10 @@
 #ifndef _CEGUIWindow_h_
 #define _CEGUIWindow_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/NamedElement.h"
-#include "CEGUI/Rectf.h"
-#include "CEGUI/Sizef.h"
-#include "CEGUI/USize.h"
-#include "CEGUI/EventSet.h"
-#include "CEGUI/TplWindowProperty.h"
-#include "CEGUI/System.h"
-#include "CEGUI/GUIContext.h"
+#include "CEGUI/RenderedString.h"
 #include "CEGUI/InputEvent.h"
-#include "CEGUI/UDim.h"
-#include "CEGUI/WindowRenderer.h"
-#include "CEGUI/BasicRenderedStringParser.h"
-#include "CEGUI/DefaultRenderedStringParser.h"
-#include <vector>
 #include <unordered_set>
-#include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -1382,10 +1369,7 @@ public:
         String object holding the name of the look assigned to this window.
         Returns the empty string if no look is assigned.
     */
-    inline const String& getLookNFeel() const
-    {
-        return d_lookName;
-    }
+    inline const String& getLookNFeel() const { return d_lookName; }
 
     /*!
     \brief
@@ -1394,7 +1378,7 @@ public:
     \return
         Returns true if this Window is the modal target, otherwise false.
     */
-    bool getModalState() const { return getGUIContext().getModalWindow() == this; }
+    bool getModalState() const;
 
     /*!
     \brief

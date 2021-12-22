@@ -27,11 +27,9 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/ListHeader.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/SharedStringStream.h"
-#include <sstream>
-
+#include "CEGUI/GUIContext.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

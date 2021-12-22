@@ -25,16 +25,14 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/falagard/TextComponent.h"
-#include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/FontManager.h"
-#include "CEGUI/Exceptions.h"
-#include "CEGUI/Font.h"
 #include "CEGUI/LeftAlignedRenderedString.h"
 #include "CEGUI/RightAlignedRenderedString.h"
 #include "CEGUI/CentredRenderedString.h"
 #include "CEGUI/JustifiedRenderedString.h"
 #include "CEGUI/RenderedStringWordWrapper.h"
+#include "CEGUI/RenderedStringParser.h"
 #if defined (CEGUI_USE_FRIBIDI)
     #include "CEGUI/FribidiVisualMapping.h"
 #elif defined (CEGUI_USE_MINIBIDI)

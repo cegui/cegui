@@ -26,22 +26,18 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include <queue>
-
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
 #endif
 
 #include "CEGUI/NamedElement.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/Exceptions.h"
+#include <queue>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
 const String NamedElement::EventNamespace("NamedElement");
-
 const String NamedElement::EventNameChanged("NameChanged");
 
 //----------------------------------------------------------------------------//

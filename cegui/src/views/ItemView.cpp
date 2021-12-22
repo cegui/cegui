@@ -26,9 +26,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "CEGUI/ImageManager.h"
 #include "CEGUI/views/ItemView.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/widgets/Tooltip.h"
+#include "CEGUI/widgets/Scrollbar.h"
 
 namespace CEGUI
 {

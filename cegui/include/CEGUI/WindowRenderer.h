@@ -29,18 +29,14 @@
 #ifndef _CEGUIWindowRenderer_h_
 #define _CEGUIWindowRenderer_h_
 
-#include "CEGUI/Window.h"
-#include "CEGUI/Property.h"
+#include "CEGUI/String.h"
 #include <vector>
-#include <utility>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
 #endif
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

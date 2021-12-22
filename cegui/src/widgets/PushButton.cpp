@@ -27,6 +27,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/PushButton.h"
+#include "CEGUI/GUIContext.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

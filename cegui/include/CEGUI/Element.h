@@ -31,11 +31,9 @@
 #ifndef _CEGUIElement_h_
 #define _CEGUIElement_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/PropertySet.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/EventArgs.h"
-#include "CEGUI/DefaultParagraphDirection.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

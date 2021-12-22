@@ -30,8 +30,8 @@
 #define _CEGUIEditbox_h_
 
 #include "CEGUI/widgets/EditboxBase.h"
-
-#include "CEGUI/RegexMatcher.h"
+#include "CEGUI/RegexMatcher.h" // FIXME: RegexMatcher::MatchState requires this here
+#include "CEGUI/WindowRenderer.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

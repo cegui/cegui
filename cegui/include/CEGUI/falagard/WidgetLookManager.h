@@ -29,18 +29,14 @@
 
 #include "../Singleton.h"
 #include "../String.h"
-#include "../Exceptions.h"
-#include "./WidgetLookFeel.h"
 #include <unordered_map>
 #include <unordered_set>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
 #	pragma warning(disable : 4251)
-#	pragma warning(disable : 4275)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
     /*!

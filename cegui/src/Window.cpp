@@ -27,27 +27,32 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/Window.h"
+#include "CEGUI/System.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/WindowRendererManager.h"
 #include "CEGUI/WindowFactoryManager.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/widgets/Tooltip.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/GlobalEventSet.h"
 #include "CEGUI/SharedStringStream.h"
+#include "CEGUI/BasicRenderedStringParser.h"
+#include "CEGUI/DefaultRenderedStringParser.h"
 #if defined (CEGUI_USE_FRIBIDI)
 #include "CEGUI/FribidiVisualMapping.h"
 #elif defined (CEGUI_USE_MINIBIDI)
 #include "CEGUI/MinibidiVisualMapping.h"
 #endif
 #if defined(CEGUI_USE_RAQM)
-    #include "CEGUI/RaqmTextData.h"
+#include "CEGUI/RaqmTextData.h"
 #endif
 
 #include <queue>
@@ -1347,8 +1352,7 @@ const Image* Window::getActualCursor() const
 //----------------------------------------------------------------------------//
 void Window::setCursor(const String& name)
 {
-    setCursor(
-        &ImageManager::getSingleton().get(name));
+    setCursor(&ImageManager::getSingleton().get(name));
 }
 
 //----------------------------------------------------------------------------//
@@ -1955,6 +1959,12 @@ void Window::setModalState(bool state)
     // clear the modal target
     else
         getGUIContext().setModalWindow(nullptr);
+}
+
+//----------------------------------------------------------------------------//
+bool Window::getModalState() const
+{
+    return getGUIContext().getModalWindow() == this;
 }
 
 //----------------------------------------------------------------------------//

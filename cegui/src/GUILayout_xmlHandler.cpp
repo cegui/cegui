@@ -27,10 +27,9 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/GUILayout_xmlHandler.h"
-#include "CEGUI/Exceptions.h"
-#include "CEGUI/ScriptModule.h"
+#include "CEGUI/Window.h"
 #include "CEGUI/XMLAttributes.h"
-#include "CEGUI/WindowManager.h"
+#include "CEGUI/Logger.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

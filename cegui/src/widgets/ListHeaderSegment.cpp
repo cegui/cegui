@@ -27,12 +27,10 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/ListHeaderSegment.h"
-#include "CEGUI/Cursor.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/ImageManager.h"
-#include <CEGUI/WindowRendererSets/Core/ItemViewRenderer.h>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 const String ListHeaderSegment::EventNamespace("ListHeaderSegment");

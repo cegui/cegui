@@ -29,7 +29,6 @@
 #ifndef _CEGUIFrameWindow_h_
 #define _CEGUIFrameWindow_h_
 
-#include "../Base.h"
 #include "../Window.h"
 
 #if defined(_MSC_VER)
@@ -37,8 +36,6 @@
 #    pragma warning(disable : 4251)
 #endif
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

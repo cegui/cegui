@@ -27,11 +27,10 @@
 #ifndef _FalStaticText_h_
 #define _FalStaticText_h_
 
-#include "CEGUI/WindowRendererSets/Core/Module.h"
 #include "CEGUI/WindowRendererSets/Core/Static.h"
 #include "CEGUI/falagard/Enums.h"
 #include "CEGUI/ColourRect.h"
-#include <vector>
+#include "CEGUI/Event.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -41,7 +40,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
     class ComponentArea;
 
     /*!

@@ -29,18 +29,11 @@
 #ifndef _CEGUIWindowManager_h_
 #define _CEGUIWindowManager_h_
 
-#include "CEGUI/Base.h"
-#include "CEGUI/String.h"
 #include "CEGUI/Singleton.h"
-#include "CEGUI/Logger.h"
-#include "CEGUI/IteratorBase.h"
 #include "CEGUI/EventSet.h"
-#include <map>
-#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
-#	pragma warning(disable : 4275)
 #	pragma warning(disable : 4251)
 #endif
 
