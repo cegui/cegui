@@ -30,14 +30,8 @@
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/FontManager.h"
-#include "CEGUI/Window.h"
 #include "CEGUI/widgets/Tooltip.h"
-#include "CEGUI/SimpleTimer.h"
-
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4355)
-#endif
+#include "CEGUI/WindowNavigator.h"
 
 namespace CEGUI
 {
@@ -910,11 +904,6 @@ void GUIContext::setWindowNavigator(WindowNavigator* navigator)
 {
     d_windowNavigator = navigator;
 }
-
-//----------------------------------------------------------------------------//
-#if defined(_MSC_VER)
-#   pragma warning(pop)
-#endif
 
 }
 

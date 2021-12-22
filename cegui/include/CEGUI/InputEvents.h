@@ -29,7 +29,6 @@
 #ifndef _CEGUIInputEvents_h_
 #define _CEGUIInputEvents_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/SlotFunctorBase.h"
 #include "CEGUI/String.h"

@@ -27,8 +27,7 @@
 #include "CEGUI/FactoryModule.h"
 #include "CEGUI/FactoryRegisterer.h"
 #include "CEGUI/Exceptions.h"
-#include <stdio.h>
-// Start of CEGUI namespace section
+
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//

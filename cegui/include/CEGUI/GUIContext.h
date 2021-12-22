@@ -29,11 +29,8 @@
 
 #include "CEGUI/RenderingSurface.h"
 #include "CEGUI/InputEventReceiver.h"
-#include "CEGUI/SemanticInputEvent.h"
 #include "CEGUI/Cursor.h"
-#include "CEGUI/WindowNavigator.h"
-
-#include <map>
+#include "CEGUI/InputEvent.h"
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -42,6 +39,8 @@
 
 namespace CEGUI
 {
+class WindowNavigator;
+
 //! EventArgs class passed to subscribers for (most) GUIContext events.
 class CEGUIEXPORT GUIContextEventArgs : public EventArgs
 {

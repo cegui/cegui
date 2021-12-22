@@ -27,7 +27,6 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/Element.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 

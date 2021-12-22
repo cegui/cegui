@@ -27,16 +27,9 @@
 #ifndef _CEGUICoordConverter_h_
 #define _CEGUICoordConverter_h_
 
-#include "CEGUI/UDim.h"
-#include "CEGUI/UVector.h"
-#include "CEGUI/Sizef.h"
-#include "CEGUI/USize.h"
 #include "CEGUI/Rectf.h"
 #include "CEGUI/URect.h"
 
-#include <cmath>
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 class Element;

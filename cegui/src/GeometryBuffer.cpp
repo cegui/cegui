@@ -28,13 +28,9 @@
 #include "CEGUI/Vertex.h"
 #include "CEGUI/ShaderParameterBindings.h"
 #include "CEGUI/RenderTarget.h"
-
+#include "CEGUI/Renderer.h" // for BlendMode
+#include "CEGUI/RenderMaterial.h"
 #include <glm/gtc/matrix_transform.hpp>
-
-#include <vector>
-#include <algorithm>
-#include <iterator>
-#include <stddef.h>
 
 namespace CEGUI
 {

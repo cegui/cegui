@@ -42,6 +42,7 @@ author:     Lukas E Meindl
 #include <string>
 #include <iostream>
 #include <vector>
+#include <algorithm> // sort
 
 using namespace CEGUI;
 

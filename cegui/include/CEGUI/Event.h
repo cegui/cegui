@@ -29,9 +29,7 @@
 
 #include "CEGUI/String.h"
 #include "CEGUI/BoundSlot.h"
-#include "CEGUI/SubscriberSlot.h"
 #include "CEGUI/RefCounted.h"
-
 #include <map>
 
 #if defined(_MSC_VER)
@@ -39,9 +37,9 @@
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+
 /*!
 \brief
     Defines an 'event' which can be subscribed to by interested parties.

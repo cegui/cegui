@@ -27,9 +27,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/Colour.h"
+#include <iostream>
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*************************************************************************
@@ -256,6 +255,36 @@ void Colour::invertColourWithAlpha(void)
 	d_red	= 1.0f - d_red;
 	d_green	= 1.0f - d_green;
 	d_blue	= 1.0f - d_blue;
+}
+
+/*!
+\brief Writes a Colour to a stream
+*/
+std::ostream& operator << (std::ostream& s, const Colour& val)
+{
+    s.fill('0');
+    s.width(8);
+    s << std::hex;
+    s << val.getARGB();
+
+    // Reset sticky manipulators
+    s << std::dec;
+    // Reset to default fill character
+    s.fill(s.widen(' '));
+
+    return s;
+}
+
+/*!
+\brief Extracts a Colour from a stream
+*/
+std::istream& operator >> (std::istream& inStream, Colour& val)
+{
+    argb_t value = 0xFF000000;
+    inStream >> std::hex >> value;
+    val.setARGB(value);
+    inStream >> std::dec;
+    return inStream;
 }
 
 } // End of  CEGUI namespace section

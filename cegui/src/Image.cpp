@@ -28,9 +28,6 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/System.h"
 
-#include <algorithm>
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//

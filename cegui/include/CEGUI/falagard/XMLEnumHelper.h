@@ -27,8 +27,9 @@
 #ifndef _CEGUIFalXMLEnumHelper_h_
 #define _CEGUIFalXMLEnumHelper_h_
 
-#include "../String.h"
-#include "../Window.h"
+#include "../VerticalAlignment.h"
+#include "../HorizontalAlignment.h"
+#include "../Exceptions.h"
 #include "CEGUI/falagard/Enums.h"
 
 namespace CEGUI

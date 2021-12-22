@@ -40,6 +40,7 @@
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/BitmapImage.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/Logger.h"
 
 #include "CEGUI/CommonDialogs/ColourPicker/ColourPicker.h"
 #include "CEGUI/CommonDialogs/ColourPicker/Controls.h"

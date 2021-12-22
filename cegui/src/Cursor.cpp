@@ -27,18 +27,14 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/Cursor.h"
-#include "CEGUI/Logger.h"
 #include "CEGUI/System.h"
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/Window.h"
-#include "CEGUI/Renderer.h"
-#include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
+#include "CEGUI/ImageManager.h"
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/GUIContext.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*************************************************************************

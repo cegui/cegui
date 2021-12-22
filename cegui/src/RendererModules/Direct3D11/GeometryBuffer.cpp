@@ -28,6 +28,7 @@
 #include "CEGUI/RendererModules/Direct3D11/Texture.h"
 #include "CEGUI/RendererModules/Direct3D11/ShaderWrapper.h"
 #include "CEGUI/ShaderParameterBindings.h"
+#include "CEGUI/RenderMaterial.h"
 #include "CEGUI/RenderEffect.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/Exceptions.h"

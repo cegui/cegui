@@ -31,11 +31,7 @@
 #define _CEGUIColour_h_
 
 #include "CEGUI/Base.h"
-#include <istream>
-#include <ostream>
-#include <iomanip>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 typedef std::uint32_t argb_t;    //!< 32 bit ARGB representation of a colour.
@@ -283,32 +279,12 @@ public:
     /*!
     \brief Writes a Colour to a stream
     */
-    inline friend std::ostream& operator << (std::ostream& s, const Colour& val)
-    {
-        s.fill('0');
-        s.width(8);
-        s << std::hex;
-        s << val.getARGB();
-
-        // Reset sticky manipulators
-        s << std::dec;
-        // Reset to default fill character
-        s.fill(s.widen(' '));
-
-        return s;
-    }
+    friend std::ostream& operator << (std::ostream& s, const Colour& val);
 
     /*!
     \brief Extracts a Colour from a stream
     */
-    inline friend std::istream& operator >> (std::istream& inStream, Colour& val)
-    {
-        argb_t value = 0xFF000000;
-        inStream >> std::hex >> value;
-        val.setARGB(value);
-        inStream >> std::dec;
-        return inStream;
-    }
+    friend std::istream& operator >> (std::istream& inStream, Colour& val);
 
 	//
 	// Conversion operators

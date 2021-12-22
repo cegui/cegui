@@ -26,8 +26,8 @@
  ***************************************************************************/
 #include "CEGUI/falagard/NamedArea.h"
 #include "CEGUI/falagard/XMLHandler.h"
+#include "CEGUI/XMLSerializer.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
     NamedArea::NamedArea(const String& name) :

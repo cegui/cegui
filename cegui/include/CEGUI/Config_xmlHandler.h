@@ -27,9 +27,6 @@
 #ifndef _CEGUIConfig_xmlHandler_h_
 #define _CEGUIConfig_xmlHandler_h_
 
-#include "CEGUI/Base.h"
-#include "CEGUI/String.h"
-#include "CEGUI/Logger.h"
 #include "CEGUI/XMLHandler.h"
 #include <vector>
 
@@ -38,9 +35,10 @@
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+enum class LoggingLevel : int;
+
 //! Handler class used to parse the Configuration XML file.
 class Config_xmlHandler : public XMLHandler
 {

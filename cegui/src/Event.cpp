@@ -26,7 +26,6 @@
  ***************************************************************************/
 #include "CEGUI/Event.h"
 #include "CEGUI/EventArgs.h"
-#include <algorithm>
 
 namespace CEGUI
 {

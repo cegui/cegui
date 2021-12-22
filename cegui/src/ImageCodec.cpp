@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "CEGUI/ImageCodec.h"
 
-// Start of CEGUI namespace section 
 namespace CEGUI
 {
 

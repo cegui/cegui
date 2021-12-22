@@ -31,8 +31,6 @@
 
 #include "CEGUI/Font.h"
 #include "CEGUI/DataContainer.h"
-#include "CEGUI/BitmapImage.h"
-#include "CEGUI/FontSizeUnit.h"
 #include "CEGUI/FreeTypeFontGlyph.h"
 #include "CEGUI/FreeTypeFontLayer.h"
 
@@ -48,6 +46,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class BitmapImage;
+
 /*!
 \brief
     Implementation of the Font class interface using the FreeType library.

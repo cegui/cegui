@@ -30,10 +30,6 @@
 #include "CEGUI/Singleton.h"
 #include "CEGUI/ChainedXMLHandler.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Sizef.h"
-#include "CEGUI/ImageFactory.h"
-#include "CEGUI/Logger.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/IteratorBase.h"
 #include <unordered_map>
 
@@ -42,9 +38,10 @@
 #	pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+class ImageFactory;
+
 class CEGUIEXPORT ImageManager :
         public Singleton<ImageManager>,
         public ChainedXMLHandler

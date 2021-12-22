@@ -31,7 +31,6 @@
 #include "CEGUI/String.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/Rectf.h"
-
 #include <vector>
 
 #if defined(_MSC_VER)

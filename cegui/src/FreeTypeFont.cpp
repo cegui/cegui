@@ -30,6 +30,7 @@
 #include "CEGUI/Texture.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/BitmapImage.h"
 #include "CEGUI/Font_xmlHandler.h"
 #include "CEGUI/SharedStringStream.h"
 
@@ -37,8 +38,6 @@
 #include <raqm.h>
 #endif
 
-#include <cmath>
-#include <utility>
 #include <iostream>
 
 namespace

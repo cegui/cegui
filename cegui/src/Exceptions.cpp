@@ -29,6 +29,7 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/PropertyHelper.h"
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 
@@ -54,10 +55,8 @@
 #endif
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-
 bool Exception::d_stdErrEnabled(true);
 
 //----------------------------------------------------------------------------//

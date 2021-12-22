@@ -25,7 +25,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/Config_xmlHandler.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/DefaultResourceProvider.h"
@@ -35,9 +34,10 @@
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/ScriptModule.h"
 #include "CEGUI/XMLParser.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/Logger.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//

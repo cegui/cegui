@@ -29,19 +29,12 @@
 #ifndef _CEGUICursor_h_
 #define _CEGUICursor_h_
 
-#include "CEGUI/Base.h"
-#include "CEGUI/String.h"
-#include "CEGUI/UVector.h"
-#include "CEGUI/Rectf.h"
 #include "CEGUI/URect.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/EventSet.h"
-#include "CEGUI/InputEvent.h"
-
-#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
-#	pragma warning(disable : 4275)
 #	pragma warning(disable : 4251)
 #endif
 

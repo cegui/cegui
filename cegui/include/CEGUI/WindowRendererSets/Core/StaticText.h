@@ -31,6 +31,7 @@
 #include "CEGUI/falagard/Enums.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/Event.h"
+#include <sstream>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

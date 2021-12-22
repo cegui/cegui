@@ -28,17 +28,15 @@
 #define _CEGUIFontManager_h_
 
 #include "CEGUI/Singleton.h"
-#include "CEGUI/Font.h"
-#include "CEGUI/Font_xmlHandler.h"
-#include "CEGUI/IteratorBase.h"
 #include "CEGUI/ResourceEventSet.h"
+#include "CEGUI/XmlResourceExistsAction.h"
+#include "CEGUI/FontSizeUnit.h"
+#include "CEGUI/Image.h" // for AutoScaledMode
 #include "CEGUI/FreeTypeFontLayer.h"
-
 #include <unordered_map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
-#   pragma warning(disable : 4275)
 #   pragma warning(disable : 4251)
 #endif
 

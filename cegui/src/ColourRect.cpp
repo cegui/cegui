@@ -27,9 +27,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/ColourRect.h"
+#include "CEGUI/StreamHelper.h"
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*************************************************************************
@@ -187,5 +186,27 @@ ColourRect& ColourRect::operator *=(const ColourRect& other)
     return *this;
 }
 
+/*!
+\brief Writes a ColourRect to a stream
+*/
+std::ostream& operator << (std::ostream& s, const ColourRect& val)
+{
+    s << "tl:" << val.d_top_left << " tr:" << val.d_top_right << " bl:" << val.d_bottom_left << " br:" << val.d_bottom_right;
+    return s;
+}
+
+/*!
+\brief Extracts a ColourRect from a stream
+*/
+std::istream& operator >> (std::istream& inStream, ColourRect& val)
+{
+    // Match and remove the preceding string and all trailing whitespaces
+    inStream >> MandatoryString(" tl : ") >> val.d_top_left >>
+        MandatoryString(" tr : ") >> val.d_top_right >>
+        MandatoryString(" bl : ") >> val.d_bottom_left >>
+        MandatoryString(" br : ") >> val.d_bottom_right;
+
+    return inStream;
+}
 
 } // End of  CEGUI namespace section

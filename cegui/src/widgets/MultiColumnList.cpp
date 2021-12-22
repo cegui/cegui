@@ -32,6 +32,7 @@
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/CoordConverter.h"
+#include <algorithm>
 
 namespace CEGUI
 {

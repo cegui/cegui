@@ -29,13 +29,9 @@
 #define _CEGUIGeometryBuffer_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/Renderer.h"
 #include "CEGUI/Rectf.h"
 #include "CEGUI/RefCounted.h"
-#include "CEGUI/RenderMaterial.h"
-
 #include <glm/gtc/quaternion.hpp>
-
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -43,12 +39,11 @@
 #   pragma warning(disable : 4251)
 #endif
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
 class RenderMaterial;
+enum class BlendMode : int;
 
 //----------------------------------------------------------------------------//
 

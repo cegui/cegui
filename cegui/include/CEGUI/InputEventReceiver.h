@@ -29,7 +29,6 @@
 #ifndef _CEGUIInputEventReceiver_h_
 #define _CEGUIInputEventReceiver_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/InputEvents.h"
 
 // Start of CEGUI namespace section

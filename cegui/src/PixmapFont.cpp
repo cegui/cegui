@@ -29,6 +29,7 @@
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/BitmapImage.h"
 #include "CEGUI/Font_xmlHandler.h"
+#include "CEGUI/FontGlyph.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/SharedStringStream.h"

@@ -28,6 +28,7 @@
 #include "CEGUI/widgets/PushButton.h"
 #include "CEGUI/widgets/Editbox.h"
 #include "CEGUI/SharedStringStream.h"
+#include <iomanip>
 
 namespace CEGUI
 {

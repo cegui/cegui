@@ -35,6 +35,7 @@
 #include "CEGUI/RenderedStringWordWrapper.h"
 #include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/widgets/Scrollbar.h"
+#include <algorithm> // sort
 
 namespace CEGUI
 {

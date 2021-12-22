@@ -30,6 +30,7 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/widgets/Scrollbar.h"
+#include <algorithm> // sort
 
 //TODO: handle semantic event for up/down and left/right (open/close subtree)
 

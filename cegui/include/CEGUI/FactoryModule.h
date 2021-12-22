@@ -27,7 +27,6 @@
 #ifndef _CEGUIFactoryModule_h_
 #define _CEGUIFactoryModule_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/String.h"
 #include <vector>
 

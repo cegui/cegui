@@ -27,19 +27,15 @@
 #ifndef _CEGUIFont_h_
 #define _CEGUIFont_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/PropertySet.h"
 #include "CEGUI/EventSet.h"
-#include "CEGUI/String.h"
-#include "CEGUI/XMLSerializer.h"
-#include "CEGUI/FontGlyph.h"
+#include "CEGUI/Image.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

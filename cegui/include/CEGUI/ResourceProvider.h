@@ -47,20 +47,8 @@ namespace CEGUI
 class CEGUIEXPORT ResourceProvider
 {
 public:
-	/*************************************************************************
-		Construction and Destruction
-	*************************************************************************/
-    /*!
-    \brief
-        Constructor for the ResourceProvider class
-    */
-	ResourceProvider() { }
 
-    /*!
-    \brief
-        Destructor for the ResourceProvider class
-    */
-	virtual ~ResourceProvider(void) { }
+    virtual ~ResourceProvider() = default;
 
     /*************************************************************************
         Accessor functions

@@ -28,12 +28,9 @@
 #define _CEGUIFalDimensions_h_
 
 #include "./Enums.h"
-#include "../String.h"
 #include "../UDim.h"
 #include "../Rectf.h"
-#include "../XMLSerializer.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //! Abstract interface for a generic 'dimension' class.

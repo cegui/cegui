@@ -29,19 +29,13 @@
 #include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
-#include "CEGUI/falagard/NamedArea.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
-#include "CEGUI/WindowManager.h"
-#include "CEGUI/Window.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/Font.h"
-#include "CEGUI/PropertyHelper.h"
 #include "CEGUI/CoordConverter.h"
-#include <cassert>
+#include "CEGUI/Logger.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//

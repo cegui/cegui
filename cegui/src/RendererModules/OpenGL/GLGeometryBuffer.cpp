@@ -28,6 +28,7 @@
 #include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "CEGUI/RendererModules/OpenGL/GLGeometryBuffer.h"
 #include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
+#include "CEGUI/RenderMaterial.h"
 #include "CEGUI/RenderEffect.h"
 #include "CEGUI/Vertex.h"
 

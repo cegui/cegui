@@ -45,11 +45,6 @@ namespace CEGUI
 class CEGUIEXPORT DefaultResourceProvider : public ResourceProvider
 {
 public:
-	/*************************************************************************
-		Construction and Destruction
-	*************************************************************************/
-	DefaultResourceProvider() {}
-	~DefaultResourceProvider(void) {}
 
     /*!
     \brief

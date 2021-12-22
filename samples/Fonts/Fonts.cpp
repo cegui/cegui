@@ -27,6 +27,7 @@ author:     Paul D Turner
 
 #include "Fonts.h"
 #include "CEGUI/CEGUI.h"
+#include "CEGUI/Font_xmlHandler.h"
 
 #include "LanguageStrings.h"
 

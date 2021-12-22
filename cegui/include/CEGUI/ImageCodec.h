@@ -29,13 +29,13 @@
 #ifndef _CEGUIImageCodec_h_
 #define _CEGUIImageCodec_h_
 
-#include "CEGUI/Base.h" 
-#include "CEGUI/DataContainer.h"
-#include "CEGUI/Texture.h" 
+#include "CEGUI/String.h" 
 
-// Start of CEGUI namespace section 
 namespace CEGUI 
 {
+class Texture;
+class RawDataContainer;
+
 /*!
   \brief 
   Abstract ImageLoader class. An image loader encapsulate the loading of a texture.

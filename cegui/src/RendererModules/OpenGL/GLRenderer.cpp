@@ -35,6 +35,7 @@
 #include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
 #include "CEGUI/RendererModules/OpenGL/GLTexture.h"
 #include "CEGUI/RendererModules/OpenGL/GLShaderWrapper.h"
+#include "CEGUI/RenderMaterial.h"
 
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"

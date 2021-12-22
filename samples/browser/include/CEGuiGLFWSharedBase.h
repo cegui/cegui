@@ -29,6 +29,7 @@
 
 #include "CEGUISamplesConfig.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
+#include "CEGUI/InputEvent.h"
 
 #if CEGUI_USE_GLFW_VER == 3
 #   include <GLFW/glfw3.h>

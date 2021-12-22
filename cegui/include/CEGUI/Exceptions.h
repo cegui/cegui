@@ -29,7 +29,6 @@
 #ifndef _CEGUIExceptions_h_
 #define _CEGUIExceptions_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/String.h"
 #include <exception>
 
@@ -40,7 +39,6 @@
 #endif
 
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //! Root exception class used within the GUI system.

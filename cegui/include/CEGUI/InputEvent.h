@@ -29,9 +29,6 @@
 #ifndef _CEGUIInputEvent_h_
 #define _CEGUIInputEvent_h_
 
-#include "CEGUI/Base.h"
-#include "CEGUI/EventArgs.h"
-#include "CEGUI/String.h"
 #include "CEGUI/Sizef.h"
 #include "CEGUI/SemanticInputEvent.h"
 
@@ -40,7 +37,6 @@
 #	pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!

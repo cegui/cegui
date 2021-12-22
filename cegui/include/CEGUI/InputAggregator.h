@@ -29,24 +29,18 @@
 #ifndef _CEGUIInputAggregator_h_
 #define _CEGUIInputAggregator_h_
 
-#include "CEGUI/Base.h"
-#include "CEGUI/Event.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/InjectedInputReceiver.h"
-#include "CEGUI/InputEventReceiver.h"
-#include "CEGUI/SemanticInputEvent.h"
-
-#include <cstdint>
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 struct MouseClickTracker;
+class InputEventReceiver;
 
 //! EventArgs class passed to subscribers for (most) InputAggregator events.
 class CEGUIEXPORT InputAggregatorEventArgs : public EventArgs

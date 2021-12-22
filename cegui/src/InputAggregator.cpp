@@ -24,22 +24,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/CoordConverter.h"
 #include "CEGUI/InputAggregator.h"
 #include "CEGUI/Rectf.h"
-#include "CEGUI/SemanticInputEvent.h"
 #include "CEGUI/SimpleTimer.h"
 #include "CEGUI/System.h"
+#include "CEGUI/InputEventReceiver.h"
 
-#include <iterator>
-
-#if defined (_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4351)
-#   pragma warning(disable : 4355)
-#endif
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
@@ -583,9 +573,5 @@ bool InputAggregator::onDisplaySizeChanged(const EventArgs&)
     recomputeMultiClickAbsoluteTolerance();
     return true;
 }
-
-#if defined (_MSC_VER)
-#   pragma warning(pop)
-#endif
 
 } // End of  CEGUI namespace section
