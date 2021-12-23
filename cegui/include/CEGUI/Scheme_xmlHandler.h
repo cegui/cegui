@@ -29,6 +29,11 @@
 
 #include "CEGUI/XMLHandler.h"
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 namespace CEGUI
 {
 //! Handler class used to parse the Scheme XML files using SAX2
@@ -136,5 +141,9 @@ private:
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIScheme_xmlHandler_h_
