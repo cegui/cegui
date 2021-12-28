@@ -31,6 +31,7 @@
 #define _String_h_
 
 #include "CEGUI/Base.h"
+#include <stdexcept>
 
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
 
