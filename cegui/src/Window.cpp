@@ -618,7 +618,7 @@ Window* Window::getChildAtPosition(const glm::vec2& position,
     const auto end = d_drawList.crend();
     for (auto child = d_drawList.rbegin(); child != end; ++child)
     {
-        if ((*child) != exclude && (*child)->isEffectiveVisible())
+        if ((*child) != exclude && (*child)->isEffectiveVisible() && !(*child)->d_destructionStarted)
         {
             // recursively scan for hit on children of this child window...
             if (Window* const wnd = (*child)->getChildAtPosition(p, hittestfunc, allow_disabled, exclude))
