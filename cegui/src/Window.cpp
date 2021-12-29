@@ -3107,42 +3107,7 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
     }
 
     // Apply our screen area changes to rendering surface and geometry settings
-    {
-        RenderingContext ctx;
-        getRenderingContext(ctx);
-
-        const auto& pos = getUnclippedOuterRect().get().getPosition();
-
-        if (ctx.owner == this && ctx.surface->isRenderingWindow())
-        {
-            RenderingWindow* const rw = static_cast<RenderingWindow*>(ctx.surface);
-
-            // move the underlying RenderingWindow if we're using such a thing
-            rw->setPosition(pos);
-            updatePivot();
-            d_translation = glm::vec3(0.0f, 0.0f, 0.0f);
-
-            rw->setClippingRegion(getParentClipRect());
-
-            d_clippingRegion = Rectf(glm::vec2(0, 0), d_pixelSize);
-        }
-        else
-        {
-            // if we're not texture backed, update geometry position.
-            // position is the offset of the window on the dest surface.
-            d_translation = glm::vec3(pos - ctx.offset, 0.0f);
-
-            d_clippingRegion = getOuterRectClipper();
-            if (d_clippingRegion.getWidth() != 0.0f && d_clippingRegion.getHeight() != 0.0f)
-                d_clippingRegion.offset(-ctx.offset);
-        }
-
-        for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
-        {
-            currentBuffer->setTranslation(d_translation);
-            currentBuffer->setClippingRegion(d_clippingRegion);
-        }
-    }
+    updateTransformAndClipping();
 
     return flags;
 }
@@ -3781,6 +3746,45 @@ const Window* Window::getWindowAttachedToCommonAncestor(const Window& wnd) const
 }
 
 //----------------------------------------------------------------------------//
+void Window::updateTransformAndClipping()
+{
+    RenderingContext ctx;
+    getRenderingContext(ctx);
+
+    const auto& pos = getUnclippedOuterRect().get().getPosition();
+
+    if (ctx.owner == this && ctx.surface->isRenderingWindow())
+    {
+        RenderingWindow* const rw = static_cast<RenderingWindow*>(ctx.surface);
+
+        // move the underlying RenderingWindow if we're using such a thing
+        rw->setPosition(pos);
+        updatePivot();
+        d_translation = glm::vec3(0.0f, 0.0f, 0.0f);
+
+        rw->setClippingRegion(getParentClipRect());
+
+        d_clippingRegion = Rectf(glm::vec2(0, 0), d_pixelSize);
+    }
+    else
+    {
+        // if we're not texture backed, update geometry position.
+        // position is the offset of the window on the dest surface.
+        d_translation = glm::vec3(pos - ctx.offset, 0.0f);
+
+        d_clippingRegion = getOuterRectClipper();
+        if (d_clippingRegion.getWidth() != 0.0f && d_clippingRegion.getHeight() != 0.0f)
+            d_clippingRegion.offset(-ctx.offset);
+    }
+
+    for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
+    {
+        currentBuffer->setTranslation(d_translation);
+        currentBuffer->setClippingRegion(d_clippingRegion);
+    }
+}
+
+//----------------------------------------------------------------------------//
 void Window::updatePivot()
 {
     static_cast<RenderingWindow*>(d_surface)->setPivot(
@@ -3835,31 +3839,28 @@ void Window::onTargetSurfaceChanged(RenderingSurface* newSurface)
 
     if (d_autoRenderingWindow)
     {
+        if (newSurface == d_surface)
+            return;
+
         // We use our own auto-window and must update its state
         if (!d_surface)
         {
-            if (newSurface)
-            {
-                allocateRenderingWindow(d_autoRenderingSurfaceStencilEnabled);
+            allocateRenderingWindow(d_autoRenderingSurfaceStencilEnabled);
 
-                // Propagate our auto-window as a new host surface for our children
-                for (auto child : d_children)
-                    static_cast<Window*>(child)->onTargetSurfaceChanged(d_surface);
-            }
+            // Propagate our auto-window as a new host surface for our children
+            for (auto child : d_children)
+                static_cast<Window*>(child)->onTargetSurfaceChanged(d_surface);
         }
         else if (!newSurface)
         {
-            if (d_surface)
-            {
-                // We are about to destroy our auto-window, so enforce children that use it
-                // as a host surface to destroy their windows first.
-                for (auto child : d_children)
-                    static_cast<Window*>(child)->onTargetSurfaceChanged(nullptr);
+            // We are about to destroy our auto-window, so enforce children that use it
+            // as a host surface to destroy their windows first.
+            for (auto child : d_children)
+                static_cast<Window*>(child)->onTargetSurfaceChanged(nullptr);
 
-                releaseRenderingWindow();
-            }
+            releaseRenderingWindow();
         }
-        else if (newSurface != d_surface)
+        else
         {
             // Since we have a surface, child surfaces stay with us. Though we
             // must now ensure /our/ surface is transferred.
@@ -3873,6 +3874,9 @@ void Window::onTargetSurfaceChanged(RenderingSurface* newSurface)
         for (auto child : d_children)
             static_cast<Window*>(child)->onTargetSurfaceChanged(newSurface);
     }
+
+    // Update our transformation to render into the new target
+    updateTransformAndClipping();
 }
 
 //----------------------------------------------------------------------------//

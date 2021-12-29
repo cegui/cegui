@@ -3912,6 +3912,7 @@ protected:
 
 private:
 
+    void updateTransformAndClipping();
     void updatePivot();
 };
 
