@@ -3769,8 +3769,6 @@ protected:
     mutable Rectf d_innerRectClipper;
     //! area rect used for hit-testing against this window
     mutable Rectf d_hitTestRect;
-    //! The clipping region which was set for this window.
-    Rectf d_clippingRegion;
     //! Margin, only used when the Window is inside LayoutContainer class
     //!!!FIXME: move to LC? Too much memory wasted.
     UBox d_margin;
@@ -3786,8 +3784,6 @@ protected:
     CursorInputSource d_repeatPointerSource;
     //! The mode to use for calling Window::update
     WindowUpdateMode d_updateMode;
-    //! The translation which was set for this window.
-    glm::vec3 d_translation;
     //! Alpha transparency setting for the Window
     float d_alpha;
     //! seconds before first repeat event is fired
@@ -3912,8 +3908,9 @@ protected:
 
 private:
 
-    void updateTransformAndClipping();
-    void updatePivot();
+    void updateRenderingWindow(bool updateSize);
+    void updateGeometryTransformAndClipping();
+    void updateGeometryAlpha();
 };
 
 } // End of  CEGUI namespace section

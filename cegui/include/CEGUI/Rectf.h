@@ -166,6 +166,8 @@ public:
         return d_max.y - d_min.y;
     }
 
+    bool empty() const { return d_max.x <= d_min.x || d_max.y <= d_min.y; }
+
     /*!
     \    
         return a Rectf that is the intersection of 'this' Rectf with the Rectf 'rect'

@@ -1205,40 +1205,35 @@ void Window::drawSelf(const RenderingContext& ctx, std::uint32_t drawModeMask)
 //----------------------------------------------------------------------------//
 void Window::bufferGeometry(const RenderingContext&, std::uint32_t /*drawModeMask*/)
 {
-    if (d_needsRedraw)
-    {
-        // dispose of already cached geometry.
-        destroyGeometryBuffers();
+    if (!d_needsRedraw)
+        return;
 
-        // signal rendering started
-        WindowEventArgs args(this);
-        onRenderingStarted(args);
+    // dispose of already cached geometry.
+    destroyGeometryBuffers();
 
-        // HACK: ensure our rendered string content is up to date
-        getRenderedString();
+    // signal rendering started
+    WindowEventArgs args(this);
+    onRenderingStarted(args);
 
-        // get derived class or WindowRenderer to re-populate geometry buffer.
-        if (d_windowRenderer)
-            d_windowRenderer->createRenderGeometry();
-        else
-            populateGeometryBuffer();
+    // HACK: ensure our rendered string content is up to date
+    getRenderedString();
 
-        // Setup newly created geometry with our settings
-        const float finalAlpha = getEffectiveAlpha();
-        for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
-        {
-            currentBuffer->setTranslation(d_translation);
-            currentBuffer->setClippingRegion(d_clippingRegion);
-            currentBuffer->setAlpha(finalAlpha);
-        }
+    // get derived class or WindowRenderer to re-populate geometry buffer.
+    if (d_windowRenderer)
+        d_windowRenderer->createRenderGeometry();
+    else
+        populateGeometryBuffer();
 
-        // signal rendering ended
-        args.handled = 0;
-        onRenderingEnded(args);
+    // Setup newly created geometry with our settings
+    updateGeometryTransformAndClipping();
+    updateGeometryAlpha();
 
-        // mark ourselves as no longer needed a redraw.
-        d_needsRedraw = false;
-    }
+    // signal rendering ended
+    args.handled = 0;
+    onRenderingEnded(args);
+
+    // mark ourselves as no longer needed a redraw.
+    d_needsRedraw = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -2268,15 +2263,10 @@ void Window::onAlphaChanged(WindowEventArgs& e)
             WindowEventArgs args(getChildAtIndex(i));
             getChildAtIndex(i)->onAlphaChanged(args);
         }
-
     }
 
-    const float finalAlpha = getEffectiveAlpha();
-    for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
-        currentBuffer->setAlpha(finalAlpha);
-
+    updateGeometryAlpha();
     invalidateRenderingSurface();
-
     if (GUIContext* context = getGUIContextPtr())
         context->markAsDirty();
 
@@ -3098,16 +3088,14 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
     }
 
     if (sized)
-    {
-        // Resize the underlying RenderingWindow if we're using such a thing
-        if (d_surface && d_surface->isRenderingWindow())
-            static_cast<RenderingWindow*>(d_surface)->setSize(d_pixelSize);
-
         invalidate();
-    }
 
     // Apply our screen area changes to rendering surface and geometry settings
-    updateTransformAndClipping();
+    if (moved || sized)
+    {
+        updateRenderingWindow(sized);
+        updateGeometryTransformAndClipping();
+    }
 
     return flags;
 }
@@ -3277,7 +3265,7 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
     {
         ctx.surface = d_guiContext;
         ctx.owner = nullptr;
-        ctx.offset = glm::vec2(0, 0);
+        ctx.offset = glm::vec2(0.f, 0.f);
         ctx.queue = RenderQueueID::Base;
     }
 }
@@ -3285,12 +3273,19 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
 //----------------------------------------------------------------------------//
 RenderingSurface* Window::getTargetRenderingSurface() const
 {
-    if (d_surface)
-        return d_surface;
-    else if (d_parent)
-        return getParent()->getTargetRenderingSurface();
-    else
-        return d_guiContext;
+    const Window* curr = this;
+    do
+    {
+        if (curr->d_surface)
+            return curr->d_surface;
+
+        curr = curr->getParent();
+    }
+    while (curr);
+
+    // FIXME: d_guiContext must be set for all windows in the hierarchy!
+    //return d_guiContext;
+    return getGUIContextPtr();
 }
 
 //----------------------------------------------------------------------------//
@@ -3315,12 +3310,20 @@ void Window::setRenderingSurface(RenderingSurface* surface)
 //----------------------------------------------------------------------------//
 void Window::invalidateRenderingSurface()
 {
-    // invalidate our surface chain if we have one
-    if (d_surface)
-        d_surface->invalidate();
-    // else look through the hierarchy for a surface chain to invalidate.
-    else if (d_parent)
-        getParent()->invalidateRenderingSurface();
+    const Window* curr = this;
+    do
+    {
+        // invalidate our surface chain if we have one
+        if (curr->d_surface)
+        {
+            curr->d_surface->invalidate();
+            break;;
+        }
+
+        // else look through the hierarchy for a surface chain to invalidate.
+        curr = curr->getParent();
+    }
+    while (curr);
 }
 
 //----------------------------------------------------------------------------//
@@ -3348,10 +3351,6 @@ void Window::setUsingAutoRenderingSurface(bool setting)
         releaseRenderingWindow();
         d_autoRenderingWindow = false;
     }
-
-    // while the actual area on screen may not have changed, the arrangement of
-    // surfaces and geometry did...
-    notifyScreenAreaChanged(true, true); //???or only update geometry if size not changed?
 }
 
 //----------------------------------------------------------------------------//
@@ -3401,15 +3400,8 @@ void Window::allocateRenderingWindow(bool addStencilBuffer)
 
     d_surface = &rs->createRenderingWindow(*t);
     transferChildSurfaces();
-
-    // set size and position of RenderingWindow
-    auto rw = static_cast<RenderingWindow*>(d_surface);
-    rw->setSize(getPixelSize());
-    rw->setPosition(getUnclippedOuterRect().get().getPosition());
-    rw->setClippingRegion(getParentClipRect());
-    rw->setRotation(d_rotation);
-    updatePivot();
-
+    updateRenderingWindow(true);
+    updateGeometryTransformAndClipping();
     if (GUIContext* context = getGUIContextPtr())
         context->markAsDirty();
 }
@@ -3430,6 +3422,7 @@ void Window::releaseRenderingWindow()
     old_surface->getOwner().destroyRenderingWindow(*old_surface);
     System::getSingleton().getRenderer()->destroyTextureTarget(tt);
 
+    updateGeometryTransformAndClipping();
     if (GUIContext* context = getGUIContextPtr())
         context->markAsDirty();
 }
@@ -3458,14 +3451,12 @@ void Window::onRotated(ElementEventArgs& e)
 {
     Element::onRotated(e);
     
-    if(!getGUIContextPtr())
-    {
+    if (!getGUIContextPtr())
         return;
-    }
 
     // TODO: Checking quaternion for equality with IDENTITY is stupid,
     //       change this to something else, checking with tolerance.
-    if (d_rotation != glm::quat() && !d_surface)
+    if (!d_surface && d_rotation != glm::quat(1.f, 0.f, 0.f, 0.f))
     {
         // if we have no surface set and the rotation differs from identity,
         // enable the auto surface
@@ -3476,7 +3467,7 @@ void Window::onRotated(ElementEventArgs& e)
 
         setUsingAutoRenderingSurface(true);
 
-        // still no surface?  Renderer or HW must not support what we need :(
+        // still no surface? Renderer or HW must not support what we need :(
         if (!d_surface)
         {
             Logger::getSingleton().logEvent("Window::setRotation - "
@@ -3502,7 +3493,12 @@ void Window::onRotated(ElementEventArgs& e)
 
         // Checks / setup complete!  Now we can finally set the rotation.
         static_cast<RenderingWindow*>(d_surface)->setRotation(d_rotation);
-        updatePivot();
+
+        // FIXME: this is required here because Element::setPivot notifies us only with onRotated
+        static_cast<RenderingWindow*>(d_surface)->setPivot(
+            glm::vec3(CoordConverter::asAbsolute(d_pivot.d_x, d_pixelSize.d_width, false),
+                CoordConverter::asAbsolute(d_pivot.d_y, d_pixelSize.d_height, false),
+                CoordConverter::asAbsolute(d_pivot.d_z, 0, false)));
     }
 }
 
@@ -3746,51 +3742,68 @@ const Window* Window::getWindowAttachedToCommonAncestor(const Window& wnd) const
 }
 
 //----------------------------------------------------------------------------//
-void Window::updateTransformAndClipping()
+void Window::updateRenderingWindow(bool updateSize)
 {
-    RenderingContext ctx;
-    getRenderingContext(ctx);
+    if (!d_surface || !d_surface->isRenderingWindow())
+        return;
 
-    const auto& pos = getUnclippedOuterRect().get().getPosition();
+    auto rw = static_cast<RenderingWindow*>(d_surface);
+    rw->setPosition(getUnclippedOuterRect().get().getPosition());
+    rw->setClippingRegion(getParentClipRect());
+    rw->setRotation(d_rotation);
+    rw->setPivot(
+        glm::vec3(CoordConverter::asAbsolute(d_pivot.d_x, d_pixelSize.d_width, false),
+            CoordConverter::asAbsolute(d_pivot.d_y, d_pixelSize.d_height, false),
+            CoordConverter::asAbsolute(d_pivot.d_z, 0, false)));
 
-    if (ctx.owner == this && ctx.surface->isRenderingWindow())
+    // This invalidates the window geometry so we prefer to touch it only when necessary
+    if (updateSize)
+        rw->setSize(d_pixelSize);
+}
+
+//----------------------------------------------------------------------------//
+void Window::updateGeometryTransformAndClipping()
+{
+    if (d_geometryBuffers.empty())
+        return;
+
+    glm::vec3 translation;
+    Rectf clippingRegion;
+    if (d_surface && d_surface->isRenderingWindow())
     {
-        RenderingWindow* const rw = static_cast<RenderingWindow*>(ctx.surface);
-
-        // move the underlying RenderingWindow if we're using such a thing
-        rw->setPosition(pos);
-        updatePivot();
-        d_translation = glm::vec3(0.0f, 0.0f, 0.0f);
-
-        rw->setClippingRegion(getParentClipRect());
-
-        d_clippingRegion = Rectf(glm::vec2(0, 0), d_pixelSize);
+        translation = glm::vec3(0.f, 0.f, 0.f);
+        clippingRegion = Rectf(glm::vec2(0.f, 0.f), d_pixelSize);
     }
     else
     {
+        RenderingContext ctx;
+        getRenderingContext(ctx);
+
         // if we're not texture backed, update geometry position.
         // position is the offset of the window on the dest surface.
-        d_translation = glm::vec3(pos - ctx.offset, 0.0f);
+        translation = glm::vec3(getUnclippedOuterRect().get().getPosition() - ctx.offset, 0.f);
 
-        d_clippingRegion = getOuterRectClipper();
-        if (d_clippingRegion.getWidth() != 0.0f && d_clippingRegion.getHeight() != 0.0f)
-            d_clippingRegion.offset(-ctx.offset);
+        clippingRegion = getOuterRectClipper();
+        if (!clippingRegion.empty())
+            clippingRegion.offset(-ctx.offset);
     }
 
     for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
     {
-        currentBuffer->setTranslation(d_translation);
-        currentBuffer->setClippingRegion(d_clippingRegion);
+        currentBuffer->setTranslation(translation);
+        currentBuffer->setClippingRegion(clippingRegion);
     }
 }
 
 //----------------------------------------------------------------------------//
-void Window::updatePivot()
+void Window::updateGeometryAlpha()
 {
-    static_cast<RenderingWindow*>(d_surface)->setPivot(
-      glm::vec3(CoordConverter::asAbsolute(d_pivot.d_x, d_pixelSize.d_width,  false),
-                CoordConverter::asAbsolute(d_pivot.d_y, d_pixelSize.d_height, false),
-                CoordConverter::asAbsolute(d_pivot.d_z, 0,                    false)));
+    if (d_geometryBuffers.empty())
+        return;
+
+    const float finalAlpha = getEffectiveAlpha();
+    for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)
+        currentBuffer->setAlpha(finalAlpha);
 }
 
 //----------------------------------------------------------------------------//
@@ -3876,7 +3889,8 @@ void Window::onTargetSurfaceChanged(RenderingSurface* newSurface)
     }
 
     // Update our transformation to render into the new target
-    updateTransformAndClipping();
+    updateRenderingWindow(false);
+    updateGeometryTransformAndClipping();
 }
 
 //----------------------------------------------------------------------------//
