@@ -26,7 +26,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-
 #ifndef _CEGUIWindow_h_
 #define _CEGUIWindow_h_
 
@@ -39,7 +38,6 @@
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
 #endif
-
 
 namespace CEGUI
 {
@@ -66,6 +64,7 @@ template<>
 class PropertyHelper<WindowUpdateMode>
 {
 public:
+
     typedef WindowUpdateMode return_type;
     typedef return_type safe_method_return_type;
     typedef WindowUpdateMode pass_type;
@@ -73,47 +72,31 @@ public:
 
     static const String& getDataTypeName()
     {
-        static String type("WindowUpdateMode");
-
+        static const String type("WindowUpdateMode");
         return type;
     }
 
     static return_type fromString(const String& str)
     {
-
         if (str == "Always")
-        {
             return WindowUpdateMode::Always;
-        }
         else if (str == "Never")
-        {
             return WindowUpdateMode::Never;
-        }
         else
-        {
             return WindowUpdateMode::Visible;
-        }
     }
 
     static string_return_type toString(pass_type val)
     {
         if (val == WindowUpdateMode::Always)
-        {
             return "Always";
-        }
         else if (val == WindowUpdateMode::Never)
-        {
             return "Never";
-        }
         else if (val == WindowUpdateMode::Visible)
-        {
             return "Visible";
-        }
-        else
-        {
-            assert(false && "Invalid Window Update Mode");
-            return "Always";
-        }
+
+        assert(false && "Invalid Window Update Mode");
+        return "Always";
     }
 };
 
@@ -502,19 +485,13 @@ public:
     \return
         String object holding the Window type.
     */
-    inline const String& getType() const
-    {
-        return d_falagardType.empty() ? d_type : d_falagardType;
-    }
+    const String& getType() const { return d_falagardType.empty() ? d_type : d_falagardType; }
 
     /*!
     \brief
         return a String object holding the factory type name for this Window without Falagard mapping.
     */
-    inline const String& getFactoryType() const
-    {
-        return d_type;
-    }
+    const String& getFactoryType() const { return d_type; }
 
     /*!
     \brief
@@ -550,10 +527,7 @@ public:
         - true if the window is disabled.
         - false if the window is enabled.
     */
-    inline bool isDisabled() const
-    {
-        return !d_enabled;
-    }
+    bool isDisabled() const { return !d_enabled; }
 
     /*!
     \brief
@@ -588,10 +562,7 @@ public:
         - true if the window is set as visible.
         - false if the window is set as hidden.
     */
-    inline bool isVisible() const
-    {
-        return d_visible;
-    }
+    bool isVisible() const { return d_visible; }
 
     /*!
     \brief
@@ -670,7 +641,7 @@ public:
         - true if at least one child window was found with the ID code \a ID
         - false if no child window was found with the ID code \a ID.
     */
-    bool isChild(unsigned int ID) const;
+    bool isChild(unsigned int ID) const { return !!findChild(ID); }
 
     using NamedElement::isChildRecursive;
     /*!
@@ -693,7 +664,7 @@ public:
         - true if at least one child window was found with the ID code \a ID
         - false if no child window was found with the ID code \a ID.
     */
-    bool isChildRecursive(unsigned int ID) const;
+    bool isChildRecursive(unsigned int ID) const { return !!getChildRecursive(ID); }
 
 
     /*!
@@ -913,7 +884,7 @@ public:
         - true if the Window inherits alpha from its parent(s)
         - false if the alpha for this Window is independant from its parents.
     */
-    bool inheritsAlpha() const  {return d_inheritsAlpha;}
+    bool inheritsAlpha() const { return d_inheritsAlpha; }
 
     /*!
     \brief
@@ -1117,10 +1088,7 @@ public:
         Pointer to the Window object that is the parent of this Window.
         This value can be NULL, in which case the Window is a GUI sheet / root.
     */
-    inline Window* getParent() const
-    {
-        return static_cast<Window*>(getParentElement());
-    }
+    Window* getParent() const { return static_cast<Window*>(getParentElement()); }
 
     /*!
     \brief
@@ -1185,10 +1153,7 @@ public:
         - false: z-order changes are disabled for this window.
           moveToFront, moveToBack, moveInFront and moveBehind are ignored.
     */
-    inline bool isZOrderingEnabled() const
-    {
-        return d_zOrderingEnabled;
-    }
+    bool isZOrderingEnabled() const { return d_zOrderingEnabled; }
 
     /*!
     \brief
@@ -1198,10 +1163,7 @@ public:
     \note
         Clicks are not repeated because they require down & up.
     */
-    inline bool isCursorAutoRepeatEnabled() const
-    {
-        return d_autoRepeat;
-    }
+    bool isCursorAutoRepeatEnabled() const { return d_autoRepeat; }
 
     /*!
     \brief
@@ -1211,10 +1173,7 @@ public:
         float value indicating the delay, in seconds, before the first repeat
         cursor press event will be triggered when autorepeat is enabled.
     */
-    inline float getAutoRepeatDelay() const
-    {
-        return d_repeatDelay;
-    }
+    float getAutoRepeatDelay() const { return d_repeatDelay; }
 
     /*!
     \brief
@@ -1224,10 +1183,7 @@ public:
         float value indicating the rate, in seconds, at which repeat cursor press
         events will be generated after the initial delay has expired.
     */
-    inline float getAutoRepeatRate() const
-    {
-        return d_repeatRate;
-    }
+    float getAutoRepeatRate() const { return d_repeatRate; }
 
     /*!
     \brief
@@ -1238,10 +1194,7 @@ public:
         - true if System should pass captured input events to child windows.
         - false if System should pass captured input events to this window only.
     */
-    inline bool distributesCapturedInputs() const
-    {
-        return d_distCapturedInputs;
-    }
+    bool distributesCapturedInputs() const { return d_distCapturedInputs; }
 
     /*!
     \brief
@@ -1252,10 +1205,7 @@ public:
         - true if the Window will use the system default tooltip.
         - false if the window has a custom Tooltip object.
     */
-    inline bool isUsingDefaultTooltip() const
-    {
-        return !d_customTip;
-    }
+    bool isUsingDefaultTooltip() const { return !d_customTip; }
 
     /*!
     \brief
@@ -1285,10 +1235,7 @@ public:
     \return
         String object holding the current tooltip text set for this window.
      */
-    inline const String& getTooltipText() const
-    {
-        return d_tooltipText;
-    }
+    const String& getTooltipText() const { return d_tooltipText; }
 
     /*!
     \brief
@@ -1313,10 +1260,7 @@ public:
         - false if the window does not inherit tooltip text from its parent
           (and shows no tooltip when no text is set).
      */
-    inline bool inheritsTooltipText() const
-    {
-        return d_inheritsTipText;
-    }
+    bool inheritsTooltipText() const { return d_inheritsTipText; }
 
     /*!
     \brief
@@ -1347,10 +1291,7 @@ public:
     \return
         Reference to the list of GeometryBuffer objects for this Window.
     */
-    inline std::vector<GeometryBuffer*>& getGeometryBuffers()
-    {
-        return d_geometryBuffers;
-    }
+    std::vector<GeometryBuffer*>& getGeometryBuffers() { return d_geometryBuffers; }
     
     /*!
     \brief
@@ -1461,10 +1402,7 @@ public:
         - true if the Window is enabled as a drag and drop target.
         - false if the window is not enabled as a drag and drop target.
     */
-    inline bool isDragDropTarget() const
-    {
-        return d_dragDropTarget;
-    }
+    bool isDragDropTarget() const { return d_dragDropTarget; }
 
     /*!
     \brief
@@ -1481,10 +1419,7 @@ public:
         return the RenderingSurface currently set for this window.  May return
         0.
     */
-    inline RenderingSurface* getRenderingSurface() const
-    {
-        return d_surface;
-    }
+    inline RenderingSurface* getRenderingSurface() const { return d_surface; }
 
     /*!
     \brief
@@ -1504,10 +1439,7 @@ public:
         - true if automatic use of a caching RenderingSurface is enabled.
         - false if automatic use of a caching RenderTarget is not enabled.
     */
-    inline bool isUsingAutoRenderingSurface() const
-    {
-        return d_autoRenderingWindow;
-    }
+    inline bool isUsingAutoRenderingSurface() const { return d_autoRenderingWindow; }
 
     /*!
     \brief
@@ -1519,10 +1451,7 @@ public:
     - true to provide stencil buffer functionality with the texture caching.
     - false to not provide a stencil buffer functionality with the texture caching.
     */
-    inline bool isAutoRenderingSurfaceStencilEnabled() const
-    {
-        return d_autoRenderingSurfaceStencilEnabled;
-    }
+    inline bool isAutoRenderingSurfaceStencilEnabled() const { return d_autoRenderingSurfaceStencilEnabled; }
 
     /*!
     \brief
@@ -1534,8 +1463,8 @@ public:
         A pointer to the root window of the hierarchy that this window is
         attached to.
     */
-    const Window* getRootWindow() const;
-    Window* getRootWindow();
+    const Window* getRootWindow() const { return d_parent ? getParent()->getRootWindow() : this; }
+    Window* getRootWindow() { return d_parent ? getParent()->getRootWindow() : this; }
 
     /*!
     \brief
@@ -1556,9 +1485,6 @@ public:
         - true to have the Window auto-destroyed when its parent is destroyed
           (default behaviour)
         - false to have the Window remain after its parent is destroyed.
-
-    \return
-        Nothing
     */
     void setDestroyedByParent(bool setting);
 
@@ -1570,34 +1496,14 @@ public:
     \param setting
         - true to enable the Window
         - false to disable the Window.
-
-    \return
-        Nothing
     */
     virtual void setEnabled(bool enabled);
 
-    /*!
-    \brief
-        Set whether this window is enabled or disabled.  A disabled window
-        normally can not be interacted with, and may have different rendering.
+    //! \brief enable the Window to allow interaction.
+    void enable() { setEnabled(true); }
 
-    \param setting
-        - true to disable the Window
-        - false to enable the Window.
-    */
-    void setDisabled(bool disabled) { setEnabled(!disabled); }
-
-    /*!
-    \brief
-        enable the Window to allow interaction.
-    */
-    void enable()   { setEnabled(true); }
-
-    /*!
-    \brief
-        disable the Window to prevent interaction.
-    */
-    void disable()  { setEnabled(false); }
+    //! \brief disable the Window to prevent interaction.
+    void disable() { setEnabled(false); }
 
     /*!
     \brief
@@ -1612,9 +1518,6 @@ public:
         Showing a window does not, however, automatically cause that window to
         become the active window (call Window::activate after making the window
         visible to activate it).
-
-    \return
-        Nothing
     */
     void setVisible(bool setting);
 
@@ -1626,9 +1529,6 @@ public:
         Showing a window does not automatically activate the window.  If you
         want the window to also become active you will need to call the
         Window::activate member also.
-
-    \return
-        Nothing
     */
     void show() { setVisible(true); }
 
@@ -1638,9 +1538,6 @@ public:
     \note
         If the window is the active window, it will become deactivated as a
         result of being hidden.
-
-    \return
-        Nothing
     */
     void hide() { setVisible(false); }
 
@@ -1657,9 +1554,6 @@ public:
         window is not already active.  The window must be already visible in 
         order to activate it otherwise it will have no effect.  
         When deactivating, all active children will also be deactivated.
-
-    \return
-        Nothing
     */
 
     void setActive(bool setting);
@@ -1668,9 +1562,6 @@ public:
     \brief
         Activate the Window giving it input focus and bringing it to the top of
         all windows with the same always-on-top settig as this Window.
-
-    \return
-        Nothing
     */
     void activate() { activate_impl(false); }
 
@@ -1690,9 +1581,6 @@ public:
         - true to have the Window clipped so that rendering is constrained to
           within the area of its parent(s).
         - false to have rendering constrained to the screen only.
-
-    \return
-        Nothing
     */
     void setClippedByParent(bool setting);
 
@@ -1703,9 +1591,6 @@ public:
     \param ID
         Client assigned ID code for this Window.  The GUI system assigns no
         meaning to any IDs, they are a device purely for client code usage.
-
-    \return
-        Nothing
     */
     void setID(unsigned int ID);
 
@@ -1715,9 +1600,6 @@ public:
 
     \param text
         String object containing the text that is to be set as the Window text.
-
-    \return
-        Nothing
     */
     void setText(const String& text);
 
@@ -1754,9 +1636,6 @@ public:
     \param font
         Pointer to the Font object to be used by this Window.
         If \a font is NULL, the default font will be used.
-
-    \return
-        Nothing
     */
     void setFont(const Font* font);
 
@@ -1767,9 +1646,6 @@ public:
     \param name
         String object holding the name of the Font object to be used by this
         Window.  If \a name == "", the default font will be used.
-
-    \return
-        Nothing
 
     \exception UnknownObjectException
         thrown if the specified Font is unknown within the system.
@@ -1786,11 +1662,8 @@ public:
     \param ID
         ID number assigned to the Window to be removed.  If no Window with ID
         code \a ID is attached, nothing happens.
-
-    \return
-        Nothing.
     */
-    void removeChild(unsigned int ID);
+    void removeChild(unsigned int ID) { if (auto child = findChild(ID)) removeChild(child); }
 
     /*!
     \brief
@@ -1825,7 +1698,7 @@ public:
     \param name_path
         Name path that references the window to destroy
     */
-    void destroyChild(const String& name_path);
+    void destroyChild(const String& name_path) { destroyChild(getChild(name_path)); }
 
     /*!
     \brief
@@ -1836,11 +1709,8 @@ public:
           for all ancestors.
         - If the Window is an always-on-top window it is moved to the of of all
           sibling Windows, and the process repeated for all ancestors.
-
-    \return
-        Nothing
     */
-    void moveToFront();
+    void moveToFront() { moveToFront_impl(false); }
 
     /*!
     \brief
@@ -1852,9 +1722,6 @@ public:
         - If the window is always-on-top, the Window is sent to the bottom of
           all sibling always-on-top windows and the process repeated for all
           ancestors.
-
-    \return
-        Nothing
     */
     void moveToBack();
 
@@ -2053,7 +1920,7 @@ public:
     \param user_data
         pointer to the user data that is to be set for this window.
     */
-    void setUserData(void* user_data)   {d_userData = user_data;}
+    void setUserData(void* user_data) { d_userData = user_data; }
 
     /*!
     \brief
@@ -2074,7 +1941,7 @@ public:
         - false: z-order changes are disabled for this window.
           moveToFront, moveToBack, moveInFront and moveBehind are ignored.
     */
-    void    setZOrderingEnabled(bool setting);
+    void setZOrderingEnabled(bool setting) { d_zOrderingEnabled = setting; }
 
     /*!
     \brief
@@ -2094,7 +1961,7 @@ public:
         float value indicating the delay, in seconds, before the first repeat
         cursor press event should be triggered when autorepeat is enabled.
     */
-    void setAutoRepeatDelay(float delay);
+    void setAutoRepeatDelay(float delay) { d_repeatDelay = delay; }
 
     /*!
     \brief
@@ -2104,7 +1971,7 @@ public:
         float value indicating the rate, in seconds, at which repeat cursor press
         events should be generated after the initial delay has expired.
     */
-    void setAutoRepeatRate(float rate);
+    void setAutoRepeatRate(float rate) { d_repeatRate = rate; }
 
     /*!
     \brief
@@ -2115,7 +1982,7 @@ public:
         - true if System should pass captured input events to child windows.
         - false if System should pass captured input events to this window only.
     */
-    void setDistributesCapturedInputs(bool setting);
+    void setDistributesCapturedInputs(bool setting) { d_distCapturedInputs = setting; }
 
     /*!
     \brief
@@ -2168,9 +2035,6 @@ public:
         system default Tooltip object.  Note that when passing a pointer to a
         Tooltip object, ownership of the Tooltip does not pass to this Window
         object.
-
-    \return
-        Nothing.
     */
     void setTooltip(Tooltip* tooltip);
 
@@ -2188,9 +2052,6 @@ public:
     \param tooltipType
         String object holding the name of the Tooltip based Window type which
         should be used as the Tooltip for this Window.
-
-    \return
-        Nothing.
     */
     void setTooltipType(const String& tooltipType);
 
@@ -2201,9 +2062,6 @@ public:
     \param tip
         String object holding the text to be displayed in the tooltip for this
         Window.
-
-    \return
-        Nothing.
     */
     void setTooltipText(const String& tip);
 
@@ -2220,11 +2078,8 @@ public:
           its own text is not set.
         - false if the window should not inherit tooltip text from its parent
           (and so show no tooltip when no text is set).
-
-    \return
-        Nothing.
      */
-    void setInheritsTooltipText(bool setting);
+    void setInheritsTooltipText(bool setting) { d_inheritsTipText = setting; }
 
     /*!
     \brief
@@ -2245,11 +2100,8 @@ public:
           left cursor source is activated within its area.
         - false if the window should not change z-order position when the left
           cursor source is activated within its area.
-
-    \return
-        Nothing.
      */
-    void setRiseOnClickEnabled(bool setting)    { d_riseOnPointerActivation = setting; }
+    void setRiseOnClickEnabled(bool setting) { d_riseOnPointerActivation = setting; }
 
     /*!
     \brief
@@ -2293,9 +2145,6 @@ public:
         - true if this Window should be activated and set as the modal target.
         - false if the modal target should be cleared if this Window is
           currently the modal target.
-
-    \return
-        Nothing.
     */
     void setModalState(bool state);
 
@@ -2308,9 +2157,6 @@ public:
 
     \param value
         String object holding the value to be assigned to the user string.
-
-    \return
-        Nothing.
     */
     void setUserString(const String& name, const String& value);
 
@@ -2340,9 +2186,6 @@ public:
     \param elapsed
         float value indicating the number of seconds passed since the last
         update.
-
-    \return
-        Nothing.
     */
     virtual void update(float elapsed);
 
@@ -2356,7 +2199,7 @@ public:
     \return
         true if the copy was successful and allowed, false otherwise
     */
-    virtual bool performCopy(Clipboard& clipboard);
+    virtual bool performCopy(Clipboard& /*clipboard*/) { return false; }
 
     /*!
     \brief
@@ -2368,7 +2211,7 @@ public:
     \return
         true if the cut was successful and allowed, false otherwise
     */
-    virtual bool performCut(Clipboard& clipboard);
+    virtual bool performCut(Clipboard& /*clipboard*/) { return false; }
 
     /*!
     \brief
@@ -2380,7 +2223,7 @@ public:
     \return
         true if the paste was successful and allowed, false otherwise
      */
-    virtual bool performPaste(Clipboard& clipboard);
+    virtual bool performPaste(Clipboard& /*clipboard*/) { return false; }
 
     /*!
     \brief
@@ -2389,7 +2232,7 @@ public:
     \return
         true if the undo was successful and allowed, false otherwise
      */
-    virtual bool performUndo();
+    virtual bool performUndo() { return false; }
 
     /*!
     \brief
@@ -2398,7 +2241,7 @@ public:
     \return
         true if the redo was successful and allowed, false otherwise
      */
-    virtual bool performRedo();
+    virtual bool performRedo() { return false; }
 
     /*!
     \brief
@@ -2406,9 +2249,6 @@ public:
 
     \param xml_stream
         Stream where xml data should be output.
-
-    \return
-        Nothing.
     */
     virtual void writeXMLToStream(XMLSerializer& xml_stream) const;
 
@@ -2447,7 +2287,7 @@ public:
     \return
         the Window object for the auto window referenced by \a name.
     */
-    virtual Window* getChildAutoWindow(const String& name);
+    virtual Window* getChildAutoWindow(const String& name) { return getChild(name); }
 
     /*!
     \brief
@@ -2459,7 +2299,7 @@ public:
         true if cursor pass through is enabled.
         false if cursor pass through is not enabled.
     */
-    void setCursorPassThroughEnabled(bool setting)   {d_cursorPassThroughEnabled = setting;}
+    void setCursorPassThroughEnabled(bool setting) { d_cursorPassThroughEnabled = setting; }
 
     /*!
     \brief
@@ -2485,10 +2325,7 @@ public:
         A pointer to the assigned window renderer object.
         0 if no window renderer is assigned.
     */
-    inline WindowRenderer* getWindowRenderer() const
-    {
-        return d_windowRenderer;
-    }
+    inline WindowRenderer* getWindowRenderer() const { return d_windowRenderer; }
 
     /*!
     \brief
@@ -2505,7 +2342,7 @@ public:
     \brief
         Sets whether this window is allowed to write XML
     */
-    void setWritingXMLAllowed(bool allow)   {d_allowWriteXML = allow;}
+    void setWritingXMLAllowed(bool allow) { d_allowWriteXML = allow; }
 
     /*!
     \brief
@@ -2529,7 +2366,7 @@ public:
         - true to enable the Window as a drag and drop target.
         - false to disable the Window as a drag and drop target.
     */
-    void setDragDropTarget(bool setting);
+    void setDragDropTarget(bool setting) { d_dragDropTarget = setting; }
 
     /*!
     \brief
@@ -2620,37 +2457,27 @@ public:
     //! Return the parsed RenderedString object for this window.
     const RenderedString& getRenderedString() const;
     //! Return a pointer to any custom RenderedStringParser set, or 0 if none.
-    inline RenderedStringParser* getCustomRenderedStringParser() const
-    {
-        return d_customStringParser;
-    }
+    inline RenderedStringParser* getCustomRenderedStringParser() const { return d_customStringParser; }
     //! Set a custom RenderedStringParser, or 0 to remove an existing one.
     void setCustomRenderedStringParser(RenderedStringParser* parser);
     //! return the active RenderedStringParser to be used
     virtual RenderedStringParser& getRenderedStringParser() const;
     //! return whether text parsing is enabled for this window.
-    inline bool isTextParsingEnabled() const
-    {
-        return d_textParsingEnabled;
-    }
+    inline bool isTextParsingEnabled() const { return d_textParsingEnabled; }
     //! set whether text parsing is enabled for this window.
-    void setTextParsingEnabled(const bool setting);
+    void setTextParsingEnabled(bool setting);
 
     //! set margin
     virtual void setMargin(const UBox& margin);
     //! retrieves currently set margin
-    inline const UBox& getMargin() const
-    {
-        return d_margin;
-    }
+    inline const UBox& getMargin() const { return d_margin; }
 
     //! return glm::vec2 \a pos after being fully unprojected for this Window.
     glm::vec2 getUnprojectedPosition(const glm::vec2& pos) const;
 
 #ifdef CEGUI_BIDI_SUPPORT
     //! return the pointer to the BidiVisualMapping for this window, if any.
-    const BidiVisualMapping* getBidiVisualMapping() const
-        {return d_bidiVisualMapping;}
+    const BidiVisualMapping* getBidiVisualMapping() const {return d_bidiVisualMapping;}
 #endif
 
     /*!
@@ -2751,7 +2578,7 @@ public:
         One of the WindowUpdateMode enumerated values indicating the mode to
         set for this Window.
     */
-    void setUpdateMode(const WindowUpdateMode mode);
+    void setUpdateMode(const WindowUpdateMode mode) { d_updateMode = mode; }
 
     /*!
     \brief
@@ -2770,10 +2597,7 @@ public:
         One of the WindowUpdateMode enumerated values indicating the current
         mode set for this Window.
     */
-    inline WindowUpdateMode getUpdateMode() const
-    {
-        return d_updateMode;
-    }
+    WindowUpdateMode getUpdateMode() const { return d_updateMode; }
 
     /*!
     \brief
@@ -2781,7 +2605,7 @@ public:
         (including it's event subscribers) should be propagated back to the
         Window's parent.
     */
-    void setCursorInputPropagationEnabled(const bool enabled);
+    void setCursorInputPropagationEnabled(const bool enabled) { d_propagatePointerInputs = enabled; }
 
     /*!
     \brief
@@ -2789,10 +2613,7 @@ public:
         (including it's event subscribers) should be propagated back to the
         Window's parent.
     */
-    inline bool isCursorInputPropagationEnabled() const
-    {
-        return d_propagatePointerInputs;
-    }
+    bool isCursorInputPropagationEnabled() const { return d_propagatePointerInputs; }
 
     /*!
     \brief
@@ -2804,7 +2625,7 @@ public:
     \return
         the cloned Window
     */
-    Window* clone(const bool deepCopy = true) const;
+    Window* clone(bool deepCopy = true) const;
 
     //! copies this widget's properties to given target widget
     virtual void clonePropertiesTo(Window& target) const;
@@ -3440,9 +3261,6 @@ protected:
     \param elapsed
         float value indicating the number of seconds elapsed since the last
         update call.
-
-    \return
-        Nothing.
     */
     virtual void updateSelf(float elapsed);
 
@@ -3453,9 +3271,6 @@ protected:
     \param ctx
         RenderingContext holding the details of the RenderingSurface to be
         used for the Window rendering operations.
-
-    \return
-        Nothing
     */
     virtual void drawSelf(const RenderingContext& ctx, std::uint32_t drawModeMask);
 
@@ -3496,7 +3311,7 @@ protected:
         Returns true if the given WindowRenderer class name is valid for this window.
         False if not.
     */
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
+    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const { return true; }
 
     /*!
     \brief
@@ -3590,9 +3405,6 @@ protected:
         Indicates whether the window should be placed at the back of other
         windows in the same group. If this is false, the window is placed in
         front of other windows in the group.
-
-    \return
-        Nothing.
     */
     void addWindowToDrawList(Window& wnd, bool at_back = false);
 
@@ -3603,9 +3415,6 @@ protected:
 
     \param wnd
         Window object to be removed from the drawing list.
-
-    \return
-        Nothing.
     */
     void removeWindowFromDrawList(const Window& wnd);
 
@@ -3662,7 +3471,10 @@ protected:
                                bool allow_disabled = false,
                                const Window* const exclude = nullptr) const;
 
-    bool isHitTargetWindow(const glm::vec2& position, bool allow_disabled) const;
+    bool isHitTargetWindow(const glm::vec2& position, bool allow_disabled) const
+    {
+        return !isCursorPassThroughEnabled() && isHit(position, allow_disabled);
+    }
 
     /*************************************************************************
         Properties for Window base class
@@ -3713,23 +3525,23 @@ protected:
     *************************************************************************/
 
     //! GUIContext.  Set when this window is used as a root window.
-    GUIContext* d_guiContext;
+    GUIContext* d_guiContext = nullptr;
     //! The WindowRenderer module that implements the Look'N'Feel specification
-    WindowRenderer* d_windowRenderer;
+    WindowRenderer* d_windowRenderer = nullptr;
     //! RenderingSurface owned by this window (may be 0)
-    RenderingSurface* d_surface;
+    RenderingSurface* d_surface = nullptr;
     //! Holds pointer to the Window objects current cursor image.
-    const Image* d_cursor;
+    const Image* d_cursor = nullptr;
     //! Possible custom Tooltip for this window.
-    Tooltip* d_customTip;
+    Tooltip* d_customTip = nullptr;
     //! Holds pointer to the Window objects current Font.
-    const Font* d_font;
+    const Font* d_font = nullptr;
     //! Pointer to a custom (user assigned) RenderedStringParser object.
-    RenderedStringParser* d_customStringParser;
+    RenderedStringParser* d_customStringParser = nullptr;
     //! The Window that previously had capture (used for restoreOldCapture mode)
-    Window* d_oldCapture;
+    Window* d_oldCapture = nullptr;
     //! Holds pointer to some user assigned data.
-    void* d_userData;
+    void* d_userData = nullptr;
 
 #ifdef CEGUI_BIDI_SUPPORT
     //! pointer to bidirection support object
@@ -3746,34 +3558,34 @@ protected:
     Event::ScopedConnection d_fontRenderSizeChangeConnection;
 
     //! outer area clipping rect in screen pixels
-    mutable Rectf d_outerRectClipper;
+    mutable Rectf d_outerRectClipper = Rectf(0.f, 0.f, 0.f, 0.f);
     //! inner area clipping rect in screen pixels
-    mutable Rectf d_innerRectClipper;
+    mutable Rectf d_innerRectClipper = Rectf(0.f, 0.f, 0.f, 0.f);
     //! area rect used for hit-testing against this window
-    mutable Rectf d_hitTestRect;
+    mutable Rectf d_hitTestRect = Rectf(0.f, 0.f, 0.f, 0.f);
     //! Margin, only used when the Window is inside LayoutContainer class
     //!!!FIXME: move to LC? Too much memory wasted.
-    UBox d_margin;
+    UBox d_margin = UBox(UDim(0, 0));
     /*!
         Contains the draw mode mask, for this window, specifying
         a the bit flags that determine if the Window will be drawn or not
         in the draw calls, depending on the bitmask passed to the calls.
     */
-    std::uint32_t d_drawModeMask;
+    std::uint32_t d_drawModeMask = DrawModeFlagWindowRegular;
     //! User ID assigned to this Window
-    unsigned int d_ID;
+    unsigned int d_ID = 0;
     //! Cursor source we're tracking for auto-repeat purposes.
-    CursorInputSource d_repeatPointerSource;
+    CursorInputSource d_repeatPointerSource = CursorInputSource::NotSpecified;
     //! The mode to use for calling Window::update
-    WindowUpdateMode d_updateMode;
+    WindowUpdateMode d_updateMode = WindowUpdateMode::Visible;
     //! Alpha transparency setting for the Window
-    float d_alpha;
+    float d_alpha = 1.f;
     //! seconds before first repeat event is fired
-    float d_repeatDelay;
+    float d_repeatDelay = 0.3f;
     //! seconds between further repeats after delay has expired.
-    float d_repeatRate;
+    float d_repeatRate = 0.06f;
     //! implements repeating - tracks time elapsed.
-    float d_repeatElapsed;
+    float d_repeatElapsed = 0.f;
 
     //! Holds a collection of named user string values.
     std::unordered_map<String, String> d_userStrings;
@@ -3885,6 +3697,9 @@ protected:
 #endif
 
 private:
+
+    // For property
+    void setDisabled(bool value) { setEnabled(!value); }
 
     void updateRenderingWindow(bool updateSize);
     void updateGeometryTransformAndClipping();
