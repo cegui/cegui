@@ -317,11 +317,11 @@ void Window::destroy()
     WindowEventArgs args(this);
     onDestructionStarted(args);
 
-    // Check we are detached from parent
+    // Check we are detached from parent, or from context in the case of root
     if (d_parent)
         d_parent->removeChild(this);
-
-    releaseInput();
+    else if (d_guiContext)
+        d_guiContext->onWindowDetached(this);
 
     // let go of the tooltip if we have it
     Tooltip* const tip = getTooltip();
@@ -706,6 +706,21 @@ void Window::setEnabled(bool enabled)
 }
 
 //----------------------------------------------------------------------------//
+bool Window::isEffectiveDisabled() const
+{
+    const Window* current = this;
+    while (current)
+    {
+        if (!current->d_enabled)
+            return true;
+
+        current = current->getParent();
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 void Window::setVisible(bool setting)
 {
     // only react if setting has changed
@@ -718,6 +733,21 @@ void Window::setVisible(bool setting)
 
     if (d_guiContext)
         d_guiContext->updateWindowContainingCursor();
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isEffectiveVisible() const
+{
+    const Window* current = this;
+    while (current)
+    {
+        if (!current->d_visible)
+            return false;
+
+        current = current->getParent();
+    }
+
+    return true;
 }
 
 //----------------------------------------------------------------------------//
@@ -778,6 +808,21 @@ void Window::deactivate()
     ActivationEventArgs args(this);
     args.otherWindow = nullptr;
     onDeactivated(args);
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isActive() const
+{
+    const Window* current = this;
+    while (current)
+    {
+        if (!current->d_active)
+            return false;
+
+        current = current->getParent();
+    }
+
+    return true;
 }
 
 //----------------------------------------------------------------------------//
@@ -1238,14 +1283,6 @@ void Window::removeChild_impl(Element* element)
     removeWindowFromDrawList(*wnd);
 
     Element::removeChild_impl(wnd);
-
-    // TODO: to ctx?!
-    if (d_guiContext)
-    {
-        Window* captureWnd = d_guiContext->getInputCaptureWindow();
-        if (captureWnd && (captureWnd == wnd || captureWnd->isAncestor(wnd)))
-            captureWnd->releaseInput();
-    }
 
     wnd->attachToGUIContext(nullptr);
 
@@ -3367,6 +3404,9 @@ GUIContext& Window::getGUIContext() const
 //----------------------------------------------------------------------------//
 void Window::setGUIContextRecursively(GUIContext* context)
 {
+    if (d_guiContext)
+        d_guiContext->onWindowDetached(this);
+
     d_guiContext = context;
 
     for (auto child : d_children)

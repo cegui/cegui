@@ -48,11 +48,7 @@ GUIContext::GUIContext(RenderTarget& target) :
     d_areaChangedEventConnection(
         target.subscribeEvent(
             RenderTarget::EventAreaChanged,
-            Event::Subscriber(&GUIContext::areaChangedHandler, this))),
-    d_windowDestroyedEventConnection(
-        WindowManager::getSingleton().subscribeEvent(
-            WindowManager::EventWindowDestroyed,
-            Event::Subscriber(&GUIContext::windowDestroyedHandler, this)))
+            Event::Subscriber(&GUIContext::areaChangedHandler, this)))
 {
     d_cursor.resetPositionToDefault();
     resetWindowContainingCursor();
@@ -318,30 +314,30 @@ bool GUIContext::areaChangedHandler(const EventArgs&)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::windowDestroyedHandler(const EventArgs& args)
+void GUIContext::onWindowDetached(Window* window)
 {
-    const Window* const window =
-        static_cast<const WindowEventArgs&>(args).window;
+    if (!window)
+        return;
 
     if (window == d_rootWindow)
         d_rootWindow = nullptr;
 
-    if (window == getWindowContainingCursor())
+    if (window == d_windowContainingCursor)
         resetWindowContainingCursor();
 
     if (window == d_modalWindow)
         d_modalWindow = nullptr;
 
-    if (window == d_captureWindow)
-        d_captureWindow = nullptr;
+    if (window == d_oldCaptureWindow)
+        d_oldCaptureWindow = nullptr;
+
+    releaseInputCapture(true, window);
 
     if (window == d_defaultTooltipObject)
     {
         d_defaultTooltipObject = nullptr;
         d_weCreatedTooltipObject = false;
     }
-
-    return true;
 }
 
 //----------------------------------------------------------------------------//

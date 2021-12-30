@@ -173,14 +173,13 @@ public:
         If the bool is true all PixelAlignment settings will be overridden
         and no pixel alignment will take place.
         */
-        typedef Rectf (Element::*DataGenerator)(bool) const;
+        typedef Rectf(Element::* DataGenerator)(bool) const;
 
-        CachedRectf(Element const* element, DataGenerator generator):
+        CachedRectf(Element const* element, DataGenerator generator) :
             d_element(element),
-            d_generator(generator),
+            d_generator(generator)
             // we don't have to initialise d_cachedData here, it will get
             // regenerated and reset anyways
-            d_cacheValid(false)
         {}
 
         /*!
@@ -189,9 +188,7 @@ public:
         inline const Rectf& get() const
         {
             if (!d_cacheValid)
-            {
                 regenerateCache();
-            }
 
             return d_cachedData;
         }
@@ -207,9 +204,7 @@ public:
             // if the cache is not valid we will use this chance to regenerate it
             // of course this is only applicable if we are allowed to use pixel alignment where applicable
             if (!d_cacheValid && !skipAllPixelAlignment)
-            {
                 return get();
-            }
 
             return ((*d_element).*d_generator)(skipAllPixelAlignment);
         }
@@ -217,10 +212,7 @@ public:
         /*!
         \brief Retrieves cached Rectf even if the cache is invalid
         */
-        inline const Rectf& getCurrent() const
-        {
-            return d_cachedData;
-        }
+        const Rectf& getCurrent() const { return d_cachedData; }
 
         /*!
         \brief Invalidates the cached Rectf causing it to be regenerated
@@ -228,15 +220,9 @@ public:
         The regeneration will not happen immediately, it will happen when user
         requests the data.
         */
-        inline void invalidateCache() const
-        {
-            d_cacheValid = false;
-        }
+        void invalidateCache() const { d_cacheValid = false; }
 
-        inline bool isCacheValid() const
-        {
-            return d_cacheValid;
-        }
+        bool isCacheValid() const { return d_cacheValid; }
 
         inline void regenerateCache() const
         {
@@ -252,7 +238,7 @@ public:
         const DataGenerator d_generator;
 
         mutable Rectf d_cachedData;
-        mutable bool  d_cacheValid;
+        mutable bool  d_cacheValid = false;
     };
 
     /*!
@@ -265,7 +251,7 @@ public:
 
     /*!
     \brief Retrieves parent of this element
-   
+
     \returns
         pointer to parent or 0, 0 means that this Element is a root of
         the subtree it represents
@@ -301,7 +287,7 @@ public:
 
     //! \overload
     inline void setArea(const UDim& xpos, const UDim& ypos,
-                        const UDim& width, const UDim& height)
+        const UDim& width, const UDim& height)
     {
         setArea(UVector2(xpos, ypos), USize(width, height));
     }
@@ -332,10 +318,7 @@ public:
 
     \see UDim
     */
-    inline const URect& getArea() const
-    {
-        return d_area;
-    }
+    const URect& getArea() const { return d_area; }
 
     /*!
     \brief
@@ -383,22 +366,13 @@ public:
 
     \see UDim
     */
-    inline const UVector2& getPosition() const
-    {
-        return d_area.getPosition();
-    }
+    const UVector2& getPosition() const { return d_area.getPosition(); }
 
     //! \overload
-    inline const UDim& getXPosition() const
-    {
-        return getPosition().d_x;
-    }
+    const UDim& getXPosition() const { return getPosition().d_x; }
 
     //! \overload
-    inline const UDim& getYPosition() const
-    {
-        return getPosition().d_y;
-    }
+    const UDim& getYPosition() const { return getPosition().d_y; }
 
     /*!
     \brief
@@ -422,10 +396,7 @@ public:
     \return
         One of the HorizontalAlignment enumerated values.
      */
-    inline HorizontalAlignment getHorizontalAlignment() const
-    {
-        return d_horizontalAlignment;
-    }
+    HorizontalAlignment getHorizontalAlignment() const { return d_horizontalAlignment; }
 
     /*!
     \brief
@@ -449,10 +420,7 @@ public:
     \return
         One of the VerticalAlignment enumerated values.
      */
-    inline VerticalAlignment getVerticalAlignment() const
-    {
-        return d_verticalAlignment;
-    }
+    VerticalAlignment getVerticalAlignment() const { return d_verticalAlignment; }
 
     /*!
     \brief
@@ -515,22 +483,13 @@ public:
 
     \see UDim
     */
-    inline USize getSize() const
-    {
-        return d_area.getSize();
-    }
+    USize getSize() const { return d_area.getSize(); }
 
     //! \overload
-    inline UDim getWidth() const
-    {
-        return getSize().d_width;
-    }
+    UDim getWidth() const { return getSize().d_width; }
 
     //! \overload
-    inline UDim getHeight() const
-    {
-        return getSize().d_height;
-    }
+    UDim getHeight() const { return getSize().d_height; }
 
     /*!
     \brief
@@ -564,10 +523,7 @@ public:
 
     \see Element::setMinSize
     */
-    inline const USize& getMinSize() const
-    {
-        return d_minSize;
-    }
+    const USize& getMinSize() const { return d_minSize; }
 
     /*!
     \brief
@@ -603,10 +559,7 @@ public:
 
     \see Element::setMaxSize
      */
-    inline const USize& getMaxSize() const
-    {
-        return d_maxSize;
-    }
+    const USize& getMaxSize() const { return d_maxSize; }
 
     /*!
     \brief Sets current aspect mode and recalculates the area rect
@@ -624,10 +577,7 @@ public:
 
     \see Element::setAspectMode
     */
-    inline AspectMode getAspectMode() const
-    {
-        return d_aspectMode;
-    }
+    AspectMode getAspectMode() const { return d_aspectMode; }
 
     /*!
     \brief
@@ -650,15 +600,12 @@ public:
 
     \see Element::setAspectRatio
     */
-    inline float getAspectRatio() const
-    {
-        return d_aspectRatio;
-    }
+    float getAspectRatio() const { return d_aspectRatio; }
 
     /*!
     \brief
         Sets whether this Element is pixel aligned (both position and size, basically the 4 "corners").
-        
+
     \par Impact on the element tree
         Lets say we have Element A with child Element B, A is pixel aligned
         and it's position is 99.5, 99.5 px in screenspace. This gives us
@@ -681,14 +628,11 @@ public:
     /*!
     \brief
         Checks whether this Element is pixel aligned
-        
+
     \see
         Element::setPixelAligned
     */
-    inline bool isPixelAligned() const
-    {
-        return d_pixelAligned;
-    }
+    bool isPixelAligned() const { return d_pixelAligned; }
 
     /*!
     \brief
@@ -697,10 +641,7 @@ public:
     \return
         glm::vec2 object describing this element's absolute position in pixels.
     */
-    inline glm::vec2 getPixelPosition() const
-    {
-        return getUnclippedOuterRect().get().d_min;
-    }
+    glm::vec2 getPixelPosition() const { return getUnclippedOuterRect().get().d_min; }
 
     /*!
     \brief
@@ -709,15 +650,12 @@ public:
     \return
         Size object describing this element's size in pixels.
     */
-    inline const Sizef& getPixelSize() const
-    {
-        return d_pixelSize;
-    }
+    const Sizef& getPixelSize() const { return d_pixelSize; }
 
     /*!
     \brief Calculates this element's pixel size
 
-    \param skipAllPixelAlignment 
+    \param skipAllPixelAlignment
         Should all pixel-alignment be skipped when calculating the pixel size?
 
     If you want to get the pixel size you most probably want to use the
@@ -763,10 +701,7 @@ public:
 
     \see Element::setRotation
     */
-    inline const glm::quat& getRotation() const
-    {
-        return d_rotation;
-    }
+    const glm::quat& getRotation() const { return d_rotation; }
 
     /*!
     \brief
@@ -781,10 +716,7 @@ public:
     \see Element::setPivot
     \see Element::getRotation
     */
-    inline UVector3 getPivot() const
-    {
-        return d_pivot;
-    }
+    const UVector3& getPivot() const { return d_pivot; }
 
     /*!
     \brief
@@ -941,11 +873,7 @@ public:
           parent, etc) of this Element.
         - false if \a element is not an ancestor of this element.
     */
-    inline bool isAncestor(const Element* element) const
-    {
-        // no parent - no ancestor at all
-        return d_parent && (d_parent == element || d_parent->isAncestor(element));
-    }
+    bool isAncestor(const Element* element) const;
 
     /*!
     \brief Set whether the Element is non-client.
@@ -967,10 +895,7 @@ public:
 
     \see Element::setNonClient
     */
-    inline bool isNonClient() const
-    {
-        return d_nonClient;
-    }
+    bool isNonClient() const { return d_nonClient; }
 
     /*!
     \brief
@@ -1027,10 +952,7 @@ public:
     \see onIsSizeAdjustedToContentChanged
     \see onSized
     */
-    inline bool isWidthAdjustedToContent() const
-    {
-        return d_isWidthAdjustedToContent;
-    }
+    bool isWidthAdjustedToContent() const { return d_isWidthAdjustedToContent; }
 
     /*!
     \brief
@@ -1060,10 +982,7 @@ public:
     \see onIsSizeAdjustedToContentChanged
     \see onSized
     */
-    inline bool isHeightAdjustedToContent() const
-    {
-        return d_isHeightAdjustedToContent;
-    }
+    bool isHeightAdjustedToContent() const { return d_isHeightAdjustedToContent; }
 
     /*!
     \brief
@@ -1073,10 +992,7 @@ public:
     \see isWidthAdjustedToContent
     \see isHeightAdjustedToContent
     */
-    inline bool isSizeAdjustedToContent() const
-    {
-        return isWidthAdjustedToContent() || isHeightAdjustedToContent();
-    }
+    bool isSizeAdjustedToContent() const { return isWidthAdjustedToContent() || isHeightAdjustedToContent(); }
 
     /*!
     \brief Return a Rect that describes the unclipped outer rect area of the Element
@@ -1091,10 +1007,7 @@ public:
         If you take position of the result rectangle it is the same as pixel
         position of the Element in screenspace.
     */
-    inline const CachedRectf& getUnclippedOuterRect() const
-    {
-        return d_unclippedOuterRect;
-    }
+    const CachedRectf& getUnclippedOuterRect() const { return d_unclippedOuterRect; }
 
     /*!
     \brief Return a Rect that describes the unclipped inner rect area of the Element
@@ -1109,10 +1022,7 @@ public:
         Rect object that describes, in unclipped screen pixel co-ordinates, the
         element object's inner rect area.
     */
-    inline const CachedRectf& getUnclippedInnerRect() const
-    {
-        return d_unclippedInnerRect;
-    }
+    const CachedRectf& getUnclippedInnerRect() const { return d_unclippedInnerRect; }
 
     /*!
     \brief Return a Rect that is used to position and size child elements
