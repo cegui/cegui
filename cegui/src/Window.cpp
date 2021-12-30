@@ -578,12 +578,6 @@ Rectf Window::getParentClipRect() const
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::getCaptureWindow() const
-{
-    return d_guiContext ? d_guiContext->getInputCaptureWindow() : nullptr;
-}
-
-//----------------------------------------------------------------------------//
 Rectf Window::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
 {
     // TODO: handle skipAllPixelAlignment in a window renderer!
@@ -743,20 +737,13 @@ bool Window::activate_impl(bool byClick)
 {
     // exit if the window is not visible, since a hidden window may not be the
     // active window.
-    if (!isEffectiveVisible())
+    if (!d_guiContext || !isEffectiveVisible())
         return false;
 
+    // TODO: move activation to GUIContext? Only one window subtree can be active!
     // force complete release of input capture.
-    // NB: This is not done via releaseCapture() because that has
-    // different behaviour depending on the restoreOldCapture setting.
-    Window* const tmpCapture = getCaptureWindow();
-    if (tmpCapture && tmpCapture != this)
-    {
-        getGUIContext().setInputCaptureWindow(nullptr);
-
-        WindowEventArgs args(nullptr);
-        tmpCapture->onCaptureLost(args);
-    }
+    if (d_guiContext->getInputCaptureWindow() != this)
+        d_guiContext->releaseInputCapture(false);
 
     // get immediate child of parent that is currently active (if any)
     Window* const activeWnd = getActiveSibling();
@@ -1038,54 +1025,14 @@ void Window::setAlwaysOnTop(bool setting)
 //----------------------------------------------------------------------------//
 bool Window::captureInput()
 {
-    // we can only capture if we are the active window (LEAVE THIS ALONE!)
-    if (!isActive())
-        return false;
-
-    if (!isCapturedByThis())
-    {
-        Window* const current_capture = getCaptureWindow();
-        getGUIContext().setInputCaptureWindow(this);
-        WindowEventArgs args(this);
-
-        // inform window which previously had capture that it doesn't anymore.
-        if (current_capture && current_capture != this && !d_restoreOldCapture)
-            current_capture->onCaptureLost(args);
-
-        if (d_restoreOldCapture)
-            d_oldCapture = current_capture;
-
-        onCaptureGained(args);
-    }
-
-    return true;
+    return d_guiContext && d_guiContext->captureInput(this);
 }
 
 //----------------------------------------------------------------------------//
 void Window::releaseInput()
 {
-    // if we are not the window that has capture, do nothing
-    if (!isCapturedByThis())
-        return;
-
-    // restore old captured window if that mode is set
-    if (d_restoreOldCapture)
-    {
-        getGUIContext().setInputCaptureWindow(d_oldCapture);
-
-        // check for case when there was no previously captured window
-        if (d_oldCapture)
-        {
-            d_oldCapture = nullptr;
-            getCaptureWindow()->moveToFront();
-        }
-
-    }
-    else
-        getGUIContext().setInputCaptureWindow(nullptr);
-
-    WindowEventArgs args(this);
-    onCaptureLost(args);
+    if (d_guiContext)
+        d_guiContext->releaseInputCapture(this);
 }
 
 //----------------------------------------------------------------------------//
@@ -1287,14 +1234,18 @@ void Window::removeChild_impl(Element* element)
 {
     Window* wnd = static_cast<Window*>(element);
 
-    Window* captureWnd = getCaptureWindow();
-    if (captureWnd && (captureWnd == wnd || captureWnd->isAncestor(wnd)))
-        captureWnd->releaseInput();
-
     // remove from draw list
     removeWindowFromDrawList(*wnd);
 
     Element::removeChild_impl(wnd);
+
+    // TODO: to ctx?!
+    if (d_guiContext)
+    {
+        Window* captureWnd = d_guiContext->getInputCaptureWindow();
+        if (captureWnd && (captureWnd == wnd || captureWnd->isAncestor(wnd)))
+            captureWnd->releaseInput();
+    }
 
     wnd->attachToGUIContext(nullptr);
 
@@ -1640,30 +1591,6 @@ String Window::getNamePath() const
     }
 
     return path;
-}
-
-//----------------------------------------------------------------------------//
-void Window::setModalState(bool state)
-{
-    // do nothing if state isn't changing
-    if (getModalState() == state)
-        return;
-
-    // if going modal
-    if (state)
-    {
-        activate();
-        getGUIContext().setModalWindow(this);
-    }
-    // clear the modal target
-    else
-        getGUIContext().setModalWindow(nullptr);
-}
-
-//----------------------------------------------------------------------------//
-bool Window::getModalState() const
-{
-    return getGUIContext().getModalWindow() == this;
 }
 
 //----------------------------------------------------------------------------//
@@ -2081,22 +2008,6 @@ void Window::onCaptureLost(WindowEventArgs& e)
     // reset auto-repeat state
     d_repeatPointerSource = CursorInputSource::NotSpecified;
 
-    // handle restore of previous capture window as required.
-    if (d_restoreOldCapture && d_oldCapture)
-    {
-        d_oldCapture->onCaptureGained(e);
-        d_oldCapture = nullptr;
-    }
-
-    // handle case where cursor is now in a different window
-    // (this is a bit of a hack that uses the injection of a semantic event to handle
-    // this for us).
-    SemanticInputEvent moveEvent(SemanticValue::CursorMove);
-    const glm::vec2 cursorPosition = getGUIContext().getCursor().getPosition();
-    moveEvent.d_payload.array[0] = cursorPosition.x;
-    moveEvent.d_payload.array[1] = cursorPosition.y;
-    getGUIContext().injectInputEvent(moveEvent);
-
     fireEvent(EventInputCaptureLost, e, EventNamespace);
 }
 
@@ -2256,7 +2167,6 @@ void Window::onCursorMove(CursorInputEventArgs& e)
     {
         e.window = getParent();
         getParent()->onCursorMove(e);
-
         return;
     }
 
@@ -2276,7 +2186,6 @@ void Window::onScroll(CursorInputEventArgs& e)
     {
         e.window = getParent();
         getParent()->onScroll(e);
-
         return;
     }
 
@@ -2303,7 +2212,7 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
         if (d_repeatPointerSource == CursorInputSource::NotSpecified)
             captureInput();
 
-        if ((d_repeatPointerSource != e.source) && isCapturedByThis())
+        if ((d_repeatPointerSource != e.source) && (d_guiContext->getInputCaptureWindow() == this))
         {
             d_repeatPointerSource = e.source;
             d_repeatElapsed = 0.f;
@@ -2319,7 +2228,6 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
     {
         e.window = getParent();
         getParent()->onCursorPressHold(e);
-
         return;
     }
 
@@ -2339,7 +2247,6 @@ void Window::onSelectWord(CursorInputEventArgs& e)
     {
         e.window = getParent();
         getParent()->onSelectWord(e);
-
         return;
     }
 
@@ -2359,7 +2266,6 @@ void Window::onSelectAll(CursorInputEventArgs& e)
     {
         e.window = getParent();
         getParent()->onSelectAll(e);
-
         return;
     }
 

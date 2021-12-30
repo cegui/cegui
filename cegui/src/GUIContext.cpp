@@ -70,16 +70,12 @@ void GUIContext::resetWindowContainingCursor()
 GUIContext::~GUIContext()
 {
     destroyDefaultTooltipWindowInstance();
-    deleteSemanticEventHandlers();
+
+    for (auto it = d_semanticEventHandlers.begin(); it != d_semanticEventHandlers.end(); ++it)
+        delete it->second;
 
     if (d_rootWindow)
         d_rootWindow->attachToGUIContext(nullptr);
-}
-
-//----------------------------------------------------------------------------//
-Window* GUIContext::getRootWindow() const
-{
-    return d_rootWindow;
 }
 
 //----------------------------------------------------------------------------//
@@ -88,8 +84,9 @@ void GUIContext::setRootWindow(Window* new_root)
     if (d_rootWindow == new_root)
         return;
 
-    setInputCaptureWindow(nullptr);
-    setModalWindow(nullptr);
+    releaseInputCapture();
+
+    d_modalWindow = nullptr;
     updateWindowContainingCursor();
 
     if (d_rootWindow)
@@ -112,15 +109,64 @@ void GUIContext::setRootWindow(Window* new_root)
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIContext::getInputCaptureWindow() const
+bool GUIContext::captureInput(Window* window)
 {
-    return d_captureWindow;
+    // We can only capture if we are the active window (LEAVE THIS ALONE!)
+    if (!window || !window->isActive())
+        return false;
+
+    if (d_captureWindow == window)
+        return true;
+
+    WindowEventArgs args(window);
+
+    if (d_captureWindow)
+    {
+        if (window->restoresOldCapture())
+            d_oldCaptureWindow = d_captureWindow;
+
+        d_captureWindow->onCaptureLost(args);
+        args.handled = 0;
+
+        updateWindowContainingCursor();
+    }
+
+    d_captureWindow = window;
+    window->onCaptureGained(args);
+
+    return true;
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::setInputCaptureWindow(Window* window)
+void GUIContext::releaseInputCapture(bool allowRestoreOld, Window* exactWindow)
 {
-    d_captureWindow = window;
+    // Nothing captured
+    if (!d_captureWindow)
+        return;
+
+    // Exact window specified and it is not the capturing one
+    if (exactWindow && d_captureWindow != exactWindow)
+        return;
+
+    WindowEventArgs args(d_captureWindow);
+    d_captureWindow->onCaptureLost(args);
+
+    updateWindowContainingCursor();
+
+    if (allowRestoreOld && d_oldCaptureWindow && d_captureWindow->restoresOldCapture())
+    {
+        d_captureWindow = d_oldCaptureWindow;
+        d_captureWindow->moveToFront();
+
+        args.handled = 0;
+        d_captureWindow->onCaptureGained(args);
+    }
+    else
+    {
+        d_captureWindow = nullptr;
+    }
+
+    d_oldCaptureWindow = nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -187,12 +233,8 @@ void GUIContext::createDefaultTooltipWindowInstance() const
 void GUIContext::setModalWindow(Window* window)
 {
     d_modalWindow = window;
-}
-
-//----------------------------------------------------------------------------//
-Window* GUIContext::getModalWindow() const
-{
-    return d_modalWindow;
+    if (d_modalWindow)
+        d_modalWindow->activate();
 }
 
 //----------------------------------------------------------------------------//
@@ -205,18 +247,6 @@ Window* GUIContext::getWindowContainingCursor() const
     }
 
     return d_windowContainingCursor;
-}
-
-//----------------------------------------------------------------------------//
-const Sizef& GUIContext::getSurfaceSize() const
-{
-    return d_surfaceSize;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::markAsDirty(std::uint32_t drawModeMask)
-{
-    d_dirtyDrawModeMask |= drawModeMask;
 }
 
 //----------------------------------------------------------------------------//
@@ -276,19 +306,6 @@ void GUIContext::drawWindowContentToTarget(std::uint32_t drawModeMask)
 }
 
 //----------------------------------------------------------------------------//
-Cursor& GUIContext::getCursor()
-{
-    return const_cast<Cursor&>(
-        static_cast<const GUIContext*>(this)->getCursor());
-}
-
-//----------------------------------------------------------------------------//
-const Cursor& GUIContext::getCursor() const
-{
-    return d_cursor;
-}
-
-//----------------------------------------------------------------------------//
 bool GUIContext::areaChangedHandler(const EventArgs&)
 {
     d_surfaceSize = d_target->getArea().getSize();
@@ -325,12 +342,6 @@ bool GUIContext::windowDestroyedHandler(const EventArgs& args)
     }
 
     return true;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::updateWindowContainingCursor()
-{
-    d_windowContainingCursorIsUpToDate = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -578,15 +589,15 @@ void GUIContext::onRenderTargetChanged(GUIContextRenderTargetEventArgs& args)
 //----------------------------------------------------------------------------//
 void GUIContext::setDefaultFont(const String& name)
 {
-    if (name.empty())
-        setDefaultFont(nullptr);
-    else
-        setDefaultFont(&FontManager::getSingleton().get(name));
+    setDefaultFont(name.empty() ? nullptr  : &FontManager::getSingleton().get(name));
 }
 
 //----------------------------------------------------------------------------//
 void GUIContext::setDefaultFont(Font* font)
 {
+    if (d_defaultFont == font)
+        return;
+
     d_defaultFont = font;
 
     EventArgs args;
@@ -599,13 +610,10 @@ Font* GUIContext::getDefaultFont() const
     if (d_defaultFont)
         return d_defaultFont;
 
-    // if no explicit default, we will return the first font we can get from
-    // the font manager
-    const FontManager::FontRegistry& registeredFonts = FontManager::getSingleton().getRegisteredFonts();
-
-    FontManager::FontRegistry::const_iterator iter = registeredFonts.begin();
-
-    return (iter != registeredFonts.end()) ? iter->second : 0;
+    // if no explicit default, return the first font we can get from the font manager
+    const auto& registeredFonts = FontManager::getSingleton().getRegisteredFonts();
+    auto iter = registeredFonts.cbegin();
+    return (iter != registeredFonts.end()) ? iter->second : nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -703,16 +711,6 @@ void GUIContext::initializeSemanticEventHandlers()
     d_semanticEventHandlers.insert(std::make_pair(SemanticValue::CursorMove,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
             &GUIContext::handleCursorMoveEvent, this)));
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::deleteSemanticEventHandlers()
-{
-    for (std::map<SemanticValue, SlotFunctorBase<InputEvent>*>::iterator itor = d_semanticEventHandlers.begin();
-        itor != d_semanticEventHandlers.end(); ++itor)
-    {
-        delete itor->second;
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -833,26 +831,6 @@ bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handleCursorMove_impl(CursorInputEventArgs& pa)
-{
-    updateWindowContainingCursor();
-
-    // input can't be handled if there is no window to handle it.
-    if (!getWindowContainingCursor())
-        return false;
-
-    // make cursor position sane for this target window
-    pa.position = getWindowContainingCursor()->getUnprojectedPosition(pa.position);
-    // inform window about the input.
-    pa.window = getWindowContainingCursor();
-    pa.handled = 0;
-    pa.window->onCursorMove(pa);
-
-    // return whether window handled the input.
-    return pa.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
 bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
 {
     const glm::vec2 new_position(
@@ -876,7 +854,21 @@ bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
     // update position in args (since actual position may be constrained)
     ciea.position = d_cursor.getPosition();
 
-    return handleCursorMove_impl(ciea);
+    updateWindowContainingCursor();
+
+    // input can't be handled if there is no window to handle it.
+    if (!getWindowContainingCursor())
+        return false;
+
+    // make cursor position sane for this target window
+    ciea.position = getWindowContainingCursor()->getUnprojectedPosition(ciea.position);
+    // inform window about the input.
+    ciea.window = getWindowContainingCursor();
+    ciea.handled = 0;
+    ciea.window->onCursorMove(ciea);
+
+    // return whether window handled the input.
+    return ciea.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -897,12 +889,6 @@ bool GUIContext::handleCursorLeave(const SemanticInputEvent&)
     resetWindowContainingCursor();
 
     return ciea.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::setWindowNavigator(WindowNavigator* navigator)
-{
-    d_windowNavigator = navigator;
 }
 
 }

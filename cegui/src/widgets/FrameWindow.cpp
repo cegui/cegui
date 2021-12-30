@@ -625,7 +625,7 @@ void FrameWindow::onCursorActivate(CursorInputEventArgs& e)
     // default processing (this is now essential as it controls event firing).
     Window::onCursorActivate(e);
 
-    if (e.source == CursorInputSource::Left && isCapturedByThis())
+    if (e.source == CursorInputSource::Left && d_guiContext->getInputCaptureWindow() == this)
     {
         // release our capture on the input data
         releaseInput();

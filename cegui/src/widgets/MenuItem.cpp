@@ -76,18 +76,20 @@ MenuItem::~MenuItem(void)
 *************************************************************************/
 void MenuItem::updateInternalState(const glm::vec2& cursor_pos)
 {
-    bool oldstate = d_hovering;
+    if (!d_guiContext)
+        return;
+
+    const bool oldstate = d_hovering;
 
     // assume not hovering
     d_hovering = false;
 
     // if input is captured, but not by 'this', then we never hover highlight
-    const Window* capture_wnd = getCaptureWindow();
+    auto targetWnd = d_guiContext->getInputCaptureWindow();
+    if (!targetWnd)
+        targetWnd = d_guiContext->getWindowContainingCursor();
 
-    if (capture_wnd == nullptr)
-        d_hovering = (getGUIContext().getWindowContainingCursor() == this && isHit(cursor_pos));
-    else
-        d_hovering = (capture_wnd == this && isHit(cursor_pos));
+    d_hovering = (targetWnd == this && isHit(cursor_pos));
 
     // if state has changed, trigger a re-draw
     // and possible make the parent menu open another popup
