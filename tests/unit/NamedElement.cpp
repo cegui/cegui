@@ -25,7 +25,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#include "CEGUI/NamedElement.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/WindowManager.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -33,11 +34,11 @@ BOOST_AUTO_TEST_SUITE(NamedElement)
 
 BOOST_AUTO_TEST_CASE(Children)
 {
-    CEGUI::NamedElement* root = new CEGUI::NamedElement("root");
+    CEGUI::Window* root = CEGUI::WindowManager::getSingleton().createWindow("DefaultWindow", "root");
     BOOST_CHECK_EQUAL(root->getName(), "root");
     BOOST_CHECK_EQUAL(root->getProperty("Name"), "root");
-    CEGUI::NamedElement* child1 = new CEGUI::NamedElement("child");
-    CEGUI::NamedElement* child2 = new CEGUI::NamedElement("child");
+    CEGUI::Window* child1 = CEGUI::WindowManager::getSingleton().createWindow("DefaultWindow", "child");
+    CEGUI::Window* child2 = CEGUI::WindowManager::getSingleton().createWindow("DefaultWindow", "child");
     root->addChild(child1);
     BOOST_CHECK_THROW(root->addChild(child2), CEGUI::AlreadyExistsException);
     root->removeChild("child");
@@ -52,9 +53,9 @@ BOOST_AUTO_TEST_CASE(Children)
 
 BOOST_AUTO_TEST_CASE(NamePath)
 {
-    CEGUI::NamedElement* root = new CEGUI::NamedElement("root");
-    CEGUI::NamedElement* child = new CEGUI::NamedElement("child");
-    CEGUI::NamedElement* inner_child = new CEGUI::NamedElement("inner_child");
+    CEGUI::Window* root = CEGUI::WindowManager::getSingleton().createWindow("DefaultWindow", "root");
+    CEGUI::Window* child = CEGUI::WindowManager::getSingleton().createWindow("DefaultWindow", "child");
+    CEGUI::Window* inner_child = CEGUI::WindowManager::getSingleton().createWindow("DefaultWindow", "inner_child");
     root->addChild(child);
     child->addChild(inner_child);
 
@@ -62,10 +63,10 @@ BOOST_AUTO_TEST_CASE(NamePath)
     BOOST_CHECK_EQUAL(child->getProperty("NamePath"), "root/child");
     BOOST_CHECK_EQUAL(inner_child->getNamePath(), "root/child/inner_child");
 
-    BOOST_CHECK_EQUAL(root->getChildElement("child"), child);
-    BOOST_CHECK_EQUAL(root->getChildElement("child/inner_child"), inner_child);
-    BOOST_CHECK_EQUAL(child->getChildElement("inner_child"), inner_child);
-    BOOST_CHECK_THROW(child->getChildElement("nonexistant"), CEGUI::UnknownObjectException);
+    BOOST_CHECK_EQUAL(root->getChild("child"), child);
+    BOOST_CHECK_EQUAL(root->getChild("child/inner_child"), inner_child);
+    BOOST_CHECK_EQUAL(child->getChild("inner_child"), inner_child);
+    BOOST_CHECK_THROW(child->getChild("nonexistant"), CEGUI::UnknownObjectException);
 
     delete inner_child;
     delete child;
@@ -74,21 +75,21 @@ BOOST_AUTO_TEST_CASE(NamePath)
 
 BOOST_AUTO_TEST_CASE(FindRecursive)
 {
-    CEGUI::NamedElement* root = new CEGUI::NamedElement("root");
-    CEGUI::NamedElement* child = new CEGUI::NamedElement("child");
-    CEGUI::NamedElement* inner_child = new CEGUI::NamedElement("inner_child");
+    CEGUI::Window* root = CEGUI::WindowManager::getSingleton().createWindow("DefaultWindow", "root");
+    CEGUI::Window* child = CEGUI::WindowManager::getSingleton().createWindow("DefaultWindow", "child");
+    CEGUI::Window* inner_child = CEGUI::WindowManager::getSingleton().createWindow("DefaultWindow", "inner_child");
     root->addChild(child);
     child->addChild(inner_child);
 
-    BOOST_CHECK_EQUAL(child, root->getChildElementRecursive("child"));
-    BOOST_CHECK_EQUAL(inner_child, root->getChildElementRecursive("inner_child"));
-    BOOST_CHECK_EQUAL(inner_child, child->getChildElementRecursive("inner_child"));
+    BOOST_CHECK_EQUAL(child, root->getChildRecursive("child"));
+    BOOST_CHECK_EQUAL(inner_child, root->getChildRecursive("inner_child"));
+    BOOST_CHECK_EQUAL(inner_child, child->getChildRecursive("inner_child"));
 
-    BOOST_CHECK(0 == root->getChildElementRecursive("ChIlD")); // case sensitive
-    BOOST_CHECK(0 == root->getChildElementRecursive("InNeR_ChIlD"));
-    BOOST_CHECK(0 == child->getChildElementRecursive("InNeR_ChIlD"));
+    BOOST_CHECK(0 == root->getChildRecursive("ChIlD")); // case sensitive
+    BOOST_CHECK(0 == root->getChildRecursive("InNeR_ChIlD"));
+    BOOST_CHECK(0 == child->getChildRecursive("InNeR_ChIlD"));
 
-    BOOST_CHECK(0 == root->getChildElementRecursive("blah")); // blah-tantly wrong
+    BOOST_CHECK(0 == root->getChildRecursive("blah")); // blah-tantly wrong
 
     delete inner_child;
     delete child;

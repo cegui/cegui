@@ -415,10 +415,6 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     mouseCursor.include()
     mouseCursor.noncopyable = True
 
-    # NamedElement.h
-    namedElement = CEGUI_ns.class_("NamedElement")
-    namedElement.include()
-
     # NamedXMLResourceManager.h
     xmlResourceExistsActionEnum = CEGUI_ns.enum("XMLResourceExistsAction")
     xmlResourceExistsActionEnum.include()

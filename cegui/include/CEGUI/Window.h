@@ -29,7 +29,7 @@
 #ifndef _CEGUIWindow_h_
 #define _CEGUIWindow_h_
 
-#include "CEGUI/NamedElement.h"
+#include "CEGUI/Element.h"
 #include "CEGUI/RenderedString.h"
 #include "CEGUI/InputEvent.h"
 #include <unordered_set>
@@ -114,8 +114,7 @@ public:
     and specifies the minimal interface required to be implemented by derived
     classes.
 */
-class CEGUIEXPORT Window :
-    public NamedElement
+class CEGUIEXPORT Window : public Element
 {
 public:
     /*************************************************************************
@@ -198,6 +197,11 @@ public:
      */
     static const String EventUpdated;
 
+    /** Event fired when the Window name has changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Element whose name was changed.
+     */
+    static const String EventNameChanged;
     /** Event fired when the text string for the Window has changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window whose text was changed.
@@ -460,6 +464,10 @@ public:
     static const String UserStringNameXMLAttributeName;
     static const String UserStringValueXMLAttributeName;
 
+    using Element::isChild;
+    using Element::removeChild;
+    using Element::isAncestor;
+
     /*!
     \brief
         Constructor for Window base class
@@ -606,6 +614,21 @@ public:
 
     /*!
     \brief
+        return a pointer to the Window that currently has input focus starting
+        with this Window.
+
+    \return
+        Pointer to the window that is active (has input focus) starting at this
+        window.  The function will return 'this' if this Window is active
+        and either no children are attached or if none of the attached children
+        are active.  Returns NULL if this Window (and therefore all children)
+        are not active.
+    */
+    Window* getActiveChild();
+    const Window* getActiveChild() const;
+
+    /*!
+    \brief
         return true if this Window is clipped so that its rendering will not
         pass outside of its parent Window area.
 
@@ -623,48 +646,6 @@ public:
         unsigned int value equal to the currently assigned ID code for this Window.
     */
     unsigned int getID() const { return d_ID; }
-
-    using NamedElement::isChild;
-    /*!
-    \brief
-        returns whether at least one window with the given ID code is attached
-        to this Window as a child.
-
-    \note
-        ID codes are client assigned and may or may not be unique, and as such,
-        the return from this function will only have meaning to the client code.
-
-    \param ID
-        unsigned int ID code to look for.
-
-    \return
-        - true if at least one child window was found with the ID code \a ID
-        - false if no child window was found with the ID code \a ID.
-    */
-    bool isChild(unsigned int ID) const { return !!findChild(ID); }
-
-    using NamedElement::isChildRecursive;
-    /*!
-    \brief
-        returns whether at least one window with the given ID code is attached
-        to this Window or any of it's children as a child.
-
-    \note
-        ID codes are client assigned and may or may not be unique, and as such,
-        the return from this function will only have meaning to the client code.
-
-        WARNING! This function can be very expensive and should only be used
-        when you have no other option available. If you decide to use it anyway,
-        make sure the window hierarchy from the entry point is small.
-
-    \param ID
-        unsigned int ID code to look for.
-
-    \return
-        - true if at least one child window was found with the ID code \a ID
-        - false if no child window was found with the ID code \a ID.
-    */
-    bool isChildRecursive(unsigned int ID) const { return !!getChildRecursive(ID); }
 
 
     /*!
@@ -706,7 +687,7 @@ public:
         thrown if \a name_path does not reference a Window attached to this
         Window.
     */
-    Window* getChild(const String& name_path) const { return static_cast<Window*>(getChildElement(name_path)); }
+    Window* getChild(const String& name_path) const;
 
     /*!
     \brief
@@ -728,7 +709,7 @@ public:
         Pointer to the Window object referenced by \a name_path.
         If no child is found with the name \a name, 0 is returned.
     */
-    Window* findChild(const String& name_path) const { return static_cast<Window*>(findChildElement(name_path)); }
+    Window* findChild(const String& name_path) const { return findChildByNamePath_impl(name_path); }
 
     /*!
     \brief
@@ -751,7 +732,60 @@ public:
         the name \a name.
         If no child is found with the name \a name, 0 is returned.
     */
-    Window* getChildRecursive(const String& name) const { return static_cast<Window*>(getChildElementRecursive(name)); }
+    Window* getChildRecursive(const String& name) const;
+
+    /*!
+    \brief Checks whether given name path references a Window that is attached to this Element.
+
+    \param name_path
+        String object holding the name path of the child element to test.
+
+    \return
+         - true if the element referenced by \a name_path is attached.
+         - false if the element referenced by \a name_path is not attached.
+    */
+    bool isChild(const String& name_path) const { return !!findChild(name_path); }
+
+    /*!
+    \brief
+        returns whether at least one window with the given name is attached
+        to this Window or any of it's children as a child.
+
+    \note
+        WARNING! This function can be very expensive and should only be used
+        when you have no other option available. If you decide to use it anyway,
+        make sure the window hierarchy from the entry point is small.
+
+    \param name
+        Name of the child to look for.
+
+    \return
+       - true if at least one child window was found with the name \a name
+        - false if no child window was found with the name \a name.
+    */
+    bool isChildRecursive(const String& name) const { return !!getChildRecursive(name); }
+
+    /*!
+    \brief Return true if the specified element name is a name of some ancestor of this Window
+
+    \param name
+        String object holding the name to check for.
+
+    \return
+        true if an window named \a name is an ancestor (parent, or parent of
+        parent, etc) of this element, false otherwise.
+    */
+    bool isAncestor(const String& name) const;
+
+    /*!
+    \brief
+        Set the current ID for the Window.
+
+    \param ID
+        Client assigned ID code for this Window.  The GUI system assigns no
+        meaning to any IDs, they are a device purely for client code usage.
+    */
+    void setID(unsigned int ID);
 
     /*!
     \brief
@@ -813,23 +847,46 @@ public:
         If no child is found with the ID code \a ID, 0 is returned.
     */
     Window* getChildRecursive(unsigned int ID) const;
+    /*!
+    \brief
+        returns whether at least one window with the given ID code is attached
+        to this Window as a child.
+
+    \note
+        ID codes are client assigned and may or may not be unique, and as such,
+        the return from this function will only have meaning to the client code.
+
+    \param ID
+        unsigned int ID code to look for.
+
+    \return
+        - true if at least one child window was found with the ID code \a ID
+        - false if no child window was found with the ID code \a ID.
+    */
+    bool isChild(unsigned int ID) const { return !!findChild(ID); }
 
     /*!
     \brief
-        return a pointer to the Window that currently has input focus starting
-        with this Window.
+        returns whether at least one window with the given ID code is attached
+        to this Window or any of it's children as a child.
+
+    \note
+        ID codes are client assigned and may or may not be unique, and as such,
+        the return from this function will only have meaning to the client code.
+
+        WARNING! This function can be very expensive and should only be used
+        when you have no other option available. If you decide to use it anyway,
+        make sure the window hierarchy from the entry point is small.
+
+    \param ID
+        unsigned int ID code to look for.
 
     \return
-        Pointer to the window that is active (has input focus) starting at this
-        window.  The function will return 'this' if this Window is active
-        and either no children are attached or if none of the attached children
-        are active.  Returns NULL if this Window (and therefore all children)
-        are not active.
+        - true if at least one child window was found with the ID code \a ID
+        - false if no child window was found with the ID code \a ID.
     */
-    Window* getActiveChild();
-    const Window* getActiveChild() const;
+    bool isChildRecursive(unsigned int ID) const { return !!getChildRecursive(ID); }
 
-    using NamedElement::isAncestor;
     /*!
     \brief
         return true if any Window with the given ID is some ancestor of this
@@ -1310,7 +1367,24 @@ public:
         String object holding the name of the look assigned to this window.
         Returns the empty string if no look is assigned.
     */
-    inline const String& getLookNFeel() const { return d_lookName; }
+    const String& getLookNFeel() const { return d_lookName; }
+
+    /*!
+    \brief Renames the window.
+
+    \param name
+        String object holding the new name for the window.
+
+    \exception AlreadyExistsException
+        thrown if an element named \a name already exists in the parent of this window.
+    */
+    virtual void setName(const String& name);
+
+    //! \brief Return a String object holding the name of this window.
+    const String& getName() const { return d_name; }
+
+    //! \brief Return a String object that describes the name path for this window.
+    String getNamePath() const;
 
     /*!
     \brief
@@ -1586,16 +1660,6 @@ public:
 
     /*!
     \brief
-        Set the current ID for the Window.
-
-    \param ID
-        Client assigned ID code for this Window.  The GUI system assigns no
-        meaning to any IDs, they are a device purely for client code usage.
-    */
-    void setID(unsigned int ID);
-
-    /*!
-    \brief
         Set the current text string for the Window.
 
     \param text
@@ -1652,7 +1716,18 @@ public:
     */
     void setFont(const String& name);
 
-    using NamedElement::removeChild;
+    /*!
+    \brief
+        Remove the Element referenced by the given name path from this Element's
+        child list.
+
+    \param name_path
+        String the name path that references the the Element to be removed.
+        If the Element specified is not attached to this Window,
+        UnknownObjectException is thrown
+    */
+    void removeChild(const String& name_path) { if (auto child = findChild(name_path)) removeChild(child); }
+
     /*!
     \brief
         Remove the first child Window with the specified ID.  If there is more
@@ -2802,6 +2877,15 @@ protected:
     void onRotated(ElementEventArgs& e) override;
 
     /*!
+    \brief Handler called when the window name changes.
+
+    \param e
+        WindowEventArgs object whose 'window' pointer field is set to the window
+        that triggered the event. For this event the window is always 'this'.
+    */
+    virtual void onNameChanged(WindowEventArgs& e);
+
+    /*!
     \brief
         Handler called when the window's text is changed.
 
@@ -3459,6 +3543,10 @@ protected:
     //! handler function for when font render size changes.
     virtual bool handleFontRenderSizeChange(const EventArgs& args);
 
+    // FIXME: this is needed only for very dirty HACK!
+    //! \brief Retrieves a child at \a name_path or 0 if none such exists
+    virtual Window* findChildByNamePath_impl(const String& name_path) const;
+
     Window* getChildAtPosition(const glm::vec2& position,
                                bool (Window::*hittestfunc)(const glm::vec2&, bool)
                                #ifndef SWIG
@@ -3602,6 +3690,8 @@ protected:
     String d_falagardType;
     //! Name of the Look assigned to this window (if any).
     String d_lookName;
+    //! The name of the window, unique in its parent
+    String d_name;
 
     //! Holds the text / label / caption for this Window.
     String d_textLogical;

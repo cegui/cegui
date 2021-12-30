@@ -493,8 +493,8 @@ protected:
     void addChild_impl(Element* element) override;
     void removeChild_impl(Element* element) override;
 
-    //! \copydoc Window::getChildByNamePath_impl
-    NamedElement* getChildByNamePath_impl(const String& name_path) const override;
+    //! \copydoc Window::findChildByNamePath_impl
+    Window* findChildByNamePath_impl(const String& name_path) const override;
 
     /*************************************************************************
     Event handlers

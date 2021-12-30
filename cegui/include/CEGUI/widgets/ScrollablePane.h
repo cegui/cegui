@@ -557,8 +557,8 @@ protected:
     void onIsSizeAdjustedToContentChanged(ElementEventArgs& e) override;
     void adjustSizeToContent() override {}
 
-    //! \copydoc Window::getChildByNamePath_impl
-    NamedElement* getChildByNamePath_impl(const String& name_path) const override;
+    //! \copydoc Window::findChildByNamePath_impl
+    Window* findChildByNamePath_impl(const String& name_path) const override;
 
     // Swipe scroll support
     void onCursorPressHold(CursorInputEventArgs& e) override;

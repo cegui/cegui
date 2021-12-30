@@ -683,14 +683,14 @@ void ScrollablePane::destroy(void)
 }
 
 //----------------------------------------------------------------------------//
-NamedElement* ScrollablePane::getChildByNamePath_impl(const String& name_path) const
+Window* ScrollablePane::findChildByNamePath_impl(const String& name_path) const
 {
     // FIXME: This is horrible
     //
     if (name_path.substr(0, 7) == "__auto_")
-        return Window::getChildByNamePath_impl(name_path);
+        return Window::findChildByNamePath_impl(name_path);
     else
-        return Window::getChildByNamePath_impl(ScrolledContainerName + '/' + name_path);
+        return Window::findChildByNamePath_impl(ScrolledContainerName + '/' + name_path);
 }
 
 //----------------------------------------------------------------------------//

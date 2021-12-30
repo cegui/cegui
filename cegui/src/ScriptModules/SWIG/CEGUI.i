@@ -127,7 +127,6 @@ using namespace CEGUI;
 
 // element and window
 %include "CEGUI/Element.h"
-%include "CEGUI/NamedElement.h"
 %include "CEGUI/Window.h"
 
 // some base classes (must be before derived classes)
