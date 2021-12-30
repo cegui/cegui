@@ -1155,6 +1155,8 @@ void Window::bufferGeometry(const RenderingContext&, std::uint32_t /*drawModeMas
     if (!d_needsRedraw)
         return;
 
+    d_needsRedraw = false;
+
     // dispose of already cached geometry.
     // TODO: reuse buffers instead of destroying?
     for (auto buffer : d_geometryBuffers)
@@ -1179,9 +1181,6 @@ void Window::bufferGeometry(const RenderingContext&, std::uint32_t /*drawModeMas
     // signal rendering ended
     args.handled = 0;
     onRenderingEnded(args);
-
-    // mark ourselves as no longer needed a redraw.
-    d_needsRedraw = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -3320,7 +3319,7 @@ void Window::updateRenderingWindow(bool updateSize)
 //----------------------------------------------------------------------------//
 void Window::updateGeometryTransformAndClipping()
 {
-    if (d_geometryBuffers.empty())
+    if (d_needsRedraw || d_geometryBuffers.empty())
         return;
 
     glm::vec3 translation;
@@ -3354,7 +3353,7 @@ void Window::updateGeometryTransformAndClipping()
 //----------------------------------------------------------------------------//
 void Window::updateGeometryAlpha()
 {
-    if (d_geometryBuffers.empty())
+    if (d_needsRedraw || d_geometryBuffers.empty())
         return;
 
     const float finalAlpha = getEffectiveAlpha();
