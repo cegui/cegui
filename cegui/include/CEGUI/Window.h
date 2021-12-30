@@ -510,7 +510,7 @@ public:
         - true if the Window will be destroyed when its parent is destroyed.
         - false if the Window will remain when its parent is destroyed.
     */
-    bool isDestroyedByParent() const {return d_destroyedByParent;}
+    bool isDestroyedByParent() const { return d_destroyedByParent; }
 
     /*!
     \brief
@@ -521,7 +521,7 @@ public:
         - true if this Window is always drawn on top of other normal windows.
         - false if the Window has normal z-order behaviour.
     */
-    bool isAlwaysOnTop() const {return d_alwaysOnTop;}
+    bool isAlwaysOnTop() const { return d_alwaysOnTop; }
 
     /*!
     \brief
@@ -549,10 +549,7 @@ public:
         - true if the window is disabled.
         - false if the window is enabled.
     */
-    inline bool isEffectiveDisabled() const
-    {
-        return !d_enabled || (d_parent && getParent()->isEffectiveDisabled());
-    }
+    bool isEffectiveDisabled() const;
 
     /*!
     \brief
@@ -588,44 +585,7 @@ public:
         - true if the window will be drawn.
         - false if the window is hidden and therefore ignored when rendering.
     */
-    inline bool isEffectiveVisible() const
-    {
-        return d_visible && (!d_parent || getParent()->isEffectiveVisible());
-    }
-
-    /*!
-    \brief
-        return true if this is the active Window.  An active window is a window
-        that may receive user inputs.
-
-        Cursor events are always sent to the window containing the cursor
-        regardless of what this function reports (unless a window has
-        captured inputs). The active state mainly determines where send other,
-        for example keyboard inputs.
-
-    \return
-        - true if the window is active and may be sent inputs by the system.
-        - false if the window is inactive and will not be sent inputs.
-    */
-    inline bool isActive() const
-    {
-        return d_active && (!d_parent || getParent()->isActive());
-    }
-
-    /*!
-    \brief
-        return a pointer to the Window that currently has input focus starting
-        with this Window.
-
-    \return
-        Pointer to the window that is active (has input focus) starting at this
-        window.  The function will return 'this' if this Window is active
-        and either no children are attached or if none of the attached children
-        are active.  Returns NULL if this Window (and therefore all children)
-        are not active.
-    */
-    Window* getActiveChild();
-    const Window* getActiveChild() const;
+    bool isEffectiveVisible() const;
 
     /*!
     \brief
@@ -1569,6 +1529,37 @@ public:
         interacting with the gui.
     */
     void deactivate();
+
+    /*!
+    \brief
+        return true if this is the active Window.  An active window is a window
+        that may receive user inputs.
+
+        Cursor events are always sent to the window containing the cursor
+        regardless of what this function reports (unless a window has
+        captured inputs). The active state mainly determines where send other,
+        for example keyboard inputs.
+
+    \return
+        - true if the window is active and may be sent inputs by the system.
+        - false if the window is inactive and will not be sent inputs.
+    */
+    bool isActive() const;
+
+    /*!
+    \brief
+        return a pointer to the Window that currently has input focus starting
+        with this Window.
+
+    \return
+        Pointer to the window that is active (has input focus) starting at this
+        window.  The function will return 'this' if this Window is active
+        and either no children are attached or if none of the attached children
+        are active.  Returns NULL if this Window (and therefore all children)
+        are not active.
+    */
+    Window* getActiveChild();
+    const Window* getActiveChild() const;
 
     /*!
     \brief

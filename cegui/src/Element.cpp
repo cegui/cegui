@@ -791,6 +791,21 @@ bool Element::isChild(const Element* element) const
 }
 
 //----------------------------------------------------------------------------//
+bool Element::isAncestor(const Element* element) const
+{
+    const Element* current = d_parent;
+    while (current)
+    {
+        if (current == element)
+            return true;
+
+        current = current->d_parent;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 void Element::setNonClient(const bool setting)
 {
     if (setting == d_nonClient)

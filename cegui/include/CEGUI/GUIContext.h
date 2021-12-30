@@ -226,6 +226,8 @@ public:
     //! \brief Sets a window navigator to be used for navigating in this context
     void setWindowNavigator(WindowNavigator* navigator) { d_windowNavigator = navigator; }
 
+    void onWindowDetached(Window* window);
+
 protected:
     void drawWindowContentToTarget(std::uint32_t drawModeMask);
 
@@ -242,7 +244,6 @@ protected:
                                CursorInputEventArgs& args) const;
 
     bool areaChangedHandler(const EventArgs& args);
-    bool windowDestroyedHandler(const EventArgs& args);
 
     //! returns whether the window containing the cursor had changed.
     bool updateWindowContainingCursor_impl() const;
@@ -297,7 +298,6 @@ protected:
     CursorsState d_cursorsState;
 
     Event::ScopedConnection d_areaChangedEventConnection;
-    Event::ScopedConnection d_windowDestroyedEventConnection;
     std::map<SemanticValue, SlotFunctorBase<InputEvent>*> d_semanticEventHandlers;
 
     //! the window navigator (if any) used to navigate the GUI
