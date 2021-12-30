@@ -518,7 +518,7 @@ bool DragContainer::pickUp(bool force_sticky /*= false*/)
     if (d_pickedUp)
         return true;
 
-    if (!d_draggingEnabled)
+    if (!d_draggingEnabled || !d_guiContext)
         return false;
 
     // see if we need to force sticky mode switch
@@ -529,8 +529,8 @@ bool DragContainer::pickUp(bool force_sticky /*= false*/)
     if (d_stickyMode)
     {
         // force immediate release of any current input capture (unless it's us)
-        if (getCaptureWindow() && getCaptureWindow() != this)
-            getCaptureWindow()->releaseInput();
+        if (d_guiContext->getInputCaptureWindow() != this)
+            d_guiContext->releaseInputCapture(false);
 
         // activate ourselves and try to capture input
         activate();

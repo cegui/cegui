@@ -68,12 +68,17 @@ void ButtonBase::updateInternalState(const glm::vec2& cursor_pos)
 //----------------------------------------------------------------------------//
 bool ButtonBase::calculateCurrentHoverState(const glm::vec2& cursor_pos)
 {
-	if (const Window* capture_wnd = getCaptureWindow())
+    if (!d_guiContext)
+        return false;
+
+    if (auto captureWnd = d_guiContext->getInputCaptureWindow())
+    {
         return
-            (capture_wnd == this ||
-            (capture_wnd->distributesCapturedInputs() && isAncestor(capture_wnd))) && isHit(cursor_pos);
-    else
-	    return d_guiContext && d_guiContext->getWindowContainingCursor() == this;
+            ((captureWnd == this) || (captureWnd->distributesCapturedInputs() && isAncestor(captureWnd))) &&
+            isHit(cursor_pos);
+    }
+
+	return d_guiContext->getWindowContainingCursor() == this;
 }
 
 /*************************************************************************

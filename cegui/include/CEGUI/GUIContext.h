@@ -87,30 +87,36 @@ public:
     static const String EventDefaultFontChanged;
 
     GUIContext(RenderTarget& target);
-    ~GUIContext();
+    virtual ~GUIContext() override;
 
-    Window* getRootWindow() const;
+    Window* getRootWindow() const { return d_rootWindow; }
     void setRootWindow(Window* new_root);
 
+    //???need modal stack to show dialog over dialog?
     /*!
     \brief
-        Internal function to directly set the current modal window.
+        Set the modal state for this Window.
 
     \note
-        This function is called internally by Window, and should not be called
-        by client code.  Doing so will likely not give the expected results.
+        This returns the previous modal window into normal state.
+
+    \param state
+        Boolean value defining if this Window should be the modal target.
+        - true if this Window should be activated and set as the modal target.
+        - false if the modal target should be cleared if this Window is
+          currently the modal target.
     */
     void setModalWindow(Window* window);
 
     //! Return a pointer to the Window that is currently set as modal.
-    Window* getModalWindow() const;
+    Window* getModalWindow() const { return d_modalWindow; }
 
     Window* getWindowContainingCursor() const;
 
-    const Sizef& getSurfaceSize() const;
+    const Sizef& getSurfaceSize() const { return d_surfaceSize; }
 
     //! call to indicate that some redrawing is required.
-    void markAsDirty(std::uint32_t drawModeMask = DrawModeMaskAll);
+    void markAsDirty(std::uint32_t drawModeMask = DrawModeMaskAll) { d_dirtyDrawModeMask |= drawModeMask; }
     bool isDirty() const { return d_dirtyDrawModeMask != 0; }
     std::uint32_t getDirtyDrawModeMask() const { return d_dirtyDrawModeMask; }
 
@@ -125,15 +131,15 @@ public:
         a reference via this method and call a method on the reference
         (in our example that's setDefaultImage).
     */
-    Cursor& getCursor();
-    const Cursor& getCursor() const;
-
+    Cursor& getCursor() { return d_cursor; }
+    const Cursor& getCursor() const { return d_cursor; }
 
     //! Tell the context to reconsider which window it thinks the cursor is in.
-    void updateWindowContainingCursor();
+    void updateWindowContainingCursor() { d_windowContainingCursorIsUpToDate = false; }
 
-    Window* getInputCaptureWindow() const;
-    void setInputCaptureWindow(Window* window);
+    Window* getInputCaptureWindow() const { return d_captureWindow; }
+    bool captureInput(Window* window);
+    void releaseInputCapture(bool allowRestoreOld = true, Window* exactWindow = nullptr);
 
     /*!
     \brief
@@ -217,11 +223,8 @@ public:
     // public overrides
     void draw(std::uint32_t drawMode = DrawModeMaskAll) override;
 
-    /*!
-    \brief
-        Sets a window navigator to be used for navigating in this context
-    */
-    void setWindowNavigator(WindowNavigator* navigator);
+    //! \brief Sets a window navigator to be used for navigating in this context
+    void setWindowNavigator(WindowNavigator* navigator) { d_windowNavigator = navigator; }
 
 protected:
     void drawWindowContentToTarget(std::uint32_t drawModeMask);
@@ -254,7 +257,6 @@ protected:
 
     // Input event handlers
     void initializeSemanticEventHandlers();
-    void deleteSemanticEventHandlers();
 
     bool handleTextInputEvent(const TextInputEvent& event);
     bool handleSemanticInputEvent(const SemanticInputEvent& event);
@@ -263,7 +265,6 @@ protected:
     bool handlePasteRequest(const SemanticInputEvent& event);
     bool handleScrollEvent(const SemanticInputEvent& event);
     bool handleCursorMoveEvent(const SemanticInputEvent& event);
-    bool handleCursorMove_impl(CursorInputEventArgs& pa);
     bool handleCursorLeave(const SemanticInputEvent& event);
     bool handleCursorActivateEvent(const SemanticInputEvent& event);
     bool handleCursorPressHoldEvent(const SemanticInputEvent& event);
@@ -288,6 +289,7 @@ protected:
     mutable bool d_windowContainingCursorIsUpToDate;
     Window* d_modalWindow = nullptr;
     Window* d_captureWindow = nullptr;
+    Window* d_oldCaptureWindow = nullptr;
 
     //! The mask of draw modes that must be redrawn
     std::uint32_t d_dirtyDrawModeMask = 0;

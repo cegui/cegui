@@ -1041,47 +1041,6 @@ public:
 
     /*!
     \brief
-        return the Window that currently has inputs captured.
-
-    \return
-        Pointer to the Window object that currently has inputs captured, or NULL
-        if no Window has captured input.
-    */
-    Window* getCaptureWindow() const;
-
-    /*!
-    \brief
-        return true if this Window has input captured.
-
-    \return
-        - true if this Window has captured inputs.
-        - false if some other Window, or no Window, has captured inputs.
-    */
-    bool isCapturedByThis() const { return getCaptureWindow() == this; }
-
-    /*!
-    \brief
-        return true if an ancestor window has captured inputs.
-
-    \return
-        - true if input is captured by a Window that is some ancestor (parent,
-          parent of parent, etc) of this Window.
-        - false if no ancestor of this window has captured input.
-    */
-    bool isCapturedByAncestor() const { return isAncestor(getCaptureWindow()); }
-
-    /*!
-    \brief
-        return true if a child window has captured inputs.
-
-    \return
-        - true if input is captured by a Window that is a child of this Window.
-        - false if no child of this window has not captured input.
-    */
-    bool isCapturedByChild() const  {return isChild(getCaptureWindow());}
-
-    /*!
-    \brief
         check if the given pixel position would hit this window.
 
     \param position
@@ -1177,22 +1136,6 @@ public:
 
     /*!
     \brief
-        Return whether this window is set to restore old input capture when it
-        loses input capture.
-
-        This is only really useful for certain sub-components for widget
-        writers.
-
-    \return
-        - true if the window will restore the previous capture window when it
-          loses input capture.
-        - false if the window will set the capture window to NULL when it loses
-          input capture (this is the default behaviour).
-    */
-    bool restoresOldCapture() const { return d_restoreOldCapture; }
-
-    /*!
-    \brief
         Return whether z-order changes are enabled or disabled for this Window.
 
     \note
@@ -1241,17 +1184,6 @@ public:
         events will be generated after the initial delay has expired.
     */
     float getAutoRepeatRate() const { return d_repeatRate; }
-
-    /*!
-    \brief
-        Return whether the window wants inputs passed to its attached
-        child windows when the window has inputs captured.
-
-    \return
-        - true if System should pass captured input events to child windows.
-        - false if System should pass captured input events to this window only.
-    */
-    bool distributesCapturedInputs() const { return d_distCapturedInputs; }
 
     /*!
     \brief
@@ -1385,15 +1317,6 @@ public:
 
     //! \brief Return a String object that describes the name path for this window.
     String getNamePath() const;
-
-    /*!
-    \brief
-        Get whether or not this Window is the modal target.
-
-    \return
-        Returns true if this Window is the modal target, otherwise false.
-    */
-    bool getModalState() const;
 
     /*!
     \brief
@@ -1917,6 +1840,44 @@ public:
 
     /*!
     \brief
+        Return whether this window is set to restore old input capture when it
+        loses input capture.
+
+        This is only really useful for certain sub-components for widget
+        writers.
+
+    \return
+        - true if the window will restore the previous capture window when it
+          loses input capture.
+        - false if the window will set the capture window to NULL when it loses
+          input capture (this is the default behaviour).
+    */
+    bool restoresOldCapture() const { return d_restoreOldCapture; }
+
+    /*!
+    \brief
+        Set whether the window wants inputs passed to its attached
+        child windows when the window has inputs captured.
+
+    \param setting
+        - true if System should pass captured input events to child windows.
+        - false if System should pass captured input events to this window only.
+    */
+    void setDistributesCapturedInputs(bool setting) { d_distCapturedInputs = setting; }
+
+    /*!
+    \brief
+        Return whether the window wants inputs passed to its attached
+        child windows when the window has inputs captured.
+
+    \return
+        - true if System should pass captured input events to child windows.
+        - false if System should pass captured input events to this window only.
+    */
+    bool distributesCapturedInputs() const { return d_distCapturedInputs; }
+
+    /*!
+    \brief
         Set the current alpha value for this window.
 
     \note
@@ -2047,17 +2008,6 @@ public:
         events should be generated after the initial delay has expired.
     */
     void setAutoRepeatRate(float rate) { d_repeatRate = rate; }
-
-    /*!
-    \brief
-        Set whether the window wants inputs passed to its attached
-        child windows when the window has inputs captured.
-
-    \param setting
-        - true if System should pass captured input events to child windows.
-        - false if System should pass captured input events to this window only.
-    */
-    void setDistributesCapturedInputs(bool setting) { d_distCapturedInputs = setting; }
 
     /*!
     \brief
@@ -2210,18 +2160,6 @@ public:
           same type with the same name.
     */
     virtual void setLookNFeel(const String& look);
-
-    /*!
-    \brief
-        Set the modal state for this Window.
-
-    \param state
-        Boolean value defining if this Window should be the modal target.
-        - true if this Window should be activated and set as the modal target.
-        - false if the modal target should be cleared if this Window is
-          currently the modal target.
-    */
-    void setModalState(bool state);
 
     /*!
     \brief
@@ -3623,8 +3561,6 @@ protected:
     const Font* d_font = nullptr;
     //! Pointer to a custom (user assigned) RenderedStringParser object.
     RenderedStringParser* d_customStringParser = nullptr;
-    //! The Window that previously had capture (used for restoreOldCapture mode)
-    Window* d_oldCapture = nullptr;
     //! Holds pointer to some user assigned data.
     void* d_userData = nullptr;
 
