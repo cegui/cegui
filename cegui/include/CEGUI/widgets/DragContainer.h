@@ -323,7 +323,7 @@ protected:
     void onCursorMove(CursorInputEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;
     void onAlphaChanged(WindowEventArgs& e) override;
-    void onClippingChanged(WindowEventArgs& e) override;/*Window::drawSelf(z);*/
+    void onClippingChanged(WindowEventArgs& e) override;
     void onMoved(ElementEventArgs& e) override;
 
     /*************************************************************************

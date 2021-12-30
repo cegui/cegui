@@ -3473,24 +3473,6 @@ protected:
 
     /*!
     \brief
-        Perform drawing operations concerned with positioning, clipping and
-        queueing of window geometry to RenderingSurfaces.
-
-    \note
-        This function is a sub-function of drawSelf and is provided to make it
-        easier to override drawSelf without needing to duplicate large sections
-        of the code from the default implementation.
-    */
-    void queueGeometry(const RenderingContext& ctx);
-
-    /*!
-    \brief
-        Destroys the geometry buffers of this Window.
-    */
-    void destroyGeometryBuffers();
-
-    /*!
-    \brief
         Update the rendering cache.
 
         Populates the Window's GeometryBuffer ready for rendering.

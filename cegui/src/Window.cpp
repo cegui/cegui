@@ -323,10 +323,11 @@ Window::Window(const String& type, const String& name):
 }
 
 //----------------------------------------------------------------------------//
+// most of the cleanup actually happened earlier in Window::destroy.
 Window::~Window()
 {
-    // most cleanup actually happened earlier in Window::destroy.
-    destroyGeometryBuffers();
+    for (auto buffer : d_geometryBuffers)
+        System::getSingleton().getRenderer()->destroyGeometryBuffer(*buffer);
 
 #ifdef CEGUI_BIDI_SUPPORT
     delete d_bidiVisualMapping;
@@ -1179,11 +1180,9 @@ void Window::draw(std::uint32_t drawModeMask)
     // redraw if no surface set, or if surface is invalidated
     if (!d_surface || d_surface->isInvalidated())
     {
+        // perform drawing for 'this' Window
         if (allowDrawing)
-        {
-            // perform drawing for 'this' Window
             drawSelf(ctx, drawModeMask);
-        }
 
         // render any child windows
         for (auto wnd : d_drawList)
@@ -1199,7 +1198,7 @@ void Window::draw(std::uint32_t drawModeMask)
 void Window::drawSelf(const RenderingContext& ctx, std::uint32_t drawModeMask)
 {
     bufferGeometry(ctx, drawModeMask);
-    queueGeometry(ctx);
+    ctx.surface->addGeometryBuffers(ctx.queue, d_geometryBuffers);
 }
 
 //----------------------------------------------------------------------------//
@@ -1209,16 +1208,17 @@ void Window::bufferGeometry(const RenderingContext&, std::uint32_t /*drawModeMas
         return;
 
     // dispose of already cached geometry.
-    destroyGeometryBuffers();
+    // TODO: reuse buffers instead of destroying?
+    for (auto buffer : d_geometryBuffers)
+        System::getSingleton().getRenderer()->destroyGeometryBuffer(*buffer);
+
+    d_geometryBuffers.clear();
 
     // signal rendering started
     WindowEventArgs args(this);
     onRenderingStarted(args);
 
-    // HACK: ensure our rendered string content is up to date
-    getRenderedString();
-
-    // get derived class or WindowRenderer to re-populate geometry buffer.
+    // re-populate geometry buffers
     if (d_windowRenderer)
         d_windowRenderer->createRenderGeometry();
     else
@@ -1237,16 +1237,9 @@ void Window::bufferGeometry(const RenderingContext&, std::uint32_t /*drawModeMas
 }
 
 //----------------------------------------------------------------------------//
-void Window::queueGeometry(const RenderingContext& ctx)
-{
-    // add geometry so that it gets drawn to the target surface.
-    ctx.surface->addGeometryBuffers(ctx.queue, d_geometryBuffers);
-}
-
-//----------------------------------------------------------------------------//
 void Window::cleanupChildren()
 {
-    while (getChildCount() != 0)
+    while (d_children.size())
     {
         Window* wnd = static_cast<Window*>(d_children[0]);
 
@@ -4035,16 +4028,6 @@ bool Window::canFocus() const
 {
     // by default all widgets can be focused if they are not disabled
     return !isDisabled();
-}
-
-//----------------------------------------------------------------------------//
-void Window::destroyGeometryBuffers()
-{
-    const size_t geom_buffer_count = d_geometryBuffers.size();
-    for (size_t i = 0; i < geom_buffer_count; ++i)
-        System::getSingleton().getRenderer()->destroyGeometryBuffer(*d_geometryBuffers.at(i));
-
-    d_geometryBuffers.clear();
 }
 
 //----------------------------------------------------------------------------//

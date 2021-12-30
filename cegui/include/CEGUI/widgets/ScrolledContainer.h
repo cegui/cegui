@@ -95,7 +95,7 @@ protected:
     void onIsSizeAdjustedToContentChanged(ElementEventArgs& e) override;
 
     // overridden from Window.
-    void drawSelf(const RenderingContext&, std::uint32_t) override {}
+    void drawSelf(const RenderingContext&, std::uint32_t) override { /* do nothing; rendering is handled by children */ }
     Rectf getInnerRectClipper_impl() const override;
     Rectf getHitTestRect_impl() const override;
     void onChildAdded(ElementEventArgs& e) override;
