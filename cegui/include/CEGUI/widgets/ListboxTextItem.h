@@ -29,40 +29,20 @@
 #ifndef _CEGUIListboxTextItem_h_
 #define _CEGUIListboxTextItem_h_
 #include "./ListboxItem.h"
-#include "../BasicRenderedStringParser.h"
-#include "../DefaultRenderedStringParser.h"
+#include "../RenderedString.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-/*!
-\brief
-	Class used for textual items in a list box.
-*/
+
+//! \brief Class used for textual items in a list box.
 class CEGUIEXPORT ListboxTextItem : public ListboxItem
 {
 public:
-	/*************************************************************************
-		Constants
-	*************************************************************************/
-	static const Colour	DefaultTextColour;			//!< Default text colour.
 
+    static const Colour	DefaultTextColour;
 
-	/*************************************************************************
-		Construction and Destruction
-	*************************************************************************/
-	/*!
-	\brief
-		base class constructor
-	*/
 	ListboxTextItem(const String& text, unsigned int item_id = 0, void* item_data = nullptr, bool disabled = false, bool auto_delete = true);
-
-
-	/*!
-	\brief
-		base class destructor
-	*/
-	virtual ~ListboxTextItem(void) {}
+    virtual ~ListboxTextItem() = default;
 
 
 	/*************************************************************************
@@ -78,7 +58,7 @@ public:
 	\return
 		Font to be used for rendering this item
 	*/
-	const Font*	getFont(void) const;
+	const Font*	getFont() const;
 
 
 	/*!
@@ -88,7 +68,7 @@ public:
 	\return
 		ColourRect object describing the currently set colours
 	*/
-	ColourRect	getTextColours(void) const		{return d_textCols;}
+	ColourRect getTextColours() const {return d_textCols;}
 
 
 	/*************************************************************************
@@ -100,9 +80,6 @@ public:
 
 	\param font
 		Font to be used for rendering this item
-
-	\return
-		Nothing
 	*/
     void setFont(Font* font);
 
@@ -113,11 +90,8 @@ public:
 
 	\param font_name
 		String object containing the name of the Font to be used for rendering this item
-
-	\return
-		Nothing
 	*/
-	void	setFont(const String& font_name);
+	void setFont(const String& font_name);
 
 
 	/*!
@@ -126,11 +100,8 @@ public:
 
 	\param cols
 		ColourRect object describing the colours to be used.
-
-	\return
-		Nothing.
 	*/
-	void	setTextColours(const ColourRect& cols)			{d_textCols = cols;}
+	void setTextColours(const ColourRect& cols) { d_textCols = cols; }
 
 
 	/*!
@@ -148,11 +119,8 @@ public:
 
 	\param bottom_right_colour
 		Colour (as ARGB value) to be applied to the bottom-right corner of each text glyph rendered.
-
-	\return 
-		Nothing.
 	*/
-	void	setTextColours(Colour top_left_colour, Colour top_right_colour, Colour bottom_left_colour, Colour bottom_right_colour);
+	void setTextColours(Colour top_left_colour, Colour top_right_colour, Colour bottom_left_colour, Colour bottom_right_colour);
 
 
 	/*!
@@ -161,11 +129,8 @@ public:
 
 	\param col
 		colour value to be used when rendering.
-
-	\return
-		Nothing.
 	*/
-	void	setTextColours(Colour col)		{setTextColours(col, col, col, col);}
+	void setTextColours(Colour col) { setTextColours(col, col, col, col); }
 
     /*!
     \brief
@@ -179,7 +144,7 @@ public:
 
     \note For enable parsing with custom parser use setCustomRenderedStringParser.
     */
-    void setTextParsingEnabled(const bool enable);
+    void setTextParsingEnabled(bool enable);
 
     //! return whether text parsing is enabled for this ListboxTextItem.
     bool isTextParsingEnabled() const;
@@ -189,34 +154,22 @@ public:
 
     // base class overrides
     void setText(const String& text) override;
-    bool handleFontRenderSizeChange(const Font* const font) override;
-
-
-    Sizef getPixelSize(void) const override;
+    bool handleFontRenderSizeChange(const Font* font) override;
+    Sizef getPixelSize() const override;
     std::vector<GeometryBuffer*> createRenderGeometry(
         const Rectf& targetRect, float alpha, const Rectf* clipper) const override;
 
 protected:
+
     void parseTextString() const;
 
-	/*************************************************************************
-		Implementation Data
-	*************************************************************************/
-	ColourRect	d_textCols;			//!< Colours used for rendering the text.
-	Font*		d_font;				//!< Font used for rendering text.
-    //! Parser used to produce a final RenderedString from the standard String.
-    static BasicRenderedStringParser d_stringParser;
-    //! RenderedString drawn by this item.
-    mutable RenderedString  d_renderedString;
-    //! boolean used to track when item state changes (and needs re-parse)
-    mutable bool d_renderedStringValid;
-    //! Parser used when parsing is off.  Basically just does linebreaks.
-    static DefaultRenderedStringParser d_noTagsStringParser;
-    //! pointer to currently used render string parser.
-    CEGUI::RenderedStringParser* d_renderedStringParser;
+	Font*		                 d_font = nullptr;				//!< Font used for rendering text.
+    CEGUI::RenderedStringParser* d_renderedStringParser;        //!< pointer to currently used render string parser.
+    ColourRect	                 d_textCols;			        //!< Colours used for rendering the text.
+    mutable RenderedString       d_renderedString;              //!< RenderedString drawn by this item.
+    mutable bool                 d_renderedStringValid = false; //!< boolean used to track when item state changes (and needs re-parse)
 };
 
-} // End of  CEGUI namespace section
-
+}
 
 #endif	// end of guard _CEGUIListboxTextItem_h_

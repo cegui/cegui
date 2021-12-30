@@ -44,6 +44,8 @@
 #include "CEGUI/WindowRendererManager.h"
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/XMLParser.h"
+#include "CEGUI/BasicRenderedStringParser.h"
+#include "CEGUI/DefaultRenderedStringParser.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageCodec.h"
@@ -112,22 +114,23 @@ System::System(Renderer& renderer,
                ImageCodec* imageCodec,
                ScriptModule* scriptModule,
                const String& configFile,
-               const String& logFile)
-
-: d_renderer(&renderer),
-  d_resourceProvider(resourceProvider),
-  d_ourResourceProvider(false),
-  d_clipboard(new Clipboard()),
-  d_nativeClipboardProvider(nullptr),
-  d_scriptModule(scriptModule),
-  d_xmlParser(xmlParser),
-  d_ourXmlParser(false),
-  d_parserModule(nullptr),
-  d_imageCodec(imageCodec),
-  d_ourImageCodec(false),
-  d_imageCodecModule(nullptr),
-  d_ourLogger(Logger::getSingletonPtr() == nullptr),
-  d_customRenderedStringParser(nullptr)
+               const String& logFile):
+    d_renderer(&renderer),
+    d_resourceProvider(resourceProvider),
+    d_ourResourceProvider(false),
+    d_clipboard(new Clipboard()),
+    d_nativeClipboardProvider(nullptr),
+    d_scriptModule(scriptModule),
+    d_xmlParser(xmlParser),
+    d_ourXmlParser(false),
+    d_parserModule(nullptr),
+    d_imageCodec(imageCodec),
+    d_ourImageCodec(false),
+    d_imageCodecModule(nullptr),
+    d_ourLogger(Logger::getSingletonPtr() == nullptr),
+    d_basicStringParser(std::make_unique<BasicRenderedStringParser>()),
+    d_defaultStringParser(std::make_unique<DefaultRenderedStringParser>()),
+    d_customRenderedStringParser(nullptr)
 {
     // Start out by fixing the numeric locale to C (we depend on this behaviour)
     // consider a UVector2 as a property {{0.5,0},{0.5,0}} could become {{0,5,0},{0,5,0}}
@@ -934,6 +937,18 @@ void System::destroy()
 RenderedStringParser* System::getDefaultCustomRenderedStringParser() const
 {
     return d_customRenderedStringParser;
+}
+
+//----------------------------------------------------------------------------//
+RenderedStringParser& System::getBasicRenderedStringParser() const
+{
+    return *d_basicStringParser.get();
+}
+
+//----------------------------------------------------------------------------//
+RenderedStringParser& System::getDefaultRenderedStringParser() const
+{
+    return *d_defaultStringParser.get();
 }
 
 //----------------------------------------------------------------------------//
