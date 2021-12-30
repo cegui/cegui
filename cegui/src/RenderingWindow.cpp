@@ -25,11 +25,11 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RenderingWindow.h"
-#include "CEGUI/TextureTarget.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Renderer.h"
-#include "CEGUI/Vertex.h"
+#include "CEGUI/TextureTarget.h"
 #include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/Vertex.h"
 #include "CEGUI/Texture.h"
 #include "CEGUI/RenderEffect.h"
 
@@ -38,14 +38,9 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 RenderingWindow::RenderingWindow(TextureTarget& target, RenderingSurface& owner) :
     RenderingSurface(target),
-    d_renderer(*System::getSingleton().getRenderer()),
     d_textarget(target),
     d_owner(&owner),
-    d_geometryBuffer(d_renderer.createGeometryBufferTextured()),
-    d_geometryValid(false),
-    d_position(0, 0),
-    d_size(0, 0),
-    d_rotation(1, 0, 0, 0) // <-- IDENTITY
+    d_geometryBuffer(System::getSingleton().getRenderer()->createGeometryBufferTextured())
 {
     d_geometryBuffer.setBlendMode(BlendMode::RttPremultiplied);
 }
@@ -53,7 +48,7 @@ RenderingWindow::RenderingWindow(TextureTarget& target, RenderingSurface& owner)
 //----------------------------------------------------------------------------//
 RenderingWindow::~RenderingWindow()
 {
-    d_renderer.destroyGeometryBuffer(d_geometryBuffer);
+    System::getSingleton().getRenderer()->destroyGeometryBuffer(d_geometryBuffer);
 }
 
 //----------------------------------------------------------------------------//
@@ -64,9 +59,7 @@ void RenderingWindow::setClippingRegion(const Rectf& region)
     // clip region position must be offset according to our owner position, if
     // that is a RenderingWindow.
     if (d_owner->isRenderingWindow())
-    {
         final_region.offset(-static_cast<RenderingWindow*>(d_owner)->d_position);
-    }
 
     d_geometryBuffer.setClippingRegion(final_region);
 }
@@ -80,9 +73,7 @@ void RenderingWindow::setPosition(const glm::vec2& position)
     // geometry position must be offset according to our owner position, if
     // that is a RenderingWindow.
     if (d_owner->isRenderingWindow())
-    {
         trans -= glm::vec3(static_cast<RenderingWindow*>(d_owner)->d_position, 0);
-    }
 
     d_geometryBuffer.setTranslation(trans);
 }
@@ -90,12 +81,8 @@ void RenderingWindow::setPosition(const glm::vec2& position)
 //----------------------------------------------------------------------------//
 void RenderingWindow::setSize(const Sizef& size)
 {
-    // URGENT FIXME: Isn't this in the hands of the user?
-    /*d_size.d_width = PixelAligned(size.d_width);
-    d_size.d_height = PixelAligned(size.d_height);*/
     d_size = size;
     d_geometryValid = false;
-
     d_textarget.declareRenderSize(d_size);
 }
 
@@ -114,48 +101,9 @@ void RenderingWindow::setPivot(const glm::vec3& pivot)
 }
 
 //----------------------------------------------------------------------------//
-const glm::vec2& RenderingWindow::getPosition() const
-{
-    return d_position;
-}
-
-//----------------------------------------------------------------------------//
-const Sizef& RenderingWindow::getSize() const
-{
-    return d_size;
-}
-
-//----------------------------------------------------------------------------//
-const glm::quat& RenderingWindow::getRotation() const
-{
-    return d_rotation;
-}
-
-//----------------------------------------------------------------------------//
-const glm::vec3& RenderingWindow::getPivot() const
-{
-    return d_pivot;
-}
-
-//----------------------------------------------------------------------------//
-const TextureTarget& RenderingWindow::getTextureTarget() const
-{
-    return d_textarget;
-}
-
-//----------------------------------------------------------------------------//
-TextureTarget& RenderingWindow::getTextureTarget()
-{
-    return const_cast<TextureTarget&>(
-        static_cast<const RenderingWindow*>(this)->getTextureTarget());
-}
-
-//----------------------------------------------------------------------------//
 void RenderingWindow::update(const float elapsed)
 {
-    RenderEffect* effect = d_geometryBuffer.getRenderEffect();
-
-    if (effect)
+    if (RenderEffect* effect = d_geometryBuffer.getRenderEffect())
         d_geometryValid &= effect->update(elapsed, *this);
 }
 
@@ -172,19 +120,6 @@ RenderEffect* RenderingWindow::getRenderEffect()
 }
 
 //----------------------------------------------------------------------------//
-const RenderingSurface& RenderingWindow::getOwner() const
-{
-    return *d_owner;
-}
-
-//----------------------------------------------------------------------------//
-RenderingSurface& RenderingWindow::getOwner()
-{
-    return const_cast<RenderingSurface&>(
-        static_cast<const RenderingWindow*>(this)->getOwner());
-}
-
-//----------------------------------------------------------------------------//
 void RenderingWindow::setOwner(RenderingSurface& owner)
 {
     if (&owner == this)
@@ -197,8 +132,7 @@ void RenderingWindow::setOwner(RenderingSurface& owner)
 void RenderingWindow::draw(std::uint32_t drawModeMask)
 {
     // update geometry if needed.
-    if (!d_geometryValid)
-        realiseGeometry();
+    realiseGeometry();
 
     if (d_invalidated)
     {
@@ -225,12 +159,6 @@ void RenderingWindow::invalidate()
 
     // also invalidate what we render back to.
     d_owner->invalidate();
-}
-
-//----------------------------------------------------------------------------//
-bool RenderingWindow::isRenderingWindow() const
-{
-    return true;
 }
 
 //----------------------------------------------------------------------------//
@@ -324,12 +252,4 @@ Rectf RenderingWindow::getTextureRect() const
         Rectf(0, 0, tu, tv);
 }
 
-//----------------------------------------------------------------------------//
-void RenderingWindow::invalidateGeometry()
-{
-    d_geometryValid = false;
 }
-
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section

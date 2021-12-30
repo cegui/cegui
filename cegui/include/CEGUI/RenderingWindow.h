@@ -36,7 +36,6 @@
 #	pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
@@ -151,7 +150,7 @@ public:
         other root surface.  It is \e not relative to the owner of the
         RenderingWindow.
     */
-    const glm::vec2& getPosition() const;
+    const glm::vec2& getPosition() const { return d_position; }
 
     /*!
     \brief
@@ -160,7 +159,7 @@ public:
     \return
         Size object describing the current pixel size of the RenderingWindow.
     */
-    const Sizef& getSize() const;
+    const Sizef& getSize() const { return d_size; }
 
     /*!
     \brief
@@ -169,7 +168,7 @@ public:
     \return
         Quaternion object describing the rotation for the RenderingWindow.
     */
-    const glm::quat& getRotation()const;
+    const glm::quat& getRotation() const { return d_rotation; }
 
     /*!
     \brief
@@ -179,7 +178,7 @@ public:
         Vector3 object describing the current location of the pivot point used
         when rotating the RenderingWindow.
     */
-    const glm::vec3& getPivot() const;
+    const glm::vec3& getPivot() const { return d_pivot; }
 
     /*!
     \brief
@@ -191,8 +190,8 @@ public:
         The TextureTarget object that receives the rendered output resulting
         from geometry queued to this RenderingWindow.
     */
-    const TextureTarget& getTextureTarget() const;
-    TextureTarget& getTextureTarget();
+    const TextureTarget& getTextureTarget() const { return d_textarget; }
+    TextureTarget& getTextureTarget() { return d_textarget; }
 
     /*!
     \brief
@@ -254,7 +253,7 @@ public:
         cases invalidating the cached imagery will not require the potentially
         expensive regeneration of the geometry for the RenderingWindow itself.
     */
-    void invalidateGeometry();
+    void invalidateGeometry() { d_geometryValid = false; }
 
     /*!
     \brief
@@ -266,8 +265,8 @@ public:
         RenderingSurface object that owns, and is targetted by, the
         RenderingWindow.
     */
-    const RenderingSurface& getOwner() const;
-    RenderingSurface& getOwner();
+    const RenderingSurface& getOwner() const { return *d_owner; }
+    RenderingSurface& getOwner() { return *d_owner; }
 
     /*!
     \brief
@@ -281,7 +280,7 @@ public:
     // overrides from base
     void draw(std::uint32_t drawModeMask = DrawModeMaskAll) override;
     void invalidate() override;
-    bool isRenderingWindow() const override;
+    bool isRenderingWindow() const override { return true; }
 
 protected:
     //! default generates geometry to draw window as a single quad.
@@ -292,27 +291,25 @@ protected:
     // friend is so that RenderingSurface can call setOwner to xfer ownership.
     friend void RenderingSurface::transferRenderingWindow(RenderingWindow&);
 
-    //! holds ref to renderer
-    Renderer& d_renderer;
-    //! TextureTarget to draw to. Like d_target in base, but avoiding downcasts.
-    TextureTarget& d_textarget;
     //! RenderingSurface that owns this object, we render back to this object.
-    RenderingSurface* d_owner;
+    RenderingSurface* d_owner = nullptr;
+    //! The same as d_target in base, but avoiding impossible downcast of the virtual base.
+    TextureTarget& d_textarget;
     //! The geometry buffers that cache the geometry drawn by this Window.
     GeometryBuffer& d_geometryBuffer;
-    //! indicates whether data in GeometryBuffer is up-to-date
-    bool d_geometryValid;
     //! Position of this RenderingWindow
-    glm::vec2 d_position;
+    glm::vec2 d_position = glm::vec2(0.f, 0.f);
     //! Size of this RenderingWindow
     Sizef d_size;
     //! Rotation for this RenderingWindow
-    glm::quat d_rotation;
+    glm::quat d_rotation = glm::quat(1.f, 0.f, 0.f, 0.f);
     //! Pivot point used for the rotation.
-    glm::vec3 d_pivot;
+    glm::vec3 d_pivot = glm::vec3(0.f, 0.f, 0.f);
+    //! indicates whether data in GeometryBuffer is up-to-date
+    bool d_geometryValid = false;
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)
