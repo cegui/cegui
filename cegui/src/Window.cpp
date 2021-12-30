@@ -463,11 +463,9 @@ bool Window::isAncestor(unsigned int ID) const
 //----------------------------------------------------------------------------//
 const Font* Window::getActualFont() const
 {
-    if (d_font)
-        return d_font;
-
-    GUIContext* context = getGUIContextPtr();
-    return context ? context->getDefaultFont() : nullptr;
+    return d_font ? d_font :
+        d_guiContext ? d_guiContext->getDefaultFont() :
+        nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -526,8 +524,7 @@ Rectf Window::getParentClipRect() const
 //----------------------------------------------------------------------------//
 Window* Window::getCaptureWindow() const
 {
-    GUIContext* context = getGUIContextPtr();
-    return context ? context->getInputCaptureWindow() : nullptr;
+    return d_guiContext ? d_guiContext->getInputCaptureWindow() : nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -654,8 +651,8 @@ void Window::setEnabled(bool enabled)
         onDisabled(args);
     }
 
-    if (GUIContext* context = getGUIContextPtr())
-        context->updateWindowContainingCursor();
+    if (d_guiContext)
+        d_guiContext->updateWindowContainingCursor();
 }
 
 //----------------------------------------------------------------------------//
@@ -669,8 +666,8 @@ void Window::setVisible(bool setting)
     WindowEventArgs args(this);
     d_visible ? onShown(args) : onHidden(args);
 
-    if (GUIContext* context = getGUIContextPtr())
-        context->updateWindowContainingCursor();
+    if (d_guiContext)
+        d_guiContext->updateWindowContainingCursor();
 }
 
 //----------------------------------------------------------------------------//
@@ -1090,8 +1087,8 @@ void Window::invalidate(const bool recursive)
 {
     invalidate_impl(recursive);
 
-    if (GUIContext* context = getGUIContextPtr())
-        context->markAsDirty();
+    if (d_guiContext)
+        d_guiContext->markAsDirty();
 }
 
 //----------------------------------------------------------------------------//
@@ -1211,18 +1208,14 @@ void Window::addChild_impl(Element* element)
 
     NamedElement::addChild_impl(wnd);
 
-    // TODO: also propagate GUI context, see setGUIContext
-    wnd->onTargetSurfaceChanged(getTargetRenderingSurface());
-
     addWindowToDrawList(*wnd);
-
-    wnd->invalidate(true);
 
     wnd->onZChange_impl();
 
-    // If window uses default font, handle its possible change
-    // TODO: remove if GUI context will be propagated, setGUIContext will have to handle this!
-    wnd->notifyDefaultFontChanged();
+    if (d_guiContext)
+        wnd->attachToGUIContext(d_guiContext);
+
+    wnd->invalidate(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -1239,8 +1232,7 @@ void Window::removeChild_impl(Element* element)
 
     NamedElement::removeChild_impl(wnd);
 
-    // TODO: also propagate GUI context, see setGUIContext
-    wnd->onTargetSurfaceChanged(nullptr);
+    wnd->attachToGUIContext(nullptr);
 
     wnd->onZChange_impl();
 
@@ -1261,7 +1253,6 @@ void Window::onZChange_impl()
     else
     {
         const size_t child_count = d_parent->getChildCount();
-
         for (size_t i = 0; i < child_count; ++i)
         {
             WindowEventArgs args(getParent()->getChildAtIndex(i));
@@ -1270,18 +1261,16 @@ void Window::onZChange_impl()
 
     }
 
-    if (GUIContext* context = getGUIContextPtr())
-        context->updateWindowContainingCursor();
+    if (d_guiContext)
+        d_guiContext->updateWindowContainingCursor();
 }
 
 //----------------------------------------------------------------------------//
 const Image* Window::getActualCursor() const
 {
-    if (d_cursor)
-        return d_cursor;
-
-    GUIContext* context = getGUIContextPtr();
-    return context ? context->getCursor().getDefaultImage() : nullptr;
+    return d_cursor ? d_cursor :
+        d_guiContext ? d_guiContext->getCursor().getDefaultImage() :
+        nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -1295,9 +1284,8 @@ void Window::setCursor(const Image* image)
 {
     d_cursor = image;
 
-    GUIContext* context = getGUIContextPtr();
-    if (context && context->getWindowContainingCursor() == this)
-        context->getCursor().setImage(image);
+    if (d_guiContext && d_guiContext->getWindowContainingCursor() == this)
+        d_guiContext->getCursor().setImage(image);
 }
 
 //----------------------------------------------------------------------------//
@@ -1442,11 +1430,9 @@ bool Window::notifyDragDropItemDropped(DragContainer* item)
 //----------------------------------------------------------------------------//
 Tooltip* Window::getTooltip() const
 {
-    if (d_customTip)
-        return d_customTip;
-
-    GUIContext* context = getGUIContextPtr();
-    return context ? context->getDefaultTooltipObject(): nullptr;
+    return d_customTip ? d_customTip :
+        d_guiContext ? d_guiContext->getDefaultTooltipObject() :
+        nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -1829,12 +1815,13 @@ void Window::onMoved(ElementEventArgs& e)
     if (d_parent)
     {
         getParent()->invalidateRenderingSurface();
+
         // need to redraw some geometry if parent uses a caching surface
-        if (auto ctx = getGUIContextPtr())
+        if (d_guiContext)
         {
-            CEGUI::RenderingSurface* rs = getParent()->getTargetRenderingSurface();
+            auto rs = getParent()->getTargetRenderingSurface();
             if (rs && rs->isRenderingWindow())
-                ctx->markAsDirty();
+                d_guiContext->markAsDirty();
         }
     }
 }
@@ -1875,8 +1862,8 @@ void Window::onAlphaChanged(WindowEventArgs& e)
 
     updateGeometryAlpha();
     invalidateRenderingSurface();
-    if (GUIContext* context = getGUIContextPtr())
-        context->markAsDirty();
+    if (d_guiContext)
+        d_guiContext->markAsDirty();
 
     fireEvent(EventAlphaChanged, e, EventNamespace);
 }
@@ -1969,8 +1956,8 @@ void Window::onAlwaysOnTopChanged(WindowEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
-    if (GUIContext* context = getGUIContextPtr())
-        context->markAsDirty();
+    if (d_guiContext)
+        d_guiContext->markAsDirty();
     fireEvent(EventAlwaysOnTopChanged, e, EventNamespace);
 }
 
@@ -2028,8 +2015,8 @@ void Window::onZChanged(WindowEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
-    if (GUIContext* context = getGUIContextPtr())
-        context->markAsDirty();
+    if (d_guiContext)
+        d_guiContext->markAsDirty();
     fireEvent(EventZOrderChanged, e, EventNamespace);
 }
 
@@ -2085,9 +2072,8 @@ void Window::onChildAdded(ElementEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
-    if (GUIContext* context = getGUIContextPtr())
-        context->markAsDirty();
-
+    if (d_guiContext)
+        d_guiContext->markAsDirty();
     Element::onChildAdded(e);
 }
 
@@ -2096,8 +2082,8 @@ void Window::onChildRemoved(ElementEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
-    if (auto context = getGUIContextPtr())
-        context->markAsDirty();
+    if (d_guiContext)
+        d_guiContext->markAsDirty();
 
     // Though we do need to invalidate the rendering surface!
     if (auto rs = getTargetRenderingSurface())
@@ -2124,8 +2110,8 @@ void Window::onCursorLeavesArea(CursorInputEventArgs& e)
 void Window::onCursorEnters(CursorInputEventArgs& e)
 {
     // set the cursor
-    if (GUIContext* context = getGUIContextPtr())
-        context->getCursor().setImage(getActualCursor());
+    if (d_guiContext)
+        d_guiContext->getCursor().setImage(getActualCursor());
 
     // perform tooltip control
     Tooltip* const tip = getTooltip();
@@ -2139,8 +2125,7 @@ void Window::onCursorEnters(CursorInputEventArgs& e)
 void Window::onCursorLeaves(CursorInputEventArgs& e)
 {
     // perform tooltip control
-    GUIContext* context = getGUIContextPtr();
-    const Window* const mw = context ? context->getWindowContainingCursor() : nullptr;
+    const Window* const mw = d_guiContext ? d_guiContext->getWindowContainingCursor() : nullptr;
     Tooltip* const tip = getTooltip();
     if (tip && mw != tip && !(mw && mw->isAncestor(tip)))
         tip->setTargetWindow(nullptr);
@@ -2595,8 +2580,8 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
 
     // Always invalidate hit rect because we can't guess how it is calculated
     d_hitTestRectValid = false;
-    if (GUIContext* context = getGUIContextPtr())
-        context->updateWindowContainingCursor();
+    if (d_guiContext)
+        d_guiContext->updateWindowContainingCursor();
 
     // Check base area changes to update our children
     uint8_t flags = 0;
@@ -2861,9 +2846,7 @@ RenderingSurface* Window::getTargetRenderingSurface() const
     }
     while (curr);
 
-    // FIXME: d_guiContext must be set for all windows in the hierarchy!
-    //return d_guiContext;
-    return getGUIContextPtr();
+    return d_guiContext;
 }
 
 //----------------------------------------------------------------------------//
@@ -2967,8 +2950,8 @@ void Window::allocateRenderingWindow(bool addStencilBuffer)
     transferChildSurfaces();
     updateRenderingWindow(true);
     updateGeometryTransformAndClipping();
-    if (GUIContext* context = getGUIContextPtr())
-        context->markAsDirty();
+    if (d_guiContext)
+        d_guiContext->markAsDirty();
 }
 
 //----------------------------------------------------------------------------//
@@ -2987,8 +2970,8 @@ void Window::releaseRenderingWindow()
     System::getSingleton().getRenderer()->destroyTextureTarget(tt);
 
     updateGeometryTransformAndClipping();
-    if (GUIContext* context = getGUIContextPtr())
-        context->markAsDirty();
+    if (d_guiContext)
+        d_guiContext->markAsDirty();
 }
 
 //----------------------------------------------------------------------------//
@@ -3015,7 +2998,7 @@ void Window::onRotated(ElementEventArgs& e)
 {
     Element::onRotated(e);
     
-    if (!getGUIContextPtr())
+    if (!d_guiContext)
         return;
 
     // TODO: Checking quaternion for equality with IDENTITY is stupid,
@@ -3201,9 +3184,6 @@ Window* Window::clone(bool deepCopy) const
     Window* ret =
         WindowManager::getSingleton().createWindow(getType(), getName());
 
-    //Setting some properties on DragContainer trigger events that require the GUI Context to be set
-    if (d_guiContext)
-        ret->setGUIContext(d_guiContext);
     // always copy properties
     clonePropertiesTo(*ret);
 
@@ -3362,37 +3342,35 @@ void Window::updateGeometryAlpha()
 }
 
 //----------------------------------------------------------------------------//
-GUIContext* Window::getGUIContextPtr() const
-{
-    // GUIContext is always the one on the root window, we do not allow parts
-    // of a hierarchy to be drawn to separate contexts (which is not much of
-    // a limitation).
-    return getParent() ? getParent()->getGUIContextPtr() : d_guiContext;
-}
-
-//----------------------------------------------------------------------------//
 GUIContext& Window::getGUIContext() const
 {
-    GUIContext* context = getGUIContextPtr();
-
-    if (!context)
+    if (!d_guiContext)
         throw NullObjectException("There is no GUI context for the window " + d_name);
 
-    return *context;
+    return *d_guiContext;
 }
 
 //----------------------------------------------------------------------------//
-void Window::setGUIContext(GUIContext* context)
+void Window::setGUIContextRecursively(GUIContext* context)
+{
+    d_guiContext = context;
+
+    for (auto child : d_children)
+        static_cast<Window*>(child)->setGUIContextRecursively(context);
+}
+
+//----------------------------------------------------------------------------//
+void Window::attachToGUIContext(GUIContext* context)
 {
     if (d_guiContext == context)
         return;
 
-    d_guiContext = context;
+    setGUIContextRecursively(context);
+    onTargetSurfaceChanged(context ? getTargetRenderingSurface() : nullptr);
 
-    // TODO: store context recursively in children? Field exists anyway.
-
-    notifyDefaultFontChanged(); // TODO: can check if font really changed? Move to GUIContext::setRootWindow?
-    onTargetSurfaceChanged(getTargetRenderingSurface());
+    // TODO: can check if font really changed? Move to GUIContext::setRootWindow?
+    if (context)
+        notifyDefaultFontChanged();
 }
 
 //----------------------------------------------------------------------------//
@@ -3453,8 +3431,8 @@ Sizef Window::getRootContainerSize() const
 {
     if (auto root = getRootWindow())
     {
-        if (GUIContext* context = root->getGUIContextPtr())
-            return context->getSurfaceSize();
+        if (d_guiContext)
+            return d_guiContext->getSurfaceSize();
         else if (root->getRenderingSurface())
             return root->getRenderingSurface()->getRenderTarget().getArea().getSize();
     }
@@ -3592,8 +3570,8 @@ void Window::setDrawModeMask(std::uint32_t drawModeMask)
         return;
 
     d_drawModeMask = drawModeMask;
-    if (auto ctx = getGUIContextPtr())
-        ctx->markAsDirty();
+    if (d_guiContext)
+        d_guiContext->markAsDirty();
 }
 
 //----------------------------------------------------------------------------//

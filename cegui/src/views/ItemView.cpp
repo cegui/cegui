@@ -777,7 +777,7 @@ void ItemView::onFontChanged(WindowEventArgs& e)
 void ItemView::onTargetSurfaceChanged(RenderingSurface* newSurface)
 {
     Window::onTargetSurfaceChanged(newSurface);
-    if (getGUIContextPtr())
+    if (d_guiContext)
     {
         performChildLayout(false, false);
         updateScrollbars();

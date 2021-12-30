@@ -75,8 +75,7 @@ namespace CEGUI
 
     void Tooltip::positionSelf()
     {
-        GUIContext* context = getGUIContextPtr();
-        if (!context)
+        if (!d_guiContext)
             return;
 
         // no recursion allowed for this function!
@@ -85,7 +84,7 @@ namespace CEGUI
 
         d_inPositionSelf = true;
 
-        const Cursor& indicator = context->getCursor();
+        const Cursor& indicator = d_guiContext->getCursor();
         const Rectf screen(glm::vec2(0, 0), getRootContainerSize());
         Rectf tipRect(getUnclippedOuterRect().get());
         const Image* cursor_image = indicator.getImage();

@@ -942,7 +942,7 @@ bool MultiLineEditbox::validateWindowRenderer(const WindowRenderer* renderer) co
 void MultiLineEditbox::onTargetSurfaceChanged(RenderingSurface* newSurface)
 {
     EditboxBase::onTargetSurfaceChanged(newSurface);
-    if (getGUIContextPtr())
+    if (d_guiContext)
     {
         formatText(true);
         performChildLayout(false, false);
