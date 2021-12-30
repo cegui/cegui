@@ -350,7 +350,7 @@ protected:
     \return
         Nothing
     */
-    void drawSelf(const RenderingContext&, std::uint32_t) override { /* do nothing; rendering handled by children */ }
+    void drawSelf(const RenderingContext&, std::uint32_t) override { /* do nothing; rendering is handled by children */ }
 
     /*!
     \brief
