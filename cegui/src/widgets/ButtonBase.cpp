@@ -73,7 +73,7 @@ bool ButtonBase::calculateCurrentHoverState(const glm::vec2& cursor_pos)
             (capture_wnd == this ||
             (capture_wnd->distributesCapturedInputs() && isAncestor(capture_wnd))) && isHit(cursor_pos);
     else
-	    return getGUIContext().getWindowContainingCursor() == this;
+	    return d_guiContext && d_guiContext->getWindowContainingCursor() == this;
 }
 
 /*************************************************************************

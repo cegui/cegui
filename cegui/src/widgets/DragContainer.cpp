@@ -102,7 +102,8 @@ void DragContainer::setDragAlpha(float alpha)
 const Image* DragContainer::getDragIndicatorImage() const
 {
     return d_dragIndicatorImage ? d_dragIndicatorImage :
-        getGUIContext().getCursor().getDefaultImage();
+        d_guiContext ? d_guiContext->getCursor().getDefaultImage() :
+        nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -202,8 +203,8 @@ void DragContainer::cancelDragging()
 //----------------------------------------------------------------------------//
 void DragContainer::updateActiveCursorImage() const
 {
-    if (auto ctx = getGUIContextPtr())
-        ctx->getCursor().setImage(d_dragging ? getDragIndicatorImage() : getActualCursor());
+    if (d_guiContext)
+        d_guiContext->getCursor().setImage(d_dragging ? getDragIndicatorImage() : getActualCursor());
 }
 
 //----------------------------------------------------------------------------//
@@ -381,7 +382,7 @@ void DragContainer::onDragStarted(WindowEventArgs& e)
 
     // Immediately update position relative to the cursor
     const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this,
-        getGUIContext().getCursor().getPosition()));
+        d_guiContext->getCursor().getPosition()));
     doDragging(localPointerPos);
 }
 
@@ -402,17 +403,16 @@ void DragContainer::onDragPositionChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void DragContainer::updateDropTarget()
 {
-    GUIContext* ctx = getGUIContextPtr();
-    if (!ctx || !ctx->getRootWindow())
+    if (!d_guiContext || !d_guiContext->getRootWindow())
         return;
 
     // find out which child of root window has the cursor in it
-    Window* target = ctx->getRootWindow()->getTargetChildAtPosition(
-        ctx->getCursor().getPosition(), false, this);
+    Window* target = d_guiContext->getRootWindow()->getTargetChildAtPosition(
+        d_guiContext->getCursor().getPosition(), false, this);
 
     // use root itself if no child was hit
     if (!target)
-        target = ctx->getRootWindow();
+        target = d_guiContext->getRootWindow();
 
     // if the window with the cursor is different to current drop target
     if (target != d_dropTarget)

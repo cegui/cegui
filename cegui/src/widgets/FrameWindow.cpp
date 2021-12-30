@@ -477,29 +477,29 @@ void FrameWindow::setCursorForSizingLocation(SizingLocation location) const
 {
     switch(location)
     {
-    case SizingLocation::Top:
-    case SizingLocation::Bottom:
-        getGUIContext().getCursor().setImage(d_nsSizingCursor);
-        break;
+        case SizingLocation::Top:
+        case SizingLocation::Bottom:
+            getGUIContext().getCursor().setImage(d_nsSizingCursor);
+            break;
 
-    case SizingLocation::Left:
-    case SizingLocation::Right:
-        getGUIContext().getCursor().setImage(d_ewSizingCursor);
-        break;
+        case SizingLocation::Left:
+        case SizingLocation::Right:
+            getGUIContext().getCursor().setImage(d_ewSizingCursor);
+            break;
 
-    case SizingLocation::TopLeft:
-    case SizingLocation::BottomRight:
-        getGUIContext().getCursor().setImage(d_nwseSizingCursor);
-        break;
+        case SizingLocation::TopLeft:
+        case SizingLocation::BottomRight:
+            getGUIContext().getCursor().setImage(d_nwseSizingCursor);
+            break;
 
-    case SizingLocation::TopRight:
-    case SizingLocation::BottomLeft:
-        getGUIContext().getCursor().setImage(d_neswSizingCursor);
-        break;
+        case SizingLocation::TopRight:
+        case SizingLocation::BottomLeft:
+            getGUIContext().getCursor().setImage(d_neswSizingCursor);
+            break;
 
-    default:
-        getGUIContext().getCursor().setImage(getActualCursor());
-        break;
+        default:
+            getGUIContext().getCursor().setImage(getActualCursor());
+            break;
     }
 }
 
@@ -537,9 +537,7 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
     // if we are not the window containing the cursor, do NOT change the indicator
     const Window* wndUnderCursor = getGUIContext().getWindowContainingCursor();
     if (wndUnderCursor != this && wndUnderCursor != getTitlebar())
-    {
         return;
-    }
 
     if (isSizingEnabled())
     {

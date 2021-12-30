@@ -2634,8 +2634,8 @@ public:
 
     //! return the GUIContext this window is associated with.
     GUIContext& getGUIContext() const;
-    //! function used internally.  Do not call this from client code.
-    void setGUIContext(GUIContext* context);
+    //! return the GUIContext pointer this window is associated with.
+    GUIContext* getGUIContextPtr() const { return d_guiContext; }
 
     /*!
     \brief
@@ -3337,9 +3337,6 @@ protected:
     */
     virtual void onTargetSurfaceChanged(RenderingSurface* newSurface);
 
-    //! return the GUIContext this window is associated with.
-    GUIContext* getGUIContextPtr() const;
-
     //! helper to create and setup the auto RenderingWindow surface
     void allocateRenderingWindow(bool addStencilBuffer);
 
@@ -3701,6 +3698,9 @@ private:
     // For property
     void setDisabled(bool value) { setEnabled(!value); }
 
+    void setGUIContextRecursively(GUIContext* context);
+    void attachToGUIContext(GUIContext* context);
+
     void updateRenderingWindow(bool updateSize);
     void updateGeometryTransformAndClipping();
     void updateGeometryAlpha();
@@ -3708,10 +3708,8 @@ private:
 
 } // End of  CEGUI namespace section
 
-
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
 
 #endif  // end of guard _CEGUIWindow_h_
-

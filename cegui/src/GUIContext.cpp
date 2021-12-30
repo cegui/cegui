@@ -73,7 +73,7 @@ GUIContext::~GUIContext()
     deleteSemanticEventHandlers();
 
     if (d_rootWindow)
-        d_rootWindow->setGUIContext(nullptr);
+        d_rootWindow->attachToGUIContext(nullptr);
 }
 
 //----------------------------------------------------------------------------//
@@ -93,7 +93,7 @@ void GUIContext::setRootWindow(Window* new_root)
     updateWindowContainingCursor();
 
     if (d_rootWindow)
-        d_rootWindow->setGUIContext(nullptr);
+        d_rootWindow->attachToGUIContext(nullptr);
 
     // Remember previous root for the event
     WindowEventArgs args(d_rootWindow);
@@ -102,7 +102,7 @@ void GUIContext::setRootWindow(Window* new_root)
 
     if (d_rootWindow)
     {
-        d_rootWindow->setGUIContext(this);
+        d_rootWindow->attachToGUIContext(this);
         d_rootWindow->notifyScreenAreaChanged(true);
     }
 
