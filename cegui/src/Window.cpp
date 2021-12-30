@@ -45,8 +45,7 @@
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/GlobalEventSet.h"
 #include "CEGUI/SharedStringStream.h"
-#include "CEGUI/BasicRenderedStringParser.h"
-#include "CEGUI/DefaultRenderedStringParser.h"
+#include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/Logger.h"
 #if defined (CEGUI_USE_FRIBIDI)
 #include "CEGUI/FribidiVisualMapping.h"
@@ -151,10 +150,6 @@ const String Window::UserStringValueXMLAttributeName("value");
 
 //----------------------------------------------------------------------------//
 const String Window::TooltipNameSuffix("__auto_tooltip__");
-
-//----------------------------------------------------------------------------//
-BasicRenderedStringParser Window::d_basicStringParser;
-DefaultRenderedStringParser Window::d_defaultStringParser;
 
 //----------------------------------------------------------------------------//
 Window::WindowRendererProperty Window::d_windowRendererProperty;
@@ -3521,7 +3516,7 @@ RenderedStringParser& Window::getRenderedStringParser() const
     // if parsing is disabled, we use a DefaultRenderedStringParser that creates
     // a RenderedString to renderi the input text verbatim (i.e. no parsing).
     if (!d_textParsingEnabled)
-        return d_defaultStringParser;
+        return CEGUI::System::getSingleton().getDefaultRenderedStringParser();
 
     // Next prefer a custom RenderedStringParser assigned to this Window.
     if (d_customStringParser)
@@ -3535,7 +3530,7 @@ RenderedStringParser& Window::getRenderedStringParser() const
 
     // if parsing is enabled and no custom RenderedStringParser is set anywhere,
     // use the system's BasicRenderedStringParser to do the parsing.
-    return d_basicStringParser;
+    return CEGUI::System::getSingleton().getBasicRenderedStringParser();
 }
 
 //----------------------------------------------------------------------------//

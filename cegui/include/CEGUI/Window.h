@@ -3786,10 +3786,6 @@ protected:
 
     //! RenderedString representation of text string as ouput from a parser.
     mutable RenderedString d_renderedString;
-    //! Shared instance of a parser to be used in most instances.
-    static BasicRenderedStringParser d_basicStringParser;
-    //! Shared instance of a parser to be used when rendering text verbatim.
-    static DefaultRenderedStringParser d_defaultStringParser;
 
     //! type of Window (also the name of the WindowFactory that created us)
     const String d_type;

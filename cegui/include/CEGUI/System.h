@@ -509,6 +509,9 @@ public:
     */
     void setDefaultCustomRenderedStringParser(RenderedStringParser* parser);
 
+    RenderedStringParser& getBasicRenderedStringParser() const;
+    RenderedStringParser& getDefaultRenderedStringParser() const;
+
     /*!
     \brief
         Invalidate all imagery and geometry caches for CEGUI managed elements.
@@ -667,6 +670,11 @@ protected:
     static String d_defaultImageCodecName;
     //! true when we created the CEGUI::Logger based object.
     bool d_ourLogger;
+
+    //! Shared instance of a parser to be used in most instances.
+    std::unique_ptr<BasicRenderedStringParser> d_basicStringParser;
+    //! Shared instance of a parser to be used when rendering text verbatim.
+    std::unique_ptr<DefaultRenderedStringParser> d_defaultStringParser;
     //! currently set global RenderedStringParser.
     RenderedStringParser* d_customRenderedStringParser;
 

@@ -27,63 +27,39 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/ListboxTextItem.h"
+#include "CEGUI/System.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/Window.h"
-#include "CEGUI/Image.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/RenderedStringParser.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+const Colour ListboxTextItem::DefaultTextColour = 0xFFFFFFFF;
+
 //----------------------------------------------------------------------------//
-BasicRenderedStringParser ListboxTextItem::d_stringParser;
-DefaultRenderedStringParser ListboxTextItem::d_noTagsStringParser;
-
-/*************************************************************************
-	Constants
-*************************************************************************/
-const Colour	ListboxTextItem::DefaultTextColour		= 0xFFFFFFFF;
-
-
-/*************************************************************************
-	Constructor
-*************************************************************************/
 ListboxTextItem::ListboxTextItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete) :
 	ListboxItem(text, item_id, item_data, disabled, auto_delete),
 	d_textCols(DefaultTextColour, DefaultTextColour, DefaultTextColour, DefaultTextColour),
-	d_font(nullptr),
-    d_renderedStringValid(false),
-    d_renderedStringParser(&d_noTagsStringParser)
+    d_renderedStringParser(&CEGUI::System::getSingleton().getDefaultRenderedStringParser())
 {
 }
 
-
-/*************************************************************************
-	Return a pointer to the font being used by this ListboxTextItem
-*************************************************************************/
-const Font* ListboxTextItem::getFont(void) const
+//----------------------------------------------------------------------------//
+const Font* ListboxTextItem::getFont() const
 {
 	// prefer out own font
 	if (d_font)
-	{
 		return d_font;
-	}
 	// try our owner window's font setting (may be null if owner uses no existant default font)
-	else if (d_owner)
-	{
+	if (d_owner)
 		return d_owner->getActualFont();
-	}
     // no owner, so the default font is ambiguous (it could be of any context)
-    else
-        return nullptr;  
+    return nullptr;  
 }
 
-
-/*************************************************************************
-	Set the font to be used by this ListboxTextItem
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void ListboxTextItem::setFont(const String& font_name)
 {
 	setFont(&FontManager::getSingleton().get(font_name));
@@ -93,15 +69,11 @@ void ListboxTextItem::setFont(const String& font_name)
 void ListboxTextItem::setFont(Font* font)
 {
     d_font = font;
-
     d_renderedStringValid = false;
 }
 
-
-/*************************************************************************
-	Return the rendered pixel size of this list box item.
-*************************************************************************/
-Sizef ListboxTextItem::getPixelSize(void) const
+//----------------------------------------------------------------------------//
+Sizef ListboxTextItem::getPixelSize() const
 {
     const Font* fnt = getFont();
 
@@ -125,9 +97,9 @@ Sizef ListboxTextItem::getPixelSize(void) const
     return sz;
 }
 
+//----------------------------------------------------------------------------//
 std::vector<GeometryBuffer*> ListboxTextItem::createRenderGeometry(
-    const Rectf& targetRect,
-    float alpha, const Rectf* clipper) const
+    const Rectf& targetRect, float alpha, const Rectf* clipper) const
 {
     std::vector<GeometryBuffer*> geomBuffers;
 
@@ -173,10 +145,7 @@ std::vector<GeometryBuffer*> ListboxTextItem::createRenderGeometry(
     return geomBuffers;
 }
 
-
-/*************************************************************************
-	Set the colours used for text rendering.	
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void ListboxTextItem::setTextColours(Colour top_left_colour,
                                      Colour top_right_colour,
                                      Colour bottom_left_colour,
@@ -194,45 +163,39 @@ void ListboxTextItem::setTextColours(Colour top_left_colour,
 void ListboxTextItem::setText(const String& text)
 {
     ListboxItem::setText(text);
-
     d_renderedStringValid = false;
 }
 
 //----------------------------------------------------------------------------//
 void ListboxTextItem::parseTextString() const
 {
-    d_renderedString =
-        d_renderedStringParser->parse(getTextVisual(), getFont(), &d_textCols);
-
+    d_renderedString = d_renderedStringParser->parse(getTextVisual(), getFont(), &d_textCols);
     d_renderedStringValid = true;
 }
 
 //----------------------------------------------------------------------------//
-void ListboxTextItem::setTextParsingEnabled(const bool enable)
+// FIXME: now this silently resets a custom parser!
+void ListboxTextItem::setTextParsingEnabled(bool enable)
 {
-    if(enable)
-        d_renderedStringParser = &d_stringParser;
-    else
-        d_renderedStringParser = &d_noTagsStringParser;
-
-    d_renderedStringValid = false;
+    const auto prevParser = d_renderedStringParser;
+    d_renderedStringParser = enable ?
+        &CEGUI::System::getSingleton().getBasicRenderedStringParser() :
+        &CEGUI::System::getSingleton().getDefaultRenderedStringParser();
+    d_renderedStringValid &= (prevParser != d_renderedStringParser);
 }
 
 //----------------------------------------------------------------------------//
 bool ListboxTextItem::isTextParsingEnabled() const
 {
-    return d_renderedStringParser != &d_noTagsStringParser;
+    return d_renderedStringParser != &CEGUI::System::getSingleton().getDefaultRenderedStringParser();
 }
 
 //----------------------------------------------------------------------------//
 void ListboxTextItem::setCustomRenderedStringParser(CEGUI::RenderedStringParser* parser)
 {
-    if(parser)
-        d_renderedStringParser = parser;
-    else
-        d_renderedStringParser = &d_noTagsStringParser;
-
-    d_renderedStringValid = false;
+    const auto prevParser = d_renderedStringParser;
+    d_renderedStringParser = parser ? parser : &CEGUI::System::getSingleton().getDefaultRenderedStringParser();
+    d_renderedStringValid &= (prevParser != d_renderedStringParser);
 }
 
 //----------------------------------------------------------------------------//
@@ -241,6 +204,4 @@ bool ListboxTextItem::handleFontRenderSizeChange(const Font* const font)
     return getFont() == font;
 }
 
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section
+}
