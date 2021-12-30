@@ -522,31 +522,28 @@ bool DragContainer::pickUp(bool force_sticky /*= false*/)
         return false;
 
     // see if we need to force sticky mode switch
-    if (!d_stickyMode && force_sticky)
-        setStickyModeEnabled(true);
-
     // can only pick up if sticky
-    if (d_stickyMode)
+    if (!d_stickyMode)
     {
-        // force immediate release of any current input capture (unless it's us)
-        if (d_guiContext->getInputCaptureWindow() != this)
-            d_guiContext->releaseInputCapture(false);
+        if (force_sticky)
+            d_stickyMode = true;
+        else
+            return false;
+    }
 
-        // activate ourselves and try to capture input
-        activate();
+    activate();
 
-        if (captureInput())
-        {
-            // set the dragging point to the centre of the container.
-            d_dragPoint.d_x = cegui_absdim(d_pixelSize.d_width / 2);
-            d_dragPoint.d_y = cegui_absdim(d_pixelSize.d_height / 2);
+    if (captureInput())
+    {
+        // set the dragging point to the centre of the container.
+        d_dragPoint.d_x = cegui_absdim(d_pixelSize.d_width / 2.f);
+        d_dragPoint.d_y = cegui_absdim(d_pixelSize.d_height / 2.f);
 
-            // initialise the dragging state
-            WindowEventArgs args(this);
-            onDragStarted(args);
-            if (d_dragging)
-                d_pickedUp = true;
-        }
+        // initialise the dragging state
+        WindowEventArgs args(this);
+        onDragStarted(args);
+        if (d_dragging)
+            d_pickedUp = true;
     }
 
     return d_pickedUp;
