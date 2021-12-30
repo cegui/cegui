@@ -96,6 +96,7 @@ const String Window::DrawModeMaskPropertyName("DrawModeMask");
 //----------------------------------------------------------------------------//
 const String Window::EventNamespace("Window");
 const String Window::EventUpdated ("Updated");
+const String Window::EventNameChanged("NameChanged");
 const String Window::EventTextChanged("TextChanged");
 const String Window::EventFontChanged("FontChanged");
 const String Window::EventAlphaChanged("AlphaChanged");
@@ -195,10 +196,11 @@ void Window::LookNFeelProperty::writeXMLToStream(const PropertyReceiver* receive
 
 //----------------------------------------------------------------------------//
 Window::Window(const String& type, const String& name):
-    NamedElement(name),
+    Element(),
 
     // basic types and initial window name
     d_type(type),
+    d_name(name),
     d_autoWindow(false),
 
     // basic state
@@ -350,6 +352,60 @@ void Window::destroy()
 
     releaseRenderingWindow();
     invalidate();
+}
+
+//----------------------------------------------------------------------------//
+Window* Window::getChild(const String& name_path) const
+{
+    if (Window* w = findChild(name_path))
+        return w;
+
+    throw UnknownObjectException("The Element object "
+        "referenced by '" + name_path + "' is not attached to Element at '"
+        + getNamePath() + "'.");
+}
+
+//----------------------------------------------------------------------------//
+Window* Window::getChildRecursive(const String& name) const
+{
+    std::deque<Element*> openList;
+
+    for (Element* child : d_children)
+        openList.push_back(child);
+
+    // breadth-first search for the child to find
+    while (!openList.empty())
+    {
+        Element* child = openList.front();
+        openList.pop_front();
+
+        if (!child) continue;
+
+        Window* window = static_cast<Window*>(child);
+        if (window->getName() == name)
+            return window;
+
+        const size_t childCount = child->getChildCount();
+        for (size_t i = 0; i < childCount; ++i)
+            openList.push_back(child->getChildElementAtIndex(i));
+    }
+
+    return nullptr;
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isAncestor(const String& name) const
+{
+    const Window* current = getParent();
+    while (current)
+    {
+        if (current->getName() == name)
+            return true;
+
+        current = current->getParent();
+    }
+
+    return false;
 }
 
 //----------------------------------------------------------------------------//
@@ -1206,7 +1262,15 @@ void Window::addChild_impl(Element* element)
             "Window can only have Elements of type Window added as children "
             "(Window path: " + getNamePath() + ").");
 
-    NamedElement::addChild_impl(wnd);
+    const Window* const existing = findChild(wnd->getName());
+
+    if (existing && wnd != existing)
+        throw AlreadyExistsException("Failed to add "
+            "Element named: " + wnd->getName() + " to element at: " +
+            getNamePath() + " since an Element with that name is already "
+            "attached.");
+
+    Element::addChild_impl(element);
 
     addWindowToDrawList(*wnd);
 
@@ -1230,7 +1294,7 @@ void Window::removeChild_impl(Element* element)
     // remove from draw list
     removeWindowFromDrawList(*wnd);
 
-    NamedElement::removeChild_impl(wnd);
+    Element::removeChild_impl(wnd);
 
     wnd->attachToGUIContext(nullptr);
 
@@ -1541,6 +1605,44 @@ void Window::setLookNFeel(const String& look)
 }
 
 //----------------------------------------------------------------------------//
+void Window::setName(const String& name)
+{
+    if (d_name == name)
+        return;
+
+    if (getParent()->isChild(name))
+    {
+        throw AlreadyExistsException("Failed to rename "
+            "Window at: " + getNamePath() + " as: " + name + ". A Window "
+            "with that name is already attached as a sibling.");
+    }
+
+    // log this under informative level
+    Logger::getSingleton().logEvent("Renamed element at: " + getNamePath() +
+        " as: " + name, LoggingLevel::Informative);
+
+    d_name = name;
+
+    WindowEventArgs args(this);
+    onNameChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+String Window::getNamePath() const
+{
+    String path = d_name;
+
+    auto parent = getParent();
+    while (parent)
+    {
+        path = parent->getName() + '/' + path;
+        parent = parent->getParent();
+    }
+
+    return path;
+}
+
+//----------------------------------------------------------------------------//
 void Window::setModalState(bool state)
 {
     // do nothing if state isn't changing
@@ -1824,6 +1926,12 @@ void Window::onMoved(ElementEventArgs& e)
                 d_guiContext->markAsDirty();
         }
     }
+}
+
+//----------------------------------------------------------------------------//
+void Window::onNameChanged(WindowEventArgs& e)
+{
+    fireEvent(EventNameChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -3533,6 +3641,29 @@ bool Window::handleFontRenderSizeChange(const EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
+Window* Window::findChildByNamePath_impl(const String& name_path) const
+{
+    //!!!TODO: optimize through immutable string_view!
+    const size_t sep = name_path.find_first_of('/');
+    const String base_child(name_path.substr(0, sep));
+
+    const size_t child_count = d_children.size();
+    for (size_t i = 0; i < child_count; ++i)
+    {
+        auto child = getChildAtIndex(i);
+        if (child->getName() == base_child)
+        {
+            if (sep != String::npos && sep < name_path.length() - 1)
+                return child->findChild(name_path.substr(sep + 1));
+            else
+                return child;
+        }
+    }
+
+    return nullptr;
+}
+
+//----------------------------------------------------------------------------//
 void Window::focus()
 {
     if (isDisabled())
@@ -3637,6 +3768,24 @@ void Window::addWindowProperties()
     CEGUI_DEFINE_PROPERTY(Window, bool,
         RestoreOldCapturePropertyName, "Property to get/set the 'restore old capture' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setRestoreOldCapture, &Window::restoresOldCapture, false
+    );
+
+    // "Name" is already stored in <Window> element
+    CEGUI_DEFINE_PROPERTY_NO_XML(Window, String,
+        "Name", "Property to get/set the name of the Window. Make sure it's unique in its parent if any.",
+        &Window::setName, &Window::getName, ""
+    );
+
+    // A name path is a string that describes a path down the element
+    // hierarchy using names and the forward slash '/' as a separator.
+    // For example, if this element has a child attached to it named "Panel"
+    // which has its own children attached named "Okay" and "Cancel",
+    // you can check for the element "Okay" from this element by using the
+    // name path "Panel/Okay".  To check for "Panel", you would simply pass
+    // the name "Panel".
+    CEGUI_DEFINE_PROPERTY_NO_XML(Window, String,
+        "NamePath", "Property to get the absolute name path of this Element.",
+        nullptr, &Window::getNamePath, ""
     );
 
     CEGUI_DEFINE_PROPERTY(Window, String,

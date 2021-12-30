@@ -11,7 +11,7 @@ enum WindowUpdateMode
 /****************************************
 	Window
 *****************************************/
-class Window : public NamedElement
+class Window : public Element
 {
     string getType(void) const;
 
