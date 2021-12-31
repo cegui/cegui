@@ -248,14 +248,13 @@ size_t RenderedString::getLineCount() const
 }
 
 //----------------------------------------------------------------------------//
-Sizef RenderedString::getPixelSize(const Window* ref_wnd,
-                                   const size_t line) const
+Sizef RenderedString::getPixelSize(const Window* ref_wnd, const size_t line) const
 {
     if (line >= getLineCount())
         throw InvalidRequestException(
             "line number specified is invalid.");
 
-    Sizef sz(0, 0);
+    Sizef sz(0.f, 0.f);
 
     const size_t end_component = d_lines[line].first + d_lines[line].second;
     for (size_t i = d_lines[line].first; i < end_component; ++i)
@@ -268,6 +267,46 @@ Sizef RenderedString::getPixelSize(const Window* ref_wnd,
     }
 
     return sz;
+}
+
+//----------------------------------------------------------------------------//
+Sizef RenderedString::getPixelSize(const Window* ref_wnd) const
+{
+    Sizef sz(0.f, 0.f);
+    for (size_t i = 0; i < d_lines.size(); ++i)
+    {
+        const Sizef line_sz(getPixelSize(ref_wnd, i));
+        sz.d_height += line_sz.d_height;
+
+        if (line_sz.d_width > sz.d_width)
+            sz.d_width = line_sz.d_width;
+    }
+
+    return sz;
+}
+
+//----------------------------------------------------------------------------//
+float RenderedString::getHorizontalExtent(const Window* ref_wnd) const
+{
+    float w = 0.0f;
+    for (size_t i = 0; i < d_lines.size(); ++i)
+    {
+        const float this_width = getPixelSize(ref_wnd, i).d_width;
+        if (this_width > w)
+            w = this_width;
+    }
+
+    return w;
+}
+
+//----------------------------------------------------------------------------//
+float RenderedString::getVerticalExtent(const Window* ref_wnd) const
+{
+    float h = 0.0f;
+    for (size_t i = 0; i < d_lines.size(); ++i)
+        h += getPixelSize(ref_wnd, i).d_height;
+
+    return h;
 }
 
 //----------------------------------------------------------------------------//
@@ -349,30 +388,6 @@ void RenderedString::setSelection(const Window* ref_wnd, float start, float end)
         end -= comp_extent;
         ++idx;
     }
-}
-
-//----------------------------------------------------------------------------//
-float RenderedString::getHorizontalExtent(const Window* ref_wnd) const
-{
-    float w = 0.0f;
-    for (size_t i = 0; i < d_lines.size(); ++i)
-    {
-        const float this_width = getPixelSize(ref_wnd, i).d_width;
-        if (this_width > w)
-            w = this_width;
-    }
-
-    return w;
-}
-
-//----------------------------------------------------------------------------//
-float RenderedString::getVerticalExtent(const Window* ref_wnd) const
-{
-    float h = 0.0f;
-    for (size_t i = 0; i < d_lines.size(); ++i)
-        h += getPixelSize(ref_wnd, i).d_height;
-
-    return h;
 }
 
 //----------------------------------------------------------------------------//

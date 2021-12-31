@@ -182,6 +182,26 @@ void GUIContext::setDefaultTooltipType(const String& tooltip_type)
 }
 
 //----------------------------------------------------------------------------//
+void GUIContext::createDefaultTooltipWindowInstance() const
+{
+    if (WindowManager::getSingleton().isLocked())
+        return;
+
+    //!!!FIXME: if a non-Tooltip window is created here it will leak!
+    // But this should be automatically fixed if I get rid of the Tooltip class.
+    d_defaultTooltipObject = dynamic_cast<Tooltip*>(
+        WindowManager::getSingleton().createWindow(d_defaultTooltipType,
+            "CEGUI::System::default__auto_tooltip__"));
+
+    if (d_defaultTooltipObject)
+    {
+        d_defaultTooltipObject->setAutoWindow(true);
+        d_defaultTooltipObject->setWritingXMLAllowed(false);
+        d_weCreatedTooltipObject = true;
+    }
+}
+
+//----------------------------------------------------------------------------//
 void GUIContext::destroyDefaultTooltipWindowInstance()
 {
     if (d_defaultTooltipObject && d_weCreatedTooltipObject)
@@ -200,26 +220,6 @@ Tooltip* GUIContext::getDefaultTooltipObject() const
         createDefaultTooltipWindowInstance();
 
     return d_defaultTooltipObject;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::createDefaultTooltipWindowInstance() const
-{
-    WindowManager& winmgr(WindowManager::getSingleton());
-
-    if (winmgr.isLocked())
-        return;
-
-    d_defaultTooltipObject = dynamic_cast<Tooltip*>(
-        winmgr.createWindow(d_defaultTooltipType,
-                            "CEGUI::System::default__auto_tooltip__"));
-
-    if (d_defaultTooltipObject)
-    {
-        d_defaultTooltipObject->setAutoWindow(true);
-        d_defaultTooltipObject->setWritingXMLAllowed(false);
-        d_weCreatedTooltipObject = true;
-    }
 }
 
 //----------------------------------------------------------------------------//

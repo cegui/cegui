@@ -680,7 +680,6 @@ Window* Window::getTargetChildAtPosition(const glm::vec2& position,
 //----------------------------------------------------------------------------//
 void Window::setEnabled(bool enabled)
 {
-    // only react if setting has changed
     if (d_enabled == enabled)
         return;
 
@@ -723,7 +722,6 @@ bool Window::isEffectiveDisabled() const
 //----------------------------------------------------------------------------//
 void Window::setVisible(bool setting)
 {
-    // only react if setting has changed
     if (d_visible == setting)
         return;
 
@@ -828,7 +826,6 @@ bool Window::isActive() const
 //----------------------------------------------------------------------------//
 void Window::setClippedByParent(bool setting)
 {
-    // only react if setting has changed
     if (d_clippedByParent == setting)
         return;
 
@@ -840,6 +837,9 @@ void Window::setClippedByParent(bool setting)
 //----------------------------------------------------------------------------//
 void Window::setText(const String& text)
 {
+    if (d_textLogical == text)
+        return;
+
     d_textLogical = text;
     d_renderedStringValid = false;
 
@@ -1041,8 +1041,7 @@ size_t Window::getZIndex() const
 //----------------------------------------------------------------------------//
 void Window::setAlwaysOnTop(bool setting)
 {
-    // only react to an actual change
-    if (isAlwaysOnTop() == setting)
+    if (d_alwaysOnTop == setting)
         return;
 
     d_alwaysOnTop = setting;
@@ -1532,7 +1531,7 @@ void Window::setTooltipType(const String& tooltipType)
 //----------------------------------------------------------------------------//
 String Window::getTooltipType() const
 {
-    return isUsingDefaultTooltip() ? String("") : d_customTip->getType();
+    return d_customTip ? d_customTip->getType() : String("");
 }
 
 //----------------------------------------------------------------------------//
