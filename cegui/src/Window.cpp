@@ -2213,25 +2213,6 @@ void Window::onCursorMove(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onScroll(CursorInputEventArgs& e)
-{
-    fireEvent(EventScroll, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagatePointerInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onScroll(e);
-        return;
-    }
-
-    // by default we now mark cursor events as handled
-    // (derived classes may override, of course!)
-    ++e.handled;
-}
-
-//----------------------------------------------------------------------------//
 void Window::onCursorPressHold(CursorInputEventArgs& e)
 {
     // perform tooltip control
@@ -2274,6 +2255,32 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+void Window::onCursorActivate(CursorInputEventArgs& e)
+{
+    // onCursorPressHold() hides the tooltip, restore it here
+    Tooltip* const tip = getTooltip();
+    if (tip && !isAncestor(tip))
+        tip->setTargetWindow(this);
+
+    // reset auto-repeat state
+    if (d_autoRepeat && d_repeatPointerSource != CursorInputSource::NotSpecified)
+    {
+        releaseInput();
+        d_repeatPointerSource = CursorInputSource::NotSpecified;
+    }
+
+    fireEvent(EventCursorActivate, e, EventNamespace);
+
+    // optionally propagate to parent
+    if (!e.handled && d_propagatePointerInputs &&
+        d_parent && this != getGUIContext().getModalWindow())
+    {
+        e.window = getParent();
+        getParent()->onCursorActivate(e);
+    }
+}
+
+//----------------------------------------------------------------------------//
 void Window::onSelectWord(CursorInputEventArgs& e)
 {
     fireEvent(EventSelectWord, e, EventNamespace);
@@ -2312,29 +2319,22 @@ void Window::onSelectAll(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onCursorActivate(CursorInputEventArgs& e)
+void Window::onScroll(CursorInputEventArgs& e)
 {
-    // onCursorPressHold() hides the tooltip, restore it here
-    Tooltip* const tip = getTooltip();
-    if (tip && !isAncestor(tip))
-        tip->setTargetWindow(this);
-
-    // reset auto-repeat state
-    if (d_autoRepeat && d_repeatPointerSource != CursorInputSource::NotSpecified)
-    {
-        releaseInput();
-        d_repeatPointerSource = CursorInputSource::NotSpecified;
-    }
-
-    fireEvent(EventCursorActivate, e, EventNamespace);
+    fireEvent(EventScroll, e, EventNamespace);
 
     // optionally propagate to parent
     if (!e.handled && d_propagatePointerInputs &&
         d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
-        getParent()->onCursorActivate(e);
+        getParent()->onScroll(e);
+        return;
     }
+
+    // by default we now mark cursor events as handled
+    // (derived classes may override, of course!)
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
