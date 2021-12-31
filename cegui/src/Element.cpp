@@ -666,9 +666,6 @@ void Element::addChild(Element* element)
 
     addChild_impl(element);
 
-    // Update child rects after all class-specific child initialization
-    element->notifyScreenAreaChanged(true, true);
-
     ElementEventArgs args(element);
     onChildAdded(args);
 }
