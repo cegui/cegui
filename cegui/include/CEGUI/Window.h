@@ -1213,6 +1213,63 @@ public:
 
     /*!
     \brief
+        Set the custom Tooltip object for this Window.  This value may be 0 to
+        indicate that the Window should use the system default Tooltip object.
+
+    \param tooltip
+        Pointer to a valid Tooltip based object which should be used as the
+        tooltip for this Window, or 0 to indicate that the Window should use the
+        system default Tooltip object.  Note that when passing a pointer to a
+        Tooltip object, ownership of the Tooltip does not pass to this Window
+        object.
+    */
+    void setTooltip(Tooltip* tooltip);
+
+    /*!
+    \brief
+        Set the custom Tooltip to be used by this Window by specifying a Window
+        type.
+
+        The Window will internally attempt to create an instance of the
+        specified window type (which must be derived from the base Tooltip
+        class).  If the Tooltip creation fails, the error is logged and the
+        Window will revert to using either the existing custom Tooltip or the
+        system default Tooltip.
+
+    \param tooltipType
+        String object holding the name of the Tooltip based Window type which
+        should be used as the Tooltip for this Window.
+    */
+    void setTooltipType(const String& tooltipType);
+
+    /*!
+    \brief
+        Set the tooltip text for this window.
+
+    \param tip
+        String object holding the text to be displayed in the tooltip for this
+        Window.
+    */
+    void setTooltipText(const String& tip);
+
+    void setTooltipEnabled(bool enable) { d_tooltipEnabled = enable; }
+    bool isTooltipEnabled() const { return d_tooltipEnabled; }
+
+    /*!
+    \brief
+        Set whether this window inherits Tooltip text from its parent when its
+        own tooltip text is not set.
+
+    \param setting
+        - true if the window should inherit tooltip text from its parent when
+          its own text is not set.
+        - false if the window should not inherit tooltip text from its parent
+          (and so show no tooltip when no text is set).
+     */
+    void setInheritsTooltipText(bool setting) { d_inheritsTipText = setting; }
+
+    /*!
+    \brief
         Return whether this window will rise to the top of the z-order when
         activated with the left cursor source.
 
@@ -1376,7 +1433,7 @@ public:
         return the RenderingSurface currently set for this window.  May return
         0.
     */
-    inline RenderingSurface* getRenderingSurface() const { return d_surface; }
+    RenderingSurface* getRenderingSurface() const { return d_surface; }
 
     /*!
     \brief
@@ -1396,7 +1453,7 @@ public:
         - true if automatic use of a caching RenderingSurface is enabled.
         - false if automatic use of a caching RenderTarget is not enabled.
     */
-    inline bool isUsingAutoRenderingSurface() const { return d_autoRenderingWindow; }
+    bool isUsingAutoRenderingSurface() const { return d_autoRenderingWindow; }
 
     /*!
     \brief
@@ -1408,7 +1465,7 @@ public:
     - true to provide stencil buffer functionality with the texture caching.
     - false to not provide a stencil buffer functionality with the texture caching.
     */
-    inline bool isAutoRenderingSurfaceStencilEnabled() const { return d_autoRenderingSurfaceStencilEnabled; }
+    bool isAutoRenderingSurfaceStencilEnabled() const { return d_autoRenderingSurfaceStencilEnabled; }
 
     /*!
     \brief
@@ -1758,20 +1815,6 @@ public:
 
     /*!
     \brief
-        Return whether /a this Window is behind the given window.
-
-    \note
-        Here 'behind' just means that one window is drawn before the other, it
-        is not meant to imply that the windows are overlapping nor that one
-        window is obscured by the other.
-    */
-    inline bool isBehind(const Window& wnd) const
-    {
-        return !isInFront(wnd);
-    }
-
-    /*!
-    \brief
         Return the (visual) z index of the window on it's parent.
 
         The z index is a number that indicates the order that windows will be
@@ -2042,63 +2085,6 @@ public:
 
     /*!
     \brief
-        Set the custom Tooltip object for this Window.  This value may be 0 to
-        indicate that the Window should use the system default Tooltip object.
-
-    \param tooltip
-        Pointer to a valid Tooltip based object which should be used as the
-        tooltip for this Window, or 0 to indicate that the Window should use the
-        system default Tooltip object.  Note that when passing a pointer to a
-        Tooltip object, ownership of the Tooltip does not pass to this Window
-        object.
-    */
-    void setTooltip(Tooltip* tooltip);
-
-    /*!
-    \brief
-        Set the custom Tooltip to be used by this Window by specifying a Window
-        type.
-
-        The Window will internally attempt to create an instance of the
-        specified window type (which must be derived from the base Tooltip
-        class).  If the Tooltip creation fails, the error is logged and the
-        Window will revert to using either the existing custom Tooltip or the
-        system default Tooltip.
-
-    \param tooltipType
-        String object holding the name of the Tooltip based Window type which
-        should be used as the Tooltip for this Window.
-    */
-    void setTooltipType(const String& tooltipType);
-
-    /*!
-    \brief
-        Set the tooltip text for this window.
-
-    \param tip
-        String object holding the text to be displayed in the tooltip for this
-        Window.
-    */
-    void setTooltipText(const String& tip);
-
-    void setTooltipEnabled(bool enable) { d_tooltipEnabled = enable; }
-    bool isTooltipEnabled() const { return d_tooltipEnabled; }
-
-    /*!
-    \brief
-        Set whether this window inherits Tooltip text from its parent when its
-        own tooltip text is not set.
-
-    \param setting
-        - true if the window should inherit tooltip text from its parent when
-          its own text is not set.
-        - false if the window should not inherit tooltip text from its parent
-          (and so show no tooltip when no text is set).
-     */
-    void setInheritsTooltipText(bool setting) { d_inheritsTipText = setting; }
-
-    /*!
-    \brief
         Set whether this window will rise to the top of the z-order when clicked
         with the left cursor source.
 
@@ -2329,7 +2315,7 @@ public:
         A pointer to the assigned window renderer object.
         0 if no window renderer is assigned.
     */
-    inline WindowRenderer* getWindowRenderer() const { return d_windowRenderer; }
+    WindowRenderer* getWindowRenderer() const { return d_windowRenderer; }
 
     /*!
     \brief
@@ -2461,20 +2447,20 @@ public:
     //! Return the parsed RenderedString object for this window.
     const RenderedString& getRenderedString() const;
     //! Return a pointer to any custom RenderedStringParser set, or 0 if none.
-    inline RenderedStringParser* getCustomRenderedStringParser() const { return d_customStringParser; }
+    RenderedStringParser* getCustomRenderedStringParser() const { return d_customStringParser; }
     //! Set a custom RenderedStringParser, or 0 to remove an existing one.
     void setCustomRenderedStringParser(RenderedStringParser* parser);
     //! return the active RenderedStringParser to be used
     virtual RenderedStringParser& getRenderedStringParser() const;
     //! return whether text parsing is enabled for this window.
-    inline bool isTextParsingEnabled() const { return d_textParsingEnabled; }
+    bool isTextParsingEnabled() const { return d_textParsingEnabled; }
     //! set whether text parsing is enabled for this window.
     void setTextParsingEnabled(bool setting);
 
     //! set margin
     virtual void setMargin(const UBox& margin);
     //! retrieves currently set margin
-    inline const UBox& getMargin() const { return d_margin; }
+    const UBox& getMargin() const { return d_margin; }
 
     //! return glm::vec2 \a pos after being fully unprojected for this Window.
     glm::vec2 getUnprojectedPosition(const glm::vec2& pos) const;
@@ -2660,10 +2646,7 @@ public:
         returned here may be inaccurate - this is not a bug, but is required
         to ensure correct handling of certain events.
     */
-    inline bool isPointerContainedInArea() const
-    {
-        return d_containsPointer;
-    }
+    bool isPointerContainedInArea() const { return d_containsPointer; }
 
     // overridden from Element
     Sizef getRootContainerSize() const override;
@@ -2675,10 +2658,7 @@ public:
         A window is focused when it is the active Window inside the current
         GUIContext.
     */
-    inline bool isFocused() const
-    {
-        return d_isFocused;
-    }
+    bool isFocused() const { return d_isFocused; }
 
     /*!
     \brief
@@ -2729,10 +2709,7 @@ public:
     \return
         The drawMode bitmask that is set for this Window.
     */
-    inline std::uint32_t getDrawModeMask() const
-    {
-        return d_drawModeMask;
-    }
+    std::uint32_t getDrawModeMask() const { return d_drawModeMask; }
 
     /*!
     \brief
@@ -2745,7 +2722,7 @@ public:
     \return
         True if a bitwise and between the masks return non-zero.
     */
-    inline bool checkIfDrawMaskAllowsDrawing(std::uint32_t drawModeMask) const
+    bool checkIfDrawMaskAllowsDrawing(std::uint32_t drawModeMask) const
     {
         return (getDrawModeMask() & drawModeMask) != 0;
     }
