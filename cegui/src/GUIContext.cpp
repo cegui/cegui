@@ -94,10 +94,7 @@ void GUIContext::setRootWindow(Window* new_root)
     d_rootWindow = new_root;
 
     if (d_rootWindow)
-    {
         d_rootWindow->attachToGUIContext(this);
-        d_rootWindow->notifyScreenAreaChanged(true);
-    }
 
     markAsDirty();
 

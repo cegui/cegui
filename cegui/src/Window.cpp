@@ -2605,6 +2605,7 @@ void Window::notifyClippingChanged()
 //----------------------------------------------------------------------------//
 void Window::notifyDefaultFontChanged()
 {
+    //???TODO: check if an actual font changed?! Save potentially very heavy onFontChanged call.
     if (!d_font)
     {
         d_renderedStringValid = false;
@@ -3422,9 +3423,14 @@ void Window::attachToGUIContext(GUIContext* context)
     setGUIContextRecursively(context);
     onTargetSurfaceChanged(context ? getTargetRenderingSurface() : nullptr);
 
-    // TODO: can check if font really changed? Move to GUIContext::setRootWindow?
     if (context)
+    {
+        // 2021-12-31 CHECK: forceLayoutChildren was true here previously, need to look if some problems arise
+        notifyScreenAreaChanged(true);
+
+        // TODO: can check if font really changed? Move to GUIContext::setRootWindow?
         notifyDefaultFontChanged();
+    }
 }
 
 //----------------------------------------------------------------------------//
