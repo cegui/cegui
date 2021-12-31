@@ -117,6 +117,16 @@ public:
     */
     Sizef getPixelSize(const Window* ref_wnd, const size_t line) const;
 
+    /*!
+    \brief
+        Return the pixel size of a whole text for the RenderedString.
+
+    \return
+        Size object describing the size of the rendered output of the whole
+        text of this RenderedString, in pixels.
+    */
+    Sizef getPixelSize(const Window* ref_wnd) const;
+
     //! Return the maximum horizontal extent of all lines, in pixels.
     float getHorizontalExtent(const Window* ref_wnd) const;
 
