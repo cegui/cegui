@@ -25,44 +25,29 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/WindowRendererSets/Core/Tooltip.h"
-#include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/CoordConverter.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardTooltip::TypeName("Core/Tooltip");
+const String FalagardTooltip::TypeName("Core/Tooltip");
 
-    FalagardTooltip::FalagardTooltip(const String& type) :
-        TooltipWindowRenderer(type)
-    {
-    }
+void FalagardTooltip::createRenderGeometry()
+{
+    auto& imagery = getLookNFeel().getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
+    imagery.render(*d_window);
+}
 
-    void FalagardTooltip::createRenderGeometry()
-    {
-        // get WidgetLookFeel for the assigned look.
-        const WidgetLookFeel& wlf = getLookNFeel();
-        // try and get imagery for our current state
-        const StateImagery* imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
-        // peform the rendering operation.
-        imagery->render(*d_window);
-    }
+Sizef FalagardTooltip::getTextSize() const
+{
+    Tooltip* w = static_cast<Tooltip*>(d_window);
+    const Rectf textArea(getLookNFeel().getNamedArea("TextArea").getArea().getPixelRect(*w));
+    const Rectf wndArea(CoordConverter::asAbsolute(w->getArea(), w->getParentPixelSize()));
 
-    Sizef FalagardTooltip::getTextSize() const
-    {
-        Tooltip* w = static_cast<Tooltip*>(d_window);
-        Sizef sz(w->getTextSize_impl());
+    Sizef sz(w->getTextSize_impl());
+    sz.d_width  = CoordConverter::alignToPixels(sz.d_width + wndArea.getWidth() - textArea.getWidth());
+    sz.d_height = CoordConverter::alignToPixels(sz.d_height + wndArea.getHeight() - textArea.getHeight());
+    return sz;
+}
 
-        // get WidgetLookFeel for the assigned look.
-        const WidgetLookFeel& wlf = getLookNFeel();
-
-        const Rectf textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*w));
-        const Rectf wndArea(CoordConverter::asAbsolute(w->getArea(), w->getParentPixelSize()));
-
-        sz.d_width  = CoordConverter::alignToPixels(sz.d_width + wndArea.getWidth() - textArea.getWidth());
-        sz.d_height = CoordConverter::alignToPixels(sz.d_height + wndArea.getHeight() - textArea.getHeight());
-        return sz;
-    }
-
-} // End of  CEGUI namespace section
+}
