@@ -85,6 +85,22 @@ public:
      * Handlers are passed a const reference to a generic EventArgs struct.
      */
     static const String EventDefaultFontChanged;
+    /** Event fired when the tooltip is about to get activated.
+        * Handlers are passed a const WindowEventArgs reference with
+        * WindowEventArgs::window set to the Tooltip that is about to become
+        * active.
+        */
+    static const String EventTooltipActive;
+    /** Event fired when the tooltip has been deactivated.
+        * Handlers are passed a const WindowEventArgs reference with
+        * WindowEventArgs::window set to the Tooltip that has become inactive.
+        */
+    static const String EventTooltipInactive;
+    /** Event fired when the tooltip changes target window but stays active.
+        * Handlers are passed a const WindowEventArgs reference with
+        * WindowEventArgs::window set to the Tooltip that has transitioned.
+        */
+    static const String EventTooltipTransition;
 
     GUIContext(RenderTarget& target);
     virtual ~GUIContext() override;
@@ -207,6 +223,34 @@ public:
     //! \brief Sets a window navigator to be used for navigating in this context
     void setWindowNavigator(WindowNavigator* navigator) { d_windowNavigator = navigator; }
 
+    /*!
+    \brief
+        Return the number of seconds the cursor should hover stationary
+        over the target window before the tooltip gets activated.
+    */
+    float getTooltipHoverTime() const { return d_tooltipHoverTime; }
+
+    /*!
+    \brief
+        Set the number of seconds the cursor should hover stationary over
+        the target window before the tooltip gets activated.
+    */
+    void setTooltipHoverTime(float seconds) { d_tooltipHoverTime = seconds; }
+
+    /*!
+    \brief
+        Return the number of seconds the tooltip should be displayed for before it automatically
+        de-activates itself.  0 indicates that the tooltip never timeout and auto-deactivates.
+    */
+    float getTooltipDisplayTime() const { return d_tooltipDisplayTime; }
+
+    /*!
+    \brief
+        Set the number of seconds the tooltip should be displayed for before it automatically
+        de-activates itself. 0 indicates that the tooltip should never timeout and auto-deactivate.
+    */
+    void setTooltipDisplayTime(float seconds) { d_tooltipDisplayTime = seconds; }
+
     void onWindowDetached(Window* window);
 
 protected:
@@ -225,10 +269,6 @@ protected:
 
     //! returns whether the window containing the cursor had changed.
     void updateWindowContainingCursor_impl(Window* windowWithCursor);
-
-    // event trigger functions.
-    virtual void onRenderTargetChanged(GUIContextRenderTargetEventArgs& args);
-    virtual void onDefaultFontChanged(EventArgs& args);
 
     // protected overrides
     void drawContent(std::uint32_t drawModeMask = DrawModeMaskAll) override;
@@ -270,6 +310,10 @@ protected:
 
     //! The mask of draw modes that must be redrawn
     std::uint32_t d_dirtyDrawModeMask = 0;
+
+    float d_tooltipTimer = 0.f;
+    float d_tooltipHoverTime = 0.4f;   //!< seconds cursor must stay stationary before tip shows
+    float d_tooltipDisplayTime = 7.5f; //!< seconds that tip is shown for
 
     Event::ScopedConnection d_areaChangedEventConnection;
     std::map<SemanticValue, SlotFunctorBase<InputEvent>*> d_semanticEventHandlers;

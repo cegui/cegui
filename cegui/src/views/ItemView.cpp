@@ -402,15 +402,51 @@ void ItemView::onCursorPressHold(CursorInputEventArgs& e)
 void ItemView::onCursorMove(CursorInputEventArgs& e)
 {
     Window::onCursorMove(e);
-    if (d_isItemTooltipsEnabled)
-        setupTooltip(e.position);
 
     ++e.handled;
+
+    if (!d_isItemTooltipsEnabled || !d_itemModel)
+        return;
+
+    static ModelIndex last_model_index;
+
+    ModelIndex index = indexAt(e.position);
+    if (d_itemModel->areIndicesEqual(index, last_model_index))
+        return;
+
+    Tooltip* tooltip = getTooltip();
+    if (!tooltip)
+        return;
+
+    if (tooltip->getTargetWindow() != this)
+        tooltip->setTargetWindow(this);
+    else
+        tooltip->positionSelf();
+
+    /* tooltip->setTargetWindow(wnd):
+
+    if (wnd == d_target || wnd == this || (wnd && !wnd->getGUIContextPtr()))
+        return;
+
+    d_target = wnd;
+
+    // All necessary checks are performed inside addChild
+    if (wnd)
+        wnd->getGUIContextPtr()->getRootWindow()->addChild(this);
+
+    // Refresh already active tooltip immediately
+    if (d_activeState)
+        switchToActiveState();
+    */
+
+    last_model_index = index;
+
+    setTooltipText(d_itemModel->isValidIndex(index) ? d_itemModel->getData(index, ItemDataRole::Tooltip) : "");
 }
 
 static void disconnectIfNotNull(Event::Connection& connection)
 {
-    if (connection != nullptr)
+    if (connection)
         connection->disconnect();
 }
 
@@ -679,35 +715,6 @@ bool ItemView::isItemTooltipsEnabled() const
 void ItemView::setItemTooltipsEnabled(bool enabled)
 {
     d_isItemTooltipsEnabled = enabled;
-}
-
-//----------------------------------------------------------------------------//
-void ItemView::setupTooltip(glm::vec2 position)
-{
-    if (d_itemModel == nullptr)
-        return;
-
-    static ModelIndex last_model_index;
-
-    ModelIndex index = indexAt(position);
-    if (d_itemModel->areIndicesEqual(index, last_model_index))
-        return;
-
-    Tooltip* tooltip = getTooltip();
-    if (tooltip == nullptr)
-        return;
-
-    if (tooltip->getTargetWindow() != this)
-        tooltip->setTargetWindow(this);
-    else
-        tooltip->positionSelf();
-
-    last_model_index = index;
-
-    if (!d_itemModel->isValidIndex(index))
-        setTooltipText("");
-    else
-        setTooltipText(d_itemModel->getData(index, ItemDataRole::Tooltip));
 }
 
 //----------------------------------------------------------------------------//
