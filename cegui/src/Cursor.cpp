@@ -114,7 +114,7 @@ void Cursor::setDefaultImage(const Image* image)
     // update the current image if it is the default image
     if (d_indicatorImage == d_defaultIndicatorImage)
     {
-        auto* window = d_context.getWindowContainingCursor();
+        auto* window = d_context.getTargetWindow(d_position, true);
         if (!window || !window->getCursor())
         {
             setImage(image);
