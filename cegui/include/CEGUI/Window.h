@@ -448,12 +448,6 @@ public:
      */
     static const String EventSemanticEvent;
 
-    /*************************************************************************
-        Child Widget name suffix constants
-    *************************************************************************/
-    //! Widget name suffix for automatically created tooltip widgets.
-    static const String TooltipNameSuffix;
-
     // XML element and attribute names that relate to Window.
     static const String WindowXMLElementName;
     static const String AutoWindowXMLElementName;
@@ -1154,18 +1148,7 @@ public:
         - true if the Window will use the system default tooltip.
         - false if the window has a custom Tooltip object.
     */
-    bool isUsingDefaultTooltip() const { return !d_customTip; }
-
-    /*!
-    \brief
-        Return a pointer to the Tooltip object used by this Window.  The value
-        returned may point to the system default Tooltip, a custom Window
-        specific Tooltip, or be NULL.
-
-    \return
-        Pointer to a Tooltip based object, or NULL.
-    */
-    Tooltip* getTooltip() const;
+    bool isUsingDefaultTooltip() const { return d_tooltipType.empty(); }
 
     /*!
     \brief
@@ -1175,7 +1158,7 @@ public:
         String object holding the current custom tooltip window type, or an
         empty string if no custom tooltip is set.
      */
-    String getTooltipType() const;
+    const String& getTooltipType() const { return d_tooltipType; }
 
     /*!
     \brief
@@ -1209,21 +1192,7 @@ public:
         - false if the window does not inherit tooltip text from its parent
           (and shows no tooltip when no text is set).
      */
-    bool inheritsTooltipText() const { return d_inheritsTipText; }
-
-    /*!
-    \brief
-        Set the custom Tooltip object for this Window.  This value may be 0 to
-        indicate that the Window should use the system default Tooltip object.
-
-    \param tooltip
-        Pointer to a valid Tooltip based object which should be used as the
-        tooltip for this Window, or 0 to indicate that the Window should use the
-        system default Tooltip object.  Note that when passing a pointer to a
-        Tooltip object, ownership of the Tooltip does not pass to this Window
-        object.
-    */
-    void setTooltip(Tooltip* tooltip);
+    bool inheritsTooltipText() const { return d_inheritsTooltipText; }
 
     /*!
     \brief
@@ -1266,7 +1235,7 @@ public:
         - false if the window should not inherit tooltip text from its parent
           (and so show no tooltip when no text is set).
      */
-    void setInheritsTooltipText(bool setting) { d_inheritsTipText = setting; }
+    void setInheritsTooltipText(bool setting) { d_inheritsTooltipText = setting; }
 
     /*!
     \brief
@@ -3523,8 +3492,6 @@ protected:
     RenderingSurface* d_surface = nullptr;
     //! Holds pointer to the Window objects current cursor image.
     const Image* d_cursor = nullptr;
-    //! Possible custom Tooltip for this window.
-    Tooltip* d_customTip = nullptr;
     //! Holds pointer to the Window objects current Font.
     const Font* d_font = nullptr;
     //! Pointer to a custom (user assigned) RenderedStringParser object.
@@ -3596,10 +3563,11 @@ protected:
     String d_lookName;
     //! The name of the window, unique in its parent
     String d_name;
-
     //! Holds the text / label / caption for this Window.
     String d_textLogical;
-    //! Text string used as tip for this window.
+    //! Type of the tooltip object used for this window.
+    String d_tooltipType;
+    //! Text string used as tooltip for this window.
     String d_tooltipText;
 
     //! true when this window is an auto-window
@@ -3653,10 +3621,8 @@ protected:
     //! true if window will receive drag and drop related notifications
     bool d_dragDropTarget : 1;
 
-    //! true if this Window created the custom Tooltip.
-    bool d_weOwnTip : 1;
     //! whether tooltip text may be inherited from parent.
-    bool d_inheritsTipText : 1;
+    bool d_inheritsTooltipText : 1;
     bool d_tooltipEnabled : 1;
 
     //! true if this window is allowed to write XML, false if not

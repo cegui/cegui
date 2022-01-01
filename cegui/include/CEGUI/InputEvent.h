@@ -273,16 +273,16 @@ public:
 class CEGUIEXPORT CursorInputEventArgs : public WindowEventArgs
 {
 public:
-    CursorInputEventArgs(Window* wnd) : WindowEventArgs(wnd), source(CursorInputSource::NotSpecified), scroll(0.f) {}
+    CursorInputEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
 
     //!< holds current cursor position.
     glm::vec2 position;
     //!< holds variation of cursor position from last cursor input
     glm::vec2 moveDelta;
     // one of the CursorInputSource enumerated values describing the source causing the event
-    CursorInputSource source;
+    CursorInputSource source = CursorInputSource::NotSpecified;
     // holds the amount of the scroll
-    float scroll;
+    float scroll = 0.f;
 
     // current state (hold: true/false) of cursors sources. Addressable by members of \ref CursorInputSource
     CursorsState state;

@@ -111,7 +111,8 @@ public:
     //! Return a pointer to the Window that is currently set as modal.
     Window* getModalWindow() const { return d_modalWindow; }
 
-    Window* getWindowContainingCursor() const;
+    Window* getTargetWindow(const glm::vec2& pt, bool allow_disabled) const;
+    Window* getWindowContainingCursor();
 
     const Sizef& getSurfaceSize() const { return d_surfaceSize; }
 
@@ -143,36 +144,16 @@ public:
 
     /*!
     \brief
-        Set the default Tooltip object for this GUIContext. This value may be 0
-        to indicate that no default Tooltip object will be available.
-
-    \param tooltip
-        Pointer to a valid Tooltip based object which should be used as the
-        default tooltip for the GUIContext, or 0 to indicate that no default
-        Tooltip is required.
-
-    \note
-        When passing a cursor to a Tooltip object, ownership of the Tooltip
-        does not pass to the GUIContext.
-    */
-    void setDefaultTooltipObject(Tooltip* tooltip);
-
-    /*!
-    \brief
         Set the default Tooltip to be used by specifying a Window type.
-
-        The GUIContext will internally attempt to create an instance of the
-        specified window type (which must be derived from the base Tooltip
-        class).  If the Tooltip creation fails, the error is logged and no
-        default Tooltip will be available on the GUIContext.
 
     \param tooltipType
         String holding the name of a Tooltip based Window type.
     */
-    void setDefaultTooltipType(const String& tooltip_type);
+    void setDefaultTooltipType(const String& tooltip_type) { d_defaultTooltipType = tooltip_type; }
 
-    //! Returns a pointer to the context's default tooltip object.  May return 0.
-    Tooltip* getDefaultTooltipObject() const;
+    const String& getDefaultTooltipType() const { return d_defaultTooltipType; }
+    Window* getTooltipObject(const String& type) const;
+    Window* getOrCreateTooltipObject(const String& type);
 
     void setRenderTarget(RenderTarget& target);
 
@@ -229,12 +210,9 @@ public:
     void onWindowDetached(Window* window);
 
 protected:
+
     void drawWindowContentToTarget(std::uint32_t drawModeMask);
 
-    void createDefaultTooltipWindowInstance() const;
-    void destroyDefaultTooltipWindowInstance();
-
-    Window* getTargetWindow(const glm::vec2& pt, const bool allow_disabled) const;
     //! returns the window used as input target
     Window* getInputTargetWindow() const;
     Window* getCommonAncestor(Window* w1, Window* w2) const;
@@ -246,8 +224,7 @@ protected:
     bool areaChangedHandler(const EventArgs& args);
 
     //! returns whether the window containing the cursor had changed.
-    bool updateWindowContainingCursor_impl() const;
-    void resetWindowContainingCursor();
+    void updateWindowContainingCursor_impl(Window* windowWithCursor);
 
     // event trigger functions.
     virtual void onRenderTargetChanged(GUIContextRenderTargetEventArgs& args);
@@ -275,33 +252,29 @@ protected:
     bool handleRedoRequest(const SemanticInputEvent& event);
 
     Window* d_rootWindow = nullptr;
-    Cursor d_cursor;
-
-    mutable Tooltip* d_defaultTooltipObject = nullptr;
-    mutable bool d_weCreatedTooltipObject = false;
-    String d_defaultTooltipType;
-
-    Font* d_defaultFont = nullptr;
-
-    //! a cache of the target surface size, allows returning by ref.
-    Sizef d_surfaceSize;
-
-    mutable Window* d_windowContainingCursor;
-    mutable bool d_windowContainingCursorIsUpToDate;
+    Window* d_windowContainingCursor = nullptr;
     Window* d_modalWindow = nullptr;
     Window* d_captureWindow = nullptr;
     Window* d_oldCaptureWindow = nullptr;
+    Window* d_tooltipWindow = nullptr;
+    WindowNavigator* d_windowNavigator = nullptr;
+
+    Font* d_defaultFont = nullptr;
+    Cursor d_cursor;
+    CursorsState d_cursorsState;
+
+    String d_defaultTooltipType;
+    std::map<String, Window*> d_tooltips;
+
+    Sizef d_surfaceSize; //!< a cache of the target surface size, allows returning by ref.
 
     //! The mask of draw modes that must be redrawn
     std::uint32_t d_dirtyDrawModeMask = 0;
 
-    CursorsState d_cursorsState;
-
     Event::ScopedConnection d_areaChangedEventConnection;
     std::map<SemanticValue, SlotFunctorBase<InputEvent>*> d_semanticEventHandlers;
 
-    //! the window navigator (if any) used to navigate the GUI
-    WindowNavigator* d_windowNavigator = nullptr;
+    bool d_windowContainingCursorIsUpToDate = true;
 };
 
 }

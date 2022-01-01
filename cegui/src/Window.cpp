@@ -149,9 +149,6 @@ const String Window::UserStringNameXMLAttributeName("name");
 const String Window::UserStringValueXMLAttributeName("value");
 
 //----------------------------------------------------------------------------//
-const String Window::TooltipNameSuffix("__auto_tooltip__");
-
-//----------------------------------------------------------------------------//
 Window::WindowRendererProperty Window::d_windowRendererProperty;
 Window::LookNFeelProperty Window::d_lookNFeelProperty;
 
@@ -254,8 +251,7 @@ Window::Window(const String& type, const String& name):
     d_dragDropTarget(true),
 
     // tool tip related
-    d_weOwnTip(false),
-    d_inheritsTipText(true),
+    d_inheritsTooltipText(true),
     d_tooltipEnabled(true),
 
     d_allowWriteXML(true),
@@ -322,14 +318,6 @@ void Window::destroy()
         d_parent->removeChild(this);
     else if (d_guiContext)
         d_guiContext->onWindowDetached(this);
-
-    // let go of the tooltip if we have it
-    Tooltip* const tip = getTooltip();
-    if (tip && tip->getTargetWindow() == this)
-        tip->setTargetWindow(nullptr);
-
-    // ensure custom tooltip is cleaned up
-    setTooltip(nullptr);
 
     // clean up looknfeel related things
     if (!d_lookName.empty())
@@ -1479,78 +1467,45 @@ bool Window::notifyDragDropItemDropped(DragContainer* item)
 }
 
 //----------------------------------------------------------------------------//
-Tooltip* Window::getTooltip() const
-{
-    return d_customTip ? d_customTip :
-        d_guiContext ? d_guiContext->getDefaultTooltipObject() :
-        nullptr;
-}
-
-//----------------------------------------------------------------------------//
-void Window::setTooltip(Tooltip* tooltip)
-{
-    // destroy current custom tooltip if one exists and we created it
-    if (d_customTip && d_weOwnTip)
-        WindowManager::getSingleton().destroyWindow(d_customTip);
-
-    // set new custom tooltip
-    d_weOwnTip = false;
-    d_customTip = tooltip;
-}
-
-//----------------------------------------------------------------------------//
 void Window::setTooltipType(const String& tooltipType)
 {
-    // destroy current custom tooltip if one exists and we created it
-    if (d_customTip && d_weOwnTip)
-        WindowManager::getSingleton().destroyWindow(d_customTip);
+    if (d_tooltipType == tooltipType)
+        return;
 
-    if (tooltipType.empty())
-    {
-        d_customTip = nullptr;
-        d_weOwnTip = false;
-    }
-    else
-    {
-        try
-        {
-            d_customTip = static_cast<Tooltip*>(
-                WindowManager::getSingleton().createWindow(
-                    tooltipType, getName() + TooltipNameSuffix));
-            d_customTip->setAutoWindow(true);
-            d_weOwnTip = true;
-        }
-        catch (UnknownObjectException&)
-        {
-            d_customTip = nullptr;
-            d_weOwnTip = false;
-        }
-    }
-}
+    d_tooltipType = tooltipType;
 
-//----------------------------------------------------------------------------//
-String Window::getTooltipType() const
-{
-    return d_customTip ? d_customTip->getType() : String("");
+    //!!!TODO: GUI ctx must subscribe on this change to recreate a tooltip on the fly!
 }
 
 //----------------------------------------------------------------------------//
 void Window::setTooltipText(const String& tip)
 {
+    if (d_tooltipText == tip)
+        return;
+
     d_tooltipText = tip;
 
-    Tooltip* const tooltip = getTooltip();
-    if (tooltip && tooltip->getTargetWindow() == this)
-        tooltip->setText(tip);
+    //!!!TODO: GUI ctx must subscribe on this change to recreate a tooltip on the fly!
+
+    //Tooltip* const tooltip = getTooltip();
+    //if (tooltip && tooltip->getTargetWindow() == this)
+    //    tooltip->setText(tip);
 }
 
 //----------------------------------------------------------------------------//
 const String& Window::getTooltipTextIncludingInheritance() const
 {
-    if (d_inheritsTipText && d_parent && d_tooltipText.empty())
-        return getParent()->getTooltipText();
-    else
-        return d_tooltipText;
+    const Window* current = this;
+    do
+    {
+        if (!d_inheritsTooltipText || !d_parent || !d_tooltipText.empty())
+            return current->d_tooltipText;
+
+        current = current->getParent();
+    }
+    while (current);
+
+    return d_tooltipText; // guaranteed to be empty and is used to return a reference
 }
 
 //----------------------------------------------------------------------------//
@@ -2164,37 +2119,18 @@ void Window::onCursorLeavesArea(CursorInputEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onCursorEnters(CursorInputEventArgs& e)
 {
-    // set the cursor
-    if (d_guiContext)
-        d_guiContext->getCursor().setImage(getActualCursor());
-
-    // perform tooltip control
-    Tooltip* const tip = getTooltip();
-    if (tip && !isAncestor(tip))
-        tip->setTargetWindow(this);
-
     fireEvent(EventCursorEntersSurface, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 void Window::onCursorLeaves(CursorInputEventArgs& e)
 {
-    // perform tooltip control
-    const Window* const mw = d_guiContext ? d_guiContext->getWindowContainingCursor() : nullptr;
-    Tooltip* const tip = getTooltip();
-    if (tip && mw != tip && !(mw && mw->isAncestor(tip)))
-        tip->setTargetWindow(nullptr);
-
     fireEvent(EventCursorLeavesSurface, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 void Window::onCursorMove(CursorInputEventArgs& e)
 {
-    // perform tooltip control
-    if (Tooltip* const tip = getTooltip())
-        tip->resetTimer();
-
     fireEvent(EventCursorMove, e, EventNamespace);
 
     // optionally propagate to parent
@@ -2214,10 +2150,6 @@ void Window::onCursorMove(CursorInputEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onCursorPressHold(CursorInputEventArgs& e)
 {
-    // perform tooltip control
-    if (auto tip = getTooltip())
-        tip->setTargetWindow(nullptr);
-
     if ((e.source == CursorInputSource::Left) && activate_impl(true))
         ++e.handled;
 
@@ -2256,11 +2188,6 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onCursorActivate(CursorInputEventArgs& e)
 {
-    // onCursorPressHold() hides the tooltip, restore it here
-    Tooltip* const tip = getTooltip();
-    if (tip && !isAncestor(tip))
-        tip->setTargetWindow(this);
-
     // reset auto-repeat state
     if (d_autoRepeat && d_repeatPointerSource != CursorInputSource::NotSpecified)
     {

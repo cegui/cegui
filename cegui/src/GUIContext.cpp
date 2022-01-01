@@ -51,27 +51,21 @@ GUIContext::GUIContext(RenderTarget& target) :
             Event::Subscriber(&GUIContext::areaChangedHandler, this)))
 {
     d_cursor.resetPositionToDefault();
-    resetWindowContainingCursor();
     initializeSemanticEventHandlers();
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::resetWindowContainingCursor()
-{
-    d_windowContainingCursor = nullptr;
-    d_windowContainingCursorIsUpToDate = true;
 }
 
 //----------------------------------------------------------------------------//
 GUIContext::~GUIContext()
 {
-    destroyDefaultTooltipWindowInstance();
+    if (d_rootWindow)
+        d_rootWindow->attachToGUIContext(nullptr);
+
+    for (auto record : d_tooltips)
+        if (WindowManager::getSingleton().isAlive(record.second))
+            WindowManager::getSingleton().destroyWindow(record.second);
 
     for (auto it = d_semanticEventHandlers.begin(); it != d_semanticEventHandlers.end(); ++it)
         delete it->second;
-
-    if (d_rootWindow)
-        d_rootWindow->attachToGUIContext(nullptr);
 }
 
 //----------------------------------------------------------------------------//
@@ -163,63 +157,40 @@ void GUIContext::releaseInputCapture(bool allowRestoreOld, Window* exactWindow)
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::setDefaultTooltipObject(Tooltip* tooltip)
+Window* GUIContext::getTooltipObject(const String& type) const
 {
-    destroyDefaultTooltipWindowInstance();
-
-    d_defaultTooltipObject = tooltip;
-
-    if (d_defaultTooltipObject)
-        d_defaultTooltipObject->setWritingXMLAllowed(false);
+    auto it = d_tooltips.find(type);
+    return (it == d_tooltips.cend()) ? nullptr : it->second;
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::setDefaultTooltipType(const String& tooltip_type)
+Window* GUIContext::getOrCreateTooltipObject(const String& type)
 {
-    destroyDefaultTooltipWindowInstance();
+    if (type.empty())
+        return nullptr;
 
-    d_defaultTooltipType = tooltip_type;
-}
+    if (auto tooltip = getTooltipObject(type))
+        return tooltip;
 
-//----------------------------------------------------------------------------//
-void GUIContext::createDefaultTooltipWindowInstance() const
-{
     if (WindowManager::getSingleton().isLocked())
-        return;
+        return nullptr;
 
-    //!!!FIXME: if a non-Tooltip window is created here it will leak!
-    // But this should be automatically fixed if I get rid of the Tooltip class.
-    d_defaultTooltipObject = dynamic_cast<Tooltip*>(
-        WindowManager::getSingleton().createWindow(d_defaultTooltipType,
-            "CEGUI::System::default__auto_tooltip__"));
+    Window* tooltip = WindowManager::getSingleton().createWindow(
+        type, "__auto_tooltip__" + type);
 
-    if (d_defaultTooltipObject)
-    {
-        d_defaultTooltipObject->setAutoWindow(true);
-        d_defaultTooltipObject->setWritingXMLAllowed(false);
-        d_weCreatedTooltipObject = true;
-    }
-}
+    if (!tooltip)
+        return nullptr;
 
-//----------------------------------------------------------------------------//
-void GUIContext::destroyDefaultTooltipWindowInstance()
-{
-    if (d_defaultTooltipObject && d_weCreatedTooltipObject)
-    {
-        WindowManager::getSingleton().destroyWindow(d_defaultTooltipObject);
-        d_defaultTooltipObject = nullptr;
-    }
+    tooltip->setAutoWindow(true);
+    tooltip->setWritingXMLAllowed(false);
+    tooltip->setClippedByParent(false);
+    tooltip->setDestroyedByParent(false);
+    tooltip->setAlwaysOnTop(true);
+    tooltip->setCursorPassThroughEnabled(true);
+    tooltip->setUpdateMode(WindowUpdateMode::Always);
 
-    d_weCreatedTooltipObject = false;
-}
-
-//----------------------------------------------------------------------------//
-Tooltip* GUIContext::getDefaultTooltipObject() const
-{
-    if (!d_defaultTooltipObject && !d_defaultTooltipType.empty())
-        createDefaultTooltipWindowInstance();
-
-    return d_defaultTooltipObject;
+    d_tooltips.emplace(type, tooltip);
+    return tooltip;
 }
 
 //----------------------------------------------------------------------------//
@@ -231,13 +202,10 @@ void GUIContext::setModalWindow(Window* window)
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIContext::getWindowContainingCursor() const
+Window* GUIContext::getWindowContainingCursor()
 {
     if (!d_windowContainingCursorIsUpToDate)
-    {
-        updateWindowContainingCursor_impl();
-        d_windowContainingCursorIsUpToDate = true;
-    }
+        updateWindowContainingCursor_impl(getTargetWindow(d_cursor.getPosition(), true));
 
     return d_windowContainingCursor;
 }
@@ -319,8 +287,20 @@ void GUIContext::onWindowDetached(Window* window)
     if (window == d_rootWindow)
         d_rootWindow = nullptr;
 
+    //!!!TODO TOOLTIPS: if this window is a tooltip target, hide the tooltip!
+    // let go of the tooltip if we have it
+    //Tooltip* const tip = getTooltip();
+    //if (tip && tip->getTargetWindow() == this)
+    //    tip->setTargetWindow(nullptr);
+    //// ensure custom tooltip is cleaned up
+    //setTooltip(nullptr);
+    //d_windowContainingCursor - always a tooltip target. If it is killed, hide tooltip.
+
     if (window == d_windowContainingCursor)
-        resetWindowContainingCursor();
+    {
+        d_windowContainingCursor = nullptr;
+        d_windowContainingCursorIsUpToDate = true;
+    }
 
     if (window == d_modalWindow)
         d_modalWindow = nullptr;
@@ -330,58 +310,64 @@ void GUIContext::onWindowDetached(Window* window)
 
     releaseInputCapture(true, window);
 
-    if (window == d_defaultTooltipObject)
+    // Handle external deletion of a tooltip but don't delete it if only detached but alive
+    auto itTooltip = d_tooltips.find(window->getType());
+    if (itTooltip != d_tooltips.cend() && window == itTooltip->second)
     {
-        d_defaultTooltipObject = nullptr;
-        d_weCreatedTooltipObject = false;
+        // TODO: can use Window::d_destructionStarted for faster check?
+        if (!WindowManager::getSingleton().isAlive(window))
+            d_tooltips.erase(itTooltip);
     }
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::updateWindowContainingCursor_impl() const
+void GUIContext::updateWindowContainingCursor_impl(Window* windowWithCursor)
 {
-    CursorInputEventArgs ciea(nullptr);
-    const glm::vec2 cursor_pos(d_cursor.getPosition());
+    d_windowContainingCursorIsUpToDate = true;
 
-    Window* const window_with_cursor = getTargetWindow(cursor_pos, true);
-
-    // exit if window containing cursor has not changed.
-    if (window_with_cursor == d_windowContainingCursor)
-        return false;
-
-    ciea.scroll = 0;
-    ciea.source = CursorInputSource::NotSpecified;
+    if (windowWithCursor == d_windowContainingCursor)
+        return;
 
     Window* oldWindow = d_windowContainingCursor;
-    d_windowContainingCursor = window_with_cursor;
+    d_windowContainingCursor = windowWithCursor;
+
+    // for 'area' version of events
+    Window* root = getCommonAncestor(oldWindow, windowWithCursor);
 
     // inform previous window the cursor has left it
     if (oldWindow)
     {
-        ciea.window = oldWindow;
-        ciea.position = oldWindow->getUnprojectedPosition(cursor_pos);
+        // perform tooltip control
+        if (d_tooltipWindow && windowWithCursor != d_tooltipWindow && !(windowWithCursor && windowWithCursor->isAncestor(d_tooltipWindow)))
+            d_tooltipWindow->setTargetWindow(nullptr);
+
+        CursorInputEventArgs ciea(oldWindow);
+        ciea.position = oldWindow->getUnprojectedPosition(d_cursor.getPosition());
         oldWindow->onCursorLeaves(ciea);
+
+        notifyCursorTransition(root, oldWindow, &Window::onCursorLeavesArea, ciea);
     }
 
     // inform window containing cursor that cursor has entered it
-    if (d_windowContainingCursor)
+    if (windowWithCursor)
     {
-        ciea.handled = 0;
-        ciea.window = d_windowContainingCursor;
-        ciea.position = d_windowContainingCursor->getUnprojectedPosition(cursor_pos);
-        d_windowContainingCursor->onCursorEnters(ciea);
+        d_cursor.setImage(windowWithCursor->getActualCursor());
+
+        const String& tooltipType = !windowWithCursor->isUsingDefaultTooltip() ?
+            windowWithCursor->getTooltipType() :
+            d_defaultTooltipType;
+
+        //???what to do with the previous tooltip if it is shown and different?
+        d_tooltipWindow = getTooltipObject(tooltipType);
+        if (tooltip && !windowWithCursor->isAncestor(tooltip))
+            tooltip->setTargetWindow(this);
+
+        CursorInputEventArgs ciea(windowWithCursor);
+        ciea.position = windowWithCursor->getUnprojectedPosition(d_cursor.getPosition());
+        windowWithCursor->onCursorEnters(ciea);
+
+        notifyCursorTransition(root, windowWithCursor, &Window::onCursorEntersArea, ciea);
     }
-
-    // do the 'area' version of the events
-    Window* root = getCommonAncestor(oldWindow, d_windowContainingCursor);
-
-    if (oldWindow)
-        notifyCursorTransition(root, oldWindow, &Window::onCursorLeavesArea, ciea);
-
-    if (d_windowContainingCursor)
-        notifyCursorTransition(root, d_windowContainingCursor, &Window::onCursorEntersArea, ciea);
-
-    return true;
 }
 
 //----------------------------------------------------------------------------//
@@ -428,8 +414,7 @@ void GUIContext::notifyCursorTransition(Window* top, Window* bottom,
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIContext::getTargetWindow(const glm::vec2& pt,
-                                    const bool allow_disabled) const
+Window* GUIContext::getTargetWindow(const glm::vec2& pt, bool allow_disabled) const
 {
     // if there is no GUI sheet visible, then there is nowhere to send input
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
@@ -439,9 +424,7 @@ Window* GUIContext::getTargetWindow(const glm::vec2& pt,
 
     if (!dest_window)
     {
-        dest_window = d_rootWindow->
-            getTargetChildAtPosition(pt, allow_disabled);
-
+        dest_window = d_rootWindow->getTargetChildAtPosition(pt, allow_disabled);
         if (!dest_window)
             dest_window = d_rootWindow;
     }
@@ -726,6 +709,11 @@ bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
     if (d_windowNavigator != nullptr)
         d_windowNavigator->setCurrentFocusedWindow(ciea.window);
 
+    // onCursorPressHold() hides the tooltip, restore it here
+    Tooltip* const tip = getTooltip();
+    if (tip && !isAncestor(tip))
+        tip->setTargetWindow(this);
+
     ciea.window->onCursorActivate(ciea);
     return ciea.handled != 0;
 }
@@ -749,6 +737,10 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
 
     if (d_windowNavigator != nullptr)
         d_windowNavigator->setCurrentFocusedWindow(ciea.window);
+
+    // perform tooltip control
+    if (auto tip = getTooltip())
+        tip->setTargetWindow(nullptr);
 
     ciea.window->onCursorPressHold(ciea);
     return ciea.handled != 0;
@@ -853,6 +845,11 @@ bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
     if (!getWindowContainingCursor())
         return false;
 
+    //!!!apply to the current tooltip!
+    // perform tooltip control
+    if (Tooltip* const tip = getTooltip())
+        tip->resetTimer();
+
     // make cursor position sane for this target window
     ciea.position = getWindowContainingCursor()->getUnprojectedPosition(ciea.position);
     // inform window about the input.
@@ -867,21 +864,8 @@ bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
 //----------------------------------------------------------------------------//
 bool GUIContext::handleCursorLeave(const SemanticInputEvent&)
 {
-    if (!getWindowContainingCursor())
-        return false;
-
-    CursorInputEventArgs ciea(nullptr);
-    ciea.position = getWindowContainingCursor()->getUnprojectedPosition(
-        d_cursor.getPosition());
-    ciea.moveDelta = glm::vec2(0, 0);
-    ciea.source = CursorInputSource::NotSpecified;
-    ciea.scroll = 0;
-    ciea.window = getWindowContainingCursor();
-
-    getWindowContainingCursor()->onCursorLeaves(ciea);
-    resetWindowContainingCursor();
-
-    return ciea.handled != 0;
+    updateWindowContainingCursor_impl(nullptr);
+    return true;
 }
 
 }
