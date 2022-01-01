@@ -99,6 +99,8 @@ const String Window::EventUpdated ("Updated");
 const String Window::EventNameChanged("NameChanged");
 const String Window::EventTextChanged("TextChanged");
 const String Window::EventFontChanged("FontChanged");
+const String Window::EventTooltipTypeChanged("TooltipTypeChanged");
+const String Window::EventTooltipTextChanged("TooltipTextChanged");
 const String Window::EventAlphaChanged("AlphaChanged");
 const String Window::EventIDChanged("IDChanged");
 const String Window::EventActivated("Activated");
@@ -1474,7 +1476,8 @@ void Window::setTooltipType(const String& tooltipType)
 
     d_tooltipType = tooltipType;
 
-    //!!!TODO: GUI ctx must subscribe on this change to recreate a tooltip on the fly!
+    WindowEventArgs args(this);
+    onTooltipTypeChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -1485,11 +1488,8 @@ void Window::setTooltipText(const String& tip)
 
     d_tooltipText = tip;
 
-    //!!!TODO: GUI ctx must subscribe on this change to recreate a tooltip on the fly!
-
-    //Tooltip* const tooltip = getTooltip();
-    //if (tooltip && tooltip->getTargetWindow() == this)
-    //    tooltip->setText(tip);
+    WindowEventArgs args(this);
+    onTooltipTextChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -1870,6 +1870,18 @@ void Window::onFontChanged(WindowEventArgs& e)
 
     invalidate();
     fireEvent(EventFontChanged, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onTooltipTypeChanged(WindowEventArgs& e)
+{
+    fireEvent(EventTooltipTypeChanged, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onTooltipTextChanged(WindowEventArgs& e)
+{
+    fireEvent(EventTooltipTextChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//

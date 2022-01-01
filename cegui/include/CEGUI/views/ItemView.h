@@ -418,7 +418,6 @@ protected:
     void disconnectModelEvents();
 
     void handleOnScroll(Scrollbar* scrollbar, float scroll);
-    void setupTooltip(glm::vec2 position);
     int getSelectedIndexPosition(const ModelIndex& index) const;
     virtual bool handleSelection(const glm::vec2& position, bool should_select,
         bool is_cumulative, bool is_range);

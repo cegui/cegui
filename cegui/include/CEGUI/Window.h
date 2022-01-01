@@ -212,6 +212,8 @@ public:
      * WindowEventArgs::window set to the Window whose font was changed.
      */
     static const String EventFontChanged;
+    static const String EventTooltipTypeChanged;
+    static const String EventTooltipTextChanged;
     /** Event fired when the Alpha blend value for the Window has changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window whose alpha value was changed.
@@ -2781,6 +2783,10 @@ protected:
         'this'.
     */
     virtual void onFontChanged(WindowEventArgs& e);
+
+    virtual void onTooltipTypeChanged(WindowEventArgs& e);
+
+    virtual void onTooltipTextChanged(WindowEventArgs& e);
 
     /*!
     \brief

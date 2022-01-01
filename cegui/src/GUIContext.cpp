@@ -39,6 +39,9 @@ namespace CEGUI
 const String GUIContext::EventRootWindowChanged("RootWindowChanged");
 const String GUIContext::EventRenderTargetChanged("RenderTargetChanged");
 const String GUIContext::EventDefaultFontChanged("DefaultFontChanged");
+const String GUIContext::EventTooltipActive("TooltipActive");
+const String GUIContext::EventTooltipInactive("TooltipInactive");
+const String GUIContext::EventTooltipTransition("TooltipTransition");
 
 //----------------------------------------------------------------------------//
 GUIContext::GUIContext(RenderTarget& target) :
@@ -188,6 +191,7 @@ Window* GUIContext::getOrCreateTooltipObject(const String& type)
     tooltip->setAlwaysOnTop(true);
     tooltip->setCursorPassThroughEnabled(true);
     tooltip->setUpdateMode(WindowUpdateMode::Always);
+    tooltip->hide();
 
     d_tooltips.emplace(type, tooltip);
     return tooltip;
@@ -284,23 +288,20 @@ void GUIContext::onWindowDetached(Window* window)
     if (!window)
         return;
 
-    if (window == d_rootWindow)
-        d_rootWindow = nullptr;
-
-    //!!!TODO TOOLTIPS: if this window is a tooltip target, hide the tooltip!
-    // let go of the tooltip if we have it
-    //Tooltip* const tip = getTooltip();
-    //if (tip && tip->getTargetWindow() == this)
-    //    tip->setTargetWindow(nullptr);
-    //// ensure custom tooltip is cleaned up
-    //setTooltip(nullptr);
-    //d_windowContainingCursor - always a tooltip target. If it is killed, hide tooltip.
-
     if (window == d_windowContainingCursor)
     {
+        if (d_tooltipWindow)
+        {
+            d_tooltipWindow->hide();
+            d_tooltipWindow = nullptr;
+        }
+
         d_windowContainingCursor = nullptr;
         d_windowContainingCursorIsUpToDate = true;
     }
+
+    if (window == d_rootWindow)
+        d_rootWindow = nullptr;
 
     if (window == d_modalWindow)
         d_modalWindow = nullptr;
@@ -337,9 +338,10 @@ void GUIContext::updateWindowContainingCursor_impl(Window* windowWithCursor)
     // inform previous window the cursor has left it
     if (oldWindow)
     {
-        // perform tooltip control
         if (d_tooltipWindow && windowWithCursor != d_tooltipWindow && !(windowWithCursor && windowWithCursor->isAncestor(d_tooltipWindow)))
-            d_tooltipWindow->setTargetWindow(nullptr);
+        {
+            //???hide?! or what if we will show the same tooltip below?! avoid show-hide?!
+        }
 
         CursorInputEventArgs ciea(oldWindow);
         ciea.position = oldWindow->getUnprojectedPosition(d_cursor.getPosition());
@@ -357,10 +359,44 @@ void GUIContext::updateWindowContainingCursor_impl(Window* windowWithCursor)
             windowWithCursor->getTooltipType() :
             d_defaultTooltipType;
 
+        //!!!what if the new window under cursor is our current tooltip itself?
         //???what to do with the previous tooltip if it is shown and different?
-        d_tooltipWindow = getTooltipObject(tooltipType);
-        if (tooltip && !windowWithCursor->isAncestor(tooltip))
-            tooltip->setTargetWindow(this);
+        auto tooltipWindow = getTooltipObject(tooltipType);
+        if (tooltipWindow && !windowWithCursor->isAncestor(tooltipWindow))
+        {
+            d_tooltipWindow = tooltipWindow;
+
+            if (windowWithCursor == d_tooltipWindow || (windowWithCursor && !windowWithCursor->getGUIContextPtr()))
+                return;
+
+            // All necessary checks are performed inside addChild
+            d_rootWindow->addChild(d_tooltipWindow);
+
+            // Refresh already active tooltip immediately
+            if (d_tooltipWindow->isVisible())
+                d_tooltipWindow->switchToActiveState();
+
+            subscribeEvent(Window::EventHidden);
+            /*
+                // The animation will take care of fade out or whatnot,
+                // at the end it will hide the tooltip to let us know the transition
+                // is done. At this point we will remove the tooltip from the
+                // previous parent.
+
+                // NOTE: There has to be a fadeout animation! Even if it's a 0 second
+                //       immediate hide animation.
+
+                if (d_parent)
+                    d_parent->removeChild(this);
+            */
+
+            subscribeEvent(Window::EventTooltipTypeChanged);
+
+            subscribeEvent(Window::EventTooltipTextChanged);
+            //Tooltip* const tooltip = getTooltip();
+            //if (tooltip && tooltip->getTargetWindow() == this)
+            //    tooltip->setText(tip);
+        }
 
         CursorInputEventArgs ciea(windowWithCursor);
         ciea.position = windowWithCursor->getUnprojectedPosition(d_cursor.getPosition());
@@ -475,7 +511,7 @@ bool GUIContext::injectInputEvent(const InputEvent& event)
         const SemanticInputEvent& semantic_event =
             static_cast<const SemanticInputEvent&>(event);
 
-        if (d_windowNavigator != nullptr)
+        if (d_windowNavigator)
             d_windowNavigator->handleSemanticEvent(semantic_event);
 
         return handleSemanticInputEvent(semantic_event);
@@ -487,17 +523,92 @@ bool GUIContext::injectInputEvent(const InputEvent& event)
 //----------------------------------------------------------------------------//
 bool GUIContext::injectTimePulse(float timeElapsed)
 {
-    // if no visible active sheet, input can't be handled
+    // If no visible active sheet, input can't be handled
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
         return false;
 
-    // ensure window containing cursor is now valid
+    // Ensure window containing cursor is now valid
     getWindowContainingCursor();
 
-    // else pass to sheet for distribution.
+    // Update the tooltip if needed
+    if (d_tooltipWindow)
+    {
+        //???allow nonstandard tooltips to be shown without text? let them fill themselves
+        const bool needTooltip = d_windowContainingCursor &&
+            d_windowContainingCursor->isTooltipEnabled() &&
+            !d_windowContainingCursor->getTooltipTextIncludingInheritance().empty();
+
+        if (d_tooltipWindow->isVisible())
+        {
+            // if no tooltip must be shown, switch immediately to inactive state
+            bool inactive = false;
+            if (!needTooltip)
+            {
+                d_tooltipWindow->hide();
+                inactive = true;
+            }
+            else if (d_tooltipDisplayTime > 0.f) // else see if display timeout has been reached
+            {
+                d_tooltipTimer += timeElapsed;
+                if (d_tooltipTimer >= d_tooltipDisplayTime)
+                    inactive = true;
+            }
+
+            if (inactive)
+            {
+                d_activeState = false;
+                d_tooltipTimer = 0.f;
+
+                // fire event before target gets reset in case that information is required in handler.
+                WindowEventArgs args(d_tooltipWindow);
+                fireEvent(EventTooltipInactive, args, EventNamespace);
+
+                d_target = nullptr;
+            }
+        }
+        else if (needTooltip)
+        {
+            d_tooltipTimer += timeElapsed;
+            if (d_tooltipTimer >= d_tooltipHoverTime)
+                switchToActiveState();
+        }
+    }
+
+    // Pass to sheet for distribution. This input is then /always/ considered handled.
     d_rootWindow->update(timeElapsed);
-    // this input is then /always/ considered handled.
     return true;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::switchToActiveState()
+{
+    if (!d_windowContainingCursor)
+        return;
+
+    // Set text to that of the tooltip text of the target.
+    const String& newText = d_windowContainingCursor->getTooltipTextIncludingInheritance();
+    if (newText != d_tooltipWindow->d_textLogical)
+    {
+        d_tooltipWindow->setText(newText);
+    }
+    else
+    {
+        // Just in case the font is different, otherwise is called from onTextChanged
+        d_tooltipWindow->sizeSelf();
+        d_tooltipWindow->positionSelf();
+    }
+
+    const bool wasVisible = isVisible();
+
+    show();
+
+    d_tooltipTimer = 0.f;
+
+    WindowEventArgs args(d_tooltipWindow);
+    if (wasVisible)
+        fireEvent(EventTooltipTransition, args, EventNamespace);
+    else
+        fireEvent(EventTooltipActive, args, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -553,13 +664,7 @@ void GUIContext::setRenderTarget(RenderTarget& target)
     areaChangedHandler(area_args);
 
     GUIContextRenderTargetEventArgs change_args(this, old_target);
-    onRenderTargetChanged(change_args);
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::onRenderTargetChanged(GUIContextRenderTargetEventArgs& args)
-{
-    fireEvent(EventRenderTargetChanged, args, EventNamespace);
+    fireEvent(EventRenderTargetChanged, change_args, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -576,8 +681,11 @@ void GUIContext::setDefaultFont(Font* font)
 
     d_defaultFont = font;
 
+    if (d_rootWindow)
+        d_rootWindow->notifyDefaultFontChanged();
+
     EventArgs args;
-    onDefaultFontChanged(args);
+    fireEvent(EventDefaultFontChanged, args, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -590,15 +698,6 @@ Font* GUIContext::getDefaultFont() const
     const auto& registeredFonts = FontManager::getSingleton().getRegisteredFonts();
     auto iter = registeredFonts.cbegin();
     return (iter != registeredFonts.end()) ? iter->second : nullptr;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::onDefaultFontChanged(EventArgs& args)
-{
-    if (d_rootWindow)
-        d_rootWindow->notifyDefaultFontChanged();
-
-    fireEvent(EventDefaultFontChanged, args, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -629,10 +728,10 @@ bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
 
     Window* targetWindow = getInputTargetWindow();
     // window navigator's window takes precedence
-    if (d_windowNavigator != nullptr)
+    if (d_windowNavigator)
         targetWindow = d_windowNavigator->getCurrentFocusedWindow();
 
-    if (targetWindow != nullptr)
+    if (targetWindow)
     {
         SemanticEventArgs args(targetWindow);
 
@@ -690,59 +789,49 @@ void GUIContext::initializeSemanticEventHandlers()
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
+bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
 {
-    CursorInputEventArgs ciea(nullptr);
-    ciea.position = d_cursor.getPosition();
-    ciea.moveDelta = glm::vec2(0, 0);
-    ciea.source = event.d_payload.source;
-    ciea.scroll = 0;
-    ciea.window = getTargetWindow(ciea.position, false);
-    // make cursor position sane for this target window
-    if (ciea.window)
-        ciea.position = ciea.window->getUnprojectedPosition(ciea.position);
-
-    // if there is no target window, input can not be handled.
-    if (!ciea.window)
+    auto window = getTargetWindow(d_cursor.getPosition(), false);
+    if (!window)
         return false;
 
-    if (d_windowNavigator != nullptr)
-        d_windowNavigator->setCurrentFocusedWindow(ciea.window);
+    // perform tooltip control
+    if (auto tip = getTooltip())
+        tip->setTargetWindow(nullptr);
+
+    CursorInputEventArgs ciea(window);
+    ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
+    ciea.moveDelta = glm::vec2(0.f, 0.f);
+    ciea.source = event.d_payload.source;
+
+    if (d_windowNavigator)
+        d_windowNavigator->setCurrentFocusedWindow(window);
+
+    window->onCursorPressHold(ciea);
+    return ciea.handled != 0;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
+{
+    auto window = getTargetWindow(d_cursor.getPosition(), false);
+    if (!window)
+        return false;
 
     // onCursorPressHold() hides the tooltip, restore it here
     Tooltip* const tip = getTooltip();
     if (tip && !isAncestor(tip))
         tip->setTargetWindow(this);
 
-    ciea.window->onCursorActivate(ciea);
-    return ciea.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
-{
-    CursorInputEventArgs ciea(nullptr);
-    ciea.position = d_cursor.getPosition();
-    ciea.moveDelta = glm::vec2(0, 0);
+    CursorInputEventArgs ciea(window);
+    ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
+    ciea.moveDelta = glm::vec2(0.f, 0.f);
     ciea.source = event.d_payload.source;
-    ciea.scroll = 0;
-    ciea.window = getTargetWindow(ciea.position, false);
-    // make cursor position sane for this target window
-    if (ciea.window)
-        ciea.position = ciea.window->getUnprojectedPosition(ciea.position);
 
-    // if there is no target window, input can not be handled.
-    if (!ciea.window)
-        return false;
+    if (d_windowNavigator)
+        d_windowNavigator->setCurrentFocusedWindow(window);
 
-    if (d_windowNavigator != nullptr)
-        d_windowNavigator->setCurrentFocusedWindow(ciea.window);
-
-    // perform tooltip control
-    if (auto tip = getTooltip())
-        tip->setTargetWindow(nullptr);
-
-    ciea.window->onCursorPressHold(ciea);
+    window->onCursorActivate(ciea);
     return ciea.handled != 0;
 }
 
@@ -763,7 +852,7 @@ bool GUIContext::handleSelectWord(const SemanticInputEvent& event)
     if (!ciea.window)
         return false;
 
-    if (d_windowNavigator != nullptr)
+    if (d_windowNavigator)
         d_windowNavigator->setCurrentFocusedWindow(ciea.window);
 
     ciea.window->onSelectWord(ciea);
@@ -787,7 +876,7 @@ bool GUIContext::handleSelectAll(const SemanticInputEvent& event)
     if (!ciea.window)
         return false;
 
-    if (d_windowNavigator != nullptr)
+    if (d_windowNavigator)
         d_windowNavigator->setCurrentFocusedWindow(ciea.window);
 
     ciea.window->onSelectAll(ciea);
@@ -848,7 +937,7 @@ bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
     //!!!apply to the current tooltip!
     // perform tooltip control
     if (Tooltip* const tip = getTooltip())
-        tip->resetTimer();
+        tip->d_tooltipTimer = 0.f;
 
     // make cursor position sane for this target window
     ciea.position = getWindowContainingCursor()->getUnprojectedPosition(ciea.position);
