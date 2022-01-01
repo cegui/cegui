@@ -152,7 +152,7 @@ void TabButton::onScroll(CursorInputEventArgs& e)
     fireEvent(EventScrolled, e, EventNamespace);
 
 	// default handling
-	ButtonBase::onCursorMove(e);
+	ButtonBase::onScroll(e);
 }
 
 } // End of  CEGUI namespace section

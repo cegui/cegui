@@ -54,15 +54,6 @@ Tooltip::Tooltip(const String& type, const String& name) :
     Window(type, name)
 {
     addTooltipProperties();
-
-    setClippedByParent(false);
-    setDestroyedByParent(false);
-    setAlwaysOnTop(true);
-    setCursorPassThroughEnabled(true);
-
-    // we need updates even when not visible
-    setUpdateMode(WindowUpdateMode::Always);
-
     switchToInactiveState();
     hide();
 }

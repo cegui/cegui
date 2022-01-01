@@ -260,7 +260,7 @@ public:
 	\return
 		true if the cursor is visible, false if the cursor is hidden.
 	*/
-	bool	isVisible(void) const	{return d_visible;}
+	bool isVisible() const {return d_visible;}
 
 
 	/*!
@@ -271,10 +271,7 @@ public:
 	\return
 		Point object describing the cursor position in screen pixels.
 	*/
-    inline glm::vec2 getPosition() const
-    {
-        return d_position;
-    }
+    const glm::vec2& getPosition() const { return d_position; }
 
 	/*!
 	\brief
