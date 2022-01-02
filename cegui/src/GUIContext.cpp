@@ -332,37 +332,21 @@ void GUIContext::updateWindowContainingCursor_impl(Window* windowWithCursor)
     Window* oldWindow = d_windowContainingCursor;
     d_windowContainingCursor = windowWithCursor;
 
-    // For 'area' version of events
-    Window* root = Window::getCommonAncestor(oldWindow, windowWithCursor);
-
-    if (oldWindow)
+    // Handle the tooltip change only if the cursor is not over it
+    if (!windowWithCursor || !windowWithCursor->isInHierarchyOf(d_tooltipWindow))
     {
-        // Hide a tooltip of the previous window if we are not over the tooltip area
-        if (d_tooltipWindow && (!windowWithCursor || !windowWithCursor->isInHierarchyOf(d_tooltipWindow)))
-            hideTooltip(false);
+        Window* oldTooltip = d_tooltipWindow;
 
-        // Inform previous window the cursor has left it
-        CursorInputEventArgs ciea(oldWindow);
-        ciea.position = oldWindow->getUnprojectedPosition(d_cursor.getPosition());
-        oldWindow->onCursorLeaves(ciea);
-        notifyCursorTransition(root, oldWindow, &Window::onCursorLeavesArea, ciea);
-    }
-
-    if (windowWithCursor)
-    {
-        d_cursor.setImage(windowWithCursor->getActualCursor());
-
-        //!!!TODO TOOLTIPS: when EventTooltipTransition should happen? What oldWindow / windowWithCursor must be?
-        //!!!Need to think of this behaviour path! Must update already shown tooltip pos, size and text!
-        //!!!???refreshTooltip() is it is already visible!?
-
-        // Find a tooltip for the new target windowand remember it for showing
-        if (!d_tooltipWindow)
+        if (windowWithCursor)
         {
             const String& tooltipType = !windowWithCursor->getTooltipType().empty() ?
                 windowWithCursor->getTooltipType() :
                 d_defaultTooltipType;
-            Window* tooltipWindow = getTooltipObject(tooltipType);
+            d_tooltipWindow = getTooltipObject(tooltipType);
+
+            //!!!TODO TOOLTIPS: when EventTooltipTransition should happen? What oldWindow / windowWithCursor must be?
+            //!!!Need to think of this behaviour path! Must update already shown tooltip pos, size and text!
+            //!!!???refreshTooltip() is it is already visible!?
             if (tooltipWindow && !windowWithCursor->isInHierarchyOf(tooltipWindow))
             {
                 d_tooltipWindow = tooltipWindow;
@@ -374,7 +358,31 @@ void GUIContext::updateWindowContainingCursor_impl(Window* windowWithCursor)
                 }));
             }
         }
+        else
+        {
+            d_tooltipWindow = nullptr;
+        }
+    }
 
+    // For 'area' version of events
+    Window* root = Window::getCommonAncestor(oldWindow, windowWithCursor);
+
+    if (oldWindow)
+    {
+        // Inform previous window the cursor has left it
+        CursorInputEventArgs ciea(oldWindow);
+        ciea.position = oldWindow->getUnprojectedPosition(d_cursor.getPosition());
+        oldWindow->onCursorLeaves(ciea);
+        notifyCursorTransition(root, oldWindow, &Window::onCursorLeavesArea, ciea);
+    }
+
+    // Set the new cursor
+    d_cursor.setImage((windowWithCursor && windowWithCursor->getCursor()) ?
+        windowWithCursor->getCursor() :
+        d_cursor.getDefaultImage());
+
+    if (windowWithCursor)
+    {
         // Inform window containing cursor that cursor has entered it
         CursorInputEventArgs ciea(windowWithCursor);
         ciea.position = windowWithCursor->getUnprojectedPosition(d_cursor.getPosition());
