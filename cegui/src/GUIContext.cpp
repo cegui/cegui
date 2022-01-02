@@ -332,102 +332,55 @@ void GUIContext::updateWindowContainingCursor_impl(Window* windowWithCursor)
     Window* oldWindow = d_windowContainingCursor;
     d_windowContainingCursor = windowWithCursor;
 
-    // for 'area' version of events
-    Window* root = getCommonAncestor(oldWindow, windowWithCursor);
+    // For 'area' version of events
+    Window* root = Window::getCommonAncestor(oldWindow, windowWithCursor);
 
-    // inform previous window the cursor has left it
     if (oldWindow)
     {
-        if (d_tooltipWindow && windowWithCursor != d_tooltipWindow && !(windowWithCursor && windowWithCursor->isAncestor(d_tooltipWindow)))
-        {
-            //???hide?! or what if we will show the same tooltip below?! avoid show-hide?!
-        }
+        // Hide a tooltip of the previous window if we are not over the tooltip area
+        if (d_tooltipWindow && (!windowWithCursor || !windowWithCursor->isInHierarchyOf(d_tooltipWindow)))
+            hideTooltip(false);
 
+        // Inform previous window the cursor has left it
         CursorInputEventArgs ciea(oldWindow);
         ciea.position = oldWindow->getUnprojectedPosition(d_cursor.getPosition());
         oldWindow->onCursorLeaves(ciea);
-
         notifyCursorTransition(root, oldWindow, &Window::onCursorLeavesArea, ciea);
     }
 
-    // inform window containing cursor that cursor has entered it
     if (windowWithCursor)
     {
         d_cursor.setImage(windowWithCursor->getActualCursor());
 
-        const String& tooltipType = !windowWithCursor->isUsingDefaultTooltip() ?
-            windowWithCursor->getTooltipType() :
-            d_defaultTooltipType;
+        //!!!TODO TOOLTIPS: when EventTooltipTransition should happen? What oldWindow / windowWithCursor must be?
+        //!!!Need to think of this behaviour path! Must update already shown tooltip pos, size and text!
+        //!!!???refreshTooltip() is it is already visible!?
 
-        //!!!what if the new window under cursor is our current tooltip itself?
-        //???what to do with the previous tooltip if it is shown and different?
-        auto tooltipWindow = getTooltipObject(tooltipType);
-        if (tooltipWindow && !windowWithCursor->isAncestor(tooltipWindow))
+        // Find a tooltip for the new target windowand remember it for showing
+        if (!d_tooltipWindow)
         {
-            d_tooltipWindow = tooltipWindow;
-
-            if (windowWithCursor == d_tooltipWindow || (windowWithCursor && !windowWithCursor->getGUIContextPtr()))
-                return;
-
-            // All necessary checks are performed inside addChild
-            d_rootWindow->addChild(d_tooltipWindow);
-
-            // Refresh already active tooltip immediately
-            if (d_tooltipWindow->isVisible())
-                d_tooltipWindow->switchToActiveState();
-
-            subscribeEvent(Window::EventHidden);
-            /*
-                // The animation will take care of fade out or whatnot,
-                // at the end it will hide the tooltip to let us know the transition
-                // is done. At this point we will remove the tooltip from the
-                // previous parent.
-
-                // NOTE: There has to be a fadeout animation! Even if it's a 0 second
-                //       immediate hide animation.
-
-                if (d_parent)
-                    d_parent->removeChild(this);
-            */
-
-            subscribeEvent(Window::EventTooltipTypeChanged);
-
-            subscribeEvent(Window::EventTooltipTextChanged);
-            //Tooltip* const tooltip = getTooltip();
-            //if (tooltip && tooltip->getTargetWindow() == this)
-            //    tooltip->setText(tip);
+            const String& tooltipType = !windowWithCursor->getTooltipType().empty() ?
+                windowWithCursor->getTooltipType() :
+                d_defaultTooltipType;
+            Window* tooltipWindow = getTooltipObject(tooltipType);
+            if (tooltipWindow && !windowWithCursor->isInHierarchyOf(tooltipWindow))
+            {
+                d_tooltipWindow = tooltipWindow;
+                d_tooltipTimer = 0.f;
+                d_tooltipEventConnections.push_back(windowWithCursor->subscribeEvent(
+                    Window::EventTooltipTypeChanged, [](const EventArgs& args)
+                {
+                    //!!!TODO TOOLTIPS: reinit d_tooltipWindow, refreshTooltip() with the new window is it was already visible!
+                }));
+            }
         }
 
+        // Inform window containing cursor that cursor has entered it
         CursorInputEventArgs ciea(windowWithCursor);
         ciea.position = windowWithCursor->getUnprojectedPosition(d_cursor.getPosition());
         windowWithCursor->onCursorEnters(ciea);
-
         notifyCursorTransition(root, windowWithCursor, &Window::onCursorEntersArea, ciea);
     }
-}
-
-//----------------------------------------------------------------------------//
-Window* GUIContext::getCommonAncestor(Window* w1, Window* w2) const
-{
-    if (!w2)
-        return w2;
-
-    if (w1 == w2)
-        return w1;
-
-    // make sure w1 is always further up
-    if (w1 && w1->isAncestor(w2))
-        return w2;
-
-    while (w1)
-    {
-        if (w2->isAncestor(w1))
-            break;
-
-        w1 = w1->getParent();
-    }
-
-    return w1;
 }
 
 //----------------------------------------------------------------------------//
@@ -447,6 +400,95 @@ void GUIContext::notifyCursorTransition(Window* top, Window* bottom,
     args.window = bottom;
 
     (bottom->*func)(args);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::showTooltip()
+{
+    //!!!TODO TOOLTIPS: this method must reinitialize already shown tooltip! E.g. when type changed!
+    //Note that it must not be called for refreshing tooltip not shown yet, because it will show it immediately!
+    //EventTooltipTransition must be called only if the target changed?!
+
+    if (!d_windowContainingCursor || !d_tooltipWindow)
+        return;
+
+    // All necessary checks are performed inside addChild
+    d_rootWindow->addChild(d_tooltipWindow);
+
+    // Set text to that of the tooltip text of the target.
+    const String& newText = d_windowContainingCursor->getTooltipTextIncludingInheritance();
+    if (newText != d_tooltipWindow->d_textLogical)
+    {
+        d_tooltipWindow->setText(newText);
+    }
+    else
+    {
+        // Just in case the font is different, otherwise is called from onTextChanged
+        //!!!TODO TOOLTIPS: size will be calculated on text set, only position here!
+        d_tooltipWindow->sizeSelf();
+        d_tooltipWindow->positionSelf();
+    }
+
+    // TODO TOOLTIPS: the same if the target size changed, see areaChangedHandler()!!!
+    d_tooltipEventConnections.push_back(d_windowContainingCursor->subscribeEvent(
+        Window::EventSized, [](const EventArgs& args)
+    {
+        // TODO TOOLTIPS: d_tooltipWindow->positionSelf();
+    }));
+
+    d_tooltipEventConnections.push_back(d_windowContainingCursor->subscribeEvent(
+        Window::EventTooltipTextChanged, [this](const EventArgs& args)
+    {
+        // TODO TOOLTIPS: allow custom tooltips without using the tooltip text?! I.e. show when text empty.
+        //!!!then this handler will not be needed for them!
+        if (d_tooltipWindow && d_windowContainingCursor)
+            d_tooltipWindow->setText(d_windowContainingCursor->getTooltipTextIncludingInheritance());
+    }));
+
+    d_tooltipEventConnections.push_back(d_tooltipWindow->subscribeEvent(
+        Window::EventHidden, [](const EventArgs& args)
+    {
+        /* TODO TOOLTIPS:
+            // The animation will take care of fade out or whatnot,
+            // at the end it will hide the tooltip to let us know the transition
+            // is done. At this point we will remove the tooltip from the
+            // previous parent.
+
+            // NOTE: There has to be a fadeout animation! Even if it's a 0 second
+            //       immediate hide animation.
+
+            if (d_parent)
+                d_parent->removeChild(this);
+        */
+    }));
+
+    d_tooltipTimer = 0.f;
+
+    WindowEventArgs args(d_tooltipWindow);
+    if (d_tooltipWindow->isVisible())
+    {
+        fireEvent(EventTooltipTransition, args, EventNamespace);
+    }
+    else
+    {
+        d_tooltipWindow->show();
+        fireEvent(EventTooltipActive, args, EventNamespace);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::hideTooltip(bool force)
+{
+    if (force)
+        d_tooltipWindow->hide();
+
+    //!!!FIXME TOOLTIPS: if clear here but 'force' is false, EventHidden connection will not do its work!
+    d_tooltipEventConnections.clear();
+
+    WindowEventArgs args(d_tooltipWindow);
+    fireEvent(EventTooltipInactive, args, EventNamespace);
+
+    d_tooltipWindow = nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -477,9 +519,8 @@ Window* GUIContext::getTargetWindow(const glm::vec2& pt, bool allow_disabled) co
     }
 
     // modal target overrules
-    if (d_modalWindow && dest_window != d_modalWindow)
-        if (!dest_window->isAncestor(d_modalWindow))
-            dest_window = d_modalWindow;
+    if (dest_window->isInHierarchyOf(d_modalWindow))
+        dest_window = d_modalWindow;
 
     return dest_window;
 }
@@ -533,82 +574,36 @@ bool GUIContext::injectTimePulse(float timeElapsed)
     // Update the tooltip if needed
     if (d_tooltipWindow)
     {
-        //???allow nonstandard tooltips to be shown without text? let them fill themselves
+        //???TODO TOOLTIPS: allow nonstandard tooltips to be shown without text? let them fill themselves
         const bool needTooltip = d_windowContainingCursor &&
             d_windowContainingCursor->isTooltipEnabled() &&
             !d_windowContainingCursor->getTooltipTextIncludingInheritance().empty();
 
+        //???!!!TODO TOOLTIPS: add d_tooltipDisplayTime calc from text?! avgTextReadingTime(lang, text)
         if (d_tooltipWindow->isVisible())
         {
-            // if no tooltip must be shown, switch immediately to inactive state
-            bool inactive = false;
             if (!needTooltip)
             {
-                d_tooltipWindow->hide();
-                inactive = true;
+                hideTooltip(true);
             }
-            else if (d_tooltipDisplayTime > 0.f) // else see if display timeout has been reached
+            else if (d_tooltipDisplayTime > 0.f)
             {
                 d_tooltipTimer += timeElapsed;
                 if (d_tooltipTimer >= d_tooltipDisplayTime)
-                    inactive = true;
-            }
-
-            if (inactive)
-            {
-                d_activeState = false;
-                d_tooltipTimer = 0.f;
-
-                // fire event before target gets reset in case that information is required in handler.
-                WindowEventArgs args(d_tooltipWindow);
-                fireEvent(EventTooltipInactive, args, EventNamespace);
-
-                d_target = nullptr;
+                    hideTooltip(false);
             }
         }
         else if (needTooltip)
         {
             d_tooltipTimer += timeElapsed;
             if (d_tooltipTimer >= d_tooltipHoverTime)
-                switchToActiveState();
+                showTooltip();
         }
     }
 
     // Pass to sheet for distribution. This input is then /always/ considered handled.
     d_rootWindow->update(timeElapsed);
     return true;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::switchToActiveState()
-{
-    if (!d_windowContainingCursor)
-        return;
-
-    // Set text to that of the tooltip text of the target.
-    const String& newText = d_windowContainingCursor->getTooltipTextIncludingInheritance();
-    if (newText != d_tooltipWindow->d_textLogical)
-    {
-        d_tooltipWindow->setText(newText);
-    }
-    else
-    {
-        // Just in case the font is different, otherwise is called from onTextChanged
-        d_tooltipWindow->sizeSelf();
-        d_tooltipWindow->positionSelf();
-    }
-
-    const bool wasVisible = isVisible();
-
-    show();
-
-    d_tooltipTimer = 0.f;
-
-    WindowEventArgs args(d_tooltipWindow);
-    if (wasVisible)
-        fireEvent(EventTooltipTransition, args, EventNamespace);
-    else
-        fireEvent(EventTooltipActive, args, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//

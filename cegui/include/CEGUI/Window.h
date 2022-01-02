@@ -460,6 +460,8 @@ public:
     static const String UserStringNameXMLAttributeName;
     static const String UserStringValueXMLAttributeName;
 
+    static Window* getCommonAncestor(Window* w1, Window* w2);
+
     using Element::isChild;
     using Element::removeChild;
     using Element::isAncestor;
@@ -1140,17 +1142,6 @@ public:
         events will be generated after the initial delay has expired.
     */
     float getAutoRepeatRate() const { return d_repeatRate; }
-
-    /*!
-    \brief
-        Return whether this Window is using the system default Tooltip for its
-        Tooltip window.
-
-    \return
-        - true if the Window will use the system default tooltip.
-        - false if the window has a custom Tooltip object.
-    */
-    bool isUsingDefaultTooltip() const { return d_tooltipType.empty(); }
 
     /*!
     \brief

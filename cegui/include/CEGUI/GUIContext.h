@@ -259,11 +259,13 @@ protected:
 
     //! returns the window used as input target
     Window* getInputTargetWindow() const;
-    Window* getCommonAncestor(Window* w1, Window* w2) const;
     //! call some function for a chain of windows: (top, bottom]
     void notifyCursorTransition(Window* top, Window* bottom,
                                void (Window::*func)(CursorInputEventArgs&),
                                CursorInputEventArgs& args) const;
+
+    void showTooltip();
+    void hideTooltip(bool force);
 
     bool areaChangedHandler(const EventArgs& args);
 
@@ -275,7 +277,6 @@ protected:
 
     // Input event handlers
     void initializeSemanticEventHandlers();
-
     bool handleTextInputEvent(const TextInputEvent& event);
     bool handleSemanticInputEvent(const SemanticInputEvent& event);
     bool handleCopyRequest(const SemanticInputEvent& event);
@@ -316,6 +317,7 @@ protected:
     float d_tooltipDisplayTime = 7.5f; //!< seconds that tip is shown for
 
     Event::ScopedConnection d_areaChangedEventConnection;
+    std::vector<Event::ScopedConnection> d_tooltipEventConnections;
     std::map<SemanticValue, SlotFunctorBase<InputEvent>*> d_semanticEventHandlers;
 
     bool d_windowContainingCursorIsUpToDate = true;

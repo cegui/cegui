@@ -852,14 +852,10 @@ public:
     */
     size_t getChildIndex(const Element* child) const;
 
-    /*!
-    \brief Returns number of child elements attached to this Element
-    */
+    //! \brief Returns number of child elements attached to this Element
     inline size_t getChildCount() const { return d_children.size(); }
 
-    /*!
-    \brief Checks whether given element is attached to this Element
-    */
+    //! \brief Checks whether given element is attached to this Element
     bool isChild(const Element* element) const;
 
     /*!
@@ -876,6 +872,9 @@ public:
         - false if \a element is not an ancestor of this element.
     */
     bool isAncestor(const Element* element) const;
+
+    //! \brief Checks whether the element is in a subtree starting at the given root
+    bool isInHierarchyOf(const Element* root) const { return root && (root == this || isAncestor(root)); }
 
     /*!
     \brief Set whether the Element is non-client.
