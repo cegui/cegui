@@ -194,6 +194,30 @@ void Window::LookNFeelProperty::writeXMLToStream(const PropertyReceiver* receive
 }
 
 //----------------------------------------------------------------------------//
+Window* Window::getCommonAncestor(Window* w1, Window* w2)
+{
+    if (!w2)
+        return nullptr;
+
+    if (w1 == w2)
+        return w1;
+
+    // make sure w1 is always further up
+    if (w1 && w1->isAncestor(w2))
+        return w2;
+
+    while (w1)
+    {
+        if (w2->isAncestor(w1))
+            break;
+
+        w1 = w1->getParent();
+    }
+
+    return w1;
+}
+
+//----------------------------------------------------------------------------//
 Window::Window(const String& type, const String& name):
     Element(),
 
@@ -463,6 +487,21 @@ Window* Window::getChildRecursive(unsigned int ID) const
 }
 
 //----------------------------------------------------------------------------//
+bool Window::isAncestor(unsigned int ID) const
+{
+    const Window* current = getParent();
+    while (current)
+    {
+        if (current->getID() == ID)
+            return true;
+
+        current = current->getParent();
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 Window* Window::getActiveChild()
 {
     return const_cast<Window*>(
@@ -489,21 +528,6 @@ const Window* Window::getActiveChild() const
 
     // no child was active, therefore we are the topmost active window
     return this;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isAncestor(unsigned int ID) const
-{
-    // return false if we have no ancestor
-    if (!d_parent)
-        return false;
-
-    // check our immediate parent
-    if (getParent()->getID() == ID)
-        return true;
-
-    // not our parent, check back up the family line
-    return getParent()->isAncestor(ID);
 }
 
 //----------------------------------------------------------------------------//
