@@ -402,10 +402,6 @@ void GUIContext::notifyCursorTransition(Window* top, Window* bottom,
 //----------------------------------------------------------------------------//
 void GUIContext::showTooltip(bool force)
 {
-    //!!!TODO TOOLTIPS: this method must reinitialize already shown tooltip! E.g. when type changed!
-    //Note that it must not be called for refreshing tooltip not shown yet, because it will show it immediately!
-    //EventTooltipTransition must be called only if the target changed?!
-
     if (!d_tooltipSource)
         return;
 
@@ -429,13 +425,11 @@ void GUIContext::showTooltip(bool force)
 
     d_tooltipEventConnections.clear();
 
-    // All necessary checks are performed inside addChild
     d_rootWindow->addChild(d_tooltipWindow);
 
     d_tooltipWindow->setText(d_tooltipSource->getTooltipTextIncludingInheritance());
     positionTooltip();
 
-    // TODO TOOLTIPS: send events recursively from actually inheriting children!
     d_tooltipEventConnections.push_back(d_tooltipSource->subscribeEvent(
         Window::EventTooltipTextChanged, [this](const EventArgs& args)
     {
@@ -453,16 +447,6 @@ void GUIContext::showTooltip(bool force)
         Cursor::EventImageChanged, [this](const EventArgs& args)
     {
         positionTooltip();
-    }));
-
-    // This is to wait until the tooltip window hide animation is finished
-    d_tooltipEventConnections.push_back(d_tooltipWindow->subscribeEvent(
-        Window::EventHidden, [](const EventArgs& args)
-    {
-        // Context fields will be cleared in removeChild -> onWindowDetached
-        Window* wnd = static_cast<const WindowEventArgs&>(args).window;
-        if (wnd && wnd->getParent())
-            wnd->getParent()->removeChild(wnd);
     }));
 
     WindowEventArgs args(d_tooltipWindow);
@@ -489,6 +473,27 @@ void GUIContext::hideTooltip(bool force)
     if (!d_tooltipWindow)
         return;
 
+    d_tooltipEventConnections.clear();
+
+    // Wait until the optional tooltip window hide animation is finished. Subscribe before hide()!
+    d_tooltipEventConnections.push_back(d_tooltipWindow->subscribeEvent(
+        Window::EventHidden, [this](const EventArgs& args)
+    {
+        d_tooltipEventConnections.clear();
+
+        if (d_tooltipWindow)
+        {
+            // Context fields will be cleared in removeChild -> onWindowDetached
+            if (d_tooltipWindow->getParent())
+                d_tooltipWindow->getParent()->removeChild(d_tooltipWindow);
+
+            // NB: resetting a text is important for triggering auto-sizing for certain tooltip widgets.
+            // If we had kept the text, it may match the next one and EventTextChanged wouldn't happen.
+            d_tooltipWindow->setText("");
+            d_tooltipWindow = nullptr;
+        }
+    }));
+
     //!!!TODO TOOLTIPS: show and hide must break previous animation and ensure that each event happens once!
     //if (force)
         d_tooltipWindow->hide();
@@ -497,15 +502,6 @@ void GUIContext::hideTooltip(bool force)
 
     WindowEventArgs args(d_tooltipWindow);
     fireEvent(EventTooltipInactive, args, EventNamespace);
-
-    //!!!FIXME TOOLTIPS: hideTooltip -> EventHidden -> onWindowDetached -> hideTooltip loop needs to be fixed!
-    //!!!FIXME TOOLTIPS: if clear here but 'force' is false, EventHidden connection will not do its work!
-    d_tooltipEventConnections.clear();
-
-    // NB: resetting a text is important for triggering auto-sizing for certain tooltip widgets.
-    // If we had kept the text, it may match the next one and EventTextChanged wouldn't happen.
-    d_tooltipWindow->setText("");
-    d_tooltipWindow = nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -853,6 +849,7 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
         return false;
 
     //!!!FIXME TOOLTIPS: or clear d_tooltipSource temporarily?
+    //!!!stop counting the time, don't hide by timer!
     //hideTooltip(true);
 
     CursorInputEventArgs ciea(window);
@@ -875,6 +872,7 @@ bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
         return false;
 
     //!!!FIXME TOOLTIPS: or restore d_tooltipSource?
+    //???!!!reset timer?!
     //showTooltip(true);
 
     CursorInputEventArgs ciea(window);
