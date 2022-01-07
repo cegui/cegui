@@ -94,7 +94,7 @@ protected:
     bool handleWidgetSelectionChanged(const CEGUI::EventArgs& args);
 
     void fillWidgetPropertiesDisplayWindow(CEGUI::Window* widgetWindowRoot);
-    void handleSpecialWindowCases(CEGUI::Window* widgetWindowRoot, CEGUI::String widgetTypeString);
+    void handleSpecialWindowCases(CEGUI::String widgetTypeString);
     CEGUI::Window* retrieveOrCreateWidgetWindow(const CEGUI::String& widgetTypeString, const CEGUI::String& widgetName);
     bool getWidgetType(CEGUI::String &widgetName, CEGUI::String &widgetTypeString);
     CEGUI::Window* createWidget(const CEGUI::String &widgetMapping, const CEGUI::String &widgetType);

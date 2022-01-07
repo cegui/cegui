@@ -284,7 +284,7 @@ bool WidgetsSample::handleWidgetSelectionChanged(const CEGUI::EventArgs& /*args*
     d_widgetDisplayWindow->setText("Demo of widget: \"" + widgetTypeString + "\"");
 
     //Special initialisations for certain Windows
-    handleSpecialWindowCases(widgetWindowRoot, widgetTypeString);
+    handleSpecialWindowCases(widgetTypeString);
 
     //Set the property items for the property inspector
     fillWidgetPropertiesDisplayWindow(widgetWindowRoot);
@@ -889,24 +889,22 @@ CEGUI::Window* WidgetsSample::retrieveOrCreateWidgetWindow(const CEGUI::String& 
     }
 }
 
-void WidgetsSample::handleSpecialWindowCases(CEGUI::Window* widgetWindowRoot, CEGUI::String widgetTypeString)
+void WidgetsSample::handleSpecialWindowCases(CEGUI::String widgetTypeString)
 {
-    //Reset to 0 progress in case of a progressbar
-    CEGUI::ProgressBar* progressBar = dynamic_cast<CEGUI::ProgressBar*>(d_currentlyDisplayedWidgetRoot);
-    if (progressBar != nullptr)
-        progressBar->setProgress(0.0f);
+    // Reset to 0 progress in case of a progressbar
+    if (auto progressBar = dynamic_cast<CEGUI::ProgressBar*>(d_currentlyDisplayedWidgetRoot))
+        progressBar->setProgress(0.f);
 
-    //Apply the tooltip to the widget display window in case of a tooltip
-    CEGUI::Tooltip* tooltip = dynamic_cast<CEGUI::Tooltip*>(d_currentlyDisplayedWidgetRoot);
-    if (tooltip)
+    // Apply the tooltip to the widget display window in case of a tooltip
+    if (auto tooltip = dynamic_cast<CEGUI::Tooltip*>(d_currentlyDisplayedWidgetRoot))
     {
-        d_widgetDisplayWindowInnerWindow->setTooltip(tooltip);
-        d_widgetDisplayWindowInnerWindow->removeChild(widgetWindowRoot);
+        d_widgetDisplayWindowInnerWindow->setTooltipType(tooltip->getType());
         d_widgetDisplayWindowInnerWindow->setTooltipText(widgetTypeString);
+        d_widgetDisplayWindowInnerWindow->removeChild(d_currentlyDisplayedWidgetRoot);
         d_currentlyDisplayedWidgetRoot = nullptr;
     }
     else
-        d_widgetDisplayWindowInnerWindow->setTooltip(nullptr);
+        d_widgetDisplayWindowInnerWindow->setTooltipType("");
 }
 
 void WidgetsSample::fillWidgetPropertiesDisplayWindow(CEGUI::Window* widgetWindowRoot)

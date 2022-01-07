@@ -363,6 +363,7 @@ protected:
     bool d_needsFullRender;
     std::vector<ModelIndexSelectionState> d_indexSelectionStates;
     ModelIndex d_lastSelectedIndex;
+    ModelIndex d_lastHoveredIndex;
     const Image* d_selectionBrush;
     ScrollbarDisplayMode d_vertScrollbarDisplayMode;
     ScrollbarDisplayMode d_horzScrollbarDisplayMode;

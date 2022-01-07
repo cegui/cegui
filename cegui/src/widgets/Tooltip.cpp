@@ -25,8 +25,6 @@ author:     Paul D Turner
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 #include "CEGUI/widgets/Tooltip.h"
-#include "CEGUI/Image.h"
-#include "CEGUI/GUIContext.h"
 
 namespace CEGUI
 {
@@ -42,43 +40,6 @@ TooltipWindowRenderer::TooltipWindowRenderer(const String& name) :
 Tooltip::Tooltip(const String& type, const String& name) :
     Window(type, name)
 {
-}
-
-//----------------------------------------------------------------------------//
-void Tooltip::positionSelf()
-{
-    if (!d_guiContext || d_inPositionSelf)
-        return;
-
-    d_inPositionSelf = true;
-
-    const Sizef screenSize = getRootContainerSize();
-    const Image* cursor_image = d_guiContext->getCursor().getImage();
-
-    const glm::vec2 cursor_pos(d_guiContext->getCursor().getPosition());
-    const Sizef cursor_size = cursor_image ? cursor_image->getRenderedSize() : Sizef(0.f, 0.f);
-
-    glm::vec2 tmpPos(cursor_pos.x + cursor_size.d_width, cursor_pos.y + cursor_size.d_height);
-    const Rectf tipRect(tmpPos, getUnclippedOuterRect().get().getSize());
-
-    // if the tooltip would be off more at the right side of the screen,
-    // reposition to the other side of the cursor.
-    if (screenSize.d_width - tipRect.right() < tipRect.left() - tipRect.getWidth())
-        tmpPos.x = cursor_pos.x - tipRect.getWidth() - 5;
-
-    // if the tooltip would be off more at the bottom side of the screen,
-    // reposition to the other side of the cursor.
-    if (screenSize.d_height - tipRect.bottom() < tipRect.top() - tipRect.getHeight())
-        tmpPos.y = cursor_pos.y - tipRect.getHeight() - 5;
-
-    // prevent being cut off at edges
-    tmpPos.x = std::max(0.0f, std::min(tmpPos.x, screenSize.d_width - tipRect.getWidth()));
-    tmpPos.y = std::max(0.0f, std::min(tmpPos.y, screenSize.d_height - tipRect.getHeight()));
-
-    // set final position of tooltip window.
-    setPosition(UVector2(cegui_absdim(tmpPos.x), cegui_absdim(tmpPos.y)));
-
-    d_inPositionSelf = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -103,21 +64,12 @@ bool Tooltip::validateWindowRenderer(const WindowRenderer* renderer) const
 }
 
 //----------------------------------------------------------------------------//
-void Tooltip::onCursorEnters(CursorInputEventArgs& e)
-{
-    positionSelf();
-
-    Window::onCursorEnters(e);
-}
-
-//----------------------------------------------------------------------------//
 void Tooltip::onTextChanged(WindowEventArgs& e)
 {
     Window::onTextChanged(e);
 
-    // set size and position of the tooltip window to consider new text
+    // set size of the tooltip window to consider new text
     sizeSelf();
-    positionSelf();
 
     // we do not signal we handled it, in case user wants to hear
     // about text changes too.
