@@ -344,7 +344,8 @@ void WidgetLookFeel::initialiseWidget(Window& widget) const
         // add the property to the window
         widget.addProperty(dynamic_cast<Property*>(*pldi));
     }
-    // apply properties to the parent window
+
+    // initialize properties with values
     PropertyInitialiserCollator pic;
     appendPropertyInitialisers(pic);
     for (PropertyInitialiserCollator::const_iterator pi = pic.begin();
@@ -934,7 +935,7 @@ void WidgetLookFeel::appendEventLinkDefinitions(
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::appendAnimationNames(std::unordered_set<String>& set, bool inherits) const
 {
-    set.insert(d_animations.begin(),d_animations.end());
+    set.insert(d_animations.begin(), d_animations.end());
 
     if (!d_inheritedLookName.empty() && inherits)
         WidgetLookManager::getSingleton().

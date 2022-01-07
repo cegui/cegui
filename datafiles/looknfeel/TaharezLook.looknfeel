@@ -2644,8 +2644,9 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Tooltip">
-        <Property name="Alpha" value="0" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
+        <Property name="ShowAnimation" value="TaharezLook/Tooltip/FadeIn" />
+        <Property name="HideAnimation" value="TaharezLook/Tooltip/FadeOut" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/TooltipLeftEdge" dimension="Width" /></Dim>
@@ -2718,8 +2719,6 @@
                 <KeyFrame position="0" sourceProperty="Alpha" />
                 <KeyFrame position="0.33" value="1" progression="linear" />
             </Affector>
-
-            <Subscription event="TooltipActive" action="Start" />
         </AnimationDefinition>
 
         <AnimationDefinition name="FadeOut" duration="0.33" replayMode="once">
@@ -2727,12 +2726,6 @@
                 <KeyFrame position="0" sourceProperty="Alpha" />
                 <KeyFrame position="0.33" value="0" progression="linear" />
             </Affector>
-            <Affector property="Visible" interpolator="bool">
-                <KeyFrame position="0" sourceProperty="Visible" />
-                <KeyFrame position="0.33" value="false" progression="discrete" />
-            </Affector>
-
-            <Subscription event="TooltipInactive" action="Start" />
         </AnimationDefinition>
     </WidgetLook>
 
