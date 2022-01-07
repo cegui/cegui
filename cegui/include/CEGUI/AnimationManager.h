@@ -299,22 +299,17 @@ public:
     }
 
 private:
-    typedef std::map<String, Interpolator*, std::less<String> > InterpolatorMap;
+
     String generateUniqueAnimationName();
     
     //! stores available interpolators
-    InterpolatorMap d_interpolators;
-    typedef std::vector<Interpolator*> BasicInterpolatorList;
+    std::map<String, Interpolator*> d_interpolators;
     //! stores interpolators that are inbuilt in CEGUI
-    BasicInterpolatorList d_basicInterpolators;
-    
-    typedef std::map<String, Animation*> AnimationMap;
+    std::vector<Interpolator*> d_basicInterpolators;
     //! all defined animations
-    AnimationMap d_animations;
-
-    typedef std::multimap<Animation*, AnimationInstance*, std::less<Animation*> > AnimationInstanceMap;
+    std::map<String, Animation*> d_animations;
     //! all instances of animations
-    AnimationInstanceMap d_animationInstances;
+    std::multimap<Animation*, AnimationInstance*> d_animationInstances;
     //! Default resource group used when loading animation xml files.
     static String s_defaultResourceGroup;
     //! Base name to use for generated window names.
