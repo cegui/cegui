@@ -455,7 +455,6 @@ void GUIContext::showTooltip(bool force)
             d_tooltipWindow->show();
         //else
         //    assert(false);
-            d_tooltipWindow->setAlpha(1.f); //!!!DBG TMP! Fix in a look!
 
         fireEvent(EventTooltipActive, args, EventNamespace);
     }

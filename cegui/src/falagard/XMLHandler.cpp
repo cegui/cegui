@@ -1772,37 +1772,24 @@ namespace CEGUI
         }
     }
 
-    void Falagard_xmlHandler::elementAnimationDefinitionStart(
-                                            const XMLAttributes& attributes)
+    void Falagard_xmlHandler::elementAnimationDefinitionStart(const XMLAttributes& attributes)
     {
-        if (d_widgetlook == nullptr)
+        if (!d_widgetlook)
         {
             throwExceptionNotChildOfNode(d_widgetlook, AnimationDefinitionHandler::ElementName, attributes.getValueAsString(NameAttribute), WidgetLookElement);
+            return;
         }
 
-        String anim_name_prefix(d_widgetlook->getName());
-        anim_name_prefix.append("/");
+        const String animNamePrefix = d_widgetlook->getName() + '/';
+        const String animName(animNamePrefix + attributes.getValueAsString(NameAttribute));
 
-        const String anim_name(anim_name_prefix +
-                        attributes.getValueAsString(NameAttribute));
-
-
-        if (AnimationManager::getSingleton().isAnimationPresent(anim_name))
-        {
-            Logger::getSingleton().logEvent(
-                "[XMLHandler] WARNING: Using existing Animation :" + anim_name);
-        }
+        if (AnimationManager::getSingleton().isAnimationPresent(animName))
+            Logger::getSingleton().logEvent("[XMLHandler] WARNING: Using existing Animation :" + animName);
         else
-        {
-            d_chainedHandler = new AnimationDefinitionHandler(
-                attributes, anim_name_prefix);
-        }
+            d_chainedHandler = new AnimationDefinitionHandler(attributes, animNamePrefix);
 
-        // This is a little bit of abuse here, ideally we would get the name
-        // somewhere else.
-        d_widgetlook->addAnimationName(
-            anim_name_prefix +
-            attributes.getValueAsString("name"));
+        // This is a little bit of abuse here, ideally we would get the name somewhere else.
+        d_widgetlook->addAnimationName(animName);
     }
 
 
