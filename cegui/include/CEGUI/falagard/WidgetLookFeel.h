@@ -800,48 +800,30 @@ private:
     */
     void copyPropertyLinkDefinitionsFrom(const WidgetLookFeel& widgetLook);
 
-
-    //! Map types for the Falagard elements that this WidgetLookFeel can own. The keys are the names of the corresponding elements, as CEGUI::String.
-    typedef std::unordered_map<String, StateImagery> StateImageryMap;
-    typedef std::unordered_map<String, ImagerySection> ImagerySectionMap;
-    typedef std::unordered_map<String, NamedArea> NamedAreaMap;
-
-    typedef std::unordered_map<String, PropertyInitialiser> PropertyInitialiserMap;
-    typedef std::unordered_map<String, PropertyDefinitionBase*> PropertyDefinitionMap;
-    typedef std::unordered_map<String, PropertyDefinitionBase*> PropertyLinkDefinitionMap;
-
-    typedef std::unordered_map<String, WidgetComponent> WidgetComponentMap;
-    typedef std::unordered_map<String, EventLinkDefinition> EventLinkDefinitionMap;
-
-    //! List of animation names
-    typedef std::vector<String> AnimationList;
-    //! Map of Windows to AnimationInstances
-    typedef std::multimap<Window*, AnimationInstance*, std::less<Window*> > AnimationInstanceMap;
-
     //! Name of this WidgetLookFeel.
     CEGUI::String d_lookName;
     //! Name of a WidgetLookFeel inherited by this WidgetLookFeel.
     CEGUI::String d_inheritedLookName;
     //! Map of ImagerySection objects.
-    ImagerySectionMap d_imagerySectionMap;
+    std::unordered_map<String, ImagerySection> d_imagerySectionMap;
     //! Map of WidgetComponent objects.
-    WidgetComponentMap d_widgetComponentMap;
+    std::unordered_map<String, WidgetComponent> d_widgetComponentMap;
     //! Map of StateImagery objects.
-    StateImageryMap d_stateImageryMap;
+    std::unordered_map<String, StateImagery> d_stateImageryMap;
     //! Map of PropertyInitialser objects.
-    PropertyInitialiserMap d_propertyInitialiserMap;
+    std::unordered_map<String, PropertyInitialiser> d_propertyInitialiserMap;
     //! Map of NamedArea objects.
-    NamedAreaMap d_namedAreaMap;
+    std::unordered_map<String, NamedArea> d_namedAreaMap;
     //! Map of PropertyDefinition objects.
-    mutable PropertyDefinitionMap d_propertyDefinitionMap;
+    mutable std::unordered_map<String, PropertyDefinitionBase*> d_propertyDefinitionMap;
     //! Map of PropertyLinkDefinition objects.
-    mutable PropertyLinkDefinitionMap d_propertyLinkDefinitionMap;
+    mutable std::unordered_map<String, PropertyDefinitionBase*> d_propertyLinkDefinitionMap;
     //! List of animation names associated with this WidgetLookFeel.
-    AnimationList d_animations;
+    std::vector<String> d_animations;
     //! Map of windows and their associated animation instances
-    mutable AnimationInstanceMap d_animationInstances;
+    mutable std::multimap<Window*, AnimationInstance*> d_animationInstances;
     //! Collection of EventLinkDefinition objects.
-    EventLinkDefinitionMap d_eventLinkDefinitionMap;
+    std::unordered_map<String, EventLinkDefinition> d_eventLinkDefinitionMap;
 
     // these are container types used when composing final collections of
     // objects that come via inheritence.
@@ -850,7 +832,6 @@ private:
     typedef NamedDefinitionCollator<String, PropertyDefinitionBase*> PropertyLinkDefinitionCollator;
     typedef NamedDefinitionCollator<String, const PropertyInitialiser*> PropertyInitialiserCollator;
     typedef NamedDefinitionCollator<String, const EventLinkDefinition*> EventLinkDefinitionCollator;
-    typedef std::unordered_set<String> AnimationNameSet;
 
     // functions to populate containers with collections of objects that we
     // gain through inheritence.
@@ -859,7 +840,7 @@ private:
     void appendPropertyLinkDefinitions(PropertyLinkDefinitionCollator& col, bool inherits = true) const;
     void appendPropertyInitialisers(PropertyInitialiserCollator& col, bool inherits = true) const;
     void appendEventLinkDefinitions(EventLinkDefinitionCollator& col, bool inherits = true) const;
-    void appendAnimationNames(AnimationNameSet& set, bool inherits = true) const;
+    void appendAnimationNames(std::unordered_set<String>& set, bool inherits = true) const;
 
     void swap(WidgetLookFeel& other);
 };
