@@ -98,6 +98,12 @@ bool GameMenuSample::initialise(CEGUI::GUIContext* guiContext)
 
     d_currentWriteFocus = WF_BotBar;
 
+    // Temporary solution of the most noticeable twitching. See https://github.com/cegui/cegui/issues/1243.
+    if (auto wnd = d_root->getChild("InnerButtonsContainer/PopupLinesCharacters/LabelDelete"))
+        wnd->setPixelAligned(false);
+    if (auto wnd = d_root->getChild("InnerButtonsContainer/PopupLinesCharacters/LabelSelect"))
+        wnd->setPixelAligned(false);
+
     return true;
 }
 
