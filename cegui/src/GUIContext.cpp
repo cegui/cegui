@@ -79,6 +79,7 @@ void GUIContext::setRootWindow(Window* new_root)
 
 	//???TODO TOOLTIPS: need this block or will be handled when detaching the root?
 	hideTooltip(true);
+    d_tooltipSource = nullptr;
     releaseInputCapture();
     d_modalWindow = nullptr;
 
@@ -293,8 +294,11 @@ void GUIContext::onWindowDetached(Window* window)
     if (!window)
         return;
 
-	if (window == d_tooltipSource)
-		hideTooltip(true);
+    if (window == d_tooltipSource)
+    {
+        hideTooltip(true);
+        d_tooltipSource = nullptr;
+    }
 
     // Handle external deletion of a tooltip but don't delete it if only detached but alive
     auto itTooltip = d_tooltips.find(window->getType());
@@ -335,8 +339,6 @@ void GUIContext::updateWindowContainingCursor_impl(Window* windowWithCursor)
     d_windowContainingCursor = windowWithCursor;
 
     // Change the tooltip source only if the cursor is not over the tooltip itself
-	//!!!TODO TOOLTIPS: isn't it impossible due to setCursorPassThroughEnabled(true)? Need to check thoroughly!
-    //!!!TODO TOOLTIPS: if tooltip is visible and we are over it, we need to positionTooltip() according to the old logic!
     if (d_tooltipSource != windowWithCursor &&
         (!windowWithCursor || !windowWithCursor->isInHierarchyOf(d_tooltipWindow)))
     {
@@ -404,8 +406,28 @@ void GUIContext::showTooltip(bool force)
     //Note that it must not be called for refreshing tooltip not shown yet, because it will show it immediately!
     //EventTooltipTransition must be called only if the target changed?!
 
-    if (!d_tooltipSource || !d_tooltipWindow)
+    if (!d_tooltipSource)
         return;
+
+    const bool wasShown = !!d_tooltipWindow;
+
+    if (!d_tooltipWindow)
+    {
+        const String& tooltipType = !d_tooltipSource->getTooltipType().empty() ?
+            d_tooltipSource->getTooltipType() :
+            d_defaultTooltipType;
+
+        d_tooltipWindow = getOrCreateTooltipObject(tooltipType);
+
+        // Avoid trying again every frame if there is no certain tooltip type registered
+        if (!d_tooltipWindow)
+        {
+            d_tooltipSource = nullptr;
+            return;
+        }
+    }
+
+    d_tooltipEventConnections.clear();
 
     // All necessary checks are performed inside addChild
     d_rootWindow->addChild(d_tooltipWindow);
@@ -427,27 +449,35 @@ void GUIContext::showTooltip(bool force)
         positionTooltip();
     }));
 
-    // This is to wait until the hide animation is finished
+    d_tooltipEventConnections.push_back(d_cursor.subscribeEvent(
+        Cursor::EventImageChanged, [this](const EventArgs& args)
+    {
+        positionTooltip();
+    }));
+
+    // This is to wait until the tooltip window hide animation is finished
     d_tooltipEventConnections.push_back(d_tooltipWindow->subscribeEvent(
         Window::EventHidden, [](const EventArgs& args)
     {
+        // Context fields will be cleared in removeChild -> onWindowDetached
         Window* wnd = static_cast<const WindowEventArgs&>(args).window;
         if (wnd && wnd->getParent())
             wnd->getParent()->removeChild(wnd);
     }));
 
     WindowEventArgs args(d_tooltipWindow);
-    if (d_tooltipWindow->isVisible())
+    if (wasShown)
     {
         fireEvent(EventTooltipTransition, args, EventNamespace);
     }
     else
     {
         //!!!TODO TOOLTIPS: show and hide must break previous animation and ensure that each event happens once!
-        if (force)
+        //if (force)
             d_tooltipWindow->show();
-        else
-            assert(false);
+        //else
+        //    assert(false);
+            d_tooltipWindow->setAlpha(1.f); //!!!DBG TMP! Fix in a look!
 
         fireEvent(EventTooltipActive, args, EventNamespace);
     }
@@ -456,17 +486,21 @@ void GUIContext::showTooltip(bool force)
 //----------------------------------------------------------------------------//
 void GUIContext::hideTooltip(bool force)
 {
-    //!!!TODO TOOLTIPS: show and hide must break previous animation and ensure that each event happens once!
-    if (force)
-        d_tooltipWindow->hide();
-    else
-        assert(false);
+    if (!d_tooltipWindow)
+        return;
 
-    //!!!FIXME TOOLTIPS: if clear here but 'force' is false, EventHidden connection will not do its work!
-    d_tooltipEventConnections.clear();
+    //!!!TODO TOOLTIPS: show and hide must break previous animation and ensure that each event happens once!
+    //if (force)
+        d_tooltipWindow->hide();
+    //else
+    //    assert(false);
 
     WindowEventArgs args(d_tooltipWindow);
     fireEvent(EventTooltipInactive, args, EventNamespace);
+
+    //!!!FIXME TOOLTIPS: hideTooltip -> EventHidden -> onWindowDetached -> hideTooltip loop needs to be fixed!
+    //!!!FIXME TOOLTIPS: if clear here but 'force' is false, EventHidden connection will not do its work!
+    d_tooltipEventConnections.clear();
 
     // NB: resetting a text is important for triggering auto-sizing for certain tooltip widgets.
     // If we had kept the text, it may match the next one and EventTextChanged wouldn't happen.
@@ -480,7 +514,6 @@ void GUIContext::positionTooltip()
     if (!d_tooltipWindow)
         return;
 
-    //???TODO TOOLTIPS: call positionTooltip() when the actual cursor image changes?
     glm::vec2 pos = d_cursor.getPosition();
     if (auto cursorImage = d_cursor.getImage())
     {
@@ -519,90 +552,39 @@ void GUIContext::updateTooltipState(float timeElapsed)
     if (!needTooltip)
     {
         hideTooltip(true);
+        d_tooltipSource = nullptr;
         return;
     }
 
-    const String& tooltipType = !d_tooltipSource->getTooltipType().empty() ?
-        d_tooltipSource->getTooltipType() :
-        d_defaultTooltipType;
-
-    // if target changed //???to updateWindowContainingCursor_impl?
-    //   d_tooltipTimer = 0.f;
-    //   if tooltip is already shown
-    //     if d_tooltipWindow->getType() != tooltipType //???need special case or force hide and then force show the same tooltip is OK?
-    //       hideTooltip(true) // will immediately hide a current tooltip if it is shown
-    //       showTooltip(true) // will create required tooltip instance inside and show without animation
-    //     else
-    //       update tooltip text -> size -> pos
-    //       unsubscribe previous subs and subscribe to the new source
-    // else // target not changed
-    //   d_tooltipTimer += timeElapsed;
-    //   if tooltip is already shown
-    //     if d_tooltipTimer >= d_tooltipDisplayTime
-    //       hideTooltip(false);
-    //       d_tooltipTimer = 0.f;
-    //     else if d_tooltipWindow->getType() != tooltipType
-    //       hideTooltip(true) // will immediately hide a current tooltip if it is shown
-    //       showTooltip(true) // will create required tooltip instance inside and show without animation
-    //   else if d_tooltipTimer >= d_tooltipHoverTime
-    //     showTooltip(false);
-    //     d_tooltipTimer = 0.f;
-
-
-
-///////////////////////////////
-
+    d_tooltipTimer += timeElapsed;
     if (d_tooltipWindow)
     {
-
         //???!!!TODO TOOLTIPS: add d_tooltipDisplayTime calc from text?! avgTextReadingTime(lang, text)
-        if (d_tooltipWindow->isVisible())
+        if (d_tooltipTimer >= d_tooltipDisplayTime)
         {
-            if (!needTooltip)
-            {
-                hideTooltip(true);
-            }
-            else if (d_tooltipDisplayTime > 0.f)
-            {
-                d_tooltipTimer += timeElapsed;
-                if (d_tooltipTimer >= d_tooltipDisplayTime)
-                    hideTooltip(false);
-            }
-        }
-        else if (needTooltip)
-        {
-            d_tooltipTimer += timeElapsed;
-            if (d_tooltipTimer >= d_tooltipHoverTime)
-                showTooltip(false);
-        }
-    }
-
-    /*
-    {
-        if (windowWithCursor)
-        {
-            d_tooltipWindow = getTooltipObject(tooltipType);
-
-            //!!!TODO TOOLTIPS: when EventTooltipTransition should happen? What oldWindow / windowWithCursor must be?
-            //!!!Need to think of this behaviour path! Must update already shown tooltip pos, size and text!
-            //!!!???refreshTooltip() is it is already visible!?
-            if (tooltipWindow && !windowWithCursor->isInHierarchyOf(tooltipWindow))
-            {
-                d_tooltipWindow = tooltipWindow;
-                d_tooltipTimer = 0.f;
-                d_tooltipEventConnections.push_back(windowWithCursor->subscribeEvent(
-                    Window::EventTooltipTypeChanged, [](const EventArgs& args)
-                {
-                    //!!!TODO TOOLTIPS: reinit d_tooltipWindow, refreshTooltip() with the new window is it was already visible!
-                }));
-            }
+            hideTooltip(false);
+            d_tooltipTimer = 0.f;
+            d_tooltipSource = nullptr;
         }
         else
         {
-            d_tooltipWindow = nullptr;
+            // Update the tooltip if its type has changed on the fly
+            const String& tooltipType = !d_tooltipSource->getTooltipType().empty() ?
+                d_tooltipSource->getTooltipType() :
+                d_defaultTooltipType;
+
+            if (d_tooltipWindow->getType() != tooltipType)
+            {
+                hideTooltip(true);
+                showTooltip(true);
+            }
         }
     }
-    */
+    else if (d_tooltipTimer >= d_tooltipHoverTime)
+    {
+        d_tooltipTimer = 0.f;
+        showTooltip(false);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -612,31 +594,26 @@ Window* GUIContext::getTargetWindow(const glm::vec2& pt, bool allow_disabled) co
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
         return nullptr;
 
-    Window* dest_window = d_captureWindow;
-
-    if (!dest_window)
+    Window* destWnd;
+    if (d_captureWindow)
     {
-        dest_window = d_rootWindow->getTargetChildAtPosition(pt, allow_disabled);
-        if (!dest_window)
-            dest_window = d_rootWindow;
+        destWnd = d_captureWindow;
+        if (destWnd->distributesCapturedInputs())
+            if (auto childWnd = destWnd->getTargetChildAtPosition(pt, allow_disabled))
+                destWnd = childWnd;
     }
     else
     {
-        if (dest_window->distributesCapturedInputs())
-        {
-            Window* child_window = dest_window->
-                getTargetChildAtPosition(pt, allow_disabled);
-
-            if (child_window)
-                dest_window = child_window;
-        }
+        destWnd = d_rootWindow->getTargetChildAtPosition(pt, allow_disabled);
+        if (!destWnd)
+            destWnd = d_rootWindow;
     }
 
     // modal target overrules
-    if (dest_window->isInHierarchyOf(d_modalWindow))
-        dest_window = d_modalWindow;
+    if (destWnd->isInHierarchyOf(d_modalWindow))
+        destWnd = d_modalWindow;
 
-    return dest_window;
+    return destWnd;
 }
 
 //----------------------------------------------------------------------------//
@@ -875,8 +852,8 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
     if (!window)
         return false;
 
-    //!!!FIXME TOOLTIP: or clear d_tooltipSource temporarily?
-    hideTooltip(true);
+    //!!!FIXME TOOLTIPS: or clear d_tooltipSource temporarily?
+    //hideTooltip(true);
 
     CursorInputEventArgs ciea(window);
     ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
@@ -897,8 +874,8 @@ bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
     if (!window)
         return false;
 
-    //!!!FIXME TOOLTIP: or restore d_tooltipSource?
-    showTooltip(true);
+    //!!!FIXME TOOLTIPS: or restore d_tooltipSource?
+    //showTooltip(true);
 
     CursorInputEventArgs ciea(window);
     ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
@@ -1011,10 +988,11 @@ bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
     if (!getWindowContainingCursor())
         return false;
 
-	// this is an old behaviour, let's keep it for now
+	// resetting the timer is an old behaviour, let's keep it for now
     d_tooltipTimer = 0.f;
 
-    //???!!!TODO TOOLTIPS: do need to always positionTooltip() here if it is visible?
+    //???!!!TODO TOOLTIPS: do need this?
+    //positionTooltip();
 
     // make cursor position sane for this target window
     ciea.position = getWindowContainingCursor()->getUnprojectedPosition(ciea.position);

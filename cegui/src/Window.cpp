@@ -1522,7 +1522,7 @@ const String& Window::getTooltipTextIncludingInheritance() const
     const Window* current = this;
     do
     {
-        if (!d_inheritsTooltipText || !d_parent || !d_tooltipText.empty())
+        if (!current->d_inheritsTooltipText || !current->d_parent || !current->d_tooltipText.empty())
             return current->d_tooltipText;
 
         current = current->getParent();
