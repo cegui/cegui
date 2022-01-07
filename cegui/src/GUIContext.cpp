@@ -77,20 +77,14 @@ void GUIContext::setRootWindow(Window* new_root)
     if (d_rootWindow == new_root)
         return;
 
-	//???TODO TOOLTIPS: need this block or will be handled when detaching the root?
-	hideTooltip(true);
-    d_tooltipSource = nullptr;
-    releaseInputCapture();
-    d_modalWindow = nullptr;
-
-    if (d_rootWindow)
-        d_rootWindow->attachToGUIContext(nullptr);
-
     // Remember previous root for the event
     WindowEventArgs args(d_rootWindow);
 
-    d_rootWindow = new_root;
+    // NB: all tracked windows will be cleared by onWindowDetached
+    if (d_rootWindow)
+        d_rootWindow->attachToGUIContext(nullptr);
 
+    d_rootWindow = new_root;
 	d_windowContainingCursorIsUpToDate = false;
 
     if (d_rootWindow)
@@ -540,7 +534,7 @@ void GUIContext::positionTooltip()
 //----------------------------------------------------------------------------//
 void GUIContext::updateTooltipState(float timeElapsed)
 {
-    //???TODO TOOLTIPS: allow nonstandard tooltips to be shown without text? let them fill themselves
+    // TODO: allow creating nonstandard tooltips without specifying the text?
     const bool needTooltip = d_tooltipSource &&
         d_tooltipSource->isTooltipEnabled() &&
         !d_tooltipSource->getTooltipTextIncludingInheritance().empty();
@@ -555,7 +549,11 @@ void GUIContext::updateTooltipState(float timeElapsed)
     d_tooltipTimer += timeElapsed;
     if (d_tooltipWindow)
     {
-        //???!!!TODO TOOLTIPS: add d_tooltipDisplayTime calc from text?! avgTextReadingTime(lang, text)
+        // Don't update while hidden, e.g. by holding the mouse button
+        if (!d_tooltipWindow->isVisible())
+            return;
+
+        // TODO: add an option to calculate d_tooltipDisplayTime from text? avgTextReadingTime(lang, text)
         if (d_tooltipTimer >= d_tooltipDisplayTime)
         {
             hideTooltip(false);
@@ -848,9 +846,8 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
     if (!window)
         return false;
 
-    //!!!FIXME TOOLTIPS: or clear d_tooltipSource temporarily?
-    //!!!stop counting the time, don't hide by timer!
-    //hideTooltip(true);
+    if (d_tooltipWindow)
+        d_tooltipWindow->hide(); //!!!TODO TOOLTIPS: forced!
 
     CursorInputEventArgs ciea(window);
     ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
@@ -871,9 +868,11 @@ bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
     if (!window)
         return false;
 
-    //!!!FIXME TOOLTIPS: or restore d_tooltipSource?
-    //???!!!reset timer?!
-    //showTooltip(true);
+    if (d_tooltipWindow)
+    {
+        d_tooltipWindow->show(); //!!!TODO TOOLTIPS: forced!
+        d_tooltipTimer = 0.f;
+    }
 
     CursorInputEventArgs ciea(window);
     ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
@@ -988,9 +987,8 @@ bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
 
 	// resetting the timer is an old behaviour, let's keep it for now
     d_tooltipTimer = 0.f;
-
-    //???!!!TODO TOOLTIPS: do need this?
-    //positionTooltip();
+    if (d_tooltipFollowsCursor)
+        positionTooltip();
 
     // make cursor position sane for this target window
     ciea.position = getWindowContainingCursor()->getUnprojectedPosition(ciea.position);
