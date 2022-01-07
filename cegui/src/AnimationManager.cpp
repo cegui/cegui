@@ -102,11 +102,8 @@ AnimationManager::~AnimationManager()
     d_interpolators.clear();
 
     // we only destroy inbuilt interpolators
-    for (BasicInterpolatorList::const_iterator it = d_basicInterpolators.begin();
-         it != d_basicInterpolators.end(); ++it)
-    {
-        delete *it;
-    }
+    for (Interpolator* i : d_basicInterpolators)
+        delete i;
 
     d_basicInterpolators.clear();
 
@@ -132,7 +129,7 @@ void AnimationManager::addInterpolator(Interpolator* interpolator)
 //----------------------------------------------------------------------------//
 void AnimationManager::removeInterpolator(Interpolator* interpolator)
 {
-    InterpolatorMap::iterator it = d_interpolators.find(interpolator->getType());
+    auto it = d_interpolators.find(interpolator->getType());
 
     if (it == d_interpolators.end())
     {
@@ -146,7 +143,7 @@ void AnimationManager::removeInterpolator(Interpolator* interpolator)
 //----------------------------------------------------------------------------//
 Interpolator* AnimationManager::getInterpolator(const String& type) const
 {
-    InterpolatorMap::const_iterator it = d_interpolators.find(type);
+    auto it = d_interpolators.find(type);
 
     if (it == d_interpolators.end())
     {
@@ -183,7 +180,7 @@ void AnimationManager::destroyAnimation(Animation* animation)
 //----------------------------------------------------------------------------//
 void AnimationManager::destroyAnimation(const String& name)
 {
-    AnimationMap::iterator it = d_animations.find(name);
+    auto it = d_animations.find(name);
 
     if (it == d_animations.end())
     {
@@ -206,11 +203,8 @@ void AnimationManager::destroyAllAnimations()
     // animation that is being destroyed
     destroyAllAnimationInstances();
     
-    for (AnimationMap::const_iterator it = d_animations.begin();
-         it != d_animations.end(); ++it)
-    {
-        delete it->second;
-    }
+    for (const auto& pair : d_animations)
+        delete pair.second;
 
     d_animations.clear();
 }
@@ -218,7 +212,7 @@ void AnimationManager::destroyAllAnimations()
 //----------------------------------------------------------------------------//
 Animation* AnimationManager::getAnimation(const String& name) const
 {
-    AnimationMap::const_iterator it = d_animations.find(name);
+    auto it = d_animations.find(name);
 
     if (it == d_animations.end())
     {
@@ -243,7 +237,7 @@ Animation* AnimationManager::getAnimationAtIndex(size_t index) const
         throw InvalidRequestException("Out of bounds.");
     }
 
-    AnimationMap::const_iterator it = d_animations.begin();
+    auto it = d_animations.begin();
     std::advance(it, index);
 
     return it->second;
@@ -279,10 +273,8 @@ AnimationInstance* AnimationManager::instantiateAnimation(const String& name)
 //----------------------------------------------------------------------------//
 void AnimationManager::destroyAnimationInstance(AnimationInstance* instance)
 {
-    AnimationInstanceMap::iterator it =
-        d_animationInstances.find(instance->getDefinition());
-
-    for (; it != d_animationInstances.end(); ++it)
+    const auto range = d_animationInstances.equal_range(instance->getDefinition());
+    for (auto it = range.first; it != range.second; ++it)
     {
         if (it->second == instance)
         {
@@ -298,28 +290,17 @@ void AnimationManager::destroyAnimationInstance(AnimationInstance* instance)
 //----------------------------------------------------------------------------//
 void AnimationManager::destroyAllInstancesOfAnimation(Animation* animation)
 {
-    AnimationInstanceMap::iterator it = d_animationInstances.find(animation);
-
-    // the first instance of given animation is now it->second (if there is any)
-    while (it != d_animationInstances.end() && it->first == animation)
-    {
-        AnimationInstanceMap::iterator toErase = it;
-        ++it;
-
-        delete toErase->second;
-        d_animationInstances.erase(toErase);
-    }
+    const auto range = d_animationInstances.equal_range(animation);
+    for (auto it = range.first; it != range.second; ++it)
+        delete it->second;
+    d_animationInstances.erase(range.first, range.second);
 }
 
 //----------------------------------------------------------------------------//
 void AnimationManager::destroyAllAnimationInstances()
 {
-    for (AnimationInstanceMap::const_iterator it = d_animationInstances.begin();
-         it != d_animationInstances.end(); ++it)
-    {
-        delete it->second;
-    }
-
+    for (const auto& pair : d_animationInstances)
+        delete pair.second;
     d_animationInstances.clear();
 }
 
@@ -327,11 +308,9 @@ void AnimationManager::destroyAllAnimationInstances()
 AnimationInstance* AnimationManager::getAnimationInstanceAtIndex(size_t index) const
 {
     if (index >= d_animationInstances.size())
-    {
         throw InvalidRequestException("Out of bounds.");
-    }
 
-    AnimationInstanceMap::const_iterator it = d_animationInstances.begin();
+    auto it = d_animationInstances.begin();
     std::advance(it, index);
 
     return it->second;
@@ -346,12 +325,9 @@ size_t AnimationManager::getNumAnimationInstances() const
 //----------------------------------------------------------------------------//
 void AnimationManager::autoStepInstances(float delta)
 {
-    for (AnimationInstanceMap::const_iterator it = d_animationInstances.begin();
-         it != d_animationInstances.end(); ++it)
-    {
-    	if (it->second->isAutoSteppingEnabled())
-    		it->second->step(delta);
-    }
+    for (const auto& pair : d_animationInstances)
+    	if (pair.second->isAutoSteppingEnabled())
+            pair.second->step(delta);
 }
 
 //----------------------------------------------------------------------------//
