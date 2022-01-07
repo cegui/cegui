@@ -1905,20 +1905,33 @@ void Window::onTooltipTypeChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onTooltipTextChanged(WindowEventArgs& e)
 {
+    // call this method for all children that inherit the tooltip text
+    const size_t childCount = getChildCount();
+    for (size_t i = 0; i < childCount; ++i)
+    {
+        Window* child = getChildAtIndex(i);
+        if (child->d_inheritsTooltipText && child->d_tooltipText.empty())
+        {
+            WindowEventArgs args(child);
+            child->onTooltipTextChanged(args);
+        }
+    }
+
     fireEvent(EventTooltipTextChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 void Window::onAlphaChanged(WindowEventArgs& e)
 {
-    // scan child list and call this method for all children that inherit alpha
-    const size_t child_count = getChildCount();
-    for (size_t i = 0; i < child_count; ++i)
+    // call this method for all children that inherit alpha
+    const size_t childCount = getChildCount();
+    for (size_t i = 0; i < childCount; ++i)
     {
-        if (getChildAtIndex(i)->inheritsAlpha())
+        Window* child = getChildAtIndex(i);
+        if (child->inheritsAlpha())
         {
-            WindowEventArgs args(getChildAtIndex(i));
-            getChildAtIndex(i)->onAlphaChanged(args);
+            WindowEventArgs args(child);
+            child->onAlphaChanged(args);
         }
     }
 
