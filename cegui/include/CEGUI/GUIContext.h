@@ -251,6 +251,9 @@ public:
     */
     void setTooltipDisplayTime(float seconds) { d_tooltipDisplayTime = seconds; }
 
+    //! \brief Controls whether the tooltip will follow the cursor
+    void setTooltipFollowsCursor(bool value) { d_tooltipFollowsCursor = value; }
+
     void onWindowDetached(Window* window);
 
 protected:
@@ -324,6 +327,7 @@ protected:
     std::map<SemanticValue, SlotFunctorBase<InputEvent>*> d_semanticEventHandlers;
 
     bool d_windowContainingCursorIsUpToDate = true;
+    bool d_tooltipFollowsCursor = false;
 };
 
 }
