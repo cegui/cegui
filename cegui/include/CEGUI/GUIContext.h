@@ -264,8 +264,10 @@ protected:
                                void (Window::*func)(CursorInputEventArgs&),
                                CursorInputEventArgs& args) const;
 
-    void showTooltip();
+    void showTooltip(bool force);
     void hideTooltip(bool force);
+    void positionTooltip();
+    void updateTooltipState(float timeElapsed);
 
     bool areaChangedHandler(const EventArgs& args);
 
@@ -298,6 +300,7 @@ protected:
     Window* d_captureWindow = nullptr;
     Window* d_oldCaptureWindow = nullptr;
     Window* d_tooltipWindow = nullptr;
+    Window* d_tooltipSource = nullptr;
     WindowNavigator* d_windowNavigator = nullptr;
 
     Font* d_defaultFont = nullptr;
@@ -330,4 +333,3 @@ protected:
 #endif
 
 #endif
-

@@ -55,16 +55,13 @@ public:
 \brief
     Base class for Tooltip widgets.
 
-    The Tooltip class shows a simple pop-up window around the cursor position
-    with some text information.  The tool-tip fades in when the user hovers
-    with the cursor over a window which has tool-tip text set, and then fades
-    out after some pre-set time.
+    This is a simple window that adjust its size to the text.
 
 \note
-    For Tooltip to work properly, you must specify a default tool-tip widget
-    type via System::setTooltip, or by setting a custom tool-tip object for
-    your Window(s).  Additionally, you need to ensure that time pulses are
-    properly passed to the system via System::injectTimePulse.
+    For tooltips to work properly, you must specify a default tooltip widget type
+    via GUIContext::setDefaultTooltipType and/or by setting custom tooltip types
+    for your Windows. Additionally, you need to ensure that time pulses are
+    properly passed to the context via GUIContext::injectTimePulse.
 */
 class CEGUIEXPORT Tooltip : public Window
 {
@@ -73,9 +70,6 @@ public:
     static const String WidgetTypeName; //!< Window factory name
 
     Tooltip(const String& type, const String& name);
-
-    //! \brief Causes the tooltip to position itself appropriately.
-    void positionSelf();
 
     //! \brief Causes the tooltip to resize itself appropriately.
     void sizeSelf();
@@ -103,10 +97,7 @@ public:
 protected:
 
     bool validateWindowRenderer(const WindowRenderer* renderer) const override;
-    void onCursorEnters(CursorInputEventArgs& e) override;
     void onTextChanged(WindowEventArgs& e) override;
-
-    bool d_inPositionSelf = false;
 };
 
 }

@@ -408,38 +408,11 @@ void ItemView::onCursorMove(CursorInputEventArgs& e)
     if (!d_isItemTooltipsEnabled || !d_itemModel)
         return;
 
-    static ModelIndex last_model_index;
-
     ModelIndex index = indexAt(e.position);
-    if (d_itemModel->areIndicesEqual(index, last_model_index))
+    if (d_itemModel->areIndicesEqual(index, d_lastHoveredIndex))
         return;
 
-    Tooltip* tooltip = getTooltip();
-    if (!tooltip)
-        return;
-
-    if (tooltip->getTargetWindow() != this)
-        tooltip->setTargetWindow(this);
-    else
-        tooltip->positionSelf();
-
-    /* tooltip->setTargetWindow(wnd):
-
-    if (wnd == d_target || wnd == this || (wnd && !wnd->getGUIContextPtr()))
-        return;
-
-    d_target = wnd;
-
-    // All necessary checks are performed inside addChild
-    if (wnd)
-        wnd->getGUIContextPtr()->getRootWindow()->addChild(this);
-
-    // Refresh already active tooltip immediately
-    if (d_activeState)
-        switchToActiveState();
-    */
-
-    last_model_index = index;
+    d_lastHoveredIndex = index;
 
     setTooltipText(d_itemModel->isValidIndex(index) ? d_itemModel->getData(index, ItemDataRole::Tooltip) : "");
 }

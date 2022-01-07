@@ -3367,6 +3367,9 @@ GUIContext& Window::getGUIContext() const
 //----------------------------------------------------------------------------//
 void Window::setGUIContextRecursively(GUIContext* context)
 {
+    // NB: we don't check d_guiContext != context here because it is impossible
+    // in the current logic. Be careful not to break this. Better not call this
+    // method by yourself. Most likely it is never what you really need.
     if (d_guiContext)
         d_guiContext->onWindowDetached(this);
 
