@@ -30,7 +30,7 @@
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/FontManager.h"
-#include "CEGUI/widgets/Tooltip.h"
+#include "CEGUI/Window.h"
 #include "CEGUI/WindowNavigator.h"
 
 namespace CEGUI
@@ -188,7 +188,7 @@ Window* GUIContext::getOrCreateTooltipObject(const String& type)
     tooltip->setAlwaysOnTop(true);
     tooltip->setCursorPassThroughEnabled(true);
     tooltip->setUpdateMode(WindowUpdateMode::Always);
-    tooltip->hide();
+    tooltip->hide(true);
 
     d_tooltips.emplace(type, tooltip);
     return tooltip;
@@ -450,12 +450,7 @@ void GUIContext::showTooltip(bool force)
     }
     else
     {
-        //!!!TODO TOOLTIPS: show and hide must break previous animation and ensure that each event happens once!
-        //if (force)
-            d_tooltipWindow->show();
-        //else
-        //    assert(false);
-
+        d_tooltipWindow->show(force);
         fireEvent(EventTooltipActive, args, EventNamespace);
     }
 }
@@ -466,34 +461,33 @@ void GUIContext::hideTooltip(bool force)
     if (!d_tooltipWindow)
         return;
 
+    // Prevent repeated hiding
+    auto tooltipWnd = d_tooltipWindow;
+    d_tooltipWindow = nullptr;
+
     d_tooltipEventConnections.clear();
 
     // Wait until the optional tooltip window hide animation is finished. Subscribe before hide()!
-    d_tooltipEventConnections.push_back(d_tooltipWindow->subscribeEvent(
+    d_tooltipEventConnections.push_back(tooltipWnd->subscribeEvent(
         Window::EventHidden, [this](const EventArgs& args)
     {
         d_tooltipEventConnections.clear();
 
-        if (d_tooltipWindow)
+        if (auto wnd = static_cast<const WindowEventArgs&>(args).window)
         {
             // Context fields will be cleared in removeChild -> onWindowDetached
-            if (d_tooltipWindow->getParent())
-                d_tooltipWindow->getParent()->removeChild(d_tooltipWindow);
+            if (wnd->getParent())
+                wnd->getParent()->removeChild(wnd);
 
             // NB: resetting a text is important for triggering auto-sizing for certain tooltip widgets.
             // If we had kept the text, it may match the next one and EventTextChanged wouldn't happen.
-            d_tooltipWindow->setText("");
-            d_tooltipWindow = nullptr;
+            wnd->setText("");
         }
     }));
 
-    //!!!TODO TOOLTIPS: show and hide must break previous animation and ensure that each event happens once!
-    //if (force)
-        d_tooltipWindow->hide();
-    //else
-    //    assert(false);
+    tooltipWnd->hide(force);
 
-    WindowEventArgs args(d_tooltipWindow);
+    WindowEventArgs args(tooltipWnd);
     fireEvent(EventTooltipInactive, args, EventNamespace);
 }
 
@@ -846,7 +840,7 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
         return false;
 
     if (d_tooltipWindow)
-        d_tooltipWindow->hide(); //!!!TODO TOOLTIPS: forced!
+        d_tooltipWindow->hide(true);
 
     CursorInputEventArgs ciea(window);
     ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
@@ -869,7 +863,7 @@ bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
 
     if (d_tooltipWindow)
     {
-        d_tooltipWindow->show(); //!!!TODO TOOLTIPS: forced!
+        d_tooltipWindow->show(true);
         d_tooltipTimer = 0.f;
     }
 

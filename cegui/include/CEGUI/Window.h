@@ -1495,7 +1495,7 @@ public:
         become the active window (call Window::activate after making the window
         visible to activate it).
     */
-    void setVisible(bool setting);
+    void setVisible(bool setting, bool force = false);
 
     /*!
     \brief
@@ -1506,7 +1506,7 @@ public:
         want the window to also become active you will need to call the
         Window::activate member also.
     */
-    void show() { setVisible(true); }
+    void show(bool force = false) { setVisible(true, force); }
 
     /*!
     \brief
@@ -1515,7 +1515,12 @@ public:
         If the window is the active window, it will become deactivated as a
         result of being hidden.
     */
-    void hide() { setVisible(false); }
+    void hide(bool force = false) { setVisible(false, force); }
+
+    void setShowAnimationName(const String& animName);
+    const String& getShowAnimationName() const { return d_showAnimName; }
+    void setHideAnimationName(const String& animName);
+    const String& getHideAnimationName() const { return d_hideAnimName; }
 
     /*!
     \brief
@@ -3510,6 +3515,8 @@ protected:
     //! connection for event listener for font render size changes.
     Event::ScopedConnection d_fontRenderSizeChangeConnection;
 
+    Event::ScopedConnection d_visibilityAnimEndConnection;
+
     //! outer area clipping rect in screen pixels
     mutable Rectf d_outerRectClipper = Rectf(0.f, 0.f, 0.f, 0.f);
     //! inner area clipping rect in screen pixels
@@ -3566,6 +3573,9 @@ protected:
     String d_tooltipType;
     //! Text string used as tooltip for this window.
     String d_tooltipText;
+
+    String d_showAnimName;
+    String d_hideAnimName;
 
     //! true when this window is an auto-window
     bool d_autoWindow : 1;
@@ -3652,8 +3662,11 @@ protected:
 
 private:
 
-    // For property
+    // For properties
     void setDisabled(bool value) { setEnabled(!value); }
+    void setVisibleForced(bool value) { setVisible(value, true); }
+
+    void performVisibilityChange(bool setting);
 
     void setGUIContextRecursively(GUIContext* context);
     void attachToGUIContext(GUIContext* context);

@@ -29,7 +29,6 @@
 #include "CEGUI/views/ItemView.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/GUIContext.h"
-#include "CEGUI/widgets/Tooltip.h"
 #include "CEGUI/widgets/Scrollbar.h"
 
 namespace CEGUI

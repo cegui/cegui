@@ -79,15 +79,15 @@ public:
 
     //! fired when animation instance starts
     static const String EventAnimationStarted;
-    //! fired when animation instance stops
+    //! fired when animation instance is aborted manually or ended in PlayOnce mode
     static const String EventAnimationStopped;
     //! fired when animation instance pauses
     static const String EventAnimationPaused;
     //! fired when animation instance unpauses
     static const String EventAnimationUnpaused;
-    //! fired when animation instance finishes
+    //! fired when animation instance is manually fast-forwarded to the end
     static const String EventAnimationFinished;
-    //! fired when animation instance ends
+    //! fired when animation instance ends playing in PlayOnce mode or due to zero duration
     static const String EventAnimationEnded;
     //! fired when animation instance loops
     static const String EventAnimationLooped;
