@@ -157,44 +157,6 @@ void GUIContext::releaseInputCapture(bool allowRestoreOld, Window* exactWindow)
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIContext::getTooltipObject(const String& type) const
-{
-    auto it = d_tooltips.find(type);
-    return (it == d_tooltips.cend()) ? nullptr : it->second;
-}
-
-//----------------------------------------------------------------------------//
-Window* GUIContext::getOrCreateTooltipObject(const String& type)
-{
-    if (type.empty())
-        return nullptr;
-
-    if (auto tooltip = getTooltipObject(type))
-        return tooltip;
-
-    if (WindowManager::getSingleton().isLocked())
-        return nullptr;
-
-    Window* tooltip = WindowManager::getSingleton().createWindow(
-        type, "__auto_tooltip__" + type);
-
-    if (!tooltip)
-        return nullptr;
-
-    tooltip->setAutoWindow(true);
-    tooltip->setWritingXMLAllowed(false);
-    tooltip->setClippedByParent(false);
-    tooltip->setDestroyedByParent(false);
-    tooltip->setAlwaysOnTop(true);
-    tooltip->setCursorPassThroughEnabled(true);
-    tooltip->setUpdateMode(WindowUpdateMode::Always);
-    tooltip->hide(true);
-
-    d_tooltips.emplace(type, tooltip);
-    return tooltip;
-}
-
-//----------------------------------------------------------------------------//
 void GUIContext::setModalWindow(Window* window)
 {
     d_modalWindow = window;
@@ -391,6 +353,43 @@ void GUIContext::notifyCursorTransition(Window* top, Window* bottom,
     args.window = bottom;
 
     (bottom->*func)(args);
+}
+
+//----------------------------------------------------------------------------//
+Window* GUIContext::getTooltipObject(const String& type) const
+{
+    auto it = d_tooltips.find(type);
+    return (it == d_tooltips.cend()) ? nullptr : it->second;
+}
+
+//----------------------------------------------------------------------------//
+Window* GUIContext::getOrCreateTooltipObject(const String& type)
+{
+    if (type.empty())
+        return nullptr;
+
+    if (auto tooltip = getTooltipObject(type))
+        return tooltip;
+
+    if (WindowManager::getSingleton().isLocked())
+        return nullptr;
+
+    Window* tooltip = WindowManager::getSingleton().createWindow(
+        type, "__auto_tooltip__" + type);
+
+    if (!tooltip)
+        return nullptr;
+
+    tooltip->setAutoWindow(true);
+    tooltip->setWritingXMLAllowed(false);
+    tooltip->setClippedByParent(false);
+    tooltip->setDestroyedByParent(false);
+    tooltip->setAlwaysOnTop(true);
+    tooltip->setCursorPassThroughEnabled(true);
+    tooltip->hide(true);
+
+    d_tooltips.emplace(type, tooltip);
+    return tooltip;
 }
 
 //----------------------------------------------------------------------------//

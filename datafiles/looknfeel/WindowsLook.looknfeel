@@ -4824,8 +4824,9 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Tooltip">
-        <Property name="Alpha" value="0" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
+        <Property name="ShowAnimation" value="WindowsLook/Tooltip/FadeIn" />
+        <Property name="HideAnimation" value="WindowsLook/Tooltip/FadeOut" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -4908,23 +4909,18 @@
                 <Section section="label"/>
             </Layer>
         </StateImagery>
-        <AnimationDefinition duration="0.33" replayMode="once" name="FadeIn">
-            <Affector interpolator="float" property="Alpha">
-                <KeyFrame position="0" sourceProperty="Alpha"/>
-                <KeyFrame position="0.33" progression="linear" value="1"/>
+        <AnimationDefinition name="FadeIn" duration="0.33" replayMode="once">
+            <Affector property="Alpha" interpolator="float">
+                <KeyFrame position="0" value="0" />
+                <KeyFrame position="0.33" value="1" progression="linear" />
             </Affector>
-            <Subscription action="Start" event="TooltipActive"/>
         </AnimationDefinition>
-        <AnimationDefinition duration="0.33" replayMode="once" name="FadeOut">
-            <Affector interpolator="float" property="Alpha">
-                <KeyFrame position="0" sourceProperty="Alpha"/>
-                <KeyFrame position="0.33" progression="linear" value="0"/>
+
+        <AnimationDefinition name="FadeOut" duration="0.33" replayMode="once">
+            <Affector property="Alpha" interpolator="float">
+                <KeyFrame position="0" sourceProperty="Alpha" />
+                <KeyFrame position="0.33" value="0" progression="linear" />
             </Affector>
-            <Affector interpolator="bool" property="Visible">
-                <KeyFrame position="0" sourceProperty="Visible"/>
-                <KeyFrame position="0.33" progression="discrete" value="false"/>
-            </Affector>
-            <Subscription action="Start" event="TooltipInactive"/>
         </AnimationDefinition>
     </WidgetLook>
 
