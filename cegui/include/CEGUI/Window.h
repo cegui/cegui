@@ -3253,7 +3253,7 @@ protected:
 
         Populates the Window's GeometryBuffer ready for rendering.
     */
-    virtual void populateGeometryBuffer()  {}
+    virtual void populateGeometryBuffer() {}
 
     /*!
     \brief
@@ -3304,38 +3304,22 @@ protected:
     //! helper to clean up the auto RenderingWindow surface
     void releaseRenderingWindow();
 
-    /*!
-    \brief
-        Cleanup child windows
-    */
+    //! \brief Cleanup child windows
     virtual void cleanupChildren();
 
-    /*!
-    \copydoc Element::addChild_impl
-    */
+    //! \copydoc Element::addChild_impl
     void addChild_impl(Element* element) override;
 
-    /*!
-    \copydoc Element::removeChild_impl
-    */
+    //! \copydoc Element::removeChild_impl
     void removeChild_impl(Element* element) override;
 
-    /*!
-    \brief
-        Notify 'this' and all siblings of a ZOrder change event
-    */
+    //! \brief Notify 'this' and all siblings of a ZOrder change event
     virtual void onZChange_impl();
 
-    /*!
-    \brief
-        Add standard CEGUI::Window properties.
-    */
+    //! \brief Add standard CEGUI::Window properties.
     void    addWindowProperties();
 
-    /*!
-    \brief
-        A helper function for internal activation logic.
-    */
+    //! \brief A helper function for internal activation logic.
     bool activate_impl(bool byClick);
 
     /*!
@@ -3654,9 +3638,7 @@ protected:
 #endif
 
 #ifdef CEGUI_USE_RAQM
-    /*! Stores whether raqm text is up-to-date or if the logical text has changed since
-     the last update
-    */
+    //! Stores whether the logical text has changed since the last update of raqm data
     mutable bool d_raqmTextNeedsUpdate : 1;
 #endif
 
@@ -3666,7 +3648,7 @@ private:
     void setDisabled(bool value) { setEnabled(!value); }
     void setVisibleForced(bool value) { setVisible(value, true); }
 
-    void performVisibilityChange(bool setting);
+    void changeVisibility(bool setting);
 
     void setGUIContextRecursively(GUIContext* context);
     void attachToGUIContext(GUIContext* context);

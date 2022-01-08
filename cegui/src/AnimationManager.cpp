@@ -58,7 +58,7 @@ const String AnimationManager::GeneratedAnimationNameBase("__ceanim_uid_");
 /*************************************************************************
     Constructor
 *************************************************************************/
-AnimationManager::AnimationManager(void)
+AnimationManager::AnimationManager()
 {
     String addressStr = SharedStringstream::GetPointerAddressAsString(this);
 

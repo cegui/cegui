@@ -43,8 +43,7 @@
 namespace CEGUI
 {
 
-class CEGUIEXPORT AnimationManager :
-    public Singleton<AnimationManager>
+class CEGUIEXPORT AnimationManager : public Singleton<AnimationManager>
 {
 public:
     //! Name of the schema used for loading animation xml files.
@@ -62,7 +61,7 @@ public:
         to the GUI system's AnimationManager via the System object, and use
         that.
     */
-    AnimationManager(void);
+    AnimationManager();
 
 
     /*!
@@ -72,7 +71,7 @@ public:
         This will properly destroy all remaining AnimationInstance and Animation
         objects.
     */
-    ~AnimationManager(void);
+    ~AnimationManager() override;
 
     /*!
     \brief
