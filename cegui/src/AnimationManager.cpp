@@ -288,6 +288,23 @@ void AnimationManager::destroyAnimationInstance(AnimationInstance* instance)
 }
 
 //----------------------------------------------------------------------------//
+void AnimationManager::destroyAnimationInstances(PropertySet* target)
+{
+    for (auto it = d_animationInstances.begin(); it != d_animationInstances.end(); /**/)
+    {
+        if (it->second->getTarget() == target)
+        {
+            delete it->second;
+            it = d_animationInstances.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
 void AnimationManager::destroyAllInstancesOfAnimation(Animation* animation)
 {
     const auto range = d_animationInstances.equal_range(animation);
@@ -314,6 +331,20 @@ AnimationInstance* AnimationManager::getAnimationInstanceAtIndex(size_t index) c
     std::advance(it, index);
 
     return it->second;
+}
+
+//----------------------------------------------------------------------------//
+AnimationInstance* AnimationManager::getAnimationInstance(Animation* animation, PropertySet* target) const
+{
+    if (!animation || !target)
+        return nullptr;
+
+    const auto range = d_animationInstances.equal_range(animation);
+    for (auto it = range.first; it != range.second; ++it)
+        if (it->second->getTarget() == target)
+            return it->second;
+
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------//

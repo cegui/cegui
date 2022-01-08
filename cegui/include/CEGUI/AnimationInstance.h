@@ -39,9 +39,9 @@
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+class Animation;
 
 /*!
 \brief
@@ -70,7 +70,7 @@ public:
 \see
     Animation
 */
-class CEGUIEXPORT AnimationInstance
+class CEGUIEXPORT AnimationInstance final
 {
 public:
     //! Namespace for animation instance events
@@ -98,13 +98,13 @@ public:
     /** internal destructor, please use
      * AnimationManager::destroyAnimationInstance
      */
-    ~AnimationInstance(void);
+    ~AnimationInstance();
 
     /*!
     \brief
         Retrieves the animation definition that is used in this instance
     */
-    Animation* getDefinition() const;
+    Animation* getDefinition() const { return d_definition; }
 
     /*!
     \brief
@@ -117,7 +117,7 @@ public:
     \brief
         Retrieves the target property set
     */
-    PropertySet* getTarget() const;
+    PropertySet* getTarget() const { return d_target; }
 
     /*!
     \brief
@@ -125,13 +125,13 @@ public:
         happens to the playback of this animation - it starts, stops, pauses,
         unpauses, ends and loops
     */
-    void setEventReceiver(EventSet* receiver);
+    void setEventReceiver(EventSet* receiver) { d_eventReceiver = receiver; }
 
     /*!
     \brief
         Retrieves the event receiver
     */
-    EventSet* getEventReceiver() const;
+    EventSet* getEventReceiver() const { return d_eventReceiver; }
 
     /*!
     \brief
@@ -145,7 +145,7 @@ public:
     \brief
         Retrieves the event sender
     */
-    EventSet* getEventSender() const;
+    EventSet* getEventSender() const { return d_eventSender; }
 
     /*!
     \brief
@@ -165,7 +165,7 @@ public:
     \brief
         Retrieves current playback position
     */
-    float getPosition() const;
+    float getPosition() const { return d_position; }
 
     /*!
     \brief
@@ -178,13 +178,13 @@ public:
     \brief
         Retrieves current playback speed
     */
-    float getSpeed() const;
+    float getSpeed() const { return d_speed; }
 
     /*!
     \brief
         Controls whether the next time step is skipped
     */
-    void setSkipNextStep(bool skip);
+    void setSkipNextStep(bool skip) { d_skipNextStep = skip; }
 
     /*!
     \brief
@@ -194,7 +194,7 @@ public:
         If it was skipped already, this returns false as step resets
         it to false after it skips one step.
     */
-    bool getSkipNextStep() const;
+    bool getSkipNextStep() const { return d_skipNextStep; }
 
     /*!
     \brief
@@ -211,13 +211,13 @@ public:
         For example setMaxStepDeltaSkip(1.0f / 25.0f) ensures that if FPS drops
         below 25, the animation just stops progressing and waits till FPS raises.
     */
-    void setMaxStepDeltaSkip(float maxDelta);
+    void setMaxStepDeltaSkip(float maxDelta) { d_maxStepDeltaSkip = maxDelta; }
 
     /*!
     \brief
         Gets the max delta before step skipping occurs
     */
-    float getMaxStepDeltaSkip() const;
+    float getMaxStepDeltaSkip() const { return d_maxStepDeltaSkip; }
 
     /*!
     \brief
@@ -232,13 +232,13 @@ public:
         you should call setMaxStepDeltaClamp(1.0f / 60.0f). This essentially slows
         the animation down in case the FPS drops below 60.
     */
-    void setMaxStepDeltaClamp(float maxDelta);
+    void setMaxStepDeltaClamp(float maxDelta) { d_maxStepDeltaClamp = maxDelta; }
 
     /*!
     \brief
         Gets the max delta before step clamping occurs
     */
-    float getMaxStepDeltaClamp() const;
+    float getMaxStepDeltaClamp() const { return d_maxStepDeltaClamp; }
 
     /*!
     \brief
@@ -294,7 +294,7 @@ public:
         Returns true if this animation instance is currently unpaused,
         if it is stepping forward.
     */
-    bool isRunning() const;
+    bool isRunning() const { return d_running; }
 
     /*!
     \brief
@@ -304,13 +304,13 @@ public:
     	If auto stepping is enabled, CEGUI will step this animation instance forward
     	whenever CEGUI::System::injectTimePulse is called
      */
-    void setAutoSteppingEnabled(bool enabled);
+    void setAutoSteppingEnabled(bool enabled) { d_autoSteppingEnabled = enabled; }
 
     /*!
     \brief
     	Checks whether auto stepping is enabled
     */
-    bool isAutoSteppingEnabled() const;
+    bool isAutoSteppingEnabled() const { return d_autoSteppingEnabled; }
 
     /*!
     \brief
@@ -325,37 +325,37 @@ public:
     \brief
         handler that starts the animation instance
     */
-    bool handleStart(const CEGUI::EventArgs& e);
+    bool handleStart(const EventArgs& e);
 
     /*!
     \brief
         handler that stops the animation instance
     */
-    bool handleStop(const CEGUI::EventArgs& e);
+    bool handleStop(const EventArgs& e);
 
     /*!
     \brief
         handler that pauses the animation instance
     */
-    bool handlePause(const CEGUI::EventArgs& e);
+    bool handlePause(const EventArgs& e);
 
     /*!
     \brief
         handler that unpauses the animation instance
     */
-    bool handleUnpause(const CEGUI::EventArgs& e);
+    bool handleUnpause(const EventArgs& e);
 
     /*!
     \brief
         handler that toggles pause on this animation instance
     */
-    bool handleTogglePause(const CEGUI::EventArgs& e);
+    bool handleTogglePause(const EventArgs& e);
 
     /*!
     \brief
         handler that finishes the animation instance
     */
-    bool handleFinish(const CEGUI::EventArgs& e);
+    bool handleFinish(const EventArgs& e);
 
     /*!
     \brief
@@ -366,7 +366,7 @@ public:
     /** this purges all saved values forcing this class to gather new ones fresh
      * from the properties
      */
-    void purgeSavedPropertyValues(void);
+    void purgeSavedPropertyValues();
 
     /** retrieves saved value, if it isn't cached already, it retrieves it fresh
      * from the properties
@@ -422,43 +422,41 @@ private:
     Animation* d_definition;
 
     //! target property set, properties of this are affected by Affectors
-    PropertySet* d_target;
+    PropertySet* d_target = nullptr;
     //! event receiver, receives events about this animation instance
-    EventSet* d_eventReceiver;
+    EventSet* d_eventReceiver = nullptr;
     /** event sender, sends events and can control this animation instance if
      * there are any auto subscriptions
      */
-    EventSet* d_eventSender;
+    EventSet* d_eventSender = nullptr;
 
     /** position of this animation instance,
      * should always be higher or equal to 0.0 and lower or equal to duration of
      * animation definition
      */
-    float d_position;
+    float d_position = 0.f;
     //! playback speed, 1.0 means normal playback
-    float d_speed;
+    float d_speed = 1.f;
     //! needed for ReplayMode::BOUNCE mode, if true, we bounce backwards
-    bool d_bounceBackwards;
+    bool d_bounceBackwards = false;
     //! true if this animation is unpaused
-    bool d_running;
+    bool d_running = false;
     //! skip next update (true if the next update should be skipped entirely)
-    bool d_skipNextStep;
+    bool d_skipNextStep = false;
     //! skip the update if the step is larger than this value
-    float d_maxStepDeltaSkip;
+    float d_maxStepDeltaSkip = -1.f;
     //! always clamp step delta to this value
-    float d_maxStepDeltaClamp;
+    float d_maxStepDeltaClamp = -1.f;
     //! true if auto stepping is enabled
-    bool d_autoSteppingEnabled;
+    bool d_autoSteppingEnabled = true;
 
-    typedef std::map<String, String, std::less<String> > PropertyValueMap;
     /** cached saved values, used for relative application method
      *  and keyframe property source, see Affector and KeyFrame classes
      */
-    PropertyValueMap d_savedPropertyValues;
+    std::map<String, String> d_savedPropertyValues;
 
-    typedef std::vector<Event::Connection> ConnectionTracker;
     //! tracks auto event connections we make.
-    ConnectionTracker d_autoConnections;
+    std::vector<Event::Connection> d_autoConnections;
 };
 
 } // End of  CEGUI namespace section
