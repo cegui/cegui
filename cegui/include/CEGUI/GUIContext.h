@@ -240,7 +240,7 @@ public:
     /*!
     \brief
         Return the number of seconds the tooltip should be displayed for before it automatically
-        de-activates itself.  0 indicates that the tooltip never timeout and auto-deactivates.
+        de-activates itself. 0 indicates that the tooltip never timeout and auto-deactivates.
     */
     float getTooltipDisplayTime() const { return d_tooltipDisplayTime; }
 
@@ -253,6 +253,9 @@ public:
 
     //! \brief Controls whether the tooltip will follow the cursor
     void setTooltipFollowsCursor(bool value) { d_tooltipFollowsCursor = value; }
+
+    //! \brief Immediately updates a tooltip position according to the cursor
+    void positionTooltip();
 
     void onWindowDetached(Window* window);
 
@@ -269,7 +272,6 @@ protected:
 
     void showTooltip(bool force);
     void hideTooltip(bool force);
-    void positionTooltip();
     void updateTooltipState(float timeElapsed);
 
     bool areaChangedHandler(const EventArgs& args);

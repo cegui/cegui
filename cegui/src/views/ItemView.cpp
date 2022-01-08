@@ -415,9 +415,13 @@ void ItemView::onCursorMove(CursorInputEventArgs& e)
     d_lastHoveredIndex = index;
 
     setTooltipText(d_itemModel->isValidIndex(index) ? d_itemModel->getData(index, ItemDataRole::Tooltip) : "");
+
+    if (d_guiContext)
+        d_guiContext->positionTooltip();
 }
 
-static void disconnectIfNotNull(Event::Connection& connection)
+//----------------------------------------------------------------------------//
+static inline void disconnectIfNotNull(Event::Connection& connection)
 {
     if (connection)
         connection->disconnect();
