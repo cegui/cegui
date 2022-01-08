@@ -175,29 +175,32 @@ public:
     */
     AnimationInstance* instantiateAnimation(const String& name);
 
-    /*!
-    \brief
-        Destroys given animation instance
-    */
+    //! \brief Destroys given animation instance
     void destroyAnimationInstance(AnimationInstance* instance);
 
-    /*!
-    \brief
-        Destroys all instances of given animation
-    */
+    //! \brief Destroys all instances targeted at the given object
+    void destroyAnimationInstances(PropertySet* target);
+
+    //! \brief Destroys all instances of given animation
     void destroyAllInstancesOfAnimation(Animation* animation);
-    
+
     /*!
     \brief
         Destroys all instances of all animations
     */
     void destroyAllAnimationInstances();
 
-    /*!
-    \brief
-        Retrieves animation instance at given index
-    */
+    //! \brief Retrieves animation instance at given index
     AnimationInstance* getAnimationInstanceAtIndex(size_t index) const;
+
+    //! \brief Retrieves animation instance for the given target
+    AnimationInstance* getAnimationInstance(Animation* animation, PropertySet* target) const;
+
+    //! \overload
+    AnimationInstance* getAnimationInstance(const String& animName, PropertySet* target) const
+    {
+        return animName.empty() ? nullptr : getAnimationInstance(getAnimation(animName), target);
+    }
 
     /*!
     \brief

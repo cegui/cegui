@@ -32,7 +32,6 @@
 #include "CEGUI/Window.h"
 #include "CEGUI/Logger.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
@@ -49,37 +48,17 @@ const String AnimationInstance::EventAnimationLooped("AnimationLooped");
 
 //----------------------------------------------------------------------------//
 AnimationInstance::AnimationInstance(Animation* definition):
-    d_definition(definition),
-
-    d_target(nullptr),
-    d_eventReceiver(nullptr),
-    d_eventSender(nullptr),
-
-    d_position(0.0),
-    d_speed(1.0),
-    d_bounceBackwards(false),
-    d_running(false),
-    d_skipNextStep(false),
-    // default behaviour is to never skip
-    d_maxStepDeltaSkip(-1.0f),
-    // default behaviour is to never clamp
-    d_maxStepDeltaClamp(-1.0f),
-    d_autoSteppingEnabled(true)
+    d_definition(definition)
 {}
 
 //----------------------------------------------------------------------------//
-AnimationInstance::~AnimationInstance(void)
+AnimationInstance::~AnimationInstance()
 {
-    if (d_eventSender)
-    {
-        d_definition->autoUnsubscribe(this);
-    }
-}
+    if (d_running)
+        stop();
 
-//----------------------------------------------------------------------------//
-Animation* AnimationInstance::getDefinition() const
-{
-    return d_definition;
+    if (d_eventSender)
+        d_definition->autoUnsubscribe(this);
 }
 
 //----------------------------------------------------------------------------//
@@ -90,49 +69,19 @@ void AnimationInstance::setTarget(PropertySet* target)
     purgeSavedPropertyValues();
 
     if (d_definition->getAutoStart() && !isRunning())
-    {
         start();
-    }
-}
-
-//----------------------------------------------------------------------------//
-PropertySet* AnimationInstance::getTarget() const
-{
-    return d_target;
-}
-
-//----------------------------------------------------------------------------//
-void AnimationInstance::setEventReceiver(EventSet* receiver)
-{
-    d_eventReceiver = receiver;
-}
-
-//----------------------------------------------------------------------------//
-EventSet* AnimationInstance::getEventReceiver() const
-{
-    return d_eventReceiver;
 }
 
 //----------------------------------------------------------------------------//
 void AnimationInstance::setEventSender(EventSet* sender)
 {
     if (d_eventSender)
-    {
         d_definition->autoUnsubscribe(this);
-    }
 
     d_eventSender = sender;
 
     if (d_eventSender)
-    {
         d_definition->autoSubscribe(this);
-    }
-}
-
-//----------------------------------------------------------------------------//
-EventSet* AnimationInstance::getEventSender() const
-{
-    return d_eventSender;
 }
 
 //----------------------------------------------------------------------------//
@@ -158,12 +107,6 @@ void AnimationInstance::setPosition(float position)
 }
 
 //----------------------------------------------------------------------------//
-float AnimationInstance::getPosition() const
-{
-    return d_position;
-}
-
-//----------------------------------------------------------------------------//
 void AnimationInstance::setSpeed(float speed)
 {
     // first sort out the adventurous users
@@ -185,48 +128,6 @@ void AnimationInstance::setSpeed(float speed)
 }
 
 //----------------------------------------------------------------------------//
-float AnimationInstance::getSpeed() const
-{
-    return d_speed;
-}
-
-//----------------------------------------------------------------------------//
-void AnimationInstance::setSkipNextStep(bool skip)
-{
-    d_skipNextStep = skip;
-}
-
-//----------------------------------------------------------------------------//
-bool AnimationInstance::getSkipNextStep() const
-{
-    return d_skipNextStep;
-}
-
-//----------------------------------------------------------------------------//
-void AnimationInstance::setMaxStepDeltaSkip(float maxDelta)
-{
-    d_maxStepDeltaSkip = maxDelta;
-}
-
-//----------------------------------------------------------------------------//
-float AnimationInstance::getMaxStepDeltaSkip() const
-{
-    return d_maxStepDeltaSkip;
-}
-
-//----------------------------------------------------------------------------//
-void AnimationInstance::setMaxStepDeltaClamp(float maxDelta)
-{
-    d_maxStepDeltaClamp = maxDelta;
-}
-
-//----------------------------------------------------------------------------//
-float AnimationInstance::getMaxStepDeltaClamp() const
-{
-    return d_maxStepDeltaClamp;
-}
-
-//----------------------------------------------------------------------------//
 void AnimationInstance::start(bool skipNextStep)
 {
     setPosition(0.0);
@@ -241,7 +142,7 @@ void AnimationInstance::start(bool skipNextStep)
     {
         Logger::getSingleton().logEvent(
             "AnimationInstance::start - Starting an animation instance with "
-            "no animation definition or 0 duration has no effect!", LoggingLevel::Warning);
+            "no animation definition or 0 duration has no effect!", LoggingLevel::Informative);
         onAnimationStarted();
         onAnimationEnded();
     }
@@ -276,7 +177,7 @@ void AnimationInstance::unpause(bool skipNextStep)
     {
         Logger::getSingleton().logEvent(
             "AnimationInstance::unpause - Unpausing an animation instance with "
-            "no animation definition or 0 duration has no effect!", LoggingLevel::Warning);
+            "no animation definition or 0 duration has no effect!", LoggingLevel::Informative);
         onAnimationUnpaused();
         onAnimationEnded();
     }
@@ -285,14 +186,10 @@ void AnimationInstance::unpause(bool skipNextStep)
 //----------------------------------------------------------------------------//
 void AnimationInstance::togglePause(bool skipNextStep)
 {
-    if (isRunning())
-    {
+    if (d_running)
         pause();
-    }
     else
-    {
         unpause(skipNextStep);
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -307,24 +204,6 @@ void AnimationInstance::finish()
     d_running = false;
     setPosition(0.0);
     onAnimationFinished();
-}
-
-//----------------------------------------------------------------------------//
-bool AnimationInstance::isRunning() const
-{
-    return d_running;
-}
-
-//----------------------------------------------------------------------------//
-void AnimationInstance::setAutoSteppingEnabled(bool enabled)
-{
-    d_autoSteppingEnabled = enabled;
-}
-
-//----------------------------------------------------------------------------//
-bool AnimationInstance::isAutoSteppingEnabled() const
-{
-    return d_autoSteppingEnabled;
 }
 
 //----------------------------------------------------------------------------//
@@ -445,50 +324,44 @@ void AnimationInstance::step(float delta)
 }
 
 //----------------------------------------------------------------------------//
-bool AnimationInstance::handleStart(const CEGUI::EventArgs&)
+bool AnimationInstance::handleStart(const EventArgs&)
 {
     start();
-
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool AnimationInstance::handleStop(const CEGUI::EventArgs&)
+bool AnimationInstance::handleStop(const EventArgs&)
 {
     stop();
-
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool AnimationInstance::handlePause(const CEGUI::EventArgs&)
+bool AnimationInstance::handlePause(const EventArgs&)
 {
     pause();
-
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool AnimationInstance::handleUnpause(const CEGUI::EventArgs&)
+bool AnimationInstance::handleUnpause(const EventArgs&)
 {
     unpause();
-
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool AnimationInstance::handleTogglePause(const CEGUI::EventArgs&)
+bool AnimationInstance::handleTogglePause(const EventArgs&)
 {
     togglePause();
-
     return true;
 }
 
 //----------------------------------------------------------------------------//
-bool AnimationInstance::handleFinish(const CEGUI::EventArgs&)
+bool AnimationInstance::handleFinish(const EventArgs&)
 {
     finish();
-
     return true;
 }
 
@@ -496,12 +369,11 @@ bool AnimationInstance::handleFinish(const CEGUI::EventArgs&)
 void AnimationInstance::savePropertyValue(const String& propertyName)
 {
     assert(d_target);
-
     d_savedPropertyValues[propertyName] = d_target->getProperty(propertyName);
 }
 
 //----------------------------------------------------------------------------//
-void AnimationInstance::purgeSavedPropertyValues(void)
+void AnimationInstance::purgeSavedPropertyValues()
 {
     d_savedPropertyValues.clear();
 }
@@ -509,8 +381,7 @@ void AnimationInstance::purgeSavedPropertyValues(void)
 //----------------------------------------------------------------------------//
 const String& AnimationInstance::getSavedPropertyValue(const String& propertyName)
 {
-    PropertyValueMap::iterator it = d_savedPropertyValues.find(propertyName);
-
+    auto it = d_savedPropertyValues.find(propertyName);
     if (it == d_savedPropertyValues.end())
     {
         // even though we explicitly save all used property values when
@@ -533,12 +404,8 @@ void AnimationInstance::addAutoConnection(Event::Connection conn)
 //----------------------------------------------------------------------------//
 void AnimationInstance::unsubscribeAutoConnections()
 {
-    for (ConnectionTracker::iterator it = d_autoConnections.begin();
-         it != d_autoConnections.end(); ++it)
-    {
-        (*it)->disconnect();
-    }
-
+    for (auto& connection : d_autoConnections)
+        connection->disconnect();
     d_autoConnections.clear();
 }
 
@@ -546,9 +413,7 @@ void AnimationInstance::unsubscribeAutoConnections()
 void AnimationInstance::apply()
 {
     if (d_target)
-    {
         d_definition->apply(this);
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -624,7 +489,4 @@ void AnimationInstance::onAnimationLooped()
     }
 }
 
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section
-
+}

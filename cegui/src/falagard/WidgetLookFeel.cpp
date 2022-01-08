@@ -427,7 +427,7 @@ void WidgetLookFeel::cleanUpWidget(Window& widget) const
         widget.removeProperty((*pldi)->getPropertyName());
     }
 
-    // clean up animation instances assoicated wit the window.
+    // clean up animation instances assoicated with the window.
     const auto range = d_animationInstances.equal_range(&widget);
     for (auto it = range.first; it != range.second; ++it)
         AnimationManager::getSingleton().destroyAnimationInstance(it->second);
