@@ -740,68 +740,90 @@ bool Window::isEffectiveDisabled() const
 //----------------------------------------------------------------------------//
 void Window::setVisible(bool setting, bool force)
 {
-    //!!!if non-forced hiding in progress, need to handle that d_visible is true!
-    //!!!if any non-forced operation is in progress, the same forced one must overrule it!
-    //!!!4 states, 4 actions, need to build 4x4 outcome matrix!
+    //!!!if animation changed, need to handle it here! We can't find playing instance here because we don't know its name!
+    //!!!if LnF changed, need to handle playing animations too!
+    //!!!Don't forget to disconnect connection!
 
-    // TODO: profile if animations need caching in big layouts. Can store instances instead of
-    // string names and use dirty flags in set*AnimationName() to delay instance search.
+    // TODO: profile if animations need caching in big layouts
+    // TODO: getOrCreateAnimationInstance? Need to send Window as an argument.
     auto showAnimInst = AnimationManager::getSingleton().getAnimationInstance(d_showAnimName, this);
+    if (!showAnimInst && !d_showAnimName.empty())
+    {
+        showAnimInst = AnimationManager::getSingleton().instantiateAnimation(d_showAnimName);
+        if (showAnimInst)
+            showAnimInst->setTargetWindow(this);
+    }
+
     auto hideAnimInst = AnimationManager::getSingleton().getAnimationInstance(d_hideAnimName, this);
+    if (!hideAnimInst && !d_hideAnimName.empty())
+    {
+        hideAnimInst = AnimationManager::getSingleton().instantiateAnimation(d_hideAnimName);
+        if (hideAnimInst)
+            hideAnimInst->setTargetWindow(this);
+    }
 
-    if (d_visible == setting)
-        return;
-
+    // TODO: need events onStartShowing, onStartHiding?
     if (setting)
     {
-        //!!!interrupt hide anim, prevent from calling onHidden and don't call onShown then!
-
-        if (hideAnimInst && hideAnimInst->isRunning())
+        if (!d_visible)
+            changeVisibility(true);
+        else if (hideAnimInst && hideAnimInst->isRunning())
+        {
+            d_visibilityAnimEndConnection.disconnect();
             hideAnimInst->stop();
-
-        performVisibilityChange(true);
+        }
 
         if (showAnimInst)
         {
-            showAnimInst->start();
+            if (!showAnimInst->isRunning())
+                showAnimInst->start();
+
             if (force)
                 showAnimInst->setPosition(showAnimInst->getDefinition()->getDuration());
+
             showAnimInst->step(0.f); // Apply and a the same time allow to trigger animation end event synchronously
         }
     }
     else
     {
-        if (showAnimInst && showAnimInst->isRunning())
+        if (!d_visible)
+            return;
+        else if (showAnimInst && showAnimInst->isRunning())
             showAnimInst->stop();
 
         if (hideAnimInst)
         {
-            // FIXME: assignment of non-scoped connection must disconnect the previous connection!
-            d_visibilityAnimEndConnection.disconnect();
-            d_visibilityAnimEndConnection = subscribeEvent(AnimationInstance::EventAnimationEnded,
-                [this, hideAnimInst](const EventArgs& e)
+            if (!hideAnimInst->isRunning())
             {
-                if (static_cast<const AnimationEventArgs&>(e).instance == hideAnimInst)
+                // FIXME: assignment of non-scoped connection must disconnect the previous connection if not the same!
+                d_visibilityAnimEndConnection.disconnect();
+                d_visibilityAnimEndConnection = subscribeEvent(AnimationInstance::EventAnimationEnded,
+                    [this, hideAnimInst](const EventArgs& e)
                 {
-                    d_visibilityAnimEndConnection.disconnect();
-                    performVisibilityChange(false);
-                }
-            });
+                    if (static_cast<const AnimationEventArgs&>(e).instance == hideAnimInst)
+                    {
+                        d_visibilityAnimEndConnection.disconnect();
+                        changeVisibility(false);
+                    }
+                });
 
-            hideAnimInst->start();
+                hideAnimInst->start();
+            }
+
             if (force)
                 hideAnimInst->setPosition(hideAnimInst->getDefinition()->getDuration());
+
             hideAnimInst->step(0.f); // Apply and a the same time allow to trigger animation end event synchronously
         }
         else
         {
-            performVisibilityChange(false);
+            changeVisibility(false);
         }
     }
 }
 
 //----------------------------------------------------------------------------//
-void Window::performVisibilityChange(bool setting)
+void Window::changeVisibility(bool setting)
 {
     if (d_visible == setting)
         return;
