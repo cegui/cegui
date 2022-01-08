@@ -744,6 +744,7 @@ void Window::setVisible(bool setting, bool force)
     //!!!if LnF changed, need to handle playing animations too!
     //!!!Don't forget to disconnect connection!
 
+    // TODO: need events onStartShowing, onStartHiding?
     // TODO: profile if animations need caching in big layouts
     // TODO: getOrCreateAnimationInstance? Need to send Window as an argument.
     auto showAnimInst = AnimationManager::getSingleton().getAnimationInstance(d_showAnimName, this);
@@ -762,7 +763,7 @@ void Window::setVisible(bool setting, bool force)
             hideAnimInst->setTargetWindow(this);
     }
 
-    // TODO: need events onStartShowing, onStartHiding?
+    AnimationInstance* animToPlay = nullptr;
     if (setting)
     {
         if (!d_visible)
@@ -774,15 +775,7 @@ void Window::setVisible(bool setting, bool force)
         }
 
         if (showAnimInst)
-        {
-            if (!showAnimInst->isRunning())
-                showAnimInst->start();
-
-            if (force)
-                showAnimInst->setPosition(showAnimInst->getDefinition()->getDuration());
-
-            showAnimInst->step(0.f); // Apply and a the same time allow to trigger animation end event synchronously
-        }
+            animToPlay = showAnimInst;
     }
     else
     {
@@ -793,6 +786,8 @@ void Window::setVisible(bool setting, bool force)
 
         if (hideAnimInst)
         {
+            animToPlay = hideAnimInst;
+
             if (!hideAnimInst->isRunning())
             {
                 // FIXME: assignment of non-scoped connection must disconnect the previous connection if not the same!
@@ -806,19 +801,23 @@ void Window::setVisible(bool setting, bool force)
                         changeVisibility(false);
                     }
                 });
-
-                hideAnimInst->start();
             }
-
-            if (force)
-                hideAnimInst->setPosition(hideAnimInst->getDefinition()->getDuration());
-
-            hideAnimInst->step(0.f); // Apply and a the same time allow to trigger animation end event synchronously
         }
         else
         {
             changeVisibility(false);
         }
+    }
+
+    if (animToPlay)
+    {
+        if (!animToPlay->isRunning())
+            animToPlay->start();
+
+        if (force)
+            animToPlay->setPosition(animToPlay->getDefinition()->getDuration());
+
+        animToPlay->step(0.f); // Apply and at the same time allow to trigger animation end event synchronously
     }
 }
 
