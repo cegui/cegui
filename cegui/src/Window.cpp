@@ -27,6 +27,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/Window.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Renderer.h"
 #include "CEGUI/WindowManager.h"
@@ -35,8 +36,9 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/WindowRendererManager.h"
 #include "CEGUI/WindowFactoryManager.h"
-#include "CEGUI/GUIContext.h"
-#include "CEGUI/widgets/Tooltip.h"
+#include "CEGUI/AnimationManager.h"
+#include "CEGUI/AnimationInstance.h"
+#include "CEGUI/Animation.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/GeometryBuffer.h"
@@ -361,6 +363,8 @@ void Window::destroy()
             destroyWindowRenderer(d_windowRenderer);
         d_windowRenderer = nullptr;
     }
+
+    AnimationManager::getSingleton().destroyAnimationInstances(this);
 
     cleanupChildren();
 
@@ -734,7 +738,70 @@ bool Window::isEffectiveDisabled() const
 }
 
 //----------------------------------------------------------------------------//
-void Window::setVisible(bool setting)
+void Window::setVisible(bool setting, bool force)
+{
+    //!!!if non-forced hiding in progress, need to handle that d_visible is true!
+    //!!!if any non-forced operation is in progress, the same forced one must overrule it!
+    //!!!4 states, 4 actions, need to build 4x4 outcome matrix!
+
+    // TODO: profile if animations need caching in big layouts. Can store instances instead of
+    // string names and use dirty flags in set*AnimationName() to delay instance search.
+    auto showAnimInst = AnimationManager::getSingleton().getAnimationInstance(d_showAnimName, this);
+    auto hideAnimInst = AnimationManager::getSingleton().getAnimationInstance(d_hideAnimName, this);
+
+    if (d_visible == setting)
+        return;
+
+    if (setting)
+    {
+        //!!!interrupt hide anim, prevent from calling onHidden and don't call onShown then!
+
+        if (hideAnimInst && hideAnimInst->isRunning())
+            hideAnimInst->stop();
+
+        performVisibilityChange(true);
+
+        if (showAnimInst)
+        {
+            showAnimInst->start();
+            if (force)
+                showAnimInst->setPosition(showAnimInst->getDefinition()->getDuration());
+            showAnimInst->step(0.f); // Apply and a the same time allow to trigger animation end event synchronously
+        }
+    }
+    else
+    {
+        if (showAnimInst && showAnimInst->isRunning())
+            showAnimInst->stop();
+
+        if (hideAnimInst)
+        {
+            // FIXME: assignment of non-scoped connection must disconnect the previous connection!
+            d_visibilityAnimEndConnection.disconnect();
+            d_visibilityAnimEndConnection = subscribeEvent(AnimationInstance::EventAnimationEnded,
+                [this, hideAnimInst](const EventArgs& e)
+            {
+                if (static_cast<const AnimationEventArgs&>(e).instance == hideAnimInst)
+                {
+                    d_visibilityAnimEndConnection.disconnect();
+                    performVisibilityChange(false);
+                }
+            });
+
+            hideAnimInst->start();
+            if (force)
+                hideAnimInst->setPosition(hideAnimInst->getDefinition()->getDuration());
+            hideAnimInst->step(0.f); // Apply and a the same time allow to trigger animation end event synchronously
+        }
+        else
+        {
+            performVisibilityChange(false);
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Window::performVisibilityChange(bool setting)
 {
     if (d_visible == setting)
         return;
@@ -745,6 +812,18 @@ void Window::setVisible(bool setting)
 
     if (d_guiContext)
         d_guiContext->updateWindowContainingCursor();
+}
+
+//----------------------------------------------------------------------------//
+void Window::setShowAnimationName(const String& animName)
+{
+    d_showAnimName = animName;
+}
+
+//----------------------------------------------------------------------------//
+void Window::setHideAnimationName(const String& animName)
+{
+    d_hideAnimName = animName;
 }
 
 //----------------------------------------------------------------------------//
@@ -3687,7 +3766,7 @@ void Window::addWindowProperties()
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
         VisiblePropertyName, "Property to get/set the 'visible state' setting for the Window. Value is either \"true\" or \"false\".",
-        &Window::setVisible, &Window::isVisible, true
+        &Window::setVisibleForced, &Window::isVisible, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
@@ -3698,6 +3777,16 @@ void Window::addWindowProperties()
     CEGUI_DEFINE_PROPERTY(Window, bool,
         RestoreOldCapturePropertyName, "Property to get/set the 'restore old capture' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setRestoreOldCapture, &Window::restoresOldCapture, false
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, String,
+        "ShowAnimation", "Animation name to play when the window is shown.",
+        &Window::setShowAnimationName, &Window::getShowAnimationName, ""
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, String,
+        "HideAnimation", "Animation name to play when the window is hidden.",
+        &Window::setHideAnimationName, &Window::getHideAnimationName, ""
     );
 
     // "Name" is already stored in <Window> element

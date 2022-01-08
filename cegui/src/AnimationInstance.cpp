@@ -136,6 +136,10 @@ void AnimationInstance::start(bool skipNextStep)
     if (d_definition && d_definition->getDuration() > 0)
     {
         d_running = true;
+
+        purgeSavedPropertyValues();
+        d_definition->savePropertyValues(this);
+
         onAnimationStarted();
     }
     else
@@ -419,9 +423,6 @@ void AnimationInstance::apply()
 //----------------------------------------------------------------------------//
 void AnimationInstance::onAnimationStarted()
 {
-    purgeSavedPropertyValues();
-    d_definition->savePropertyValues(this);
-
     if (d_eventReceiver)
     {
         AnimationEventArgs args(this);

@@ -2716,7 +2716,7 @@
 
         <AnimationDefinition name="FadeIn" duration="0.33" replayMode="once">
             <Affector property="Alpha" interpolator="float">
-                <KeyFrame position="0" sourceProperty="Alpha" />
+                <KeyFrame position="0" value="0" />
                 <KeyFrame position="0.33" value="1" progression="linear" />
             </Affector>
         </AnimationDefinition>
