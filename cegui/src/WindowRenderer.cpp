@@ -132,8 +132,7 @@ void WindowRenderer::getRenderingContext(RenderingContext& ctx) const
 //----------------------------------------------------------------------------//
 bool WindowRenderer::handleFontRenderSizeChange(const Font* const font)
 {
-    const WidgetLookFeel& lf(getLookNFeel());
-    return lf.handleFontRenderSizeChange(*d_window, font);
+    return getLookNFeel().handleFontRenderSizeChange(*d_window, font);
 }
 
 //----------------------------------------------------------------------------//
