@@ -50,7 +50,7 @@ namespace CEGUI
     not called, then no child window will have it's update function called
     either - even if it specifies WindowUpdateMode::ALWAYS as it's WindowUpdateMode.
 */
-enum class WindowUpdateMode : int
+enum class WindowUpdateMode : std::uint8_t
 {
     //! Always call the Window::update function for this window.
     Always,
@@ -3514,8 +3514,6 @@ protected:
     std::uint32_t d_drawModeMask = DrawModeFlagWindowRegular;
     //! User ID assigned to this Window
     unsigned int d_ID = 0;
-    //! The mode to use for calling Window::update
-    WindowUpdateMode d_updateMode = WindowUpdateMode::Visible;
     //! Alpha transparency setting for the Window
     float d_alpha = 1.f;
     //! seconds before first repeat event is fired
@@ -3549,6 +3547,9 @@ protected:
     String d_tooltipType;
     //! Text string used as tooltip for this window.
     String d_tooltipText;
+
+    //! The mode to use for calling Window::update
+    WindowUpdateMode d_updateMode = WindowUpdateMode::Visible;
 
     //! true when this window is an auto-window
     bool d_autoWindow : 1;
