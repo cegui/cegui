@@ -154,12 +154,6 @@ public:
     static const String EventIsSizeAdjustedToContentChanged;
 
     /*!
-    \brief
-        Fired when the "DefaultParagraphDirection" changes.
-    */
-    static const String EventDefaultParagraphDirectionChanged;
-
-    /*!
     \brief A tiny wrapper to hide some of the dirty work of rect caching
 
     This is used internally by CEGUI::Element and other classes, it is passed
@@ -1423,15 +1417,6 @@ public:
     */
     virtual bool contentFits() const;
 
-    //! Gets the default paragraph direction for the displayed text of this Element.
-    inline DefaultParagraphDirection getDefaultParagraphDirection() const
-    {
-        return d_defaultParagraphDirection;
-    }
-
-    //! Sets the default paragraph direction for the displayed text of this Element.
-    void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);
-
     /*!
     \brief
         Layout child widgets inside our content areas.
@@ -1641,13 +1626,6 @@ protected:
     VerticalAlignment d_verticalAlignment;
     //! How to satisfy current aspect ratio
     AspectMode d_aspectMode;
-
-    /*!
-    \brief
-        Default direction of the paragraph, relevant for bidirectional text.
-    \see DefaultParagraphDirection
-    */
-    DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
 
     //! outer area rect in screen pixels
     CachedRectf d_unclippedOuterRect;

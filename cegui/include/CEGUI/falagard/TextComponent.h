@@ -357,15 +357,6 @@ public:
     mutable bool d_bidiDataValid;
 #endif
 
-#ifdef CEGUI_USE_RAQM
-    //! raqm text object
-    std::unique_ptr<RaqmTextData> d_raqmTextData;
-    /*! Stores whether raqm text is up-to-date or if the logical text has changed since
-     the last update
-    */
-    mutable bool d_raqmTextNeedsUpdate;
-#endif
-
     //! RenderedString used when not using the one from the target Window.
     mutable RenderedString d_renderedString;
     //! FormattedRenderedString object that applies formatting to the string

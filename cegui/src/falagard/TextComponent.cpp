@@ -39,9 +39,6 @@
 #elif defined (CEGUI_USE_MINIBIDI)
     #include "CEGUI/MinibidiVisualMapping.h"
 #endif
-#if defined(CEGUI_USE_RAQM)
-    #include "CEGUI/RaqmTextData.h"
-#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -56,10 +53,6 @@ namespace CEGUI
 #elif defined (CEGUI_BIDI_SUPPORT)
         #error "BIDI Configuration is inconsistant, check your config!"
 #endif
-#ifdef CEGUI_USE_RAQM
-        d_raqmTextData(new RaqmTextData()),
-        d_raqmTextNeedsUpdate(true),
-#endif 
         d_formattedRenderedString(new LeftAlignedRenderedString(d_renderedString)),
         d_lastHorzFormatting(HorizontalTextFormatting::LeftAligned),
         d_vertFormatting(VerticalTextFormatting::TopAligned),
@@ -86,12 +79,6 @@ namespace CEGUI
 #elif defined (CEGUI_BIDI_SUPPORT)
         #error "BIDI Configuration is inconsistant, check your config!"
 #endif
-
-#ifdef CEGUI_USE_RAQM
-        d_raqmTextData(new RaqmTextData()),
-        d_raqmTextNeedsUpdate(true),
-#endif
-
         d_renderedString(obj.d_renderedString),
         d_formattedRenderedString(obj.d_formattedRenderedString),
         d_lastHorzFormatting(obj.d_lastHorzFormatting),
