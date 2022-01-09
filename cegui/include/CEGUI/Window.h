@@ -1249,7 +1249,29 @@ public:
         - false if the window does not change z-order position when the left
           cursor source is activated within its area.
      */
-    bool isRiseOnPointerActivationEnabled() const { return d_riseOnPointerActivation; }
+    bool isRiseOnCursorActivationEnabled() const { return d_riseOnCursorActivation; }
+
+    /*!
+    \brief
+        Set whether this window will rise to the top of the z-order when clicked
+        with the left cursor source.
+
+    \note
+        This is distinguished from the is/setZOrderingEnabled setting in that
+        if rise on cursor activation is disabled it only affects the users ability to affect
+        the z order of the Window by activating the left cursor source; is still
+        possible to programmatic alter the Window z-order by calling the moveToFront,
+        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
+        ordering is disabled those functions are also precluded from affecting
+        the Window z position.
+
+    \param setting
+        - true if the window should come to the top of other windows when the
+          left cursor source is activated within its area.
+        - false if the window should not change z-order position when the left
+          cursor source is activated within its area.
+     */
+    void setRiseOnCursorActivationEnabled(bool setting) { d_riseOnCursorActivation = setting; }
 
     /*!
     \brief
@@ -1418,7 +1440,7 @@ public:
 
     /*!
     \brief
-        Returns whether the Window's texture caching (if activated) will have a stencil buffer
+        Returns whether the Window's texture caching (if enabled) will have a stencil buffer
         attached or not. This may be required for proper rendering of SVG images and Custom Shapes.
         For example, polygons with internal overlap in SVG require this in order to be correctly rendered.
 
@@ -1535,7 +1557,6 @@ public:
         order to activate it otherwise it will have no effect.  
         When deactivating, all active children will also be deactivated.
     */
-
     void setActive(bool setting);
 
     /*!
@@ -2048,28 +2069,6 @@ public:
         destroy your Window objects (which will call this for you).
     */
     virtual void destroy();
-
-    /*!
-    \brief
-        Set whether this window will rise to the top of the z-order when clicked
-        with the left cursor source.
-
-    \note
-        This is distinguished from the is/setZOrderingEnabled setting in that
-        if rise on cursor activation is disabled it only affects the users ability to affect
-        the z order of the Window by activating the left cursor source; is still
-        possible to programmatic alter the Window z-order by calling the moveToFront,
-        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
-        ordering is disabled those functions are also precluded from affecting
-        the Window z position.
-
-    \param setting
-        - true if the window should come to the top of other windows when the
-          left cursor source is activated within its area.
-        - false if the window should not change z-order position when the left
-          cursor source is activated within its area.
-     */
-    void setRiseOnClickEnabled(bool setting) { d_riseOnPointerActivation = setting; }
 
     /*!
     \brief
@@ -3582,7 +3581,7 @@ protected:
     //! true if Window will be drawn on top of all other Windows
     bool d_alwaysOnTop : 1;
     //! whether window should rise in the z order when left cursor source is activated.
-    bool d_riseOnPointerActivation : 1;
+    bool d_riseOnCursorActivation : 1;
     //! true if the Window responds to z-order change requests.
     bool d_zOrderingEnabled : 1;
 

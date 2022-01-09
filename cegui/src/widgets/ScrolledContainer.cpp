@@ -45,7 +45,7 @@ ScrolledContainer::ScrolledContainer(const String& type, const String& name) :
     d_childContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&ScrolledContainer::getChildContentArea_impl))
 {
     setCursorInputPropagationEnabled(true);
-    setRiseOnClickEnabled(false);
+    setRiseOnCursorActivationEnabled(false);
 
     d_isWidthAdjustedToContent = true;
     d_isHeightAdjustedToContent = true;
