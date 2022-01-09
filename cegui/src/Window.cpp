@@ -3604,7 +3604,7 @@ Window* Window::findChildByNamePath_impl(const String& name_path) const
 //----------------------------------------------------------------------------//
 void Window::focus()
 {
-    if (isDisabled())
+    if (!canFocus())
         return;
 
     d_isFocused = true;
