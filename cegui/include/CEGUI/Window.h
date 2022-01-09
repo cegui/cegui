@@ -1988,7 +1988,7 @@ public:
     \note
         Clicks are not repeated because they require down & up.
     */
-    void setCursorAutoRepeatEnabled(bool setting);
+    void setCursorAutoRepeatEnabled(bool setting) { d_autoRepeat = setting; }
 
     /*!
     \brief
@@ -3257,12 +3257,6 @@ protected:
 
     /*!
     \brief
-        Fires off a repeated cursor press event for this window.
-    */
-    void generateAutoRepeatEvent(CursorInputSource source);
-
-    /*!
-    \brief
         Function used in checking if a WindowRenderer is valid for this window.
 
     \param renderer
@@ -3521,8 +3515,6 @@ protected:
     std::uint32_t d_drawModeMask = DrawModeFlagWindowRegular;
     //! User ID assigned to this Window
     unsigned int d_ID = 0;
-    //! Cursor source we're tracking for auto-repeat purposes.
-    CursorInputSource d_repeatPointerSource = CursorInputSource::NotSpecified;
     //! The mode to use for calling Window::update
     WindowUpdateMode d_updateMode = WindowUpdateMode::Visible;
     //! Alpha transparency setting for the Window
@@ -3531,8 +3523,6 @@ protected:
     float d_repeatDelay = 0.3f;
     //! seconds between further repeats after delay has expired.
     float d_repeatRate = 0.06f;
-    //! implements repeating - tracks time elapsed.
-    float d_repeatElapsed = 0.f;
 
     //! Holds a collection of named user string values.
     std::unordered_map<String, String> d_userStrings;
@@ -3606,8 +3596,6 @@ protected:
     bool d_cursorPassThroughEnabled : 1;
     //! whether pressed cursor will auto-repeat the down event.
     bool d_autoRepeat : 1;
-    //! implements repeating - is true after delay has elapsed,
-    bool d_repeating : 1;
 
     //! true if window will receive drag and drop related notifications
     bool d_dragDropTarget : 1;

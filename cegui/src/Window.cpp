@@ -274,7 +274,6 @@ Window::Window(const String& type, const String& name):
 
     d_cursorPassThroughEnabled(false),
     d_autoRepeat(false),
-    d_repeating(false),
 
     d_dragDropTarget(true),
 
@@ -1217,7 +1216,7 @@ bool Window::captureInput()
 void Window::releaseInput()
 {
     if (d_guiContext)
-        d_guiContext->releaseInputCapture(this);
+        d_guiContext->releaseInputCapture(true, this);
 }
 
 //----------------------------------------------------------------------------//
@@ -1493,38 +1492,6 @@ void Window::setDestroyedByParent(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::generateAutoRepeatEvent(CursorInputSource source)
-{
-    CursorInputEventArgs ciea(this);
-    ciea.position = getUnprojectedPosition(
-        getGUIContext().getCursor().getPosition());
-    ciea.moveDelta = glm::vec2(0.f, 0.f);
-    ciea.source = source;
-    ciea.scroll = 0.f;
-    onCursorPressHold(ciea);
-}
-
-//----------------------------------------------------------------------------//
-void Window::setCursorAutoRepeatEnabled(bool setting)
-{
-    if (d_autoRepeat == setting)
-        return;
-
-    d_autoRepeat = setting;
-    d_repeatPointerSource = CursorInputSource::NotSpecified;
-
-    // FIXME: There is a potential issue here if this setting is
-    // FIXME: changed _while_ the cursor is auto-repeating, and
-    // FIXME: the 'captured' state of input could get messed up.
-    // FIXME: The alternative is to always release here, but that
-    // FIXME: has a load of side effects too - so for now nothing
-    // FIXME: is done. This whole aspect of the system needs a
-    // FIXME: review an reworking - though such a change was
-    // FIXME: beyond the scope of the bug-fix that originated this
-    // FIXME: comment block.  PDT - 30/10/06
-}
-
-//----------------------------------------------------------------------------//
 void Window::update(float elapsed)
 {
     // perform update for 'this' Window
@@ -1553,32 +1520,6 @@ void Window::update(float elapsed)
 //----------------------------------------------------------------------------//
 void Window::updateSelf(float elapsed)
 {
-    // cursor autorepeat processing.
-    if (d_autoRepeat && d_repeatPointerSource != CursorInputSource::NotSpecified)
-    {
-        d_repeatElapsed += elapsed;
-
-        if (d_repeating)
-        {
-            if (d_repeatElapsed > d_repeatRate)
-            {
-                d_repeatElapsed -= d_repeatRate;
-                // trigger the repeated event
-                generateAutoRepeatEvent(d_repeatPointerSource);
-            }
-        }
-        else
-        {
-            if (d_repeatElapsed > d_repeatDelay)
-            {
-                d_repeatElapsed = 0;
-                d_repeating = true;
-                // trigger the repeated event
-                generateAutoRepeatEvent(d_repeatPointerSource);
-            }
-        }
-    }
-
     // allow for updates within an assigned WindowRenderer
     if (d_windowRenderer)
         d_windowRenderer->update(elapsed);
@@ -2179,9 +2120,6 @@ void Window::onCaptureGained(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onCaptureLost(WindowEventArgs& e)
 {
-    // reset auto-repeat state
-    d_repeatPointerSource = CursorInputSource::NotSpecified;
-
     fireEvent(EventInputCaptureLost, e, EventNamespace);
 }
 
@@ -2336,22 +2274,6 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
     if ((e.source == CursorInputSource::Left) && activate_impl(true))
         ++e.handled;
 
-    // if auto repeat is enabled and we are not currently tracking
-    // the source that was just pushed (need this source check because
-    // it could be us that generated this event via auto-repeat).
-    if (d_autoRepeat)
-    {
-        if (d_repeatPointerSource == CursorInputSource::NotSpecified)
-            captureInput();
-
-        if ((d_repeatPointerSource != e.source) && (d_guiContext->getInputCaptureWindow() == this))
-        {
-            d_repeatPointerSource = e.source;
-            d_repeatElapsed = 0.f;
-            d_repeating = false;
-        }
-    }
-
     fireEvent(EventCursorPressHold, e, EventNamespace);
 
     // optionally propagate to parent
@@ -2371,13 +2293,6 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onCursorActivate(CursorInputEventArgs& e)
 {
-    // reset auto-repeat state
-    if (d_autoRepeat && d_repeatPointerSource != CursorInputSource::NotSpecified)
-    {
-        releaseInput();
-        d_repeatPointerSource = CursorInputSource::NotSpecified;
-    }
-
     fireEvent(EventCursorActivate, e, EventNamespace);
 
     // optionally propagate to parent
