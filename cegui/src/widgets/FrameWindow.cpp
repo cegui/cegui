@@ -564,7 +564,7 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
             else if (isBottomSizingLocation(dragEdge))
                 moveBottomEdge(deltaY, newArea);
 
-            setArea(newArea.d_min, newArea.getSize(), true);
+            setArea(newArea);
         }
         else
         {
