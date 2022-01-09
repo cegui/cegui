@@ -211,7 +211,11 @@ public:
      * WindowEventArgs::window set to the Window whose font was changed.
      */
     static const String EventFontChanged;
+    //! Fired when the default paragraph direction of this window changes.
+    static const String EventDefaultParagraphDirectionChanged;
+    //! Fired when the window type for the associated tooltip changes.
     static const String EventTooltipTypeChanged;
+    //! Fired when the effective tooltip text changes, taking inheritance into account.
     static const String EventTooltipTextChanged;
     /** Event fired when the Alpha blend value for the Window has changed.
      * Handlers are passed a const WindowEventArgs reference with
@@ -889,6 +893,12 @@ public:
         the regular text String if using raqm or no bidi.
     */
     const String& getTextVisual() const;
+
+    //! Gets the default paragraph direction for the displayed text.
+    DefaultParagraphDirection getDefaultParagraphDirection() const { return d_defaultParagraphDirection; }
+
+    //! Sets the default paragraph direction for the displayed text.
+    void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);
 
     /*!
     \brief
@@ -3465,11 +3475,6 @@ protected:
     std::unique_ptr <BidiVisualMapping> d_bidiVisualMapping;
 #endif
 
-#ifdef CEGUI_USE_RAQM
-    //! raqm text object
-    std::unique_ptr<RaqmTextData> d_raqmTextData;
-#endif
-
     Event::ScopedConnection d_visibilityAnimEndConnection;
 
     //! outer area clipping rect in screen pixels
@@ -3523,6 +3528,9 @@ protected:
     String d_tooltipType;
     //! Text string used as tooltip for this window.
     String d_tooltipText;
+
+    //! Default direction of the paragraph, relevant for bidirectional text.
+    DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
 
     //! The mode to use for calling Window::update
     WindowUpdateMode d_updateMode = WindowUpdateMode::Visible;
@@ -3599,11 +3607,6 @@ protected:
 #ifdef CEGUI_BIDI_SUPPORT
     //! whether bidi visual mapping has been updated since last text change.
     mutable bool d_bidiDataValid : 1;
-#endif
-
-#ifdef CEGUI_USE_RAQM
-    //! Stores whether the logical text has changed since the last update of raqm data
-    mutable bool d_raqmTextNeedsUpdate : 1;
 #endif
 
 private:

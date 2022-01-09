@@ -32,9 +32,6 @@
 
 #include "CEGUI/Config.h"
 #include "CEGUI/widgets/ListboxItem.h"
-#if defined(CEGUI_USE_RAQM)
-#include "CEGUI/RaqmTextData.h"
-#endif
 #include "CEGUI/System.h"
 #include "CEGUI/ImageManager.h"
 #if defined (CEGUI_USE_FRIBIDI)
@@ -63,9 +60,6 @@ ListboxItem::ListboxItem(const String& text, unsigned int item_id, void* item_da
 #elif defined(CEGUI_BIDI_SUPPORT)
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
-#ifdef CEGUI_USE_RAQM
-    d_raqmTextData(new RaqmTextData()),
-#endif 
 	d_itemID(item_id),
 	d_itemData(item_data),
     d_selected(false),
@@ -124,10 +118,6 @@ void ListboxItem::setText( const String& text )
 
 #ifdef CEGUI_BIDI_SUPPORT
    d_bidiDataValid = false;
-#endif
-
-#ifdef CEGUI_USE_RAQM
-   d_raqmTextNeedsUpdate = true;
 #endif
 }
 

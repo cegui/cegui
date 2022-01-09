@@ -225,15 +225,6 @@ class SVGRect;
 class SVGPaint;
 class SVGPaintStyle;
 
-
-/*************************************************************************
-    Dependency-specific classes.
-*************************************************************************/
-#ifdef CEGUI_USE_RAQM
-class RaqmTextData;
-#endif
-
-
 } // End of  CEGUI namespace section
 
 #endif	// end of guard _CEGUIForwardRefs_h_

@@ -461,15 +461,6 @@ protected:
     mutable bool d_bidiDataValid;
 #endif
 
-#ifdef CEGUI_USE_RAQM
-    //! raqm text object
-    std::unique_ptr<RaqmTextData> d_raqmTextData;
-    /*! Stores whether raqm text is up-to-date or if the logical text has changed since
-     the last update
-    */
-    mutable bool d_raqmTextNeedsUpdate;
-#endif
-
     String  d_tooltipText;  //!< Text for the individual tooltip of this item
     unsigned int    d_itemID;       //!< ID code assigned by client code.  This has no meaning within the GUI system.
     void*   d_itemData;     //!< Pointer to some client code data.  This has no meaning within the GUI system.

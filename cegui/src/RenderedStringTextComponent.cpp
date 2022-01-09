@@ -210,12 +210,6 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
         return std::vector<GeometryBuffer*>();
     }
 
-    DefaultParagraphDirection defaultParagraphDir = DefaultParagraphDirection::LeftToRight;
-    if(ref_wnd != nullptr)
-    {
-        defaultParagraphDir = ref_wnd->getDefaultParagraphDirection();
-    }
-
     glm::vec2 final_pos(position);
 
     handleFormattingOptions(ref_wnd, vertical_space, final_pos);
@@ -230,10 +224,10 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
 
     // render selection
     if (d_selectionImage && (d_selectionLength > 0))
-    {
         createSelectionRenderGeometry(position, clip_rect, vertical_space, fnt);
-    }
+
     // Create the geometry for rendering for the given text.
+    const auto defaultParagraphDir = ref_wnd ? ref_wnd->getDefaultParagraphDirection() : DefaultParagraphDirection::LeftToRight;
     return fnt->createTextRenderGeometry(
         d_text, final_pos,
         clip_rect, true, final_cols,

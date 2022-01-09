@@ -47,7 +47,7 @@ namespace CEGUI
         RightToLeft written paragraph. If the language of the UI user is known, then either LeftToRight
         or RightToLeft should be chosen for the paragraphs.
  */
-enum class DefaultParagraphDirection : int
+enum class DefaultParagraphDirection : std::uint8_t
 {
     //! Default direction is from left to right, as used in most of the modern European and Asian languages .
     LeftToRight,

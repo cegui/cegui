@@ -53,9 +53,6 @@
 #elif defined (CEGUI_USE_MINIBIDI)
 #include "CEGUI/MinibidiVisualMapping.h"
 #endif
-#if defined(CEGUI_USE_RAQM)
-#include "CEGUI/RaqmTextData.h"
-#endif
 
 #include <deque>
 
@@ -100,6 +97,7 @@ const String Window::EventUpdated ("Updated");
 const String Window::EventNameChanged("NameChanged");
 const String Window::EventTextChanged("TextChanged");
 const String Window::EventFontChanged("FontChanged");
+const String Window::EventDefaultParagraphDirectionChanged("DefaultParagraphDirectionChanged");
 const String Window::EventTooltipTypeChanged("TooltipTypeChanged");
 const String Window::EventTooltipTextChanged("TooltipTextChanged");
 const String Window::EventAlphaChanged("AlphaChanged");
@@ -258,9 +256,6 @@ Window::Window(const String& type, const String& name):
     d_bidiDataValid(false),
 #elif defined (CEGUI_BIDI_SUPPORT)
     #error "BIDI Configuration is inconsistant, check your config!"
-#endif
-#ifdef CEGUI_USE_RAQM
-    d_raqmTextData(new RaqmTextData()),
 #endif
 
     d_renderedStringValid(false),
@@ -3188,6 +3183,20 @@ const String& Window::getTextVisual() const
 }
 
 //----------------------------------------------------------------------------//
+void Window::setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection)
+{
+    if (defaultParagraphDirection == d_defaultParagraphDirection)
+        return;
+
+    d_defaultParagraphDirection = defaultParagraphDirection;
+
+    notifyScreenAreaChanged(true);
+
+    WindowEventArgs eventArgs(this);
+    fireEvent(EventDefaultParagraphDirectionChanged, eventArgs, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
 void Window::setTextParsingEnabled(bool setting)
 {
     if (d_textParsingEnabled == setting)
@@ -3739,6 +3748,22 @@ void Window::addWindowProperties()
     CEGUI_DEFINE_PROPERTY(Window, String,
         TextPropertyName, "Property to get/set the text / caption for the Window. Value is the text string to use. Meaning of this property heavily depends on the type of the Window.",
         &Window::setText, &Window::getText, ""
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, DefaultParagraphDirection,
+        "DefaultParagraphDirection", "Property to get/set the default paragraph direction. "
+        "This is only in effect if raqm is linked and activated. It sets the default order of the "
+        "words in a paragraph, which is relevant when having sentences in a RightToLeft language that "
+        "may start with a word (or to be specific: first character of a word) from a LeftToRight language. "
+        "Example: If the mode is set to Automatic and the first word of a paragraph in Hebrew is a German "
+        "company name, written in German alphabet, the German word will end up left, whereas the rest of "
+        "the Hebrew sentences starts from the righ, continuing towards the left. With the setting RightToLeft "
+        "the sentence will start on the very right with the German word, as would be expected in a mainly "
+        "RightToLeft written paragraph. If the language of the UI user is known, then either LeftToRight "
+        "or RightToLeft should be chosen for the paragraphs. Default is LeftToRight."
+        "Value is one of \"LeftToRight\", \"RightToLeft\" or \"Automatic\".",
+        &Window::setDefaultParagraphDirection, &Window::getDefaultParagraphDirection,
+        DefaultParagraphDirection::LeftToRight
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
