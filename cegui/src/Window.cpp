@@ -268,7 +268,7 @@ Window::Window(const String& type, const String& name):
 
     // z-order related options
     d_alwaysOnTop(false),
-    d_riseOnPointerActivation(true),
+    d_riseOnCursorActivation(true),
     d_zOrderingEnabled(true),
 
     d_cursorPassThroughEnabled(false),
@@ -1026,7 +1026,7 @@ bool Window::moveToFront_impl(bool byClick)
 
     // bring us to the front of our siblings
     if (d_zOrderingEnabled &&
-        (!byClick || d_riseOnPointerActivation) &&
+        (!byClick || d_riseOnCursorActivation) &&
         !isTopOfZOrder())
     {
         took_action = true;
@@ -3807,7 +3807,7 @@ void Window::addWindowProperties()
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
         RiseOnClickEnabledPropertyName, "Property to get/set whether the window will come to the top of the Z-order when clicked. Value is either \"true\" or \"false\".",
-        &Window::setRiseOnClickEnabled, &Window::isRiseOnPointerActivationEnabled, true
+        &Window::setRiseOnCursorActivationEnabled, &Window::isRiseOnCursorActivationEnabled, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,

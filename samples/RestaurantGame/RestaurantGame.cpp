@@ -269,7 +269,7 @@ CEGUI::Window* RestaurantGameSample::spawnPlate()
     plateRoot->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.16f)));
     plateRoot->setAspectMode(CEGUI::AspectMode::Expand);
     plateRoot->setAspectRatio(1.0f);
-    plateRoot->setRiseOnClickEnabled(false);
+    plateRoot->setRiseOnCursorActivationEnabled(false);
     plateRoot->setPixelAligned(false);
     plateRoot->subscribeEvent(CEGUI::Window::EventCursorActivate, Event::Subscriber(&RestaurantGameSample::handlePlateWindowActivated, this));
     d_rootIngame->addChild(plateRoot);
@@ -398,7 +398,7 @@ void RestaurantGameSample::createScorePopup(const glm::vec2& cursor_pos, std::in
     d_rootIngame->addChild(popupWindow);
     popupWindow->setPosition(CEGUI::UVector2(cegui_absdim(cursor_pos.x), cegui_absdim(cursor_pos.y)));
     popupWindow->setText(CEGUI::PropertyHelper<std::int32_t>::toString(points));
-    popupWindow->setRiseOnClickEnabled(false);
+    popupWindow->setRiseOnCursorActivationEnabled(false);
     popupWindow->subscribeEvent(AnimationInstance::EventAnimationEnded, Event::Subscriber(&RestaurantGameSample::handleScorePopupAnimationEnded, this));
     popupWindow->setPixelAligned(false);
     popupWindow->setFont("DejaVuSans-14");
