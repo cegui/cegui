@@ -45,7 +45,6 @@
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/RenderTarget.h"
-#include "CEGUI/GlobalEventSet.h"
 #include "CEGUI/SharedStringStream.h"
 #include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/Logger.h"
@@ -292,11 +291,6 @@ Window::Window(const String& type, const String& name):
     d_containsPointer(false),
     d_isFocused(false)
 {
-    d_fontRenderSizeChangeConnection =
-        GlobalEventSet::getSingleton().subscribeEvent(
-            "Font/RenderSizeChanged",
-            Event::Subscriber(&Window::handleFontRenderSizeChange, this));
-
     addWindowProperties();
 }
 
@@ -306,10 +300,6 @@ Window::~Window()
 {
     for (auto buffer : d_geometryBuffers)
         System::getSingleton().getRenderer()->destroyGeometryBuffer(*buffer);
-
-#ifdef CEGUI_BIDI_SUPPORT
-    delete d_bidiVisualMapping;
-#endif
 }
 
 //----------------------------------------------------------------------------//
@@ -2638,6 +2628,23 @@ void Window::notifyDefaultFontChanged()
 }
 
 //----------------------------------------------------------------------------//
+bool Window::notifyFontRenderSizeChanged(const Font& font)
+{
+    bool result = handleFontRenderSizeChange(font);
+
+    for (Element* child : d_children)
+        result |= static_cast<Window*>(child)->notifyFontRenderSizeChanged(font);
+
+    return result;
+}
+
+//----------------------------------------------------------------------------//
+bool Window::handleFontRenderSizeChange(const Font& font)
+{
+    return d_windowRenderer && d_windowRenderer->handleFontRenderSizeChange(&font);
+}
+
+//----------------------------------------------------------------------------//
 uint8_t Window::handleAreaChanges(bool moved, bool sized)
 {
     // NB: we don't call Element::handleAreaChanges because we completely override its behaviour
@@ -3606,13 +3613,6 @@ void Window::banPropertiesForAutoWindow()
     banPropertyFromXML("MaxSize");
     banPropertyFromXML(&d_windowRendererProperty);
     banPropertyFromXML(&d_lookNFeelProperty);
-}
-
-//----------------------------------------------------------------------------//
-bool Window::handleFontRenderSizeChange(const EventArgs& args)
-{
-    return d_windowRenderer && d_windowRenderer->handleFontRenderSizeChange(
-        static_cast<const FontEventArgs&>(args).font);
 }
 
 //----------------------------------------------------------------------------//

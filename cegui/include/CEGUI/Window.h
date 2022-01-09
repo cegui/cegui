@@ -3286,6 +3286,9 @@ protected:
     //! notify windows in a hierarchy when the default font changes
     void notifyDefaultFontChanged();
 
+    //! Internal notification about render size change of any font
+    bool notifyFontRenderSizeChanged(const Font& font);
+
     /*!
     \brief
         Recursively updates all rendering surfaces and windows to work with a new host surface.
@@ -3396,7 +3399,7 @@ protected:
     virtual void banPropertiesForAutoWindow();
 
     //! handler function for when font render size changes.
-    virtual bool handleFontRenderSizeChange(const EventArgs& args);
+    virtual bool handleFontRenderSizeChange(const Font& font);
 
     // FIXME: this is needed only for very dirty HACK!
     //! \brief Retrieves a child at \a name_path or 0 if none such exists
@@ -3484,17 +3487,13 @@ protected:
 
 #ifdef CEGUI_BIDI_SUPPORT
     //! pointer to bidirection support object
-    BidiVisualMapping* d_bidiVisualMapping;
+    std::unique_ptr <BidiVisualMapping> d_bidiVisualMapping;
 #endif
 
 #ifdef CEGUI_USE_RAQM
     //! raqm text object
     std::unique_ptr<RaqmTextData> d_raqmTextData;
 #endif
-
-    // FIXME: why GUI context doesn't propagate this to its window hierarchy?
-    //! connection for event listener for font render size changes.
-    Event::ScopedConnection d_fontRenderSizeChangeConnection;
 
     Event::ScopedConnection d_visibilityAnimEndConnection;
 

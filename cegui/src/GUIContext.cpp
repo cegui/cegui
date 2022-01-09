@@ -32,6 +32,7 @@
 #include "CEGUI/FontManager.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/WindowNavigator.h"
+#include "CEGUI/GlobalEventSet.h"
 
 namespace CEGUI
 {
@@ -51,7 +52,11 @@ GUIContext::GUIContext(RenderTarget& target) :
     d_areaChangedEventConnection(
         target.subscribeEvent(
             RenderTarget::EventAreaChanged,
-            Event::Subscriber(&GUIContext::areaChangedHandler, this)))
+            Event::Subscriber(&GUIContext::areaChangedHandler, this))),
+    d_fontRenderSizeChangeConnection(
+        GlobalEventSet::getSingleton().subscribeEvent(
+            "Font/RenderSizeChanged",
+            Event::Subscriber(&GUIContext::fontRenderSizeChangedHandler, this)))
 {
     d_cursor.resetPositionToDefault();
     initializeSemanticEventHandlers();
@@ -244,6 +249,13 @@ bool GUIContext::areaChangedHandler(const EventArgs&)
     }
 
     return true;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::fontRenderSizeChangedHandler(const EventArgs& args)
+{
+    const Font* font = static_cast<const FontEventArgs&>(args).font;
+    return font && d_rootWindow && d_rootWindow->notifyFontRenderSizeChanged(*font);
 }
 
 //----------------------------------------------------------------------------//

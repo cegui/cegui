@@ -277,6 +277,7 @@ protected:
     void updateInputAutoRepeating(float timeElapsed);
 
     bool areaChangedHandler(const EventArgs& args);
+    bool fontRenderSizeChangedHandler(const EventArgs& args);
 
     //! returns whether the window containing the cursor had changed.
     void updateWindowContainingCursor_impl(Window* windowWithCursor);
@@ -330,6 +331,7 @@ protected:
     CursorInputSource d_repeatPointerSource = CursorInputSource::NotSpecified;
 
     Event::ScopedConnection d_areaChangedEventConnection;
+    Event::ScopedConnection d_fontRenderSizeChangeConnection;
     std::vector<Event::ScopedConnection> d_tooltipEventConnections;
     std::map<SemanticValue, SlotFunctorBase<InputEvent>*> d_semanticEventHandlers;
 
