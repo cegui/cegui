@@ -295,9 +295,8 @@ void Spinner::onActivated(ActivationEventArgs& e)
     {
         Window::onActivated(e);
 
-        Editbox* editbox = getEditbox();
-        if (!editbox->isActive())
-            editbox->activate();
+        if (!getActiveChild())
+            getEditbox()->activate();
     }
 }
 
