@@ -929,12 +929,7 @@ void Combobox::addComboboxProperties(void)
 *************************************************************************/
 void Combobox::activateEditbox(void)
 {
-    Editbox* editbox = getEditbox();
-
-	if (!editbox->isActive())
-	{
-		editbox->activate();
-	}
+    getEditbox()->setActive(true);
 }
 
 
@@ -949,7 +944,6 @@ void Combobox::onActivated(ActivationEventArgs& e)
 		Window::onActivated(e);
 		activateEditbox();
 	}
-
 }
 
 //----------------------------------------------------------------------------//

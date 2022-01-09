@@ -560,7 +560,7 @@ void GUIContext::updateTooltipState(float timeElapsed)
             return;
 
         // TODO: add an option to calculate d_tooltipDisplayTime from text? avgTextReadingTime(lang, text)
-        if (d_tooltipTimer >= d_tooltipDisplayTime)
+        if (d_tooltipDisplayTime > 0.f && d_tooltipTimer >= d_tooltipDisplayTime)
         {
             hideTooltip(false);
             d_tooltipTimer = 0.f;
