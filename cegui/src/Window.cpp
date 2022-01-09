@@ -1419,8 +1419,7 @@ void Window::removeChild_impl(Element* element)
 
     // Removed windows should not be active anymore (they are not attached
     // to anything so this would not make sense)
-    if (wnd->isActive())
-        wnd->deactivate();
+    wnd->deactivate();
 }
 
 //----------------------------------------------------------------------------//
@@ -2023,10 +2022,7 @@ void Window::onShown(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onHidden(WindowEventArgs& e)
 {
-    // first deactivate window if it is the active window.
-    if (isActive())
-        deactivate();
-
+    deactivate();
     invalidate();
     fireEvent(EventHidden, e, EventNamespace);
 }
