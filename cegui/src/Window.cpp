@@ -1745,32 +1745,31 @@ void Window::writeXMLToStream(XMLSerializer& xml_stream) const
 int Window::writePropertiesXML(XMLSerializer& xml_stream) const
 {
     int propertiesWritten = 0;
-    PropertySet::PropertyIterator iter =  getPropertyIterator();
 
-    while(!iter.isAtEnd())
+    for (PropertySet::PropertyIterator propertyIt = getPropertyIterator();
+        !propertyIt.isAtEnd();
+        ++propertyIt)
     {
         // first we check to make sure the property is'nt banned from XML
-        if (!isPropertyBannedFromXML(iter.getCurrentValue()))
+        if (isPropertyBannedFromXML(propertyIt.getCurrentValue()))
+            continue;
+
+        try
         {
-            try
+            // only write property if it's not at the default state
+            if (!isPropertyAtDefault(propertyIt.getCurrentValue()))
             {
-                // only write property if it's not at the default state
-                if (!isPropertyAtDefault(iter.getCurrentValue()))
-                {
-                    iter.getCurrentValue()->writeXMLToStream(this, xml_stream);
-                    ++propertiesWritten;
-                }
-            }
-            catch (InvalidRequestException&)
-            {
-                // This catches errors from the MultiLineColumnList for example
-                Logger::getSingleton().logEvent(
-                    "Window::writePropertiesXML: property receiving failed.  "
-                    "Continuing...", LoggingLevel::Error);
+                propertyIt.getCurrentValue()->writeXMLToStream(this, xml_stream);
+                ++propertiesWritten;
             }
         }
-
-        ++iter;
+        catch (InvalidRequestException&)
+        {
+            // This catches errors from the MultiLineColumnList for example
+            Logger::getSingleton().logEvent(
+                "Window::writePropertiesXML: property receiving failed.  "
+                "Continuing...", LoggingLevel::Error);
+        }
     }
 
     return propertiesWritten;
@@ -2468,85 +2467,76 @@ const String& Window::getWindowRendererName() const
 }
 
 //----------------------------------------------------------------------------//
-void Window::banPropertyFromXML(const String& property_name)
+void Window::banPropertyFromXML(const String& propertyName)
 {
-    if (!getPropertyInstance(property_name)->isWritable())
+    const auto property = getPropertyInstance(propertyName);
+    if (!property || !property->doesWriteXML() || !property->isWritable())
     {
-        Logger::getSingleton().logEvent("Property '" + property_name + "' "
-                "is not writable so it's implicitly banned from XML. No need "
-                "to ban it manually", LoggingLevel::Warning);
-
+        Logger::getSingleton().logEvent("Property '" + propertyName + "' "
+                "is implicitly banned from XML. No need to ban it manually", LoggingLevel::Warning);
         return;
     }
 
-    // check if the insertion failed
-    if (!d_bannedXMLProperties.insert(property_name).second)
-        // just log the incidence
+    auto it = std::lower_bound(d_bannedXMLProperties.begin(), d_bannedXMLProperties.end(), propertyName);
+    if (it != d_bannedXMLProperties.end() && (*it) == propertyName)
         CEGUI_LOGINSANE("Window::banPropertyFromXML: The property '" +
-            property_name + "' is already banned in window '" + d_name + "'");
+            propertyName + "' is already banned in window '" + d_name + "'")
+    else
+        d_bannedXMLProperties.insert(it, propertyName);
 }
 
 //----------------------------------------------------------------------------//
-void Window::banPropertyFromXMLRecursive(const String& property_name)
+void Window::banPropertyFromXMLRecursive(const String& propertyName)
 {
-    banPropertyFromXML(property_name);
+    banPropertyFromXML(propertyName);
 
     const size_t childCount = getChildCount();
     for(size_t i = 0; i < childCount; ++i)
-        getChildAtIndex(i)->banPropertyFromXMLRecursive(property_name);
+        getChildAtIndex(i)->banPropertyFromXMLRecursive(propertyName);
 }
 
 //----------------------------------------------------------------------------//
-void Window::unbanPropertyFromXML(const String& property_name)
+void Window::unbanPropertyFromXML(const String& propertyName)
 {
-    d_bannedXMLProperties.erase(property_name);
+    auto it = std::lower_bound(d_bannedXMLProperties.begin(), d_bannedXMLProperties.end(), propertyName);
+    if (it != d_bannedXMLProperties.end() && (*it) == propertyName)
+        d_bannedXMLProperties.erase(it);
 }
 
 //----------------------------------------------------------------------------//
-void Window::unbanPropertyFromXMLRecursive(const String& property_name)
+void Window::unbanPropertyFromXMLRecursive(const String& propertyName)
 {
-    unbanPropertyFromXML(property_name);
+    unbanPropertyFromXML(propertyName);
 
     const size_t childCount = getChildCount();
     for(size_t i = 0; i < childCount; ++i)
-        getChildAtIndex(i)->unbanPropertyFromXMLRecursive(property_name);
+        getChildAtIndex(i)->unbanPropertyFromXMLRecursive(propertyName);
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isPropertyBannedFromXML(const String& property_name) const
+bool Window::isPropertyBannedFromXML(const String& propertyName) const
 {
-    // generally, there will always less banned properties than all properties,
+    // generally, there are always less banned properties than all properties,
     // so it makes sense to check that first before querying the property instance
-    if (d_bannedXMLProperties.find(property_name) != d_bannedXMLProperties.end())
+    auto it = std::lower_bound(d_bannedXMLProperties.begin(), d_bannedXMLProperties.end(), propertyName);
+    if (it != d_bannedXMLProperties.end() && (*it) == propertyName)
         return true;
 
     // properties that don't write any XML code are implicitly banned
-
-    // read-only properties are implicitly banned
-    // (such stored information wouldn't be of any value in the XML anyways,
-    // no way to apply it to the widget)
-    const Property* instance = getPropertyInstance(property_name);
+    // read-only properties are implicitly banned (such stored information wouldn't
+    // be of any value in the XML anyways, no way to apply it to the widget)
+    const Property* instance = getPropertyInstance(propertyName);
     return !instance->doesWriteXML() || !instance->isWritable();
-}
-
-//----------------------------------------------------------------------------//
-void Window::banPropertyFromXML(const Property* property)
-{
-    if (property)
-        banPropertyFromXML(property->getName());
-}
-
-//----------------------------------------------------------------------------//
-void Window::unbanPropertyFromXML(const Property* property)
-{
-    if (property)
-        unbanPropertyFromXML(property->getName());
 }
 
 //----------------------------------------------------------------------------//
 bool Window::isPropertyBannedFromXML(const Property* property) const
 {
-    return property && isPropertyBannedFromXML(property->getName());
+    if (!property || !property->doesWriteXML() || !property->isWritable())
+        return true;
+
+    auto it = std::lower_bound(d_bannedXMLProperties.begin(), d_bannedXMLProperties.end(), property->getName());
+    return (it != d_bannedXMLProperties.end() && (*it) == property->getName());
 }
 
 //----------------------------------------------------------------------------//
@@ -3280,28 +3270,26 @@ void Window::clonePropertiesTo(Window& target) const
          !propertyIt.isAtEnd();
          ++propertyIt)
     {
-        const String& propertyName = propertyIt.getCurrentKey();
-        const String propertyValue = getProperty(propertyName);
-
         // we never copy stuff that doesn't get written into XML
-        if (isPropertyBannedFromXML(propertyName))
+        if (isPropertyBannedFromXML(propertyIt.getCurrentValue()))
             continue;
 
         // some cases when propertyValue is "" could lead to exception throws
+        const String propertyValue = propertyIt.getCurrentValue()->get(this);
         if (propertyValue.empty())
         {
             // special case, this causes exception throw when no window renderer
             // is assigned to the window
-            if (propertyName == "LookNFeel")
+            if (propertyIt.getCurrentKey() == "LookNFeel")
                 continue;
 
             // special case, this causes exception throw because we are setting
             // 'null' window renderer
-            if (propertyName == "WindowRenderer")
+            if (propertyIt.getCurrentKey() == "WindowRenderer")
                 continue;
         }
 
-        target.setProperty(propertyName, propertyValue);
+        target.setProperty(propertyIt.getCurrentKey(), propertyValue);
     }
 }
 
@@ -3607,12 +3595,10 @@ void Window::banPropertiesForAutoWindow()
     banPropertyFromXML("VerticalAlignment");
     banPropertyFromXML("HorizontalAlignment");
     banPropertyFromXML("Area");
-    banPropertyFromXML("Position");
-    banPropertyFromXML("Size");
     banPropertyFromXML("MinSize");
     banPropertyFromXML("MaxSize");
-    banPropertyFromXML(&d_windowRendererProperty);
-    banPropertyFromXML(&d_lookNFeelProperty);
+    banPropertyFromXML(d_windowRendererProperty.getName());
+    banPropertyFromXML(d_lookNFeelProperty.getName());
 }
 
 //----------------------------------------------------------------------------//

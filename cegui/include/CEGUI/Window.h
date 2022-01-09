@@ -32,7 +32,6 @@
 #include "CEGUI/Element.h"
 #include "CEGUI/RenderedString.h"
 #include "CEGUI/InputEvent.h"
-#include <unordered_set>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -2446,10 +2445,10 @@ public:
         Please note that properties that are not writable (read-only properties) are
         implicitly/automatically banned from XML, no need to ban them manually.
 
-    \param property_name 
+    \param propertyName 
         Name of the property you want to ban
     */
-    void banPropertyFromXML(const String& property_name);
+    void banPropertyFromXML(const String& propertyName);
 
     /*!
     \brief
@@ -2460,10 +2459,10 @@ public:
         Please note that properties that are not writable (read-only properties) are
         implicitly/automatically banned from XML, no need to ban them manually.
 
-    \param property_name 
+    \param propertyName 
         Name of the property you want to ban
     */
-    void banPropertyFromXMLRecursive(const String& property_name);
+    void banPropertyFromXMLRecursive(const String& propertyName);
 
     /*!
     \brief
@@ -2473,10 +2472,10 @@ public:
         Please note that properties that are not writable (read-only properties) are
         implicitly/automatically banned from XML.
 
-    \param property_name 
+    \param propertyName 
         Name of the property you want to unban
     */
-    void unbanPropertyFromXML(const String& property_name);
+    void unbanPropertyFromXML(const String& propertyName);
 
     /*!
     \brief
@@ -2486,10 +2485,10 @@ public:
         Please note that properties that are not writable (read-only properties) are
         implicitly/automatically banned from XML.
 
-    \param property_name 
+    \param propertyName 
         Name of the property you want to unban
     */
-    void unbanPropertyFromXMLRecursive(const String& property_name);
+    void unbanPropertyFromXMLRecursive(const String& propertyName);
     
 
     /*!
@@ -2500,13 +2499,7 @@ public:
         Read-only properties and properties that can't write to XML streams
         are implicitly banned. This method will return true for them.
     */
-    bool isPropertyBannedFromXML(const String& property_name) const;
-
-    //! Add the given property to the XML ban list for this window.
-    void banPropertyFromXML(const Property* property);
-
-    //! Remove the given property from the XML ban list for this window.
-    void unbanPropertyFromXML(const Property* property);
+    bool isPropertyBannedFromXML(const String& propertyName) const;
 
     /*!
     \brief
@@ -3522,9 +3515,10 @@ protected:
     float d_repeatRate = 0.06f;
 
     //! Holds a collection of named user string values.
-    std::unordered_map<String, String> d_userStrings;
-    //! collection of properties not to be written to XML for this window.
-    std::unordered_set<String> d_bannedXMLProperties;
+    // TODO: StringAtom key!
+    std::map<String, String> d_userStrings;
+    //! sorted vector of properties not to be written to XML for this window.
+    std::vector<String> d_bannedXMLProperties;
     //! List of geometry buffers that cache the geometry drawn by this Window.
     std::vector<GeometryBuffer*> d_geometryBuffers;
     //! Child window objects arranged in rendering order.

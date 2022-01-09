@@ -296,11 +296,7 @@ protected:
     const String d_name;    //!< Name of the factory type used to create this window renderer.
     const String d_class;   //!< Name of the widget class that is the "minimum" requirement.
 
-    //! type used for entries in the PropertyList.
-    typedef std::pair<Property*, bool> PropertyEntry;
-    //! type to use for the property list.
-    typedef std::vector<PropertyEntry> PropertyList;
-    PropertyList d_properties;  //!< The list of properties that this windowrenderer will be handling.
+    std::vector<std::pair<Property*, bool>> d_properties; //!< The list of properties that this windowrenderer will be handling.
 
     // Window is friend so it can manipulate our 'd_window' member directly.
     // We don't want users fiddling with this so no public interface.
