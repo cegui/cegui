@@ -740,62 +740,40 @@ bool Window::isEffectiveDisabled() const
 //----------------------------------------------------------------------------//
 void Window::setVisible(bool setting, bool force)
 {
-    //!!!if animation changed, need to handle it here! We can't find playing instance here because we don't know its name!
-    //!!!if LnF changed, need to handle playing animations too!
-    //!!!Don't forget to disconnect connection!
-
     // TODO: need events onStartShowing, onStartHiding?
-    // TODO: profile if animations need caching in big layouts
-    // TODO: getOrCreateAnimationInstance? Need to send Window as an argument.
-    auto showAnimInst = AnimationManager::getSingleton().getAnimationInstance(d_showAnimName, this);
-    if (!showAnimInst && !d_showAnimName.empty())
-    {
-        showAnimInst = AnimationManager::getSingleton().instantiateAnimation(d_showAnimName);
-        if (showAnimInst)
-            showAnimInst->setTargetWindow(this);
-    }
-
-    auto hideAnimInst = AnimationManager::getSingleton().getAnimationInstance(d_hideAnimName, this);
-    if (!hideAnimInst && !d_hideAnimName.empty())
-    {
-        hideAnimInst = AnimationManager::getSingleton().instantiateAnimation(d_hideAnimName);
-        if (hideAnimInst)
-            hideAnimInst->setTargetWindow(this);
-    }
-
     AnimationInstance* animToPlay = nullptr;
     if (setting)
     {
         if (!d_visible)
             changeVisibility(true);
-        else if (hideAnimInst && hideAnimInst->isRunning())
+        else if (d_hideAnimInst && d_hideAnimInst->isRunning())
         {
             d_visibilityAnimEndConnection.disconnect();
-            hideAnimInst->stop();
+            d_hideAnimInst->stop();
         }
 
-        if (showAnimInst)
-            animToPlay = showAnimInst;
+        if (d_showAnimInst)
+            animToPlay = d_showAnimInst;
     }
     else
     {
         if (!d_visible)
             return;
-        else if (showAnimInst && showAnimInst->isRunning())
-            showAnimInst->stop();
+        else if (d_showAnimInst && d_showAnimInst->isRunning())
+            d_showAnimInst->stop();
 
-        if (hideAnimInst)
+        if (d_hideAnimInst)
         {
-            animToPlay = hideAnimInst;
+            animToPlay = d_hideAnimInst;
 
-            if (!hideAnimInst->isRunning())
+            if (!d_hideAnimInst->isRunning())
             {
                 // FIXME: assignment of non-scoped connection must disconnect the previous connection if not the same!
                 d_visibilityAnimEndConnection.disconnect();
                 d_visibilityAnimEndConnection = subscribeEvent(AnimationInstance::EventAnimationEnded,
-                    [this, hideAnimInst](const EventArgs& e)
+                    [this](const EventArgs& e)
                 {
-                    if (static_cast<const AnimationEventArgs&>(e).instance == hideAnimInst)
+                    if (static_cast<const AnimationEventArgs&>(e).instance == d_hideAnimInst)
                     {
                         d_visibilityAnimEndConnection.disconnect();
                         changeVisibility(false);
@@ -838,13 +816,62 @@ void Window::changeVisibility(bool setting)
 //----------------------------------------------------------------------------//
 void Window::setShowAnimationName(const String& animName)
 {
-    d_showAnimName = animName;
+    if (d_showAnimInst)
+    {
+        if (d_showAnimInst->getDefinition()->getName() == animName)
+            return;
+
+        if (d_showAnimInst->isRunning())
+        {
+            d_showAnimInst->setPosition(d_showAnimInst->getDefinition()->getDuration());
+            d_showAnimInst->step(0.f);
+        }
+    }
+
+    // Instance might have been already created (e.g. by LnF)
+    d_showAnimInst = AnimationManager::getSingleton().getAnimationInstance(animName, this);
+    if (!d_showAnimInst && !animName.empty())
+    {
+        d_showAnimInst = AnimationManager::getSingleton().instantiateAnimation(animName);
+        d_showAnimInst->setTargetWindow(this);
+    }
+}
+
+//----------------------------------------------------------------------------//
+const String& Window::getShowAnimationName() const
+{
+    return d_showAnimInst ? d_showAnimInst->getDefinition()->getName() : String::GetEmpty();
 }
 
 //----------------------------------------------------------------------------//
 void Window::setHideAnimationName(const String& animName)
 {
-    d_hideAnimName = animName;
+    if (d_hideAnimInst)
+    {
+        if (d_hideAnimInst->getDefinition()->getName() == animName)
+            return;
+
+        if (d_hideAnimInst->isRunning())
+        {
+            d_hideAnimInst->setPosition(d_hideAnimInst->getDefinition()->getDuration());
+            d_hideAnimInst->step(0.f);
+            d_visibilityAnimEndConnection.disconnect();
+        }
+    }
+
+    // Instance might have been already created (e.g. by LnF)
+    d_hideAnimInst = AnimationManager::getSingleton().getAnimationInstance(animName, this);
+    if (!d_hideAnimInst && !animName.empty())
+    {
+        d_hideAnimInst = AnimationManager::getSingleton().instantiateAnimation(animName);
+        d_hideAnimInst->setTargetWindow(this);
+    }
+}
+
+//----------------------------------------------------------------------------//
+const String& Window::getHideAnimationName() const
+{
+    return d_hideAnimInst ? d_hideAnimInst->getDefinition()->getName() : String::GetEmpty();
 }
 
 //----------------------------------------------------------------------------//
@@ -1646,8 +1673,15 @@ void Window::setLookNFeel(const String& look)
     WidgetLookManager& wlMgr = WidgetLookManager::getSingleton();
     if (!d_lookName.empty())
     {
+        const auto& prevLnf = wlMgr.getWidgetLook(d_lookName);
+
+        if (prevLnf.isAnimationPresent(getShowAnimationName()))
+            setShowAnimationName(String::GetEmpty());
+        if (prevLnf.isAnimationPresent(getHideAnimationName()))
+            setHideAnimationName(String::GetEmpty());
+
         d_windowRenderer->onLookNFeelUnassigned();
-        wlMgr.getWidgetLook(d_lookName).cleanUpWidget(*this);
+        prevLnf.cleanUpWidget(*this);
     }
 
     d_lookName = look;
@@ -2525,11 +2559,7 @@ void Window::onWindowRendererDetached(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 const String& Window::getWindowRendererName() const
 {
-    if (d_windowRenderer)
-        return d_windowRenderer->getName();
-
-    static const String empty("");
-    return empty;
+    return d_windowRenderer ? d_windowRenderer->getName() : String::GetEmpty();
 }
 
 //----------------------------------------------------------------------------//

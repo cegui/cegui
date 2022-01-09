@@ -30,6 +30,7 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/AnimationManager.h"
 #include "CEGUI/AnimationInstance.h"
+#include "CEGUI/Animation.h"
 
 namespace CEGUI
 {
@@ -365,14 +366,18 @@ void WidgetLookFeel::initialiseWidget(Window& widget) const
         (*eldi)->initialiseWidget(widget);
     }
 
-    // create animation instances
+    // create animation instances which automatically react on widget events
     std::unordered_set<String> ans;
     appendAnimationNames(ans);
     for (const auto& animName : ans)
     {
-        auto instance = AnimationManager::getSingleton().instantiateAnimation(animName);
-        d_animationInstances.emplace(&widget, instance);
-        instance->setTargetWindow(&widget);
+        auto animDef = AnimationManager::getSingleton().getAnimation(animName);
+        if (animDef && animDef->hasAutoSubscriptions())
+        {
+            auto instance = AnimationManager::getSingleton().instantiateAnimation(animDef);
+            d_animationInstances.emplace(&widget, instance);
+            instance->setTargetWindow(&widget);
+        }
     }
 }
 
@@ -544,6 +549,21 @@ bool WidgetLookFeel::isEventLinkDefinitionPresent(const String& name, bool inclu
         return false;
 
     return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).isEventLinkDefinitionPresent(name, true);
+}
+
+//---------------------------------------------------------------------------//
+bool WidgetLookFeel::isAnimationPresent(const String& name, bool includeInheritedLook) const
+{
+    if (name.empty())
+        return false;
+
+    if (std::find(d_animations.cbegin(), d_animations.cend(), name) != d_animations.end())
+        return true;
+
+    if (!includeInheritedLook || d_inheritedLookName.empty())
+        return false;
+
+    return WidgetLookManager::getSingleton().getWidgetLook(d_inheritedLookName).isAnimationPresent(name, true);
 }
 
 //---------------------------------------------------------------------------//
