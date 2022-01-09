@@ -274,6 +274,8 @@ protected:
     void hideTooltip(bool force);
     void updateTooltipState(float timeElapsed);
 
+    void updateInputAutoRepeating(float timeElapsed);
+
     bool areaChangedHandler(const EventArgs& args);
 
     //! returns whether the window containing the cursor had changed.
@@ -324,12 +326,16 @@ protected:
     float d_tooltipHoverTime = 0.4f;   //!< seconds cursor must stay stationary before tip shows
     float d_tooltipDisplayTime = 7.5f; //!< seconds that tip is shown for
 
+    float d_repeatElapsed = 0.f;
+    CursorInputSource d_repeatPointerSource = CursorInputSource::NotSpecified;
+
     Event::ScopedConnection d_areaChangedEventConnection;
     std::vector<Event::ScopedConnection> d_tooltipEventConnections;
     std::map<SemanticValue, SlotFunctorBase<InputEvent>*> d_semanticEventHandlers;
 
     bool d_windowContainingCursorIsUpToDate = true;
     bool d_tooltipFollowsCursor = false;
+    bool d_repeating = false;
 };
 
 }

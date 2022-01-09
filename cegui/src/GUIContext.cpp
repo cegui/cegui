@@ -115,6 +115,7 @@ bool GUIContext::captureInput(Window* window)
         d_captureWindow->onCaptureLost(args);
         args.handled = 0;
 
+        d_repeatPointerSource = CursorInputSource::NotSpecified;
         d_windowContainingCursorIsUpToDate = false;
     }
 
@@ -138,6 +139,7 @@ void GUIContext::releaseInputCapture(bool allowRestoreOld, Window* exactWindow)
     WindowEventArgs args(d_captureWindow);
     d_captureWindow->onCaptureLost(args);
 
+    d_repeatPointerSource = CursorInputSource::NotSpecified;
     d_windowContainingCursorIsUpToDate = false;
 
     if (allowRestoreOld && d_oldCaptureWindow && d_captureWindow->restoresOldCapture())
@@ -574,6 +576,48 @@ void GUIContext::updateTooltipState(float timeElapsed)
 }
 
 //----------------------------------------------------------------------------//
+void GUIContext::updateInputAutoRepeating(float timeElapsed)
+{
+    if (!d_captureWindow || d_repeatPointerSource == CursorInputSource::NotSpecified)
+        return;
+
+    const float repeatRate = d_captureWindow->getAutoRepeatRate();
+
+    // Stop auto-repeating if the window wants it no more
+    if (!d_captureWindow->isCursorAutoRepeatEnabled() || repeatRate <= 0.f)
+    {
+        releaseInputCapture(true);
+        return;
+    }
+
+    d_repeatElapsed += timeElapsed;
+
+    if (!d_repeating)
+    {
+        if (d_repeatElapsed < d_captureWindow->getAutoRepeatDelay())
+            return;
+
+        d_repeating = true;
+        d_repeatElapsed = repeatRate;
+    }
+    else if (d_repeatElapsed < repeatRate)
+        return;
+
+    CursorInputEventArgs ciea(d_captureWindow);
+    ciea.position = d_captureWindow->getUnprojectedPosition(d_cursor.getPosition());
+    ciea.moveDelta = glm::vec2(0.f, 0.f);
+    ciea.source = d_repeatPointerSource;
+
+    do
+    {
+        ciea.handled = 0;
+        d_captureWindow->onCursorPressHold(ciea);
+        d_repeatElapsed -= repeatRate;
+    }
+    while (d_repeatElapsed >= repeatRate);
+}
+
+//----------------------------------------------------------------------------//
 Window* GUIContext::getTargetWindow(const glm::vec2& pt, bool allow_disabled) const
 {
     // if there is no GUI sheet visible, then there is nowhere to send input
@@ -648,6 +692,7 @@ bool GUIContext::injectTimePulse(float timeElapsed)
     getWindowContainingCursor();
 
     updateTooltipState(timeElapsed);
+    updateInputAutoRepeating(timeElapsed);
 
     // Pass to sheet for distribution. This input is then /always/ considered handled.
     d_rootWindow->update(timeElapsed);
@@ -841,15 +886,28 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
     if (d_tooltipWindow)
         d_tooltipWindow->hide(true);
 
+    if (d_windowNavigator)
+        d_windowNavigator->setCurrentFocusedWindow(window);
+
     CursorInputEventArgs ciea(window);
     ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
     ciea.moveDelta = glm::vec2(0.f, 0.f);
     ciea.source = event.d_payload.source;
-
-    if (d_windowNavigator)
-        d_windowNavigator->setCurrentFocusedWindow(window);
-
     window->onCursorPressHold(ciea);
+
+    if (window->isCursorAutoRepeatEnabled())
+    {
+        if (d_repeatPointerSource == CursorInputSource::NotSpecified)
+            captureInput(window);
+
+        if (d_repeatPointerSource != ciea.source && d_captureWindow == window)
+        {
+            d_repeatPointerSource = ciea.source;
+            d_repeatElapsed = 0.f;
+            d_repeating = false;
+        }
+    }
+
     return ciea.handled != 0;
 }
 
@@ -866,14 +924,16 @@ bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
         d_tooltipTimer = 0.f;
     }
 
+    if (d_windowNavigator)
+        d_windowNavigator->setCurrentFocusedWindow(window);
+
+    if (d_repeatPointerSource != CursorInputSource::NotSpecified)
+        releaseInputCapture(true, window);
+
     CursorInputEventArgs ciea(window);
     ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
     ciea.moveDelta = glm::vec2(0.f, 0.f);
     ciea.source = event.d_payload.source;
-
-    if (d_windowNavigator)
-        d_windowNavigator->setCurrentFocusedWindow(window);
-
     window->onCursorActivate(ciea);
     return ciea.handled != 0;
 }
