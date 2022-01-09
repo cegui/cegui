@@ -1348,23 +1348,6 @@ public:
 
     /*!
     \brief
-        Returns the active sibling window.
-
-        This searches the immediate children of this window's parent, and
-        returns a pointer to the active window.  The method will return this if
-        we are the immediate child of our parent that is active.  If our parent
-        is not active, or if no immediate child of our parent is active then 0
-        is returned.  If this window has no parent, and this window is not
-        active then 0 is returned, else this is returned.
-
-    \return
-        A pointer to the immediate child window attached to our parent that is
-        currently active, or 0 if no immediate child of our parent is active.
-    */
-    Window* getActiveSibling();
-
-    /*!
-    \brief
         Returns whether this window should ignore cursor event and pass them
         through to and other windows behind it. In effect making the window
         transparent to the cursor.

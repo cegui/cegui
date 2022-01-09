@@ -891,22 +891,31 @@ void Window::setActive(bool setting)
 }
 
 //----------------------------------------------------------------------------//
+// TODO: move activation to GUIContext? Only one window subtree can be active!
 bool Window::activate_impl(bool byClick)
 {
-    // exit if the window is not visible, since a hidden window may not be the
-    // active window.
-    if (!d_guiContext || !isEffectiveVisible())
+    // a hidden window may not be the active window
+    if (!d_guiContext || !isEffectiveVisible() || isActive())
         return false;
 
-    // TODO: move activation to GUIContext? Only one window subtree can be active!
+    // get immediate child of parent that is currently active (if any)
+    Window* activeWnd = nullptr;
+    if (d_parent)
+    {
+        // scan backwards through the draw list, as this will usually result in the fastest result
+        for (auto it = getParent()->d_drawList.rbegin(); it != getParent()->d_drawList.rend(); ++it)
+        {
+            if ((*it)->isActive())
+            {
+                activeWnd = (*it);
+                break;
+            }
+        }
+    }
+
     // force complete release of input capture.
     if (d_guiContext->getInputCaptureWindow() != this)
         d_guiContext->releaseInputCapture(false);
-
-    // get immediate child of parent that is currently active (if any)
-    Window* const activeWnd = getActiveSibling();
-    if (activeWnd == this)
-        return false;
 
     const bool handled = moveToFront_impl(byClick);
 
@@ -1883,34 +1892,6 @@ void Window::removeWindowFromDrawList(const Window& wnd)
         if (position != d_drawList.end())
             d_drawList.erase(position);
     }
-}
-
-//----------------------------------------------------------------------------//
-Window* Window::getActiveSibling()
-{
-    Window* activeWnd = isActive() ? this : nullptr;
-
-    // if active window not already known, and we have a parent window
-    if (!activeWnd && d_parent)
-    {
-        // scan backwards through the draw list, as this will
-        // usually result in the fastest result.
-        for (auto it = getParent()->d_drawList.rbegin(); it != getParent()->d_drawList.rend(); ++it)
-        {
-            Window* wnd = *it;
-            // if this child is active
-            if (wnd->isActive())
-            {
-                // set the return value
-                activeWnd = wnd;
-                // exit loop early, as we have found what we needed
-                break;
-            }
-        }
-    }
-
-    // return whatever we discovered
-    return activeWnd;
 }
 
 //----------------------------------------------------------------------------//
