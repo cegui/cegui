@@ -369,7 +369,7 @@ public:
 
 protected:
     // Inherited methods
-    bool validateWindowRenderer(const WindowRenderer* renderer) const override = 0;
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
     /*!
     \brief
