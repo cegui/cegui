@@ -93,15 +93,12 @@ void WindowRenderer::registerProperty(Property* property)
 *************************************************************************/
 void WindowRenderer::onAttach()
 {
-    PropertyList::iterator i = d_properties.begin();
-    while (i != d_properties.end())
+    for (const auto& pair : d_properties)
     {
-        d_window->addProperty((*i).first);
+        d_window->addProperty(pair.first);
         // ban from xml if neccessary
-        if ((*i).second)
-            d_window->banPropertyFromXML((*i).first);
-
-        ++i;
+        if (pair.second)
+            d_window->banPropertyFromXML(pair.first->getName());
     }
 }
 
@@ -110,15 +107,13 @@ void WindowRenderer::onAttach()
 *************************************************************************/
 void WindowRenderer::onDetach()
 {
-    PropertyList::reverse_iterator i = d_properties.rbegin();
-    while (i != d_properties.rend())
+    for (const auto& pair : d_properties)
     {
         // unban from xml if neccessary
-        if ((*i).second)
-            d_window->unbanPropertyFromXML((*i).first);
+        if (pair.second)
+            d_window->unbanPropertyFromXML(pair.first->getName());
 
-        d_window->removeProperty((*i).first->getName());
-        ++i;
+        d_window->removeProperty(pair.first->getName());
     }
 }
 
