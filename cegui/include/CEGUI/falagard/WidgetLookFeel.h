@@ -421,6 +421,22 @@ public:
 
     /*!
     \brief
+        Returns if an Animation with the given name is present in this look.
+
+    \param name
+        The name of the Animation to look for.
+
+    \param includeInheritedLook
+       If set to true, this function will try to also include elements from the inherited WidgetLookFeel.
+
+    \return
+        - true, if the element with the given name is present,
+        - false, if no such element is present.
+    */
+    bool isAnimationPresent(const String& name, bool includeInheritedLook = true) const;
+
+    /*!
+    \brief
         Adds a named area to the WidgetLookFeel.
 
     \param area

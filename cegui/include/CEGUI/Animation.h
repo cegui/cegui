@@ -228,6 +228,8 @@ public:
     */
     void autoSubscribe(AnimationInstance* instance);
 
+    bool hasAutoSubscriptions() const { return !d_autoSubscriptions.empty(); }
+
     /*!
     \brief
         Unsubscribes all auto subscriptions with information from given
@@ -284,16 +286,14 @@ private:
      */
     bool d_autoStart;
 
-    typedef std::vector<Affector*> AffectorList;
     //! list of affectors defined in this animation
-    AffectorList d_affectors;
+    std::vector<Affector*> d_affectors;
 
-    typedef std::multimap<String, String, std::less<String> > SubscriptionMap;
     /** holds pairs of 2 strings, the left string is the Event that we will
      * subscribe to, the right string is the action that will be invoked to the
      * instance if the event is fired on target window
      */
-    SubscriptionMap d_autoSubscriptions;
+    std::multimap<String, String> d_autoSubscriptions;
 };
 
 } // End of  CEGUI namespace section

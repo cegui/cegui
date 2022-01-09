@@ -37,6 +37,11 @@
 
 namespace CEGUI
 {
+static const String emptyString;
+const String& String::GetEmpty()
+{
+    return emptyString;
+}
 
 std::u32string String::convertUtf8ToUtf32(const char* utf8String)
 {

@@ -1518,9 +1518,9 @@ public:
     void hide(bool force = false) { setVisible(false, force); }
 
     void setShowAnimationName(const String& animName);
-    const String& getShowAnimationName() const { return d_showAnimName; }
+    const String& getShowAnimationName() const;
     void setHideAnimationName(const String& animName);
-    const String& getHideAnimationName() const { return d_hideAnimName; }
+    const String& getHideAnimationName() const;
 
     /*!
     \brief
@@ -3470,16 +3470,19 @@ protected:
         Implementation Data
     *************************************************************************/
 
-    //! GUIContext.  Set when this window is used as a root window.
+    //! GUIContext this window is currently living in.
     GUIContext* d_guiContext = nullptr;
     //! The WindowRenderer module that implements the Look'N'Feel specification
     WindowRenderer* d_windowRenderer = nullptr;
-    //! RenderingSurface owned by this window (may be 0)
+    //! RenderingSurface owned by this window (may be nullptr)
     RenderingSurface* d_surface = nullptr;
     //! Holds pointer to the Window objects current cursor image.
     const Image* d_cursor = nullptr;
     //! Holds pointer to the Window objects current Font.
     const Font* d_font = nullptr;
+    //! Animations that play when the window visibility is changed
+    AnimationInstance* d_showAnimInst = nullptr;
+    AnimationInstance* d_hideAnimInst = nullptr;
     //! Pointer to a custom (user assigned) RenderedStringParser object.
     RenderedStringParser* d_customStringParser = nullptr;
     //! Holds pointer to some user assigned data.
@@ -3557,9 +3560,6 @@ protected:
     String d_tooltipType;
     //! Text string used as tooltip for this window.
     String d_tooltipText;
-
-    String d_showAnimName;
-    String d_hideAnimName;
 
     //! true when this window is an auto-window
     bool d_autoWindow : 1;

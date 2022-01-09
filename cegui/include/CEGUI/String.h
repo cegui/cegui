@@ -352,6 +352,7 @@ public:
 
     static bool isContinuingUTF8CodeUnit(const char codeUnit);
 
+    static const String& GetEmpty();
 
     //////////////////////////////////////////////////////////////////////////
     // Default constructors and destructors

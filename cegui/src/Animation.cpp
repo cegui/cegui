@@ -127,8 +127,7 @@ Affector* Animation::createAffector(const String& targetProperty,
 //----------------------------------------------------------------------------//
 void Animation::destroyAffector(Affector* affector)
 {
-    AffectorList::iterator it =
-        std::find(d_affectors.begin(), d_affectors.end(), affector);
+    auto it = std::find(d_affectors.begin(), d_affectors.end(), affector);
 
     if (it == d_affectors.end())
     {
@@ -147,7 +146,7 @@ Affector* Animation::getAffectorAtIndex(size_t index) const
         throw InvalidRequestException("Out of bounds.");
     }
 
-    AffectorList::const_iterator it = d_affectors.begin();
+    auto it = d_affectors.begin();
     std::advance(it, index);
 
     return *it;
@@ -163,7 +162,7 @@ size_t Animation::getNumAffectors(void) const
 void Animation::defineAutoSubscription(const String& eventName,
                                        const String& action)
 {
-    SubscriptionMap::iterator it = d_autoSubscriptions.find(eventName);
+    auto it = d_autoSubscriptions.find(eventName);
 
     while (it != d_autoSubscriptions.end() && it->first == eventName)
     {
@@ -184,7 +183,7 @@ void Animation::defineAutoSubscription(const String& eventName,
 void Animation::undefineAutoSubscription(const String& eventName,
         const String& action)
 {
-    SubscriptionMap::iterator it = d_autoSubscriptions.find(eventName);
+    auto it = d_autoSubscriptions.find(eventName);
 
     while (it != d_autoSubscriptions.end() && it->first == eventName)
     {
@@ -213,15 +212,12 @@ void Animation::autoSubscribe(AnimationInstance* instance)
     EventSet* eventSender = instance->getEventSender();
 
     if (!eventSender)
-    {
         return;
-    }
 
-    for (SubscriptionMap::const_iterator it = d_autoSubscriptions.begin();
-            it != d_autoSubscriptions.end(); ++it)
+    for (const auto& pair : d_autoSubscriptions)
     {
-        const String& e = it->first;
-        const String& a = it->second;
+        const String& e = pair.first;
+        const String& a = pair.second;
 
         Event::Connection connection;
 
@@ -276,21 +272,15 @@ void Animation::autoUnsubscribe(AnimationInstance* instance)
 //----------------------------------------------------------------------------//
 void Animation::savePropertyValues(AnimationInstance* instance)
 {
-    for (AffectorList::const_iterator it = d_affectors.begin();
-            it != d_affectors.end(); ++it)
-    {
-        (*it)->savePropertyValues(instance);
-    }
+    for (Affector* affector : d_affectors)
+        affector->savePropertyValues(instance);
 }
 
 //----------------------------------------------------------------------------//
 void Animation::apply(AnimationInstance* instance)
 {
-    for (AffectorList::const_iterator it = d_affectors.begin();
-            it != d_affectors.end(); ++it)
-    {
-        (*it)->apply(instance);
-    }
+    for (Affector* affector : d_affectors)
+        affector->apply(instance);
 }
 
 //----------------------------------------------------------------------------//
@@ -321,17 +311,15 @@ void Animation::writeXMLToStream(XMLSerializer& xml_stream, const String& name_o
     xml_stream.attribute(AnimationDefinitionHandler::ReplayModeAttribute, replayMode);
     xml_stream.attribute(AnimationDefinitionHandler::AutoStartAttribute, PropertyHelper<bool>::toString(getAutoStart()));
 
-    for (AffectorList::const_iterator it = d_affectors.begin(); it != d_affectors.end(); ++it)
-    {
-        (*it)->writeXMLToStream(xml_stream);
-    }
+    for (Affector* affector : d_affectors)
+        affector->writeXMLToStream(xml_stream);
 
-    for (SubscriptionMap::const_iterator it = d_autoSubscriptions.begin(); it != d_autoSubscriptions.end(); ++it)
+    for (const auto& pair : d_autoSubscriptions)
     {
         xml_stream.openTag(AnimationSubscriptionHandler::ElementName);
 
-        xml_stream.attribute(AnimationSubscriptionHandler::EventAttribute, it->first);
-        xml_stream.attribute(AnimationSubscriptionHandler::ActionAttribute, it->second);
+        xml_stream.attribute(AnimationSubscriptionHandler::EventAttribute, pair.first);
+        xml_stream.attribute(AnimationSubscriptionHandler::ActionAttribute, pair.second);
 
         xml_stream.closeTag();
     }
@@ -342,4 +330,3 @@ void Animation::writeXMLToStream(XMLSerializer& xml_stream, const String& name_o
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
-

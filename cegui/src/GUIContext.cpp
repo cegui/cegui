@@ -480,7 +480,7 @@ void GUIContext::hideTooltip(bool force)
 
             // NB: resetting a text is important for triggering auto-sizing for certain tooltip widgets.
             // If we had kept the text, it may match the next one and EventTextChanged wouldn't happen.
-            wnd->setText("");
+            wnd->setText(String::GetEmpty());
         }
     }));
 
