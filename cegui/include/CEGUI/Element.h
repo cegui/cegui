@@ -350,7 +350,7 @@ public:
     \brief
         Get the element's position.
 
-        Sets the position of the area occupied by this element. The position is offset from
+        Gets the position of the area occupied by this element. The position is offset from
         one of the corners of this Element's parent element (depending on alignments)
         or from the top-left corner of the display if this element has no parent
         (i.e. it is the root element).
@@ -1052,7 +1052,7 @@ public:
     \param forceLayoutChildren
         - true - call children layout code even if we are not resized.
     */
-    void notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLayoutChildren = false);
+    void notifyScreenAreaChanged(bool adjust_size_to_content);
 
     /*!
     \brief Return the size of the root container (such as screen size).
@@ -1602,7 +1602,7 @@ protected:
     //! The list of child element objects attached to this.
     std::vector<Element*> d_children;
     //! Holds pointer to the parent element.
-    Element* d_parent;
+    Element* d_parent = nullptr;
 
     URect d_area;
     //! current minimum size for the element.
@@ -1616,14 +1616,14 @@ protected:
     //! Pivot point (the point around which the widget is rotated).
     UVector3 d_pivot;
     //! The target aspect ratio
-    float d_aspectRatio;
+    float d_aspectRatio = 1.f;
 
     //! Specifies the base for horizontal alignment.
-    HorizontalAlignment d_horizontalAlignment;
+    HorizontalAlignment d_horizontalAlignment = HorizontalAlignment::Left;
     //! Specifies the base for vertical alignment.
-    VerticalAlignment d_verticalAlignment;
+    VerticalAlignment d_verticalAlignment = VerticalAlignment::Top;
     //! How to satisfy current aspect ratio
-    AspectMode d_aspectMode;
+    AspectMode d_aspectMode = AspectMode::Ignore;
 
     //! outer area rect in screen pixels
     CachedRectf d_unclippedOuterRect;
@@ -1631,7 +1631,7 @@ protected:
     CachedRectf d_unclippedInnerRect;
 
     //! true if element is in non-client (outside InnerRect) area of parent.
-    bool d_nonClient;
+    bool d_nonClient = false;
 
     /*!
     \brief
@@ -1646,7 +1646,7 @@ protected:
     \see isWidthAdjustedToContent
     \see d_isHeightAdjustedToContent
     */
-    bool d_isWidthAdjustedToContent;
+    bool d_isWidthAdjustedToContent = false;
 
     /*!
     \brief
@@ -1661,10 +1661,10 @@ protected:
     \see isHeightAdjustedToContent
     \see d_isWidthAdjustedToContent
     */
-    bool d_isHeightAdjustedToContent;
+    bool d_isHeightAdjustedToContent = false;
 
     //! If true, the position and size are pixel aligned
-    bool d_pixelAligned;
+    bool d_pixelAligned = true;
 };
 
 } // End of  CEGUI namespace section

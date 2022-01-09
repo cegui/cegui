@@ -41,10 +41,8 @@
 #   pragma warning(disable : 4355) // 'this' is used to init unclipped rects
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-
 const String Element::EventNamespace("Element");
 
 const String Element::EventSized("Sized");
@@ -61,24 +59,12 @@ const String Element::EventIsSizeAdjustedToContentChanged("IsSizeAdjustedToConte
 
 //----------------------------------------------------------------------------//
 Element::Element():
-    d_parent(nullptr),
-
-    d_nonClient(false),
-    d_isWidthAdjustedToContent(false),
-    d_isHeightAdjustedToContent(false),
-
     d_area(cegui_reldim(0), cegui_reldim(0), cegui_reldim(0), cegui_reldim(0)),
-    d_horizontalAlignment(HorizontalAlignment::Left),
-    d_verticalAlignment(VerticalAlignment::Top),
     d_minSize(cegui_reldim(0), cegui_reldim(0)),
     d_maxSize(cegui_reldim(0), cegui_reldim(0)),
-    d_aspectMode(AspectMode::Ignore),
-    d_aspectRatio(1.0 / 1.0),
-    d_pixelAligned(true),
     d_pixelSize(0.0f, 0.0f),
     d_rotation(1.f, 0.f, 0.f, 0.f), // <-- IDENTITY
-    d_pivot(UVector3(cegui_reldim(1./2), cegui_reldim(1./2), cegui_reldim(1./2))),
-
+    d_pivot(UVector3(cegui_reldim(0.5f), cegui_reldim(0.5f), cegui_reldim(0.5f))),
     d_unclippedOuterRect(this, &Element::getUnclippedOuterRect_impl),
     d_unclippedInnerRect(this, &Element::getUnclippedInnerRect_impl)
 {
@@ -95,7 +81,7 @@ void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_t
 }
 
 //----------------------------------------------------------------------------//
-void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLayoutChildren)
+void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
 {
     // Update pixel size and detect resizing
     const Sizef oldSize = d_pixelSize;
@@ -113,8 +99,8 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content, bool forceLay
 
     if (!d_children.empty())
     {
-        const bool needClientLayout = forceLayoutChildren || (flags & ClientSized);
-        const bool needNonClientLayout = forceLayoutChildren || (flags & NonClientSized);
+        const bool needClientLayout = (flags & ClientSized);
+        const bool needNonClientLayout = (flags & NonClientSized);
         if (needClientLayout || needNonClientLayout)
         {
             // We need full layouting when child area size changed or when explicitly requested

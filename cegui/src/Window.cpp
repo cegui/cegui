@@ -2905,7 +2905,7 @@ void Window::setRenderingSurface(RenderingSurface* surface)
     if (d_surface)
     {
         transferChildSurfaces();
-        notifyScreenAreaChanged(true, true); //???or only update geometry if size not changed?
+        notifyScreenAreaChanged(true); //???or only update geometry if size not changed?
     }
 }
 
