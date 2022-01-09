@@ -206,9 +206,6 @@ protected:
     void onTextChanged(WindowEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;
 
-    //! validate window renderer
-    bool validateWindowRenderer(const WindowRenderer* renderer) const override;    
-
     
 
 

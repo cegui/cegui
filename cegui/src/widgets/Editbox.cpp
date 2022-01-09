@@ -472,12 +472,6 @@ void Editbox::handleDelete(void)
 }
 
 
-bool Editbox::validateWindowRenderer(const WindowRenderer* renderer) const
-{
-	return dynamic_cast<const EditboxWindowRenderer*>(renderer) != nullptr;
-}
-
-
 void Editbox::onValidationStringChanged(WindowEventArgs& e)
 {
     fireEvent(EventValidationStringChanged , e, EventNamespace);
