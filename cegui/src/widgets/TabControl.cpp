@@ -552,20 +552,19 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
 Layout the widgets
 *************************************************************************/
 void TabControl::performChildLayout(bool client, bool nonClient)
-
 {
     Window* tabButtonPane = getTabButtonPane();
     Window* tabContentPane = getTabPane();
 
     // Enable top/bottom edges of the tabPane control, if supported by looknfeel
-    if (tabContentPane->isPropertyPresent (EnableTop))
-        tabContentPane->setProperty (EnableTop, (d_tabPanePos == TabPanePosition::Top) ? n0 : n1);
-    if (tabContentPane->isPropertyPresent (EnableBottom))
-        tabContentPane->setProperty (EnableBottom, (d_tabPanePos == TabPanePosition::Top) ? n1 : n0);
-    if (tabButtonPane->isPropertyPresent (EnableTop))
-        tabButtonPane->setProperty (EnableTop, (d_tabPanePos == TabPanePosition::Top) ? n0 : n1);
-    if (tabButtonPane->isPropertyPresent (EnableBottom))
-        tabButtonPane->setProperty (EnableBottom, (d_tabPanePos == TabPanePosition::Top) ? n1 : n0);
+    if (tabContentPane->isPropertyPresent(EnableTop))
+        tabContentPane->setProperty(EnableTop, (d_tabPanePos == TabPanePosition::Top) ? n0 : n1);
+    if (tabContentPane->isPropertyPresent(EnableBottom))
+        tabContentPane->setProperty(EnableBottom, (d_tabPanePos == TabPanePosition::Top) ? n1 : n0);
+    if (tabButtonPane->isPropertyPresent(EnableTop))
+        tabButtonPane->setProperty(EnableTop, (d_tabPanePos == TabPanePosition::Top) ? n0 : n1);
+    if (tabButtonPane->isPropertyPresent(EnableBottom))
+        tabButtonPane->setProperty(EnableBottom, (d_tabPanePos == TabPanePosition::Top) ? n1 : n0);
 
     Window::performChildLayout(client, nonClient);
 

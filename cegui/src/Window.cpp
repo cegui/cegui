@@ -3429,7 +3429,6 @@ void Window::attachToGUIContext(GUIContext* context)
 
     if (context)
     {
-        // 2021-12-31 CHECK: forceLayoutChildren was true here previously, need to look if some problems arise
         notifyScreenAreaChanged(true);
 
         // TODO: can check if font really changed? Move to GUIContext::setRootWindow?
