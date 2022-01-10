@@ -27,6 +27,7 @@
 #include "CEGUI/widgets/Spinner.h"
 #include "CEGUI/widgets/PushButton.h"
 #include "CEGUI/widgets/Editbox.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/SharedStringStream.h"
 #include <iomanip>
 
@@ -291,13 +292,11 @@ void Spinner::onTextChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Spinner::onActivated(ActivationEventArgs& e)
 {
-    if (!isActive())
-    {
-        Window::onActivated(e);
+    Window::onActivated(e);
 
-        if (!getActiveChild())
-            getEditbox()->activate();
-    }
+    // When receiving input focus, forward it to the editbox
+    if (isFocused())
+        getEditbox()->activate();
 }
 
 //----------------------------------------------------------------------------//

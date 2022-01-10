@@ -108,7 +108,21 @@ public:
     Window* getRootWindow() const { return d_rootWindow; }
     void setRootWindow(Window* new_root);
 
-    //???need modal stack to show dialog over dialog?
+    /*!
+    \brief
+        Activate the window giving it input focus.
+
+    \param window
+        Window to activate or nullptr to clear an active window.
+    */
+    bool setActiveWindow(Window* window, bool moveToFront);
+
+    //! Gets an active leaf window that owns an input focus when not overridden.
+    Window* getActiveWindow() const { return d_activeWindow; }
+
+    //! Checks if a window is in an active branch of the tree
+    bool isWindowActive(const Window* window) const;
+
     /*!
     \brief
         Set the modal state for this Window.
@@ -126,6 +140,10 @@ public:
 
     //! Return a pointer to the Window that is currently set as modal.
     Window* getModalWindow() const { return d_modalWindow; }
+
+    Window* getInputCaptureWindow() const { return d_captureWindow; }
+    bool captureInput(Window* window);
+    void releaseInputCapture(bool allowRestoreOld = true, Window* exactWindow = nullptr);
 
     Window* getTargetWindow(const glm::vec2& pt, bool allow_disabled) const;
     Window* getWindowContainingCursor();
@@ -153,10 +171,6 @@ public:
 
     //! Tell the context to reconsider which window it thinks the cursor is in.
     void updateWindowContainingCursor() { d_windowContainingCursorIsUpToDate = false; }
-
-    Window* getInputCaptureWindow() const { return d_captureWindow; }
-    bool captureInput(Window* window);
-    void releaseInputCapture(bool allowRestoreOld = true, Window* exactWindow = nullptr);
 
     /*!
     \brief
@@ -309,6 +323,7 @@ protected:
     Window* d_oldCaptureWindow = nullptr;
     Window* d_tooltipWindow = nullptr;
     Window* d_tooltipSource = nullptr;
+    Window* d_activeWindow = nullptr;
     WindowNavigator* d_windowNavigator = nullptr;
 
     Font* d_defaultFont = nullptr;

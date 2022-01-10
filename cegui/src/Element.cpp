@@ -58,6 +58,67 @@ const String Element::EventNonClientChanged("NonClientChanged");
 const String Element::EventIsSizeAdjustedToContentChanged("IsSizeAdjustedToContentChanged");
 
 //----------------------------------------------------------------------------//
+Element* Element::getCommonAncestor(Element* e1, Element* e2)
+{
+    if (!e1 || !e2)
+        return nullptr;
+
+    if (e1 == e2)
+        return e1;
+
+    // Calculate depth of e1 and check if e2 is its ancestor
+    size_t depth1 = 0;
+    auto curr = e1;
+    do
+    {
+        ++depth1;
+        curr = curr->getParentElement();
+        if (curr == e2)
+            return e2;
+    }
+    while (curr);
+
+    // Calculate depth of e2 and check if e1 is its ancestor
+    size_t depth2 = 0;
+    curr = e2;
+    do
+    {
+        ++depth2;
+        curr = curr->getParentElement();
+        if (curr == e1)
+            return e1;
+    }
+    while (curr);
+
+    // Common ancestor is inherently at the same level in both branches.
+    // Prepare to search by moving both branches to the shallowest level.
+    while (depth2 > depth1)
+    {
+        e2 = e2->getParentElement();
+        --depth2;
+    }
+    while (depth1 > depth2)
+    {
+        e1 = e1->getParentElement();
+        --depth1;
+    }
+
+    // Now compare branches at the same level, starting from parents because
+    // we already know that e1 and e2 are not parents of each other.
+    while (depth1)
+    {
+        e1 = e1->getParentElement();
+        e2 = e2->getParentElement();
+        if (e1 == e2)
+            return e1;
+
+        --depth1;
+    }
+
+    return nullptr;
+}
+
+//----------------------------------------------------------------------------//
 Element::Element():
     d_area(cegui_reldim(0), cegui_reldim(0), cegui_reldim(0), cegui_reldim(0)),
     d_minSize(cegui_reldim(0), cegui_reldim(0)),
@@ -939,10 +1000,7 @@ void Element::removeChild_impl(Element* element)
 {
     // NB: it is intentionally valid to remove an element that is not in the list
 
-    // find this element in the child list
-    std::vector<Element*>::iterator it = std::find(d_children.begin(), d_children.end(), element);
-
-    // if the element was found in the child list, remove it from there
+    auto it = std::find(d_children.begin(), d_children.end(), element);
     if (it != d_children.end())
         d_children.erase(it);
 

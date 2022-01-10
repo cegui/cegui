@@ -101,6 +101,102 @@ void GUIContext::setRootWindow(Window* new_root)
 }
 
 //----------------------------------------------------------------------------//
+bool GUIContext::setActiveWindow(Window* window, bool moveToFront)
+{
+    if (window && (window->getGUIContextPtr() != this || !window->canFocus() || !window->isEffectiveVisible()))
+        return false;
+
+    //!!!TODO ACTIVE: move to front here if required and not front already!
+    if (window == d_activeWindow)
+        return true;
+
+    //!!!TODO ACTIVE: if !canFocus, climb up to the deepest parent who can?
+
+    const auto commonAncestor = Window::getCommonAncestor(window, d_activeWindow);
+
+    // Deactivate branch from d_activeWindow to commonAncestor
+    if (d_activeWindow && d_activeWindow != commonAncestor)
+    {
+        auto curr = d_activeWindow;
+        do
+        {
+            ActivationEventArgs args(curr);
+            args.otherWindow = window;
+            curr->onDeactivated(args);
+
+            //!!!TODO ACTIVE:
+            // (need?) Release input capture of curr. Or allow to capture for inactive window?
+            //// force complete release of input capture.
+            //if (d_guiContext->getInputCaptureWindow() != this)
+            //    d_guiContext->releaseInputCapture(false);
+
+            curr = curr->getParent();
+        }
+        while (curr != commonAncestor);
+    }
+
+    auto prevActiveWindow = d_activeWindow;
+    d_activeWindow = window;
+
+    if (window)
+    {
+        //!!!FIXME ACTIVE: byClick arg - fix logic in Window!
+        if (moveToFront)
+            window->moveToFront();
+
+        if (window == commonAncestor)
+        {
+            // The window became focused (active leaf) and may require redrawing
+            window->invalidate();
+        }
+        else
+        {
+            // Activate branch from commonAncestor to window
+            std::vector<Window*> reversedList;
+            reversedList.reserve(16);
+            auto curr = window;
+            do
+            {
+                reversedList.push_back(curr);
+                curr = curr->getParent();
+            }
+            while (curr != commonAncestor);
+
+            for (auto it = reversedList.rbegin(); it != reversedList.rend(); ++it)
+            {
+                ActivationEventArgs args((*it));
+                args.otherWindow = prevActiveWindow;
+                (*it)->onActivated(args);
+
+                //!!!TODO ACTIVE:
+                // Subscribe on EventHidden of each window in a chain, or propagate effective hiding event?
+
+                //???TODO ACTIVE: really need to deactivate when moveToBack? May worth complete decoupling!
+                //void Window::moveToBack()
+                //{
+                //    deactivate();
+            }
+        }
+    }
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::isWindowActive(const Window* window) const
+{
+    return d_activeWindow && d_activeWindow->isInHierarchyOf(window);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setModalWindow(Window* window)
+{
+    // TODO: need stack to show one modal dialog inside of another?
+    if (!d_modalWindow || setActiveWindow(d_modalWindow, true))
+        d_modalWindow = window;
+}
+
+//----------------------------------------------------------------------------//
 bool GUIContext::captureInput(Window* window)
 {
     // We can only capture if we are the active window (LEAVE THIS ALONE!)
@@ -161,14 +257,6 @@ void GUIContext::releaseInputCapture(bool allowRestoreOld, Window* exactWindow)
     }
 
     d_oldCaptureWindow = nullptr;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::setModalWindow(Window* window)
-{
-    d_modalWindow = window;
-    if (d_modalWindow)
-        d_modalWindow->activate();
 }
 
 //----------------------------------------------------------------------------//
@@ -278,6 +366,9 @@ void GUIContext::onWindowDetached(Window* window)
         if (!WindowManager::getSingleton().isAlive(window))
             d_tooltips.erase(itTooltip);
     }
+
+    if (window == d_activeWindow)
+        setActiveWindow(window->getParent(), false);
 
     if (window == d_windowContainingCursor)
     {
@@ -665,13 +756,9 @@ Window* GUIContext::getInputTargetWindow() const
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
         return nullptr;
 
-    // handle normal non-modal situations
-    if (!d_modalWindow)
-        return d_rootWindow->getActiveChild();
+    //!!!???TODO ACTIVE: override with input capture window here?
 
-    // handle possible modal window.
-    Window* const target = d_modalWindow->getActiveChild();
-    return target ? target : d_modalWindow;
+    return d_activeWindow ? d_activeWindow : d_modalWindow;
 }
 
 //----------------------------------------------------------------------------//
@@ -897,6 +984,9 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
 
     if (d_tooltipWindow)
         d_tooltipWindow->hide(true);
+
+    if (event.d_payload.source == CursorInputSource::Left)
+        setActiveWindow(window, window->isRiseOnCursorActivationEnabled());
 
     if (d_windowNavigator)
         d_windowNavigator->setCurrentFocusedWindow(window);

@@ -923,27 +923,14 @@ void Combobox::addComboboxProperties(void)
     );
 }
 
-
-/*************************************************************************
-	Activate the edit box component of the Combobox.
-*************************************************************************/
-void Combobox::activateEditbox(void)
-{
-    getEditbox()->setActive(true);
-}
-
-
-
-/*************************************************************************
-	Widget activation handler
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Combobox::onActivated(ActivationEventArgs& e)
 {
-	if (!isActive())
-	{
-		Window::onActivated(e);
-		activateEditbox();
-	}
+	Window::onActivated(e);
+
+    // When receiving input focus, forward it to the editbox
+    if (isFocused())
+        getEditbox()->activate();
 }
 
 //----------------------------------------------------------------------------//

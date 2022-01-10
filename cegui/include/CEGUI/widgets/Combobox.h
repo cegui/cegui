@@ -665,16 +665,6 @@ public:
 	void	setMaxTextLength(size_t max_len);
 
 
-	/*!
-	\brief
-		Activate the edit box component of the Combobox.
-
-	\return
-		Nothing.
-	*/
-	void	activateEditbox(void);
-
-
 	/*************************************************************************
 		List Manipulators
 	*************************************************************************/
