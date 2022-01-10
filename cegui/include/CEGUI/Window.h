@@ -463,7 +463,10 @@ public:
     static const String UserStringNameXMLAttributeName;
     static const String UserStringValueXMLAttributeName;
 
-    static Window* getCommonAncestor(Window* w1, Window* w2);
+    static inline Window* getCommonAncestor(Window* w1, Window* w2)
+    {
+        return static_cast<Window*>(Element::getCommonAncestor(w1, w2));
+    }
 
     using Element::isChild;
     using Element::removeChild;
@@ -1557,7 +1560,7 @@ public:
         Activate the Window giving it input focus and bringing it to the top of
         all windows with the same always-on-top settig as this Window.
     */
-    void activate() { activate_impl(false); }
+    bool activate();
 
     /*!
     \brief
@@ -1585,18 +1588,39 @@ public:
 
     /*!
     \brief
-        return a pointer to the Window that currently has input focus starting
-        with this Window.
+        Makes this Window be focused.
 
-    \return
-        Pointer to the window that is active (has input focus) starting at this
-        window.  The function will return 'this' if this Window is active
-        and either no children are attached or if none of the attached children
-        are active.  Returns NULL if this Window (and therefore all children)
-        are not active.
+        Focusing a Window means activating it and setting the focused flag.
+        This will also trigger the activated event. Focusing works only on
+        non-disabled widgets.
     */
-    Window* getActiveChild();
-    const Window* getActiveChild() const;
+    void focus();
+
+    /*!
+    \brief
+        Unfocus this Window.
+
+        This will trigger the deactivated event if this was an active window.
+    */
+    void unfocus();
+
+    /*!
+    \brief
+        Return whether Window can be focused or not.
+
+        A Window cannot be usually focused when it's disabled. Other widgets
+        can override this method based on their own behaviour.
+    */
+    virtual bool canFocus() const;
+
+    /*!
+    \brief
+        Return whether this Window is focused or not.
+
+        A window is focused when it is the active Window inside the current
+        GUIContext.
+    */
+    bool isFocused() const;
 
     /*!
     \brief
@@ -2602,42 +2626,6 @@ public:
 
     // overridden from Element
     Sizef getRootContainerSize() const override;
-
-    /*!
-    \brief
-        Return whether this Window is focused or not.
-
-        A window is focused when it is the active Window inside the current
-        GUIContext.
-    */
-    bool isFocused() const { return d_isFocused; }
-
-    /*!
-    \brief
-        Makes this Window be focused.
-
-        Focusing a Window means activating it and setting the focused flag.
-        This will also trigger the activated event. Focusing works only on
-        non-disabled widgets.
-    */
-    void focus();
-
-    /*!
-    \brief
-        Unfocus this Window.
-
-        This will trigger the deactivated event if this was an active window.
-    */
-    void unfocus();
-
-    /*!
-    \brief
-        Return whether Window can be focused or not.
-
-        A Window cannot be usually focused when it's disabled. Other widgets
-        can override this method based on their own behaviour.
-    */
-    virtual bool canFocus() const;
     
     /*!
     \brief
@@ -3299,10 +3287,7 @@ protected:
     virtual void onZChange_impl();
 
     //! \brief Add standard CEGUI::Window properties.
-    void    addWindowProperties();
-
-    //! \brief A helper function for internal activation logic.
-    bool activate_impl(bool byClick);
+    void addWindowProperties();
 
     /*!
     \brief
@@ -3545,8 +3530,6 @@ protected:
     bool d_enabled : 1;
     //! is window visible (i.e. it will be rendered, but may still be obscured)
     bool d_visible : 1;
-    //! true when Window is the active Window (receiving inputs).
-    bool d_active : 1;
     //! true when Window will be auto-destroyed by parent.
     bool d_destroyedByParent : 1;
     //! true when Window will be clipped by parent Window area Rect.
@@ -3600,9 +3583,6 @@ protected:
 
     //! true when cursor is contained within this Window's area.
     bool d_containsPointer : 1;
-
-    //! true when this window is focused.
-    bool d_isFocused : 1;
 
 #ifdef CEGUI_BIDI_SUPPORT
     //! whether bidi visual mapping has been updated since last text change.

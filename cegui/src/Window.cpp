@@ -193,30 +193,6 @@ void Window::LookNFeelProperty::writeXMLToStream(const PropertyReceiver* receive
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::getCommonAncestor(Window* w1, Window* w2)
-{
-    if (!w2)
-        return nullptr;
-
-    if (w1 == w2)
-        return w1;
-
-    // make sure w1 is always further up
-    if (w1 && w1->isAncestor(w2))
-        return w2;
-
-    while (w1)
-    {
-        if (w2->isAncestor(w1))
-            break;
-
-        w1 = w1->getParent();
-    }
-
-    return w1;
-}
-
-//----------------------------------------------------------------------------//
 Window::Window(const String& type, const String& name):
     Element(),
 
@@ -230,7 +206,6 @@ Window::Window(const String& type, const String& name):
     d_destructionStarted(false),
     d_enabled(true),
     d_visible(true),
-    d_active(false),
 
     d_destroyedByParent(true),
     d_clippedByParent(true),
@@ -283,8 +258,7 @@ Window::Window(const String& type, const String& name):
     d_hitTestRectValid(false),
 
     d_propagatePointerInputs(false),
-    d_containsPointer(false),
-    d_isFocused(false)
+    d_containsPointer(false)
 {
     addWindowProperties();
 }
@@ -487,35 +461,6 @@ bool Window::isAncestor(unsigned int ID) const
     }
 
     return false;
-}
-
-//----------------------------------------------------------------------------//
-Window* Window::getActiveChild()
-{
-    return const_cast<Window*>(
-        static_cast<const Window*>(this)->getActiveChild());
-}
-
-//----------------------------------------------------------------------------//
-const Window* Window::getActiveChild() const
-{
-    // are children can't be active if we are not
-    if (!isActive())
-        return nullptr;
-
-    for (auto it = d_drawList.crbegin(); it != d_drawList.crend(); ++it)
-    {
-        // don't need full backward scan for activeness as we already know
-        // 'this' is active.  NB: This uses the draw-ordered child list, as that
-        // should be quicker in most cases.
-
-        const Window* wnd = *it;
-        if (wnd->d_active)
-            return wnd->getActiveChild();
-    }
-
-    // no child was active, therefore we are the topmost active window
-    return this;
 }
 
 //----------------------------------------------------------------------------//
@@ -886,75 +831,48 @@ void Window::setActive(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-// TODO: move activation to GUIContext? Only one window subtree can be active!
-bool Window::activate_impl(bool byClick)
+bool Window::activate()
 {
-    // a hidden window may not be the active window
-    if (!d_guiContext || !isEffectiveVisible() || isActive())
-        return false;
-
-    // get immediate child of parent that is currently active (if any)
-    Window* activeWnd = nullptr;
-    if (d_parent)
-    {
-        // scan backwards through the draw list, as this will usually result in the fastest result
-        for (auto it = getParent()->d_drawList.rbegin(); it != getParent()->d_drawList.rend(); ++it)
-        {
-            if ((*it)->isActive())
-            {
-                activeWnd = (*it);
-                break;
-            }
-        }
-    }
-
-    // force complete release of input capture.
-    if (d_guiContext->getInputCaptureWindow() != this)
-        d_guiContext->releaseInputCapture(false);
-
-    const bool handled = moveToFront_impl(byClick);
-
-    // notify ourselves that we have become active
-    ActivationEventArgs args(this);
-    args.otherWindow = activeWnd;
-    onActivated(args);
-
-    // notify any previously active window that it is no longer active
-    if (activeWnd)
-    {
-        args.window = activeWnd;
-        args.otherWindow = this;
-        args.handled = 0;
-        activeWnd->onDeactivated(args);
-    }
-
-    return handled;
+    return d_guiContext && d_guiContext->setActiveWindow(this, true);
 }
 
 //----------------------------------------------------------------------------//
 void Window::deactivate()
 {
-    if (!isActive())
-        return;
-
-    ActivationEventArgs args(this);
-    args.otherWindow = nullptr;
-    onDeactivated(args);
+    if (isActive())
+        d_guiContext->setActiveWindow(getParent(), true);
 }
 
 //----------------------------------------------------------------------------//
 bool Window::isActive() const
 {
-    const Window* current = this;
-    while (current)
-    {
-        if (!current->d_active)
-            return false;
+    return d_guiContext && d_guiContext->isWindowActive(this);
+}
 
-        current = current->getParent();
-    }
+//----------------------------------------------------------------------------//
+void Window::focus()
+{
+    activate();
+}
 
-    return true;
+//----------------------------------------------------------------------------//
+void Window::unfocus()
+{
+    if (isFocused())
+        deactivate();
+}
+
+//----------------------------------------------------------------------------//
+bool Window::canFocus() const
+{
+    // by default all widgets can be focused if they are not disabled
+    return !isDisabled();
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isFocused() const
+{
+    return d_guiContext && d_guiContext->getActiveWindow() == this;
 }
 
 //----------------------------------------------------------------------------//
@@ -1415,15 +1333,11 @@ void Window::removeChild_impl(Element* element)
     // remove from draw list
     removeWindowFromDrawList(*wnd);
 
-    Element::removeChild_impl(wnd);
-
     wnd->attachToGUIContext(nullptr);
 
-    wnd->onZChange_impl();
+    Element::removeChild_impl(wnd);
 
-    // Removed windows should not be active anymore (they are not attached
-    // to anything so this would not make sense)
-    wnd->deactivate();
+    wnd->onZChange_impl();
 }
 
 //----------------------------------------------------------------------------//
@@ -1998,6 +1912,7 @@ void Window::onShown(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onHidden(WindowEventArgs& e)
 {
+    releaseInput();
     deactivate();
     invalidate();
     fireEvent(EventHidden, e, EventNamespace);
@@ -2122,39 +2037,13 @@ void Window::onDestructionStarted(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onActivated(ActivationEventArgs& e)
 {
-    d_active = true;
     invalidate();
-
-    // activate all ancestors
-    auto ancestor = getParent();
-    while (ancestor)
-    {
-        ActivationEventArgs parent_e(ancestor);
-        parent_e.otherWindow = e.otherWindow;
-        ancestor->onActivated(parent_e);
-
-        ancestor = ancestor->getParent();
-    }
-
     fireEvent(EventActivated, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 void Window::onDeactivated(ActivationEventArgs& e)
 {
-    // first de-activate all children
-    for (Element* child : d_children)
-    {
-        auto childWnd = static_cast<Window*>(child);
-        if (childWnd->isActive())
-        {
-            ActivationEventArgs child_e(childWnd);
-            child_e.otherWindow = e.otherWindow;
-            childWnd->onDeactivated(child_e);
-        }
-    }
-
-    d_active = false;
     invalidate();
     fireEvent(EventDeactivated, e, EventNamespace);
 }
@@ -2232,9 +2121,6 @@ void Window::onCursorMove(CursorInputEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onCursorPressHold(CursorInputEventArgs& e)
 {
-    if ((e.source == CursorInputSource::Left) && activate_impl(true))
-        ++e.handled;
-
     fireEvent(EventCursorPressHold, e, EventNamespace);
 
     // optionally propagate to parent
@@ -3611,37 +3497,6 @@ Window* Window::findChildByNamePath_impl(const String& name_path) const
 }
 
 //----------------------------------------------------------------------------//
-void Window::focus()
-{
-    if (!canFocus())
-        return;
-
-    d_isFocused = true;
-
-    ActivationEventArgs event_args(this);
-    onActivated(event_args);
-}
-
-//----------------------------------------------------------------------------//
-void Window::unfocus()
-{
-    d_isFocused = false;
-
-    if (d_active)
-    {
-        ActivationEventArgs event_args(this);
-        onDeactivated(event_args);
-    }
-}
-
-//----------------------------------------------------------------------------//
-bool Window::canFocus() const
-{
-    // by default all widgets can be focused if they are not disabled
-    return !isDisabled();
-}
-
-//----------------------------------------------------------------------------//
 void Window::setDrawModeMask(std::uint32_t drawModeMask)
 {
     if (d_drawModeMask == drawModeMask)
@@ -3707,7 +3562,8 @@ void Window::addWindowProperties()
         &Window::setVisibleForced, &Window::isVisible, true
     );
 
-    CEGUI_DEFINE_PROPERTY(Window, bool,
+    // NB: activity isn't saved to XML but the property is still here (e.g. for animations)
+    CEGUI_DEFINE_PROPERTY_NO_XML(Window, bool,
         ActivePropertyName, "Property to get/set the 'active' setting for the Window. Value is either \"true\" or \"false\".",
         &Window::setActive, &Window::isActive, false
     );
@@ -3836,7 +3692,7 @@ void Window::addWindowProperties()
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        AutoRenderingSurfaceStencilEnabledPropertyName, "Property to get/set whether the Window's texture caching (if activated) "
+        AutoRenderingSurfaceStencilEnabledPropertyName, "Property to get/set whether the Window's texture caching (if enabled) "
         "will have a stencil buffer attached. This may be required for proper rendering of SVG images and Custom Shapes."
         "  Value is either \"true\" or \"false\".",
         &Window::setAutoRenderingSurfaceStencilEnabled, &Window::isAutoRenderingSurfaceStencilEnabled, false

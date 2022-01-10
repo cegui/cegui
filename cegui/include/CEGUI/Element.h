@@ -228,6 +228,8 @@ public:
         mutable bool  d_cacheValid = false;
     };
 
+    static Element* getCommonAncestor(Element* e1, Element* e2);
+
     Element();
     Element(const Element&) = delete;
     Element& operator=(const Element&) = delete;

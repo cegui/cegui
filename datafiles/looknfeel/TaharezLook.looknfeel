@@ -1750,7 +1750,17 @@
                 <Section section="container_normal" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="container_normal" />
+            </Layer>
+        </StateImagery>
         <StateImagery name="ReadOnly">
+            <Layer>
+                <Section section="container_normal" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnlyFocused">
             <Layer>
                 <Section section="container_normal" />
             </Layer>
