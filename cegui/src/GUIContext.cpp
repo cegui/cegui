@@ -765,19 +765,19 @@ bool GUIContext::injectInputEvent(const InputEvent& event)
     {
         auto& semantic_event = static_cast<const SemanticInputEvent&>(event);
 
-        if (d_navigationStrategy)
+        if (d_windowNavigator)
         {
             //!!!TODO ACTIVE: move event mapping into strategy instance!
-            SemanticMappingsMap::const_iterator itor = d_mappings.find(semantic_event.d_value);
+            auto itor = d_mappings.find(semantic_event.d_value);
             if (itor != d_mappings.end())
             {
-                if (d_activeWindow && d_activeWindow->isFocused())
-                    d_activeWindow->deactivate();
+                auto prevWnd = d_activeWindow;
 
-                d_activeWindow = d_navigationStrategy->getWindow(d_activeWindow, itor->second);
+                if (prevWnd && prevWnd->isFocused())
+                    prevWnd->deactivate();
 
-                if (d_activeWindow)
-                    d_activeWindow->activate();
+                if (auto wnd = d_windowNavigator->getWindow(prevWnd, itor->second))
+                    wnd->activate();
             }
         }
 

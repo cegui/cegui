@@ -31,7 +31,7 @@
 #include <sstream>
 
 using namespace CEGUI;
-using namespace NavigationStrategiesPayloads;
+using namespace NavigatorPayloads;
 
 /** This sample uses most of the code from the 'HelloWorld' sample.
     Thus, most of the clarifying comments have been removed for brevity. **/
@@ -67,14 +67,10 @@ bool MenuNavigationSample::initialise(CEGUI::GUIContext* gui_context)
 
     gui_context->setRootWindow(d_root);
 
-    MatrixNavigationStrategy* d_matrixNavigationStrategy = new MatrixNavigationStrategy();
-    d_matrixWindowNavigator = new WindowNavigator(createMatrixNavigationMappings(),
-        d_matrixNavigationStrategy);
+    d_matrixWindowNavigator = new MatrixNavigator(createMatrixNavigationMappings());
     gui_context->setWindowNavigator(d_matrixWindowNavigator);
 
-    LinearNavigationStrategy* d_linearNavigatorStrategy = new LinearNavigationStrategy();
-    d_linearWindowNavigator = new WindowNavigator(createLinearNavigationMappings(),
-        d_linearNavigatorStrategy);
+    d_linearWindowNavigator = new LinearNavigator(createLinearNavigationMappings());
 
     TabControl* tabControl = static_cast<TabControl*>(d_root->getChild("FrameWindow/TabControl"));
     tabControl->subscribeEvent(TabControl::EventSelectionChanged,
@@ -85,7 +81,7 @@ bool MenuNavigationSample::initialise(CEGUI::GUIContext* gui_context)
     d_logWidget1->setText("OK");
 
     // 4 rows
-    d_matrixNavigationStrategy->d_windows.resize(4);
+    d_matrixWindowNavigator->d_windows.resize(4);
     for (int i = 1; i <= 16; ++i)
     {
         std::ostringstream os;
@@ -95,7 +91,7 @@ bool MenuNavigationSample::initialise(CEGUI::GUIContext* gui_context)
         button->subscribeEvent(PushButton::EventClicked,
             Event::Subscriber(&MenuNavigationSample::handleNumberButtonClicked, this));
 
-        d_matrixNavigationStrategy->d_windows.at((i - 1) % 4).push_back(button);
+        d_matrixWindowNavigator->d_windows.at((i - 1) % 4).push_back(button);
     }
 
     tabControl->addTab(page1Window);
@@ -114,8 +110,8 @@ bool MenuNavigationSample::initialise(CEGUI::GUIContext* gui_context)
     d_classesList->setMultiSelectEnabled(true);
     initialiseClasses(d_classesList);
 
-    d_linearNavigatorStrategy->d_windows.push_back(d_classesList);
-    d_linearNavigatorStrategy->d_windows.push_back(selectButton);
+    d_linearWindowNavigator->d_windows.push_back(d_classesList);
+    d_linearWindowNavigator->d_windows.push_back(selectButton);
 
     return true;
 }

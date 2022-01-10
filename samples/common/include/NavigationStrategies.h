@@ -35,7 +35,7 @@
 \brief
     Payloads used by the navigation strategies defined in this file
 */
-namespace NavigationStrategiesPayloads
+namespace NavigatorPayloads
 {
 static const CEGUI::String NAVIGATE_LEFT = "left";
 static const CEGUI::String NAVIGATE_RIGHT = "right";
@@ -53,15 +53,13 @@ static const CEGUI::String NAVIGATE_PREVIOUS = "previous";
     - NAVIGATE_NEXT
     - NAVIGATE_PREVIOUS
 */
-class WindowChildrenNavigationStrategy : public CEGUI::NavigationStrategy
+class WindowChildrenNavigator : public CEGUI::WindowNavigator
 {
 public:
-    WindowChildrenNavigationStrategy(CEGUI::Window* target_window) :
-        d_targetWindow(target_window)
-    {
-    }
 
-    CEGUI::Window* d_targetWindow;
+    WindowChildrenNavigator(CEGUI::Window* target) : d_targetWindow(target) {}
+
+    CEGUI::Window* d_targetWindow = nullptr;
 
     virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload);
 };
@@ -74,9 +72,10 @@ public:
     - NAVIGATE_NEXT
     - NAVIGATE_PREVIOUS
 */
-class LinearNavigationStrategy : public CEGUI::NavigationStrategy
+class LinearNavigator : public CEGUI::WindowNavigator
 {
 public:
+
     std::vector<CEGUI::Window*> d_windows;
 
     virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload);
@@ -92,11 +91,11 @@ public:
     - NAVIGATE_UP
     - NAVIGATE_DOWN
 */
-class MatrixNavigationStrategy : public CEGUI::NavigationStrategy
+class MatrixNavigator : public CEGUI::WindowNavigator
 {
 public:
-    // matrix
-    std::vector< std::vector<CEGUI::Window*> > d_windows;
+
+    std::vector<std::vector<CEGUI::Window*>> d_windows;
 
     virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload);
 };

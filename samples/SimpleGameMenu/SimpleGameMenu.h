@@ -45,8 +45,7 @@ private:
     CEGUI::Window*      d_root;
     CEGUI::Window*      d_currentMenu;
 
-    WindowChildrenNavigationStrategy*   d_navigationStrategy;
-    CEGUI::WindowNavigator*             d_windowNavigator;
+    WindowChildrenNavigator* d_windowNavigator;
 
     static std::map<CEGUI::SemanticValue, CEGUI::String> createNavigationMappings();
 

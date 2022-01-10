@@ -26,13 +26,70 @@
  ***************************************************************************/
 #include "NavigationStrategies.h"
 #include "CEGUI/Window.h"
-
 #include <algorithm>
 
 using namespace CEGUI;
-using namespace NavigationStrategiesPayloads;
+using namespace NavigatorPayloads;
 
-Window* LinearNavigationStrategy::getWindow(Window* neighbour, const String& payload)
+//----------------------------------------------------------------------------//
+CEGUI::Window* WindowChildrenNavigator::getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload)
+{
+    if (d_targetWindow == nullptr)
+        return nullptr;
+
+    size_t child_count = d_targetWindow->getChildCount();
+    if (child_count == 0)
+        return nullptr;
+
+    bool found = false;
+    size_t index = 0;
+
+    for (size_t i = 0; i < child_count; ++i)
+    {
+        if (d_targetWindow->getChildAtIndex(i) == neighbour)
+        {
+            found = true;
+            index = i;
+            break;
+        }
+    }
+
+    if (found)
+    {
+        if (payload == NAVIGATE_NEXT)
+        {
+            if (index >= child_count - 1)
+                index = 0;
+            else
+                index++;
+        }
+
+        if (payload == NAVIGATE_PREVIOUS)
+        {
+            if (index == 0)
+                index = child_count - 1;
+            else
+                index--;
+        }
+    }
+
+    Window* child = d_targetWindow->getChildAtIndex(index);
+
+    // start a new search
+    if (!child->canFocus())
+    {
+        // prevent overflow
+        if (child != neighbour)
+            return getWindow(child, payload);
+        else
+            return nullptr;
+    }
+
+    return child;
+}
+
+//----------------------------------------------------------------------------//
+Window* LinearNavigator::getWindow(Window* neighbour, const String& payload)
 {
     std::vector<Window*>::const_iterator itor;
     // start at the beginning
@@ -66,7 +123,8 @@ Window* LinearNavigationStrategy::getWindow(Window* neighbour, const String& pay
     return neighbour;
 }
 
-Window* MatrixNavigationStrategy::getWindow(Window* neighbour, const String& payload)
+//----------------------------------------------------------------------------//
+Window* MatrixNavigator::getWindow(Window* neighbour, const String& payload)
 {
     size_t rows = d_windows.size();
 
@@ -106,60 +164,4 @@ Window* MatrixNavigationStrategy::getWindow(Window* neighbour, const String& pay
 
     // first button
     return d_windows.at(0).at(0);
-}
-
-CEGUI::Window* WindowChildrenNavigationStrategy::getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload)
-{
-    if (d_targetWindow == nullptr)
-        return nullptr;
-
-    size_t child_count = d_targetWindow->getChildCount();
-    if (child_count == 0)
-        return nullptr;
-
-    bool found = false;
-    size_t index = 0;
-
-    for (size_t i = 0; i < child_count; ++i)
-    {
-        if (d_targetWindow->getChildAtIndex(i) == neighbour)
-        {
-            found = true;
-            index = i;
-            break;
-        }
-    }
-
-    if (found)
-    {
-        if (payload == NAVIGATE_NEXT)
-        {
-            if (index >= child_count - 1)
-                index = 0;
-            else
-                index ++;
-        }
-
-        if (payload == NAVIGATE_PREVIOUS)
-        {
-            if (index == 0)
-                index = child_count - 1;
-            else
-                index --;
-        }
-    }
-
-    Window* child = d_targetWindow->getChildAtIndex(index);
-
-    // start a new search
-    if (!child->canFocus())
-    {
-        // prevent overflow
-        if (child != neighbour)
-            return getWindow(child, payload);
-        else
-            return nullptr;
-    }
-
-    return child;
 }

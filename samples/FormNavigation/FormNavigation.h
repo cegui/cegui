@@ -51,8 +51,7 @@ private:
     CEGUI::ToggleButton*        d_isGameMasterCheckbox;
     CEGUI::Window*              d_confirmButton;
     std::vector<CEGUI::Window*> d_editboxes;
-    LinearNavigationStrategy*   d_navigationStrategy;
-    CEGUI::WindowNavigator*     d_windowNavigator;
+    LinearNavigator*            d_windowNavigator;
 };
 
 #endif  // end of guard _Sample_Form_Navigation_h_
