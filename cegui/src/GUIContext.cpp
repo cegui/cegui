@@ -761,30 +761,27 @@ bool GUIContext::injectInputEvent(const InputEvent& event)
     if (event.d_eventType == InputEventType::TextInputEventType)
         return handleTextInputEvent(static_cast<const TextInputEvent&>(event));
 
-    if (event.d_eventType == InputEventType::SemanticInputEventType)
+    if (event.d_eventType != InputEventType::SemanticInputEventType)
+        return false;
+
+    auto& semantic_event = static_cast<const SemanticInputEvent&>(event);
+
+    // First try to process an event in a window navigator
+    if (d_windowNavigator)
     {
-        auto& semantic_event = static_cast<const SemanticInputEvent&>(event);
-
-        if (d_windowNavigator)
+        // TODO ACTIVE: translate SemanticValue -> String payload
+        auto itor = d_mappings.find(semantic_event.d_value);
+        if (itor != d_mappings.end())
         {
-            //!!!TODO ACTIVE: move event mapping into strategy instance!
-            auto itor = d_mappings.find(semantic_event.d_value);
-            if (itor != d_mappings.end())
-            {
-                auto prevWnd = d_activeWindow;
-
-                if (prevWnd && prevWnd->isFocused())
-                    prevWnd->deactivate();
-
-                if (auto wnd = d_windowNavigator->getWindow(prevWnd, itor->second))
-                    wnd->activate();
-            }
+            // Activate a window. Treat as a handling action if there were changes in Z-order.
+            auto newWnd = d_windowNavigator->getWindow(d_activeWindow, itor->second);
+            if (setActiveWindow(newWnd, newWnd ? newWnd->isRiseOnCursorActivationEnabled() : false))
+                return true;
         }
-
-        return handleSemanticInputEvent(semantic_event);
     }
 
-    return false;
+    // Window navigator didn't consume an event, do normal processing
+    return handleSemanticInputEvent(semantic_event);
 }
 
 //----------------------------------------------------------------------------//
