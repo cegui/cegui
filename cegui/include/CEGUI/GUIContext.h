@@ -303,8 +303,6 @@ protected:
 
     // Input event handlers
     void initializeSemanticEventHandlers();
-    bool handleTextInputEvent(const TextInputEvent& event);
-    bool handleSemanticInputEvent(const SemanticInputEvent& event);
     bool handleCopyRequest(const SemanticInputEvent& event);
     bool handleCutRequest(const SemanticInputEvent& event);
     bool handlePasteRequest(const SemanticInputEvent& event);
