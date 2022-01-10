@@ -765,8 +765,21 @@ bool GUIContext::injectInputEvent(const InputEvent& event)
     {
         auto& semantic_event = static_cast<const SemanticInputEvent&>(event);
 
-        if (d_windowNavigator)
-            d_windowNavigator->handleSemanticEvent(semantic_event);
+        if (d_navigationStrategy)
+        {
+            //!!!TODO ACTIVE: move event mapping into strategy instance!
+            SemanticMappingsMap::const_iterator itor = d_mappings.find(semantic_event.d_value);
+            if (itor != d_mappings.end())
+            {
+                if (d_activeWindow && d_activeWindow->isFocused())
+                    d_activeWindow->deactivate();
+
+                d_activeWindow = d_navigationStrategy->getWindow(d_activeWindow, itor->second);
+
+                if (d_activeWindow)
+                    d_activeWindow->activate();
+            }
+        }
 
         return handleSemanticInputEvent(semantic_event);
     }
@@ -900,27 +913,16 @@ bool GUIContext::handleTextInputEvent(const TextInputEvent& event)
 bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
 {
     // dispatch to a handler if we have one
-    std::map<SemanticValue, SlotFunctorBase<InputEvent>*>::const_iterator itor =
-        d_semanticEventHandlers.find(event.d_value);
-    if (itor != d_semanticEventHandlers.end())
-    {
-        return (*(*itor).second)(event);
-    }
+    auto it = d_semanticEventHandlers.find(event.d_value);
+    if (it != d_semanticEventHandlers.end())
+        return (*(*it).second)(event);
 
-    Window* targetWindow = getInputTargetWindow();
-    // window navigator's window takes precedence
-    if (d_windowNavigator)
-        targetWindow = d_windowNavigator->getCurrentFocusedWindow();
-
-    if (targetWindow)
+    if (Window* targetWindow = getInputTargetWindow())
     {
         SemanticEventArgs args(targetWindow);
-
         args.d_payload = event.d_payload;
         args.d_semanticValue = event.d_value;
-
         args.window->onSemanticInputEvent(args);
-
         return args.handled != 0;
     }
 
@@ -989,9 +991,6 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
         if (setActiveWindow(window, window->isRiseOnCursorActivationEnabled()))
             ++ciea.handled;
 
-    if (d_windowNavigator)
-        d_windowNavigator->setCurrentFocusedWindow(window);
-
     window->onCursorPressHold(ciea);
 
     if (window->isCursorAutoRepeatEnabled())
@@ -1023,9 +1022,6 @@ bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
         d_tooltipTimer = 0.f;
     }
 
-    if (d_windowNavigator)
-        d_windowNavigator->setCurrentFocusedWindow(window);
-
     if (d_repeatPointerSource != CursorInputSource::NotSpecified)
         releaseInputCapture(true, window);
 
@@ -1054,9 +1050,6 @@ bool GUIContext::handleSelectWord(const SemanticInputEvent& event)
     if (!ciea.window)
         return false;
 
-    if (d_windowNavigator)
-        d_windowNavigator->setCurrentFocusedWindow(ciea.window);
-
     ciea.window->onSelectWord(ciea);
     return ciea.handled != 0;
 }
@@ -1077,9 +1070,6 @@ bool GUIContext::handleSelectAll(const SemanticInputEvent& event)
     // if there is no target window, input can not be handled.
     if (!ciea.window)
         return false;
-
-    if (d_windowNavigator)
-        d_windowNavigator->setCurrentFocusedWindow(ciea.window);
 
     ciea.window->onSelectAll(ciea);
     return ciea.handled != 0;

@@ -65,67 +65,6 @@ public:
     virtual Window* getWindow(Window* neighbour, const String& payload) = 0;
 };
 
-/*!
-\brief
-    Provides a way of navigating the GUI by means of focusing windows
-
-    For a brief tutorial on how to use the GUI navigation please refer
-    to the @ref gui_navigation_tutorial
-*/
-class CEGUIEXPORT WindowNavigator
-{
-public:
-    typedef std::map<SemanticValue, String> SemanticMappingsMap;
-    ~WindowNavigator() {}
-
-    /*!
-    \brief
-        Creates a new navigator with the specified event <-> payload mapping and
-        the specified strategy
-
-    \param mapping
-        A mapping from semantic input events to certain strategy-specific payloads
-
-    \param strategy
-        The navigation strategy to be used
-    */
-    WindowNavigator(SemanticMappingsMap mappings, NavigationStrategy* strategy);
-
-    /*!
-    \brief
-        Handles the specified semantic input event and generate a navigation if
-        that is the case (a mapping matches)
-
-    \param event
-        The semantic input event
-    */
-    void handleSemanticEvent(const SemanticInputEvent& event);
-
-    /*!
-    \brief
-        Sets a new current focused window
-
-    \param window
-        The window to be the new focused one
-    */
-    void setCurrentFocusedWindow(Window* window);
-
-    /*!
-    \brief
-        Gets the current focused window
-
-    \return
-        An instance of Window
-    */
-    Window* getCurrentFocusedWindow();
-
-private:
-    SemanticMappingsMap d_mappings;
-    NavigationStrategy* d_strategy;
-
-    Window* d_currentFocusedWindow;
-};
-
 }
 
 #if defined (_MSC_VER)
