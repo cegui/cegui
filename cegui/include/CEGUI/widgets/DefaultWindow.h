@@ -57,7 +57,8 @@ public:
 
 protected:
 
-    void drawSelf(const RenderingContext& /*ctx*/, std::uint32_t /*drawModeMask*/) override {}
+    // FIXME: why breaks drawing children?
+    //void drawSelf(const RenderingContext& /*ctx*/, std::uint32_t /*drawModeMask*/) override {}
 };
 
 }
