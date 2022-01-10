@@ -47,10 +47,11 @@ namespace CEGUI
     For a brief tutorial on how to use the GUI navigation please refer
     to the @ref gui_navigation_tutorial
 */
-class CEGUIEXPORT NavigationStrategy
+class CEGUIEXPORT WindowNavigator
 {
 public:
-    virtual ~NavigationStrategy() {}
+
+    virtual ~WindowNavigator() = default;
 
     /*!
     \brief

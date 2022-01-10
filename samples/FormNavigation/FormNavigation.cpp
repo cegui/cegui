@@ -30,7 +30,7 @@
 #include <iostream>
 
 using namespace CEGUI;
-using namespace NavigationStrategiesPayloads;
+using namespace NavigatorPayloads;
 
 /** This sample uses most of the code from the 'HelloWorld' sample.
     Thus, most of the clarifying comments have been removed for brevity. **/
@@ -66,8 +66,7 @@ bool FormNavigationSample::initialise(CEGUI::GUIContext* gui_context)
 
     gui_context->setRootWindow(d_root);
 
-    d_navigationStrategy = new LinearNavigationStrategy;
-    d_windowNavigator = new WindowNavigator(getNavigationMappings(), d_navigationStrategy);
+    d_windowNavigator = new LinearNavigator(getNavigationMappings());
     gui_context->setWindowNavigator(d_windowNavigator);
 
     FrameWindow* wnd = static_cast<FrameWindow*>(win_mgr.createWindow("TaharezLook/FrameWindow",
@@ -102,35 +101,35 @@ void FormNavigationSample::createForm(FrameWindow* wnd)
     Window* editbox = createWidget("TaharezLook/Editbox", 0.2f, 0.0f);
     wnd->addChild(editbox);
     d_editboxes.push_back(editbox);
-    d_navigationStrategy->d_windows.push_back(editbox);
+    d_windowNavigator->d_windows.push_back(editbox);
 
     editbox = createWidget("TaharezLook/Editbox", 0.2f, 0.1f);
     wnd->addChild(editbox);
     d_editboxes.push_back(editbox);
-    d_navigationStrategy->d_windows.push_back(editbox);
+    d_windowNavigator->d_windows.push_back(editbox);
 
     editbox = createWidget("TaharezLook/Editbox", 0.2f, 0.2f);
     wnd->addChild(editbox);
     d_editboxes.push_back(editbox);
-    d_navigationStrategy->d_windows.push_back(editbox);
+    d_windowNavigator->d_windows.push_back(editbox);
 
     d_isGameMasterCheckbox = static_cast<ToggleButton*>(
         createWidget("TaharezLook/Checkbox", 0.01f, 0.3f, "Is Game Master"));
     d_isGameMasterCheckbox->setSize(USize(cegui_reldim(0.5f), cegui_reldim(0.1f)));
     wnd->addChild(d_isGameMasterCheckbox);
-    d_navigationStrategy->d_windows.push_back(d_isGameMasterCheckbox);
+    d_windowNavigator->d_windows.push_back(d_isGameMasterCheckbox);
 
     d_confirmButton = createWidget("TaharezLook/Button", 0.1f, 0.4f, "Confirm");
     d_confirmButton->subscribeEvent(PushButton::EventClicked,
         Event::Subscriber(&FormNavigationSample::disableConfirmButton, this));
     wnd->addChild(d_confirmButton);
-    d_navigationStrategy->d_windows.push_back(d_confirmButton);
+    d_windowNavigator->d_windows.push_back(d_confirmButton);
 
     Window* resetButton = createWidget("TaharezLook/Button", 0.3f, 0.4f, "Reset");
     resetButton->subscribeEvent(PushButton::EventClicked,
         Event::Subscriber(&FormNavigationSample::resetForm, this));
     wnd->addChild(resetButton);
-    d_navigationStrategy->d_windows.push_back(resetButton);
+    d_windowNavigator->d_windows.push_back(resetButton);
 }
 
 CEGUI::Window* FormNavigationSample::createWidget(const String& type,

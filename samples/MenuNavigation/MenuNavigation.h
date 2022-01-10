@@ -45,8 +45,8 @@ private:
     CEGUI::Window*      d_logWidget2;
     CEGUI::ListWidget*  d_classesList;;
 
-    CEGUI::WindowNavigator*     d_matrixWindowNavigator;
-    CEGUI::WindowNavigator*     d_linearWindowNavigator;
+    MatrixNavigator*    d_matrixWindowNavigator;
+    LinearNavigator*    d_linearWindowNavigator;
 
     void initialiseClasses(CEGUI::ListWidget* classes_listwidget);
     bool handleSelectButtonClicked(const CEGUI::EventArgs& e);
