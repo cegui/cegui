@@ -463,7 +463,15 @@ public:
     static const String UserStringNameXMLAttributeName;
     static const String UserStringValueXMLAttributeName;
 
-    static inline Window* getCommonAncestor(Window* w1, Window* w2)
+    //! \copydoc Element::getSiblingsInCommonAncestor
+    static inline std::pair<Window*, Window*> getSiblingsInCommonAncestor(const Window* w1, const Window* w2)
+    {
+        const auto siblings = Element::getSiblingsInCommonAncestor(w1, w2);
+        return { static_cast<Window*>(siblings.first), static_cast<Window*>(siblings.second) };
+    }
+
+    //! \copydoc Element::getCommonAncestor
+    static inline Window* getCommonAncestor(const Window* w1, const Window* w2)
     {
         return static_cast<Window*>(Element::getCommonAncestor(w1, w2));
     }
@@ -507,6 +515,49 @@ public:
 
     /*!
     \brief
+        Sets the internal 'initialising' flag to true.
+        This can be use to optimize initialisation of some widgets, and is called
+        automatically by the layout XML handler when it has created a window.
+        That is just after the window has been created, but before any children or
+        properties are read.
+    */
+    virtual void beginInitialisation() { d_initialising = true; }
+
+    /*!
+    \brief
+        Sets the internal 'initialising' flag to false.
+        This is called automatically by the layout XML handler when it is done
+        creating a window. That is after all properties and children have been
+        loaded and just before the next sibling gets created.
+    */
+    virtual void endInitialisation();
+
+    bool isInitializing() const { return d_initialising; }
+
+    /*!
+    \brief
+        Initialises the Window based object ready for use.
+
+    \note
+        This must be called for every window created.  Normally this is handled
+        automatically by the WindowManager.
+    */
+    virtual void initialiseComponents() {}
+
+    /*!
+    \brief
+        Set whether or not this Window will automatically be destroyed when its
+        parent Window is destroyed.
+
+    \param setting
+        - true to have the Window auto-destroyed when its parent is destroyed
+          (default behaviour)
+        - false to have the Window remain after its parent is destroyed.
+    */
+    void setDestroyedByParent(bool setting);
+
+    /*!
+    \brief
         returns whether or not this Window is set to be destroyed when its
         parent window is destroyed.
 
@@ -515,17 +566,6 @@ public:
         - false if the Window will remain when its parent is destroyed.
     */
     bool isDestroyedByParent() const { return d_destroyedByParent; }
-
-    /*!
-    \brief
-        returns whether or not this Window is an always on top Window.  Also
-        known as a top-most window.
-
-    \return
-        - true if this Window is always drawn on top of other normal windows.
-        - false if the Window has normal z-order behaviour.
-    */
-    bool isAlwaysOnTop() const { return d_alwaysOnTop; }
 
     /*!
     \brief
@@ -610,7 +650,6 @@ public:
         unsigned int value equal to the currently assigned ID code for this Window.
     */
     unsigned int getID() const { return d_ID; }
-
 
     /*!
     \brief
@@ -905,46 +944,6 @@ public:
 
     /*!
     \brief
-        return true if the Window inherits alpha from its parent(s).
-
-    \return
-        - true if the Window inherits alpha from its parent(s)
-        - false if the alpha for this Window is independant from its parents.
-    */
-    bool inheritsAlpha() const { return d_inheritsAlpha; }
-
-    /*!
-    \brief
-        return the current alpha value set for this Window
-
-    \note
-        The alpha value set for any given window may or may not be the final
-        alpha value that is used when rendering.  All window objects, by
-        default, inherit alpha from thier parent window(s) - this will blend
-        child windows, relatively, down the line of inheritance.  This behaviour
-        can be overridden via the setInheritsAlpha() method.  To return the true
-        alpha value that will be applied when rendering, use the
-        getEffectiveAlpha() method.
-
-    \return
-        the currently set alpha value for this Window.  The value returned Will
-        be between 0.0f and 1.0f.
-    */
-    float getAlpha() const { return d_alpha; }
-
-    /*!
-    \brief
-        return the effective alpha value that will be used when rendering this
-        window, taking into account inheritance of parent window(s) alpha.
-
-    \return
-        the effective alpha that will be applied to this Window when rendering.
-        The value returned Will be between 0.0f and 1.0f.
-    */
-    float getEffectiveAlpha() const;
-
-    /*!
-    \brief
         Return a Rect that describes the rendering clipping rect based upon the
         outer rect area of the window.
 
@@ -1106,27 +1105,6 @@ public:
 
     /*!
     \brief
-        Return whether z-order changes are enabled or disabled for this Window.
-
-    \note
-        This is distinguished from the is/setRiseOnClickEnabled setting in that
-        if rise on click is disabled it only affects the users ability to affect
-        the z order of the Window by clicking the cursor; is still possible to
-        programmatic alter the Window z-order by calling the moveToFront,
-        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
-        ordering is disabled those functions are also precluded from affecting
-        the Window z position.
-
-    \return
-        - true if z-order changes are enabled for this window.
-          moveToFront, moveToBack, moveInFront and moveBehind work normally.
-        - false: z-order changes are disabled for this window.
-          moveToFront, moveToBack, moveInFront and moveBehind are ignored.
-    */
-    bool isZOrderingEnabled() const { return d_zOrderingEnabled; }
-
-    /*!
-    \brief
         Return whether cursor down event autorepeat is enabled for this
         window.
 
@@ -1241,50 +1219,6 @@ public:
           (and so show no tooltip when no text is set).
      */
     void setInheritsTooltipText(bool setting) { d_inheritsTooltipText = setting; }
-
-    /*!
-    \brief
-        Return whether this window will rise to the top of the z-order when
-        activated with the left cursor source.
-
-    \note
-        This is distinguished from the is/setZOrderingEnabled setting in that
-        if rise on click is disabled it only affects the users ability to affect
-        the z order of the Window by activating the cursor; is still possible to
-        programmatic alter the Window z-order by calling the moveToFront,
-        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
-        ordering is disabled those functions are also precluded from affecting
-        the Window z position.
-
-    \return
-        - true if the window will come to the top of other windows when the left
-          cursor source is activated within its area.
-        - false if the window does not change z-order position when the left
-          cursor source is activated within its area.
-     */
-    bool isRiseOnCursorActivationEnabled() const { return d_riseOnCursorActivation; }
-
-    /*!
-    \brief
-        Set whether this window will rise to the top of the z-order when clicked
-        with the left cursor source.
-
-    \note
-        This is distinguished from the is/setZOrderingEnabled setting in that
-        if rise on cursor activation is disabled it only affects the users ability to affect
-        the z order of the Window by activating the left cursor source; is still
-        possible to programmatic alter the Window z-order by calling the moveToFront,
-        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
-        ordering is disabled those functions are also precluded from affecting
-        the Window z position.
-
-    \param setting
-        - true if the window should come to the top of other windows when the
-          left cursor source is activated within its area.
-        - false if the window should not change z-order position when the left
-          cursor source is activated within its area.
-     */
-    void setRiseOnCursorActivationEnabled(bool setting) { d_riseOnCursorActivation = setting; }
 
     /*!
     \brief
@@ -1461,28 +1395,6 @@ public:
 
     /*!
     \brief
-        Initialises the Window based object ready for use.
-
-    \note
-        This must be called for every window created.  Normally this is handled
-        automatically by the WindowManager.
-    */
-    virtual void initialiseComponents() {}
-
-    /*!
-    \brief
-        Set whether or not this Window will automatically be destroyed when its
-        parent Window is destroyed.
-
-    \param setting
-        - true to have the Window auto-destroyed when its parent is destroyed
-          (default behaviour)
-        - false to have the Window remain after its parent is destroyed.
-    */
-    void setDestroyedByParent(bool setting);
-
-    /*!
-    \brief
         Set whether this window is enabled or disabled.  A disabled window
         normally can not be interacted with, and may have different rendering.
 
@@ -1588,24 +1500,6 @@ public:
 
     /*!
     \brief
-        Makes this Window be focused.
-
-        Focusing a Window means activating it and setting the focused flag.
-        This will also trigger the activated event. Focusing works only on
-        non-disabled widgets.
-    */
-    void focus();
-
-    /*!
-    \brief
-        Unfocus this Window.
-
-        This will trigger the deactivated event if this was an active window.
-    */
-    void unfocus();
-
-    /*!
-    \brief
         Return whether Window can be focused or not.
 
         A Window cannot be usually focused when it's disabled. Other widgets
@@ -1615,12 +1509,282 @@ public:
 
     /*!
     \brief
-        Return whether this Window is focused or not.
-
-        A window is focused when it is the active Window inside the current
-        GUIContext.
+        Return whether this window is focused or not. A window is focused when
+        it is the active leaf inside the current GUIContext.
     */
     bool isFocused() const;
+
+    /*!
+    \brief
+        Captures input to this window
+
+    \return
+        - true if input was successfully captured to this window.
+        - false if input could not be captured to this window
+          (maybe because the window is not active).
+    */
+    bool captureInput();
+
+    /*!
+    \brief
+        Releases input capture from this Window. If this Window does not have
+        inputs captured, nothing happens.
+    */
+    void releaseInput();
+
+    /*!
+    \brief
+        Set whether this window will remember and restore the previous window
+        that had inputs captured.
+
+    \param setting
+        - true: The window will remember and restore the previous capture
+          window.  The CaptureLost event is not fired on the previous window
+          when this window steals input capture.  When this window releases
+          capture, the old capture window is silently restored.
+
+        - false: Input capture works as normal, each window losing capture is
+          signalled via CaptureLost, and upon the final release of capture, no
+          previous setting is restored (this is the default behaviour).
+    */
+    void setRestoreOldCapture(bool setting);
+
+    /*!
+    \brief
+        Return whether this window is set to restore old input capture when it
+        loses input capture.
+
+        This is only really useful for certain sub-components for widget
+        writers.
+
+    \return
+        - true if the window will restore the previous capture window when it
+          loses input capture.
+        - false if the window will set the capture window to NULL when it loses
+          input capture (this is the default behaviour).
+    */
+    bool restoresOldCapture() const { return d_restoreOldCapture; }
+
+    /*!
+    \brief
+        Set whether the window wants inputs passed to its attached
+        child windows when the window has inputs captured.
+
+    \param setting
+        - true if System should pass captured input events to child windows.
+        - false if System should pass captured input events to this window only.
+    */
+    void setDistributesCapturedInputs(bool setting) { d_distCapturedInputs = setting; }
+
+    /*!
+    \brief
+        Return whether the window wants inputs passed to its attached
+        child windows when the window has inputs captured.
+
+    \return
+        - true if System should pass captured input events to child windows.
+        - false if System should pass captured input events to this window only.
+    */
+    bool distributesCapturedInputs() const { return d_distCapturedInputs; }
+
+    /*!
+    \brief
+        Return whether z-order changes are enabled or disabled for this Window.
+
+    \note
+        This is distinguished from the is/setRiseOnClickEnabled setting in that
+        if rise on click is disabled it only affects the users ability to affect
+        the z order of the Window by clicking the cursor; is still possible to
+        programmatic alter the Window z-order by calling the moveToFront,
+        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
+        ordering is disabled those functions are also precluded from affecting
+        the Window z position.
+
+    \return
+        - true if z-order changes are enabled for this window.
+          moveToFront, moveToBack, moveInFront and moveBehind work normally.
+        - false: z-order changes are disabled for this window.
+          moveToFront, moveToBack, moveInFront and moveBehind are ignored.
+    */
+    bool isZOrderingEnabled() const { return d_zOrderingEnabled; }
+
+    /*!
+    \brief
+        Set whether z-order changes are enabled or disabled for this Window.
+
+    \note
+        This is distinguished from the is/setRiseOnClickEnabled setting in that
+        if rise on click is disabled it only affects the users ability to affect
+        the z order of the Window by activating the cursor; is still possible to
+        programmatic alter the Window z-order by calling the moveToFront,
+        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
+        ordering is disabled those functions are also precluded from affecting
+        the Window z position.
+
+    \param setting
+        - true if z-order changes are enabled for this window.
+          moveToFront, moveToBack, moveInFront and moveBehind work normally.
+        - false: z-order changes are disabled for this window.
+          moveToFront, moveToBack, moveInFront and moveBehind are ignored.
+    */
+    void setZOrderingEnabled(bool setting) { d_zOrderingEnabled = setting; }
+
+    /*!
+    \brief
+        Return whether this window will rise to the top of the z-order when
+        activated with the left cursor source.
+
+    \note
+        This is distinguished from the is/setZOrderingEnabled setting in that
+        if rise on click is disabled it only affects the users ability to affect
+        the z order of the Window by activating the cursor; is still possible to
+        programmatic alter the Window z-order by calling the moveToFront,
+        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
+        ordering is disabled those functions are also precluded from affecting
+        the Window z position.
+
+    \return
+        true if the window should come to the top of other windows when the left
+        cursor source is activated within its area, false otherwise
+     */
+    bool isRiseOnCursorActivationEnabled() const { return d_riseOnCursorActivation; }
+
+    /*!
+    \brief
+        Set whether this window will rise to the top of the z-order when clicked
+        with the left cursor source.
+
+    \note
+        This is distinguished from the is/setZOrderingEnabled setting in that
+        if rise on cursor activation is disabled it only affects the users ability to affect
+        the z order of the Window by activating the left cursor source; is still
+        possible to programmatic alter the Window z-order by calling the moveToFront,
+        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
+        ordering is disabled those functions are also precluded from affecting
+        the Window z position.
+
+    \param setting
+        true if the window should come to the top of other windows when the
+        left cursor source is activated within its area, false otherwise
+     */
+    void setRiseOnCursorActivationEnabled(bool setting) { d_riseOnCursorActivation = setting; }
+
+    /*!
+    \brief
+        Move the Window to the top of the z order.
+
+        - If the Window is a non always-on-top window it is moved the the top of
+          all other non always-on-top sibling windows, and the process repeated
+          for all ancestors.
+        - If the Window is an always-on-top window it is moved to the of of all
+          sibling Windows, and the process repeated for all ancestors.
+
+    \return
+        true if there were changes in Z-order, false otherwise. Windows with
+        d_cursorPassThroughEnabled are intentionally ignored.
+    */
+    bool moveToFront();
+
+    /*!
+    \brief
+        Move the Window to the bottom of the Z order.
+
+        - If the window is non always-on-top the Window is sent to the very
+          bottom of its sibling windows and the process repeated for all
+          ancestors.
+        - If the window is always-on-top, the Window is sent to the bottom of
+          all sibling always-on-top windows and the process repeated for all
+          ancestors.
+    */
+    void moveToBack();
+
+    /*!
+    \brief
+        Move this window immediately above it's sibling \a window in the z order.
+
+        No action will be taken under the following conditions:
+        - \a window is 0.
+        - \a window is not a sibling of this window.
+        - \a window and this window have different AlwaysOnTop settings.
+        - z-ordering is disabled for this window.
+
+    \param window
+        The sibling window that this window will be moved in front of.
+    */
+    void moveInFront(const Window* window);
+
+    /*!
+    \brief
+        Move this window immediately behind it's sibling \a window in the z
+        order.
+
+        No action will be taken under the following conditions:
+        - \a window is 0.
+        - \a window is not a sibling of this window.
+        - \a window and this window have different AlwaysOnTop settings.
+        - z-ordering is disabled for this window.
+
+    \param window
+        The sibling window that this window will be moved behind.
+    */
+    void moveBehind(const Window* window);
+
+    /*!
+    \brief
+        Return whether this window is in front of the given window.
+
+    \note
+        Here 'in front' just means that one window is drawn after the other, it
+        is not meant to imply that the windows are overlapping nor that one
+        window is obscured by the other.
+    */
+    bool isInFront(const Window& wnd) const;
+
+    /*!
+    \brief
+        Return whether the window is at the top of the Z-Order.  This will
+        correctly take into account 'Always on top' windows as needed.
+
+    \return
+        true if the Window is at the top of the z-order in relation to sibling
+        windows with the same 'always on top' setting, false otherwise
+    */
+    bool isInFront() const;
+
+    /*!
+    \brief
+        Return the (visual) z index of the window on it's parent.
+
+        The z index is a number that indicates the order that windows will be
+        drawn (but is not a 'z co-ordinate', as such).  Higher numbers are in
+        front of lower numbers.
+
+        The number returned will not be stable, and generally should be used to
+        compare with the z index of sibling windows (and only sibling windows)
+        to discover the current z-ordering of those windows.
+    */
+    size_t getZIndex() const;
+
+    /*!
+    \brief
+        Set whether this window is always on top, or not.
+
+    \param setting
+        - true to have the Window appear on top of all normal (non-topmost) windows.
+        - false to allow the window to be covered by other normal windows.
+    */
+    void setAlwaysOnTop(bool setting);
+
+    /*!
+    \brief
+        returns whether or not this Window is an always on top Window.  Also
+        known as a top-most window.
+
+    \return
+        - true if this Window is always drawn on top of other normal windows.
+        - false if the Window has normal z-order behaviour.
+    */
+    bool isAlwaysOnTop() const { return d_alwaysOnTop; }
 
     /*!
     \brief
@@ -1730,7 +1894,7 @@ public:
     \return
         Pointer to the newly created child Window object.
     */
-    Window* createChild(const String& type, const String& name = "");
+    Window* createChild(const String& type, const String& name = String::GetEmpty());
 
     /*!
     \brief
@@ -1752,167 +1916,23 @@ public:
 
     /*!
     \brief
-        Move the Window to the top of the z order.
-
-        - If the Window is a non always-on-top window it is moved the the top of
-          all other non always-on-top sibling windows, and the process repeated
-          for all ancestors.
-        - If the Window is an always-on-top window it is moved to the of of all
-          sibling Windows, and the process repeated for all ancestors.
-    */
-    void moveToFront() { moveToFront_impl(false); }
-
-    /*!
-    \brief
-        Move the Window to the bottom of the Z order.
-
-        - If the window is non always-on-top the Window is sent to the very
-          bottom of its sibling windows and the process repeated for all
-          ancestors.
-        - If the window is always-on-top, the Window is sent to the bottom of
-          all sibling always-on-top windows and the process repeated for all
-          ancestors.
-    */
-    void moveToBack();
-
-    /*!
-    \brief
-        Move this window immediately above it's sibling \a window in the z order.
-
-        No action will be taken under the following conditions:
-        - \a window is 0.
-        - \a window is not a sibling of this window.
-        - \a window and this window have different AlwaysOnTop settings.
-        - z-ordering is disabled for this window.
-
-    \param window
-        The sibling window that this window will be moved in front of.
-    */
-    void moveInFront(const Window* const window);
-
-    /*!
-    \brief
-        Move this window immediately behind it's sibling \a window in the z
-        order.
-
-        No action will be taken under the following conditions:
-        - \a window is 0.
-        - \a window is not a sibling of this window.
-        - \a window and this window have different AlwaysOnTop settings.
-        - z-ordering is disabled for this window.
-
-    \param window
-        The sibling window that this window will be moved behind.
-    */
-    void moveBehind(const Window* const window);
-
-    /*!
-    \brief
-        Return whether /a this Window is in front of the given window.
-
-    \note
-        Here 'in front' just means that one window is drawn after the other, it
-        is not meant to imply that the windows are overlapping nor that one
-        window is obscured by the other.
-    */
-    bool isInFront(const Window& wnd) const;
-
-    /*!
-    \brief
-        Return the (visual) z index of the window on it's parent.
-
-        The z index is a number that indicates the order that windows will be
-        drawn (but is not a 'z co-ordinate', as such).  Higher numbers are in
-        front of lower numbers.
-
-        The number returned will not be stable, and generally should be used to
-        compare with the z index of sibling windows (and only sibling windows)
-        to discover the current z-ordering of those windows.
-    */
-    size_t getZIndex() const;
-
-    /*!
-    \brief
-        Set whether this window is always on top, or not.
+        Sets whether this Window will inherit alpha from its parent windows.
 
     \param setting
-        - true to have the Window appear on top of all normal (non-topmost) windows.
-        - false to allow the window to be covered by other normal windows.
+        - true if the Window should use inherited alpha.
+        - false if the Window should have an independant alpha value.
     */
-    void setAlwaysOnTop(bool setting);
+    void setInheritsAlpha(bool setting);
 
     /*!
     \brief
-        Captures input to this window
+        return true if the Window inherits alpha from its parent(s).
 
     \return
-        - true if input was successfully captured to this window.
-        - false if input could not be captured to this window
-          (maybe because the window is not active).
+        - true if the Window inherits alpha from its parent(s)
+        - false if the alpha for this Window is independant from its parents.
     */
-    bool captureInput();
-
-    /*!
-    \brief
-        Releases input capture from this Window. If this Window does not have
-        inputs captured, nothing happens.
-    */
-    void releaseInput();
-
-    /*!
-    \brief
-        Set whether this window will remember and restore the previous window
-        that had inputs captured.
-
-    \param setting
-        - true: The window will remember and restore the previous capture
-          window.  The CaptureLost event is not fired on the previous window
-          when this window steals input capture.  When this window releases
-          capture, the old capture window is silently restored.
-
-        - false: Input capture works as normal, each window losing capture is
-          signalled via CaptureLost, and upon the final release of capture, no
-          previous setting is restored (this is the default behaviour).
-    */
-    void setRestoreOldCapture(bool setting);
-
-    /*!
-    \brief
-        Return whether this window is set to restore old input capture when it
-        loses input capture.
-
-        This is only really useful for certain sub-components for widget
-        writers.
-
-    \return
-        - true if the window will restore the previous capture window when it
-          loses input capture.
-        - false if the window will set the capture window to NULL when it loses
-          input capture (this is the default behaviour).
-    */
-    bool restoresOldCapture() const { return d_restoreOldCapture; }
-
-    /*!
-    \brief
-        Set whether the window wants inputs passed to its attached
-        child windows when the window has inputs captured.
-
-    \param setting
-        - true if System should pass captured input events to child windows.
-        - false if System should pass captured input events to this window only.
-    */
-    void setDistributesCapturedInputs(bool setting) { d_distCapturedInputs = setting; }
-
-    /*!
-    \brief
-        Return whether the window wants inputs passed to its attached
-        child windows when the window has inputs captured.
-
-    \return
-        - true if System should pass captured input events to child windows.
-        - false if System should pass captured input events to this window only.
-    */
-    bool distributesCapturedInputs() const { return d_distCapturedInputs; }
+    bool inheritsAlpha() const { return d_inheritsAlpha; }
 
     /*!
     \brief
@@ -1935,13 +1955,33 @@ public:
 
     /*!
     \brief
-        Sets whether this Window will inherit alpha from its parent windows.
+        return the current alpha value set for this Window
 
-    \param setting
-        - true if the Window should use inherited alpha.
-        - false if the Window should have an independant alpha value.
+    \note
+        The alpha value set for any given window may or may not be the final
+        alpha value that is used when rendering.  All window objects, by
+        default, inherit alpha from thier parent window(s) - this will blend
+        child windows, relatively, down the line of inheritance.  This behaviour
+        can be overridden via the setInheritsAlpha() method.  To return the true
+        alpha value that will be applied when rendering, use the
+        getEffectiveAlpha() method.
+
+    \return
+        the currently set alpha value for this Window.  The value returned Will
+        be between 0.0f and 1.0f.
     */
-    void setInheritsAlpha(bool setting);
+    float getAlpha() const { return d_alpha; }
+
+    /*!
+    \brief
+        return the effective alpha value that will be used when rendering this
+        window, taking into account inheritance of parent window(s) alpha.
+
+    \return
+        the effective alpha that will be applied to this Window when rendering.
+        The value returned Will be between 0.0f and 1.0f.
+    */
+    float getEffectiveAlpha() const;
 
     /*!
     \brief
@@ -1995,27 +2035,6 @@ public:
         pointer to the user data that is to be set for this window.
     */
     void setUserData(void* user_data) { d_userData = user_data; }
-
-    /*!
-    \brief
-        Set whether z-order changes are enabled or disabled for this Window.
-
-    \note
-        This is distinguished from the is/setRiseOnClickEnabled setting in that
-        if rise on click is disabled it only affects the users ability to affect
-        the z order of the Window by activating the cursor; is still possible to
-        programmatic alter the Window z-order by calling the moveToFront,
-        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
-        ordering is disabled those functions are also precluded from affecting
-        the Window z position.
-
-    \param setting
-        - true if z-order changes are enabled for this window.
-          moveToFront, moveToBack, moveInFront and moveBehind work normally.
-        - false: z-order changes are disabled for this window.
-          moveToFront, moveToBack, moveInFront and moveBehind are ignored.
-    */
-    void setZOrderingEnabled(bool setting) { d_zOrderingEnabled = setting; }
 
     /*!
     \brief
@@ -2223,27 +2242,6 @@ public:
         Stream where xml data should be output.
     */
     virtual void writeXMLToStream(XMLSerializer& xml_stream) const;
-
-    /*!
-    \brief
-        Sets the internal 'initialising' flag to true.
-        This can be use to optimize initialisation of some widgets, and is called
-        automatically by the layout XML handler when it has created a window.
-        That is just after the window has been created, but before any children or
-        properties are read.
-    */
-    virtual void beginInitialisation() { d_initialising = true; }
-
-    /*!
-    \brief
-        Sets the internal 'initialising' flag to false.
-        This is called automatically by the layout XML handler when it is done
-        creating a window. That is after all properties and children have been
-        loaded and just before the next sibling gets created.
-    */
-    virtual void endInitialisation();
-
-    bool isInitializing() const { return d_initialising; }
 
     /*!
     \brief
@@ -3291,16 +3289,6 @@ protected:
 
     /*!
     \brief
-        Implements move to front behavior.
-
-    \return
-        Should return true if some action was taken, or false if there was
-        nothing to be done.
-    */
-    virtual bool moveToFront_impl(bool byClick);
-
-    /*!
-    \brief
         Add the given window to the drawing list at an appropriate position for
         it's settings and the required direction.  Basically, when \a at_back
         is false, the window will appear in front of all other windows with the
@@ -3327,32 +3315,11 @@ protected:
     */
     void removeWindowFromDrawList(const Window& wnd);
 
-    /*!
-    \brief
-        Return whether the window is at the top of the Z-Order.  This will
-        correctly take into account 'Always on top' windows as needed.
-
-    \return
-        - true if the Window is at the top of the z-order in relation to sibling
-          windows with the same 'always on top' setting.
-        - false if the Window is not at the top of the z-order in relation to
-          sibling windows with the same 'always on top' setting.
-    */
-    bool isTopOfZOrder() const;
-
     //! transfer RenderingSurfaces to be owned by our target RenderingSurface.
     void transferChildSurfaces();
 
     //! helper function to invalidate window and optionally child windows.
     void invalidate_impl(const bool recursive);
-
-    /*!
-    \brief
-        Helper function to return the ancestor Window of /a wnd that is attached
-        as a child to a window that is also an ancestor of /a this.  Returns 0
-        if /a wnd and /a this are not part of the same hierachy.
-     */
-    const Window* getWindowAttachedToCommonAncestor(const Window& wnd) const;
 
     Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const override;
     //! Default implementation of function to return Window outer clipper area.

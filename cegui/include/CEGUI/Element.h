@@ -228,7 +228,24 @@ public:
         mutable bool  d_cacheValid = false;
     };
 
-    static Element* getCommonAncestor(Element* e1, Element* e2);
+    /*!
+    \brief
+        Retrieves parents of given elements that are siblings of
+        their lowest common ancestor
+
+    \returns
+        - two different siblings if there is a lowest common ancestor
+        - both elements equal to one of input elements if it is an ancestor of another
+        - both nullptrs if there is no common ancestor
+    */
+    static std::pair<Element*, Element*> getSiblingsInCommonAncestor(const Element* e1, const Element* e2);
+
+    //! Retrieves the lowest common ancestor of two elements (may be nullptr)
+    static inline Element* getCommonAncestor(const Element* e1, const Element* e2)
+    {
+        const auto siblings = getSiblingsInCommonAncestor(e1, e2);
+        return (siblings.first == siblings.second) ? siblings.first : siblings.first->getParentElement();
+    }
 
     Element();
     Element(const Element&) = delete;

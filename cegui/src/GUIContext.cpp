@@ -103,21 +103,23 @@ void GUIContext::setRootWindow(Window* new_root)
 //----------------------------------------------------------------------------//
 bool GUIContext::setActiveWindow(Window* window, bool moveToFront)
 {
+    //!!!TODO ACTIVE: if !canFocus, climb up to the deepest parent who can?
     if (window && (window->getGUIContextPtr() != this || !window->canFocus() || !window->isEffectiveVisible()))
         return false;
 
-    //!!!TODO ACTIVE: move to front here if required and not front already!
+    // Enforce moving to front if requested, even for already active window
+    const bool zOrderChanged = moveToFront && window && window->moveToFront();
+
     if (window == d_activeWindow)
-        return true;
+        return zOrderChanged;
 
-    //!!!TODO ACTIVE: if !canFocus, climb up to the deepest parent who can?
-
-    const auto commonAncestor = Window::getCommonAncestor(window, d_activeWindow);
+    Window* prevActiveWindow = d_activeWindow;
+    const Window* commonAncestor = Window::getCommonAncestor(window, prevActiveWindow);
 
     // Deactivate branch from d_activeWindow to commonAncestor
-    if (d_activeWindow && d_activeWindow != commonAncestor)
+    if (prevActiveWindow && prevActiveWindow != commonAncestor)
     {
-        auto curr = d_activeWindow;
+        Window* curr = prevActiveWindow;
         do
         {
             ActivationEventArgs args(curr);
@@ -135,15 +137,10 @@ bool GUIContext::setActiveWindow(Window* window, bool moveToFront)
         while (curr != commonAncestor);
     }
 
-    auto prevActiveWindow = d_activeWindow;
     d_activeWindow = window;
 
     if (window)
     {
-        //!!!FIXME ACTIVE: byClick arg - fix logic in Window!
-        if (moveToFront)
-            window->moveToFront();
-
         if (window == commonAncestor)
         {
             // The window became focused (active leaf) and may require redrawing
@@ -154,7 +151,7 @@ bool GUIContext::setActiveWindow(Window* window, bool moveToFront)
             // Activate branch from commonAncestor to window
             std::vector<Window*> reversedList;
             reversedList.reserve(16);
-            auto curr = window;
+            Window* curr = window;
             do
             {
                 reversedList.push_back(curr);
@@ -168,9 +165,6 @@ bool GUIContext::setActiveWindow(Window* window, bool moveToFront)
                 args.otherWindow = prevActiveWindow;
                 (*it)->onActivated(args);
 
-                //!!!TODO ACTIVE:
-                // Subscribe on EventHidden of each window in a chain, or propagate effective hiding event?
-
                 //???TODO ACTIVE: really need to deactivate when moveToBack? May worth complete decoupling!
                 //void Window::moveToBack()
                 //{
@@ -179,7 +173,7 @@ bool GUIContext::setActiveWindow(Window* window, bool moveToFront)
         }
     }
 
-    return true;
+    return zOrderChanged;
 }
 
 //----------------------------------------------------------------------------//
@@ -985,16 +979,19 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
     if (d_tooltipWindow)
         d_tooltipWindow->hide(true);
 
-    if (event.d_payload.source == CursorInputSource::Left)
-        setActiveWindow(window, window->isRiseOnCursorActivationEnabled());
-
-    if (d_windowNavigator)
-        d_windowNavigator->setCurrentFocusedWindow(window);
-
     CursorInputEventArgs ciea(window);
     ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
     ciea.moveDelta = glm::vec2(0.f, 0.f);
     ciea.source = event.d_payload.source;
+
+    // Activate a window. Treat as a handling action if there were changes in Z-order.
+    if (ciea.source == CursorInputSource::Left)
+        if (setActiveWindow(window, window->isRiseOnCursorActivationEnabled()))
+            ++ciea.handled;
+
+    if (d_windowNavigator)
+        d_windowNavigator->setCurrentFocusedWindow(window);
+
     window->onCursorPressHold(ciea);
 
     if (window->isCursorAutoRepeatEnabled())

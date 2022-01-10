@@ -60,13 +60,14 @@ const String Element::EventNonClientChanged("NonClientChanged");
 const String Element::EventIsSizeAdjustedToContentChanged("IsSizeAdjustedToContentChanged");
 
 //----------------------------------------------------------------------------//
-Element* Element::getCommonAncestor(Element* e1, Element* e2)
+// NB: we promised not to change incoming elements, but we don't want to prevent users from doing so with return values
+std::pair<Element*, Element*> Element::getSiblingsInCommonAncestor(const Element* e1, const Element* e2)
 {
     if (!e1 || !e2)
-        return nullptr;
+        return { nullptr, nullptr };
 
     if (e1 == e2)
-        return e1;
+        return { const_cast<Element*>(e1), const_cast<Element*>(e1) };
 
     // Calculate depth of e1 and check if e2 is its ancestor
     size_t depth1 = 0;
@@ -76,7 +77,7 @@ Element* Element::getCommonAncestor(Element* e1, Element* e2)
         ++depth1;
         curr = curr->getParentElement();
         if (curr == e2)
-            return e2;
+            return { const_cast<Element*>(e2), const_cast<Element*>(e2) };
     }
     while (curr);
 
@@ -88,7 +89,7 @@ Element* Element::getCommonAncestor(Element* e1, Element* e2)
         ++depth2;
         curr = curr->getParentElement();
         if (curr == e1)
-            return e1;
+            return { const_cast<Element*>(e1), const_cast<Element*>(e1) };
     }
     while (curr);
 
@@ -109,15 +110,15 @@ Element* Element::getCommonAncestor(Element* e1, Element* e2)
     // we already know that e1 and e2 are not parents of each other.
     while (depth1)
     {
+        if (e1->getParentElement() == e2->getParentElement())
+            return { const_cast<Element*>(e1), const_cast<Element*>(e2) };
+
         e1 = e1->getParentElement();
         e2 = e2->getParentElement();
-        if (e1 == e2)
-            return e1;
-
         --depth1;
     }
 
-    return nullptr;
+    return { nullptr, nullptr };
 }
 
 //----------------------------------------------------------------------------//
