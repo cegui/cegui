@@ -2719,7 +2719,7 @@ protected:
     *************************************************************************/
 
     //! \copydoc Element::handleAreaChanges
-    virtual uint8_t handleAreaChanges(bool moved, bool sized) override;
+    virtual uint8_t handleAreaChanges(bool movedOnScreen, bool movedInParent, bool sized) override;
 
     /*!
     \brief

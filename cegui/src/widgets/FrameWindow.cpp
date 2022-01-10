@@ -511,6 +511,8 @@ void FrameWindow::setCursorForSizingLocation(SizingLocation location) const
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
     invalidate(!d_rolledup);
+
+    // TODO: need to check necessity of auto-sizing disabling
     notifyScreenAreaChanged(false);
 
     fireEvent(EventRollupToggled, e, EventNamespace);

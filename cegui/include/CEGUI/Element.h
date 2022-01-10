@@ -27,7 +27,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-
 #ifndef _CEGUIElement_h_
 #define _CEGUIElement_h_
 
@@ -82,9 +81,7 @@ class directly. You most likely want to use CEGUI::Window.
     that deriving classes can easily make their getParent and return the proper
     casted type (Window* for example).
 */
-class CEGUIEXPORT Element :
-    public PropertySet,
-    public EventSet
+class CEGUIEXPORT Element : public PropertySet, public EventSet
 {
 public:
     //! Namespace for global events
@@ -144,11 +141,7 @@ public:
      * changed.
      */
     static const String EventNonClientChanged;
-    /*!
-    \brief
-        Fired when any of the properties "AdjustWidthToContent" and
-        "AdjustHeightToContent" changes.
-    */
+    //! \brief Fired when "AdjustWidthToContent" or "AdjustHeightToContent" changes.
     static const String EventIsSizeAdjustedToContentChanged;
 
     /*!
@@ -203,9 +196,7 @@ public:
             return ((*d_element).*d_generator)(skipAllPixelAlignment);
         }
 
-        /*!
-        \brief Retrieves cached Rectf even if the cache is invalid
-        */
+        //! \brief Retrieves cached Rectf even if the cache is invalid
         const Rectf& getCurrent() const { return d_cachedData; }
 
         /*!
@@ -223,11 +214,11 @@ public:
             // false, since when we are caching we don't want to skip anything, we want everything to act
             // exactly as it was setup
             d_cachedData = (*d_element.*d_generator)(false);
-
             d_cacheValid = true;
         }
 
     private:
+
         Element const* d_element;
         const DataGenerator d_generator;
 
@@ -235,11 +226,7 @@ public:
         mutable bool  d_cacheValid = false;
     };
 
-    /*!
-    \brief Constructor
-    */
     Element();
-
     Element(const Element&) = delete;
     Element& operator=(const Element&) = delete;
 
@@ -280,23 +267,16 @@ public:
     void setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content);
 
     //! \overload
-    inline void setArea(const UDim& xpos, const UDim& ypos,
-        const UDim& width, const UDim& height)
+    void setArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height)
     {
         setArea(UVector2(xpos, ypos), USize(width, height));
     }
 
     //! \overload
-    inline void setArea(const UVector2& pos, const USize& size)
-    {
-        setArea(pos, size, true);
-    }
+    void setArea(const UVector2& pos, const USize& size) { setArea(pos, size, true); }
 
     //! \overload
-    inline void setArea(const URect& area)
-    {
-        setArea(area.d_min, area.getSize());
-    }
+    void setArea(const URect& area) { setArea(area.d_min, area.getSize()); }
 
     /*!
     \brief
@@ -329,22 +309,13 @@ public:
     \see UDim
     \see Element::setArea(const UVector2& pos, const USize& size)
     */
-    inline void setPosition(const UVector2& pos)
-    {
-        setArea(pos, getSize(), true);
-    }
+    void setPosition(const UVector2& pos) { setArea(pos, getSize(), true); }
 
     //! \overload
-    inline void setXPosition(const UDim& pos)
-    {
-        setPosition(UVector2(pos, getYPosition()));
-    }
+    void setXPosition(const UDim& pos) { setPosition(UVector2(pos, getYPosition())); }
 
     //! \overload
-    inline void setYPosition(const UDim& pos)
-    {
-        setPosition(UVector2(getXPosition(), pos));
-    }
+    void setYPosition(const UDim& pos) { setPosition(UVector2(getXPosition(), pos)); }
 
     /*!
     \brief
@@ -427,10 +398,7 @@ public:
 
     \see UDim
     */
-    inline void setSize(const USize& size)
-    {
-        setSize(size, true);
-    }
+    void setSize(const USize& size) { setSize(size, true); }
 
     /*!
     \brief
@@ -449,22 +417,16 @@ public:
 
     \see UDim
     */
-    inline void setSize(const USize& size, bool adjust_size_to_content)
+    void setSize(const USize& size, bool adjust_size_to_content)
     {
         setArea(getPosition(), size, adjust_size_to_content);
     }
 
     //! \overload
-    inline void setWidth(const UDim& width)
-    {
-        setSize(USize(width, getSize().d_height));
-    }
+    void setWidth(const UDim& width) { setSize(USize(width, getSize().d_height)); }
 
     //! \overload
-    inline void setHeight(const UDim& height)
-    {
-        setSize(USize(getSize().d_width, height));
-    }
+    void setHeight(const UDim& height) { setSize(USize(getSize().d_width, height)); }
 
     /*!
     \brief
@@ -827,7 +789,7 @@ public:
     \return
         Pointer to the child element currently attached at index position \a idx
     */
-    inline Element* getChildElementAtIndex(size_t idx) const { return d_children[idx]; }
+    Element* getChildElementAtIndex(size_t idx) const { return d_children[idx]; }
 
     /*!
     \brief
@@ -845,7 +807,7 @@ public:
     size_t getChildIndex(const Element* child) const;
 
     //! \brief Returns number of child elements attached to this Element
-    inline size_t getChildCount() const { return d_children.size(); }
+    size_t getChildCount() const { return d_children.size(); }
 
     //! \brief Checks whether given element is attached to this Element
     bool isChild(const Element* element) const;
@@ -1048,11 +1010,20 @@ public:
 
     \param adjust_size_to_content
         - true - call adjustSizeToContent() if our size is changed.
-
-    \param forceLayoutChildren
-        - true - call children layout code even if we are not resized.
     */
-    void notifyScreenAreaChanged(bool adjust_size_to_content);
+    void notifyScreenAreaChanged(bool adjust_size_to_content = true);
+
+    /*!
+    \brief
+        Layout child widgets inside our content areas.
+
+    \param client
+        - true to process client children
+
+    \param nonClient
+        - true to process non-client children
+    */
+    virtual void performChildLayout(bool client, bool nonClient);
 
     /*!
     \brief Return the size of the root container (such as screen size).
@@ -1415,35 +1386,15 @@ public:
     */
     virtual bool contentFits() const;
 
-    /*!
-    \brief
-        Layout child widgets inside our content areas.
-
-    \param client
-        - true to process client children
-
-    \param nonClient
-        - true to process non-client children
-    */
-    virtual void performChildLayout(bool client, bool nonClient);
-
 protected:
-    /*!
-    \brief
-        Add standard CEGUI::Element properties.
-    */
+
+    //! \brief Add standard CEGUI::Element properties.
     void addElementProperties();
 
-    /*!
-    \brief
-        Add given element to child list at an appropriate position
-    */
+    //! \brief Add given element to child list at an appropriate position
     virtual void addChild_impl(Element* element);
 
-    /*!
-    \brief
-        Remove given element from child list
-    */
+    //! \brief Remove given element from child list
     virtual void removeChild_impl(Element* element);
 
     //! Default implementation of function to return Element's outer rect area.
@@ -1466,8 +1417,11 @@ protected:
         Handles an actual screen area changes for this widget. This typically leads
         to invalidation of cached imagery and areas.
 
-    \param moved
+    \param movedOnScreen
         - true if a widget moved on screen
+
+    \param movedInParent
+        - true if a widget moved inside its parent
 
     \param sized
         - true if a widget pixel size has changed
@@ -1476,7 +1430,7 @@ protected:
         Flags that represent child area changes (ClientMoved, ClientSized, ClientClippingChanged
         NonClientMoved, NonClientSized, NonClientClippingChanged)
     */
-    virtual uint8_t handleAreaChanges(bool moved, bool sized);
+    virtual uint8_t handleAreaChanges(bool movedOnScreen, bool movedInParent, bool sized);
 
     /*!
     \brief
@@ -1485,10 +1439,10 @@ protected:
     \note
         This is a lighter version of notifyScreenAreaChanged for widgets whose parent's size didn't change
 
-    \param moved
-        - notification from the parent that this child could be moved
+    \param movedOnScreen
+        - notification from the parent that this child could be moved on screen
     */
-    void handleAreaChangesRecursively(bool moved);
+    void handleAreaChangesRecursively(bool movedOnScreen);
 
     /*************************************************************************
         Event trigger methods
@@ -1588,11 +1542,7 @@ protected:
     */
     virtual void onNonClientChanged(ElementEventArgs& e);
 
-    /*!
-    \brief
-        Called whenever any of the properties "AdjustWidthToContent" and
-        "AdjustHeightToContent" change.
-    */
+    //! \brief Called whenever "AdjustWidthToContent" or "AdjustHeightToContent" change.
     virtual void onIsSizeAdjustedToContentChanged(ElementEventArgs&);
 
     /*************************************************************************
@@ -1611,6 +1561,8 @@ protected:
     USize d_maxSize;
     //! Current constrained pixel size of the element.
     Sizef d_pixelSize;
+    //! Rotation of this element (relative to the parent)
+    glm::vec2 d_offsetInParent = glm::vec2(0.f, 0.f);
     //! Rotation of this element (relative to the parent)
     glm::quat d_rotation;
     //! Pivot point (the point around which the widget is rotated).
@@ -1668,7 +1620,6 @@ protected:
 };
 
 } // End of  CEGUI namespace section
-
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
