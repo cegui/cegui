@@ -759,29 +759,50 @@ Window* GUIContext::getInputTargetWindow() const
 bool GUIContext::injectInputEvent(const InputEvent& event)
 {
     if (event.d_eventType == InputEventType::TextInputEventType)
-        return handleTextInputEvent(static_cast<const TextInputEvent&>(event));
-
-    if (event.d_eventType != InputEventType::SemanticInputEventType)
-        return false;
-
-    auto& semantic_event = static_cast<const SemanticInputEvent&>(event);
-
-    // First try to process an event in a window navigator
-    if (d_windowNavigator)
     {
-        // TODO ACTIVE: translate SemanticValue -> String payload
-        auto itor = d_mappings.find(semantic_event.d_value);
-        if (itor != d_mappings.end())
+        if (Window* targetWindow = getInputTargetWindow())
         {
-            // Activate a window. Treat as a handling action if there were changes in Z-order.
-            auto newWnd = d_windowNavigator->getWindow(d_activeWindow, itor->second);
-            if (setActiveWindow(newWnd, newWnd ? newWnd->isRiseOnCursorActivationEnabled() : false))
-                return true;
+            TextEventArgs args(targetWindow);
+            args.d_character = static_cast<const TextInputEvent&>(event).d_character;
+            args.window->onCharacter(args);
+            return args.handled != 0;
+        }
+    }
+    else if (event.d_eventType != InputEventType::SemanticInputEventType)
+    {
+        auto& semantic_event = static_cast<const SemanticInputEvent&>(event);
+
+        // First try to process an event in a window navigator
+        if (d_windowNavigator)
+        {
+            // TODO ACTIVE: translate SemanticValue -> String payload
+            auto itor = d_mappings.find(semantic_event.d_value);
+            if (itor != d_mappings.end())
+            {
+                // Activate a window. Treat as a handling action if there were changes in Z-order.
+                auto newWnd = d_windowNavigator->getWindow(d_activeWindow, itor->second);
+                if (setActiveWindow(newWnd, newWnd ? newWnd->isRiseOnCursorActivationEnabled() : false))
+                    return true;
+            }
+        }
+
+        // Dispatch to a handler if we have one
+        auto it = d_semanticEventHandlers.find(semantic_event.d_value);
+        if (it != d_semanticEventHandlers.end())
+            return (*(*it).second)(semantic_event);
+
+        // Send a raw event if no one processed it yet
+        if (Window* targetWindow = getInputTargetWindow())
+        {
+            SemanticEventArgs args(targetWindow);
+            args.d_payload = semantic_event.d_payload;
+            args.d_semanticValue = semantic_event.d_value;
+            args.window->onSemanticInputEvent(args);
+            return args.handled != 0;
         }
     }
 
-    // Window navigator didn't consume an event, do normal processing
-    return handleSemanticInputEvent(semantic_event);
+    return false;
 }
 
 //----------------------------------------------------------------------------//
@@ -889,41 +910,6 @@ Font* GUIContext::getDefaultFont() const
     const auto& registeredFonts = FontManager::getSingleton().getRegisteredFonts();
     auto iter = registeredFonts.cbegin();
     return (iter != registeredFonts.end()) ? iter->second : nullptr;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::handleTextInputEvent(const TextInputEvent& event)
-{
-    TextEventArgs args(getInputTargetWindow());
-
-    // if there's no destination window, input can't be handled.
-    if (!args.window)
-        return false;
-
-    args.d_character = event.d_character;
-
-    args.window->onCharacter(args);
-    return args.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
-{
-    // dispatch to a handler if we have one
-    auto it = d_semanticEventHandlers.find(event.d_value);
-    if (it != d_semanticEventHandlers.end())
-        return (*(*it).second)(event);
-
-    if (Window* targetWindow = getInputTargetWindow())
-    {
-        SemanticEventArgs args(targetWindow);
-        args.d_payload = event.d_payload;
-        args.d_semanticValue = event.d_value;
-        args.window->onSemanticInputEvent(args);
-        return args.handled != 0;
-    }
-
-    return false;
 }
 
 //----------------------------------------------------------------------------//
