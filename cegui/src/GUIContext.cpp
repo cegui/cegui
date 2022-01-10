@@ -244,7 +244,7 @@ bool GUIContext::areaChangedHandler(const EventArgs&)
 
     if (d_rootWindow)
     {
-        d_rootWindow->notifyScreenAreaChanged(true);
+        d_rootWindow->notifyScreenAreaChanged();
         positionTooltip();
     }
 

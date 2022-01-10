@@ -72,14 +72,14 @@ void LayoutContainer::update(float elapsed)
 }
 
 //----------------------------------------------------------------------------//
-uint8_t LayoutContainer::handleAreaChanges(bool moved, bool sized)
+uint8_t LayoutContainer::handleAreaChanges(bool movedOnScreen, bool movedInParent, bool sized)
 {
     // NB: inner rect is invalidated here because it depends on a parent and may
     // change even if our area didn't change. Window::handleAreaChanges doesn't
     // invalidate it in this case which may lead to inactual inner rect cache.
     d_childContentArea.invalidateCache();
     d_unclippedInnerRect.invalidateCache();
-    const uint8_t flags = Window::handleAreaChanges(moved, sized);
+    const uint8_t flags = Window::handleAreaChanges(movedOnScreen, movedInParent, sized);
 
     // If content areas resized, relatively sized children may break layout
     if (flags & (ClientSized | NonClientSized))

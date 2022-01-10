@@ -102,7 +102,7 @@ protected:
     void onChildRemoved(ElementEventArgs& e) override;
     void cleanupChildren(void) override;
     bool moveToFront_impl(bool byClick) override;
-    uint8_t handleAreaChanges(bool moved, bool sized) override;
+    uint8_t handleAreaChanges(bool movedOnScreen, bool movedInParent, bool sized) override;
 
     //! type definition for collection used to track event connections.
     typedef std::multimap<Window*, Event::Connection> ConnectionTracker;

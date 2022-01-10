@@ -92,12 +92,22 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
 
     // Update outer rect to detect moving
     // NB: pixel size must be already updated
-    const glm::vec2 oldPos = getUnclippedOuterRect().getCurrent().getPosition();
+    const glm::vec2 oldPos = d_unclippedOuterRect.getCurrent().d_min;
     d_unclippedOuterRect.invalidateCache();
-    const bool moved = (getUnclippedOuterRect().get().getPosition() != oldPos);
+    const glm::vec2 newPos = d_unclippedOuterRect.get().d_min;
+    const bool movedOnScreen = (newPos != oldPos);
+
+    // Check movement inside a parent
+    bool movedInParent = movedOnScreen;
+    if (d_parent)
+    {
+        const glm::vec2 newOffsetInParent = d_parent->d_unclippedOuterRect.get().d_min;
+        movedInParent = ((newPos - newOffsetInParent) != (oldPos - d_offsetInParent));
+        d_offsetInParent = newOffsetInParent;
+    }
 
     // Handle outer rect changes and check if child content rects changed
-    const uint8_t flags = handleAreaChanges(moved, sized);
+    const uint8_t flags = handleAreaChanges(movedOnScreen, movedInParent, sized);
 
     if (!d_children.empty())
     {
@@ -106,7 +116,7 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
         if (needClientLayout || needNonClientLayout)
         {
             // We need full layouting when child area size changed or when explicitly requested
-            performChildLayout(needClientLayout, needNonClientLayout); //???propagate adjust_size_to_content?
+            performChildLayout(needClientLayout, needNonClientLayout);
         }
         else if (flags)
         {
@@ -121,7 +131,7 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
         }
     }
 
-    if (moved)
+    if (movedInParent)
     {
         ElementEventArgs eventArgs(this);
         onMoved(eventArgs);
@@ -138,11 +148,11 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
 }
 
 //----------------------------------------------------------------------------//
-uint8_t Element::handleAreaChanges(bool moved, bool sized)
+uint8_t Element::handleAreaChanges(bool movedOnScreen, bool /*movedInParent*/, bool sized)
 {
     // Element has inner == outer, so all children are affected by outer rect changes
     const uint8_t flags =
-        (moved ? (NonClientMoved | ClientMoved) : 0) |
+        (movedOnScreen ? (NonClientMoved | ClientMoved) : 0) |
         (sized ? (NonClientSized | ClientSized) : 0);
 
     if (flags)
@@ -154,12 +164,14 @@ uint8_t Element::handleAreaChanges(bool moved, bool sized)
 //----------------------------------------------------------------------------//
 // Lightweight version of notifyScreenAreaChanged
 // TODO: can somehow merge with notifyScreenAreaChanged or at least rename consistently?
-void Element::handleAreaChangesRecursively(bool moved)
+void Element::handleAreaChangesRecursively(bool movedOnScreen)
 {
     d_unclippedOuterRect.invalidateCache();
 
-    // There is a guarantee that the parent size didn't change so our size didn't change too
-    const uint8_t flags = handleAreaChanges(moved, false);
+    // There are guarantees:
+    // - our size didn't change because the parent size didn't
+    // - our offset in the parent didn't change because our area and its size didn't
+    const uint8_t flags = handleAreaChanges(movedOnScreen, false, false);
 
     if (flags)
     {
@@ -171,12 +183,6 @@ void Element::handleAreaChangesRecursively(bool moved)
             if (child->isNonClient() ? nonClient : client)
                 child->handleAreaChangesRecursively(child->isNonClient() ? nonClientMoved : clientMoved);
     }
-
-    if (moved)
-    {
-        ElementEventArgs eventArgs(this);
-        onMoved(eventArgs);
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -185,7 +191,7 @@ void Element::performChildLayout(bool client, bool nonClient)
     if (client || nonClient)
         for (Element* child : d_children)
             if (child->isNonClient() ? nonClient : client)
-                child->notifyScreenAreaChanged(true);
+                child->notifyScreenAreaChanged();
 }
 
 //----------------------------------------------------------------------------//
@@ -216,14 +222,14 @@ void Element::setVerticalAlignment(const VerticalAlignment alignment)
 void Element::setMinSize(const USize& size)
 {
     d_minSize = size;
-    notifyScreenAreaChanged(true);
+    notifyScreenAreaChanged();
 }
 
 //----------------------------------------------------------------------------//
 void Element::setMaxSize(const USize& size)
 {
     d_maxSize = size;
-    notifyScreenAreaChanged(true);
+    notifyScreenAreaChanged();
 }
 
 //----------------------------------------------------------------------------//
@@ -239,7 +245,7 @@ void Element::setAspectMode(AspectMode mode)
     // Ensure the area is calculated with the new aspect mode
     // TODO: This potentially wastes effort, we should just mark it as dirty
     //       and postpone the calculation for as long as possible
-    notifyScreenAreaChanged(true);
+    notifyScreenAreaChanged();
 }
 
 //----------------------------------------------------------------------------//
@@ -255,7 +261,7 @@ void Element::setAspectRatio(float ratio)
     // Ensure the area is calculated with the new aspect ratio
     // TODO: This potentially wastes effort, we should just mark it as dirty
     //       and postpone the calculation for as long as possible
-    notifyScreenAreaChanged(true);
+    notifyScreenAreaChanged();
 }
 
 //----------------------------------------------------------------------------//
@@ -271,7 +277,7 @@ void Element::setPixelAligned(const bool setting)
     // Ensure the area is calculated with the new pixel aligned setting
     // TODO: This potentially wastes effort, we should just mark it as dirty
     //       and postpone the calculation for as long as possible
-    notifyScreenAreaChanged(true);
+    notifyScreenAreaChanged();
 }
 
 //----------------------------------------------------------------------------//
@@ -983,7 +989,7 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 //----------------------------------------------------------------------------//
 Rectf Element::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
 {
-    return skipAllPixelAlignment ? getUnclippedOuterRect().getFresh(true) : getUnclippedOuterRect().get();
+    return skipAllPixelAlignment ? d_unclippedOuterRect.getFresh(true) : d_unclippedOuterRect.get();
 }
 
 //----------------------------------------------------------------------------//
@@ -1001,7 +1007,7 @@ void Element::onMoved(ElementEventArgs& e)
 //----------------------------------------------------------------------------//
 void Element::onHorizontalAlignmentChanged(ElementEventArgs& e)
 {
-    notifyScreenAreaChanged(true);
+    notifyScreenAreaChanged();
 
     fireEvent(EventHorizontalAlignmentChanged, e, EventNamespace);
 }
@@ -1009,7 +1015,7 @@ void Element::onHorizontalAlignmentChanged(ElementEventArgs& e)
 //----------------------------------------------------------------------------//
 void Element::onVerticalAlignmentChanged(ElementEventArgs& e)
 {
-    notifyScreenAreaChanged(true);
+    notifyScreenAreaChanged();
 
     fireEvent(EventVerticalAlignmentChanged, e, EventNamespace);
 }
@@ -1041,7 +1047,7 @@ void Element::onChildOrderChanged(ElementEventArgs& e)
 //----------------------------------------------------------------------------//
 void Element::onNonClientChanged(ElementEventArgs& e)
 {
-    notifyScreenAreaChanged(true);
+    notifyScreenAreaChanged();
 
     fireEvent(EventNonClientChanged, e, EventNamespace);
 }

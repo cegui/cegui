@@ -2607,11 +2607,11 @@ bool Window::handleFontRenderSizeChange(const Font& font)
 }
 
 //----------------------------------------------------------------------------//
-uint8_t Window::handleAreaChanges(bool moved, bool sized)
+uint8_t Window::handleAreaChanges(bool movedOnScreen, bool movedInParent, bool sized)
 {
     // NB: we don't call Element::handleAreaChanges because we completely override its behaviour
 
-    if (moved || sized)
+    if (movedOnScreen || sized)
         d_unclippedInnerRect.invalidateCache();
 
     // Either our position, size or parent clip rects changed.
@@ -2632,7 +2632,7 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
         // To check sizing we must remember its old size here.
         const Sizef innerRectOldSize = d_unclippedInnerRect.getCurrent().getSize();
 
-        if (moved)
+        if (movedOnScreen)
         {
             // If we moved, consider all our children moved too
             flags |= (NonClientMoved | ClientMoved | NonClientClippingChanged | ClientClippingChanged);
@@ -2685,7 +2685,7 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
 
         // Even if our area didn't change our clippers could still be changed
         // due to changes in the parent clipper
-        if (!moved && !sized)
+        if (!movedOnScreen && !sized)
         {
             const Rectf oldOuterClipper = d_outerRectClipper;
             if (oldOuterClipper != getOuterRectClipper())
@@ -2701,11 +2701,10 @@ uint8_t Window::handleAreaChanges(bool moved, bool sized)
         invalidate();
 
     // Apply our screen area changes to rendering surface and geometry settings
-    if (moved || sized)
-    {
+    if (movedOnScreen || sized)
         updateRenderingWindow(sized);
+    if (movedOnScreen || movedInParent || sized)
         updateGeometryTransformAndClipping();
-    }
 
     return flags;
 }
@@ -2905,7 +2904,7 @@ void Window::setRenderingSurface(RenderingSurface* surface)
     if (d_surface)
     {
         transferChildSurfaces();
-        notifyScreenAreaChanged(true); //???or only update geometry if size not changed?
+        notifyScreenAreaChanged(); //???or only update geometry if size not changed?
     }
 }
 
@@ -3190,7 +3189,7 @@ void Window::setDefaultParagraphDirection(DefaultParagraphDirection defaultParag
 
     d_defaultParagraphDirection = defaultParagraphDirection;
 
-    notifyScreenAreaChanged(true);
+    notifyScreenAreaChanged();
 
     WindowEventArgs eventArgs(this);
     fireEvent(EventDefaultParagraphDirectionChanged, eventArgs, EventNamespace);
@@ -3429,10 +3428,12 @@ void Window::attachToGUIContext(GUIContext* context)
 
     if (context)
     {
-        notifyScreenAreaChanged(true);
+        notifyScreenAreaChanged();
 
-        // TODO: can check if font really changed? Move to GUIContext::setRootWindow?
+        // TODO: can check if font really changed instead of calling each time?
         notifyDefaultFontChanged();
+        if (auto font = getActualFont())
+            notifyFontRenderSizeChanged(*font);
     }
 }
 
