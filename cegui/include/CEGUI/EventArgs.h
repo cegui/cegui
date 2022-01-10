@@ -49,18 +49,11 @@ namespace CEGUI
 class CEGUIEXPORT EventArgs
 {
 public:
-    /*************************************************************************
-        Construction
-    *************************************************************************/
-    EventArgs(void) : handled(0) {}
-    virtual ~EventArgs(void) {}
 
+    virtual ~EventArgs() = default;
 
-    /*************************************************************************
-        Data members
-    *************************************************************************/
     //! handlers should increment this if they handled the event.
-    unsigned int handled;
+    unsigned int handled = 0;
 };
 
 /*!

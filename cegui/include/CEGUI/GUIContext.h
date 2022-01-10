@@ -114,6 +114,9 @@ public:
 
     \param window
         Window to activate or nullptr to clear an active window.
+
+    \return
+        true if activation led to changes in Z-order
     */
     bool setActiveWindow(Window* window, bool moveToFront);
 

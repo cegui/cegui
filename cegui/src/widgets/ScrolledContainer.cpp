@@ -32,7 +32,6 @@
 #   pragma warning(disable : 4355)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
@@ -44,17 +43,13 @@ ScrolledContainer::ScrolledContainer(const String& type, const String& name) :
     Window(type, name),
     d_childContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&ScrolledContainer::getChildContentArea_impl))
 {
+    setCursorPassThroughEnabled(true); // Improves swipe scrolling experience in a ScrollablePane
     setCursorInputPropagationEnabled(true);
     setRiseOnCursorActivationEnabled(false);
 
     d_isWidthAdjustedToContent = true;
     d_isHeightAdjustedToContent = true;
     setSize(USize::zero());
-}
-
-//----------------------------------------------------------------------------//
-ScrolledContainer::~ScrolledContainer(void)
-{
 }
 
 //----------------------------------------------------------------------------//
@@ -279,19 +274,8 @@ uint8_t ScrolledContainer::handleAreaChanges(bool movedOnScreen, bool movedInPar
     return Window::handleAreaChanges(movedOnScreen, movedInParent, sized);
 }
 
-//----------------------------------------------------------------------------//
-bool ScrolledContainer::moveToFront_impl(bool byClick)
-{
-    Window::moveToFront_impl(byClick);
-
-    // Improves swipe scrolling experience in a ScrollablePane
-    return false;
-}
-
-//----------------------------------------------------------------------------//
+} // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
-
-} // End of  CEGUI namespace section

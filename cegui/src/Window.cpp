@@ -850,19 +850,6 @@ bool Window::isActive() const
 }
 
 //----------------------------------------------------------------------------//
-void Window::focus()
-{
-    activate();
-}
-
-//----------------------------------------------------------------------------//
-void Window::unfocus()
-{
-    if (isFocused())
-        deactivate();
-}
-
-//----------------------------------------------------------------------------//
 bool Window::canFocus() const
 {
     // by default all widgets can be focused if they are not disabled
@@ -937,33 +924,27 @@ void Window::destroyChild(Window* wnd)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::moveToFront_impl(bool byClick)
+bool Window::moveToFront()
 {
     // no siblings - no Z-ordering
     if (!d_parent)
         return false;
 
     // bring parent window to front of it's siblings
-    bool took_action = getParent()->moveToFront_impl(byClick);
+    const bool parentMoved = getParent()->moveToFront();
 
-    // bring us to the front of our siblings
-    if (d_zOrderingEnabled &&
-        (!byClick || d_riseOnCursorActivation) &&
-        !isTopOfZOrder())
-    {
-        took_action = true;
+    if (!d_zOrderingEnabled || isInFront())
+        return parentMoved;
 
-        // remove us from our parent's draw list
-        getParent()->removeWindowFromDrawList(*this);
-        // re-attach ourselves to our parent's draw list which will move us in
-        // front of sibling windows with the same 'always-on-top' setting as we
-        // have.
-        getParent()->addWindowToDrawList(*this);
-        // notify relevant windows about the z-order change.
-        onZChange_impl();
-    }
+    // re-attach ourselves to our parent's draw list which will move us in
+    // front of sibling windows with the same 'always-on-top' setting
+    getParent()->removeWindowFromDrawList(*this);
+    getParent()->addWindowToDrawList(*this);
 
-    return took_action;
+    // notify relevant windows about the z-order change.
+    onZChange_impl();
+
+    return !d_cursorPassThroughEnabled;
 }
 
 //----------------------------------------------------------------------------//
@@ -992,7 +973,7 @@ void Window::moveToBack()
 }
 
 //----------------------------------------------------------------------------//
-void Window::moveInFront(const Window* const window)
+void Window::moveInFront(const Window* window)
 {
     if (!window || !window->d_parent || window->d_parent != d_parent ||
         window == this || window->d_alwaysOnTop != d_alwaysOnTop ||
@@ -1021,7 +1002,7 @@ void Window::moveInFront(const Window* const window)
 }
 
 //----------------------------------------------------------------------------//
-void Window::moveBehind(const Window* const window)
+void Window::moveBehind(const Window* window)
 {
     if (!window || !window->d_parent || window->d_parent != d_parent ||
         window == this || window->d_alwaysOnTop != d_alwaysOnTop ||
@@ -1053,26 +1034,39 @@ void Window::moveBehind(const Window* const window)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isInFront(const Window& wnd) const
+bool Window::isInFront(const Window& window) const
 {
-    // children are always in front of their ancestors
-    if (isAncestor(&wnd))
+    const auto siblings = getSiblingsInCommonAncestor(&window, this);
+
+    // Children are always in front of their ancestors
+    if (siblings.first == siblings.second)
+        return siblings.first == &window;
+
+    return siblings.second->getZIndex() > siblings.first->getZIndex();
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isInFront() const
+{
+    // root is always on top
+    if (!d_parent)
         return true;
 
-    // conversely, ancestors are always behind their children
-    if (wnd.isAncestor(this))
+    const auto& parentDrawList = getParent()->d_drawList;
+    if (parentDrawList.empty())
         return false;
 
-    const Window* const w1 = getWindowAttachedToCommonAncestor(wnd);
+    if (d_alwaysOnTop)
+        return parentDrawList.back() == this;
 
-    // seems not to be in same window hierarchy
-    if (!w1)
-        return false;
+    // Find the topmost of all window without d_alwaysOnTop.
+    // NB: could use std::lower_bound, but linear is more readable and we
+    // probably have very few always-on-top windows so it is generally faster.
+    for (auto it = parentDrawList.crbegin(); it != parentDrawList.crend(); ++it)
+        if (!(*it)->isAlwaysOnTop())
+            return *it == this;
 
-    const Window* const w2 = wnd.getWindowAttachedToCommonAncestor(*this);
-
-    // at this point, w1 and w2 share the same parent.
-    return w2->getZIndex() > w1->getZIndex();
+    return false;
 }
 
 //----------------------------------------------------------------------------//
@@ -2114,8 +2108,8 @@ void Window::onCursorMove(CursorInputEventArgs& e)
     }
 
     // by default we now mark cursor events as handled
-    // (derived classes may override, of course!)
-    ++e.handled;
+    if (!d_cursorPassThroughEnabled)
+        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -2133,8 +2127,8 @@ void Window::onCursorPressHold(CursorInputEventArgs& e)
     }
 
     // by default we now mark cursor events as handled
-    // (derived classes may override, of course!)
-    ++e.handled;
+    if (!d_cursorPassThroughEnabled)
+        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -2148,7 +2142,12 @@ void Window::onCursorActivate(CursorInputEventArgs& e)
     {
         e.window = getParent();
         getParent()->onCursorActivate(e);
+        //return;
     }
+
+    // by default we now mark cursor events as handled
+    //if (!d_cursorPassThroughEnabled)
+    //    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -2166,8 +2165,8 @@ void Window::onSelectWord(CursorInputEventArgs& e)
     }
 
     // by default we now mark cursor events as handled
-    // (derived classes may override, of course!)
-    ++e.handled;
+    if (!d_cursorPassThroughEnabled)
+        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -2185,8 +2184,8 @@ void Window::onSelectAll(CursorInputEventArgs& e)
     }
 
     // by default we now mark cursor events as handled
-    // (derived classes may override, of course!)
-    ++e.handled;
+    if (!d_cursorPassThroughEnabled)
+        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -2204,8 +2203,8 @@ void Window::onScroll(CursorInputEventArgs& e)
     }
 
     // by default we now mark cursor events as handled
-    // (derived classes may override, of course!)
-    ++e.handled;
+    if (!d_cursorPassThroughEnabled)
+        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -2670,26 +2669,6 @@ void Window::setFalagardType(const String& type, const String& rendererType)
 
     // Apply the new look to the widget
     setLookNFeel(type);
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isTopOfZOrder() const
-{
-    // if not attached, then always on top!
-    if (!d_parent)
-        return true;
-
-    // get position of window at top of z-order in same group as this window
-    auto pos = getParent()->d_drawList.rbegin();
-    if (!d_alwaysOnTop)
-    {
-        // find last non-topmost window
-        while ((pos != getParent()->d_drawList.rend()) && (*pos)->isAlwaysOnTop())
-            ++pos;
-    }
-
-    // return whether the window at the top of the z order is us
-    return *pos == this;
 }
 
 //----------------------------------------------------------------------------//
@@ -3194,24 +3173,6 @@ void Window::cloneChildWidgetsTo(Window& target) const
         Window* newChild = child->clone(true);
         target.addChild(newChild);
     }
-}
-
-//----------------------------------------------------------------------------//
-const Window* Window::getWindowAttachedToCommonAncestor(const Window& wnd) const
-{
-    const Window* w = &wnd;
-    const Window* tmp = w->getParent();
-
-    while (tmp)
-    {
-        if (isAncestor(tmp))
-            break;
-
-        w = tmp;
-        tmp = tmp->getParent();
-    }
-
-    return tmp ? w : nullptr;
 }
 
 //----------------------------------------------------------------------------//

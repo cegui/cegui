@@ -25,104 +25,16 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/DefaultWindow.h"
-#include <limits>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-/*************************************************************************
-	Constants
-*************************************************************************/
-// type name for this widget
 const String DefaultWindow::WidgetTypeName("DefaultWindow");
 
-/*************************************************************************
-    Constructor
-*************************************************************************/
+//----------------------------------------------------------------------------//
 DefaultWindow::DefaultWindow(const String& type, const String& name) :
     Window(type, name)
 {
     setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
 }
 
-//----------------------------------------------------------------------------//
-void DefaultWindow::onCursorMove(CursorInputEventArgs& e)
-{
-    // always call the base class handler
-    Window::onCursorMove(e);
-    updatePointerEventHandled(e);
 }
-
-//----------------------------------------------------------------------------//
-void DefaultWindow::onScroll(CursorInputEventArgs& e)
-{
-    // always call the base class handler
-    Window::onScroll(e);
-    updatePointerEventHandled(e);
-}
-
-//----------------------------------------------------------------------------//
-void DefaultWindow::onCursorPressHold(CursorInputEventArgs& e)
-{
-    // always call the base class handler
-    Window::onCursorPressHold(e);
-    updatePointerEventHandled(e);
-}
-
-//----------------------------------------------------------------------------//
-void DefaultWindow::onSelectWord(CursorInputEventArgs& e)
-{
-    // always call the base class handler
-    Window::onSelectWord(e);
-    updatePointerEventHandled(e);
-}
-
-//----------------------------------------------------------------------------//
-void DefaultWindow::onSelectAll(CursorInputEventArgs& e)
-{
-    // always call the base class handler
-    Window::onSelectAll(e);
-    updatePointerEventHandled(e);
-}
-
-//----------------------------------------------------------------------------//
-void DefaultWindow::onCursorActivate(CursorInputEventArgs& e)
-{
-    // always call the base class handler
-    Window::onCursorActivate(e);
-    updatePointerEventHandled(e);
-}
-
-//----------------------------------------------------------------------------//
-void DefaultWindow::updatePointerEventHandled(CursorInputEventArgs& e) const
-{
-    // by default, if we are a root window (no parent) with pass-though enabled
-    // we do /not/ mark cursor events as handled.
-    if (!d_parent && e.handled && d_cursorPassThroughEnabled)
-        --e.handled;
-}
-
-//----------------------------------------------------------------------------//
-bool DefaultWindow::moveToFront_impl(bool byClick)
-{
-    const bool took_action = Window::moveToFront_impl(byClick);
-    return took_action && (d_parent || !d_cursorPassThroughEnabled);
-}
-
-//----------------------------------------------------------------------------//
-void DefaultWindow::onSemanticInputEvent(SemanticEventArgs& e)
-{
-    // always call the base class handler
-    Window::onSemanticInputEvent(e);
-}
-
-//----------------------------------------------------------------------------//
-bool DefaultWindow::canFocus() const
-{
-    // cannot focus something that doesn't have an explicit visual appearance
-    return false;
-}
-
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section
