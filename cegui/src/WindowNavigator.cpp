@@ -21,49 +21,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/WindowNavigator.h"
-#include "CEGUI/Window.h"
 
 namespace CEGUI
 {
-
-//----------------------------------------------------------------------------//
-WindowNavigator::WindowNavigator(SemanticMappingsMap mappings,
-    NavigationStrategy* strategy) :
-    d_mappings(mappings),
-    d_strategy(strategy),
-    d_currentFocusedWindow(nullptr)
-{
-}
-
-//----------------------------------------------------------------------------//
-void WindowNavigator::handleSemanticEvent(const SemanticInputEvent& event)
-{
-    SemanticMappingsMap::const_iterator itor = d_mappings.find(event.d_value);
-
-    if (itor != d_mappings.end())
-    {
-        if (d_currentFocusedWindow && d_currentFocusedWindow->isFocused())
-            d_currentFocusedWindow->deactivate();
-
-        d_currentFocusedWindow = 
-            d_strategy->getWindow(d_currentFocusedWindow, itor->second);
-
-        if (d_currentFocusedWindow)
-            d_currentFocusedWindow->activate();
-    }
-}
-
-//----------------------------------------------------------------------------//
-void WindowNavigator::setCurrentFocusedWindow(Window* window)
-{
-    d_currentFocusedWindow = window;
-}
-
-//----------------------------------------------------------------------------//
-Window* WindowNavigator::getCurrentFocusedWindow()
-{
-    return d_currentFocusedWindow;
-}
-
-//----------------------------------------------------------------------------//
 }

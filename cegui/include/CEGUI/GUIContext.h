@@ -39,15 +39,14 @@
 
 namespace CEGUI
 {
-class WindowNavigator;
+class NavigationStrategy;
 
 //! EventArgs class passed to subscribers for (most) GUIContext events.
 class CEGUIEXPORT GUIContextEventArgs : public EventArgs
 {
 public:
-    GUIContextEventArgs(GUIContext* context):
-        context(context)
-    {}
+
+    GUIContextEventArgs(GUIContext* context) : context(context) {}
 
     //! pointer to the GUIContext that triggered the event.
     GUIContext* context;
@@ -238,7 +237,7 @@ public:
     void draw(std::uint32_t drawMode = DrawModeMaskAll) override;
 
     //! \brief Sets a window navigator to be used for navigating in this context
-    void setWindowNavigator(WindowNavigator* navigator) { d_windowNavigator = navigator; }
+    void setWindowNavigationStrategy(NavigationStrategy* navigationStrategy) { d_navigationStrategy = navigationStrategy; }
 
     /*!
     \brief
@@ -327,7 +326,8 @@ protected:
     Window* d_tooltipWindow = nullptr;
     Window* d_tooltipSource = nullptr;
     Window* d_activeWindow = nullptr;
-    WindowNavigator* d_windowNavigator = nullptr;
+    NavigationStrategy* d_navigationStrategy = nullptr;
+    //SemanticMappingsMap d_mappings;
 
     Font* d_defaultFont = nullptr;
     Cursor d_cursor;
