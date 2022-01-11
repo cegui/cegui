@@ -30,37 +30,38 @@
 #include "CEGUI/RenderedStringComponent.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/String.h"
-
+#include "CEGUI/DefaultParagraphDirection.h"
 #include <vector>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+
 //! String component that draws a text.
 class CEGUIEXPORT RenderedStringTextComponent : public RenderedStringComponent
 {
 public:
-    //! Constructor
-    RenderedStringTextComponent();
-    RenderedStringTextComponent(const String& text);
-    RenderedStringTextComponent(const String& text, const Font* font);
+
+    RenderedStringTextComponent() = default;
+    RenderedStringTextComponent(const String& text, const Font* font = nullptr);
 
     //! Set the text to be rendered by this component.
-    void setText(const String& text);
+    void setText(const String& text) { d_text = text; }
     //! return the text that will be rendered by this component
-    const String& getText() const;
+    const String& getText() const { return d_text; }
     //! set the font to use when rendering the text.
-    void setFont(const Font* font);
-    //! set the font to use when rendering the text.
-    void setFont(const String& font_name);
+    void setFont(const Font* font) { d_font = font; }
     //! return the font set to be used.  If 0 the default font will be used.
-    const Font* getFont() const;
+    const Font* getFont() const { return d_font; }
     //! Set the colour values used when rendering this component.
-    void setColours(const ColourRect& cr);
+    void setColours(const ColourRect& cr) { d_colours = cr; }
     //! Set the colour values used when rendering this component.
-    void setColours(const Colour& c);
+    void setColours(const Colour& c) { d_colours.setColours(c); }
     //! return the ColourRect object used when drawing this component.
-    const ColourRect& getColours() const;
+    const ColourRect& getColours() const { return d_colours; }
+    //! set the default paragraph direction to use when rendering the text.
+    void setDefaultParagraphDirection(DefaultParagraphDirection dir) { d_defaultParagraphDir = dir; }
+    //! return the default paragraph direction to use when rendering the text.
+    DefaultParagraphDirection getDefaultParagraphDirection() const { return d_defaultParagraphDir; }
 
     // implementation of abstract base interface
     std::vector<GeometryBuffer*> createRenderGeometry(
@@ -69,7 +70,7 @@ public:
         const Rectf* clip_rect, const float vertical_space,
         const float space_extra) const override;
     Sizef getPixelSize(const Window* ref_wnd) const override;
-    bool canSplit() const override;
+    bool canSplit() const override { return d_text.length() > 1; }
     RenderedStringTextComponent* split(const Window* ref_wnd,
       float split_point, bool first_component, bool& was_word_split) override;
     RenderedStringTextComponent* clone() const override;
@@ -86,13 +87,15 @@ protected:
     //! text string drawn by the component.
     String d_text;
     //! Font to use for text rendering, 0 for system default.
-    const Font* d_font;
+    const Font* d_font = nullptr;
     //! ColourRect object describing the colours to use when rendering.
-    ColourRect d_colours;
+    ColourRect d_colours = 0xFFFFFFFF;
     //! last set selection
-    size_t d_selectionStart, d_selectionLength;
+    size_t d_selectionStart = 0;
+    size_t d_selectionLength = 0;
+    DefaultParagraphDirection d_defaultParagraphDir = DefaultParagraphDirection::Automatic;
 };
-    
+
 } // End of  CEGUI namespace section
 
 #endif // end of guard _CEGUIRenderedStringTextComponent_h_

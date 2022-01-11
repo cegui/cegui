@@ -32,25 +32,47 @@ namespace CEGUI
 {
 const String FalagardTooltip::TypeName("Core/Tooltip");
 
+//----------------------------------------------------------------------------//
 void FalagardTooltip::createRenderGeometry()
 {
     auto& imagery = getLookNFeel().getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
     imagery.render(*d_window);
 }
 
+//----------------------------------------------------------------------------//
 Sizef FalagardTooltip::getTextSize() const
 {
-    Tooltip* w = static_cast<Tooltip*>(d_window);
-    const Rectf textArea(getLookNFeel().getNamedArea("TextArea").getArea().getPixelRect(*w));
-    const Rectf wndArea(CoordConverter::asAbsolute(w->getArea(), w->getParentPixelSize()));
-
-    //!!!find text component!
-    //getRenderedString().getPixelSize(this);
-
-    Sizef sz(w->getTextSize_impl());
-    sz.d_width  = CoordConverter::alignToPixels(sz.d_width + wndArea.getWidth() - textArea.getWidth());
+    auto& lnf = getLookNFeel();
+    Sizef sz = getTextComponentExtents(lnf);
+    const Rectf textArea(lnf.getNamedArea("TextArea").getArea().getPixelRect(*d_window));
+    const Rectf wndArea(CoordConverter::asAbsolute(d_window->getArea(), d_window->getParentPixelSize()));
+    sz.d_width = CoordConverter::alignToPixels(sz.d_width + wndArea.getWidth() - textArea.getWidth());
     sz.d_height = CoordConverter::alignToPixels(sz.d_height + wndArea.getHeight() - textArea.getHeight());
     return sz;
+}
+
+//----------------------------------------------------------------------------//
+Sizef FalagardTooltip::getTextComponentExtents(const WidgetLookFeel& lnf) const
+{
+    // Find a text component responsible for a tooltip text
+    const auto& layerSpecs = lnf.getStateImagery("Enabled").getLayerSpecifications();
+    for (auto& layerSpec : layerSpecs)
+    {
+        const auto& sectionSpecs = layerSpec.getSectionSpecifications();
+        for (auto& sectionSpec : sectionSpecs)
+        {
+            const auto& texts = lnf.getImagerySection(sectionSpec.getSectionName()).getTextComponents();
+            if (!texts.empty())
+            {
+                //!!!TODO TEXT: make a single function to avoid recalculations!
+                return Sizef(
+                    texts.front().getHorizontalTextExtent(*d_window),
+                    texts.front().getVerticalTextExtent(*d_window));
+            }
+        }
+    }
+
+    return d_window->getPixelSize();
 }
 
 }

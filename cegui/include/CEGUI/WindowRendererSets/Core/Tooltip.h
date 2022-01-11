@@ -56,6 +56,10 @@ public:
 
     void createRenderGeometry() override;
     Sizef getTextSize() const override;
+
+protected:
+
+    Sizef getTextComponentExtents(const WidgetLookFeel& lnf) const;
 };
 
 }

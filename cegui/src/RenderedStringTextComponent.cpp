@@ -32,86 +32,14 @@
 #include "CEGUI/TextUtils.h"
 #include "CEGUI/Window.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-RenderedStringTextComponent::RenderedStringTextComponent() :
-    d_font(nullptr),
-    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-    d_selectionStart(0),
-    d_selectionLength(0)
-{
-}
 
 //----------------------------------------------------------------------------//
-RenderedStringTextComponent::RenderedStringTextComponent(const String& text) :
-    d_text(text),
-    d_font(nullptr),
-    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-    d_selectionStart(0),
-    d_selectionLength(0)
+RenderedStringTextComponent::RenderedStringTextComponent(const String& text, const Font* font)
+    : d_text(text)
+    , d_font(font)
 {
-}
-
-//----------------------------------------------------------------------------//
-RenderedStringTextComponent::RenderedStringTextComponent(const String& text,
-                                                         const Font* font) :
-    d_text(text),
-    d_font(font),
-    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-    d_selectionStart(0),
-    d_selectionLength(0)
-{
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringTextComponent::setText(const String& text)
-{
-    d_text = text;
-}
-
-//----------------------------------------------------------------------------//
-const String& RenderedStringTextComponent::getText() const
-{
-    return d_text;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringTextComponent::setFont(const Font* font)
-{
-    d_font = font;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringTextComponent::setFont(const String& font_name)
-{
-    d_font =
-        font_name.empty() ? 0 : &FontManager::getSingleton().get(font_name);
-}
-
-//----------------------------------------------------------------------------//
-const Font* RenderedStringTextComponent::getFont() const
-{
-    return d_font;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringTextComponent::setColours(const ColourRect& cr)
-{
-    d_colours = cr;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringTextComponent::setColours(const Colour& c)
-{
-    d_colours.setColours(c);
-}
-
-//----------------------------------------------------------------------------//
-const ColourRect& RenderedStringTextComponent::getColours() const
-{
-    return d_colours;
 }
 
 //----------------------------------------------------------------------------//
@@ -120,7 +48,8 @@ void RenderedStringTextComponent::setSelection(const Window* ref_wnd,
 {
     if (start >= end)
     {
-        d_selectionStart = d_selectionLength = 0;
+        d_selectionStart = 0;
+        d_selectionLength = 0;
         return;
     }
 
@@ -131,8 +60,7 @@ void RenderedStringTextComponent::setSelection(const Window* ref_wnd,
 }
 
 //----------------------------------------------------------------------------//
-const Font* RenderedStringTextComponent::getEffectiveFont(
-                                                    const Window* window) const
+const Font* RenderedStringTextComponent::getEffectiveFont(const Window* window) const
 {
     if (d_font)
         return d_font;
@@ -143,35 +71,34 @@ const Font* RenderedStringTextComponent::getEffectiveFont(
     return nullptr;
 }
 
+//----------------------------------------------------------------------------//
 void RenderedStringTextComponent::handleFormattingOptions(const Window* ref_wnd, const float vertical_space, glm::vec2& final_pos) const
 {
     switch (d_verticalTextFormatting)
     {
-    case VerticalTextFormatting::BottomAligned:
-        final_pos.y += vertical_space - getPixelSize(ref_wnd).d_height;
-        break;
+        case VerticalTextFormatting::BottomAligned:
+            final_pos.y += vertical_space - getPixelSize(ref_wnd).d_height;
+            break;
 
-    case VerticalTextFormatting::CentreAligned:
-        final_pos.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
-        break;
+        case VerticalTextFormatting::CentreAligned:
+            final_pos.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
+            break;
 
-    case VerticalTextFormatting::TopAligned:
-        // nothing additional to do for this formatting option.
-        break;
+        case VerticalTextFormatting::TopAligned:
+            // nothing additional to do for this formatting option.
+            break;
 
-    default:
-        throw InvalidRequestException(
-            "unknown VerticalFormatting option specified.");
+        default:
+            throw InvalidRequestException(
+                "unknown VerticalFormatting option specified.");
     }
 }
 
-void RenderedStringTextComponent::createSelectionRenderGeometry(const glm::vec2& position, const Rectf* clip_rect, const float vertical_space, const Font* fnt) const {
-    float sel_start_extent = 0;
-
-    if (d_selectionStart > 0)
-        sel_start_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart));
-
-    float sel_end_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
+//----------------------------------------------------------------------------//
+void RenderedStringTextComponent::createSelectionRenderGeometry(const glm::vec2& position, const Rectf* clip_rect, const float vertical_space, const Font* fnt) const
+{
+    const float sel_start_extent = (d_selectionStart > 0) ? fnt->getTextExtent(d_text.substr(0, d_selectionStart)) : 0;
+    const float sel_end_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
 
     Rectf sel_rect(position.x + sel_start_extent,
                    position.y,
@@ -213,11 +140,7 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
         createSelectionRenderGeometry(position, clip_rect, vertical_space, fnt);
 
     // Create the geometry for rendering for the given text.
-    const auto defaultParagraphDir = ref_wnd ? ref_wnd->getDefaultParagraphDirection() : DefaultParagraphDirection::LeftToRight;
-    return fnt->createTextRenderGeometry(
-        d_text, final_pos,
-        clip_rect, true, final_cols,
-        defaultParagraphDir, space_extra);
+    return fnt->createTextRenderGeometry(d_text, final_pos, clip_rect, true, final_cols, d_defaultParagraphDir, space_extra);
 }
 
 //----------------------------------------------------------------------------//
@@ -226,7 +149,7 @@ Sizef RenderedStringTextComponent::getPixelSize(const Window* ref_wnd) const
     const Font* fnt = getEffectiveFont(ref_wnd);
 
     Sizef psz(d_padding.d_min.x + d_padding.d_max.x,
-               d_padding.d_min.y + d_padding.d_max.y);
+              d_padding.d_min.y + d_padding.d_max.y);
 
     if (fnt)
     {
@@ -235,12 +158,6 @@ Sizef RenderedStringTextComponent::getPixelSize(const Window* ref_wnd) const
     }
 
     return psz;
-}
-
-//----------------------------------------------------------------------------//
-bool RenderedStringTextComponent::canSplit() const
-{
-    return d_text.length() > 1;
 }
 
 //----------------------------------------------------------------------------//
@@ -355,8 +272,7 @@ size_t RenderedStringTextComponent::getNextTokenLength(const String& text,
 //----------------------------------------------------------------------------//
 RenderedStringTextComponent* RenderedStringTextComponent::clone() const
 {
-    RenderedStringTextComponent* c = new RenderedStringTextComponent(*this);
-    return c;
+    return new RenderedStringTextComponent(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -377,6 +293,4 @@ size_t RenderedStringTextComponent::getSpaceCount() const
     return space_count;
 }
 
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section
+}

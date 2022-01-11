@@ -28,15 +28,18 @@
 #define _CEGUIRenderedStringParser_h_
 
 #include "CEGUI/RenderedString.h"
+#include "CEGUI/DefaultParagraphDirection.h"
 
 namespace CEGUI
 {
-class String;
 
 //! Specifies interface for classes that parse text into RenderedString objects.
 class CEGUIEXPORT RenderedStringParser
 {
 public:
+
+    virtual ~RenderedStringParser() = default;
+
     /*!
     \brief
         parse a text string and return a RenderedString representation.
@@ -50,15 +53,16 @@ public:
     \param initial_colours
         Pointer to the initial colours to be used (0 for default).
 
+    \param defaultParagraphDir
+        BIDI setting. See DefaultParagraphDirection docs for details.
+
     \return
         RenderedString object holding the result of the parse operation.
     */
     virtual RenderedString parse(const String& input_string,
                                  const Font* initial_font,
-                                 const ColourRect* initial_colours) = 0;
-
-    virtual ~RenderedStringParser()
-    {}
+                                 const ColourRect* initial_colours,
+                                 DefaultParagraphDirection defaultParagraphDir) = 0;
 };
 
 } // End of  CEGUI namespace section

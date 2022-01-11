@@ -29,7 +29,6 @@
 
 #include "CEGUI/RenderedStringParser.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
@@ -40,12 +39,13 @@ namespace CEGUI
 class CEGUIEXPORT DefaultRenderedStringParser : public RenderedStringParser
 {
 public:
-    // implement required interface
+
     RenderedString parse(const String& input_string,
                          const Font* initial_font,
-                         const ColourRect* initial_colours) override;
+                         const ColourRect* initial_colours,
+                         DefaultParagraphDirection defaultParagraphDir) override;
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif // end of guard _CEGUIDefaultRenderedStringParser_h_
+#endif
