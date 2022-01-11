@@ -28,7 +28,6 @@
 #define _CEGUIBasicRenderedStringParser_h_
 
 #include "CEGUI/RenderedStringParser.h"
-
 #include "CEGUI/Rectf.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/String.h"
@@ -40,7 +39,6 @@
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
@@ -64,6 +62,7 @@ namespace CEGUI
 class CEGUIEXPORT BasicRenderedStringParser : public RenderedStringParser
 {
 public:
+
     // Strings for supported tags
     static const String ColourTagName;
     static const String FontTagName;
@@ -80,19 +79,16 @@ public:
     static const String ImageWidthTagName;
     static const String ImageHeightTagName;
 
-    //! Constructor.
-    BasicRenderedStringParser();
-    //! Destructor.
-    virtual ~BasicRenderedStringParser();
-
     // implement required interface from RenderedStringParser
     RenderedString parse(const String& input_string,
-                         const Font* active_font,
-                         const ColourRect* active_colours) override;
+                         const Font* initial_font,
+                         const ColourRect* initial_colours,
+                         DefaultParagraphDirection defaultParagraphDir) override;
 
 protected:
+
     //! append the text string \a text to the RenderedString \a rs.
-    virtual void appendRenderedText(RenderedString& rs, const String& text) const;
+    virtual void appendRenderedText(RenderedString& rs, const String& text, DefaultParagraphDirection dir) const;
 
     //! Process the control string \a ctrl_str.
     virtual void processControlString(RenderedString& rs, const String& ctrl_str);
@@ -124,7 +120,7 @@ protected:
     //! active colour values.
     ColourRect d_colours;
     //! active font.
-    String d_fontName;
+    const Font* d_font = nullptr;
     //! active vertical image formatting
     VerticalImageFormatting d_vertImageFormatting = VerticalImageFormatting::BottomAligned;
     //! active vertical image formatting
@@ -132,21 +128,19 @@ protected:
     //! active image size
     Sizef d_imageSize;
 
-    //! true if handlers have been registered
-    bool d_initialised;
     //! definition of type used for handler functions
-    typedef void (BasicRenderedStringParser::*TagHandler)(RenderedString&,
-                                                          const String&);
-    //! definition of type used to despatch tag handler functions
-    typedef std::unordered_map<String, TagHandler> TagHandlerMap;
+    typedef void (BasicRenderedStringParser::*TagHandler)(RenderedString&, const String&);
     //! Collection to map tag names to their handler functions.
-    TagHandlerMap d_tagHandlers;
+    std::unordered_map<String, TagHandler> d_tagHandlers;
+
+    //! true if handlers have been registered
+    bool d_initialised = false;
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
 
-#endif // end of guard _CEGUIBasicRenderedStringParser_h_
+#endif

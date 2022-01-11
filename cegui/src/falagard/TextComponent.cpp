@@ -275,7 +275,7 @@ void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const
 
     d_vertFormatting.writeXMLToStream(xml_stream);
     d_horzFormatting.writeXMLToStream(xml_stream);
-    d_paragraphDir.writeXMLToStream(xml_stream); //!!!TODO TEXT: use it!
+    d_paragraphDir.writeXMLToStream(xml_stream);
 
     // closing tag
     xml_stream.closeTag();
@@ -354,7 +354,7 @@ void TextComponent::updateRenderedString(const Window& srcWindow, const String& 
     const String& textVisual = text;
 #endif
 
-    d_renderedString = parser.parse(textVisual, font, nullptr);
+    d_renderedString = parser.parse(textVisual, font, nullptr, d_paragraphDir.get(srcWindow));
 
     d_lastFont = font;
     d_lastParser = &parser;

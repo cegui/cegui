@@ -27,50 +27,45 @@
 #include "CEGUI/DefaultRenderedStringParser.h"
 #include "CEGUI/RenderedStringTextComponent.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-void appendSubstring(RenderedString& rs,
-                     const String& string,
-                     const Font* initial_font,
-                     const ColourRect* initial_colours)
-{
-    RenderedStringTextComponent rstc(string, initial_font);
-
-    if (initial_colours)
-        rstc.setColours(*initial_colours);
-
-    rs.appendComponent(rstc);
-}
 
 //----------------------------------------------------------------------------//
 RenderedString DefaultRenderedStringParser::parse(
-                                        const String& input_string,
-                                        const Font* initial_font,
-                                        const ColourRect* initial_colours)
+    const String& input_string, const Font* initial_font,
+    const ColourRect* initial_colours, DefaultParagraphDirection defaultParagraphDir)
 {
     RenderedString rs;
 
     size_t epos, spos = 0;
-
     while ((epos = input_string.find('\n', spos)) != String::npos)
     {
-        appendSubstring(rs, input_string.substr(spos, epos - spos),
-                        initial_font, initial_colours);
+        //!!!TODO TEXT: check how this condition will work!
+        if (epos > spos)
+        {
+            RenderedStringTextComponent rstc(input_string.substr(spos, epos - spos), initial_font);
+            if (initial_colours)
+                rstc.setColours(*initial_colours);
+            rstc.setDefaultParagraphDirection(defaultParagraphDir);
+            rs.appendComponent(rstc);
+        }
+
         rs.appendLineBreak();
 
         // set new start position (skipping the previous \n we found)
         spos = epos + 1;
     }
 
-    if (spos < input_string.length())
-        appendSubstring(rs, input_string.substr(spos),
-                        initial_font, initial_colours);
+    if (spos + 1 < input_string.length())
+    {
+        RenderedStringTextComponent rstc(input_string.substr(spos), initial_font);
+        if (initial_colours)
+            rstc.setColours(*initial_colours);
+        rstc.setDefaultParagraphDirection(defaultParagraphDir);
+        rs.appendComponent(rstc);
+    }
 
     return rs;
 }
-
-//----------------------------------------------------------------------------//
     
-} // End of  CEGUI namespace section
+}

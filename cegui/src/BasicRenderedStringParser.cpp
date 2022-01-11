@@ -35,7 +35,6 @@
 #include "CEGUI/Image.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
@@ -62,22 +61,9 @@ const String BasicRenderedStringParser::ImageWidthTagName("image-width");
 const String BasicRenderedStringParser::ImageHeightTagName("image-height");
 
 //----------------------------------------------------------------------------//
-BasicRenderedStringParser::BasicRenderedStringParser() :
-    d_imageSize(0, 0),
-    d_initialised(false)
-{
-    BasicRenderedStringParser::initialiseDefaultState();
-}
-
-//----------------------------------------------------------------------------//
-BasicRenderedStringParser::~BasicRenderedStringParser()
-{
-}
-
-//----------------------------------------------------------------------------//
-RenderedString BasicRenderedStringParser::parse(const String& input_string,
-                                                const Font* active_font,
-                                                const ColourRect* active_colours)
+RenderedString BasicRenderedStringParser::parse(
+    const String& input_string, const Font* initial_font,
+    const ColourRect* initial_colours, DefaultParagraphDirection defaultParagraphDir)
 {
     // first-time initialisation (due to issues with static creation order)
     if (!d_initialised)
@@ -86,27 +72,24 @@ RenderedString BasicRenderedStringParser::parse(const String& input_string,
     initialiseDefaultState();
 
     // Override active font if necessary
-    if (active_font)
-        d_fontName = active_font->getName();
+    d_font = initial_font;
 
     // Override active font if necessary
-    if (active_colours)
-        d_colours = *active_colours;
+    if (initial_colours)
+        d_colours = *initial_colours;
 
     RenderedString rs;
     String curr_section, tag_string;
 
-    for (String::const_iterator input_iter(input_string.begin());
-         input_iter != input_string.end();
-         /* no-op*/)
+    for (auto itIn = input_string.begin(); itIn != input_string.end(); /* no-op*/)
     {
-        const bool found_tag = parse_section(input_iter, input_string.end(), '[', curr_section);
-        appendRenderedText(rs, curr_section);
+        const bool found_tag = parse_section(itIn, input_string.end(), '[', curr_section);
+        appendRenderedText(rs, curr_section, defaultParagraphDir);
 
         if (!found_tag)
             return rs;
 
-        if (!parse_section(input_iter, input_string.end(), ']', tag_string))
+        if (!parse_section(itIn, input_string.end(), ']', tag_string))
         {
             Logger::getSingleton().logEvent(
                 "BasicRenderedStringParser::parse: Ignoring unterminated tag : [" +
@@ -154,13 +137,10 @@ bool parse_section(String::const_iterator& pos, const String::const_iterator& en
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::appendRenderedText(RenderedString& rs,
-                                                   const String& text) const
+void BasicRenderedStringParser::appendRenderedText(RenderedString& rs, const String& text, DefaultParagraphDirection dir) const
 {
     if (text.empty())
         return;
-
-    auto font = d_fontName.empty() ? nullptr : &FontManager::getSingleton().get(d_fontName);
 
     size_t cpos = 0;
     // split the given string into lines based upon the newline character
@@ -173,10 +153,11 @@ void BasicRenderedStringParser::appendRenderedText(RenderedString& rs,
             ((nlpos != String::npos) ? nlpos : text.length()) - cpos;
 
         // construct new text component and append it.
-        RenderedStringTextComponent rtc(text.substr(cpos, len), font);
+        RenderedStringTextComponent rtc(text.substr(cpos, len), d_font);
         rtc.setPadding(d_padding);
         rtc.setColours(d_colours);
         rtc.setVerticalTextFormatting(d_vertTextFormatting);
+        rtc.setDefaultParagraphDirection(dir);
         rs.appendComponent(rtc);
 
         // break line if needed
@@ -189,15 +170,12 @@ void BasicRenderedStringParser::appendRenderedText(RenderedString& rs,
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::processControlString(RenderedString& rs,
-                                                     const String& ctrl_str)
+void BasicRenderedStringParser::processControlString(RenderedString& rs, const String& ctrl_str)
 {
     // All our default strings are of the form <var> = '<val>'
     // so let's get the variables using '=' as delimiter:
-    size_t findPos = ctrl_str.find_first_of('=');
-
-    
-    if(findPos == String::npos)
+    const size_t findPos = ctrl_str.find_first_of('=');
+    if (findPos == String::npos)
     {
         Logger::getSingleton().logEvent(
             "BasicRenderedStringParser::processControlString: invalid "
@@ -206,35 +184,23 @@ void BasicRenderedStringParser::processControlString(RenderedString& rs,
         return;
     }
 
-    String variable = ctrl_str.substr(0, findPos);
+    const String variable = ctrl_str.substr(0, findPos);
     String value = ctrl_str.substr(findPos + 1); 
 
-    // We were able to split the variable and value, let's see if we get a
-    // valid value:
-    bool correctValueFormat = true;
-    if ( (value.front() != '\'') || (value.back() != '\'' ) ||
-            ( value.length() < 3 ) )
-        correctValueFormat = false;
-    else
-    {
-        value.pop_back();
-        value.erase(0, 1);
-    }
-
-    // look up handler function
-    TagHandlerMap::iterator i = d_tagHandlers.find(variable);
-    // dispatch handler, or log error
+    auto i = d_tagHandlers.find(variable);
     if (i != d_tagHandlers.end())
     {
-        if(correctValueFormat)
+        // We were able to split the variable and value, let's see if we get a valid value:
+        const bool correctValueFormat = (value.front() == '\'') && (value.back() == '\'') && (value.length() > 2);
+        if (correctValueFormat)
         {
-            (this->*(*i).second)(rs, value);
+            value.pop_back();
+            value.erase(0, 1);
         }
-        else
-            // Otherwise, since the handler was found, we are sure that the
-            // second variable couldn't be read, meaning it was empty. We will supply
-            // and empty string
-            (this->*(*i).second)(rs, "");
+
+        // Since the handler was found, we are sure that if the second variable
+        // couldn't be read, it is empty. We will supply and empty string
+        (this->*(*i).second)(rs, correctValueFormat ? value : String::GetEmpty());
     }
     else
         Logger::getSingleton().logEvent(
@@ -246,7 +212,7 @@ void BasicRenderedStringParser::processControlString(RenderedString& rs,
 void BasicRenderedStringParser::initialiseDefaultState()
 {
     d_colours = Colour(0xFFFFFFFF);
-    d_fontName = "";
+    d_font = nullptr;
     d_padding = Rectf(0, 0, 0, 0);
     d_imageSize.d_width = d_imageSize.d_height = 0.0f;
     d_vertTextFormatting = VerticalTextFormatting::BottomAligned;
@@ -282,14 +248,13 @@ void BasicRenderedStringParser::handleColour(RenderedString&, const String& valu
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleFont(RenderedString&, const String& value)
 {
-    d_fontName = value;
+    d_font = value.empty() ? nullptr : &FontManager::getSingleton().get(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleImage(RenderedString& rs, const String& value)
 {
-    RenderedStringImageComponent ric(
-        PropertyHelper<Image*>::fromString(value));
+    RenderedStringImageComponent ric(PropertyHelper<Image*>::fromString(value));
     ric.setPadding(d_padding);
     ric.setColours(d_colours);
     ric.setVerticalImageFormatting(d_vertImageFormatting);
@@ -307,77 +272,63 @@ void BasicRenderedStringParser::handleWindow(RenderedString& rs, const String& v
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleVertImageFormatting(
-    RenderedString&,
-    const String& value)
+void BasicRenderedStringParser::handleVertImageFormatting(RenderedString&, const String& value)
 {
     d_vertImageFormatting = FalagardXMLHelper<VerticalImageFormatting>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleVertTextFormatting(
-    RenderedString&,
-    const String& value)
+void BasicRenderedStringParser::handleVertTextFormatting(RenderedString&, const String& value)
 {
     d_vertTextFormatting = FalagardXMLHelper<VerticalTextFormatting>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handlePadding(RenderedString&,
-                                              const String& value)
+void BasicRenderedStringParser::handlePadding(RenderedString&, const String& value)
 {
     d_padding = PropertyHelper<Rectf>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleTopPadding(RenderedString&,
-                                                 const String& value)
+void BasicRenderedStringParser::handleTopPadding(RenderedString&, const String& value)
 {
     d_padding.d_min.y = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleBottomPadding(RenderedString&,
-                                                    const String& value)
+void BasicRenderedStringParser::handleBottomPadding(RenderedString&, const String& value)
 {
     d_padding.d_max.y = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleLeftPadding(RenderedString&,
-                                                  const String& value)
+void BasicRenderedStringParser::handleLeftPadding(RenderedString&, const String& value)
 {
     d_padding.d_min.x = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleRightPadding(RenderedString&,
-                                                   const String& value)
+void BasicRenderedStringParser::handleRightPadding(RenderedString&, const String& value)
 {
     d_padding.d_max.x = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleImageSize(RenderedString&,
-                                                const String& value)
+void BasicRenderedStringParser::handleImageSize(RenderedString&, const String& value)
 {
     d_imageSize = PropertyHelper<Sizef >::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleImageWidth(RenderedString&,
-                                                 const String& value)
+void BasicRenderedStringParser::handleImageWidth(RenderedString&, const String& value)
 {
     d_imageSize.d_width = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleImageHeight(RenderedString&,
-                                                  const String& value)
+void BasicRenderedStringParser::handleImageHeight(RenderedString&, const String& value)
 {
     d_imageSize.d_height = PropertyHelper<float>::fromString(value);
 }
 
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section
+}
