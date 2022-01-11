@@ -278,7 +278,7 @@ public:
     //!< holds current cursor position.
     glm::vec2 position;
     //!< holds variation of cursor position from last cursor input
-    glm::vec2 moveDelta;
+    glm::vec2 moveDelta = glm::vec2(0.f, 0.f);
     // one of the CursorInputSource enumerated values describing the source causing the event
     CursorInputSource source = CursorInputSource::NotSpecified;
     // holds the amount of the scroll
@@ -323,9 +323,10 @@ public:
 class CEGUIEXPORT ActivationEventArgs : public WindowEventArgs
 {
 public:
-	ActivationEventArgs(Window* wnd) : WindowEventArgs(wnd), otherWindow(nullptr) {}
 
-	Window*	otherWindow;	//!< Pointer to the other window involved in the activation change.
+	ActivationEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+
+	Window*	otherWindow = nullptr; //!< Pointer to the other window involved in the activation change.
 };
 
 /*!

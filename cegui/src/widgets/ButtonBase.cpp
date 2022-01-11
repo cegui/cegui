@@ -141,14 +141,11 @@ void ButtonBase::setPushedState(const bool pushed)
 *************************************************************************/
 void ButtonBase::onCursorActivate(CursorInputEventArgs& e)
 {
-	// default processing
     Window::onCursorActivate(e);
 
     if (e.source == CursorInputSource::Left)
 	{
 		releaseInput();
-
-		// event was handled by us.
 		++e.handled;
 	}
 

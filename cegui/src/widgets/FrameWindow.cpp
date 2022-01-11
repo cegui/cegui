@@ -624,12 +624,10 @@ void FrameWindow::onCursorPressHold(CursorInputEventArgs& e)
 *************************************************************************/
 void FrameWindow::onCursorActivate(CursorInputEventArgs& e)
 {
-    // default processing (this is now essential as it controls event firing).
     Window::onCursorActivate(e);
 
-    if (e.source == CursorInputSource::Left && d_guiContext->getInputCaptureWindow() == this)
+    if (e.source == CursorInputSource::Left)
     {
-        // release our capture on the input data
         releaseInput();
         ++e.handled;
     }

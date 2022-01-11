@@ -103,7 +103,6 @@ void GUIContext::setRootWindow(Window* new_root)
 //----------------------------------------------------------------------------//
 bool GUIContext::setActiveWindow(Window* window, bool moveToFront)
 {
-    //!!!TODO ACTIVE: if !canFocus, climb up to the deepest parent who can?
     if (window && (window->getGUIContextPtr() != this || !window->canFocus() || !window->isEffectiveVisible()))
         return false;
 
@@ -122,15 +121,11 @@ bool GUIContext::setActiveWindow(Window* window, bool moveToFront)
         Window* curr = prevActiveWindow;
         do
         {
+            releaseInputCapture(false, curr);
+
             ActivationEventArgs args(curr);
             args.otherWindow = window;
             curr->onDeactivated(args);
-
-            //!!!TODO ACTIVE:
-            // (need?) Release input capture of curr. Or allow to capture for inactive window?
-            //// force complete release of input capture.
-            //if (d_guiContext->getInputCaptureWindow() != this)
-            //    d_guiContext->releaseInputCapture(false);
 
             curr = curr->getParent();
         }
@@ -164,11 +159,6 @@ bool GUIContext::setActiveWindow(Window* window, bool moveToFront)
                 ActivationEventArgs args((*it));
                 args.otherWindow = prevActiveWindow;
                 (*it)->onActivated(args);
-
-                //???TODO ACTIVE: really need to deactivate when moveToBack? May worth complete decoupling!
-                //void Window::moveToBack()
-                //{
-                //    deactivate();
             }
         }
     }
@@ -702,7 +692,6 @@ void GUIContext::updateInputAutoRepeating(float timeElapsed)
 
     CursorInputEventArgs ciea(d_captureWindow);
     ciea.position = d_captureWindow->getUnprojectedPosition(d_cursor.getPosition());
-    ciea.moveDelta = glm::vec2(0.f, 0.f);
     ciea.source = d_repeatPointerSource;
 
     do
@@ -750,7 +739,8 @@ Window* GUIContext::getInputTargetWindow() const
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
         return nullptr;
 
-    //!!!???TODO ACTIVE: override with input capture window here?
+    if (d_captureWindow)
+        return (d_activeWindow && d_activeWindow->isInHierarchyOf(d_captureWindow)) ? d_activeWindow : d_captureWindow;
 
     return d_activeWindow ? d_activeWindow : d_modalWindow;
 }
@@ -962,7 +952,6 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
 
     CursorInputEventArgs ciea(window);
     ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
-    ciea.moveDelta = glm::vec2(0.f, 0.f);
     ciea.source = event.d_payload.source;
 
     // Activate a window. Treat as a handling action if there were changes in Z-order.
@@ -1006,7 +995,6 @@ bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
 
     CursorInputEventArgs ciea(window);
     ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
-    ciea.moveDelta = glm::vec2(0.f, 0.f);
     ciea.source = event.d_payload.source;
     window->onCursorActivate(ciea);
     return ciea.handled != 0;
@@ -1015,109 +1003,75 @@ bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
 //----------------------------------------------------------------------------//
 bool GUIContext::handleSelectWord(const SemanticInputEvent& event)
 {
-    CursorInputEventArgs ciea(nullptr);
-    ciea.position = d_cursor.getPosition();
-    ciea.moveDelta = glm::vec2(0, 0);
-    ciea.source = event.d_payload.source;
-    ciea.scroll = 0;
-    ciea.window = getTargetWindow(ciea.position, false);
-    // make cursor position sane for this target window
-    if (ciea.window)
-        ciea.position = ciea.window->getUnprojectedPosition(ciea.position);
-
-    // if there is no target window, input can not be handled.
-    if (!ciea.window)
+    auto window = getTargetWindow(d_cursor.getPosition(), false);
+    if (!window)
         return false;
 
-    ciea.window->onSelectWord(ciea);
+    CursorInputEventArgs ciea(window);
+    ciea.position = window->getUnprojectedPosition(d_cursor.getPosition());
+    ciea.source = event.d_payload.source;
+    window->onSelectWord(ciea);
     return ciea.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIContext::handleSelectAll(const SemanticInputEvent& event)
 {
-    CursorInputEventArgs ciea(nullptr);
-    ciea.position = d_cursor.getPosition();
-    ciea.moveDelta = glm::vec2(0, 0);
-    ciea.source = event.d_payload.source;
-    ciea.scroll = 0;
-    ciea.window = getTargetWindow(ciea.position, false);
-    // make cursor position sane for this target window
-    if (ciea.window)
-        ciea.position = ciea.window->getUnprojectedPosition(ciea.position);
-
-    // if there is no target window, input can not be handled.
-    if (!ciea.window)
+    auto window = getTargetWindow(d_cursor.getPosition(), false);
+    if (!window)
         return false;
 
-    ciea.window->onSelectAll(ciea);
+    CursorInputEventArgs ciea(window);
+    ciea.position = window->getUnprojectedPosition(d_cursor.getPosition());
+    ciea.source = event.d_payload.source;
+    window->onSelectAll(ciea);
     return ciea.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
 {
-    CursorInputEventArgs ciea(nullptr);
-    ciea.position = d_cursor.getPosition();
-    ciea.moveDelta = glm::vec2(0, 0);
-    ciea.source = CursorInputSource::NotSpecified;
-    ciea.scroll = event.d_payload.single;
-    ciea.window = getTargetWindow(ciea.position, false);
-    // make cursor position sane for this target window
-    if (ciea.window)
-        ciea.position = ciea.window->getUnprojectedPosition(ciea.position);
-
-    // if there is no target window, input can not be handled.
-    if (!ciea.window)
+    auto window = getTargetWindow(d_cursor.getPosition(), false);
+    if (!window)
         return false;
 
-    ciea.window->onScroll(ciea);
+    CursorInputEventArgs ciea(window);
+    ciea.position = window->getUnprojectedPosition(d_cursor.getPosition());
+    ciea.scroll = event.d_payload.single;
+    window->onScroll(ciea);
     return ciea.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
 {
-    const glm::vec2 new_position(
-        event.d_payload.array[0],
-        event.d_payload.array[1]);
+    const glm::vec2 newPos(event.d_payload.array[0], event.d_payload.array[1]);
+    const glm::vec2 moveDelta = newPos - d_cursor.getPosition();
 
-    // setup cursor movement event args object.
-    CursorInputEventArgs ciea(nullptr);
-    ciea.moveDelta = new_position - d_cursor.getPosition();
-
-    // no movement means no event
-    if ((ciea.moveDelta.x == 0) && (ciea.moveDelta.y == 0))
+    // No movement means no event
+    if (moveDelta.x == 0 && moveDelta.y == 0)
         return false;
 
-    ciea.scroll = 0;
-    ciea.source = CursorInputSource::NotSpecified;
-    ciea.state = d_cursorsState;
+    // Move cursor to new position. Constraining is possible inside.
+    d_cursor.setPosition(newPos);
 
-    // move cursor to new position
-    d_cursor.setPosition(new_position);
-    // update position in args (since actual position may be constrained)
-    ciea.position = d_cursor.getPosition();
-
-    d_windowContainingCursorIsUpToDate = false;
-
-    // input can't be handled if there is no window to handle it.
-    if (!getWindowContainingCursor())
-        return false;
-
-	// resetting the timer is an old behaviour, let's keep it for now
-    d_tooltipTimer = 0.f;
-    if (d_tooltipFollowsCursor)
+    // Delay tooltip appearance
+    if (!d_tooltipWindow)
+        d_tooltipTimer = 0.f;
+    else if (d_tooltipFollowsCursor)
         positionTooltip();
 
-    // make cursor position sane for this target window
-    ciea.position = getWindowContainingCursor()->getUnprojectedPosition(ciea.position);
-    // inform window about the input.
-    ciea.window = getWindowContainingCursor();
-    ciea.handled = 0;
-    ciea.window->onCursorMove(ciea);
+    // Update window under cursor and use it as an event receiver
+    d_windowContainingCursorIsUpToDate = false;
+    auto window = getWindowContainingCursor();
+    if (!window)
+        return false;
 
-    // return whether window handled the input.
+    CursorInputEventArgs ciea(window);
+    ciea.moveDelta = moveDelta;
+    ciea.state = d_cursorsState;
+    ciea.position = window->getUnprojectedPosition(d_cursor.getPosition());
+    window->onCursorMove(ciea);
     return ciea.handled != 0;
 }
 

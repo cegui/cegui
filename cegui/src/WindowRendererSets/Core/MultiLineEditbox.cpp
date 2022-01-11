@@ -206,7 +206,8 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
     ColourRect selectTextCol;
     setColourRectToSelectedTextColour(selectTextCol);
     ColourRect selectBrushCol;
-    w->hasInputFocus() ? setColourRectToActiveSelectionColour(selectBrushCol) :
+    w->hasInputFocus() ?
+        setColourRectToActiveSelectionColour(selectBrushCol) :
         setColourRectToInactiveSelectionColour(selectBrushCol);
 
     const MultiLineEditbox::LineList& d_lines = w->getFormattedLines();

@@ -285,7 +285,7 @@ void FalagardEditbox::createRenderGeometryForTextWithoutBidi(
     setColourRectToUnselectedTextColour(unselectedColours);
     // see if the editbox is active or inactive.
     Editbox* const w = static_cast<Editbox*>(d_window);
-    const bool active = editboxIsFocussed();
+    const bool active = editboxIsFocused();
     DefaultParagraphDirection defaultParagraphDir = w->getDefaultParagraphDirection();
 
     if (w->getSelectionLength() != 0)
@@ -362,7 +362,7 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
     setColourRectToUnselectedTextColour(unselectedColour);
     // see if the editbox is active or inactive.
     Editbox* const w = static_cast<Editbox*>(d_window);
-    const bool active = editboxIsFocussed();
+    const bool active = editboxIsFocused();
 
     if (w->getSelectionLength() == 0)
     {
@@ -432,17 +432,15 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
 #endif
 
 //----------------------------------------------------------------------------//
-bool FalagardEditbox::editboxIsFocussed() const
+bool FalagardEditbox::editboxIsFocused() const
 {
-    Editbox* const w = static_cast<Editbox*>(d_window);
-    return w->hasInputFocus();
+    return d_window && static_cast<Editbox*>(d_window)->hasInputFocus();
 }
 
 //----------------------------------------------------------------------------//
 bool FalagardEditbox::editboxIsReadOnly() const
 {
-    Editbox* const w = static_cast<Editbox*>(d_window);
-    return w->isReadOnly();
+    return d_window && static_cast<Editbox*>(d_window)->isReadOnly();
 }
 
 //----------------------------------------------------------------------------//
@@ -451,7 +449,7 @@ void FalagardEditbox::renderCaret(const ImagerySection& imagery,
                                   const float text_offset,
                                   const float extent_to_caret) const
 {
-    if ((!d_blinkCaret || d_showCaret) && editboxIsFocussed() && !editboxIsReadOnly())
+    if ((!d_blinkCaret || d_showCaret) && editboxIsFocused() && !editboxIsReadOnly())
     {
         Rectf caretRect(text_area);
         caretRect.d_min.x += extent_to_caret + text_offset;

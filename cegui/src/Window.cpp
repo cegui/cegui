@@ -950,8 +950,6 @@ bool Window::moveToFront()
 //----------------------------------------------------------------------------//
 void Window::moveToBack()
 {
-    deactivate();
-
     // no siblings - no Z-ordering
     if (!d_parent)
         return;
