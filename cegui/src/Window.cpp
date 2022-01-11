@@ -1946,6 +1946,8 @@ void Window::onDisabled(WindowEventArgs& e)
         }
     }
 
+    if (isFocused() && !canFocus())
+        deactivate();
     invalidate();
     fireEvent(EventDisabled, e, EventNamespace);
 }

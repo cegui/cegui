@@ -29,25 +29,23 @@
 
 #include "Sample.h"
 #include "NavigationStrategies.h"
-#include <vector>
 
 class SimpleGameMenuSample : public Sample
 {
 public:
+
     SimpleGameMenuSample();
-    virtual ~SimpleGameMenuSample() {}
 
     bool initialise(CEGUI::GUIContext* gui_context) override;
     void deinitialise() override;
 
 private:
+
     CEGUI::Window*      d_layout;
     CEGUI::Window*      d_root;
     CEGUI::Window*      d_currentMenu;
 
     WindowChildrenNavigator* d_windowNavigator;
-
-    static std::map<CEGUI::SemanticValue, CEGUI::String> createNavigationMappings();
 
     bool handleContinueGameButtonClick(const CEGUI::EventArgs& e);
     bool handleNewGameButtonClick(const CEGUI::EventArgs& e);

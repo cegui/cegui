@@ -31,7 +31,6 @@
 #include <sstream>
 
 using namespace CEGUI;
-using namespace NavigatorPayloads;
 
 /** This sample uses most of the code from the 'HelloWorld' sample.
     Thus, most of the clarifying comments have been removed for brevity. **/
@@ -67,10 +66,10 @@ bool MenuNavigationSample::initialise(CEGUI::GUIContext* gui_context)
 
     gui_context->setRootWindow(d_root);
 
-    d_matrixWindowNavigator = new MatrixNavigator(createMatrixNavigationMappings());
+    d_matrixWindowNavigator = new MatrixNavigator();
     gui_context->setWindowNavigator(d_matrixWindowNavigator);
 
-    d_linearWindowNavigator = new LinearNavigator(createLinearNavigationMappings());
+    d_linearWindowNavigator = new LinearNavigator();
 
     TabControl* tabControl = static_cast<TabControl*>(d_root->getChild("FrameWindow/TabControl"));
     tabControl->subscribeEvent(TabControl::EventSelectionChanged,
@@ -173,28 +172,4 @@ bool MenuNavigationSample::handleTabSelectionChanged(const CEGUI::EventArgs& e)
     else
         d_root->getGUIContext().setWindowNavigator(d_linearWindowNavigator);
     return true;
-}
-
-std::map<SemanticValue, String> MenuNavigationSample::createMatrixNavigationMappings()
-{
-    std::map<SemanticValue, String> mappings;
-
-    mappings[SemanticValue::NavigateToNext] = NAVIGATE_NEXT;
-    mappings[SemanticValue::NavigateToPrevious] = NAVIGATE_PREVIOUS;
-    mappings[SemanticValue::GoToPreviousCharacter] = NAVIGATE_LEFT;
-    mappings[SemanticValue::GoToNextCharacter] = NAVIGATE_RIGHT;
-    mappings[SemanticValue::GoDown] = NAVIGATE_DOWN;
-    mappings[SemanticValue::GoUp] = NAVIGATE_UP;
-
-    return mappings;
-}
-
-std::map<SemanticValue, CEGUI::String> MenuNavigationSample::createLinearNavigationMappings()
-{
-    std::map<SemanticValue, String> mappings;
-
-    mappings[SemanticValue::NavigateToNext] = NAVIGATE_NEXT;
-    mappings[SemanticValue::NavigateToPrevious] = NAVIGATE_PREVIOUS;
-
-    return mappings;
 }

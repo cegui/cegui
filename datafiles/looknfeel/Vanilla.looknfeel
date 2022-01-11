@@ -679,7 +679,19 @@
                 <Section section="Frame" look="Vanilla/Shared"/>
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="Frame" look="Vanilla/Shared"/>
+            </Layer>
+        </StateImagery>
         <StateImagery name="ReadOnly">
+            <Layer>
+                <Section section="Frame" look="Vanilla/Shared">
+                    <ColourProperty name="ReadOnlyBGColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnlyFocused">
             <Layer>
                 <Section section="Frame" look="Vanilla/Shared">
                     <ColourProperty name="ReadOnlyBGColour"/>
@@ -1533,7 +1545,17 @@
                 <Section section="Frame" look="Vanilla/Shared"/>
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="Frame" look="Vanilla/Shared"/>
+            </Layer>
+        </StateImagery>
         <StateImagery name="ReadOnly">
+            <Layer>
+                <Section section="Frame" look="Vanilla/Shared"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnlyFocused">
             <Layer>
                 <Section section="Frame" look="Vanilla/Shared"/>
             </Layer>

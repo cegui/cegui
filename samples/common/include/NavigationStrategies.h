@@ -27,77 +27,39 @@
 #ifndef _CEGUINavigationStrategies_h_
 #define _CEGUINavigationStrategies_h_
 
-#include "CEGUI/String.h"
 #include "CEGUI/WindowNavigator.h"
 #include <vector>
 
-/*!
-\brief
-    Payloads used by the navigation strategies defined in this file
-*/
-namespace NavigatorPayloads
-{
-static const CEGUI::String NAVIGATE_LEFT = "left";
-static const CEGUI::String NAVIGATE_RIGHT = "right";
-static const CEGUI::String NAVIGATE_UP = "up";
-static const CEGUI::String NAVIGATE_DOWN = "down";
-static const CEGUI::String NAVIGATE_NEXT = "next";
-static const CEGUI::String NAVIGATE_PREVIOUS = "previous";
-}
+// Simple navigators with hardcoded events. Used for demostrational purposes.
 
-/*!
-\brief
-    A strategy that navigates between a specified window's children
-
-    It uses the following navigation strategy payloads:
-    - NAVIGATE_NEXT
-    - NAVIGATE_PREVIOUS
-*/
+//! \brief A strategy that navigates between a specified window's children
 class WindowChildrenNavigator : public CEGUI::WindowNavigator
 {
 public:
 
-    WindowChildrenNavigator(CEGUI::Window* target) : d_targetWindow(target) {}
-
     CEGUI::Window* d_targetWindow = nullptr;
 
-    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload);
+    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::SemanticValue& event) override;
 };
 
-/*!
-\brief
-    A linear strategy that navigates in the windows vector
-
-    It uses the following navigation strategy payloads:
-    - NAVIGATE_NEXT
-    - NAVIGATE_PREVIOUS
-*/
+//! \brief A linear strategy that navigates in the windows vector
 class LinearNavigator : public CEGUI::WindowNavigator
 {
 public:
 
     std::vector<CEGUI::Window*> d_windows;
 
-    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload);
+    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::SemanticValue& event) override;
 };
 
-/*!
-\brief
-    A matrix navigation strategy which navigates in the windows matrix.
-
-    It uses the following navigation strategy payloads:
-    - NAVIGATE_LEFT
-    - NAVIGATE_RIGHT
-    - NAVIGATE_UP
-    - NAVIGATE_DOWN
-*/
+//! \brief A matrix navigation strategy which navigates in the windows matrix.
 class MatrixNavigator : public CEGUI::WindowNavigator
 {
 public:
 
     std::vector<std::vector<CEGUI::Window*>> d_windows;
 
-    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload);
+    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::SemanticValue& event) override;
 };
 
 #endif
