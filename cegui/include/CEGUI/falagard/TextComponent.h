@@ -64,6 +64,13 @@ public:
     */
     const String& getText() const { return d_text; }
 
+    /*
+    \brief
+        Return a copy of the actual text string that will be used when
+        rendering this TextComponent.
+    */
+    String getEffectiveText(const Window& wnd) const;
+
     /*!
     \brief
         Set the text string for this TextComponent.
@@ -77,7 +84,7 @@ public:
     \param text
         String containing text to set on the TextComponent.
     */
-    void setText(const String& text);
+    void setText(const String& text) { d_text = text; d_textFromProperty = false; }
 
     /*!
     \brief
@@ -110,7 +117,7 @@ public:
     \param font
         String containing name of a font
     */
-    void setFont(const String& font) { d_font = font; }
+    void setFont(const String& font) { d_font = font; d_fontFromProperty = false; }
 
     /*!
     \brief

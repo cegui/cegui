@@ -105,10 +105,13 @@ TextComponent& TextComponent::operator =(const TextComponent& other)
 }
 
 //----------------------------------------------------------------------------//
-void TextComponent::setText(const String& text)
+String TextComponent::getEffectiveText(const Window& wnd) const
 {
-    d_text = text;
-    d_textFromProperty = false;
+    //!!!FIXME TEXT: retrieve a reference to String from String-typed property!
+    if (d_textFromProperty)
+        return wnd.getProperty(d_text);
+    else
+        return d_text.empty() ? wnd.getText() : d_text;
 }
 
 //----------------------------------------------------------------------------//
@@ -369,10 +372,8 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
     //!!!FIXME TEXT: retrieve a reference to String from String-typed property!
     if (d_textFromProperty)
         updateRenderedString(srcWindow, srcWindow.getProperty(d_text), font);
-    else if (!d_text.empty())
-        updateRenderedString(srcWindow, d_text, font);
     else
-        updateRenderedString(srcWindow, srcWindow.getText(), font);
+        updateRenderedString(srcWindow, d_text.empty() ? srcWindow.getText() : d_text, font);
 
     setupStringFormatter(srcWindow, d_renderedString);
     d_formatter->format(&srcWindow, size);   
