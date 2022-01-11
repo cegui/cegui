@@ -55,17 +55,6 @@ RenderedStringTextComponent::RenderedStringTextComponent(const String& text) :
 }
 
 //----------------------------------------------------------------------------//
-RenderedStringTextComponent::RenderedStringTextComponent(
-        const String& text, const String& font_name) :
-    d_text(text),
-    d_font(font_name.empty() ? 0 : &FontManager::getSingleton().get(font_name)),
-    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-    d_selectionStart(0),
-    d_selectionLength(0)
-{
-}
-
-//----------------------------------------------------------------------------//
 RenderedStringTextComponent::RenderedStringTextComponent(const String& text,
                                                          const Font* font) :
     d_text(text),
@@ -205,13 +194,10 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
     const float space_extra) const
 {
     const Font* fnt = getEffectiveFont(ref_wnd); 
-    if (fnt == nullptr)
-    {
+    if (!fnt)
         return std::vector<GeometryBuffer*>();
-    }
 
     glm::vec2 final_pos(position);
-
     handleFormattingOptions(ref_wnd, vertical_space, final_pos);
 
     // apply padding to position:

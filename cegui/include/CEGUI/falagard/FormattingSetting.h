@@ -152,6 +152,10 @@ template<> void CEGUIEXPORT FormattingSetting<HorizontalTextFormatting>::writeXM
                                             XMLSerializer& xml_stream) const;
 template<> void CEGUIEXPORT FormattingSetting<HorizontalTextFormatting>::writeXMLAttributesToStream(
                                             XMLSerializer& xml_stream) const;
+template<> void CEGUIEXPORT FormattingSetting<DefaultParagraphDirection>::writeXMLTagToStream(
+                                            XMLSerializer& xml_stream) const;
+template<> void CEGUIEXPORT FormattingSetting<DefaultParagraphDirection>::writeXMLAttributesToStream(
+                                            XMLSerializer& xml_stream) const;
 }
 
 #endif

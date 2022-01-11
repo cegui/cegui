@@ -115,6 +115,25 @@ void FormattingSetting<HorizontalTextFormatting>::writeXMLAttributesToStream(XML
 }
 
 //----------------------------------------------------------------------------//
+template<>
+void FormattingSetting<DefaultParagraphDirection>::writeXMLTagToStream(XMLSerializer& xml_stream) const
+{
+    if (d_propertySource.empty())
+        xml_stream.openTag(Falagard_xmlHandler::ParagraphDirElement);
+    else
+        xml_stream.openTag(Falagard_xmlHandler::ParagraphDirPropertyElement);
+}
+
+//----------------------------------------------------------------------------//
+template<>
+void FormattingSetting<DefaultParagraphDirection>::writeXMLAttributesToStream(XMLSerializer& xml_stream) const
+{
+    if (d_propertySource.empty())
+        xml_stream.attribute(Falagard_xmlHandler::TypeAttribute,
+            FalagardXMLHelper<DefaultParagraphDirection>::toString(d_value));
+    else
+        xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_propertySource);
+}
 
 }
 

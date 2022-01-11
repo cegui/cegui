@@ -10,17 +10,19 @@
         <PropertyDefinition name="DisabledTextColour" initialValue="FFDDDDDD" redrawOnWrite="true" type="Colour" />
         <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="VerticalTextFormatting" />
         <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="HorizontalTextFormatting" />
+        <PropertyDefinition name="DefaultParagraphDirection" initialValue="LeftToRight" redrawOnWrite="true" type="DefaultParagraphDirection" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="Label">
             <TextComponent>
                 <Area>
-	            <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
-	            <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
-	            <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
-	            <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
                 <VertFormatProperty name="VertFormatting" />
                 <HorzFormatProperty name="HorzFormatting" />
+                <ParagraphDirProperty name="DefaultParagraphDirection" />
             </TextComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -51,6 +53,7 @@
         <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" type="VerticalTextFormatting"/>
         <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" type="HorizontalTextFormatting"/>
+        <PropertyDefinition name="DefaultParagraphDirection" initialValue="LeftToRight" redrawOnWrite="true" type="DefaultParagraphDirection" />
         <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true"  type="Image"/>
         <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image"/>
@@ -62,6 +65,7 @@
             <TextComponent>
                 <VertFormatProperty name="VertLabelFormatting" />
                 <HorzFormatProperty name="HorzLabelFormatting" />
+                <ParagraphDirProperty name="DefaultParagraphDirection" />
             </TextComponent>
         </ImagerySection>
         <ImagerySection name="normal">
@@ -287,7 +291,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Checkbox">
-	    <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="ColourRect"/>
@@ -873,7 +877,7 @@
 
         <PropertyDefinition name="BackgroundTextColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" redrawOnWrite="true" type="ColourRect"/>
 
-	    <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="TextBackground" initialValue="FF888888" redrawOnWrite="true" type="ColourRect"/>
         <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
@@ -1948,21 +1952,21 @@
         <ImagerySection name="image_withframe">
             <ImageryComponent>
                 <Area>
-					<Dim type="LeftEdge" ><ImageDim name="TaharezLook/StaticLeft" dimension="Width" /></Dim>
-					<Dim type="TopEdge" ><ImageDim name="TaharezLook/StaticTop" dimension="Height" /></Dim>
-					<Dim type="RightEdge" >
+                    <Dim type="LeftEdge" ><ImageDim name="TaharezLook/StaticLeft" dimension="Width" /></Dim>
+                    <Dim type="TopEdge" ><ImageDim name="TaharezLook/StaticTop" dimension="Height" /></Dim>
+                    <Dim type="RightEdge" >
                         <OperatorDim op="Subtract">
-    						<UnifiedDim scale="1" type="RightEdge" />
-	        				<ImageDim name="TaharezLook/StaticRight" dimension="Width" />
-						</OperatorDim>
-					</Dim>
-					<Dim type="BottomEdge" >
+                            <UnifiedDim scale="1" type="RightEdge" />
+                            <ImageDim name="TaharezLook/StaticRight" dimension="Width" />
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge" >
                         <OperatorDim op="Subtract">
-    						<UnifiedDim scale="1" type="BottomEdge" />
-	    					<ImageDim name="TaharezLook/StaticBottom" dimension="Height" />
-						</OperatorDim>
-					</Dim>
-				</Area>
+                            <UnifiedDim scale="1" type="BottomEdge" />
+                            <ImageDim name="TaharezLook/StaticBottom" dimension="Height" />
+                        </OperatorDim>
+                    </Dim>
+                </Area>
                 <ImageProperty name="Image" />
                 <ColourRectProperty name="ImageColours" />
                 <VertFormatProperty name="VertFormatting" />

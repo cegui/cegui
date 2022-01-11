@@ -716,51 +716,53 @@ bool FalagardStaticText::onIsSizeAdjustedToContentChanged(const EventArgs&)
         delete d_formattedRenderedString;
         d_formattedRenderedString = nullptr;
 
+        const RenderedString& renderedString = d_window->getRenderedString();
+
         // create new formatter of whichever type...
         switch(getActualHorizontalFormatting())
         {
         case HorizontalTextFormatting::LeftAligned:
             d_formattedRenderedString =
-                new LeftAlignedRenderedString(d_window->getRenderedString());
+                new LeftAlignedRenderedString(renderedString);
             break;
 
         case HorizontalTextFormatting::RightAligned:
             d_formattedRenderedString =
-                new RightAlignedRenderedString(d_window->getRenderedString());
+                new RightAlignedRenderedString(renderedString);
             break;
 
         case HorizontalTextFormatting::CentreAligned:
             d_formattedRenderedString =
-                new CentredRenderedString(d_window->getRenderedString());
+                new CentredRenderedString(renderedString);
             break;
 
         case HorizontalTextFormatting::Justified:
             d_formattedRenderedString =
-                new JustifiedRenderedString(d_window->getRenderedString());
+                new JustifiedRenderedString(renderedString);
             break;
 
         case HorizontalTextFormatting::WordWrapLeftAligned:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
-                    <LeftAlignedRenderedString>(d_window->getRenderedString());
+                    <LeftAlignedRenderedString>(renderedString);
             break;
 
         case HorizontalTextFormatting::WordWrapRightAligned:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
-                    <RightAlignedRenderedString>(d_window->getRenderedString());
+                    <RightAlignedRenderedString>(renderedString);
             break;
 
         case HorizontalTextFormatting::WordWrapCentreAligned:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
-                    <CentredRenderedString>(d_window->getRenderedString());
+                    <CentredRenderedString>(renderedString);
             break;
 
         case HorizontalTextFormatting::WordWraperJustified:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
-                    <JustifiedRenderedString>(d_window->getRenderedString());
+                    <JustifiedRenderedString>(renderedString);
             break;
         }
     }

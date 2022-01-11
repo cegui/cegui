@@ -151,6 +151,9 @@ public:
     */
     virtual bool handleFontRenderSizeChange(const Font* const font);
 
+    //! Override this to provide an ability to assign custom rendered string parser to the window
+    virtual RenderedStringParser* getCustomRenderedStringParser() const { return nullptr; }
+
     /*!
     \brief
         Get the width of the content of the window.

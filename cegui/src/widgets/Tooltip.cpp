@@ -45,16 +45,11 @@ Tooltip::Tooltip(const String& type, const String& name) :
 //----------------------------------------------------------------------------//
 void Tooltip::sizeSelf()
 {
-    const Sizef textSize = getTextSize();
-    setSize(USize(cegui_absdim(textSize.d_width), cegui_absdim(textSize.d_height)));
-}
-
-//----------------------------------------------------------------------------//
-Sizef Tooltip::getTextSize() const
-{
-    return d_windowRenderer ?
-        static_cast<TooltipWindowRenderer*>(d_windowRenderer)->getTextSize() :
-        getTextSize_impl();
+    if (d_windowRenderer)
+    {
+        const Sizef textSize = static_cast<TooltipWindowRenderer*>(d_windowRenderer)->getTextSize();
+        setSize(USize(cegui_absdim(textSize.d_width), cegui_absdim(textSize.d_height)));
+    }
 }
 
 //----------------------------------------------------------------------------//

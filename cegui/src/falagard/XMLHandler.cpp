@@ -64,6 +64,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::ColoursElement("Colours");
     const String Falagard_xmlHandler::VertFormatElement("VertFormat");
     const String Falagard_xmlHandler::HorzFormatElement("HorzFormat");
+    const String Falagard_xmlHandler::ParagraphDirElement("ParagraphDir");
     const String Falagard_xmlHandler::VertAlignmentElement("VertAlignment");
     const String Falagard_xmlHandler::HorzAlignmentElement("HorzAlignment");
     const String Falagard_xmlHandler::PropertyElement("Property");
@@ -85,6 +86,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::OperatorDimElement("OperatorDim");
     const String Falagard_xmlHandler::VertFormatPropertyElement("VertFormatProperty");
     const String Falagard_xmlHandler::HorzFormatPropertyElement("HorzFormatProperty");
+    const String Falagard_xmlHandler::ParagraphDirPropertyElement("ParagraphDirProperty");
     const String Falagard_xmlHandler::AreaPropertyElement("AreaProperty");
     const String Falagard_xmlHandler::ImagePropertyElement("ImageProperty");
     const String Falagard_xmlHandler::TextPropertyElement("TextProperty");
@@ -255,6 +257,7 @@ namespace CEGUI
         registerElementStartHandler(ColoursElement, &Falagard_xmlHandler::elementColoursStart);
         registerElementStartHandler(VertFormatElement, &Falagard_xmlHandler::elementVertFormatStart);
         registerElementStartHandler(HorzFormatElement, &Falagard_xmlHandler::elementHorzFormatStart);
+        registerElementStartHandler(ParagraphDirElement, &Falagard_xmlHandler::elementParagraphDirStart);
         registerElementStartHandler(VertAlignmentElement, &Falagard_xmlHandler::elementVertAlignmentStart);
         registerElementStartHandler(HorzAlignmentElement, &Falagard_xmlHandler::elementHorzAlignmentStart);
         registerElementStartHandler(PropertyElement, &Falagard_xmlHandler::elementPropertyStart);
@@ -275,6 +278,7 @@ namespace CEGUI
         registerElementStartHandler(OperatorDimElement, &Falagard_xmlHandler::elementOperatorDimStart);
         registerElementStartHandler(VertFormatPropertyElement, &Falagard_xmlHandler::elementVertFormatPropertyStart);
         registerElementStartHandler(HorzFormatPropertyElement, &Falagard_xmlHandler::elementHorzFormatPropertyStart);
+        registerElementStartHandler(ParagraphDirPropertyElement, &Falagard_xmlHandler::elementParagraphDirPropertyStart);
         registerElementStartHandler(AreaPropertyElement, &Falagard_xmlHandler::elementAreaPropertyStart);
         registerElementStartHandler(ImagePropertyElement, &Falagard_xmlHandler::elementImagePropertyStart);
         registerElementStartHandler(TextPropertyElement, &Falagard_xmlHandler::elementTextPropertyStart);
@@ -768,6 +772,19 @@ namespace CEGUI
         {
             d_textcomponent->setHorizontalFormatting(
                 FalagardXMLHelper<HorizontalTextFormatting>::fromString(
+                    attributes.getValueAsString(TypeAttribute)));
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the opening ParagraphDir XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementParagraphDirStart(const XMLAttributes& attributes)
+    {
+        if (d_textcomponent)
+        {
+            d_textcomponent->setParagraphDir(
+                FalagardXMLHelper<DefaultParagraphDirection>::fromString(
                     attributes.getValueAsString(TypeAttribute)));
         }
     }
@@ -1347,6 +1364,15 @@ namespace CEGUI
             d_imagerycomponent->setHorizontalFormattingPropertySource(attributes.getValueAsString(NameAttribute));
         else if (d_textcomponent)
             d_textcomponent->setHorizontalFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+    }
+
+    /*************************************************************************
+        Method that handles the opening HorzFormatProperty XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementParagraphDirPropertyStart(const XMLAttributes& attributes)
+    {
+        if (d_textcomponent)
+            d_textcomponent->setParagraphDirPropertySource(attributes.getValueAsString(NameAttribute));
     }
 
     /*************************************************************************

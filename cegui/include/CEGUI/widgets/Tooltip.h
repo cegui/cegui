@@ -74,26 +74,6 @@ public:
     //! \brief Causes the tooltip to resize itself appropriately.
     void sizeSelf();
 
-    /*!
-    \brief
-        Return the size of the area that will be occupied by the tooltip text, given
-        any current formatting options.
-
-    \return
-        Size object describing the size of the rendered tooltip text in pixels.
-    */
-    Sizef getTextSize() const;
-
-    /*!
-    \brief
-        Return the size of the area that will be occupied by the tooltip text, given
-        any current formatting options.
-
-    \return
-        Size object describing the size of the rendered tooltip text in pixels.
-    */
-    virtual Sizef getTextSize_impl() const { return getRenderedString().getPixelSize(this); }
-
 protected:
 
     bool validateWindowRenderer(const WindowRenderer* renderer) const override;

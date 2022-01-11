@@ -36,14 +36,13 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//! String component that draws an image.
+//! String component that draws a text.
 class CEGUIEXPORT RenderedStringTextComponent : public RenderedStringComponent
 {
 public:
     //! Constructor
     RenderedStringTextComponent();
     RenderedStringTextComponent(const String& text);
-    RenderedStringTextComponent(const String& text, const String& font_name);
     RenderedStringTextComponent(const String& text, const Font* font);
 
     //! Set the text to be rendered by this component.
@@ -84,7 +83,7 @@ protected:
     void createSelectionRenderGeometry(const glm::vec2& position, const Rectf* clip_rect, const float vertical_space, const Font* fnt) const;
     static size_t getNextTokenLength(const String& text, size_t start_idx);
 
-    //! pointer to the image drawn by the component.
+    //! text string drawn by the component.
     String d_text;
     //! Font to use for text rendering, 0 for system default.
     const Font* d_font;

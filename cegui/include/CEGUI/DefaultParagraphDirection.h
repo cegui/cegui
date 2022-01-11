@@ -29,6 +29,8 @@
 #ifndef _CEGUIDefaultParagraphDirection_h_
 #define _CEGUIDefaultParagraphDirection_h_
 
+#include <cstdint>
+
 namespace CEGUI
 {
 

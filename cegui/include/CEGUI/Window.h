@@ -30,7 +30,6 @@
 #define _CEGUIWindow_h_
 
 #include "CEGUI/Element.h"
-#include "CEGUI/RenderedString.h"
 #include "CEGUI/InputEvent.h"
 
 #if defined(_MSC_VER)
@@ -211,8 +210,6 @@ public:
      * WindowEventArgs::window set to the Window whose font was changed.
      */
     static const String EventFontChanged;
-    //! Fired when the default paragraph direction of this window changes.
-    static const String EventDefaultParagraphDirectionChanged;
     //! Fired when the window type for the associated tooltip changes.
     static const String EventTooltipTypeChanged;
     //! Fired when the effective tooltip text changes, taking inheritance into account.
@@ -927,20 +924,6 @@ public:
         The String object that holds the current text for this Window.
     */
     const String& getText() const { return d_textLogical; }
-
-    /*!
-    \brief
-        Return text string with \e visual ordering of glyphs. This
-        only returns meaningful data if using only bidi. Will return
-        the regular text String if using raqm or no bidi.
-    */
-    const String& getTextVisual() const;
-
-    //! Gets the default paragraph direction for the displayed text.
-    DefaultParagraphDirection getDefaultParagraphDirection() const { return d_defaultParagraphDirection; }
-
-    //! Sets the default paragraph direction for the displayed text.
-    void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);
 
     /*!
     \brief
@@ -2422,16 +2405,7 @@ public:
         - false to not provide a stencil buffer functionality with the texture caching.
     */
     void setAutoRenderingSurfaceStencilEnabled(bool setting);
-  
 
-    //! Return the parsed RenderedString object for this window.
-    const RenderedString& getRenderedString() const;
-    //! Return a pointer to any custom RenderedStringParser set, or 0 if none.
-    RenderedStringParser* getCustomRenderedStringParser() const { return d_customStringParser; }
-    //! Set a custom RenderedStringParser, or 0 to remove an existing one.
-    void setCustomRenderedStringParser(RenderedStringParser* parser);
-    //! return the active RenderedStringParser to be used
-    virtual RenderedStringParser& getRenderedStringParser() const;
     //! return whether text parsing is enabled for this window.
     bool isTextParsingEnabled() const { return d_textParsingEnabled; }
     //! set whether text parsing is enabled for this window.
@@ -3417,15 +3391,8 @@ protected:
     //! Animations that play when the window visibility is changed
     AnimationInstance* d_showAnimInst = nullptr;
     AnimationInstance* d_hideAnimInst = nullptr;
-    //! Pointer to a custom (user assigned) RenderedStringParser object.
-    RenderedStringParser* d_customStringParser = nullptr;
     //! Holds pointer to some user assigned data.
     void* d_userData = nullptr;
-
-#ifdef CEGUI_BIDI_SUPPORT
-    //! pointer to bidirection support object
-    std::unique_ptr <BidiVisualMapping> d_bidiVisualMapping;
-#endif
 
     Event::ScopedConnection d_visibilityAnimEndConnection;
 
@@ -3463,9 +3430,6 @@ protected:
     //! Child window objects arranged in rendering order.
     std::vector<Window*> d_drawList;
 
-    //! RenderedString representation of text string as ouput from a parser.
-    mutable RenderedString d_renderedString;
-
     //! type of Window (also the name of the WindowFactory that created us)
     const String d_type;
     //! Type name of the window as defined in a Falagard mapping.
@@ -3480,9 +3444,6 @@ protected:
     String d_tooltipType;
     //! Text string used as tooltip for this window.
     String d_tooltipText;
-
-    //! Default direction of the paragraph, relevant for bidirectional text.
-    DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
 
     //! The mode to use for calling Window::update
     WindowUpdateMode d_updateMode = WindowUpdateMode::Visible;
@@ -3513,9 +3474,6 @@ protected:
     bool d_restoreOldCapture : 1;
     //! Whether to distribute captured inputs to child windows.
     bool d_distCapturedInputs : 1;
-
-    //! true if d_renderedString is valid, false if needs re-parse.
-    mutable bool d_renderedStringValid : 1;
     //! true if use of parser other than d_defaultStringParser is enabled
     bool d_textParsingEnabled : 1;
 
@@ -3528,8 +3486,12 @@ protected:
 
     //! whether (most) cursor events pass through this window
     bool d_cursorPassThroughEnabled : 1;
+    //! specifies whether cursor inputs should be propagated to parent(s)
+    bool d_propagatePointerInputs : 1;
     //! whether pressed cursor will auto-repeat the down event.
     bool d_autoRepeat : 1;
+    //! true when cursor is contained within this Window's area.
+    bool d_containsPointer : 1;
 
     //! true if window will receive drag and drop related notifications
     bool d_dragDropTarget : 1;
@@ -3544,17 +3506,6 @@ protected:
     mutable bool d_outerRectClipperValid : 1;
     mutable bool d_innerRectClipperValid : 1;
     mutable bool d_hitTestRectValid : 1;
-
-    //! specifies whether cursor inputs should be propagated to parent(s)
-    bool d_propagatePointerInputs : 1;
-
-    //! true when cursor is contained within this Window's area.
-    bool d_containsPointer : 1;
-
-#ifdef CEGUI_BIDI_SUPPORT
-    //! whether bidi visual mapping has been updated since last text change.
-    mutable bool d_bidiDataValid : 1;
-#endif
 
 private:
 

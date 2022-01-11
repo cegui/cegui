@@ -110,6 +110,7 @@ namespace CEGUI
         static const String ColoursElement;             //!< Tag name for Colours elements.
         static const String VertFormatElement;          //!< Tag name for VertFormat elements.
         static const String HorzFormatElement;          //!< Tag name for HorzFormat elements.
+        static const String ParagraphDirElement;        //!< Tag name for ParagraphDir elements.
         static const String VertAlignmentElement;       //!< Tag name for VertAlignment elements.
         static const String HorzAlignmentElement;       //!< Tag name for HorzAlignment elements.
         static const String PropertyElement;            //!< Tag name for Property elements.
@@ -131,6 +132,7 @@ namespace CEGUI
         static const String OperatorDimElement;         //!< Tag name for dimension operator elements.
         static const String VertFormatPropertyElement;  //!< Tag name for element that specifies a vertical formatting property.
         static const String HorzFormatPropertyElement;  //!< Tag name for element that specifies a horizontal formatting property..
+        static const String ParagraphDirPropertyElement; //!< Tag name for element that specifies a default paragraph direction property..
         static const String AreaPropertyElement;        //!< Tag name for element that specifies a URect property..
         static const String ImagePropertyElement;       //!< Tag name for element that specifies an Image property..
         static const String TextPropertyElement;        //!< Tag name for element that specifies an Text property.
@@ -314,6 +316,12 @@ namespace CEGUI
 
         /*!
         \brief
+            Method that handles the opening ParagraphDir XML element.
+        */
+        void elementParagraphDirStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
             Method that handles the opening VertAlignment XML element.
         */
         void elementVertAlignmentStart(const XMLAttributes& attributes);
@@ -425,6 +433,8 @@ namespace CEGUI
             Method that handles the opening HorzFormatProperty XML element.
         */
         void elementHorzFormatPropertyStart(const XMLAttributes& attributes);
+
+        void elementParagraphDirPropertyStart(const XMLAttributes& attributes);
 
         /*!
         \brief
