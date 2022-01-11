@@ -62,35 +62,7 @@ public:
         To get the actual string, call the getEffectiveText function
         instead.
     */
-    const String& getText() const { return d_textLogical; }
-
-    /*
-    \brief
-        Return a copy of the actual text string that will be used when
-        rendering this TextComponent.
-    */
-    String getEffectiveText(const Window& wnd) const;
-
-    /*!
-    \brief
-        return text string with \e visual ordering of glyphs.
-
-    \note
-        This returns the visual text derived from the string set directly to
-        the TextComponent, which may or may not be the actual string that
-        will be used - since the actual string may be sourced from a
-        property or the main text string from a window that the
-        TextComponent is rendered to. To get the actual visual string, call
-        the getEffectiveVisualText function instead.
-    */
-    const String& getTextVisual() const;
-
-    /*
-    \brief
-        Return a copy of the actual text - with visual ordering - that
-        will be used when rendering this TextComponent.
-    */
-    String getEffectiveVisualText(const Window& wnd) const;
+    const String& getText() const { return d_text; }
 
     /*!
     \brief
@@ -106,6 +78,20 @@ public:
         String containing text to set on the TextComponent.
     */
     void setText(const String& text);
+
+    /*!
+    \brief
+        return text string with \e visual ordering of glyphs.
+
+    \note
+        This returns the visual text derived from the string set directly to
+        the TextComponent, which may or may not be the actual string that
+        will be used - since the actual string may be sourced from a
+        property or the main text string from a window that the
+        TextComponent is rendered to. To get the actual visual string, call
+        the getEffectiveVisualText function instead.
+    */
+    const String& getTextVisual() const;
 
     /*!
     \brief
@@ -251,7 +237,7 @@ public:
         - true if the text string comes via a Propery.
         - false if the text string is defined explicitly, or will come from the target window.
     */
-    bool isTextFetchedFromProperty() const { return !d_textPropertyName.empty(); }
+    bool isTextFetchedFromProperty() const { return d_textFromProperty; }
 
     /*!
     \brief
@@ -261,7 +247,7 @@ public:
     \return
         String object holding the name of a Propery.
     */
-    const String& getTextPropertySource() const { return d_textPropertyName; }
+    const String& getTextPropertySource() const { return d_textFromProperty ? d_text : String::GetEmpty(); }
 
     /*!
     \brief
@@ -271,7 +257,7 @@ public:
     \param property
         String object holding the name of a Propery.  The property can contain any text string to render.
     */
-    void setTextPropertySource(const String& property) { d_textPropertyName = property; }
+    void setTextPropertySource(const String& property);
         
     /*!
     \brief
@@ -281,7 +267,7 @@ public:
         - true if the font comes via a Propery.
         - false if the font is defined explicitly, or will come from the target window.
     */
-    bool isFontFetchedFromProperty() const { return !d_fontPropertyName.empty(); }
+    bool isFontFetchedFromProperty() const { return d_fontFromProperty; }
 
     /*!
     \brief
@@ -291,7 +277,7 @@ public:
     \return
         String object holding the name of a Propery.
     */
-    const String& getFontPropertySource() const { return d_fontPropertyName; }
+    const String& getFontPropertySource() const { return d_fontFromProperty ? d_font : String::GetEmpty(); }
 
     /*!
     \brief
@@ -301,25 +287,13 @@ public:
     \param property
         String object holding the name of a Propery.  The property should access a valid font name.
     */
-    void setFontPropertySource(const String& property) { d_fontPropertyName = property; }
+    void setFontPropertySource(const String& property);
 
     //! return the horizontal pixel extent of the formatted rendered string.
     float getHorizontalTextExtent(const Window& window) const;
 
     //! return the vertical pixel extent of the formatted rendered string.
     float getVerticalTextExtent(const Window& window) const;
-
-    //! Update string formatting.
-    void updateFormatting(const Window& srcWindow) const;
-
-    /*!
-    \brief
-        Update string formatting.
-        
-    \param size
-        The pixel size of the component.
-    */
-    void updateFormatting(const Window& srcWindow, const Sizef& size) const;
 
     virtual bool handleFontRenderSizeChange(Window& window, const Font* font) const override;
 
@@ -335,31 +309,50 @@ protected:
     const Font* getFontObject(const Window& window) const;
     //! helper to get a rendered string parser for the current window
     RenderedStringParser& getRenderedStringParser(const Window& window) const;
+    //! Update rendered string from a logical text.
+    void updateRenderedString(const Window& srcWindow, const String& text, const Font* font) const;
+
+    /*!
+    \brief
+        Update string formatting.
+
+    \param size
+        The pixel size of the component.
+    */
+    void updateFormatting(const Window& srcWindow, const Sizef& size) const;
 
 private:
 
 #ifdef CEGUI_BIDI_SUPPORT
     //! pointer to bidirection support object
     BidiVisualMapping* d_bidiVisualMapping;
-    //! whether bidi visual mapping has been updated since last text change.
-    mutable bool d_bidiDataValid;
 #endif
 
-    //! RenderedString used when not using the one from the target Window.
-    mutable RenderedString d_renderedString;
     //! FormattedRenderedString object that applies formatting to the string
     mutable RefCounted<FormattedRenderedString> d_formatter;
-    //! Tracks last used horizontal formatting (in order to detect changes)
+    //! RenderedString used when not using the one from the target Window.
+    mutable RenderedString d_renderedString;
+
+    // Cache for avoiding redundant calulations
+    mutable const Font* d_lastFont = nullptr;
+    mutable const RenderedStringParser* d_lastParser = nullptr;
     mutable HorizontalTextFormatting d_lastHorzFormatting;
 
-    String d_textLogical; //!< text rendered by this component.
+    String d_text; //!< text rendered by this component, string or property name.
     String d_font; //!< name of font to use.
-    String d_textPropertyName; //!< Name of the property to access to obtain the text string to render.
-    String d_fontPropertyName; //!< Name of the property to access to obtain the font to use for rendering.
 
     FormattingSetting<VerticalTextFormatting> d_vertFormatting;
     FormattingSetting<HorizontalTextFormatting> d_horzFormatting;
     FormattingSetting<DefaultParagraphDirection> d_paragraphDir;
+
+    bool d_fontFromProperty = false; //!< d_font is a property name in a source window
+    bool d_textFromProperty = false; //!< d_text is a property name in a source window
+    bool d_ownText = false; //!< d_text is our own text
+
+#ifdef CEGUI_BIDI_SUPPORT
+    //! whether bidi visual mapping has been updated since last text change.
+    mutable bool d_bidiDataValid = false;
+#endif
 };
 
 }

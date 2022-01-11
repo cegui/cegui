@@ -781,12 +781,12 @@ namespace CEGUI
     *************************************************************************/
     void Falagard_xmlHandler::elementParagraphDirStart(const XMLAttributes& attributes)
     {
-        if (d_textcomponent)
-        {
-            d_textcomponent->setParagraphDir(
-                FalagardXMLHelper<DefaultParagraphDirection>::fromString(
-                    attributes.getValueAsString(TypeAttribute)));
-        }
+        if (!d_textcomponent)
+            throwExceptionNotChildOfNode(d_widgetlook, FontPropertyElement, attributes.getValueAsString(NameAttribute), ParagraphDirElement);
+
+        d_textcomponent->setParagraphDir(
+            FalagardXMLHelper<DefaultParagraphDirection>::fromString(
+                attributes.getValueAsString(TypeAttribute)));
     }
 
     /*************************************************************************
@@ -1371,8 +1371,10 @@ namespace CEGUI
     *************************************************************************/
     void Falagard_xmlHandler::elementParagraphDirPropertyStart(const XMLAttributes& attributes)
     {
-        if (d_textcomponent)
-            d_textcomponent->setParagraphDirPropertySource(attributes.getValueAsString(NameAttribute));
+        if (!d_textcomponent)
+            throwExceptionNotChildOfNode(d_widgetlook, FontPropertyElement, attributes.getValueAsString(NameAttribute), ParagraphDirPropertyElement);
+
+        d_textcomponent->setParagraphDirPropertySource(attributes.getValueAsString(NameAttribute));
     }
 
     /*************************************************************************

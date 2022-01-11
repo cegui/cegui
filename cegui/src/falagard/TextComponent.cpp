@@ -49,10 +49,8 @@ namespace CEGUI
 TextComponent::TextComponent() :
 #if defined (CEGUI_USE_FRIBIDI)
     d_bidiVisualMapping(new FribidiVisualMapping),
-    d_bidiDataValid(false),
 #elif defined (CEGUI_USE_MINIBIDI)
     d_bidiVisualMapping(new MinibidiVisualMapping),
-    d_bidiDataValid(false),
 #elif defined (CEGUI_BIDI_SUPPORT)
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
@@ -67,13 +65,11 @@ TextComponent::TextComponent() :
 //----------------------------------------------------------------------------//
 TextComponent::TextComponent(const TextComponent& obj) :
     FalagardComponentBase(obj),
-    d_textLogical(obj.d_textLogical),
+    d_text(obj.d_text),
 #if defined (CEGUI_USE_FRIBIDI)
     d_bidiVisualMapping(new FribidiVisualMapping),
-    d_bidiDataValid(false),
 #elif defined (CEGUI_USE_MINIBIDI)
     d_bidiVisualMapping(new MinibidiVisualMapping),
-    d_bidiDataValid(false),
 #elif defined (CEGUI_BIDI_SUPPORT)
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
@@ -84,8 +80,9 @@ TextComponent::TextComponent(const TextComponent& obj) :
     d_vertFormatting(obj.d_vertFormatting),
     d_horzFormatting(obj.d_horzFormatting),
     d_paragraphDir(obj.d_paragraphDir),
-    d_textPropertyName(obj.d_textPropertyName),
-    d_fontPropertyName(obj.d_fontPropertyName)
+    d_ownText(obj.d_ownText),
+    d_textFromProperty(obj.d_textFromProperty),
+    d_fontFromProperty(obj.d_fontFromProperty)
 {
 }
 
@@ -105,7 +102,7 @@ TextComponent& TextComponent::operator =(const TextComponent& other)
 
     FalagardComponentBase::operator=(other);
 
-    d_textLogical = other.d_textLogical;
+    d_text = other.d_text;
     // note we do not assign the BidiVisualMapping object, we just mark our
     // existing one as invalid so it's data gets regenerated next time it's
     // needed.
@@ -119,8 +116,9 @@ TextComponent& TextComponent::operator =(const TextComponent& other)
     d_vertFormatting = other.d_vertFormatting;
     d_horzFormatting = other.d_horzFormatting;
     d_paragraphDir = other.d_paragraphDir;
-    d_textPropertyName = other.d_textPropertyName;
-    d_fontPropertyName = other.d_fontPropertyName;
+    d_ownText = other.d_ownText;
+    d_textFromProperty = other.d_textFromProperty;
+    d_fontFromProperty = other.d_fontFromProperty;
 
     return *this;
 }
@@ -128,10 +126,33 @@ TextComponent& TextComponent::operator =(const TextComponent& other)
 //----------------------------------------------------------------------------//
 void TextComponent::setText(const String& text)
 {
-    d_textLogical = text;
+    d_ownText = !text.empty();
+
 #ifdef CEGUI_BIDI_SUPPORT
     d_bidiDataValid = false;
 #endif
+
+    if (d_ownText)
+    {
+        d_text = text;
+        d_textFromProperty = false;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void TextComponent::setTextPropertySource(const String& property)
+{
+    d_textFromProperty = !property.empty();
+    if (d_textFromProperty)
+        d_text = property;
+}
+
+//----------------------------------------------------------------------------//
+void TextComponent::setFontPropertySource(const String& property)
+{
+    d_fontFromProperty = !property.empty();
+    if (d_fontFromProperty)
+        d_font = property;
 }
 
 //----------------------------------------------------------------------------//
@@ -230,9 +251,9 @@ const Font* TextComponent::getFontObject(const Window& window) const
 {
     try
     {
-        return d_fontPropertyName.empty() ?
-            (d_font.empty() ? window.getActualFont() : &FontManager::getSingleton().get(d_font))
-            : &FontManager::getSingleton().get(window.getProperty(d_fontPropertyName));
+        return d_fontFromProperty ?
+            &FontManager::getSingleton().get(window.getProperty(d_font)) :
+            (d_font.empty() ? window.getActualFont() : &FontManager::getSingleton().get(d_font));
     }
     catch (UnknownObjectException&)
     {
@@ -248,30 +269,32 @@ void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     // write out area
     d_area.writeXMLToStream(xml_stream);
 
-    // write text element
-    if (!d_font.empty() || !getText().empty())
+    if (d_textFromProperty)
     {
-        xml_stream.openTag(Falagard_xmlHandler::TextElement);
-        if (!d_font.empty())
-            xml_stream.attribute(Falagard_xmlHandler::FontAttribute, d_font);
-        if (!getText().empty())
-            xml_stream.attribute(Falagard_xmlHandler::StringAttribute, getText());
-        xml_stream.closeTag();
-    }
-
-    // write text property element
-    if (!d_textPropertyName.empty())
-    {
+        // write text property element
         xml_stream.openTag(Falagard_xmlHandler::TextPropertyElement)
-            .attribute(Falagard_xmlHandler::NameAttribute, d_textPropertyName)
+            .attribute(Falagard_xmlHandler::NameAttribute, d_text)
             .closeTag();
+    }
+    else
+    {
+        // write text element
+        if (d_ownText && (!d_font.empty() || !d_text.empty()))
+        {
+            xml_stream.openTag(Falagard_xmlHandler::TextElement);
+            if (!d_fontFromProperty && !d_font.empty())
+                xml_stream.attribute(Falagard_xmlHandler::FontAttribute, d_font);
+            if (!d_text.empty())
+                xml_stream.attribute(Falagard_xmlHandler::StringAttribute, d_text);
+            xml_stream.closeTag();
+        }
     }
 
     // write font property element
-    if (!d_fontPropertyName.empty())
+    if (d_fontFromProperty)
     {
         xml_stream.openTag(Falagard_xmlHandler::FontPropertyElement)
-            .attribute(Falagard_xmlHandler::NameAttribute, d_fontPropertyName)
+            .attribute(Falagard_xmlHandler::NameAttribute, d_font)
             .closeTag();
     }
 
@@ -292,31 +315,31 @@ const String& TextComponent::getTextVisual() const
 #if defined(CEGUI_BIDI_SUPPORT)
     // no bidi support
     if (!d_bidiVisualMapping)
-        return d_textLogical;
+        return d_text;
 
     if (!d_bidiDataValid)
     {
-        d_bidiVisualMapping->updateVisual(d_textLogical);
+        d_bidiVisualMapping->updateVisual(d_text);
         d_bidiDataValid = true;
     }
 
     return d_bidiVisualMapping->getTextVisual();
 #else
-    return d_textLogical;
+    return d_text;
 #endif
 }
 
 //----------------------------------------------------------------------------//
 float TextComponent::getHorizontalTextExtent(const Window& window) const
 {
-    updateFormatting(window);
+    updateFormatting(window, d_area.getPixelRect(window).getSize());
     return d_formatter->getHorizontalExtent(&window);
 }
 
 //----------------------------------------------------------------------------//
 float TextComponent::getVerticalTextExtent(const Window& window) const
 {
-    updateFormatting(window);
+    updateFormatting(window, d_area.getPixelRect(window).getSize());
     return d_formatter->getVerticalExtent(&window);
 }
 
@@ -339,7 +362,7 @@ RenderedStringParser& TextComponent::getRenderedStringParser(const Window& windo
 {
     // if parsing is disabled, we use a DefaultRenderedStringParser that creates
     // a RenderedString to renderi the input text verbatim (i.e. no parsing).
-    if (!d_textParsingEnabled)
+    if (!window.isTextParsingEnabled())
         return CEGUI::System::getSingleton().getDefaultRenderedStringParser();
 
     // Next prefer a custom RenderedStringParser assigned to this Window.
@@ -357,9 +380,35 @@ RenderedStringParser& TextComponent::getRenderedStringParser(const Window& windo
 }
 
 //------------------------------------------------------------------------//
-void TextComponent::updateFormatting(const Window& srcWindow) const
+void TextComponent::updateRenderedString(const Window& srcWindow, const String& text, const Font* font) const
 {
-    updateFormatting(srcWindow, d_area.getPixelRect(srcWindow).getSize());
+    RenderedStringParser& parser = getRenderedStringParser(srcWindow);
+
+#if defined(CEGUI_BIDI_SUPPORT)
+    if (d_bidiVisualMapping && !d_bidiDataValid)
+    {
+        d_bidiVisualMapping->updateVisual(text);
+        d_bidiDataValid = true;
+    }
+
+    const String& textVisual = d_bidiVisualMapping ? d_bidiVisualMapping->getTextVisual() : text;
+#else
+    const String& textVisual = text;
+#endif
+
+    if (font != d_lastFont || &parser != d_lastParser)
+    {
+    }
+
+// do we fetch text from a property
+    if (d_textFromProperty)
+        d_renderedString = parser.parse(getEffectiveVisualText(srcWindow), font, nullptr);
+    // do we use a static text string from the looknfeel
+    else if (!d_text.empty())
+        d_renderedString = parser.parse(getTextVisual(), font, nullptr);
+    // do we have to override the font?
+    else if (font != srcWindow.getActualFont())
+        d_renderedString = parser.parse(srcWindow.getTextVisual(), font, nullptr);
 }
 
 //------------------------------------------------------------------------//
@@ -369,54 +418,18 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
     if (!font)
         throw InvalidRequestException("TextComponent > Window doesn't have a font.");
 
-    RenderedStringParser& parser = getRenderedStringParser(srcWindow);
-
-    // do we fetch text from a property
-    if (!d_textPropertyName.empty())
-        d_renderedString = parser.parse(getEffectiveVisualText(srcWindow), font, nullptr);
-    // do we use a static text string from the looknfeel
-    else if (!getTextVisual().empty())
-        d_renderedString = parser.parse(getTextVisual(), font, nullptr);
-    // do we have to override the font?
-    else if (font != srcWindow.getActualFont()) //!!TODO TEXT: or if window text dirty! write to our own d_textLogical and compare?
-        d_renderedString = parser.parse(srcWindow.getTextVisual(), font, nullptr);
+    // NB: made so to pass text by reference where possible
+    //!!!FIXME TEXT: retrieve a reference to String from String-typed property!
+    if (d_textFromProperty)
+        updateRenderedString(srcWindow, srcWindow.getProperty(d_text), font);
+    else if (d_ownText)
+        updateRenderedString(srcWindow, d_text, font);
+    else
+        updateRenderedString(srcWindow, srcWindow.getText(), font);
 
     setupStringFormatter(srcWindow, d_renderedString);
     d_formatter->format(&srcWindow, size);   
 }
 
-//----------------------------------------------------------------------------//
-String TextComponent::getEffectiveText(const Window& wnd) const
-{
-    if (!d_textPropertyName.empty())
-        return wnd.getProperty(d_textPropertyName);
-    else if (d_textLogical.empty())
-        return wnd.getText();
-    else
-        return d_textLogical;
-}
-
-//----------------------------------------------------------------------------//
-String TextComponent::getEffectiveVisualText(const Window& wnd) const
-{
-#ifndef CEGUI_BIDI_SUPPORT
-    return getEffectiveText(wnd);
-#else
-    if (!d_textPropertyName.empty())
-    {
-        String visual;
-        BidiVisualMapping::StrIndexList l2v, v2l;
-        d_bidiVisualMapping->reorderFromLogicalToVisual(
-            wnd.getProperty(d_textPropertyName), visual, l2v, v2l);
-
-        return visual;
-    }
-    // do we use a static text string from the looknfeel
-    else if (d_textLogical.empty())
-        return wnd.getTextVisual();
-    else
-        return getTextVisual();
-#endif
-}
 
 }
