@@ -127,7 +127,7 @@ void TabButton::onCursorActivate(CursorInputEventArgs& e)
     else if (e.source == CursorInputSource::Middle)
     {
         d_dragging = false;
-        releaseInput ();
+        releaseInput();
         ++e.handled;
     }
 

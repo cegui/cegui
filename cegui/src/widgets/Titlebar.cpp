@@ -79,10 +79,8 @@ void Titlebar::setDraggingEnabled(bool setting)
         d_dragEnabled = setting;
 
         // stop dragging now if the setting has been disabled.
-        if ((!d_dragEnabled) && d_dragging)
-        {
+        if (!d_dragEnabled && d_dragging)
             releaseInput();
-        }
 
         // call event handler.
         WindowEventArgs args(this);
@@ -179,7 +177,6 @@ void Titlebar::onCursorPressHold(CursorInputEventArgs& e)
 *************************************************************************/
 void Titlebar::onCursorActivate(CursorInputEventArgs& e)
 {
-    // Base class processing
     Window::onCursorActivate(e);
 
     if (e.source == CursorInputSource::Left)

@@ -86,7 +86,7 @@ EditboxBase::~EditboxBase(void)
 
 bool EditboxBase::hasInputFocus(void) const
 {
-    return isActive();
+    return isFocused();
 }
 
 
@@ -322,7 +322,6 @@ void EditboxBase::onCursorPressHold(CursorInputEventArgs& e)
 
 void EditboxBase::onCursorActivate(CursorInputEventArgs& e)
 {
-    // base class processing
     Window::onCursorActivate(e);
 
     if (e.source == CursorInputSource::Left)

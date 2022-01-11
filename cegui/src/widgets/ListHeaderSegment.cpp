@@ -97,9 +97,7 @@ void ListHeaderSegment::setSizingEnabled(bool setting)
 
 		// if sizing is now disabled, ensure sizing operation is cancelled
 		if (!d_sizingEnabled && d_dragSizing)
-		{
 			releaseInput();
-		}
 
 		WindowEventArgs args(this);
 		onSizingSettingChanged(args);
