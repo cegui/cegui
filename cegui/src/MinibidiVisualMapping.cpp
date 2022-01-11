@@ -38,33 +38,25 @@
 // include minibidi code directly
 #include "minibidi.cpp"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+
 //----------------------------------------------------------------------------//
 BidiCharType MinibidiVisualMapping::getBidiCharType(const utf32 char_to_check) const
 {
     switch (getType(char_to_check))
     {
-    case R:
-        return BCT_RIGHT_TO_LEFT;
-        break;
-
-    case L:
-        return BCT_LEFT_TO_RIGHT;
-        break;
-
-    default:
-        return BCT_NEUTRAL;
-        break;
+        case R: return BidiCharType::RIGHT_TO_LEFT;
+        case L: return BidiCharType::LEFT_TO_RIGHT;
+        default: return BidiCharType::NEUTRAL;
     }
 }
 
 //----------------------------------------------------------------------------//
 bool MinibidiVisualMapping::reorderFromLogicalToVisual(const String& logical,
                                                        String& visual,
-                                                       StrIndexList& l2v,
-                                                       StrIndexList& v2l) const
+                                                       std::vector<int>& l2v,
+                                                       std::vector<int>& v2l) const
 {
     visual = logical;
 

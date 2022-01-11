@@ -35,9 +35,9 @@
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+
 //! Enumeration of possible character classes, used for bi-directional text.
 enum BidiCharType : int
 {
@@ -50,11 +50,8 @@ enum BidiCharType : int
 class CEGUIEXPORT BidiVisualMapping
 {
 public:
-    //! type definition for collection used to hold mapping index lists.
-    typedef std::vector<int> StrIndexList;
 
-    //! Destructor.
-    virtual ~BidiVisualMapping();
+    virtual ~BidiVisualMapping() = default;
 
     /*!
     \brief
@@ -67,7 +64,6 @@ public:
         One of the BidiCharType enumerated values indicating the Bidi char type.
     */
     virtual BidiCharType getBidiCharType(const char32_t char_to_check) const = 0;
-
 
     /*!
     \brief
@@ -94,8 +90,9 @@ public:
     */
     virtual bool reorderFromLogicalToVisual(const String& logical,
                                             String& visual,
-                                            StrIndexList& l2v,
-                                            StrIndexList& v2l) const = 0;
+                                            std::vector<int>& l2v,
+                                            std::vector<int>& v2l) const = 0;
+
     /*!
     \brief
         Use reorderFromLogicalToVisual to update the internal visual mapping
@@ -111,26 +108,21 @@ public:
     */
     bool updateVisual(const String& logical);
 
-
-    StrIndexList getL2vMapping() const
-        {return d_l2vMapping;}
-
-    StrIndexList getV2lMapping() const
-        {return d_v2lMapping;}
-
-    const String& getTextVisual() const
-        {return d_textVisual;}
+    const std::vector<int>& getL2vMapping() const { return d_l2vMapping; }
+    const std::vector<int>& getV2lMapping() const { return d_v2lMapping; }
+    const String& getTextVisual() const { return d_textVisual; }
 
 protected:
-    StrIndexList d_l2vMapping;
-    StrIndexList d_v2lMapping;
+
+    std::vector<int> d_l2vMapping;
+    std::vector<int> d_v2lMapping;
     String d_textVisual;
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined (_MSC_VER)
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIBidiVisualMapping_h_
+#endif
