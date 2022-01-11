@@ -1820,7 +1820,6 @@ void Window::onNameChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onTextChanged(WindowEventArgs& e)
 {
-    d_renderedStringValid = false;
     invalidate();
     fireEvent(EventTextChanged, e, EventNamespace);
 }
@@ -1828,8 +1827,6 @@ void Window::onTextChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onFontChanged(WindowEventArgs& e)
 {
-    d_renderedStringValid = false;
-
     // This was added to enable the Falagard FontDim to work
     // properly. A better, more selective, solution would
     // probably be to do something funky with events ;)
@@ -2991,7 +2988,6 @@ void Window::setTextParsingEnabled(bool setting)
         return;
 
     d_textParsingEnabled = setting;
-    d_renderedStringValid = false;
 
     WindowEventArgs args(this);
     onTextParsingChanged(args);

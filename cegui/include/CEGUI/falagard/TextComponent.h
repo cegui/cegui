@@ -81,20 +81,6 @@ public:
 
     /*!
     \brief
-        return text string with \e visual ordering of glyphs.
-
-    \note
-        This returns the visual text derived from the string set directly to
-        the TextComponent, which may or may not be the actual string that
-        will be used - since the actual string may be sourced from a
-        property or the main text string from a window that the
-        TextComponent is rendered to. To get the actual visual string, call
-        the getEffectiveVisualText function instead.
-    */
-    const String& getTextVisual() const;
-
-    /*!
-    \brief
         Return the name of the font set to be used when rendering this
         TextComponent.
 
@@ -323,11 +309,6 @@ protected:
 
 private:
 
-#ifdef CEGUI_BIDI_SUPPORT
-    //! pointer to bidirection support object
-    BidiVisualMapping* d_bidiVisualMapping;
-#endif
-
     //! FormattedRenderedString object that applies formatting to the string
     mutable RefCounted<FormattedRenderedString> d_formatter;
     //! RenderedString used when not using the one from the target Window.
@@ -336,10 +317,11 @@ private:
     // Cache for avoiding redundant calulations
     mutable const Font* d_lastFont = nullptr;
     mutable const RenderedStringParser* d_lastParser = nullptr;
-    mutable HorizontalTextFormatting d_lastHorzFormatting;
+    mutable String d_lastText;
+    mutable HorizontalTextFormatting d_lastHorzFormatting = HorizontalTextFormatting::LeftAligned;
 
-    String d_text; //!< text rendered by this component, string or property name.
-    String d_font; //!< name of font to use.
+    String d_text; //!< text rendered by this component, either string or property name.
+    String d_font; //!< font to use, either font name or property name.
 
     FormattingSetting<VerticalTextFormatting> d_vertFormatting;
     FormattingSetting<HorizontalTextFormatting> d_horzFormatting;
@@ -347,12 +329,6 @@ private:
 
     bool d_fontFromProperty = false; //!< d_font is a property name in a source window
     bool d_textFromProperty = false; //!< d_text is a property name in a source window
-    bool d_ownText = false; //!< d_text is our own text
-
-#ifdef CEGUI_BIDI_SUPPORT
-    //! whether bidi visual mapping has been updated since last text change.
-    mutable bool d_bidiDataValid = false;
-#endif
 };
 
 }

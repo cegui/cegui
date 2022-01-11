@@ -36,7 +36,6 @@
 #include "CEGUI/Logger.h"
 #include <fribidi.h>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
@@ -44,26 +43,17 @@ BidiCharType FribidiVisualMapping::getBidiCharType(const char32_t char_to_check)
 {
     switch (fribidi_get_type((FriBidiChar)char_to_check))
     {
-    case FRIBIDI_TYPE_RTL:
-        return BCT_RIGHT_TO_LEFT;
-        break;
-
-    case FRIBIDI_TYPE_LTR:
-        return BCT_LEFT_TO_RIGHT;
-        break;
-
-    case FRIBIDI_TYPE_ON:
-    default:
-        return BCT_NEUTRAL;
-        break;
+        case FRIBIDI_TYPE_RTL: return BidiCharType::RIGHT_TO_LEFT;
+        case FRIBIDI_TYPE_LTR: return BidiCharType::LEFT_TO_RIGHT;
+        default: return BidiCharType::NEUTRAL;
     }
 }
 
 //----------------------------------------------------------------------------//
 bool FribidiVisualMapping::reorderFromLogicalToVisual(const String& logical,
                                                        String& visual,
-                                                       StrIndexList& l2v,
-                                                       StrIndexList& v2l) const
+                                                       std::vector<int>& l2v,
+                                                       std::vector<int>& v2l) const
 {
     visual = logical;
 

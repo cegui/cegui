@@ -47,15 +47,7 @@ namespace CEGUI
 
 //----------------------------------------------------------------------------//
 TextComponent::TextComponent() :
-#if defined (CEGUI_USE_FRIBIDI)
-    d_bidiVisualMapping(new FribidiVisualMapping),
-#elif defined (CEGUI_USE_MINIBIDI)
-    d_bidiVisualMapping(new MinibidiVisualMapping),
-#elif defined (CEGUI_BIDI_SUPPORT)
-    #error "BIDI Configuration is inconsistant, check your config!"
-#endif
     d_formatter(new LeftAlignedRenderedString(d_renderedString)),
-    d_lastHorzFormatting(HorizontalTextFormatting::LeftAligned),
     d_vertFormatting(VerticalTextFormatting::TopAligned),
     d_horzFormatting(HorizontalTextFormatting::LeftAligned),
     d_paragraphDir(DefaultParagraphDirection::Automatic)
@@ -66,33 +58,23 @@ TextComponent::TextComponent() :
 TextComponent::TextComponent(const TextComponent& obj) :
     FalagardComponentBase(obj),
     d_text(obj.d_text),
-#if defined (CEGUI_USE_FRIBIDI)
-    d_bidiVisualMapping(new FribidiVisualMapping),
-#elif defined (CEGUI_USE_MINIBIDI)
-    d_bidiVisualMapping(new MinibidiVisualMapping),
-#elif defined (CEGUI_BIDI_SUPPORT)
-    #error "BIDI Configuration is inconsistant, check your config!"
-#endif
     d_renderedString(obj.d_renderedString),
     d_formatter(obj.d_formatter),
+    d_lastFont(obj.d_lastFont),
+    d_lastParser(obj.d_lastParser),
+    d_lastText(obj.d_lastText),
     d_lastHorzFormatting(obj.d_lastHorzFormatting),
     d_font(obj.d_font),
     d_vertFormatting(obj.d_vertFormatting),
     d_horzFormatting(obj.d_horzFormatting),
     d_paragraphDir(obj.d_paragraphDir),
-    d_ownText(obj.d_ownText),
     d_textFromProperty(obj.d_textFromProperty),
     d_fontFromProperty(obj.d_fontFromProperty)
 {
 }
 
 //----------------------------------------------------------------------------//
-TextComponent::~TextComponent()
-{
-#ifdef CEGUI_BIDI_SUPPORT
-    delete d_bidiVisualMapping;
-#endif
-}
+TextComponent::~TextComponent() = default;
 
 //----------------------------------------------------------------------------//
 TextComponent& TextComponent::operator =(const TextComponent& other)
@@ -106,17 +88,16 @@ TextComponent& TextComponent::operator =(const TextComponent& other)
     // note we do not assign the BidiVisualMapping object, we just mark our
     // existing one as invalid so it's data gets regenerated next time it's
     // needed.
-#ifdef CEGUI_BIDI_SUPPORT
-    d_bidiDataValid = false;
-#endif
     d_renderedString = other.d_renderedString;
     d_formatter = other.d_formatter;
+    d_lastFont = other.d_lastFont;
+    d_lastParser = other.d_lastParser;
+    d_lastText = other.d_lastText;
     d_lastHorzFormatting = other.d_lastHorzFormatting;
     d_font = other.d_font;
     d_vertFormatting = other.d_vertFormatting;
     d_horzFormatting = other.d_horzFormatting;
     d_paragraphDir = other.d_paragraphDir;
-    d_ownText = other.d_ownText;
     d_textFromProperty = other.d_textFromProperty;
     d_fontFromProperty = other.d_fontFromProperty;
 
@@ -126,17 +107,8 @@ TextComponent& TextComponent::operator =(const TextComponent& other)
 //----------------------------------------------------------------------------//
 void TextComponent::setText(const String& text)
 {
-    d_ownText = !text.empty();
-
-#ifdef CEGUI_BIDI_SUPPORT
-    d_bidiDataValid = false;
-#endif
-
-    if (d_ownText)
-    {
-        d_text = text;
-        d_textFromProperty = false;
-    }
+    d_text = text;
+    d_textFromProperty = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -215,21 +187,18 @@ void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf
     const float textHeight = d_formatter->getVerticalExtent(&srcWindow);
 
     // handle dest area adjustments for vertical formatting.
-    const VerticalTextFormatting vertFormatting = d_vertFormatting.get(srcWindow);
-
-    switch(vertFormatting)
+    const auto vertFormatting = d_vertFormatting.get(srcWindow);
+    switch (vertFormatting)
     {
-    case VerticalTextFormatting::CentreAligned:
-        destRect.d_min.y += (destRect.getHeight() - textHeight) * 0.5f;
-        break;
-
-    case VerticalTextFormatting::BottomAligned:
-        destRect.d_min.y = destRect.d_max.y - textHeight;
-        break;
-
-    default:
-        // default is VerticalTextFormatting::TOP_ALIGNED, for which we take no action.
-        break;
+        case VerticalTextFormatting::CentreAligned:
+            destRect.d_min.y += (destRect.getHeight() - textHeight) * 0.5f;
+            break;
+        case VerticalTextFormatting::BottomAligned:
+            destRect.d_min.y = destRect.d_max.y - textHeight;
+            break;
+        default:
+            // default is VerticalTextFormatting::TOP_ALIGNED, for which we take no action.
+            break;
     }
 
     // calculate final colours to be used
@@ -269,27 +238,6 @@ void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     // write out area
     d_area.writeXMLToStream(xml_stream);
 
-    if (d_textFromProperty)
-    {
-        // write text property element
-        xml_stream.openTag(Falagard_xmlHandler::TextPropertyElement)
-            .attribute(Falagard_xmlHandler::NameAttribute, d_text)
-            .closeTag();
-    }
-    else
-    {
-        // write text element
-        if (d_ownText && (!d_font.empty() || !d_text.empty()))
-        {
-            xml_stream.openTag(Falagard_xmlHandler::TextElement);
-            if (!d_fontFromProperty && !d_font.empty())
-                xml_stream.attribute(Falagard_xmlHandler::FontAttribute, d_font);
-            if (!d_text.empty())
-                xml_stream.attribute(Falagard_xmlHandler::StringAttribute, d_text);
-            xml_stream.closeTag();
-        }
-    }
-
     // write font property element
     if (d_fontFromProperty)
     {
@@ -298,37 +246,39 @@ void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const
             .closeTag();
     }
 
+    // write text property element
+    if (d_textFromProperty)
+    {
+        xml_stream.openTag(Falagard_xmlHandler::TextPropertyElement)
+            .attribute(Falagard_xmlHandler::NameAttribute, d_text)
+            .closeTag();
+    }
+
+    // write text element
+    const bool writeFont = !d_fontFromProperty && !d_font.empty();
+    const bool writeText = !d_textFromProperty && !d_text.empty();
+    if (writeFont || writeText)
+    {
+        xml_stream.openTag(Falagard_xmlHandler::TextElement);
+        if (writeFont)
+            xml_stream.attribute(Falagard_xmlHandler::FontAttribute, d_font);
+        if (writeText)
+            xml_stream.attribute(Falagard_xmlHandler::StringAttribute, d_text);
+        xml_stream.closeTag();
+    }
+
     // get base class to write colours
     writeColoursXML(xml_stream);
 
     d_vertFormatting.writeXMLToStream(xml_stream);
     d_horzFormatting.writeXMLToStream(xml_stream);
-    d_paragraphDir.writeXMLToStream(xml_stream);
+    d_paragraphDir.writeXMLToStream(xml_stream); //!!!TODO TEXT: use it!
 
     // closing tag
     xml_stream.closeTag();
 }
 
-//----------------------------------------------------------------------------//
-const String& TextComponent::getTextVisual() const
-{
-#if defined(CEGUI_BIDI_SUPPORT)
-    // no bidi support
-    if (!d_bidiVisualMapping)
-        return d_text;
-
-    if (!d_bidiDataValid)
-    {
-        d_bidiVisualMapping->updateVisual(d_text);
-        d_bidiDataValid = true;
-    }
-
-    return d_bidiVisualMapping->getTextVisual();
-#else
-    return d_text;
-#endif
-}
-
+//!!!TODO TEXT: unify extents!
 //----------------------------------------------------------------------------//
 float TextComponent::getHorizontalTextExtent(const Window& window) const
 {
@@ -384,31 +334,28 @@ void TextComponent::updateRenderedString(const Window& srcWindow, const String& 
 {
     RenderedStringParser& parser = getRenderedStringParser(srcWindow);
 
-#if defined(CEGUI_BIDI_SUPPORT)
-    if (d_bidiVisualMapping && !d_bidiDataValid)
-    {
-        d_bidiVisualMapping->updateVisual(text);
-        d_bidiDataValid = true;
-    }
+    if (d_lastFont == font && d_lastParser == &parser && d_lastText == text)
+        return;
 
-    const String& textVisual = d_bidiVisualMapping ? d_bidiVisualMapping->getTextVisual() : text;
+#if defined(CEGUI_BIDI_SUPPORT)
+#if defined (CEGUI_USE_FRIBIDI)
+    FribidiVisualMapping bidiVisualMapping;
+#elif defined (CEGUI_USE_MINIBIDI)
+    MinibidiVisualMapping bidiVisualMapping;
+#else
+    #error "BIDI Configuration is inconsistant, check your config!"
+#endif
+    bidiVisualMapping.updateVisual(text);
+    const String& textVisual = bidiVisualMapping.getTextVisual();
 #else
     const String& textVisual = text;
 #endif
 
-    if (font != d_lastFont || &parser != d_lastParser)
-    {
-    }
+    d_renderedString = parser.parse(textVisual, font, nullptr);
 
-// do we fetch text from a property
-    if (d_textFromProperty)
-        d_renderedString = parser.parse(getEffectiveVisualText(srcWindow), font, nullptr);
-    // do we use a static text string from the looknfeel
-    else if (!d_text.empty())
-        d_renderedString = parser.parse(getTextVisual(), font, nullptr);
-    // do we have to override the font?
-    else if (font != srcWindow.getActualFont())
-        d_renderedString = parser.parse(srcWindow.getTextVisual(), font, nullptr);
+    d_lastFont = font;
+    d_lastParser = &parser;
+    d_lastText = text;
 }
 
 //------------------------------------------------------------------------//
@@ -422,7 +369,7 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
     //!!!FIXME TEXT: retrieve a reference to String from String-typed property!
     if (d_textFromProperty)
         updateRenderedString(srcWindow, srcWindow.getProperty(d_text), font);
-    else if (d_ownText)
+    else if (!d_text.empty())
         updateRenderedString(srcWindow, d_text, font);
     else
         updateRenderedString(srcWindow, srcWindow.getText(), font);
@@ -430,6 +377,5 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
     setupStringFormatter(srcWindow, d_renderedString);
     d_formatter->format(&srcWindow, size);   
 }
-
 
 }

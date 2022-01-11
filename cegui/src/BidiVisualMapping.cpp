@@ -29,10 +29,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-BidiVisualMapping::~BidiVisualMapping()
-{
-}
 
 //----------------------------------------------------------------------------//
 bool BidiVisualMapping::updateVisual(const String& logical)
