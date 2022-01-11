@@ -29,6 +29,7 @@
 
 #include "../VerticalAlignment.h"
 #include "../HorizontalAlignment.h"
+#include "../DefaultParagraphDirection.h"
 #include "../Exceptions.h"
 #include "CEGUI/falagard/Enums.h"
 
@@ -437,6 +438,41 @@ public:
 };
 
 template<>
+class CEGUIEXPORT FalagardXMLHelper<DefaultParagraphDirection>
+{
+public:
+    typedef DefaultParagraphDirection return_type;
+    typedef DefaultParagraphDirection pass_type;
+
+    static return_type fromString(const String& str)
+    {
+        if (str == "RightToLeft")
+        {
+            return DefaultParagraphDirection::RightToLeft;
+        }
+
+        if (str == "Automatic")
+        {
+            return DefaultParagraphDirection::Automatic;
+        }
+
+        return DefaultParagraphDirection::LeftToRight;
+    }
+
+    static String toString(pass_type val)
+    {
+        if (val == DefaultParagraphDirection::LeftToRight)
+            return "LeftToRight";
+        else if (val == DefaultParagraphDirection::RightToLeft)
+            return "RightToLeft";
+        else if (val == DefaultParagraphDirection::Automatic)
+            return "Automatic";
+        else
+            return "LeftToRight";
+    }
+};
+
+template<>
 class CEGUIEXPORT FalagardXMLHelper<FontMetricType>
 {
 public:
@@ -765,6 +801,32 @@ public:
     {
         static String type("HorizontalTextFormatting");
 
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        return FalagardXMLHelper<return_type>::fromString(str);
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        return FalagardXMLHelper<return_type>::toString(val);
+    }
+};
+
+template<>
+class CEGUIEXPORT PropertyHelper<DefaultParagraphDirection>
+{
+public:
+    typedef DefaultParagraphDirection return_type;
+    typedef return_type safe_method_return_type;
+    typedef DefaultParagraphDirection pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static const String type("DefaultParagraphDirection");
         return type;
     }
 

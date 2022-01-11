@@ -29,10 +29,8 @@
 #ifndef _CEGUIEditboxBase_h_
 #define _CEGUIEditboxBase_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/Window.h"
-
-#include <cstdint>
+#include "CEGUI/WindowRenderer.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -43,6 +41,28 @@
 namespace CEGUI
 {
 class UndoHandler;
+
+//! Base class for the EditboxWindowRenderer class
+class CEGUIEXPORT EditboxWindowRenderer : public WindowRenderer
+{
+public:
+    //! Constructor
+    EditboxWindowRenderer(const String& name);
+
+    /*!
+    \brief
+        Return the text code point index that is rendered closest to screen
+        position \a pt.
+
+    \param pt
+        Point object describing a position on the screen in pixels.
+
+    \return
+        Code point index into the text that is rendered closest to screen
+        position \a pt.
+    */
+    virtual size_t getTextIndexFromPosition(const glm::vec2& pt) const = 0;
+};
 
 //----------------------------------------------------------------------------//
 
@@ -86,6 +106,8 @@ public:
      * has been changed.
      */
     static const String EventMaximumTextLengthChanged;
+    //! Fired when the default paragraph direction of this window changes.
+    static const String EventDefaultParagraphDirectionChanged;
     /** Event fired when the validity of the Exitbox text (as determined by a
      * RegexMatcher object) has changed.
      * Handlers are passed a const RegexMatchStateEventArgs reference with
@@ -352,6 +374,12 @@ public:
     */
     virtual void setMaxTextLength(size_t max_len) = 0;
 
+    //! Gets the default paragraph direction for the displayed text.
+    DefaultParagraphDirection getDefaultParagraphDirection() const { return d_defaultParagraphDirection; }
+
+    //! Sets the default paragraph direction for the displayed text.
+    void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);
+
     //! \copydoc Window::performCopy
     bool performCopy(Clipboard& clipboard) override;
 
@@ -578,6 +606,8 @@ protected:
     size_t d_dragAnchorIdx;
     //! Undo handler
     UndoHandler *d_undoHandler;
+    //! Default direction of the paragraph, relevant for bidirectional text.
+    DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
 
 private:
     void addEditboxBaseProperties();

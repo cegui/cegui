@@ -26,7 +26,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/widgets/Editbox.h"
+#include "CEGUI/widgets/EditboxBase.h"
+#include "CEGUI/falagard/XMLEnumHelper.h" // for DefaultParagraphDirection property helper
 #include "CEGUI/TextUtils.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Font.h"
@@ -47,6 +48,7 @@ const String EditboxBase::EventTextMaskingEnabledChanged("TextMaskingEnabledChan
 const String EditboxBase::EventTextMaskingCodepointChanged("TextMaskingCodepointChanged");
 const String EditboxBase::EventValidationStringChanged("ValidationStringChanged");
 const String EditboxBase::EventMaximumTextLengthChanged("MaximumTextLengthChanged");
+const String EditboxBase::EventDefaultParagraphDirectionChanged("DefaultParagraphDirectionChanged");
 const String EditboxBase::EventTextValidityChanged("TextValidityChanged");
 const String EditboxBase::EventCaretMoved("CaretMoved");
 const String EditboxBase::EventTextSelectionChanged("TextSelectionChanged");
@@ -150,6 +152,33 @@ void EditboxBase::setTextMaskingEnabled(bool setting)
 
 }
 
+void EditboxBase::setTextMaskingCodepoint(std::uint32_t code_point)
+{
+    if (code_point != d_textMaskingCodepoint)
+    {
+        d_textMaskingCodepoint = code_point;
+
+        // Trigger "mask code point changed" event
+        WindowEventArgs args(this);
+        onTextMaskingCodepointChanged(args);
+    }
+
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection)
+{
+    if (defaultParagraphDirection == d_defaultParagraphDirection)
+        return;
+
+    d_defaultParagraphDirection = defaultParagraphDirection;
+
+    notifyScreenAreaChanged();
+
+    WindowEventArgs eventArgs(this);
+    fireEvent(EventDefaultParagraphDirectionChanged, eventArgs, EventNamespace);
+}
+
 
 void EditboxBase::setCaretIndex(size_t caret_pos)
 {
@@ -212,19 +241,6 @@ void EditboxBase::setSelectionStart(size_t start_pos)
 void EditboxBase::setSelectionLength(size_t length)
 {
 	this->setSelection(this->getSelectionStart(), this->getSelectionStart() + length);
-}
-
-void EditboxBase::setTextMaskingCodepoint(std::uint32_t code_point)
-{
-    if (code_point != d_textMaskingCodepoint)
-    {
-        d_textMaskingCodepoint = code_point;
-
-        // Trigger "mask code point changed" event
-        WindowEventArgs args(this);
-        onTextMaskingCodepointChanged(args);
-    }
-
 }
 
 void EditboxBase::clearSelection(void)
@@ -591,6 +607,22 @@ void EditboxBase::addEditboxBaseProperties(void)
         "for the EditBox when in Read-only mode.  Value should be \"imageset/image_name\". "
         "Value is the image to use.",
         &EditboxBase::setReadOnlyCursorImage, &EditboxBase::getReadOnlyCursorImage, nullptr
+    );
+
+    CEGUI_DEFINE_PROPERTY(EditboxBase, DefaultParagraphDirection,
+        "DefaultParagraphDirection", "Property to get/set the default paragraph direction. "
+        "This is only in effect if raqm is linked and activated. It sets the default order of the "
+        "words in a paragraph, which is relevant when having sentences in a RightToLeft language that "
+        "may start with a word (or to be specific: first character of a word) from a LeftToRight language. "
+        "Example: If the mode is set to Automatic and the first word of a paragraph in Hebrew is a German "
+        "company name, written in German alphabet, the German word will end up left, whereas the rest of "
+        "the Hebrew sentences starts from the righ, continuing towards the left. With the setting RightToLeft "
+        "the sentence will start on the very right with the German word, as would be expected in a mainly "
+        "RightToLeft written paragraph. If the language of the UI user is known, then either LeftToRight "
+        "or RightToLeft should be chosen for the paragraphs. Default is LeftToRight."
+        "Value is one of \"LeftToRight\", \"RightToLeft\" or \"Automatic\".",
+        &EditboxBase::setDefaultParagraphDirection, &EditboxBase::getDefaultParagraphDirection,
+        DefaultParagraphDirection::LeftToRight
     );
 }
 

@@ -30,6 +30,7 @@
 #include "CEGUI/RenderedStringWidgetComponent.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/PropertyHelper.h"
+#include "CEGUI/FontManager.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
@@ -156,6 +157,11 @@ bool parse_section(String::const_iterator& pos, const String::const_iterator& en
 void BasicRenderedStringParser::appendRenderedText(RenderedString& rs,
                                                    const String& text) const
 {
+    if (text.empty())
+        return;
+
+    auto font = d_fontName.empty() ? nullptr : &FontManager::getSingleton().get(d_fontName);
+
     size_t cpos = 0;
     // split the given string into lines based upon the newline character
     while (text.length() > cpos)
@@ -167,7 +173,7 @@ void BasicRenderedStringParser::appendRenderedText(RenderedString& rs,
             ((nlpos != String::npos) ? nlpos : text.length()) - cpos;
 
         // construct new text component and append it.
-        RenderedStringTextComponent rtc(text.substr(cpos, len), d_fontName);
+        RenderedStringTextComponent rtc(text.substr(cpos, len), font);
         rtc.setPadding(d_padding);
         rtc.setColours(d_colours);
         rtc.setVerticalTextFormatting(d_vertTextFormatting);

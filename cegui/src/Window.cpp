@@ -97,7 +97,6 @@ const String Window::EventUpdated ("Updated");
 const String Window::EventNameChanged("NameChanged");
 const String Window::EventTextChanged("TextChanged");
 const String Window::EventFontChanged("FontChanged");
-const String Window::EventDefaultParagraphDirectionChanged("DefaultParagraphDirectionChanged");
 const String Window::EventTooltipTypeChanged("TooltipTypeChanged");
 const String Window::EventTooltipTextChanged("TooltipTextChanged");
 const String Window::EventAlphaChanged("AlphaChanged");
@@ -233,7 +232,6 @@ Window::Window(const String& type, const String& name):
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
 
-    d_renderedStringValid(false),
     d_textParsingEnabled(true),
 
     // z-order related options
@@ -897,7 +895,6 @@ void Window::setFont(const Font* font)
         return;
 
     d_font = font;
-    d_renderedStringValid = false;
     WindowEventArgs args(this);
     onFontChanged(args);
 }
@@ -1831,6 +1828,8 @@ void Window::onTextChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onFontChanged(WindowEventArgs& e)
 {
+    d_renderedStringValid = false;
+
     // This was added to enable the Falagard FontDim to work
     // properly. A better, more selective, solution would
     // probably be to do something funky with events ;)
@@ -2462,10 +2461,8 @@ void Window::notifyClippingChanged()
 //----------------------------------------------------------------------------//
 void Window::notifyDefaultFontChanged()
 {
-    //???TODO: check if an actual font changed?! Save potentially very heavy onFontChanged call.
     if (!d_font)
     {
-        d_renderedStringValid = false;
         WindowEventArgs args(this);
         onFontChanged(args);
     }
@@ -2674,6 +2671,9 @@ void Window::setFalagardType(const String& type, const String& rendererType)
 //----------------------------------------------------------------------------//
 void Window::insertText(const String& text, const String::size_type position)
 {
+    if (text.empty())
+        return;
+
     d_textLogical.insert(position, text);
     d_renderedStringValid = false;
 
@@ -2688,6 +2688,9 @@ void Window::insertText(const String& text, const String::size_type position)
 //----------------------------------------------------------------------------//
 void Window::appendText(const String& text)
 {
+    if (text.empty())
+        return;
+
     d_textLogical.append(text);
     d_renderedStringValid = false;
 
@@ -2955,49 +2958,6 @@ void Window::onRotated(ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-const RenderedString& Window::getRenderedString() const
-{
-    if (!d_renderedStringValid)
-    {
-        d_renderedString = getRenderedStringParser().parse(
-            getTextVisual(), nullptr, nullptr);
-        d_renderedStringValid = true;
-    }
-
-    return d_renderedString;
-}
-
-//----------------------------------------------------------------------------//
-void Window::setCustomRenderedStringParser(RenderedStringParser* parser)
-{
-    d_customStringParser = parser;
-    d_renderedStringValid = false;
-}
-
-//----------------------------------------------------------------------------//
-RenderedStringParser& Window::getRenderedStringParser() const
-{
-    // if parsing is disabled, we use a DefaultRenderedStringParser that creates
-    // a RenderedString to renderi the input text verbatim (i.e. no parsing).
-    if (!d_textParsingEnabled)
-        return CEGUI::System::getSingleton().getDefaultRenderedStringParser();
-
-    // Next prefer a custom RenderedStringParser assigned to this Window.
-    if (d_customStringParser)
-        return *d_customStringParser;
-
-    // Next prefer any globally set RenderedStringParser.
-    RenderedStringParser* const global_parser =
-        CEGUI::System::getSingleton().getDefaultCustomRenderedStringParser();
-    if (global_parser)
-        return *global_parser;
-
-    // if parsing is enabled and no custom RenderedStringParser is set anywhere,
-    // use the system's BasicRenderedStringParser to do the parsing.
-    return CEGUI::System::getSingleton().getBasicRenderedStringParser();
-}
-
-//----------------------------------------------------------------------------//
 glm::vec2 Window::getUnprojectedPosition(const glm::vec2& pos) const
 {
     RenderingSurface* rs = getTargetRenderingSurface();
@@ -3024,40 +2984,6 @@ glm::vec2 Window::getUnprojectedPosition(const glm::vec2& pos) const
     }
 
     return out_pos;
-}
-
-//----------------------------------------------------------------------------//
-const String& Window::getTextVisual() const
-{
-#if defined(CEGUI_BIDI_SUPPORT)
-    // no bidi support
-    if (!d_bidiVisualMapping)
-        return d_textLogical;
-
-    if (!d_bidiDataValid)
-    {
-        d_bidiVisualMapping->updateVisual(d_textLogical);
-        d_bidiDataValid = true;
-    }
-
-    return d_bidiVisualMapping->getTextVisual();
-#else
-    return d_textLogical;
-#endif
-}
-
-//----------------------------------------------------------------------------//
-void Window::setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection)
-{
-    if (defaultParagraphDirection == d_defaultParagraphDirection)
-        return;
-
-    d_defaultParagraphDirection = defaultParagraphDirection;
-
-    notifyScreenAreaChanged();
-
-    WindowEventArgs eventArgs(this);
-    fireEvent(EventDefaultParagraphDirectionChanged, eventArgs, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -3270,6 +3196,8 @@ void Window::attachToGUIContext(GUIContext* context)
     if (d_guiContext == context)
         return;
 
+    const Font* prevDefaultFont = d_guiContext ? d_guiContext->getDefaultFont() : nullptr;
+
     setGUIContextRecursively(context);
     onTargetSurfaceChanged(context ? getTargetRenderingSurface() : nullptr);
 
@@ -3277,8 +3205,10 @@ void Window::attachToGUIContext(GUIContext* context)
     {
         notifyScreenAreaChanged();
 
-        // TODO: can check if font really changed instead of calling each time?
-        notifyDefaultFontChanged();
+        if (prevDefaultFont != d_guiContext->getDefaultFont())
+            notifyDefaultFontChanged();
+
+        // Need to call this since we could have missed notifications while we were detached
         if (auto font = getActualFont())
             notifyFontRenderSizeChanged(*font);
     }
@@ -3354,32 +3284,32 @@ Sizef Window::getRootContainerSize() const
 //----------------------------------------------------------------------------//
 float Window::getContentWidth() const
 { 
-    if (getWindowRenderer())
-        return getWindowRenderer()->getContentWidth();
+    if (d_windowRenderer)
+        return d_windowRenderer->getContentWidth();
     return Element::getContentWidth();
 }
 
 //----------------------------------------------------------------------------//
 float Window::getContentHeight() const
 {
-    if (getWindowRenderer())
-        return getWindowRenderer()->getContentHeight();
+    if (d_windowRenderer)
+        return d_windowRenderer->getContentHeight();
     return Element::getContentHeight();
 }
 
 //----------------------------------------------------------------------------//
 UDim Window::getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth() const
 {
-    if (getWindowRenderer())
-        return getWindowRenderer()->getWidthOfAreaReservedForContentLowerBoundAsFuncOfWindowWidth();
+    if (d_windowRenderer)
+        return d_windowRenderer->getWidthOfAreaReservedForContentLowerBoundAsFuncOfWindowWidth();
     return Element::getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth();
 }
 
 //----------------------------------------------------------------------------//
 UDim Window::getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight() const
 {
-    if (getWindowRenderer())
-        return getWindowRenderer()->getHeightOfAreaReservedForContentLowerBoundAsFuncOfWindowHeight();
+    if (d_windowRenderer)
+        return d_windowRenderer->getHeightOfAreaReservedForContentLowerBoundAsFuncOfWindowHeight();
     return Element::getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight();
 }
 
@@ -3389,8 +3319,8 @@ void Window::adjustSizeToContent()
     if (!isSizeAdjustedToContent())
         return;
 
-    if (getWindowRenderer())
-        getWindowRenderer()->adjustSizeToContent();
+    if (d_windowRenderer)
+        d_windowRenderer->adjustSizeToContent();
     else
         Element::adjustSizeToContent();
 }
@@ -3398,16 +3328,16 @@ void Window::adjustSizeToContent()
 //----------------------------------------------------------------------------//
 bool Window::contentFitsForSpecifiedElementSize(const Sizef& element_size) const
 {
-    if (getWindowRenderer())
-        return getWindowRenderer()->contentFitsForSpecifiedWindowSize(element_size);
+    if (d_windowRenderer)
+        return d_windowRenderer->contentFitsForSpecifiedWindowSize(element_size);
     return Element::contentFitsForSpecifiedElementSize(element_size);
 }
 
 //----------------------------------------------------------------------------//
 bool Window::contentFits() const
 {
-    if (getWindowRenderer())
-        return getWindowRenderer()->contentFits();
+    if (d_windowRenderer)
+        return d_windowRenderer->contentFits();
     return Element::contentFits();
 }
 
@@ -3565,22 +3495,6 @@ void Window::addWindowProperties()
     CEGUI_DEFINE_PROPERTY(Window, String,
         TextPropertyName, "Property to get/set the text / caption for the Window. Value is the text string to use. Meaning of this property heavily depends on the type of the Window.",
         &Window::setText, &Window::getText, ""
-    );
-
-    CEGUI_DEFINE_PROPERTY(Window, DefaultParagraphDirection,
-        "DefaultParagraphDirection", "Property to get/set the default paragraph direction. "
-        "This is only in effect if raqm is linked and activated. It sets the default order of the "
-        "words in a paragraph, which is relevant when having sentences in a RightToLeft language that "
-        "may start with a word (or to be specific: first character of a word) from a LeftToRight language. "
-        "Example: If the mode is set to Automatic and the first word of a paragraph in Hebrew is a German "
-        "company name, written in German alphabet, the German word will end up left, whereas the rest of "
-        "the Hebrew sentences starts from the righ, continuing towards the left. With the setting RightToLeft "
-        "the sentence will start on the very right with the German word, as would be expected in a mainly "
-        "RightToLeft written paragraph. If the language of the UI user is known, then either LeftToRight "
-        "or RightToLeft should be chosen for the paragraphs. Default is LeftToRight."
-        "Value is one of \"LeftToRight\", \"RightToLeft\" or \"Automatic\".",
-        &Window::setDefaultParagraphDirection, &Window::getDefaultParagraphDirection,
-        DefaultParagraphDirection::LeftToRight
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,

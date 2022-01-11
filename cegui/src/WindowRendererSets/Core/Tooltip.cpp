@@ -44,6 +44,9 @@ Sizef FalagardTooltip::getTextSize() const
     const Rectf textArea(getLookNFeel().getNamedArea("TextArea").getArea().getPixelRect(*w));
     const Rectf wndArea(CoordConverter::asAbsolute(w->getArea(), w->getParentPixelSize()));
 
+    //!!!find text component!
+    //getRenderedString().getPixelSize(this);
+
     Sizef sz(w->getTextSize_impl());
     sz.d_width  = CoordConverter::alignToPixels(sz.d_width + wndArea.getWidth() - textArea.getWidth());
     sz.d_height = CoordConverter::alignToPixels(sz.d_height + wndArea.getHeight() - textArea.getHeight());
