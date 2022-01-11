@@ -30,7 +30,6 @@
 #include <iostream>
 
 using namespace CEGUI;
-using namespace NavigatorPayloads;
 
 /** This sample uses most of the code from the 'HelloWorld' sample.
     Thus, most of the clarifying comments have been removed for brevity. **/
@@ -66,7 +65,7 @@ bool FormNavigationSample::initialise(CEGUI::GUIContext* gui_context)
 
     gui_context->setRootWindow(d_root);
 
-    d_windowNavigator = new LinearNavigator(getNavigationMappings());
+    d_windowNavigator = new LinearNavigator();
     gui_context->setWindowNavigator(d_windowNavigator);
 
     FrameWindow* wnd = static_cast<FrameWindow*>(win_mgr.createWindow("TaharezLook/FrameWindow",
@@ -162,14 +161,4 @@ bool FormNavigationSample::disableConfirmButton(const CEGUI::EventArgs&)
     d_confirmButton->setEnabled(false);
 
     return true;
-}
-
-std::map<SemanticValue, String> FormNavigationSample::getNavigationMappings()
-{
-    std::map<SemanticValue, String> mappings;
-
-    mappings[SemanticValue::NavigateToNext] = NAVIGATE_NEXT;
-    mappings[SemanticValue::NavigateToPrevious] = NAVIGATE_PREVIOUS;
-
-    return mappings;
 }

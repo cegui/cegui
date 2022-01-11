@@ -82,7 +82,7 @@ bool SimpleGameMenuSample::initialise(CEGUI::GUIContext* gui_context)
     // install this as the root GUI sheet
     gui_context->setRootWindow(d_root);
 
-    d_windowNavigator = new WindowChildrenNavigator(createNavigationMappings());
+    d_windowNavigator = new WindowChildrenNavigator();
     gui_context->setWindowNavigator(d_windowNavigator);
 
     // load font and setup default if not loaded via scheme
@@ -105,18 +105,6 @@ bool SimpleGameMenuSample::initialise(CEGUI::GUIContext* gui_context)
 void SimpleGameMenuSample::deinitialise()
 {
     delete d_windowNavigator;
-}
-
-std::map<CEGUI::SemanticValue, CEGUI::String> SimpleGameMenuSample::createNavigationMappings()
-{
-    using namespace CEGUI;
-
-    std::map<SemanticValue, String> mappings;
-
-    mappings[SemanticValue::GoDown] = NavigatorPayloads::NAVIGATE_NEXT;
-    mappings[SemanticValue::GoUp] = NavigatorPayloads::NAVIGATE_PREVIOUS;
-
-    return mappings;
 }
 
 void SimpleGameMenuSample::createEventHandlers()

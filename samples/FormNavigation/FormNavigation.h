@@ -33,19 +33,19 @@
 class FormNavigationSample : public Sample
 {
 public:
+
     FormNavigationSample();
-    virtual ~FormNavigationSample() {}
 
     bool initialise(CEGUI::GUIContext* gui_context) override;
     void deinitialise() override;
 
 private:
+
     void createForm(CEGUI::FrameWindow* wnd);
 
     CEGUI::Window* createWidget(const CEGUI::String& type, float position_x, float position_y, const CEGUI::String& text = "");
     bool resetForm(const CEGUI::EventArgs& e);
     bool disableConfirmButton(const CEGUI::EventArgs& e);
-    std::map<CEGUI::SemanticValue, CEGUI::String> getNavigationMappings();
 
     CEGUI::DefaultWindow*       d_root;
     CEGUI::ToggleButton*        d_isGameMasterCheckbox;

@@ -733,11 +733,11 @@ void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
     {
         handleSelection(getGUIContext().getCursor().getPosition(),
             true, d_isMultiSelectEnabled, e.d_semanticValue == SemanticValue::SelectRange);
+        ++e.handled;
     }
 
     handleSelectionNavigation(e);
 
-    ++e.handled;
     Window::onSemanticInputEvent(e);
 }
 
@@ -909,6 +909,7 @@ void ItemView::handleSelectionNavigation(SemanticEventArgs& e)
 
     setSelectedIndex(d_itemModel->makeIndex(
         static_cast<size_t>(next_selected_child_id), parent_index));
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//

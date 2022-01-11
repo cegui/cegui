@@ -764,41 +764,37 @@ bool GUIContext::injectInputEvent(const InputEvent& event)
         {
             TextEventArgs args(targetWindow);
             args.d_character = static_cast<const TextInputEvent&>(event).d_character;
-            args.window->onCharacter(args);
+            targetWindow->onCharacter(args);
             return args.handled != 0;
         }
     }
-    else if (event.d_eventType != InputEventType::SemanticInputEventType)
+    else if (event.d_eventType == InputEventType::SemanticInputEventType)
     {
         auto& semantic_event = static_cast<const SemanticInputEvent&>(event);
-
-        // First try to process an event in a window navigator
-        if (d_windowNavigator)
-        {
-            // TODO ACTIVE: translate SemanticValue -> String payload
-            auto itor = d_mappings.find(semantic_event.d_value);
-            if (itor != d_mappings.end())
-            {
-                // Activate a window. Treat as a handling action if there were changes in Z-order.
-                auto newWnd = d_windowNavigator->getWindow(d_activeWindow, itor->second);
-                if (setActiveWindow(newWnd, newWnd ? newWnd->isRiseOnCursorActivationEnabled() : false))
-                    return true;
-            }
-        }
 
         // Dispatch to a handler if we have one
         auto it = d_semanticEventHandlers.find(semantic_event.d_value);
         if (it != d_semanticEventHandlers.end())
             return (*(*it).second)(semantic_event);
 
-        // Send a raw event if no one processed it yet
+        // Send a raw event
         if (Window* targetWindow = getInputTargetWindow())
         {
             SemanticEventArgs args(targetWindow);
             args.d_payload = semantic_event.d_payload;
             args.d_semanticValue = semantic_event.d_value;
-            args.window->onSemanticInputEvent(args);
-            return args.handled != 0;
+            targetWindow->onSemanticInputEvent(args);
+            if (args.handled)
+                return true;
+        }
+
+        // Try to process an event in a window navigator
+        if (d_windowNavigator)
+        {
+            // Activate a window. Treat as a handling action if there were changes in Z-order.
+            auto newWnd = d_windowNavigator->getWindow(d_activeWindow, semantic_event.d_value);
+            if (setActiveWindow(newWnd, d_moveToFrontOnActivateAllowed && newWnd && newWnd->isRiseOnCursorActivationEnabled()))
+                return true;
         }
     }
 
@@ -971,7 +967,7 @@ bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
 
     // Activate a window. Treat as a handling action if there were changes in Z-order.
     if (ciea.source == CursorInputSource::Left)
-        if (setActiveWindow(window, window->isRiseOnCursorActivationEnabled()))
+        if (setActiveWindow(window, d_moveToFrontOnActivateAllowed && window->isRiseOnCursorActivationEnabled()))
             ++ciea.handled;
 
     window->onCursorPressHold(ciea);

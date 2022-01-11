@@ -30,19 +30,14 @@
 #define _CEGUIWindowNavigator_h_
 
 #include "CEGUI/SemanticInputEvent.h"
-#include <map>
-
-#if defined (_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4251)
-#endif
 
 namespace CEGUI
 {
 
 /*!
 \brief
-    Provides a strategy for navigating the GUI based on a specified mapping.
+    Provides a strategy for navigating the GUI with input events.
+    Inherit it to implement different strategies and event mappings.
 
     For a brief tutorial on how to use the GUI navigation please refer
     to the @ref gui_navigation_tutorial
@@ -60,16 +55,12 @@ public:
     \param neighbour
         The neighbour window relative to which the new window is requested
 
-    \param payload
-        A string payload value to help decide what window to return
+    \param event
+        A semantic event type to process
     */
-    virtual Window* getWindow(Window* neighbour, const String& payload) = 0;
+    virtual Window* getWindow(Window* neighbour, const SemanticValue& event) = 0;
 };
 
 }
 
-#if defined (_MSC_VER)
-#   pragma warning(pop)
 #endif
-
-#endif    // end of guard _CEGUIWindowNavigator_h_

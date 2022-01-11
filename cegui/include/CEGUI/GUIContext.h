@@ -125,6 +125,9 @@ public:
     //! Checks if a window is in an active branch of the tree
     bool isWindowActive(const Window* window) const;
 
+    //! \brief Controls whether the tooltip will follow the cursor
+    void setMoveToFrontOnActivateAllowed(bool value) { d_moveToFrontOnActivateAllowed = value; }
+
     /*!
     \brief
         Set the modal state for this Window.
@@ -325,7 +328,6 @@ protected:
     Window* d_tooltipSource = nullptr;
     Window* d_activeWindow = nullptr;
     WindowNavigator* d_windowNavigator = nullptr;
-    //SemanticMappingsMap d_mappings;
 
     Font* d_defaultFont = nullptr;
     Cursor d_cursor;
@@ -353,6 +355,7 @@ protected:
 
     bool d_windowContainingCursorIsUpToDate = true;
     bool d_tooltipFollowsCursor = false;
+    bool d_moveToFrontOnActivateAllowed = true;
     bool d_repeating = false;
 };
 

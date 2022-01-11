@@ -29,12 +29,14 @@
 #include <algorithm>
 
 using namespace CEGUI;
-using namespace NavigatorPayloads;
 
 //----------------------------------------------------------------------------//
-CEGUI::Window* WindowChildrenNavigator::getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload)
+Window* WindowChildrenNavigator::getWindow(Window* neighbour, const SemanticValue& event)
 {
-    if (d_targetWindow == nullptr)
+    if (event != SemanticValue::GoDown && event != SemanticValue::GoUp)
+        return neighbour;
+
+    if (!d_targetWindow)
         return nullptr;
 
     size_t child_count = d_targetWindow->getChildCount();
@@ -56,7 +58,7 @@ CEGUI::Window* WindowChildrenNavigator::getWindow(CEGUI::Window* neighbour, cons
 
     if (found)
     {
-        if (payload == NAVIGATE_NEXT)
+        if (event == SemanticValue::GoDown)
         {
             if (index >= child_count - 1)
                 index = 0;
@@ -64,7 +66,7 @@ CEGUI::Window* WindowChildrenNavigator::getWindow(CEGUI::Window* neighbour, cons
                 index++;
         }
 
-        if (payload == NAVIGATE_PREVIOUS)
+        if (event == SemanticValue::GoUp)
         {
             if (index == 0)
                 index = child_count - 1;
@@ -75,86 +77,88 @@ CEGUI::Window* WindowChildrenNavigator::getWindow(CEGUI::Window* neighbour, cons
 
     Window* child = d_targetWindow->getChildAtIndex(index);
 
-    // start a new search
+    // start a new search, prevent overflow
     if (!child->canFocus())
-    {
-        // prevent overflow
-        if (child != neighbour)
-            return getWindow(child, payload);
-        else
-            return nullptr;
-    }
+        return (child != neighbour) ? getWindow(child, event) : nullptr;
 
     return child;
 }
 
 //----------------------------------------------------------------------------//
-Window* LinearNavigator::getWindow(Window* neighbour, const String& payload)
+Window* LinearNavigator::getWindow(Window* neighbour, const SemanticValue& event)
 {
-    std::vector<Window*>::const_iterator itor;
-    // start at the beginning
-    if (neighbour == nullptr)
-        return *d_windows.begin();
-    else
-        itor = std::find(d_windows.begin(), d_windows.end(), neighbour);
+    if (event != SemanticValue::NavigateToPrevious && event != SemanticValue::NavigateToNext)
+        return neighbour;
 
-    // no such neighbour window in here
-    if (itor == d_windows.end())
+    if (d_windows.empty())
         return nullptr;
 
-    if (payload == NAVIGATE_PREVIOUS)
+    auto it = std::find(d_windows.begin(), d_windows.end(), neighbour);
+    if (it == d_windows.end())
+        return (event == SemanticValue::NavigateToNext) ? d_windows.front() : d_windows.back();
+
+    if (event == SemanticValue::NavigateToPrevious)
     {
-        // first item. wrap to end
-        if (itor == d_windows.begin())
-            return *(d_windows.end() - 1);
-
-        return *(itor - 1);
+        do
+        {
+            if (it == d_windows.begin())
+                it = d_windows.end();
+            --it;
+        }
+        while ((*it) != neighbour && !(*it)->canFocus());
     }
-    else if (payload == NAVIGATE_NEXT)
+    else if (event == SemanticValue::NavigateToNext)
     {
-        // last item. wrap to beginning
-        if (itor == d_windows.end() - 1)
-            return *d_windows.begin();
-
-        return *(itor + 1);
+        do
+        {
+            ++it;
+            if (it == d_windows.end())
+                it = d_windows.begin();
+        }
+        while ((*it) != neighbour && !(*it)->canFocus());
     }
 
-    // no payload handling, just return the same window
-    return neighbour;
+    return *it;
 }
 
 //----------------------------------------------------------------------------//
-Window* MatrixNavigator::getWindow(Window* neighbour, const String& payload)
+Window* MatrixNavigator::getWindow(Window* neighbour, const SemanticValue& event)
 {
-    size_t rows = d_windows.size();
+    if (event != SemanticValue::GoToNextCharacter &&
+        event != SemanticValue::GoDown &&
+        event != SemanticValue::GoToPreviousCharacter &&
+        event != SemanticValue::GoUp)
+    {
+        return neighbour;
+    }
 
+    const size_t rows = d_windows.size();
     for (size_t row = 0; row < rows; ++row)
     {
-        std::vector<Window*> column = d_windows.at(row);
-        size_t cols = column.size();
-
+        const auto& column = d_windows.at(row);
+        const size_t cols = column.size();
         for (size_t col = 0; col < cols; ++col)
         {
             if (neighbour == column.at(col))
             {
                 // compute the new window (wrapping)
-                if (payload == NAVIGATE_RIGHT)
+                if (event == SemanticValue::GoToNextCharacter)
                     col = (col + 1) % cols;
-                else if (payload == NAVIGATE_DOWN)
+                else if (event == SemanticValue::GoDown)
                     row = (row + 1) % rows;
-                else if (payload == NAVIGATE_LEFT)
+                else if (event == SemanticValue::GoToPreviousCharacter)
                 {
                     if (col == 0)
                         col = cols - 1;
                     else
-                        col --;
+                        --col;
                 }
-                else if (payload == NAVIGATE_UP)
+                else if (event == SemanticValue::GoUp)
                 {
                     if (row == 0)
                         row = rows - 1;
                     else
-                        row --;
+                        --row;
                 }
 
                 return d_windows.at(row).at(col);
@@ -162,6 +166,6 @@ Window* MatrixNavigator::getWindow(Window* neighbour, const String& payload)
         }
     }
 
-    // first button
+    // first window
     return d_windows.at(0).at(0);
 }

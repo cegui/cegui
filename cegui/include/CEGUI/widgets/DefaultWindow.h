@@ -36,13 +36,7 @@ namespace CEGUI
 /*!
 \brief
     Window class intended to be used as a simple, generic Window.
-
-    This class does no rendering and so appears totally transparent. This window defaults
-    to position 0.0f, 0.0f with a size of 1.0f x 1.0f.
-
-    /par
-    This Window has been used as the root GUI-sheet (root window) but it's usage has been extended
-    beyond that. That's why it's name has been changed to "DefaultWindow" for 0.8.
+    It has no explicit graphics but may be used as a base for Falagard windows.
 */
 class CEGUIEXPORT DefaultWindow : public Window
 {
@@ -52,13 +46,12 @@ public:
 
     DefaultWindow(const String& type, const String& name);
 
-    // cannot focus something that doesn't have an explicit visual appearance
-    bool canFocus() const override { return false; }
+    // Can't focus something that doesn't have an explicit visual appearance
+    bool canFocus() const override { return !!d_windowRenderer; }
 
 protected:
 
-    // FIXME: why breaks drawing children?
-    //void drawSelf(const RenderingContext& /*ctx*/, std::uint32_t /*drawModeMask*/) override {}
+    void drawSelf(const RenderingContext& ctx, std::uint32_t drawModeMask) override;
 };
 
 }

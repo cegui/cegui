@@ -33,13 +33,14 @@
 class MenuNavigationSample : public Sample
 {
 public:
+
     MenuNavigationSample();
-    virtual ~MenuNavigationSample() {}
 
     bool initialise(CEGUI::GUIContext* gui_context) override;
     void deinitialise() override;
 
 private:
+
     CEGUI::Window*      d_root;
     CEGUI::Window*      d_logWidget1;
     CEGUI::Window*      d_logWidget2;
@@ -52,9 +53,6 @@ private:
     bool handleSelectButtonClicked(const CEGUI::EventArgs& e);
     bool handleNumberButtonClicked(const CEGUI::EventArgs& e);
     bool handleTabSelectionChanged(const CEGUI::EventArgs& e);
-
-   std::map<CEGUI::SemanticValue, CEGUI::String> createMatrixNavigationMappings();
-   std::map<CEGUI::SemanticValue, CEGUI::String> createLinearNavigationMappings();
 };
 
 #endif  // end of guard _Sample_Menu_Navigation_h_

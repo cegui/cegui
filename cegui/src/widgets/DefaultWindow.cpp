@@ -37,4 +37,14 @@ DefaultWindow::DefaultWindow(const String& type, const String& name) :
     setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
 }
 
+//----------------------------------------------------------------------------//
+void DefaultWindow::drawSelf(const RenderingContext& ctx, std::uint32_t drawModeMask)
+{
+    // There is no own graphics, so draw only if a renderer is attached
+    if (d_windowRenderer)
+        Window::drawSelf(ctx, drawModeMask);
+    else
+        d_needsRedraw = false;
+}
+
 }
