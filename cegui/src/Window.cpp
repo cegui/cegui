@@ -878,7 +878,6 @@ void Window::setText(const String& text)
         return;
 
     d_textLogical = text;
-    d_renderedStringValid = false;
 
 #ifdef CEGUI_BIDI_SUPPORT
     d_bidiDataValid = false;
@@ -1821,6 +1820,7 @@ void Window::onNameChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onTextChanged(WindowEventArgs& e)
 {
+    d_renderedStringValid = false;
     invalidate();
     fireEvent(EventTextChanged, e, EventNamespace);
 }
@@ -2675,7 +2675,6 @@ void Window::insertText(const String& text, const String::size_type position)
         return;
 
     d_textLogical.insert(position, text);
-    d_renderedStringValid = false;
 
 #ifdef CEGUI_BIDI_SUPPORT
     d_bidiDataValid = false;
@@ -2692,7 +2691,6 @@ void Window::appendText(const String& text)
         return;
 
     d_textLogical.append(text);
-    d_renderedStringValid = false;
 
 #ifdef CEGUI_BIDI_SUPPORT
     d_bidiDataValid = false;
