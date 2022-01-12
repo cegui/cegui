@@ -109,14 +109,13 @@ void FalagardStaticText::createRenderGeometry()
 
     // get destination area for the text.
     const Rectf clipper(getTextRenderArea());
-    Rectf absarea(clipper);
+    Rectf destRect(clipper);
 
     // see if we may need to adjust horizontal position
     const Scrollbar* const horzScrollbar = getHorzScrollbar();
     if (horzScrollbar->isEffectiveVisible())
     {
-        const float range = horzScrollbar->getDocumentSize() -
-            horzScrollbar->getPageSize();
+        const float range = horzScrollbar->getDocumentSize() - horzScrollbar->getPageSize();
 
         switch (d_actualHorzFormatting)
         {
@@ -124,18 +123,18 @@ void FalagardStaticText::createRenderGeometry()
             case HorizontalTextFormatting::WordWrapLeftAligned:
             case HorizontalTextFormatting::Justified:
             case HorizontalTextFormatting::WordWraperJustified:
-                absarea.offset(glm::vec2(-horzScrollbar->getScrollPosition(), 0));
+                destRect.offset(glm::vec2(-horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HorizontalTextFormatting::CentreAligned:
             case HorizontalTextFormatting::WordWrapCentreAligned:
-                absarea.setWidth(horzScrollbar->getDocumentSize());
-                absarea.offset(glm::vec2(range / 2 - horzScrollbar->getScrollPosition(), 0));
+                destRect.setWidth(horzScrollbar->getDocumentSize());
+                destRect.offset(glm::vec2(range / 2 - horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HorizontalTextFormatting::RightAligned:
             case HorizontalTextFormatting::WordWrapRightAligned:
-                absarea.offset(glm::vec2(range - horzScrollbar->getScrollPosition(), 0));
+                destRect.offset(glm::vec2(range - horzScrollbar->getScrollPosition(), 0));
                 break;
             default:
                 throw InvalidRequestException("Invalid actual horizontal text formatting.");
@@ -146,33 +145,27 @@ void FalagardStaticText::createRenderGeometry()
     float textHeight = d_formatter->getVerticalExtent(d_window);
     const Scrollbar* const vertScrollbar = getVertScrollbar();
     const float vertScrollPosition = vertScrollbar->getScrollPosition();
-    // if scroll bar is in use, position according to that.
     if (vertScrollbar->isEffectiveVisible())
-        absarea.d_min.y -= vertScrollPosition;
-    // no scrollbar, so adjust position according to formatting set.
+    {
+        // if scroll bar is in use, position according to that.
+        destRect.d_min.y -= vertScrollPosition;
+    }
     else
-        switch (getActualVerticalFormatting())
+    {
+        // no scrollbar, so adjust position according to formatting set.
+        switch (d_actualVertFormatting)
         {
             case VerticalTextFormatting::CentreAligned:
-                absarea.d_min.y += CoordConverter::alignToPixels((absarea.getHeight() - textHeight) * 0.5f);
+                destRect.d_min.y += CoordConverter::alignToPixels((destRect.getHeight() - textHeight) * 0.5f);
                 break;
             case VerticalTextFormatting::BottomAligned:
-                absarea.d_min.y = absarea.d_max.y - textHeight;
+                destRect.d_min.y = destRect.d_max.y - textHeight;
                 break;
-            case VerticalTextFormatting::TopAligned:
-                break;
-            default:
-                throw InvalidRequestException("Invalid actual vertical text formatting.");
         }
+    }
 
-    // calculate final colours
-    const ColourRect final_cols(d_textCols);
     // cache the text for rendering.
-    std::vector<GeometryBuffer*> geomBuffers = d_formatter->createRenderGeometry(
-        d_window,
-        absarea.getPosition(),
-        &final_cols, &clipper);
-
+    auto geomBuffers = d_formatter->createRenderGeometry(d_window, destRect.getPosition(), &d_textCols, &clipper);
     d_window->appendGeometryBuffers(geomBuffers);
 }
 

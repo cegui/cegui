@@ -62,10 +62,7 @@ public:
         
     \see Node::setPixelAligned
     */
-    static float alignToPixels(float x)
-    {
-        return std::round(x);
-    }
+    static float alignToPixels(float x) { return std::round(x); }
     
     /*!
     \brief

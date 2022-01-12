@@ -51,7 +51,7 @@ protected:
     glm::vec2 getItemRenderStartPosition(ItemView* view, const Rectf& items_area) const;
     void createRenderGeometryAndAddToItemView(ItemView* view, RenderedString& rendered_string,
         Rectf draw_rect, const Font* font, const Rectf* item_clipper, bool is_selected);
-    void createRenderGeometryAndAddToItemView(ItemView* view, FormattedRenderedString* formated_rendered_string,
+    void createRenderGeometryAndAddToItemView(ItemView* view, FormattedRenderedString* formatter,
         Rectf draw_rect, const Font* font, const Rectf* item_clipper, bool is_selected);
     void resizeViewToContent(ItemView* view, bool fit_width, bool fit_height) const;
 };

@@ -68,15 +68,12 @@ void FalagardTreeView::createRenderGeometry()
 
 //----------------------------------------------------------------------------//
 void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_area,
-    glm::vec2& item_pos, const TreeViewItemRenderingState* item_to_render,
-    size_t depth)
+    glm::vec2& item_pos, const TreeViewItemRenderingState* item_to_render, size_t depth)
 {
     float expander_margin = tree_view->getSubtreeExpanderMargin();
-    for (size_t i = 0; i < item_to_render->d_renderedChildren.size(); ++i)
+    for (TreeViewItemRenderingState* const item : item_to_render->d_renderedChildren)
     {
-        TreeViewItemRenderingState* item = item_to_render->d_renderedChildren.at(i);
-        RenderedString& rendered_string = item->d_string;
-        Sizef size(item->d_size);
+        Sizef size = item->d_size;
 
         // center the expander compared to the item's height
         float half_diff = (size.d_height - d_subtreeExpanderImagerySize.d_height) / 2.0f;
@@ -126,7 +123,7 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
         }
 
         Rectf item_clipper(item_rect.getIntersection(items_area));
-        createRenderGeometryAndAddToItemView(tree_view, rendered_string, item_rect,
+        createRenderGeometryAndAddToItemView(tree_view, item->d_string, item_rect,
             tree_view->getActualFont(), &item_clipper, item->d_isSelected);
 
         item_pos.y += std::max(size.d_height, d_subtreeExpanderImagerySize.d_height);
@@ -137,20 +134,17 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
         item_pos.x += indent;
 
         if (item->d_subtreeIsExpanded)
-        {
             renderTreeItem(tree_view, items_area, item_pos, item, depth + 1);
-        }
 
         item_pos.x -= indent;
     }
 }
 
+//----------------------------------------------------------------------------//
 static Sizef getImagerySize(const ImagerySection& section)
 {
-    //TODO: handle more than 1 imagerycomponent
-    const ImageryComponent& component = section.getImageryComponents().front();
-    const Image* img = component.getImage();
-    return img->getRenderedSize();
+    //!!!TODO: handle more than 1 imagerycomponent
+    return section.getImageryComponents().front().getImage()->getRenderedSize();
 }
 
 //----------------------------------------------------------------------------//
@@ -198,4 +192,5 @@ void FalagardTreeView::resizeViewToContent(bool fit_width, bool fit_height) cons
 {
     ItemViewRenderer::resizeViewToContent(getView(), fit_width, fit_height);
 }
+
 }
