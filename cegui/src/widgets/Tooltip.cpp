@@ -31,31 +31,9 @@ namespace CEGUI
 const String Tooltip::WidgetTypeName("CEGUI/Tooltip");
 
 //----------------------------------------------------------------------------//
-TooltipWindowRenderer::TooltipWindowRenderer(const String& name) :
-    WindowRenderer(name, "Tooltip")
-{
-}
-
-//----------------------------------------------------------------------------//
 Tooltip::Tooltip(const String& type, const String& name) :
     Window(type, name)
 {
-}
-
-//----------------------------------------------------------------------------//
-void Tooltip::sizeSelf()
-{
-    if (d_windowRenderer)
-    {
-        const Sizef textSize = static_cast<TooltipWindowRenderer*>(d_windowRenderer)->getTextSize();
-        setSize(USize(cegui_absdim(textSize.d_width), cegui_absdim(textSize.d_height)));
-    }
-}
-
-//----------------------------------------------------------------------------//
-bool Tooltip::validateWindowRenderer(const WindowRenderer* renderer) const
-{
-    return dynamic_cast<const TooltipWindowRenderer*>(renderer) != nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -63,11 +41,15 @@ void Tooltip::onTextChanged(WindowEventArgs& e)
 {
     Window::onTextChanged(e);
 
-    // set size of the tooltip window to consider new text
-    sizeSelf();
+    // Set size of the tooltip window to consider new text.
+    // NB: only renderer can provide content size to us.
+    if (d_windowRenderer)
+    {
+        const Sizef textSize = getContentSize();
+        setSize(USize(cegui_absdim(textSize.d_width), cegui_absdim(textSize.d_height)));
+    }
 
-    // we do not signal we handled it, in case user wants to hear
-    // about text changes too.
+    // We do not signal we handled it, in case user wants to hear about text changes too.
 }
 
 }

@@ -28,7 +28,6 @@
 #define _FalTooltip_h_
 
 #include "CEGUI/WindowRendererSets/Core/Module.h"
-#include "CEGUI/widgets/Tooltip.h"
 
 namespace CEGUI
 {
@@ -46,16 +45,16 @@ namespace CEGUI
         TextArea - Typically this would be the same area as the TextComponent you define to receive the tooltip text. This
                    named area is used when deciding how to dynamically size the Tooltip so that the text is not clipped.
 */
-class COREWRSET_API FalagardTooltip : public TooltipWindowRenderer
+class COREWRSET_API FalagardTooltip : public WindowRenderer
 {
 public:
 
     static const String TypeName; //!< type name for this widget.
 
-    FalagardTooltip(const String& type) : TooltipWindowRenderer(type) {}
+    FalagardTooltip(const String& type) : WindowRenderer(type, "Tooltip") {}
 
     void createRenderGeometry() override;
-    Sizef getTextSize() const override;
+    Sizef getContentSize() const override;
 
 protected:
 

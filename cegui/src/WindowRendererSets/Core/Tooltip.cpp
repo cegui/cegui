@@ -40,7 +40,7 @@ void FalagardTooltip::createRenderGeometry()
 }
 
 //----------------------------------------------------------------------------//
-Sizef FalagardTooltip::getTextSize() const
+Sizef FalagardTooltip::getContentSize() const
 {
     auto& lnf = getLookNFeel();
     Sizef sz = getTextComponentExtents(lnf);
