@@ -540,8 +540,7 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
         cegui_absdim(btn->getRenderedString().getHorizontalExtent(btn)) +
             getTabTextPadding() + getTabTextPadding();
 
-    btn->setPosition(position);
-    btn->setSize(size);
+    btn->setArea(position, size);
 
     const float left_x = position.d_x.d_offset;
     btn->setVisible ((left_x < getPixelSize ().d_width) &&

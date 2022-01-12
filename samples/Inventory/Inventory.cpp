@@ -90,28 +90,24 @@ bool InventorySample::initialise(CEGUI::GUIContext* guiContext)
     // Create Backpack window
     Window* wnd = winMgr.createWindow("TaharezLook/FrameWindow", "BackpackWindow");
     root->addChild(wnd);
-    wnd->setPosition(UVector2(UDim(0.1f, 0), UDim(0.1f, 0)));
-    wnd->setSize(USize(UDim(0.2f, 0), UDim(0.4f, 0)));
+    wnd->setArea(UVector2(UDim(0.1f, 0), UDim(0.1f, 0)), USize(UDim(0.2f, 0), UDim(0.4f, 0)));
     wnd->setText("Backpack");
 
     InventoryReceiver& receiver1 = dynamic_cast<InventoryReceiver&>(*winMgr.createWindow("InventoryReceiver"));
     wnd->addChild(&receiver1);
-    receiver1.setPosition(UVector2(cegui_reldim(0.0f), cegui_reldim( 0.0f)));
-    receiver1.setSize(USize(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
+    receiver1.setArea(UVector2(cegui_reldim(0.0f), cegui_reldim(0.0f)), USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
     receiver1.setContentSize(3, 6);
     receiver1.setUserString("BlockImage", "TaharezLook/GenericBrush");
 
     // Create vault window
     Window* wnd2 = winMgr.createWindow("TaharezLook/FrameWindow", "BankVaultWindow");
     root->addChild(wnd2);
-    wnd2->setPosition(UVector2(UDim(0.48f, 0), UDim(0.2f, 0)));
-    wnd2->setSize(USize(UDim(0.5f, 0), UDim(0.5f, 0)));
+    wnd2->setArea(UVector2(UDim(0.48f, 0), UDim(0.2f, 0)), USize(UDim(0.5f, 0), UDim(0.5f, 0)));
     wnd2->setText("Bank Vault");
 
     InventoryReceiver& receiver2 = dynamic_cast<InventoryReceiver&>(*winMgr.createWindow("InventoryReceiver"));
     wnd2->addChild(&receiver2);
-    receiver2.setPosition(UVector2(cegui_reldim(0.0f), cegui_reldim( 0.0f)));
-    receiver2.setSize(USize(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
+    receiver2.setArea(UVector2(cegui_reldim(0.0f), cegui_reldim(0.0f)), USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
     receiver2.setContentSize(10, 10);
     receiver2.setUserString("BlockImage", "TaharezLook/GenericBrush");
 

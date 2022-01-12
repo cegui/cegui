@@ -63,11 +63,10 @@ bool InventoryReceiver::addItemAtLocation(InventoryItem& item, int x, int y)
         // logical content map.
 
 
-        item.setPosition(UVector2(UDim(static_cast<float>(x) / contentWidth(), 0),
-                                  UDim(static_cast<float>(y) / contentHeight(), 0)));
-        item.setSize(USize(
-            UDim(static_cast<float>(item.contentWidth()) / contentWidth(), 0),
-            UDim(static_cast<float>(item.contentHeight()) / contentHeight(), 0)));
+        item.setArea(UVector2(UDim(static_cast<float>(x) / contentWidth(), 0),
+                              UDim(static_cast<float>(y) / contentHeight(), 0)),
+                     USize(UDim(static_cast<float>(item.contentWidth()) / contentWidth(), 0),
+                           UDim(static_cast<float>(item.contentHeight()) / contentHeight(), 0)));
 
         return true;
     }

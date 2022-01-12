@@ -453,9 +453,10 @@ void CustomShapesDrawingSample::createCheckboxShowRealFPS()
 
     // We create a button and subscribe to its click events
     ToggleButton* checkboxShowRealFPS = static_cast<CEGUI::ToggleButton*>(winMgr.createWindow("WindowsLook/Checkbox"));
-    checkboxShowRealFPS->setSize(CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.035f)));
+    checkboxShowRealFPS->setArea(
+        CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.13f)),
+        CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.035f)));
     checkboxShowRealFPS->setHorizontalAlignment(HorizontalAlignment::Centre);
-    checkboxShowRealFPS->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.13f)));
     checkboxShowRealFPS->setText("Show randomly generated FPS values");
     checkboxShowRealFPS->subscribeEvent(ToggleButton::EventSelectStateChanged, Event::Subscriber(&CustomShapesDrawingSample::handleToggleButtonShowRandomisedFpsSelectionChanged, this));
     checkboxShowRealFPS->setSelected(true);
@@ -471,9 +472,10 @@ void CustomShapesDrawingSample::createLastFPSLabel()
 
     // We create a button and subscribe to its click events
     d_lastFPSLabel = winMgr.createWindow("Generic/Label");
-    d_lastFPSLabel->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.035f)));
+    d_lastFPSLabel->setArea(
+        CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.18f)),
+        CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.035f)));
     d_lastFPSLabel->setHorizontalAlignment(HorizontalAlignment::Centre);
-    d_lastFPSLabel->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.18f)));
     d_root->addChild(d_lastFPSLabel);
 }
 
@@ -486,10 +488,11 @@ void CustomShapesDrawingSample::createDescriptionLabel()
 
     // We create a button and subscribe to its click events
     CEGUI::Window* descriptionLabel = winMgr.createWindow("Generic/Label");
-    descriptionLabel->setSize(CEGUI::USize(cegui_reldim(0.8f), cegui_reldim(0.25f)));
+    descriptionLabel->setArea(
+        CEGUI::UVector2(cegui_reldim(0.0f), cegui_absdim(400.0f)),
+        CEGUI::USize(cegui_reldim(0.8f), cegui_reldim(0.25f)));
     descriptionLabel->setHorizontalAlignment(HorizontalAlignment::Centre);
     descriptionLabel->setProperty("HorzFormatting", "WordWrapCentreAligned");
-    descriptionLabel->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_absdim(400.0f)));
     d_root->addChild(descriptionLabel);
     descriptionLabel->setText("The left graph is rendered directly into a GeometryBuffer and rendered as overlay."
         "The right graph is created using an SVGImage with modified SVGData and is then used in the same way as a regular CEGUI image"
@@ -756,8 +759,9 @@ void CustomShapesDrawingSample::createCustomSVGImageWindows()
 
     //We create a draggable and resizable frame window that will contain our Image window.
     d_customSVGImageFrameWindow = winMgr.createWindow("WindowsLook/FrameWindow");
-    d_customSVGImageFrameWindow->setSize(CEGUI::USize(cegui_absdim(490.0f), cegui_absdim(160.0f)));
-    d_customSVGImageFrameWindow->setPosition(CEGUI::UVector2(cegui_reldim(0.5f), cegui_reldim(0.29f)));
+    d_customSVGImageFrameWindow->setArea(
+        CEGUI::UVector2(cegui_reldim(0.5f), cegui_reldim(0.29f)),
+        CEGUI::USize(cegui_absdim(490.0f), cegui_absdim(160.0f)));
     d_root->addChild(d_customSVGImageFrameWindow);
     d_customSVGImageFrameWindow->subscribeEvent(CEGUI::Window::EventSized,
         CEGUI::Event::Subscriber(&CustomShapesDrawingSample::handleSVGImageFrameWindowSizeChanged,
@@ -765,8 +769,9 @@ void CustomShapesDrawingSample::createCustomSVGImageWindows()
 
     //We create the image window through which our custom SVGImage will be rendered.
     d_customSVGImageWindow = winMgr.createWindow("Generic/Image");
-    d_customSVGImageWindow->setSize(CEGUI::USize(cegui_reldim(0.7f), cegui_reldim(0.9f)));
-    d_customSVGImageWindow->setPosition(CEGUI::UVector2(cegui_reldim(0.05f), cegui_reldim(0.05f)));
+    d_customSVGImageWindow->setArea(
+        CEGUI::UVector2(cegui_reldim(0.05f), cegui_reldim(0.05f)),
+        CEGUI::USize(cegui_reldim(0.7f), cegui_reldim(0.9f)));
     d_customSVGImageFrameWindow->addChild(d_customSVGImageWindow);
     d_customSVGImageWindow->setProperty("Image", "FPSGraphSVG");
 }

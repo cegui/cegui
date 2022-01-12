@@ -69,8 +69,7 @@ bool TextSample::initialise(CEGUI::GUIContext* guiContext)
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
     // set position and size
-    background->setPosition(UVector2(cegui_reldim(0), cegui_reldim( 0)));
-    background->setSize(USize(cegui_reldim(1), cegui_reldim( 1)));
+    background->setArea(UVector2(cegui_reldim(0), cegui_reldim(0)), USize(cegui_reldim(1), cegui_reldim(1)));
     // disable frame and standard background
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");

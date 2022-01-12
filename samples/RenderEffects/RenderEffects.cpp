@@ -579,8 +579,7 @@ bool RenderEffectsSample::initialise(CEGUI::GUIContext* guiContext)
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
     // set position and size
-    background->setPosition(UVector2(cegui_reldim(0), cegui_reldim( 0)));
-    background->setSize(USize(cegui_reldim(1), cegui_reldim( 1)));
+    background->setArea(UVector2(cegui_reldim(0), cegui_reldim(0)), USize(cegui_reldim(1), cegui_reldim(1)));
     // disable frame and standard background
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
@@ -630,8 +629,7 @@ bool RenderEffectsSample::initialise(CEGUI::GUIContext* guiContext)
     // We will add an image to it using a StaticImage window
     Window* aliasingStaticImage = WindowManager::getSingleton().createWindow("Vanilla/StaticImage", "AliasingTestImage");
     aliasingFrameWnd->addChild(aliasingStaticImage);
-    aliasingFrameWnd->setPosition(CEGUI::UVector2(cegui_reldim(0.05f), cegui_reldim(0.15f)));
-    aliasingFrameWnd->setSize(CEGUI::USize(cegui_reldim(0.2f), cegui_reldim(0.28f)));
+    aliasingFrameWnd->setArea(CEGUI::UVector2(cegui_reldim(0.05f), cegui_reldim(0.15f)), CEGUI::USize(cegui_reldim(0.2f), cegui_reldim(0.28f)));
     aliasingFrameWnd->setSizingEnabled(true);
     aliasingFrameWnd->setCloseButtonEnabled(false);
     aliasingFrameWnd->setTitleBarEnabled(true);

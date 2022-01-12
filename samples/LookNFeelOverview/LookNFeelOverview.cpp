@@ -102,29 +102,29 @@ bool LookNFeelOverviewSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setRootWindow(root);
 
     CEGUI::Window* skinSelectionContainer = winMgr.createWindow("Vanilla/StaticText", "SkinSelectionContainer");
-    skinSelectionContainer->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.0f)));
-    skinSelectionContainer->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
+    skinSelectionContainer->setArea(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.0f)),
+        CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
     root->addChild(skinSelectionContainer);
 
     d_loadedLayoutContainer = winMgr.createWindow("DefaultWindow", "LoadedLayoutContainer");
-    d_loadedLayoutContainer->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.1f)));
-    d_loadedLayoutContainer->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.9f)));
+    d_loadedLayoutContainer->setArea(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.1f)),
+        CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.9f)));
     skinSelectionContainer->addChild(d_loadedLayoutContainer);
 
     CEGUI::Window* skinSelectionComboboxLabel = winMgr.createWindow("Vanilla/Label", "SkinSelectionComboboxLabel");
     skinSelectionContainer->addChild(skinSelectionComboboxLabel);
     skinSelectionComboboxLabel->setHorizontalAlignment(HorizontalAlignment::Centre);
     skinSelectionComboboxLabel->setText("Choose a Look N' Feel (= a skin) to display");
-    skinSelectionComboboxLabel->setPosition(CEGUI::UVector2(cegui_reldim(-0.18f), cegui_reldim(0.0f)));
-    skinSelectionComboboxLabel->setSize(CEGUI::USize(cegui_reldim(0.36f), cegui_reldim(0.04f)));
+    skinSelectionComboboxLabel->setArea(CEGUI::UVector2(cegui_reldim(-0.18f), cegui_reldim(0.0f)),
+        CEGUI::USize(cegui_reldim(0.36f), cegui_reldim(0.04f)));
     skinSelectionComboboxLabel->setProperty("HorzFormatting", "RightAligned");
 
 
     CEGUI::Combobox* skinSelectionCombobox = static_cast<CEGUI::Combobox*>(winMgr.createWindow("Vanilla/Combobox", "SkinSelectionCombobox"));
     skinSelectionContainer->addChild(skinSelectionCombobox);
     skinSelectionCombobox->setHorizontalAlignment(HorizontalAlignment::Centre);
-    skinSelectionCombobox->setPosition(CEGUI::UVector2(cegui_reldim(0.08f), cegui_reldim(0.003f)));
-    skinSelectionCombobox->setSize(CEGUI::USize(cegui_reldim(0.15f), cegui_reldim(0.3f)));
+    skinSelectionCombobox->setArea(CEGUI::UVector2(cegui_reldim(0.08f), cegui_reldim(0.003f)),
+        CEGUI::USize(cegui_reldim(0.15f), cegui_reldim(0.3f)));
     skinSelectionCombobox->setReadOnly(true);
     skinSelectionCombobox->setSortingEnabled(false);
     skinSelectionCombobox->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, Event::Subscriber(&LookNFeelOverviewSample::handleSkinSelectionAccepted, this));

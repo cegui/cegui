@@ -475,10 +475,9 @@ void SampleBrowser::initialiseSampleBrowserLayout()
     d_sampleExitButton = static_cast<CEGUI::PushButton*>(winMgr.createWindow(
         "SampleBrowserSkin/Button", "SampleExitButton"));
 
-    d_sampleExitButton->setSize(CEGUI::USize(cegui_absdim(34.f),
-                                             cegui_absdim(34.f)));
-    d_sampleExitButton->setPosition(CEGUI::UVector2(cegui_absdim(0.0f),
-                                                    cegui_absdim(0.0f)));
+    d_sampleExitButton->setArea(
+        CEGUI::UVector2(cegui_absdim(0.0f), cegui_absdim(0.0f)),
+        CEGUI::USize(cegui_absdim(34.f), cegui_absdim(34.f)));
     d_sampleExitButton->setHorizontalAlignment(HorizontalAlignment::Right);
     d_sampleExitButton->setVerticalAlignment(VerticalAlignment::Top);
     d_sampleExitButton->setProperty(
