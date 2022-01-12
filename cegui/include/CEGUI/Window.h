@@ -170,8 +170,6 @@ public:
     static const String AutoRenderingSurfacePropertyName;
     //! Name of property to access for the Window whether texture caching should have a stencil buffer attached for stencil operations, as used in SVG and Custom Shape rendering.
     static const String AutoRenderingSurfaceStencilEnabledPropertyName;
-    //! Name of property to access for the text parsing setting for the Window.
-    static const String TextParsingEnabledPropertyName;
     //! Name of property to access for the margin for the Window.
     static const String MarginPropertyName;
     //! Name of property to access for the window update mode setting.
@@ -363,13 +361,6 @@ public:
      * detached from it.
      */
     static const String EventWindowRendererDetached;
-    /** Event fired when the Window's setting controlling parsing of it's text
-     * string is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Window whose text parsing setting was
-     * changed.
-     */
-    static const String EventTextParsingChanged;
     /** Event fired when the Window's margin has changed (any of the four margins)
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window whose margin was
@@ -915,15 +906,6 @@ public:
 
     //! Returns the font set for this window, nullptr means that a default font will be used
     const Font* getFont() const { return d_font; }
-
-    /*!
-    \brief
-        return the current text for the Window
-
-    \return
-        The String object that holds the current text for this Window.
-    */
-    const String& getText() const { return d_textLogical; }
 
     /*!
     \brief
@@ -1782,6 +1764,15 @@ public:
 
     /*!
     \brief
+        return the current text for the Window
+
+    \return
+        The String object that holds the current text for this Window.
+    */
+    const String& getText() const;
+
+    /*!
+    \brief
         Set the current text string for the Window.
 
     \param text
@@ -2406,11 +2397,6 @@ public:
     */
     void setAutoRenderingSurfaceStencilEnabled(bool setting);
 
-    //! return whether text parsing is enabled for this window.
-    bool isTextParsingEnabled() const { return d_textParsingEnabled; }
-    //! set whether text parsing is enabled for this window.
-    void setTextParsingEnabled(bool setting);
-
     //! set margin
     virtual void setMargin(const UBox& margin);
     //! retrieves currently set margin
@@ -2418,11 +2404,6 @@ public:
 
     //! return glm::vec2 \a pos after being fully unprojected for this Window.
     glm::vec2 getUnprojectedPosition(const glm::vec2& pos) const;
-
-#ifdef CEGUI_BIDI_SUPPORT
-    //! return the pointer to the BidiVisualMapping for this window, if any.
-    const BidiVisualMapping* getBidiVisualMapping() const {return d_bidiVisualMapping;}
-#endif
 
     /*!
     \brief
@@ -3143,18 +3124,6 @@ protected:
     */
     virtual void onWindowRendererDetached(WindowEventArgs& e);
 
-    /*!
-    \brief
-        Handler called when the window's setting for whether text parsing is
-        enabled is changed.
-
-    \param e
-        WindowEventArgs object whose 'window' pointer field is set to the window
-        that triggered the event.  For this event the trigger window is always
-        'this'.
-    */
-    virtual void onTextParsingChanged(WindowEventArgs& e);
-
     virtual void onMarginChanged(WindowEventArgs& e);
 
     /*************************************************************************
@@ -3438,8 +3407,6 @@ protected:
     String d_lookName;
     //! The name of the window, unique in its parent
     String d_name;
-    //! Holds the text / label / caption for this Window.
-    String d_textLogical;
     //! Type of the tooltip object used for this window.
     String d_tooltipType;
     //! Text string used as tooltip for this window.
@@ -3474,8 +3441,6 @@ protected:
     bool d_restoreOldCapture : 1;
     //! Whether to distribute captured inputs to child windows.
     bool d_distCapturedInputs : 1;
-    //! true if use of parser other than d_defaultStringParser is enabled
-    bool d_textParsingEnabled : 1;
 
     //! true if Window will be drawn on top of all other Windows
     bool d_alwaysOnTop : 1;

@@ -874,7 +874,7 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
 
 
     // base class processing
-    Window::onTextChanged(e);
+    EditboxBase::onTextChanged(e);
 
     // clear selection
     clearSelection();

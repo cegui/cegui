@@ -315,7 +315,7 @@ RenderedStringParser& TextComponent::getRenderedStringParser(const Window& windo
 {
     // if parsing is disabled, we use a DefaultRenderedStringParser that creates
     // a RenderedString to renderi the input text verbatim (i.e. no parsing).
-    if (!window.isTextParsingEnabled())
+    if (!window.getWindowRenderer() || !window.getWindowRenderer()->isTextParsingEnabled())
         return CEGUI::System::getSingleton().getDefaultRenderedStringParser();
 
     // Next prefer a custom RenderedStringParser assigned to this Window.

@@ -48,11 +48,6 @@
 #include "CEGUI/SharedStringStream.h"
 #include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/Logger.h"
-#if defined (CEGUI_USE_FRIBIDI)
-#include "CEGUI/FribidiVisualMapping.h"
-#elif defined (CEGUI_USE_MINIBIDI)
-#include "CEGUI/MinibidiVisualMapping.h"
-#endif
 
 #include <deque>
 
@@ -85,7 +80,6 @@ const String Window::CursorPassThroughEnabledPropertyName("CursorPassThroughEnab
 const String Window::DragDropTargetPropertyName("DragDropTarget");
 const String Window::AutoRenderingSurfacePropertyName("AutoRenderingSurface");
 const String Window::AutoRenderingSurfaceStencilEnabledPropertyName("AutoRenderingSurfaceStencilEnabled");
-const String Window::TextParsingEnabledPropertyName("TextParsingEnabled");
 const String Window::MarginPropertyName("MarginProperty");
 const String Window::UpdateModePropertyName("UpdateMode");
 const String Window::CursorInputPropagationEnabledPropertyName("CursorInputPropagationEnabled");
@@ -122,7 +116,6 @@ const String Window::EventDragDropItemLeaves("DragDropItemLeaves");
 const String Window::EventDragDropItemDropped("DragDropItemDropped");
 const String Window::EventWindowRendererAttached("WindowRendererAttached");
 const String Window::EventWindowRendererDetached("WindowRendererDetached");
-const String Window::EventTextParsingChanged("TextParsingChanged");
 const String Window::EventMarginChanged("MarginChanged");
 const String Window::EventCursorEntersArea("CursorEntersArea");
 const String Window::EventCursorLeavesArea("CursorLeavesArea");
@@ -220,19 +213,6 @@ Window::Window(const String& type, const String& name):
     // cursor input capture set up
     d_restoreOldCapture(false),
     d_distCapturedInputs(false),
-
-    // text system set up
-#if defined (CEGUI_USE_FRIBIDI)
-    d_bidiVisualMapping(new FribidiVisualMapping()),
-    d_bidiDataValid(false),
-#elif defined (CEGUI_USE_MINIBIDI)
-    d_bidiVisualMapping(new MinibidiVisualMapping()),
-    d_bidiDataValid(false),
-#elif defined (CEGUI_BIDI_SUPPORT)
-    #error "BIDI Configuration is inconsistant, check your config!"
-#endif
-
-    d_textParsingEnabled(true),
 
     // z-order related options
     d_alwaysOnTop(false),
@@ -872,16 +852,71 @@ void Window::setClippedByParent(bool setting)
 }
 
 //----------------------------------------------------------------------------//
+const String& Window::getText() const
+{
+    // NB: text API is popular so it is not removed from a generic Window, but
+    // since not all windows want to store text, it is stored in user properties.
+    auto it = d_userStrings.find(TextPropertyName);
+    return (it == d_userStrings.cend()) ? String::GetEmpty() : (*it).second;
+}
+
+//----------------------------------------------------------------------------//
 void Window::setText(const String& text)
 {
-    if (d_textLogical == text)
+    auto it = d_userStrings.find(TextPropertyName);
+
+    if (text.empty())
+    {
+        if (it == d_userStrings.cend())
+            return;
+        else
+            d_userStrings.erase(it); // Don't waste space on empty data
+    }
+    else
+    {
+        if (it == d_userStrings.cend())
+            d_userStrings.emplace(TextPropertyName, text);
+        else if ((*it).second == text)
+                return;
+        else
+            (*it).second = text;
+    }
+
+    WindowEventArgs args(this);
+    onTextChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void Window::insertText(const String& text, const String::size_type position)
+{
+    if (text.empty())
         return;
 
-    d_textLogical = text;
+    auto it = d_userStrings.find(TextPropertyName);
+    if (it == d_userStrings.cend())
+        d_userStrings.emplace(TextPropertyName, text);
+    else if ((*it).second == text)
+        return;
+    else
+        (*it).second.insert(position, text);
 
-#ifdef CEGUI_BIDI_SUPPORT
-    d_bidiDataValid = false;
-#endif
+    WindowEventArgs args(this);
+    onTextChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void Window::appendText(const String& text)
+{
+    if (text.empty())
+        return;
+
+    auto it = d_userStrings.find(TextPropertyName);
+    if (it == d_userStrings.cend())
+        d_userStrings.emplace(TextPropertyName, text);
+    else if ((*it).second == text)
+        return;
+    else
+        (*it).second.append(text);
 
     WindowEventArgs args(this);
     onTextChanged(args);
@@ -1820,6 +1855,7 @@ void Window::onNameChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onTextChanged(WindowEventArgs& e)
 {
+    //???TODO TEXT: invalidate only widgets that really render text?! Falagard and Window subclasses.
     invalidate();
     fireEvent(EventTextChanged, e, EventNamespace);
 }
@@ -2267,29 +2303,24 @@ void Window::setWindowRenderer(const String& name)
         return;
 
     WindowRendererManager& wrm = WindowRendererManager::getSingleton();
-    if (d_windowRenderer != nullptr)
+    if (d_windowRenderer)
     {
-        // Allow reset of renderer
-        if (d_windowRenderer->getName() == name)
-            return;
-
         WindowEventArgs e(this);
         onWindowRendererDetached(e);
         wrm.destroyWindowRenderer(d_windowRenderer);
     }
 
-    if (!name.empty())
-    {
-        Logger::getSingleton().logEvent("Assigning the window renderer '" +
-            name + "' to the window '" + d_name + "'", LoggingLevel::Informative);
-        d_windowRenderer = wrm.createWindowRenderer(name);
-        WindowEventArgs e(this);
-        onWindowRendererAttached(e);
-    }
-    else
+    if (name.empty())
         throw InvalidRequestException(
             "Attempt to assign a 'null' window renderer to window '" +
             d_name + "'.");
+
+    Logger::getSingleton().logEvent("Assigning the window renderer '" +
+        name + "' to the window '" + d_name + "'", LoggingLevel::Informative);
+
+    d_windowRenderer = wrm.createWindowRenderer(name);
+    WindowEventArgs e(this);
+    onWindowRendererAttached(e);
 }
 
 //----------------------------------------------------------------------------//
@@ -2666,38 +2697,6 @@ void Window::setFalagardType(const String& type, const String& rendererType)
 }
 
 //----------------------------------------------------------------------------//
-void Window::insertText(const String& text, const String::size_type position)
-{
-    if (text.empty())
-        return;
-
-    d_textLogical.insert(position, text);
-
-#ifdef CEGUI_BIDI_SUPPORT
-    d_bidiDataValid = false;
-#endif
-
-    WindowEventArgs args(this);
-    onTextChanged(args);
-}
-
-//----------------------------------------------------------------------------//
-void Window::appendText(const String& text)
-{
-    if (text.empty())
-        return;
-
-    d_textLogical.append(text);
-
-#ifdef CEGUI_BIDI_SUPPORT
-    d_bidiDataValid = false;
-#endif
-
-    WindowEventArgs args(this);
-    onTextChanged(args);
-}
-
-//----------------------------------------------------------------------------//
 void Window::appendGeometryBuffers(std::vector<GeometryBuffer*>& geomBuffers)
 {
     d_geometryBuffers.insert(d_geometryBuffers.end(), geomBuffers.begin(),
@@ -2982,18 +2981,6 @@ glm::vec2 Window::getUnprojectedPosition(const glm::vec2& pos) const
 }
 
 //----------------------------------------------------------------------------//
-void Window::setTextParsingEnabled(bool setting)
-{
-    if (d_textParsingEnabled == setting)
-        return;
-
-    d_textParsingEnabled = setting;
-
-    WindowEventArgs args(this);
-    onTextParsingChanged(args);
-}
-
-//----------------------------------------------------------------------------//
 void Window::setMargin(const UBox& margin)
 {
     if (d_margin == margin)
@@ -3003,12 +2990,6 @@ void Window::setMargin(const UBox& margin)
 
     WindowEventArgs args(this);
     onMarginChanged(args);
-}
-
-//----------------------------------------------------------------------------//
-void Window::onTextParsingChanged(WindowEventArgs& e)
-{
-    fireEvent(EventTextParsingChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -3565,12 +3546,6 @@ void Window::addWindowProperties()
         "will have a stencil buffer attached. This may be required for proper rendering of SVG images and Custom Shapes."
         "  Value is either \"true\" or \"false\".",
         &Window::setAutoRenderingSurfaceStencilEnabled, &Window::isAutoRenderingSurfaceStencilEnabled, false
-    );
-
-    CEGUI_DEFINE_PROPERTY(Window, bool,
-        TextParsingEnabledPropertyName, "Property to get/set the text parsing setting for the Window.  "
-        "Value is either \"true\" or \"false\".",
-        &Window::setTextParsingEnabled, &Window::isTextParsingEnabled, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, UBox,

@@ -34,13 +34,16 @@
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/BidiVisualMapping.h"
 #include "CEGUI/UndoHandler.h"
+#if defined (CEGUI_USE_FRIBIDI)
+#include "CEGUI/FribidiVisualMapping.h"
+#elif defined (CEGUI_USE_MINIBIDI)
+#include "CEGUI/MinibidiVisualMapping.h"
+#endif
 
 #include <string.h>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-
 const String EditboxBase::EventNamespace("EditboxBase");
 const String EditboxBase::WidgetTypeName("CEGUI/EditboxBase");
 const String EditboxBase::EventReadOnlyModeChanged("ReadOnlyModeChanged");
@@ -59,22 +62,18 @@ const String EditboxBase::ReadOnlyCursorImagePropertyName("ReadOnlyCursorImage")
 
 EditboxBase::EditboxBase(const String& type, const String& name) :
     Window(type, name),
-    d_readOnly(false),
-    d_readOnlyCursorImage(nullptr),
-    d_textMaskingEnabled(false),
-    d_textMaskingCodepoint('*'),
-    d_maxTextLen(String().max_size()),
-    d_caretPos(0),
-    d_selectionStart(0),
-    d_selectionEnd(0),
-    d_dragging(false)
+#if defined (CEGUI_USE_FRIBIDI)
+    d_bidiVisualMapping(new FribidiVisualMapping()),
+    d_bidiDataValid(false),
+#elif defined (CEGUI_USE_MINIBIDI)
+    d_bidiVisualMapping(new MinibidiVisualMapping()),
+    d_bidiDataValid(false),
+#elif defined (CEGUI_BIDI_SUPPORT)
+#error "BIDI Configuration is inconsistant, check your config!"
+#endif
+    d_maxTextLen(String().max_size())
 {
     addEditboxBaseProperties();
-
-    // override default and disable text parsing
-    d_textParsingEnabled = false;
-    // ban the property too, since this being off is not optional.
-    banPropertyFromXML("TextParsingEnabled");
 
     d_undoHandler = new UndoHandler(this);
 }
@@ -83,12 +82,6 @@ EditboxBase::EditboxBase(const String& type, const String& name) :
 EditboxBase::~EditboxBase(void)
 {
     delete d_undoHandler;
-}
-
-
-bool EditboxBase::hasInputFocus(void) const
-{
-    return isFocused();
 }
 
 
@@ -163,6 +156,26 @@ void EditboxBase::setTextMaskingCodepoint(std::uint32_t code_point)
         onTextMaskingCodepointChanged(args);
     }
 
+}
+
+//----------------------------------------------------------------------------//
+const String& EditboxBase::getTextVisual() const
+{
+#if defined(CEGUI_BIDI_SUPPORT)
+    // no bidi support
+    if (!d_bidiVisualMapping)
+        return getText();
+
+    if (!d_bidiDataValid)
+    {
+        d_bidiVisualMapping->updateVisual(getText());
+        d_bidiDataValid = true;
+    }
+
+    return d_bidiVisualMapping->getTextVisual();
+#else
+    return getText();
+#endif
 }
 
 //----------------------------------------------------------------------------//
@@ -368,6 +381,14 @@ void EditboxBase::onCursorMove(CursorInputEventArgs& e)
     ++e.handled;
 }
 
+void EditboxBase::onTextChanged(WindowEventArgs& e)
+{
+#ifdef CEGUI_BIDI_SUPPORT
+    d_bidiDataValid = false;
+#endif
+
+    Window::onTextChanged(e);
+}
 
 void EditboxBase::onCaptureLost(WindowEventArgs& e)
 {

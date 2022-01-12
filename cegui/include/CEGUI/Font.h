@@ -343,6 +343,9 @@ public:
         float& cur_extent,
         float& adv_extent) const;
 
+    //! Returns the FontGlyph corresponding to the codepoint or 0 if it can't be found.
+    virtual FontGlyph* getGlyphForCodepoint(const char32_t codePoint) const = 0;
+
     /*!
     \brief
         Return pixel advance of the specified text when rendered with this Font.
@@ -476,9 +479,6 @@ protected:
 
     //! event trigger function for when the font rendering size changes.
     virtual void onRenderSizeChanged(FontEventArgs& args);
-
-    //! Returns the FontGlyph corresponding to the codepoint or 0 if it can't be found.
-    virtual FontGlyph* getGlyphForCodepoint(const char32_t codePoint) const = 0;
 
     //! The old way of rendering glyphs, without kerning and extended layouting
     virtual std::vector<GeometryBuffer*> layoutUsingFallbackAndCreateGlyphGeometry(const String& text,
