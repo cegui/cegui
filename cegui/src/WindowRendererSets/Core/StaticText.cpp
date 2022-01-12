@@ -210,19 +210,16 @@ std::size_t FalagardStaticText::getNumOfFormattedTextLines() const
 }
 
 //----------------------------------------------------------------------------//
-float FalagardStaticText::getContentWidth() const
+Sizef FalagardStaticText::getContentSize() const
 {
-    return d_formatter->getHorizontalExtent(d_window);
-}
+    return Sizef(
+        d_formatter->getHorizontalExtent(d_window),
 
-//----------------------------------------------------------------------------//
-float FalagardStaticText::getContentHeight() const
-{
-    if (d_numOfTextLinesToShow.isAuto())
-        return d_formatter->getVerticalExtent(d_window) + 1.f;
-    if (d_numOfTextLinesToShow <= 1.f)
-        return getLineHeight() * d_numOfTextLinesToShow;
-    return getLineHeight() + (d_numOfTextLinesToShow - 1.f) * getVerticalAdvance();
+        d_numOfTextLinesToShow.isAuto() ?
+        d_formatter->getVerticalExtent(d_window) + 1.f :
+        (d_numOfTextLinesToShow <= 1.f) ?
+        getLineHeight() * d_numOfTextLinesToShow :
+        getLineHeight() + (d_numOfTextLinesToShow - 1.f) * getVerticalAdvance());
 }
 
 //----------------------------------------------------------------------------//
@@ -861,7 +858,7 @@ void FalagardStaticText::adjustSizeToContent_wordWrap_notKeepingAspectRatio(
     USize& sizeFunc, float contentMaxWidth, float windowMaxWidth, float epsilon)
 {
     float height(d_window->isHeightAdjustedToContent()  ?
-      sizeFunc.d_height.d_scale*(getContentHeight()+epsilon) + sizeFunc.d_height.d_offset  :
+      sizeFunc.d_height.d_scale*(getContentSize().d_height+epsilon) + sizeFunc.d_height.d_offset  :
       d_window->getPixelSize().d_height);
     UDim height_as_u_dim(d_window->isHeightAdjustedToContent()  ?  UDim(0.f, height) : d_window->getHeight());
     float window_width(d_window->getSizeAdjustedToContent_bisection(

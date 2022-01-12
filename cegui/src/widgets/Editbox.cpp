@@ -35,19 +35,16 @@
 
 namespace CEGUI
 {
-
-EditboxWindowRenderer::EditboxWindowRenderer(const String& name) :
-    WindowRenderer(name, Editbox::EventNamespace)
-{
-}
-
-
 const String Editbox::EventNamespace("Editbox");
 const String Editbox::WidgetTypeName("CEGUI/Editbox");
 const String Editbox::EventValidationStringChanged("ValidationStringChanged");
 const String Editbox::EventTextValidityChanged("TextValidityChanged");
 const String Editbox::ReadOnlyMouseCursorImagePropertyName("ReadOnlyMouseCursorImage");
 
+EditboxWindowRenderer::EditboxWindowRenderer(const String& name) :
+    WindowRenderer(name, Editbox::EventNamespace)
+{
+}
 
 Editbox::Editbox(const String& type, const String& name) :
     EditboxBase(type, name),
@@ -622,6 +619,11 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
         if (isSemanticValueHandled)
             ++e.handled;
     }
+}
+
+bool Editbox::validateWindowRenderer(const WindowRenderer* renderer) const
+{
+    return dynamic_cast<const EditboxWindowRenderer*>(renderer) != nullptr;
 }
 
 }

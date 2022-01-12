@@ -31,6 +31,7 @@
 
 #include "CEGUI/widgets/EditboxBase.h"
 #include "CEGUI/RegexMatcher.h" // FIXME: RegexMatcher::MatchState requires this here
+#include "CEGUI/WindowRenderer.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -40,6 +41,33 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+//! Base class for the EditboxWindowRenderer class
+class CEGUIEXPORT EditboxWindowRenderer : public WindowRenderer
+{
+public:
+    //! Constructor
+    EditboxWindowRenderer(const String& name);
+
+    /*!
+    \brief
+        Return the text code point index that is rendered closest to screen
+        position \a pt.
+
+    \param pt
+        Point object describing a position on the screen in pixels.
+
+    \return
+        Code point index into the text that is rendered closest to screen
+        position \a pt.
+    */
+    virtual size_t getTextIndexFromPosition(const glm::vec2& pt) const = 0;
+
+    //! Editbox text parsing is forcefully disabled
+    virtual bool isTextParsingEnabled() const { return false; }
+};
+
+//----------------------------------------------------------------------------//
 
 //! Class for an Editbox widget
 class CEGUIEXPORT Editbox : public EditboxBase
@@ -180,8 +208,7 @@ protected:
     void onTextChanged(WindowEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;
 
-    
-
+    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
     /*!
     \brief

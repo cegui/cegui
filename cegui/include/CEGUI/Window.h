@@ -2620,8 +2620,7 @@ public:
         return (getDrawModeMask() & drawModeMask) != 0;
     }
 
-    float getContentWidth() const override;
-    float getContentHeight() const override;
+    Sizef getContentSize() const override;
     UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth() const override;
     UDim getHeightOfAreaReservedForContentLowerBoundAsFuncOfElementHeight() const override;
     void adjustSizeToContent() override;

@@ -402,8 +402,7 @@ public:
     */
     bool isWordWrapOn() const;
 
-    float getContentWidth() const override;
-    float getContentHeight() const override;
+    Sizef getContentSize() const override;
     UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfWindowWidth() const override;
     UDim getHeightOfAreaReservedForContentLowerBoundAsFuncOfWindowHeight() const override;
 

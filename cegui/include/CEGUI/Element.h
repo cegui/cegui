@@ -1103,24 +1103,12 @@ public:
 
     /*!
     \brief
-        Get the width of the content of the element.
+        Get width and height of the content of the element.
 
         The meaning of "content" depends on the type of element. For instance,
         the content of a "FalagardStaticText" widget is its text.
-        This method is used by "adjustSizeToContent_direct".
     */
-    virtual float getContentWidth() const;
-
-    /*!
-    \brief
-        Get the height of the content of the element.
-
-        The meaning of "content" depends on the type of element. For instance,
-        the content of a "FalagardStaticText" widget is its text.
-
-        This method is used by "adjustSizeToContent_direct".
-    */
-    virtual float getContentHeight() const;
+    virtual Sizef getContentSize() const;
     
     /*!
     \brief

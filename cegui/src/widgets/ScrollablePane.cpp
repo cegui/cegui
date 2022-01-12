@@ -95,13 +95,13 @@ Rectf ScrollablePane::getContentPixelRect(void) const
 }
 
 //----------------------------------------------------------------------------//
-USize ScrollablePane::getContentSize(void) const
+USize ScrollablePane::getContentPaneSize(void) const
 {
     return getScrolledContainer()->getSize();
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::setContentSize(const USize& size)
+void ScrollablePane::setContentPaneSize(const USize& size)
 {
     getScrolledContainer()->setSize(size);
 }
@@ -589,7 +589,7 @@ void ScrollablePane::addScrollablePaneProperties(void)
     CEGUI_DEFINE_PROPERTY(ScrollablePane, USize,
         "ContentSize", "Property to get/set the content pane area size. Will not set dimensions that are "
         "adjusted to the content.",
-        &ScrollablePane::setContentSize, &ScrollablePane::getContentSize, USize(UDim(0, 0), UDim(0, 0))
+        &ScrollablePane::setContentPaneSize, &ScrollablePane::getContentPaneSize, USize(UDim(0, 0), UDim(0, 0))
     );
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,

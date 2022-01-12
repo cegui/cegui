@@ -30,47 +30,53 @@
 #include "CEGUI/widgets/TabButton.h"
 #include "CEGUI/widgets/TabControl.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardTabButton::TypeName("Core/TabButton");
+const String FalagardTabButton::TypeName("Core/TabButton");
 
-    FalagardTabButton::FalagardTabButton(const String& type) :
-        WindowRenderer(type, "TabButton")
+//----------------------------------------------------------------------------//
+FalagardTabButton::FalagardTabButton(const String& type) :
+    WindowRenderer(type, "TabButton")
+{
+}
+
+//----------------------------------------------------------------------------//
+void FalagardTabButton::createRenderGeometry()
+{
+    TabButton* w = static_cast<TabButton*>(d_window);
+    const WidgetLookFeel& wlf = getLookNFeel();
+
+    TabControl* tc = w->getParent() ? dynamic_cast<TabControl*>(w->getParent()->getParent()) : nullptr;
+    String prefix((tc && tc->getTabPanePosition() == TabControl::TabPanePosition::Bottom) ? "Bottom" : "Top");
+
+    String state;
+    if (w->isEffectiveDisabled())
+        state = "Disabled";
+    else if (w->isSelected())
+        state = "Selected";
+    else if (w->isPushed())
+        state = "Pushed";
+    else if (w->isHovering())
+        state = "Hover";
+    else if (w->isFocused())
+        state = "Focused";
+    else
+        state = "Normal";
+
+    if (!wlf.isStateImageryPresent(prefix + state))
     {
-    }
-
-    void FalagardTabButton::createRenderGeometry()
-    {
-        TabButton* w = static_cast<TabButton*>(d_window);
-        // get WidgetLookFeel for the assigned look.
-        const WidgetLookFeel& wlf = getLookNFeel();
-
-        TabControl* tc = w->getParent() ? dynamic_cast<TabControl*>(w->getParent()->getParent()) : 0;
-        String prefix((tc && tc->getTabPanePosition() == TabControl::TabPanePosition::Bottom) ? "Bottom" : "Top");
-
-        String state;
-        if (w->isEffectiveDisabled())
-            state = "Disabled";
-        else if (w->isSelected())
-            state = "Selected";
-        else if (w->isPushed())
-            state = "Pushed";
-        else if (w->isHovering())
-            state = "Hover";
-        else if (w->isFocused())
-            state = "Focused";
-        else
-            state = "Normal";
-
+        state = "Normal";
         if (!wlf.isStateImageryPresent(prefix + state))
-        {
-            state = "Normal";
-            if (!wlf.isStateImageryPresent(prefix + state))
-                prefix = "";
-        }
-
-        wlf.getStateImagery(prefix + state).render(*w);
+            prefix = "";
     }
 
-} // End of  CEGUI namespace section
+    wlf.getStateImagery(prefix + state).render(*w);
+}
+
+//----------------------------------------------------------------------------//
+Sizef FalagardTabButton::getContentSize() const
+{
+    return getRenderedString().getPixelSize(this);
+}
+
+}

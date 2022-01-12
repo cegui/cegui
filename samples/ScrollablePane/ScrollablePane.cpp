@@ -111,7 +111,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     // Disable autosizing. Windows will be sized relative to the content pane area.
     d_pane->setAdjustWidthToContent(false);
     d_pane->setAdjustHeightToContent(false);
-    d_pane->setContentSize(USize(UDim(0,5000), UDim(0,5000)));
+    d_pane->setContentPaneSize(USize(UDim(0,5000), UDim(0,5000)));
     d_pane->setHorizontalScrollPosition(0.015f);
     panelFixed->addChild(d_pane);
 
@@ -204,7 +204,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     // ScrollablePane viewport and not against the whole content area height.
     pane->setAdjustWidthToContent(false);
     pane->setAdjustHeightToContent(true);
-    pane->setContentSize(USize(UDim(1,0), UDim(0,0)));
+    pane->setContentPaneSize(USize(UDim(1,0), UDim(0,0)));
     panelVertical->addChild(pane);
 
     // Add some windows to the pane one below other to demonstrate relative positioning.
