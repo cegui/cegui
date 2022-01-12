@@ -357,12 +357,12 @@ void WidgetsSample::initialiseSkinCombobox(CEGUI::Window* container)
 
     CEGUI::Window* skinSelectionComboboxLabel = winMgr.createWindow("Vanilla/Label", "SkinSelectionComboboxLabel");
     skinSelectionComboboxLabel->setText("Select a Skin and a Widget");
-    skinSelectionComboboxLabel->setPosition(CEGUI::UVector2(cegui_reldim(0.65f), cegui_reldim(0.12f)));
-    skinSelectionComboboxLabel->setSize(CEGUI::USize(cegui_reldim(0.24f), cegui_reldim(0.07f)));
+    skinSelectionComboboxLabel->setArea(CEGUI::UVector2(cegui_reldim(0.65f), cegui_reldim(0.12f)),
+        CEGUI::USize(cegui_reldim(0.24f), cegui_reldim(0.07f)));
 
     d_skinSelectionCombobox = static_cast<CEGUI::Combobox*>(winMgr.createWindow("Vanilla/Combobox", "SkinSelectionCombobox"));
-    d_skinSelectionCombobox->setPosition(CEGUI::UVector2(cegui_reldim(0.65f), cegui_reldim(0.2f)));
-    d_skinSelectionCombobox->setSize(CEGUI::USize(cegui_reldim(0.24f), cegui_reldim(0.3f)));
+    d_skinSelectionCombobox->setArea(CEGUI::UVector2(cegui_reldim(0.65f), cegui_reldim(0.2f)),
+        CEGUI::USize(cegui_reldim(0.24f), cegui_reldim(0.3f)));
     d_skinSelectionCombobox->setReadOnly(true);
     d_skinSelectionCombobox->setSortingEnabled(false);
 
@@ -382,8 +382,7 @@ void WidgetsSample::initialiseSkinCombobox(CEGUI::Window* container)
 
 void WidgetsSample::initialiseBackgroundWindow(CEGUI::Window* background)
 {
-    background->setPosition(UVector2(cegui_reldim(0), cegui_reldim(0)));
-    background->setSize(USize(cegui_reldim(1), cegui_reldim(1)));
+    background->setArea(UVector2(cegui_reldim(0), cegui_reldim(0)), USize(cegui_reldim(1), cegui_reldim(1)));
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     background->setProperty("Image", "SpaceBackgroundImage");
@@ -394,8 +393,8 @@ void WidgetsSample::initialiseWidgetSelectorListWidget()
     WindowManager& winMgr = WindowManager::getSingleton();
 
     d_widgetSelectorListWidget = static_cast<ListWidget*>(winMgr.createWindow("Vanilla/ListWidget", "WidgetSelectorListWidget"));
-    d_widgetSelectorListWidget->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.075f)));
-    d_widgetSelectorListWidget->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.925f)));
+    d_widgetSelectorListWidget->setArea(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.075f)),
+        CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.925f)));
     d_widgetSelectorListWidget->setVertScrollbarDisplayMode(ScrollbarDisplayMode::WhenNeeded);
     d_widgetSelectorListWidget->setSortMode(ViewSortMode::Ascending);
 
@@ -405,8 +404,8 @@ void WidgetsSample::initialiseWidgetSelectorListWidget()
 
 void WidgetsSample::initialiseWidgetSelectorContainer(CEGUI::Window* widgetSelectorContainer)
 {
-    widgetSelectorContainer->setPosition(CEGUI::UVector2(cegui_reldim(0.6f), cegui_reldim(0.25f)));
-    widgetSelectorContainer->setSize(CEGUI::USize(cegui_reldim(0.325f), cegui_reldim(0.56f)));
+    widgetSelectorContainer->setArea(CEGUI::UVector2(cegui_reldim(0.6f), cegui_reldim(0.25f)),
+        CEGUI::USize(cegui_reldim(0.325f), cegui_reldim(0.56f)));
     widgetSelectorContainer->setText("Widget Selector");
     widgetSelectorContainer->setProperty("VertFormatting", "TopAligned");
     widgetSelectorContainer->setProperty("HorzFormatting", "CentreAligned");
@@ -417,8 +416,8 @@ void WidgetsSample::initialiseWidgetsEventsLog()
     WindowManager& winMgr = WindowManager::getSingleton();
 
     d_widgetsEventsLog = winMgr.createWindow("Vanilla/StaticText", "WidgetEventsLog");
-    d_widgetsEventsLog->setPosition(CEGUI::UVector2(cegui_reldim(0.05f), cegui_reldim(0.65f)));
-    d_widgetsEventsLog->setSize(CEGUI::USize(cegui_reldim(0.9f), cegui_reldim(0.25f)));
+    d_widgetsEventsLog->setArea(CEGUI::UVector2(cegui_reldim(0.05f), cegui_reldim(0.65f)),
+        CEGUI::USize(cegui_reldim(0.9f), cegui_reldim(0.25f)));
     d_widgetsEventsLog->setFont("DejaVuSans-12");
 
     d_widgetsEventsLog->setProperty("VertScrollbar", "true");
@@ -797,8 +796,8 @@ void WidgetsSample::initialiseWidgetDisplayWindow()
     WindowManager& winMgr = WindowManager::getSingleton();
 
     d_widgetDisplayWindow = winMgr.createWindow("Vanilla/FrameWindow", "WidgetDisplayWindow");
-    d_widgetDisplayWindow->setPosition(CEGUI::UVector2(cegui_reldim(0.05f), cegui_reldim(0.05f)));
-    d_widgetDisplayWindow->setSize(CEGUI::USize(cegui_reldim(0.9f), cegui_reldim(0.6f)));
+    d_widgetDisplayWindow->setArea(CEGUI::UVector2(cegui_reldim(0.05f), cegui_reldim(0.05f)),
+        CEGUI::USize(cegui_reldim(0.9f), cegui_reldim(0.6f)));
     d_widgetDisplayWindow->setText("Widget Demo");
 
     d_widgetDisplayWindowInnerWindow = winMgr.createWindow("DefaultWindow", "WidgetDisplayWindowInnerContainer");
@@ -827,8 +826,8 @@ void WidgetsSample::initialiseWidgetInspector(CEGUI::Window* container)
     //Add a tabcontrol serving as WidgetInspector, allowing to switch between events+widgets and the properties display
     TabControl* tabControl = static_cast<TabControl*>(winMgr.createWindow("TaharezLook/TabControl", "WidgetsSampleWidgetInspector"));
     container->addChild(tabControl);
-    tabControl->setSize(CEGUI::USize(cegui_reldim(0.55f), cegui_reldim(0.96f)));
-    tabControl->setPosition(CEGUI::UVector2(cegui_reldim(0.02f), cegui_reldim(0.02f)));
+    tabControl->setArea(CEGUI::UVector2(cegui_reldim(0.02f), cegui_reldim(0.02f)),
+        CEGUI::USize(cegui_reldim(0.55f), cegui_reldim(0.96f)));
 
     //Create the respective windows containing the displays
     CEGUI::Window* widgetMainInspectionContainer = winMgr.createWindow("DefaultWindow", "WidgetInspectionContainer");
@@ -962,8 +961,8 @@ void WidgetsSample::initialiseWidgetPropertiesDisplayWindow(CEGUI::Window* widge
         );
 
     //Create the properties display window
-    d_widgetPropertiesDisplayWindow->setSize(CEGUI::USize(cegui_reldim(0.9f), cegui_reldim(0.9f)));
-    d_widgetPropertiesDisplayWindow->setPosition(CEGUI::UVector2(cegui_reldim(0.05f), cegui_reldim(0.05f)));
+    d_widgetPropertiesDisplayWindow->setArea(CEGUI::UVector2(cegui_reldim(0.05f), cegui_reldim(0.05f)),
+        CEGUI::USize(cegui_reldim(0.9f), cegui_reldim(0.9f)));
 
     widgetPropertiesInspectionContainer->addChild(d_widgetPropertiesDisplayWindow);
 

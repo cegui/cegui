@@ -116,8 +116,7 @@ bool HelloWorldSample::initialise(CEGUI::GUIContext* guiContext)
     //
     // Here we set the FrameWindow so that it is half the size of the display,
     // and centered within the display.
-    wnd->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.25f)));
-    wnd->setSize(USize(cegui_reldim(0.5f), cegui_reldim( 0.5f)));
+    wnd->setArea(UVector2(cegui_reldim(0.25f), cegui_reldim(0.25f)), USize(cegui_reldim(0.5f), cegui_reldim(0.5f)));
 
     // now we set the maximum and minum sizes for the new window.  These are
     // specified using relative co-ordinates, but the important thing to note
@@ -126,8 +125,8 @@ bool HelloWorldSample::initialise(CEGUI::GUIContext* guiContext)
     //
     // here we set a maximum size for the FrameWindow which is equal to the size
     // of the display, and a minimum size of one tenth of the display.
-    wnd->setMaxSize(USize(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
-    wnd->setMinSize(USize(cegui_reldim(0.1f), cegui_reldim( 0.1f)));
+    wnd->setMaxSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
+    wnd->setMinSize(USize(cegui_reldim(0.1f), cegui_reldim(0.1f)));
 
     // As a final step in the initialisation of our sample window, we set the window's
     // text to "Hello World!", so that this text will appear as the caption in the

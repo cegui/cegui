@@ -77,8 +77,7 @@ bool CommonDialogsSample::initialise(CEGUI::GUIContext* guiContext)
 
     wnd->setAlwaysOnTop(true);
 
-    wnd->setPosition(UVector2(cegui_reldim(0.05f), cegui_reldim( 0.25f)));
-    wnd->setSize(USize(cegui_reldim(0.5f), cegui_reldim( 0.5f)));
+    wnd->setArea(UVector2(cegui_reldim(0.05f), cegui_reldim(0.25f)), USize(cegui_reldim(0.5f), cegui_reldim(0.5f)));
     wnd->setText("Common Dialogs Sample - Main Window");
     wnd->setCloseButtonEnabled(false);
 
@@ -90,26 +89,22 @@ bool CommonDialogsSample::initialise(CEGUI::GUIContext* guiContext)
 
     CEGUI::ColourPicker* colourPicker = static_cast<CEGUI::ColourPicker*>(winMgr.createWindow("Vanilla/ColourPicker"));
     wnd->addChild(colourPicker);
-    colourPicker->setPosition(UVector2(UDim(0, 20), UDim(0, 40)));
-    colourPicker->setSize(USize(UDim(0, 100), UDim(0, 30)));
+    colourPicker->setArea(UVector2(UDim(0, 20), UDim(0, 40)), USize(UDim(0, 100), UDim(0, 30)));
     colourPicker->setColour(CEGUI::Colour(1.0f, 0.0f, 0.0f, 0.5f));
 
     colourPicker = static_cast<CEGUI::ColourPicker*>(winMgr.createWindow("Vanilla/ColourPicker"));
     wnd->addChild(colourPicker);
-    colourPicker->setPosition(UVector2(UDim(0, 20), UDim(0, 80)));
-    colourPicker->setSize(USize(UDim(0, 100), UDim(0, 30)));
+    colourPicker->setArea(UVector2(UDim(0, 20), UDim(0, 80)), USize(UDim(0, 100), UDim(0, 30)));
     colourPicker->setColour(CEGUI::Colour(0.0f, 1.0f, 1.0f, 0.0f));
 
     colourPicker = static_cast<CEGUI::ColourPicker*>(winMgr.createWindow("Vanilla/ColourPicker"));
     wnd->addChild(colourPicker);
-    colourPicker->setPosition(UVector2(UDim(0, 20), UDim(0, 120)));
-    colourPicker->setSize(USize(UDim(0, 100), UDim(0, 30)));
+    colourPicker->setArea(UVector2(UDim(0, 20), UDim(0, 120)), USize(UDim(0, 100), UDim(0, 30)));
     colourPicker->setColour(CEGUI::Colour(0.4f, 0.4f, 0.0f, 1.0f));
 
     colourPicker = static_cast<CEGUI::ColourPicker*>(winMgr.createWindow("Vanilla/ColourPicker"));
     wnd->addChild(colourPicker);
-    colourPicker->setPosition(UVector2(UDim(0, 20), UDim(0, 160)));
-    colourPicker->setSize(USize(UDim(0, 100), UDim(0, 30)));
+    colourPicker->setArea(UVector2(UDim(0, 20), UDim(0, 160)), USize(UDim(0, 100), UDim(0, 30)));
     colourPicker->setColour(CEGUI::Colour(1.0f, 0.2f, 0.5f, 0.8f));
 
     return true;

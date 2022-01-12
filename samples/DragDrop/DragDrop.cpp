@@ -137,8 +137,7 @@ bool DragDropSample::handle_ItemDropped(const CEGUI::EventArgs& args)
         dd_args.window->addChild(dd_args.dragDropItem);
         // Now we must reset the item position from it's 'dropped' location,
         // since we're now a child of an entirely different window
-        dd_args.dragDropItem->setPosition(
-            UVector2(UDim(0.05f, 0),UDim(0.05f, 0)));
+        dd_args.dragDropItem->setPosition(UVector2(UDim(0.05f, 0),UDim(0.05f, 0)));
     }
 
     return true;

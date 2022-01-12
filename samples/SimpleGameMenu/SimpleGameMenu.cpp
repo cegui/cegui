@@ -73,8 +73,7 @@ bool SimpleGameMenuSample::initialise(CEGUI::GUIContext* gui_context)
     // here we will use a StaticImage as the root, then we can use it to place a background image
     d_root = win_mgr.createWindow("TaharezLook/StaticImage", "root_wnd");
     // set position and size
-    d_root->setPosition(UVector2(cegui_reldim(0), cegui_reldim(0)));
-    d_root->setSize(USize(cegui_reldim(1), cegui_reldim(1)));
+    d_root->setArea(UVector2(cegui_reldim(0), cegui_reldim(0)), USize(cegui_reldim(1), cegui_reldim(1)));
     // disable frame and standard background
     d_root->setProperty("BackgroundEnabled", "false");
     // set the background image

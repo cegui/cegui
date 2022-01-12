@@ -62,8 +62,7 @@ bool EditboxValidationSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setRootWindow(root);
 
     Window* wnd = root->createChild("AlfiskoSkin/FrameWindow");
-    wnd->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.25f)));
-    wnd->setSize(USize(cegui_reldim(0.5f), cegui_reldim( 0.5f)));
+    wnd->setArea(UVector2(cegui_reldim(0.25f), cegui_reldim(0.25f)), USize(cegui_reldim(0.5f), cegui_reldim(0.5f)));
     wnd->setText("Editbox Validation Sample");
 
     Window* label = wnd->createChild("AlfiskoSkin/Label");
@@ -75,8 +74,7 @@ bool EditboxValidationSample::initialise(CEGUI::GUIContext* guiContext)
         "will be [colour='FFFFBB11']orange");
 
     Editbox* eb = static_cast<Editbox*>(wnd->createChild("AlfiskoSkin/Editbox"));
-    eb->setPosition(UVector2(cegui_reldim(0.1f), cegui_reldim(0.25f)));
-    eb->setSize(USize(cegui_reldim(0.8f), cegui_reldim(0.15f)));
+    eb->setArea(UVector2(cegui_reldim(0.1f), cegui_reldim(0.25f)), USize(cegui_reldim(0.8f), cegui_reldim(0.15f)));
     eb->subscribeEvent(
         Editbox::EventTextValidityChanged,
         Event::Subscriber(&EditboxValidationSample::validationChangeHandler, this));

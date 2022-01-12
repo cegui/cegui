@@ -276,18 +276,12 @@ void TreeView::updateRenderingStateForItem(TreeViewItemRenderingState& item,
 void TreeView::fillRenderingState(TreeViewItemRenderingState& item,
     const ModelIndex& index, float& rendered_max_width, float& rendered_total_height)
 {
-    String text = d_itemModel->getData(index);
-    RenderedString rendered_string = getRenderedStringParser().parse(
-        text, getActualFont(), &d_textColourRect);
-    item.d_string = rendered_string;
-    item.d_text = text;
+    item.d_text = d_itemModel->getData(index);
+    item.d_string = getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect);
     item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);
+    item.d_size = item.d_string.getPixelSize(this);
 
-    item.d_size = Sizef(
-        rendered_string.getHorizontalExtent(this),
-        rendered_string.getVerticalExtent(this));
-
-    float indent = getViewRenderer()->getSubtreeExpanderXIndent(item.d_nestedLevel) +
+    const float indent = getViewRenderer()->getSubtreeExpanderXIndent(item.d_nestedLevel) +
         getViewRenderer()->getSubtreeExpanderSize().d_width;
     rendered_max_width = std::max(rendered_max_width, item.d_size.d_width + indent);
     rendered_total_height += item.d_size.d_height;

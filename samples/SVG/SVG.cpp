@@ -117,9 +117,9 @@ bool SVGSample::initialise(CEGUI::GUIContext* guiContext)
 
     // We create a button and subscribe to its click events
     Window* svgAntialiasingButton = winMgr.createWindow("WindowsLook/Button");
-    svgAntialiasingButton->setSize(CEGUI::USize(cegui_reldim(0.2f), cegui_reldim(0.035f)));
     svgAntialiasingButton->setHorizontalAlignment(HorizontalAlignment::Centre);
-    svgAntialiasingButton->setPosition(CEGUI::UVector2(cegui_absdim(0.0f), cegui_reldim(0.03f)));
+    svgAntialiasingButton->setArea(CEGUI::UVector2(cegui_absdim(0.0f), cegui_reldim(0.03f)),
+        CEGUI::USize(cegui_reldim(0.2f), cegui_reldim(0.035f)));
     svgAntialiasingButton->setText("Switch anti-aliasing mode");
     svgAntialiasingButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&SVGSample::handleAntialiasingButtonClicked, this));
     d_root->addChild(svgAntialiasingButton);
