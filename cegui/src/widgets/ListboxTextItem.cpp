@@ -1,8 +1,8 @@
 /***********************************************************************
-	created:	12/6/2004
-	author:		Paul D Turner
-	
-	purpose:	Implementation of List box text items
+    created:    12/6/2004
+    author:        Paul D Turner
+    
+    purpose:    Implementation of List box text items
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -33,6 +33,11 @@
 #include "CEGUI/Window.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/RenderedStringParser.h"
+#if defined (CEGUI_USE_FRIBIDI)
+#include "CEGUI/FribidiVisualMapping.h"
+#elif defined (CEGUI_USE_MINIBIDI)
+#include "CEGUI/MinibidiVisualMapping.h"
+#endif
 
 namespace CEGUI
 {
@@ -40,8 +45,8 @@ const Colour ListboxTextItem::DefaultTextColour = 0xFFFFFFFF;
 
 //----------------------------------------------------------------------------//
 ListboxTextItem::ListboxTextItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete) :
-	ListboxItem(text, item_id, item_data, disabled, auto_delete),
-	d_textCols(DefaultTextColour, DefaultTextColour, DefaultTextColour, DefaultTextColour),
+    ListboxItem(text, item_id, item_data, disabled, auto_delete),
+    d_textCols(DefaultTextColour, DefaultTextColour, DefaultTextColour, DefaultTextColour),
     d_renderedStringParser(&CEGUI::System::getSingleton().getDefaultRenderedStringParser())
 {
 }
@@ -49,20 +54,13 @@ ListboxTextItem::ListboxTextItem(const String& text, unsigned int item_id, void*
 //----------------------------------------------------------------------------//
 const Font* ListboxTextItem::getFont() const
 {
-	// prefer out own font
-	if (d_font)
-		return d_font;
-	// try our owner window's font setting (may be null if owner uses no existant default font)
-	if (d_owner)
-		return d_owner->getActualFont();
-    // no owner, so the default font is ambiguous (it could be of any context)
-    return nullptr;  
+    return d_font ? d_font : d_owner ? d_owner->getActualFont() : nullptr;  
 }
 
 //----------------------------------------------------------------------------//
 void ListboxTextItem::setFont(const String& font_name)
 {
-	setFont(&FontManager::getSingleton().get(font_name));
+    setFont(&FontManager::getSingleton().get(font_name));
 }
 
 //----------------------------------------------------------------------------//
@@ -75,26 +73,13 @@ void ListboxTextItem::setFont(Font* font)
 //----------------------------------------------------------------------------//
 Sizef ListboxTextItem::getPixelSize() const
 {
-    const Font* fnt = getFont();
-
-    if (!fnt)
+    if (d_textLogical.empty() || !getFont())
         return Sizef(0, 0);
 
     if (!d_renderedStringValid)
         parseTextString();
 
-    Sizef sz(0.0f, 0.0f);
-
-    for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
-    {
-        const Sizef line_sz(d_renderedString.getPixelSize(d_owner, i));
-        sz.d_height += line_sz.d_height;
-
-        if (line_sz.d_width > sz.d_width)
-            sz.d_width = line_sz.d_width;
-    }
-
-    return sz;
+    return d_renderedString.getPixelSize(d_owner);
 }
 
 //----------------------------------------------------------------------------//
@@ -103,60 +88,54 @@ std::vector<GeometryBuffer*> ListboxTextItem::createRenderGeometry(
 {
     std::vector<GeometryBuffer*> geomBuffers;
 
-    if (d_selected && d_selectBrush != nullptr)
+    // Draw selection brush
+    if (d_selected && d_selectBrush)
     {
-        ImageRenderSettings imgRenderSettings(
-            targetRect, clipper, true,
-            d_selectCols, alpha);
-
-        std::vector<GeometryBuffer*> brushGeomBuffers =
-            d_selectBrush->createRenderGeometry(imgRenderSettings);
-
-        geomBuffers.insert(geomBuffers.end(), brushGeomBuffers.begin(),
-            brushGeomBuffers.end());
+        ImageRenderSettings imgRenderSettings(targetRect, clipper, true, d_selectCols, alpha);
+        auto brushGeomBuffers = d_selectBrush->createRenderGeometry(imgRenderSettings);
+        geomBuffers.insert(geomBuffers.end(), brushGeomBuffers.begin(), brushGeomBuffers.end());
     }
 
-    const Font* font = getFont();
-
-    if (!font)
-        return geomBuffers;
-
-    glm::vec2 draw_pos(targetRect.getPosition());
-
-    draw_pos.y += CoordConverter::alignToPixels(
-        (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
-
-    if (!d_renderedStringValid)
-        parseTextString();
-
-    const ColourRect final_colours(ColourRect(0xFFFFFFFF));
-
-    for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
+    // Draw text
+    if (const Font* font = getFont())
     {
-        std::vector<GeometryBuffer*> stringGeomBuffers = d_renderedString.createRenderGeometry(
-            d_owner, i, draw_pos, &final_colours, clipper, 0.0f);
+        if (!d_renderedStringValid)
+            parseTextString();
 
-        geomBuffers.insert(geomBuffers.end(), stringGeomBuffers.begin(),
-            stringGeomBuffers.end());
+        glm::vec2 draw_pos(targetRect.getPosition());
+        draw_pos.y += CoordConverter::alignToPixels((font->getLineSpacing() - font->getFontHeight()) * 0.5f);
+        for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
+        {
+            auto geom = d_renderedString.createRenderGeometry(d_owner, i, draw_pos, nullptr, clipper, 0.0f);
+            geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
 
-        draw_pos.y += d_renderedString.getPixelSize(d_owner, i).d_height;
+            draw_pos.y += d_renderedString.getPixelSize(d_owner, i).d_height;
+        }
     }
 
     return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//
-void ListboxTextItem::setTextColours(Colour top_left_colour,
-                                     Colour top_right_colour,
-                                     Colour bottom_left_colour,
-                                     Colour bottom_right_colour)
+void ListboxTextItem::parseTextString() const
 {
-	d_textCols.d_top_left		= top_left_colour;
-	d_textCols.d_top_right		= top_right_colour;
-	d_textCols.d_bottom_left	= bottom_left_colour;
-	d_textCols.d_bottom_right	= bottom_right_colour;
+#if defined(CEGUI_BIDI_SUPPORT)
+#if defined (CEGUI_USE_FRIBIDI)
+    FribidiVisualMapping bidiVisualMapping;
+#elif defined (CEGUI_USE_MINIBIDI)
+    MinibidiVisualMapping bidiVisualMapping;
+#else
+#error "BIDI Configuration is inconsistant, check your config!"
+#endif
+    bidiVisualMapping.updateVisual(d_textLogical);
+    const String& textVisual = bidiVisualMapping.getTextVisual();
+#else
+    const String& textVisual = d_textLogical;
+#endif
 
-    d_renderedStringValid = false;
+    d_renderedString = d_renderedStringParser->parse(textVisual, getFont(), &d_textCols, DefaultParagraphDirection::Automatic);
+
+    d_renderedStringValid = true;
 }
 
 //----------------------------------------------------------------------------//
@@ -167,10 +146,16 @@ void ListboxTextItem::setText(const String& text)
 }
 
 //----------------------------------------------------------------------------//
-void ListboxTextItem::parseTextString() const
+void ListboxTextItem::setTextColours(Colour top_left_colour,
+                                     Colour top_right_colour,
+                                     Colour bottom_left_colour,
+                                     Colour bottom_right_colour)
 {
-    d_renderedString = d_renderedStringParser->parse(getTextVisual(), getFont(), &d_textCols);
-    d_renderedStringValid = true;
+    d_textCols.d_top_left = top_left_colour;
+    d_textCols.d_top_right = top_right_colour;
+    d_textCols.d_bottom_left = bottom_left_colour;
+    d_textCols.d_bottom_right = bottom_right_colour;
+    d_renderedStringValid = false;
 }
 
 //----------------------------------------------------------------------------//

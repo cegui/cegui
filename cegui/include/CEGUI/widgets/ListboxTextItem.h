@@ -1,8 +1,8 @@
 /***********************************************************************
-	created:	12/6/2004
-	author:		Paul D Turner
-	
-	purpose:	Interface for list box text items
+    created:    12/6/2004
+    author:        Paul D Turner
+    
+    purpose:    Interface for list box text items
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -31,6 +31,11 @@
 #include "./ListboxItem.h"
 #include "../RenderedString.h"
 
+#if defined(_MSC_VER)
+#  pragma warning(push)
+#  pragma warning(disable : 4251)
+#endif
+
 namespace CEGUI
 {
 
@@ -39,98 +44,92 @@ class CEGUIEXPORT ListboxTextItem : public ListboxItem
 {
 public:
 
-    static const Colour	DefaultTextColour;
+    static const Colour    DefaultTextColour;
 
-	ListboxTextItem(const String& text, unsigned int item_id = 0, void* item_data = nullptr, bool disabled = false, bool auto_delete = true);
-    virtual ~ListboxTextItem() = default;
+    ListboxTextItem(const String& text, unsigned int item_id = 0, void* item_data = nullptr, bool disabled = false, bool auto_delete = true);
 
+    /*!
+    \brief
+        Return a pointer to the font being used by this ListboxTextItem
 
-	/*************************************************************************
-		Accessor methods
-	*************************************************************************/
-	/*!
-	\brief
-		Return a pointer to the font being used by this ListboxTextItem
+        This method will try a number of places to find a font to be used. If no font can be
+        found, nullptr is returned.
 
-		This method will try a number of places to find a font to be used.  If no font can be
-		found, NULL is returned.
-
-	\return
-		Font to be used for rendering this item
-	*/
-	const Font*	getFont() const;
+    \return
+        Font to be used for rendering this item
+    */
+    const Font*    getFont() const;
 
 
-	/*!
-	\brief
-		Return the current colours used for text rendering.
+    /*!
+    \brief
+        Return the current colours used for text rendering.
 
-	\return
-		ColourRect object describing the currently set colours
-	*/
-	ColourRect getTextColours() const {return d_textCols;}
+    \return
+        ColourRect object describing the currently set colours
+    */
+    ColourRect getTextColours() const {return d_textCols;}
 
+    /*************************************************************************
+        Manipulator methods
+    *************************************************************************/
+    /*!
+    \brief
+        Set the font to be used by this ListboxTextItem
 
-	/*************************************************************************
-		Manipulator methods
-	*************************************************************************/
-	/*!
-	\brief
-		Set the font to be used by this ListboxTextItem
-
-	\param font
-		Font to be used for rendering this item
-	*/
+    \param font
+        Font to be used for rendering this item
+    */
     void setFont(Font* font);
 
 
-	/*!
-	\brief
-		Set the font to be used by this ListboxTextItem
+    /*!
+    \brief
+        Set the font to be used by this ListboxTextItem
 
-	\param font_name
-		String object containing the name of the Font to be used for rendering this item
-	*/
-	void setFont(const String& font_name);
-
-
-	/*!
-	\brief
-		Set the colours used for text rendering.
-
-	\param cols
-		ColourRect object describing the colours to be used.
-	*/
-	void setTextColours(const ColourRect& cols) { d_textCols = cols; }
+    \param font_name
+        String object containing the name of the Font to be used for rendering this item
+    */
+    void setFont(const String& font_name);
 
 
-	/*!
-	\brief
-		Set the colours used for text rendering.
+    /*!
+    \brief
+        Set the colours used for text rendering.
 
-	\param top_left_colour
-		Colour (as ARGB value) to be applied to the top-left corner of each text glyph rendered.
-
-	\param top_right_colour
-		Colour (as ARGB value) to be applied to the top-right corner of each text glyph rendered.
-
-	\param bottom_left_colour
-		Colour (as ARGB value) to be applied to the bottom-left corner of each text glyph rendered.
-
-	\param bottom_right_colour
-		Colour (as ARGB value) to be applied to the bottom-right corner of each text glyph rendered.
-	*/
-	void setTextColours(Colour top_left_colour, Colour top_right_colour, Colour bottom_left_colour, Colour bottom_right_colour);
+    \param cols
+        ColourRect object describing the colours to be used.
+    */
+    void setTextColours(const ColourRect& cols) { d_textCols = cols; }
 
 
-	/*!
-	\brief
-		Set the colours used for text rendering.
+    /*!
+    \brief
+        Set the colours used for text rendering.
 
-	\param col
-		colour value to be used when rendering.
-	*/
-	void setTextColours(Colour col) { setTextColours(col, col, col, col); }
+    \param top_left_colour
+        Colour (as ARGB value) to be applied to the top-left corner of each text glyph rendered.
+
+    \param top_right_colour
+        Colour (as ARGB value) to be applied to the top-right corner of each text glyph rendered.
+
+    \param bottom_left_colour
+        Colour (as ARGB value) to be applied to the bottom-left corner of each text glyph rendered.
+
+    \param bottom_right_colour
+        Colour (as ARGB value) to be applied to the bottom-right corner of each text glyph rendered.
+    */
+    void setTextColours(Colour top_left_colour, Colour top_right_colour, Colour bottom_left_colour, Colour bottom_right_colour);
+
+
+    /*!
+    \brief
+        Set the colours used for text rendering.
+
+    \param col
+        colour value to be used when rendering.
+    */
+    void setTextColours(Colour col) { setTextColours(col, col, col, col); }
 
     /*!
     \brief
@@ -156,20 +155,23 @@ public:
     void setText(const String& text) override;
     bool handleFontRenderSizeChange(const Font* font) override;
     Sizef getPixelSize() const override;
-    std::vector<GeometryBuffer*> createRenderGeometry(
-        const Rectf& targetRect, float alpha, const Rectf* clipper) const override;
+    std::vector<GeometryBuffer*> createRenderGeometry(const Rectf& targetRect, float alpha, const Rectf* clipper) const override;
 
 protected:
 
     void parseTextString() const;
 
-	Font*		                 d_font = nullptr;				//!< Font used for rendering text.
+    Font*                         d_font = nullptr;                //!< Font used for rendering text.
     CEGUI::RenderedStringParser* d_renderedStringParser;        //!< pointer to currently used render string parser.
-    ColourRect	                 d_textCols;			        //!< Colours used for rendering the text.
+    ColourRect                     d_textCols;                    //!< Colours used for rendering the text.
     mutable RenderedString       d_renderedString;              //!< RenderedString drawn by this item.
     mutable bool                 d_renderedStringValid = false; //!< boolean used to track when item state changes (and needs re-parse)
 };
 
 }
 
-#endif	// end of guard _CEGUIListboxTextItem_h_
+#if defined(_MSC_VER)
+#  pragma warning(pop)
+#endif
+
+#endif
