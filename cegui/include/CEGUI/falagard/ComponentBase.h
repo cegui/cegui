@@ -33,12 +33,13 @@
 
 namespace CEGUI
 {
+
 //! Common base class used for renderable components within an ImagerySection.
 class CEGUIEXPORT FalagardComponentBase
 {
 public:
-    FalagardComponentBase();
-    virtual ~FalagardComponentBase();
+
+    virtual ~FalagardComponentBase() = default;
 
     /*!
     \brief
@@ -86,7 +87,7 @@ public:
     \return
         ComponentArea object describing the component's current target area.
     */
-    const ComponentArea& getComponentArea() const;
+    const ComponentArea& getComponentArea() const { return d_area; }
 
     /*!
     \brief
@@ -95,7 +96,7 @@ public:
     \param area
         ComponentArea object describing a new target area for the component.
     */
-    void setComponentArea(const ComponentArea& area);
+    void setComponentArea(const ComponentArea& area) { d_area = area; }
 
     /*!
     \brief
@@ -105,7 +106,7 @@ public:
         ColourRect object holding the colours currently in use by this
         component.
     */
-    const ColourRect& getColours() const;
+    const ColourRect& getColours() const { return d_colours; }
 
     /*!
     \brief
@@ -114,7 +115,7 @@ public:
     \param cols
         ColourRect object describing the colours to be used by this component.
     */
-    void setColours(const ColourRect& cols);
+    void setColours(const ColourRect& cols) { d_colours = cols; }
 
     /*!
     \brief
@@ -123,7 +124,7 @@ public:
     \return
         String object holding the name of the property.
     */
-    const String& getColoursPropertySource() const;
+    const String& getColoursPropertySource() const { return d_colourPropertyName; }
 
     /*!
     \brief
@@ -132,13 +133,13 @@ public:
     \param property
         String containing the name of the property.
     */
-    void setColoursPropertySource(const String& property);
+    void setColoursPropertySource(const String& property) { d_colourPropertyName = property; }
 
     //! perform any processing required due to the given font having changed.
-    virtual bool handleFontRenderSizeChange(Window& window,
-                                            const Font* font) const;
+    virtual bool handleFontRenderSizeChange(Window& window, const Font* font) const;
 
 protected:
+
     /*!
     \brief
         Helper function to initialise a ColourRect with appropriate values
@@ -177,7 +178,7 @@ protected:
     //! Destination area for this component.
     ComponentArea d_area;
     //! base colours to be applied when rendering the image component.
-    ColourRect d_colours;
+    ColourRect d_colours = 0xFFFFFFFF;
     //! name of property to fetch colours from.
     String d_colourPropertyName;
 };
