@@ -154,6 +154,9 @@ public:
     //! Override this to provide an ability to assign custom rendered string parser to the window
     virtual RenderedStringParser* getCustomRenderedStringParser() const { return nullptr; }
 
+    //! Override this to provide an ability to control visual text parsing
+    virtual bool isTextParsingEnabled() const { return true; }
+
     /*!
     \brief
         Get the width of the content of the window.

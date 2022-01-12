@@ -42,7 +42,7 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-BidiCharType MinibidiVisualMapping::getBidiCharType(const utf32 char_to_check) const
+BidiCharType MinibidiVisualMapping::getBidiCharType(const char32_t char_to_check) const
 {
     switch (getType(char_to_check))
     {
@@ -66,9 +66,8 @@ bool MinibidiVisualMapping::reorderFromLogicalToVisual(const String& logical,
     l2v.resize(logical.length());
     v2l.resize(logical.length());
 
-    doBidi(visual.ptr(), static_cast<int>(logical.length()),
-           true, false,
-           &v2l[0], &l2v[0]);
+    auto ptr = const_cast<unsigned int*>(reinterpret_cast<const unsigned int*>(visual.c_str()));
+    doBidi(ptr, static_cast<int>(logical.length()), true, false, &v2l[0], &l2v[0]);
 
     return true;
 }

@@ -31,6 +31,9 @@
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/Font.h"
+#ifdef CEGUI_BIDI_SUPPORT
+#include "CEGUI/FontGlyph.h" // FIXME: for getAdvance() in old code. Maybe now should be solved differently!
+#endif
 #include "CEGUI/BidiVisualMapping.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 
@@ -103,11 +106,7 @@ void FalagardEditbox::createRenderGeometry()
     d_lastTextOffset = text_offset_logical;
     const float text_offset_visual = textOffsetVisual(text_area, text_extent);
 
-#ifdef CEGUI_BIDI_SUPPORT
-    renderTextBidi(wlf, visual_text, text_area, text_offset_visual);
-#else
-    createRenderGeometryForTextWithoutBidi(wlf, visual_text, text_area, text_offset_visual);
-#endif
+    createRenderGeometryForText(wlf, visual_text, text_area, text_offset_visual);
 
     renderCaret(caret_imagery, text_area, text_offset_visual, extent_to_caret_visual);
 }
@@ -263,86 +262,9 @@ float FalagardEditbox::textOffsetVisual(const Rectf& text_area, const float text
     } 
 }
 
-//----------------------------------------------------------------------------//
-void FalagardEditbox::createRenderGeometryForTextWithoutBidi(
-    const WidgetLookFeel& wlf,
-    const String& text,
-    const Rectf& text_area,
-    float text_offset)
-{
-    const Font* font = d_window->getActualFont();
-
-    // setup initial rect for text formatting
-    Rectf text_part_rect(text_area);
-    // allow for scroll position
-    text_part_rect.d_min.x += text_offset;
-    // centre text vertically within the defined text area
-    text_part_rect.d_min.y += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
-
-    ColourRect colours;
-    // get unhighlighted text colour (saves accessing property twice)
-    ColourRect unselectedColours;
-    setColourRectToUnselectedTextColour(unselectedColours);
-    // see if the editbox is active or inactive.
-    Editbox* const w = static_cast<Editbox*>(d_window);
-    const bool active = editboxIsFocused();
-    DefaultParagraphDirection defaultParagraphDir = w->getDefaultParagraphDirection();
-
-    if (w->getSelectionLength() != 0)
-    {
-        // calculate required start and end offsets of selection imagery.
-        float selStartOffset =
-            font->getTextAdvance(text.substr(0, w->getSelectionStart()));
-        float selEndOffset =
-            font->getTextAdvance(text.substr(0, w->getSelectionEnd()));
-
-        // calculate area for selection imagery.
-        Rectf hlarea(text_area);
-        hlarea.d_min.x += text_offset + selStartOffset;
-        hlarea.d_max.x = hlarea.d_min.x + (selEndOffset - selStartOffset);
-
-        // create render geometry for the selection imagery.
-        const String& stateName = active ? "ActiveSelection" : "InactiveSelection";
-        wlf.getStateImagery(stateName).render(*w, hlarea, nullptr, &text_area);
-    }
-
-    // create render geometry for pre-highlight text
-    String sect = text.substr(0, w->getSelectionStart());
-    colours = unselectedColours;
-
-    
-
-    auto preHighlightTextGeomBuffers = font->createTextRenderGeometry(
-        sect, text_part_rect.d_min.x,
-        text_part_rect.getPosition(),
-        &text_area, true, colours, defaultParagraphDir);
-
-    w->appendGeometryBuffers(preHighlightTextGeomBuffers);
-
-    // create render geometry for highlight text
-    sect = text.substr(w->getSelectionStart(), w->getSelectionLength());
-    setColourRectToSelectedTextColour(colours);
-
-    auto highlitTextGeomBuffers = font->createTextRenderGeometry(
-        sect, text_part_rect.d_min.x, text_part_rect.getPosition(),
-        &text_area, true, colours, defaultParagraphDir);
-
-    w->appendGeometryBuffers(highlitTextGeomBuffers);
-
-    // create render geometry for  post-highlight text
-    sect = text.substr(w->getSelectionEnd());
-    colours = unselectedColours;
-
-     auto postHighlitTextGeomBuffers = font->createTextRenderGeometry(
-         sect, text_part_rect.d_min.x, text_part_rect.getPosition(),
-         &text_area, true, colours, defaultParagraphDir);
-
-    w->appendGeometryBuffers(postHighlitTextGeomBuffers);
-}
-
 #ifdef CEGUI_BIDI_SUPPORT
 //----------------------------------------------------------------------------//
-void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
+void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
                                      const String& text,
                                      const Rectf& text_area,
                                      float text_offset)
@@ -352,9 +274,9 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
     // setup initial rect for text formatting
     Rectf text_part_rect(text_area);
     // allow for scroll position
-    text_part_rect.d_min.d_x += text_offset;
+    text_part_rect.d_min.x += text_offset;
     // centre text vertically within the defined text area
-    text_part_rect.d_min.d_y += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
+    text_part_rect.d_min.y += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
 
     ColourRect colours;
     // get unhighlighted text colour (saves accessing property twice)
@@ -368,9 +290,12 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
     {
         // no highlighted text - we can draw the whole thing
         colours = unselectedColour;
-        text_part_rect.d_min.d_x =
-            font->drawText(w->getGeometryBuffers(), text,
-                           text_part_rect.getPosition(), &text_area, colours);
+        auto textGeomBuffers = font->createTextRenderGeometry(
+            text, text_part_rect.d_min.x,
+            text_part_rect.getPosition(),
+            &text_area, true, colours, w->getDefaultParagraphDirection());
+
+        w->appendGeometryBuffers(textGeomBuffers);
     }
     else
     {
@@ -396,18 +321,17 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
                 realPos >= w->getSelectionStart() &&
                 realPos < w->getSelectionStart() + w->getSelectionLength();
 
-            float charAdvance = font->getGlyphForCodepoint(currChar[0])->getAdvance(1.0f);
+            float charAdvance = font->getGlyphForCodepoint(currChar[0])->getAdvance();
 
             if (highlighted)
             {
                 setColourRectToSelectedTextColour(colours);
 
                 {
-
                     // calculate area for selection imagery.
                     Rectf hlarea(text_area);
-                    hlarea.d_min.d_x = text_part_rect.d_min.d_x ;
-                    hlarea.d_max.d_x = text_part_rect.d_min.d_x + charAdvance ;
+                    hlarea.d_min.x = text_part_rect.d_min.x ;
+                    hlarea.d_max.x = text_part_rect.d_min.x + charAdvance;
 
                     // render the selection imagery.
                     wlf.getStateImagery(active ? "ActiveSelection" :
@@ -420,14 +344,93 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
             {
                 colours = unselectedColour;
             }
-            font->drawText(w->getGeometryBuffers(), currChar,
-                           text_part_rect.getPosition(), &text_area, colours);
+
+            auto textGeomBuffers = font->createTextRenderGeometry(
+                currChar, text_part_rect.d_min.x,
+                text_part_rect.getPosition(),
+                &text_area, true, colours, w->getDefaultParagraphDirection());
+
+            w->appendGeometryBuffers(textGeomBuffers);
 
             // adjust rect for next section
-            text_part_rect.d_min.d_x += charAdvance;
+            text_part_rect.d_min.x += charAdvance;
 
         }
     }
+}
+#else // no CEGUI_BIDI_SUPPORT
+//----------------------------------------------------------------------------//
+void FalagardEditbox::createRenderGeometryForText(
+    const WidgetLookFeel& wlf,
+    const String& text,
+    const Rectf& text_area,
+    float text_offset)
+{
+    const Font* font = d_window->getActualFont();
+
+    // setup initial rect for text formatting
+    Rectf text_part_rect(text_area);
+    // allow for scroll position
+    text_part_rect.d_min.x += text_offset;
+    // centre text vertically within the defined text area
+    text_part_rect.d_min.y += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
+
+    ColourRect colours;
+    // get unhighlighted text colour (saves accessing property twice)
+    ColourRect unselectedColours;
+    setColourRectToUnselectedTextColour(unselectedColours);
+    // see if the editbox is active or inactive.
+    Editbox* const w = static_cast<Editbox*>(d_window);
+    const bool active = editboxIsFocused();
+
+    if (w->getSelectionLength() != 0)
+    {
+        // calculate required start and end offsets of selection imagery.
+        float selStartOffset =
+            font->getTextAdvance(text.substr(0, w->getSelectionStart()));
+        float selEndOffset =
+            font->getTextAdvance(text.substr(0, w->getSelectionEnd()));
+
+        // calculate area for selection imagery.
+        Rectf hlarea(text_area);
+        hlarea.d_min.x += text_offset + selStartOffset;
+        hlarea.d_max.x = hlarea.d_min.x + (selEndOffset - selStartOffset);
+
+        // create render geometry for the selection imagery.
+        const String& stateName = active ? "ActiveSelection" : "InactiveSelection";
+        wlf.getStateImagery(stateName).render(*w, hlarea, nullptr, &text_area);
+    }
+
+    // create render geometry for pre-highlight text
+    String sect = text.substr(0, w->getSelectionStart());
+    colours = unselectedColours;
+
+    auto preHighlightTextGeomBuffers = font->createTextRenderGeometry(
+        sect, text_part_rect.d_min.x,
+        text_part_rect.getPosition(),
+        &text_area, true, colours, w->getDefaultParagraphDirection());
+
+    w->appendGeometryBuffers(preHighlightTextGeomBuffers);
+
+    // create render geometry for highlight text
+    sect = text.substr(w->getSelectionStart(), w->getSelectionLength());
+    setColourRectToSelectedTextColour(colours);
+
+    auto highlitTextGeomBuffers = font->createTextRenderGeometry(
+        sect, text_part_rect.d_min.x, text_part_rect.getPosition(),
+        &text_area, true, colours, w->getDefaultParagraphDirection());
+
+    w->appendGeometryBuffers(highlitTextGeomBuffers);
+
+    // create render geometry for  post-highlight text
+    sect = text.substr(w->getSelectionEnd());
+    colours = unselectedColours;
+
+    auto postHighlitTextGeomBuffers = font->createTextRenderGeometry(
+        sect, text_part_rect.d_min.x, text_part_rect.getPosition(),
+        &text_area, true, colours, w->getDefaultParagraphDirection());
+
+    w->appendGeometryBuffers(postHighlitTextGeomBuffers);
 }
 #endif
 

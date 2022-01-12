@@ -188,16 +188,11 @@ protected:
     */
     float textOffsetVisual(const Rectf& text_area, const float text_extent) const;
 
-    void createRenderGeometryForTextWithoutBidi(const WidgetLookFeel& wlf,
-                          const String& text,
-                          const Rectf& text_area,
-                          float text_offset);
-#ifdef CEGUI_BIDI_SUPPORT
-    void renderTextBidi(const WidgetLookFeel& wlf,
-                        const String& text,
-                        const Rectf& text_area,
-                        float text_offset);
-#endif
+    void createRenderGeometryForText(const WidgetLookFeel& wlf,
+                                     const String& text,
+                                     const Rectf& text_area,
+                                     float text_offset);
+
     bool editboxIsFocused() const;
     bool editboxIsReadOnly() const;
     void renderCaret(const ImagerySection& imagery,

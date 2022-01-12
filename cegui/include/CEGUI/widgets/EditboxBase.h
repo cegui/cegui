@@ -62,6 +62,9 @@ public:
         position \a pt.
     */
     virtual size_t getTextIndexFromPosition(const glm::vec2& pt) const = 0;
+
+    //! Editbox text parsing is forcefully disabled
+    virtual bool isTextParsingEnabled() const { return false; }
 };
 
 //----------------------------------------------------------------------------//
@@ -166,7 +169,7 @@ public:
         - true if the Editbox has input focus.
         - false if the Editbox does not have input focus.
     */
-    virtual bool hasInputFocus() const;
+    virtual bool hasInputFocus() const { return isFocused(); }
 
     bool performPaste(Clipboard& clipboard) override = 0;
 
@@ -374,11 +377,24 @@ public:
     */
     virtual void setMaxTextLength(size_t max_len) = 0;
 
+    /*!
+    \brief
+        Return text string with \e visual ordering of glyphs. This
+        only returns meaningful data if using only bidi. Will return
+        the regular text String if using raqm or no bidi.
+    */
+    const String& getTextVisual() const;
+
     //! Gets the default paragraph direction for the displayed text.
     DefaultParagraphDirection getDefaultParagraphDirection() const { return d_defaultParagraphDirection; }
 
     //! Sets the default paragraph direction for the displayed text.
     void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);
+
+#ifdef CEGUI_BIDI_SUPPORT
+    //! return the pointer to the BidiVisualMapping for this window, if any.
+    const BidiVisualMapping* getBidiVisualMapping() const { return d_bidiVisualMapping.get(); }
+#endif
 
     //! \copydoc Window::performCopy
     bool performCopy(Clipboard& clipboard) override;
@@ -396,6 +412,7 @@ public:
     bool performRedo() override;
 
 protected:
+
     // Inherited methods
     bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
@@ -579,37 +596,47 @@ protected:
     void onCaptureLost(WindowEventArgs& e) override;
 
     void onCharacter(TextEventArgs& e) override = 0;
-    void onTextChanged(WindowEventArgs& e) override = 0;
+    void onTextChanged(WindowEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override = 0;
 
-    //! True if the editbox is in read-only mode
-    bool d_readOnly;
+#ifdef CEGUI_BIDI_SUPPORT
+    //! pointer to bidirection support object
+    std::unique_ptr<BidiVisualMapping> d_bidiVisualMapping;
+#endif
+
     //! The read only mouse cursor image.
-    const Image* d_readOnlyCursorImage;
-    //! True if the editbox text should be rendered masked.
-    bool d_textMaskingEnabled;
+    const Image* d_readOnlyCursorImage = nullptr;
     //! Code point to use when rendering masked text.
-    std::uint32_t d_textMaskingCodepoint;
+    std::uint32_t d_textMaskingCodepoint = '*';
     //! Maximum number of characters for this Editbox.
     size_t d_maxTextLen;
     /*! Position of the caret / insert-point, relative to the beginning
         of the string and measured in Unicode code units (or ASCII characters).
     */
-    size_t d_caretPos;
+    size_t d_caretPos = 0;
     //! Start of selection area.
-    size_t d_selectionStart;
+    size_t d_selectionStart = 0;
     //! End of selection area.
-    size_t d_selectionEnd;
-    //! true when a selection is being dragged.
-    bool d_dragging;
+    size_t d_selectionEnd = 0;
     //! Selection index for drag selection anchor point.
     size_t d_dragAnchorIdx;
     //! Undo handler
     UndoHandler *d_undoHandler;
     //! Default direction of the paragraph, relevant for bidirectional text.
     DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
+    //! True if the editbox is in read-only mode
+    bool d_readOnly = false;
+    //! True if the editbox text should be rendered masked.
+    bool d_textMaskingEnabled = false;
+    //! true when a selection is being dragged.
+    bool d_dragging = false;
+#ifdef CEGUI_BIDI_SUPPORT
+    //! whether bidi visual mapping has been updated since last text change.
+    mutable bool d_bidiDataValid;
+#endif
 
 private:
+
     void addEditboxBaseProperties();
 };
 

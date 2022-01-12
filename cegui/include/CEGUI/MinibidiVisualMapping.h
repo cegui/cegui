@@ -29,19 +29,19 @@
 
 #include "CEGUI/BidiVisualMapping.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+
 //! minibidi based implementation of BidiVisualMapping.
 class MinibidiVisualMapping : public BidiVisualMapping
 {
 public:
-    // implement required interface.
+
     BidiCharType getBidiCharType(const char32_t char_to_check) const override;
     bool reorderFromLogicalToVisual(const String& logical, String& visual,
-                                    StrIndexList& l2v, StrIndexList& v2l) const override;
+        std::vector<int>& l2v, std::vector<int>& v2l) const override;
 };
 
-} // End of  CEGUI namespace section
+}
 
 #endif
