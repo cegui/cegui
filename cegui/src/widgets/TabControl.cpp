@@ -517,34 +517,19 @@ void TabControl::onFontChanged(WindowEventArgs&)
 void TabControl::calculateTabButtonSizePosition(size_t index)
 {
     TabButton* btn = d_tabButtonVector[index];
-    // relative height is always 1.0 for buttons since they are embedded in a
-    // panel of the correct height already
-    UVector2 position(cegui_absdim(0.0f), cegui_absdim(0.0f));
-    USize size(cegui_absdim(0.0f), cegui_reldim(1.0f));
 
     // x position is based on previous button
-    if (!index)
-    {
-        // First button
-        position.d_x = cegui_absdim(d_firstTabOffset);
-    }
-    else
-    {
-        Window* prevButton = d_tabButtonVector [index - 1];
+    const UVector2 position(
+        index ? (d_tabButtonVector[index - 1]->getArea().d_max.d_x) : cegui_absdim(d_firstTabOffset),
+        cegui_absdim(0.0f));
 
-        // position is prev pos + width
-        position.d_x = prevButton->getArea().d_max.d_x;
-    }
-
-    size.d_width =
-        cegui_absdim(btn->getRenderedString().getHorizontalExtent(btn)) +
-            getTabTextPadding() + getTabTextPadding();
+    // height is always 100% for buttons since they are embedded in a panel of the correct height already
+    const USize size(cegui_absdim(btn->getContentSize().d_width) + d_tabPadding + d_tabPadding, cegui_reldim(1.0f));
 
     btn->setArea(position, size);
 
-    const float left_x = position.d_x.d_offset;
-    btn->setVisible ((left_x < getPixelSize ().d_width) &&
-                     (left_x + btn->getPixelSize ().d_width > 0));
+    const float x = position.d_x.d_offset;
+    btn->setVisible((x < getPixelSize().d_width) && (x + btn->getPixelSize().d_width > 0));
     btn->invalidate();
 }
 /*************************************************************************

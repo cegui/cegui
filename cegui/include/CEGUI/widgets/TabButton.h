@@ -30,10 +30,12 @@
 #define _CEGUITabButton_h_
 
 #include "./ButtonBase.h"
+#include "../WindowRenderer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
 /*!
 \brief
     Base class for TabButtons.  A TabButton based class is used internally as
@@ -110,6 +112,7 @@ public:
     Window* getTargetWindow(void) { return d_targetWindow; }
 
 protected:
+
     /*************************************************************************
     Implementation Data
     *************************************************************************/

@@ -29,24 +29,15 @@
 #include "CEGUI/widgets/TabButton.h"
 #include "CEGUI/GUIContext.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 const String TabButton::EventNamespace("TabButton");
 const String TabButton::WidgetTypeName("CEGUI/TabButton");
-
-
-/*************************************************************************
-	Event name constants
-*************************************************************************/
 const String TabButton::EventClicked( "Clicked" );
 const String TabButton::EventDragged( "Dragged" );
 const String TabButton::EventScrolled( "Scrolled" );
 
-
-/*************************************************************************
-	Constructor
-*************************************************************************/
+//----------------------------------------------------------------------------//
 TabButton::TabButton(const String& type, const String& name) :
 	ButtonBase(type, name),
     d_selected(false),
@@ -74,7 +65,6 @@ void TabButton::setTargetWindow(Window* wnd)
     setText(wnd->getText());
     // Parent control will keep text up to date, since changes affect layout
 }
-
 
 /*************************************************************************
 	handler invoked internally when the button is clicked.

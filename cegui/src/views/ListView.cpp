@@ -315,7 +315,7 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index,
     item.d_text = d_itemModel->getData(index);
 
     item.setStringAndFormatting(
-        getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect),
+        getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect, DefaultParagraphDirection::Automatic),
         d_horzFormatting
     );
 

@@ -277,7 +277,7 @@ void TreeView::fillRenderingState(TreeViewItemRenderingState& item,
     const ModelIndex& index, float& rendered_max_width, float& rendered_total_height)
 {
     item.d_text = d_itemModel->getData(index);
-    item.d_string = getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect);
+    item.d_string = getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect, DefaultParagraphDirection::Automatic);
     item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);
     item.d_size = item.d_string.getPixelSize(this);
 

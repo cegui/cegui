@@ -131,13 +131,7 @@ bool WindowRenderer::handleFontRenderSizeChange(const Font* const font)
 }
 
 //----------------------------------------------------------------------------//
-float WindowRenderer::getContentWidth() const
-{
-    throw InvalidRequestException("This function isn't implemented for this type of window renderer.");
-}
-
-//----------------------------------------------------------------------------//
-float WindowRenderer::getContentHeight() const
+Sizef WindowRenderer::getContentSize() const
 {
     throw InvalidRequestException("This function isn't implemented for this type of window renderer.");
 }

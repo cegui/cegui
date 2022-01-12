@@ -159,23 +159,13 @@ public:
 
     /*!
     \brief
-        Get the width of the content of the window.
+        Get width and height of the content of the window.
 
-        See the documentaion for "Window::getContentWidth" for more details.
+        See the documentaion for "Window::getContentSize" for more details.
 
-    \see Window::getContentWidth
+    \see Window::getContentSize
     */
-    virtual float getContentWidth() const;
-
-    /*!
-    \brief
-        Get the height of the content of the window.
-
-        See the documentaion for "Window::getContentHeight" for more details.
-
-    \see Window::getContentHeight
-    */
-    virtual float getContentHeight() const;
+    virtual Sizef getContentSize() const;
 
     /*!
     \brief

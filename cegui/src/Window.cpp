@@ -3257,19 +3257,11 @@ Sizef Window::getRootContainerSize() const
 }
 
 //----------------------------------------------------------------------------//
-float Window::getContentWidth() const
+Sizef Window::getContentSize() const
 { 
     if (d_windowRenderer)
-        return d_windowRenderer->getContentWidth();
-    return Element::getContentWidth();
-}
-
-//----------------------------------------------------------------------------//
-float Window::getContentHeight() const
-{
-    if (d_windowRenderer)
-        return d_windowRenderer->getContentHeight();
-    return Element::getContentHeight();
+        return d_windowRenderer->getContentSize();
+    return Element::getContentSize();
 }
 
 //----------------------------------------------------------------------------//

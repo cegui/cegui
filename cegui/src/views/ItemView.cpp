@@ -27,6 +27,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 #include "CEGUI/views/ItemView.h"
+#include "CEGUI/System.h" // FIXME: needed for duplicated code from TextComponent, remove when fixed!
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/widgets/Scrollbar.h"
@@ -150,6 +151,30 @@ ItemView::ItemView(const String& type, const String& name) :
 ItemView::~ItemView()
 {
     disconnectModelEvents();
+}
+
+//----------------------------------------------------------------------------//
+RenderedStringParser& ItemView::getRenderedStringParser() const
+{
+    if (auto renderer = getWindowRenderer())
+    {
+        // if parsing is disabled, we use a DefaultRenderedStringParser that creates
+        // a rendered string to render the input text verbatim (i.e. no parsing).
+        if (!renderer->isTextParsingEnabled())
+            return CEGUI::System::getSingleton().getDefaultRenderedStringParser();
+
+        // Next prefer a custom RenderedStringParser assigned to this Window.
+        if (auto parser = renderer->getCustomRenderedStringParser())
+            return *parser;
+    }
+
+    // Next prefer any globally set RenderedStringParser.
+    if (auto parser = CEGUI::System::getSingleton().getDefaultCustomRenderedStringParser())
+        return *parser;
+
+    // if parsing is enabled and no custom RenderedStringParser is set anywhere,
+    // use the system's BasicRenderedStringParser to do the parsing.
+    return CEGUI::System::getSingleton().getBasicRenderedStringParser();
 }
 
 //----------------------------------------------------------------------------//

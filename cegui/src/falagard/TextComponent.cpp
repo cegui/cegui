@@ -308,15 +308,17 @@ bool TextComponent::handleFontRenderSizeChange(Window& window, const Font* font)
 //----------------------------------------------------------------------------//
 RenderedStringParser& TextComponent::getRenderedStringParser(const Window& window) const
 {
-    // if parsing is disabled, we use a DefaultRenderedStringParser that creates
-    // a rendered string to render the input text verbatim (i.e. no parsing).
-    if (!window.getWindowRenderer() || !window.getWindowRenderer()->isTextParsingEnabled())
-        return CEGUI::System::getSingleton().getDefaultRenderedStringParser();
-
-    // Next prefer a custom RenderedStringParser assigned to this Window.
     if (auto renderer = window.getWindowRenderer())
+    {
+        // if parsing is disabled, we use a DefaultRenderedStringParser that creates
+        // a rendered string to render the input text verbatim (i.e. no parsing).
+        if (!renderer->isTextParsingEnabled())
+            return CEGUI::System::getSingleton().getDefaultRenderedStringParser();
+
+        // Next prefer a custom RenderedStringParser assigned to this Window.
         if (auto parser = renderer->getCustomRenderedStringParser())
             return *parser;
+    }
 
     // Next prefer any globally set RenderedStringParser.
     if (auto parser = CEGUI::System::getSingleton().getDefaultCustomRenderedStringParser())

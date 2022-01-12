@@ -456,17 +456,6 @@ protected:
 	*/
 	virtual void	sizeToContent_impl(void);
 
-
-	/*!
-	\brief
-		Returns the Size in unclipped pixels of the content attached to this ItemListBase that is attached to it.
-
-	\return
-		Size object describing in unclipped pixels the size of the content ItemEntries attached to this menu.
-	*/
-	virtual Sizef getContentSize() const = 0;
-
-
 	/*!
 	\brief
 		Return a Rect object describing, in un-clipped pixels, the window relative area

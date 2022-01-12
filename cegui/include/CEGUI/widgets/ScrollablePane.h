@@ -146,7 +146,7 @@ public:
         USize object that details the current size of the content
         pane attached to this ScrollablePane.
     */
-    USize getContentSize() const;
+    USize getContentPaneSize() const;
 
     /*!
     \brief
@@ -160,7 +160,7 @@ public:
         USize object that details the size to use for the content
         pane attached to this ScrollablePane.
     */
-    void setContentSize(const USize& size);
+    void setContentPaneSize(const USize& size);
 
     /*!
     \brief

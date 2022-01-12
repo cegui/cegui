@@ -29,36 +29,34 @@
 
 #include "CEGUI/WindowRendererSets/Core/Module.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-    /*!
-    \brief
-        TabButton class for the FalagardBase module.
 
-        This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
+/*!
+\brief
+    TabButton class for the FalagardBase module.
 
-        States (missing states will default to 'Normal'):
-            - Normal    - Rendering for when the tab button is neither selected nor has the cursor hovering over it.
-            - Hover     - Rendering for then the tab button has the cursor hovering over it.
-            - Selected  - Rendering for when the tab button is the button for the selected tab.
-            - Disabled  - Rendering for when the tab button is disabled.
-    */
-    class COREWRSET_API FalagardTabButton : public WindowRenderer
-    {
-    public:
-        static const String TypeName;     //! type name for this widget.
+    This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
-        /*!
-        \brief
-            Constructor
-        */
-        FalagardTabButton(const String& type);
+    States (missing states will default to 'Normal'):
+        - Normal    - Rendering for when the tab button is neither selected nor has the cursor hovering over it.
+        - Hover     - Rendering for then the tab button has the cursor hovering over it.
+        - Selected  - Rendering for when the tab button is the button for the selected tab.
+        - Disabled  - Rendering for when the tab button is disabled.
+*/
+class COREWRSET_API FalagardTabButton : public WindowRenderer
+{
+public:
 
-        void createRenderGeometry() override;
-    };
+    static const String TypeName; //!< Type name for this widget.
 
-} // End of  CEGUI namespace section
+    FalagardTabButton(const String& type);
 
+    void createRenderGeometry() override;
 
-#endif  // end of guard _FalTabButton_h_
+    virtual Sizef getContentSize() const override;
+};
+
+}
+
+#endif

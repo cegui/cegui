@@ -463,13 +463,7 @@ void Element::adjustSizeToContent()
 }
 
 //----------------------------------------------------------------------------//
-float Element::getContentWidth() const
-{
-    throw InvalidRequestException("This function isn't implemented for this type of element.");
-}
-
-//----------------------------------------------------------------------------//
-float Element::getContentHeight() const
+Sizef Element::getContentSize() const
 {
     throw InvalidRequestException("This function isn't implemented for this type of element.");
 }
@@ -554,20 +548,22 @@ void Element::adjustSizeToContent_direct()
 {
     if (!isSizeAdjustedToContent())
         return;
+
     const float epsilon = adjustSizeToContent_getEpsilon();
     USize size_func(UDim(-1.f, -1.f), UDim(-1.f, -1.f));
     Sizef new_pixel_size(getPixelSize());
+    const Sizef contentSize = getContentSize();
     if (isWidthAdjustedToContent())
     {
         size_func.d_width = getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent();
-        new_pixel_size.d_width = std::ceil((getContentWidth()+epsilon)*size_func.d_width.d_scale  +
-                                            size_func.d_width.d_offset);
+        new_pixel_size.d_width = std::ceil(
+            (contentSize.d_width + epsilon) * size_func.d_width.d_scale + size_func.d_width.d_offset);
     }
     if (isHeightAdjustedToContent())
     {
         size_func.d_height = getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent();
-        new_pixel_size.d_height = std::ceil((getContentHeight()+epsilon)*size_func.d_height.d_scale  +
-                                             size_func.d_height.d_offset);
+        new_pixel_size.d_height = std::ceil(
+            (contentSize.d_height + epsilon) * size_func.d_height.d_scale + size_func.d_height.d_offset);
     }
     if (getAspectMode() != AspectMode::Ignore)
     {

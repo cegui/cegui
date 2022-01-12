@@ -377,6 +377,10 @@ protected:
     float d_renderedMaxWidth;
     float d_renderedTotalHeight;
 
+    //!!!FIXME: remove duplication with TextComponent! And maybe move into renderer?!
+    //! helper to get a rendered string parser for the current window
+    RenderedStringParser& getRenderedStringParser() const;
+
     void addItemViewProperties();
     virtual void updateScrollbars();
     void updateScrollbar(Scrollbar* scrollbar, float available_area,

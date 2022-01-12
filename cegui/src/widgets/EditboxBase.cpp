@@ -524,13 +524,6 @@ void EditboxBase::handleSelectAll()
     setCaretIndex(getText().length());
 }
 
-
-bool EditboxBase::validateWindowRenderer(const WindowRenderer* renderer) const
-{
-	return dynamic_cast<const EditboxWindowRenderer*>(renderer) != nullptr;
-}
-
-
 void EditboxBase::onReadOnlyChanged(WindowEventArgs& e)
 {
     invalidate();
