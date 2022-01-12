@@ -64,10 +64,8 @@ EditboxBase::EditboxBase(const String& type, const String& name) :
     Window(type, name),
 #if defined (CEGUI_USE_FRIBIDI)
     d_bidiVisualMapping(new FribidiVisualMapping()),
-    d_bidiDataValid(false),
 #elif defined (CEGUI_USE_MINIBIDI)
     d_bidiVisualMapping(new MinibidiVisualMapping()),
-    d_bidiDataValid(false),
 #elif defined (CEGUI_BIDI_SUPPORT)
 #error "BIDI Configuration is inconsistant, check your config!"
 #endif

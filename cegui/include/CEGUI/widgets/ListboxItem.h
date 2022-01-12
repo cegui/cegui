@@ -37,46 +37,21 @@
 #include "../Rectf.h"
 #include <vector>
 
-#if defined(_MSC_VER)
-#  pragma warning(push)
-#  pragma warning(disable : 4251)
-#endif
-
 namespace CEGUI
 {
-/*!
-\brief
-    Base class for list box items
-*/
+
+// FIXME: this class is used only in MultiColumnList! Rewrite the list as an ItemView!
+
+//! \brief Base class for list box items
 class CEGUIEXPORT ListboxItem
 {
 public:
-    /*************************************************************************
-        Constants
-    *************************************************************************/
-    static const Colour DefaultSelectionColour;     //!< Default selection brush colour.
 
+    static const Colour DefaultSelectionColour; //!< Default selection brush colour.
 
-    /*************************************************************************
-        Construction and Destruction
-    *************************************************************************/
-    /*!
-    \brief
-        base class constructor
-    */
     ListboxItem(const String& text, unsigned int item_id = 0, void* item_data = nullptr, bool disabled = false, bool auto_delete = true);
+    virtual ~ListboxItem() = default;
 
-
-    /*!
-    \brief
-        base class destructor
-    */
-    virtual ~ListboxItem(void);
-
-
-    /*************************************************************************
-        Accessors
-    *************************************************************************/
     /*!
     \brief
         return the text string set for this list box item.
@@ -87,17 +62,10 @@ public:
     \return
         String object containing the current text for the list box item.
     */
-    const String&   getTooltipText(void) const      {return d_tooltipText;}
+    const String& getText() const {return d_textLogical;}
 
-    const String& getText(void) const {return d_textLogical;}
-
-    /*!
-    \brief
-        Return text string with \e visual ordering of glyphs. This
-        only returns meaningful data if using only bidi. Will return
-        the regular text String if using raqm or no bidi.
-    */
-    const String& getTextVisual() const;
+    //!!!TODO TOOLTIPS: IMPLEMENT!
+    //const String& getTooltipText() const { return d_tooltipText; }
 
     /*!
     \brief
@@ -109,7 +77,7 @@ public:
     \return
         ID code currently assigned to this list box item
     */
-    unsigned int    getID(void) const           {return d_itemID;}
+    unsigned int getID() const { return d_itemID; }
 
 
     /*!
@@ -122,8 +90,7 @@ public:
     \return
         Pointer to the currently assigned user data.
     */
-    void*   getUserData(void) const     {return d_itemData;}
-
+    void* getUserData() const { return d_itemData; }
 
     /*!
     \brief
@@ -132,7 +99,7 @@ public:
     \return
         true if the item is selected, false if the item is not selected.
     */
-    bool    isSelected(void) const      {return d_selected;}
+    bool isSelected() const { return d_selected; }
 
 
     /*!
@@ -142,7 +109,7 @@ public:
     \return
         true if the item is disabled, false if the item is enabled.
     */
-    bool    isDisabled(void) const      {return d_disabled;}
+    bool    isDisabled() const      {return d_disabled;}
 
 
     /*!
@@ -155,7 +122,7 @@ public:
         destroyed, or when the item is removed from the list.  false if client code must destroy the
         item after it is removed from the list.
     */
-    bool    isAutoDeleted(void) const   {return d_autoDelete;}
+    bool    isAutoDeleted() const   {return d_autoDelete;}
 
 
     /*!
@@ -177,7 +144,7 @@ public:
     \return
         ColourRect object describing the currently set colours
     */
-    ColourRect  getSelectionColours(void) const     {return d_selectCols;}
+    ColourRect  getSelectionColours() const     {return d_selectCols;}
 
 
     /*!
@@ -187,7 +154,7 @@ public:
     \return
         Pointer to the Image object currently used for selection highlighting.
     */
-    const Image*    getSelectionBrushImage(void) const      {return d_selectBrush;}
+    const Image*    getSelectionBrushImage() const      {return d_selectBrush;}
 
 
     /*************************************************************************
@@ -202,13 +169,10 @@ public:
 
     \param text
         String object containing the text to set for the list box item.
-
-    \return
-        Nothing.
     */
-    virtual void setText(const String& text);
+    virtual void setText(const String& text) { d_textLogical = text; }
 
-    void    setTooltipText(const String& text)      {d_tooltipText = text;}
+    void setTooltipText(const String& text) { d_tooltipText = text; }
 
     /*!
     \brief
@@ -219,9 +183,6 @@ public:
 
     \param item_id
         ID code to be assigned to this list box item
-
-    \return
-        Nothing.
     */
     void    setID(unsigned int item_id)     {d_itemID = item_id;}
 
@@ -235,9 +196,6 @@ public:
 
     \param item_data
         Pointer to the user data to attach to this list item.
-
-    \return
-        Nothing.
     */
     void    setUserData(void* item_data)    {d_itemData = item_data;}
 
@@ -248,9 +206,6 @@ public:
 
     \param setting
         true if the item is selected, false if the item is not selected.
-
-    \return
-        Nothing.
     */
     void    setSelected(bool setting)       {d_selected = setting;}
 
@@ -261,9 +216,6 @@ public:
 
     \param setting
         true if the item is disabled, false if the item is enabled.
-
-    \return
-        Nothing.
     */
     void    setDisabled(bool setting)       {d_disabled = setting;}
 
@@ -276,9 +228,6 @@ public:
         true if the item object should be deleted by the system when the list box it is attached to is
         destroyed, or when the item is removed from the list.  false if client code will destroy the
         item after it is removed from the list.
-
-    \return
-        Nothing.
     */
     void    setAutoDeleted(bool setting)        {d_autoDelete = setting;}
 
@@ -290,9 +239,6 @@ public:
 
     \param owner
         Ponter to the window that should be considered the owner of this ListboxItem.
-
-    \return
-        Nothing
     */
     void    setOwnerWindow(const Window* owner)     {d_owner = owner;}
 
@@ -303,9 +249,6 @@ public:
 
     \param cols
         ColourRect object describing the colours to be used.
-
-    \return
-        Nothing.
     */
     void    setSelectionColours(const ColourRect& cols)     {d_selectCols = cols;}
 
@@ -325,9 +268,6 @@ public:
 
     \param bottom_right_colour
         Colour (as ARGB value) to be applied to the bottom-right corner of the selection area.
-
-    \return
-        Nothing.
     */
     void    setSelectionColours(Colour top_left_colour, Colour top_right_colour, Colour bottom_left_colour, Colour bottom_right_colour);
 
@@ -338,9 +278,6 @@ public:
 
     \param col
         colour value to be used when rendering.
-
-    \return
-        Nothing.
     */
     void    setSelectionColours(Colour col)     {setSelectionColours(col, col, col, col);}
 
@@ -351,9 +288,6 @@ public:
 
     \param image
         Pointer to the Image object to be used for selection highlighting.
-
-    \return
-        Nothing.
     */
     void    setSelectionBrushImage(const Image* image)      {d_selectBrush = image;}
 
@@ -364,9 +298,6 @@ public:
 
     \param name
         Name of the image to be used
-
-    \return
-        Nothing.
     */
     void    setSelectionBrushImage(const String& name);
 
@@ -385,7 +316,7 @@ public:
         - true if some action was taken.
         - false if no action was taken (i.e font is not used here).
     */
-    virtual bool handleFontRenderSizeChange(const Font* const font);
+    virtual bool handleFontRenderSizeChange(const Font* const font) { return false; }
 
     /*************************************************************************
         Abstract portion of interface
@@ -397,7 +328,7 @@ public:
     \return
         Size object describing the size of the list box item in pixels.
     */
-    virtual Sizef getPixelSize(void) const = 0;
+    virtual Sizef getPixelSize() const = 0;
 
 
     /*!
@@ -412,9 +343,6 @@ public:
 
     \param clipper
         Rect object describing the clipping rectangle for the draw operation.
-
-    \return
-        Nothing.
     */
     virtual std::vector<GeometryBuffer*> createRenderGeometry(
         const Rectf& targetRect,
@@ -452,30 +380,18 @@ protected:
     /*************************************************************************
         Implementation Data
     *************************************************************************/
-    String d_textLogical;
-    
-#ifdef CEGUI_BIDI_SUPPORT
-    //! pointer to bidirection support object
-    BidiVisualMapping* d_bidiVisualMapping;
-    //! whether bidi visual mapping has been updated since last text change.
-    mutable bool d_bidiDataValid;
-#endif
-
-    String  d_tooltipText;  //!< Text for the individual tooltip of this item
-    unsigned int    d_itemID;       //!< ID code assigned by client code.  This has no meaning within the GUI system.
-    void*   d_itemData;     //!< Pointer to some client code data.  This has no meaning within the GUI system.
-    bool    d_selected;     //!< true if this item is selected.  false if the item is not selected.
-    bool    d_disabled;     //!< true if this item is disabled.  false if the item is not disabled.
-    bool    d_autoDelete;   //!< true if the system should destroy this item, false if client code will destroy the item.
-    const Window*   d_owner;    //!< Pointer to the window that owns this item.
-    ColourRect      d_selectCols;       //!< Colours used for selection highlighting.
-    const Image*    d_selectBrush;      //!< Image used for rendering selection.
+    const Window* d_owner = nullptr;       //!< Pointer to the window that owns this item.
+    const Image*  d_selectBrush = nullptr; //!< Image used for rendering selection.
+    void*         d_itemData;              //!< Pointer to some client code data. This has no meaning within the GUI system.
+    String        d_textLogical;
+    String        d_tooltipText;           //!< Text for the individual tooltip of this item
+    unsigned int  d_itemID;                //!< ID code assigned by client code.  This has no meaning within the GUI system.
+    ColourRect    d_selectCols;            //!< Colours used for selection highlighting.
+    bool          d_selected = false;      //!< true if this item is selected.  false if the item is not selected.
+    bool          d_disabled;              //!< true if this item is disabled.  false if the item is not disabled.
+    bool          d_autoDelete;            //!< true if the system should destroy this item, false if client code will destroy the item.
 };
 
 } // End of  CEGUI namespace section
-
-#if defined(_MSC_VER)
-#  pragma warning(pop)
-#endif
 
 #endif  // end of guard _CEGUIListboxItem_h_

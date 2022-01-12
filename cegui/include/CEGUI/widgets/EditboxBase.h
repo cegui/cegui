@@ -632,7 +632,7 @@ protected:
     bool d_dragging = false;
 #ifdef CEGUI_BIDI_SUPPORT
     //! whether bidi visual mapping has been updated since last text change.
-    mutable bool d_bidiDataValid;
+    mutable bool d_bidiDataValid = false;
 #endif
 
 private:
