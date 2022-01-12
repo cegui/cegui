@@ -28,28 +28,9 @@
 #define _CEGUITooltip_h_
 
 #include "../Window.h"
-#include "../WindowRenderer.h"
 
 namespace CEGUI
 {
-
-//! \brief Base class for Tooltip window renderer objects.
-class CEGUIEXPORT TooltipWindowRenderer : public WindowRenderer
-{
-public:
-
-    TooltipWindowRenderer(const String& name);
-
-    /*!
-    \brief
-        Return the size of the area that will be occupied by the tooltip text, given
-        any current formatting options.
-
-    \return
-        Size object describing the size of the rendered tooltip text in pixels.
-    */
-    virtual Sizef getTextSize() const = 0;
-};
 
 /*!
 \brief
@@ -71,12 +52,8 @@ public:
 
     Tooltip(const String& type, const String& name);
 
-    //! \brief Causes the tooltip to resize itself appropriately.
-    void sizeSelf();
-
 protected:
 
-    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
     void onTextChanged(WindowEventArgs& e) override;
 };
 

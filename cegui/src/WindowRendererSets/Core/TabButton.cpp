@@ -76,7 +76,28 @@ void FalagardTabButton::createRenderGeometry()
 //----------------------------------------------------------------------------//
 Sizef FalagardTabButton::getContentSize() const
 {
-    return getRenderedString().getPixelSize(this);
+    const WidgetLookFeel& lnf = getLookNFeel();
+
+    // Find a text component responsible for a text
+    //!!!FIXME: duplicated code, see FalagardTooltip::getTextComponentExtents!
+    const auto& layerSpecs = lnf.getStateImagery("Normal").getLayerSpecifications();
+    for (auto& layerSpec : layerSpecs)
+    {
+        const auto& sectionSpecs = layerSpec.getSectionSpecifications();
+        for (auto& sectionSpec : sectionSpecs)
+        {
+            const auto& texts = lnf.getImagerySection(sectionSpec.getSectionName()).getTextComponents();
+            if (!texts.empty())
+            {
+                //!!!TODO TEXT: make a single function to avoid recalculations!
+                return Sizef(
+                    texts.front().getHorizontalTextExtent(*d_window),
+                    texts.front().getVerticalTextExtent(*d_window));
+            }
+        }
+    }
+
+    return Sizef(0.f, 0.f);
 }
 
 }
