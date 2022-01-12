@@ -88,12 +88,7 @@ Sizef FalagardTabButton::getContentSize() const
         {
             const auto& texts = lnf.getImagerySection(sectionSpec.getSectionName()).getTextComponents();
             if (!texts.empty())
-            {
-                //!!!TODO TEXT: make a single function to avoid recalculations!
-                return Sizef(
-                    texts.front().getHorizontalTextExtent(*d_window),
-                    texts.front().getVerticalTextExtent(*d_window));
-            }
+                return texts.front().getTextExtent(*d_window);
         }
     }
 

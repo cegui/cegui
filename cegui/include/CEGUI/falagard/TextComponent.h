@@ -282,11 +282,8 @@ public:
     */
     void setFontPropertySource(const String& property);
 
-    //! return the horizontal pixel extent of the formatted rendered string.
-    float getHorizontalTextExtent(const Window& window) const;
-
-    //! return the vertical pixel extent of the formatted rendered string.
-    float getVerticalTextExtent(const Window& window) const;
+    //! return the pixel extent of the formatted rendered string.
+    Sizef getTextExtent(const Window& window) const;
 
     virtual bool handleFontRenderSizeChange(Window& window, const Font* font) const override;
 

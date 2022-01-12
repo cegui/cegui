@@ -212,6 +212,7 @@ std::size_t FalagardStaticText::getNumOfFormattedTextLines() const
 //----------------------------------------------------------------------------//
 Sizef FalagardStaticText::getContentSize() const
 {
+    //!!!TODO TEXT: unify formatter calls!
     return Sizef(
         d_formatter->getHorizontalExtent(d_window),
 
@@ -243,19 +244,22 @@ void FalagardStaticText::adjustSizeToContent()
     if (isWordWrapOn())
     {
         const LeftAlignedRenderedString orig_str(d_formatter->getRenderedString());
+
+        //!!!TODO TEXT: unify calls!
+        const Sizef contentMaxSize(orig_str.getHorizontalExtent(d_window), orig_str.getVerticalExtent(d_window));
+
         USize sizeFunc(
             d_window->getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent(),
             d_window->getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent());
-        float contentMaxWidth(orig_str.getHorizontalExtent(d_window));
-        float windowMaxWidth((contentMaxWidth + epsilon) * sizeFunc.d_width.d_scale + sizeFunc.d_width.d_offset);
+        float windowMaxWidth((contentMaxSize.d_width + epsilon) * sizeFunc.d_width.d_scale + sizeFunc.d_width.d_offset);
         if (isSizeAdjustedToContentKeepingAspectRatio())
         {
-            adjustSizeToContent_wordWrap_keepingAspectRatio(orig_str, sizeFunc, contentMaxWidth, windowMaxWidth, epsilon);
+            adjustSizeToContent_wordWrap_keepingAspectRatio(contentMaxSize, sizeFunc, windowMaxWidth, epsilon);
             return;
         }
         if (d_window->isWidthAdjustedToContent())
         {
-            adjustSizeToContent_wordWrap_notKeepingAspectRatio(sizeFunc, contentMaxWidth, windowMaxWidth, epsilon);
+            adjustSizeToContent_wordWrap_notKeepingAspectRatio(sizeFunc, contentMaxSize.d_width, windowMaxWidth, epsilon);
             return;
         }
     }
@@ -286,7 +290,7 @@ bool FalagardStaticText::contentFitsForSpecifiedWindowSize(const Sizef& window_s
 bool FalagardStaticText::contentFits() const
 {
     // Scrollbars are configured inside
-    const Sizef contentSize(getDocumentSize());
+    const Sizef contentSize = getTextExtent();
 
     if (getHorzScrollbar()->isVisible() || getVertScrollbar()->isVisible())
         return false;
@@ -330,13 +334,6 @@ const ComponentArea& FalagardStaticText::getTextComponentArea() const
 {
     updateFormatting();
     return getTextComponentAreaWithoutUpdate();
-}
-
-//------------------------------------------------------------------------//
-Sizef FalagardStaticText::getDocumentSize() const
-{
-    updateFormatting();
-    return getDocumentSizeWithoutUpdate();
 }
 
 //------------------------------------------------------------------------//
@@ -416,7 +413,7 @@ void FalagardStaticText::configureScrollbars() const
     Rectf renderArea(getTextRenderAreaWithoutUpdate());
     Sizef renderAreaSize(renderArea.getSize());
     d_formatter->format(d_window, renderAreaSize);
-    Sizef documentSize(getDocumentSizeWithoutUpdate());
+    Sizef documentSize(getTextExtentWithoutUpdate());
 
     bool showVert = d_enableVertScrollbar && (documentSize.d_height > renderAreaSize.d_height);
     bool showHorz = d_enableHorzScrollbar && (documentSize.d_width > renderAreaSize.d_width);
@@ -429,7 +426,7 @@ void FalagardStaticText::configureScrollbars() const
         renderArea = updatedRenderArea;
         renderAreaSize = renderArea.getSize();
         d_formatter->format(d_window, renderAreaSize);
-        documentSize = getDocumentSizeWithoutUpdate();
+        documentSize = getTextExtentWithoutUpdate();
 
         showVert = d_enableVertScrollbar && (documentSize.d_height > renderAreaSize.d_height);
         showHorz = d_enableHorzScrollbar && (documentSize.d_width > renderAreaSize.d_width);
@@ -442,7 +439,7 @@ void FalagardStaticText::configureScrollbars() const
             renderArea = updatedRenderArea;
             renderAreaSize = renderArea.getSize();
             d_formatter->format(d_window, renderAreaSize);
-            documentSize = getDocumentSizeWithoutUpdate();
+            documentSize = getTextExtentWithoutUpdate();
         }
     }
 
@@ -562,17 +559,10 @@ void FalagardStaticText::onLookNFeelUnassigned()
 }
 
 //----------------------------------------------------------------------------//
-float FalagardStaticText::getHorizontalTextExtent() const
+Sizef FalagardStaticText::getTextExtent() const
 {
     updateFormatting();
-    return d_formatter->getHorizontalExtent(d_window);
-}
-
-//----------------------------------------------------------------------------//
-float FalagardStaticText::getVerticalTextExtent() const
-{
-    updateFormatting();
-    return d_formatter->getVerticalExtent(d_window);
+    return getTextExtentWithoutUpdate();
 }
 
 //----------------------------------------------------------------------------//
@@ -780,7 +770,7 @@ const ComponentArea& FalagardStaticText::getTextComponentAreaWithoutUpdate() con
 }
 
 //----------------------------------------------------------------------------//
-Sizef FalagardStaticText::getDocumentSizeWithoutUpdate() const
+Sizef FalagardStaticText::getTextExtentWithoutUpdate() const
 {
     //!!!TODO TEXT: make one function!
     return Sizef(d_formatter->getHorizontalExtent(d_window),
@@ -795,8 +785,7 @@ Sizef FalagardStaticText::getDocumentSizeWithoutUpdate() const
     We do that by try-and-error, using bisection.
 ------------------------------------------------------------------------------*/
 void FalagardStaticText::adjustSizeToContent_wordWrap_keepingAspectRatio(
-    const LeftAlignedRenderedString& orig_str, USize& sizeFunc,
-    float contentMaxWidth, float windowMaxWidth, float epsilon)
+    const Sizef& contentMaxSize, USize& sizeFunc, float windowMaxWidth, float epsilon)
 {
     // Start by trying height that can fit 0 text lines.
     Sizef window_size(0.f, sizeFunc.d_height.d_scale*epsilon + sizeFunc.d_height.d_offset);
@@ -835,8 +824,8 @@ void FalagardStaticText::adjustSizeToContent_wordWrap_keepingAspectRatio(
     {
         sizeFunc.d_width = d_window->getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent();
         sizeFunc.d_height = d_window->getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent();
-        window_size.d_width = (contentMaxWidth+epsilon)*sizeFunc.d_width.d_scale + sizeFunc.d_width.d_offset;
-        window_size.d_height = (orig_str.getVerticalExtent(d_window)+epsilon)*sizeFunc.d_height.d_scale +
+        window_size.d_width = (contentMaxSize.d_width+epsilon)*sizeFunc.d_width.d_scale + sizeFunc.d_width.d_offset;
+        window_size.d_height = (contentMaxSize .d_height+epsilon)*sizeFunc.d_height.d_scale +
                                 sizeFunc.d_height.d_offset;
         window_size.scaleToAspect(AspectMode::Expand, d_window->getAspectRatio());
         d_window->setSize(USize(UDim(0.f, window_size.d_width), UDim(0.f, window_size.d_height)), false);

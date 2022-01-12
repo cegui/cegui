@@ -276,19 +276,13 @@ void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     xml_stream.closeTag();
 }
 
-//!!!TODO TEXT: unify extents!
 //----------------------------------------------------------------------------//
-float TextComponent::getHorizontalTextExtent(const Window& window) const
+Sizef TextComponent::getTextExtent(const Window& window) const
 {
+    //!!!TODO TEXT: unify!
     updateFormatting(window, d_area.getPixelRect(window).getSize());
-    return d_formatter->getHorizontalExtent(&window);
-}
-
-//----------------------------------------------------------------------------//
-float TextComponent::getVerticalTextExtent(const Window& window) const
-{
-    updateFormatting(window, d_area.getPixelRect(window).getSize());
-    return d_formatter->getVerticalExtent(&window);
+    return Sizef(d_formatter->getHorizontalExtent(&window),
+        d_formatter->getVerticalExtent(&window));
 }
 
 //----------------------------------------------------------------------------//
