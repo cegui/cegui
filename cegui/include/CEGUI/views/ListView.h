@@ -52,15 +52,15 @@ enum class HorizontalTextFormatting : int;
 */
 struct CEGUIEXPORT ListViewItemRenderingState
 {
-    RenderedString* d_string;
-    FormattedRenderedString* d_formattedString;
+    RenderedString* d_string = nullptr;
+    std::unique_ptr<FormattedRenderedString> d_formatter;
     //! The name of the image that represents the icon
     String d_icon;
     Sizef d_size;
-    bool d_isSelected;
+    bool d_isSelected = false;
     ModelIndex d_index;
     String d_text;
-    ListView* d_attachedListView;
+    ListView* d_attachedListView = nullptr;
 
     ListViewItemRenderingState(ListView* list_view);
     ~ListViewItemRenderingState();
@@ -70,8 +70,6 @@ struct CEGUIEXPORT ListViewItemRenderingState
 
     ListViewItemRenderingState(const ListViewItemRenderingState&) = delete;
     ListViewItemRenderingState& operator=(const ListViewItemRenderingState&) = delete;
-
-    void setStringAndFormatting(const RenderedString& string, HorizontalTextFormatting h_fmt);
 
     bool operator< (const ListViewItemRenderingState& other) const;
     bool operator> (const ListViewItemRenderingState& other) const;
