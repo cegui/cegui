@@ -50,7 +50,7 @@ void RenderedStringWordWrapper<JustifiedRenderedString>::format(
 
     for (size_t line = 0; line < rstring.getLineCount(); ++line)
     {
-        while ((rs_width = rstring.getPixelSize(ref_wnd, line).d_width) > 0)
+        while ((rs_width = rstring.getLineExtent(ref_wnd, line).d_width) > 0)
         {
             // skip line if no wrapping occurs
             if (rs_width <= area_size.d_width)

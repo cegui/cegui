@@ -58,7 +58,7 @@ std::vector<GeometryBuffer*> LeftAlignedRenderedString::createRenderGeometry(
         auto currGeom = d_renderedString->createRenderGeometry(ref_wnd, i, draw_pos, mod_colours, clip_rect, 0.0f);
         geomBuffers.insert(geomBuffers.end(), currGeom.begin(), currGeom.end());
 
-        draw_pos.y += d_renderedString->getPixelSize(ref_wnd, i).d_height;
+        draw_pos.y += d_renderedString->getLineExtent(ref_wnd, i).d_height;
     }
 
     return geomBuffers;
@@ -76,7 +76,7 @@ float LeftAlignedRenderedString::getHorizontalExtent(const Window* ref_wnd) cons
     float w = 0.0f;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        const float this_width = d_renderedString->getPixelSize(ref_wnd, i).d_width;
+        const float this_width = d_renderedString->getLineExtent(ref_wnd, i).d_width;
         if (this_width > w)
             w = this_width;
     }
@@ -89,7 +89,7 @@ float LeftAlignedRenderedString::getVerticalExtent(const Window* ref_wnd) const
 {
     float h = 0.0f;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
-        h += d_renderedString->getPixelSize(ref_wnd, i).d_height;
+        h += d_renderedString->getLineExtent(ref_wnd, i).d_height;
 
     return h;
 }

@@ -28,15 +28,15 @@
 #define _CEGUIRenderedString_h_
 
 #include "CEGUI/Base.h"
-#include <vector>
+#include "CEGUI/Sizef.h"
 #include <glm/glm.hpp>
+#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
 #	pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 class Rectf;
@@ -53,13 +53,16 @@ class CEGUIEXPORT RenderedString
 public:
 
     RenderedString();
+    RenderedString(const RenderedString& other);
     virtual ~RenderedString();
+
+    RenderedString& operator =(const RenderedString& rhs);
 
     /*!
     \brief
         Draw the string to a GeometryBuffer.
 
-    \param ref_wnd
+    \param refWnd
         A pointer to a reference Window used to retrieve certain attributes if needed. 
 
     \param line
@@ -94,10 +97,9 @@ public:
         thrown if \a line is out of range.
     */
     std::vector<GeometryBuffer*> createRenderGeometry(
-        const Window* ref_wnd,
-        const size_t line,
+        const Window* refWnd, size_t line,
         const glm::vec2& position, const ColourRect* mod_colours,
-        const Rectf* clip_rect, const float space_extra) const;
+        const Rectf* clip_rect, float space_extra) const;
 
     /*!
     \brief
@@ -113,7 +115,7 @@ public:
     \exception InvalidRequestException
         thrown if \a line is out of range.
     */
-    Sizef getPixelSize(const Window* ref_wnd, const size_t line) const;
+    Sizef getLineExtent(const Window* refWnd, const size_t line) const;
 
     /*!
     \brief
@@ -123,13 +125,7 @@ public:
         Size object describing the size of the rendered output of the whole
         text of this RenderedString, in pixels.
     */
-    Sizef getPixelSize(const Window* ref_wnd) const;
-
-    //! Return the maximum horizontal extent of all lines, in pixels.
-    float getHorizontalExtent(const Window* ref_wnd) const;
-
-    //! Return the sum vertical extent of all lines, in pixels.
-    float getVerticalExtent(const Window* ref_wnd) const;
+    Sizef getExtent(const Window* refWnd) const;
 
     //! append \a component to the list of components drawn for this string.
     void appendComponent(const RenderedStringComponent& component);
@@ -138,11 +134,14 @@ public:
     void clearComponents();
 
     //! return the number of components that make up this string.
-    size_t getComponentCount() const;
+    size_t getComponentCount() const { return d_components.size(); }
+
+    //! return number of lines in this string.
+    size_t getLineCount() const { return d_lines.size(); }
 
     /*!
     \brief
-        split the string in line \a line as close to \a split_point as possible.
+        split the string in line \a line as close to \a splitPoint as possible.
 
         The RenderedString \a left will receive the left portion of the split,
         while the right portion of the split will remain in this RenderedString.
@@ -150,7 +149,7 @@ public:
     \param line
         The line number on which the split is to occur.
 
-    \param split_point
+    \param splitPoint
         float value specifying the pixel location where the split should occur.
         The actual split will occur as close to this point as possible, though
         preferring a shorter 'left' portion when the split can not be made
@@ -167,8 +166,7 @@ public:
     \exception InvalidRequestException
         thrown if \a line is out of range.
     */
-    bool split(const Window* ref_wnd,
-               const size_t line, float split_point, RenderedString& left);
+    bool split(const Window* refWnd, const size_t line, float splitPoint, RenderedString& left);
 
     //! return the total number of spacing characters in the specified line.
     size_t getSpaceCount(const size_t line) const;
@@ -176,38 +174,25 @@ public:
     //! linebreak the rendered string at the present position.
     void appendLineBreak();
 
-    //! return number of lines in this string.
-    size_t getLineCount() const;
-
     //! set selection highlight
-    void setSelection(const Window* ref_wnd, float start, float end);
-
-    //! Copy constructor.
-    RenderedString(const RenderedString& other);
-    //! Assignment.
-    RenderedString& operator=(const RenderedString& rhs);
+    void setSelection(const Window* refWnd, float start, float end);
 
 protected:
-    //! Collection type used to hold the string components.
-    typedef std::vector<RenderedStringComponent*> ComponentList;
-    //! RenderedStringComponent objects that comprise this RenderedString.
-    ComponentList d_components;
-    //! track info for a line.  first is componetn idx, second is component count.
-    typedef std::pair<size_t, size_t> LineInfo;
-    //! Collection type used to hold details about the lines.
-    typedef std::vector<LineInfo> LineList;
-    //! lines that make up this string.
-    LineList d_lines;
+
     //! Make this object's component list a clone of \a list.
-    void cloneComponentList(const ComponentList& list);
-    //! Free components in the given ComponentList and clear the list.
-    static void clearComponentList(ComponentList& list);
+    void cloneComponentList(const std::vector<RenderedStringComponent*>& list);
+
+    std::vector<RenderedStringComponent*>  d_components;
+    std::vector<std::pair<size_t, size_t>> d_lines; // first is component idx, second is component count.
+
+    mutable Sizef d_totalExtent;
+    mutable bool  d_totalExtentDirty = true;
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)
 #endif
 
-#endif // end of guard _CEGUIRenderedString_h_
+#endif

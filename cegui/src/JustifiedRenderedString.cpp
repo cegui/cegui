@@ -45,7 +45,7 @@ void JustifiedRenderedString::format(const Window* ref_wnd,
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
         const size_t space_count = d_renderedString->getSpaceCount(i);
-        const float string_width = d_renderedString->getPixelSize(
+        const float string_width = d_renderedString->getLineExtent(
                                                         ref_wnd, i).d_width;
 
         if ((space_count == 0) || (string_width >= area_size.d_width))
@@ -75,7 +75,7 @@ std::vector<GeometryBuffer*> JustifiedRenderedString::createRenderGeometry(
         geomBuffers.insert(geomBuffers.end(), currentRenderGeometry.begin(),
             currentRenderGeometry.end());
 
-        draw_pos.y += d_renderedString->getPixelSize(ref_wnd, i).d_height;
+        draw_pos.y += d_renderedString->getLineExtent(ref_wnd, i).d_height;
     }
 
     return geomBuffers;
@@ -93,7 +93,7 @@ float JustifiedRenderedString::getHorizontalExtent(const Window* ref_wnd) const
     float w = 0.0f;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        const float this_width = d_renderedString->getPixelSize(ref_wnd, i).d_width +
+        const float this_width = d_renderedString->getLineExtent(ref_wnd, i).d_width +
             d_renderedString->getSpaceCount(i) * d_spaceExtras[i];
 
         if (this_width > w)
@@ -108,7 +108,7 @@ float JustifiedRenderedString::getVerticalExtent(const Window* ref_wnd) const
 {
     float h = 0.0f;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
-        h += d_renderedString->getPixelSize(ref_wnd, i).d_height;
+        h += d_renderedString->getLineExtent(ref_wnd, i).d_height;
 
     return h;
 }
