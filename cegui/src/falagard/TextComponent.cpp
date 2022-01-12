@@ -47,7 +47,6 @@ namespace CEGUI
 
 //----------------------------------------------------------------------------//
 TextComponent::TextComponent() :
-    d_formatter(new LeftAlignedRenderedString(d_renderedString)),
     d_vertFormatting(VerticalTextFormatting::TopAligned),
     d_horzFormatting(HorizontalTextFormatting::LeftAligned),
     d_paragraphDir(DefaultParagraphDirection::Automatic)
@@ -59,11 +58,9 @@ TextComponent::TextComponent(const TextComponent& obj) :
     FalagardComponentBase(obj),
     d_text(obj.d_text),
     d_renderedString(obj.d_renderedString),
-    d_formatter(obj.d_formatter),
     d_lastFont(obj.d_lastFont),
     d_lastParser(obj.d_lastParser),
     d_lastText(obj.d_lastText),
-    d_lastHorzFormatting(obj.d_lastHorzFormatting),
     d_font(obj.d_font),
     d_vertFormatting(obj.d_vertFormatting),
     d_horzFormatting(obj.d_horzFormatting),
@@ -71,6 +68,7 @@ TextComponent::TextComponent(const TextComponent& obj) :
     d_textFromProperty(obj.d_textFromProperty),
     d_fontFromProperty(obj.d_fontFromProperty)
 {
+    setupStringFormatter(obj.d_lastHorzFormatting);
 }
 
 //----------------------------------------------------------------------------//
@@ -89,17 +87,18 @@ TextComponent& TextComponent::operator =(const TextComponent& other)
     // existing one as invalid so it's data gets regenerated next time it's
     // needed.
     d_renderedString = other.d_renderedString;
-    d_formatter = other.d_formatter;
+    d_formatter.reset();
     d_lastFont = other.d_lastFont;
     d_lastParser = other.d_lastParser;
     d_lastText = other.d_lastText;
-    d_lastHorzFormatting = other.d_lastHorzFormatting;
     d_font = other.d_font;
     d_vertFormatting = other.d_vertFormatting;
     d_horzFormatting = other.d_horzFormatting;
     d_paragraphDir = other.d_paragraphDir;
     d_textFromProperty = other.d_textFromProperty;
     d_fontFromProperty = other.d_fontFromProperty;
+
+    setupStringFormatter(other.d_lastHorzFormatting);
 
     return *this;
 }
@@ -131,14 +130,12 @@ void TextComponent::setFontPropertySource(const String& property)
 }
 
 //----------------------------------------------------------------------------//
-void TextComponent::setupStringFormatter(const Window& window, const RenderedString& rendered_string) const
+void TextComponent::setupStringFormatter(HorizontalTextFormatting horzFormatting) const
 {
-    const HorizontalTextFormatting horzFormatting = d_horzFormatting.get(window);
-
     // no formatting change
-    if (horzFormatting == d_lastHorzFormatting)
+    if (d_formatter && horzFormatting == d_lastHorzFormatting)
     {
-        d_formatter->setRenderedString(rendered_string);
+        d_formatter->setRenderedString(d_renderedString);
         return;
     }
 
@@ -147,35 +144,39 @@ void TextComponent::setupStringFormatter(const Window& window, const RenderedStr
     switch (horzFormatting)
     {
         case HorizontalTextFormatting::LeftAligned:
-            d_formatter.reset(new LeftAlignedRenderedString(rendered_string));
+            d_formatter.reset(new LeftAlignedRenderedString(d_renderedString));
             break;
 
         case HorizontalTextFormatting::CentreAligned:
-            d_formatter.reset(new CentredRenderedString(rendered_string));
+            d_formatter.reset(new CentredRenderedString(d_renderedString));
             break;
 
         case HorizontalTextFormatting::RightAligned:
-            d_formatter.reset(new RightAlignedRenderedString(rendered_string));
+            d_formatter.reset(new RightAlignedRenderedString(d_renderedString));
             break;
 
         case HorizontalTextFormatting::Justified:
-            d_formatter.reset(new JustifiedRenderedString(rendered_string));
+            d_formatter.reset(new JustifiedRenderedString(d_renderedString));
             break;
 
         case HorizontalTextFormatting::WordWrapLeftAligned:
-            d_formatter.reset(new RenderedStringWordWrapper<LeftAlignedRenderedString>(rendered_string));
+            d_formatter.reset(new RenderedStringWordWrapper<LeftAlignedRenderedString>(d_renderedString));
             break;
 
         case HorizontalTextFormatting::WordWrapCentreAligned:
-            d_formatter.reset(new RenderedStringWordWrapper<CentredRenderedString>(rendered_string));
+            d_formatter.reset(new RenderedStringWordWrapper<CentredRenderedString>(d_renderedString));
             break;
 
         case HorizontalTextFormatting::WordWrapRightAligned:
-            d_formatter.reset(new RenderedStringWordWrapper<RightAlignedRenderedString>(rendered_string));
+            d_formatter.reset(new RenderedStringWordWrapper<RightAlignedRenderedString>(d_renderedString));
             break;
 
         case HorizontalTextFormatting::WordWraperJustified:
-            d_formatter.reset(new RenderedStringWordWrapper<JustifiedRenderedString>(rendered_string));
+            d_formatter.reset(new RenderedStringWordWrapper<JustifiedRenderedString>(d_renderedString));
+            break;
+
+        default:
+            d_formatter.reset();
             break;
     }
 }
@@ -375,7 +376,7 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
     else
         updateRenderedString(srcWindow, d_text.empty() ? srcWindow.getText() : d_text, font);
 
-    setupStringFormatter(srcWindow, d_renderedString);
+    setupStringFormatter(d_horzFormatting.get(srcWindow));
     d_formatter->format(&srcWindow, size);   
 }
 

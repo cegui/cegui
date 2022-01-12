@@ -297,7 +297,7 @@ protected:
         bool clipToDisplay) const override;
 
     //! helper to set up an appropriate FormattedRenderedString
-    void setupStringFormatter(const Window& window, const RenderedString& rendered_string) const;
+    void setupStringFormatter(HorizontalTextFormatting horzFormatting) const;
     //! helper to get the font object to use
     const Font* getFontObject(const Window& window) const;
     //! helper to get a rendered string parser for the current window
@@ -317,7 +317,7 @@ protected:
 private:
 
     //! FormattedRenderedString object that applies formatting to the string
-    mutable RefCounted<FormattedRenderedString> d_formatter;
+    mutable std::unique_ptr<FormattedRenderedString> d_formatter;
     //! RenderedString used when not using the one from the target Window.
     mutable RenderedString d_renderedString;
 

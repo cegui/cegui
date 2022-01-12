@@ -312,10 +312,10 @@ void ListView::resortView()
 void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index,
     float& max_width, float& total_height)
 {
-    String text = d_itemModel->getData(index);
+    item.d_text = d_itemModel->getData(index);
 
     item.setStringAndFormatting(
-        getRenderedStringParser().parse(text, getActualFont(), &d_textColourRect),
+        getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect),
         d_horzFormatting
     );
 
@@ -327,7 +327,6 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index,
     item.d_formattedString->format(this, itemsAreaSize);
 
     item.d_index = index;
-    item.d_text = text;
     item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);
 
     item.d_size = Sizef(
