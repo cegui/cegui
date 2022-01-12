@@ -279,7 +279,7 @@ void TreeView::fillRenderingState(TreeViewItemRenderingState& item,
     item.d_text = d_itemModel->getData(index);
     item.d_string = getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect, DefaultParagraphDirection::Automatic);
     item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);
-    item.d_size = item.d_string.getPixelSize(this);
+    item.d_size = item.d_string.getExtent(this);
 
     const float indent = getViewRenderer()->getSubtreeExpanderXIndent(item.d_nestedLevel) +
         getViewRenderer()->getSubtreeExpanderSize().d_width;

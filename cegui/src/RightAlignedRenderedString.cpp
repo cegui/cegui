@@ -45,7 +45,7 @@ void RightAlignedRenderedString::format(const Window* ref_wnd,
 
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
         d_offsets.push_back(
-            area_size.d_width - d_renderedString->getPixelSize(ref_wnd, i).d_width);
+            area_size.d_width - d_renderedString->getLineExtent(ref_wnd, i).d_width);
 }
 
 //----------------------------------------------------------------------------//
@@ -69,7 +69,7 @@ std::vector<GeometryBuffer*> RightAlignedRenderedString::createRenderGeometry(
         geomBuffers.insert(geomBuffers.end(), currentRenderGeometry.begin(),
             currentRenderGeometry.end());
 
-        draw_pos.y += d_renderedString->getPixelSize(ref_wnd, i).d_height;
+        draw_pos.y += d_renderedString->getLineExtent(ref_wnd, i).d_height;
     }
 
     return geomBuffers;
@@ -87,7 +87,7 @@ float RightAlignedRenderedString::getHorizontalExtent(const Window* ref_wnd) con
     float w = 0.0f;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        const float this_width = d_renderedString->getPixelSize(ref_wnd, i).d_width;
+        const float this_width = d_renderedString->getLineExtent(ref_wnd, i).d_width;
         if (this_width > w)
             w = this_width;
     }
@@ -100,7 +100,7 @@ float RightAlignedRenderedString::getVerticalExtent(const Window* ref_wnd) const
 {
     float h = 0.0f;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
-        h += d_renderedString->getPixelSize(ref_wnd, i).d_height;
+        h += d_renderedString->getLineExtent(ref_wnd, i).d_height;
 
     return h;
 }

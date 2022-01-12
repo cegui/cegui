@@ -107,7 +107,7 @@ void ItemViewRenderer::createRenderGeometryAndAddToItemView(
         auto geom = rendered_string.createRenderGeometry(view, i, draw_pos, nullptr, item_clipper, 0.0f);
         view->appendGeometryBuffers(geom);
 
-        draw_pos.y += rendered_string.getPixelSize(view, i).d_height;
+        draw_pos.y += rendered_string.getLineExtent(view, i).d_height;
     }
 }
 

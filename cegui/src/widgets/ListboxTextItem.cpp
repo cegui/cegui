@@ -79,7 +79,7 @@ Sizef ListboxTextItem::getPixelSize() const
     if (!d_renderedStringValid)
         parseTextString();
 
-    return d_renderedString.getPixelSize(d_owner);
+    return d_renderedString.getExtent(d_owner);
 }
 
 //----------------------------------------------------------------------------//
@@ -109,7 +109,7 @@ std::vector<GeometryBuffer*> ListboxTextItem::createRenderGeometry(
             auto geom = d_renderedString.createRenderGeometry(d_owner, i, draw_pos, nullptr, clipper, 0.0f);
             geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
 
-            draw_pos.y += d_renderedString.getPixelSize(d_owner, i).d_height;
+            draw_pos.y += d_renderedString.getLineExtent(d_owner, i).d_height;
         }
     }
 

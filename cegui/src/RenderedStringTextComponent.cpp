@@ -146,15 +146,13 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
 //----------------------------------------------------------------------------//
 Sizef RenderedStringTextComponent::getPixelSize(const Window* ref_wnd) const
 {
-    const Font* fnt = getEffectiveFont(ref_wnd);
-
     Sizef psz(d_padding.d_min.x + d_padding.d_max.x,
               d_padding.d_min.y + d_padding.d_max.y);
 
-    if (fnt)
+    if (const Font* font = getEffectiveFont(ref_wnd))
     {
-        psz.d_width += fnt->getTextExtent(d_text);
-        psz.d_height += fnt->getFontHeight();
+        psz.d_width += font->getTextExtent(d_text);
+        psz.d_height += font->getFontHeight();
     }
 
     return psz;
