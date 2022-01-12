@@ -36,6 +36,7 @@
 #include "CEGUI/JustifiedRenderedString.h"
 #include "CEGUI/RenderedStringWordWrapper.h"
 #include "CEGUI/RenderedStringParser.h"
+#include "CEGUI/CoordConverter.h"
 #if defined (CEGUI_USE_FRIBIDI)
     #include "CEGUI/FribidiVisualMapping.h"
 #elif defined (CEGUI_USE_MINIBIDI)
@@ -190,18 +191,16 @@ void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf
     // Get total formatted height.
     const float textHeight = d_formatter->getVerticalExtent(&srcWindow);
 
-    // handle dest area adjustments for vertical formatting.
+    // Handle dest area adjustments for vertical formatting.
+    // Default is VerticalTextFormatting::TopAligned, for which we take no action.
     const auto vertFormatting = d_vertFormatting.get(srcWindow);
     switch (vertFormatting)
     {
         case VerticalTextFormatting::CentreAligned:
-            destRect.d_min.y += (destRect.getHeight() - textHeight) * 0.5f;
+            destRect.d_min.y += CoordConverter::alignToPixels(destRect.getHeight() - textHeight) * 0.5f;
             break;
         case VerticalTextFormatting::BottomAligned:
             destRect.d_min.y = destRect.d_max.y - textHeight;
-            break;
-        default:
-            // default is VerticalTextFormatting::TOP_ALIGNED, for which we take no action.
             break;
     }
 
@@ -210,13 +209,8 @@ void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf
     initColoursRect(srcWindow, modColours, finalColours);
 
     // add geometry for text to the target window.
-    auto geomBuffers = d_formatter->createRenderGeometry(
-        &srcWindow,
-        destRect.getPosition(),
-        &finalColours,
-        clipper);
-
-    srcWindow.appendGeometryBuffers(geomBuffers);
+    auto geom = d_formatter->createRenderGeometry(&srcWindow, destRect.getPosition(), &finalColours, clipper);
+    srcWindow.appendGeometryBuffers(geom);
 }
 
 //----------------------------------------------------------------------------//
@@ -315,7 +309,7 @@ bool TextComponent::handleFontRenderSizeChange(Window& window, const Font* font)
 RenderedStringParser& TextComponent::getRenderedStringParser(const Window& window) const
 {
     // if parsing is disabled, we use a DefaultRenderedStringParser that creates
-    // a RenderedString to renderi the input text verbatim (i.e. no parsing).
+    // a rendered string to render the input text verbatim (i.e. no parsing).
     if (!window.getWindowRenderer() || !window.getWindowRenderer()->isTextParsingEnabled())
         return CEGUI::System::getSingleton().getDefaultRenderedStringParser();
 

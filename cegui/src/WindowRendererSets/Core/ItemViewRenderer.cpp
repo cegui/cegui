@@ -90,62 +90,44 @@ void ItemViewRenderer::createRenderGeometryAndAddToItemView(
     ItemView* view, RenderedString& rendered_string,
     Rectf draw_rect, const Font* font, const Rectf* item_clipper, bool is_selected)
 {
-    if (view->getSelectionBrushImage() != nullptr && is_selected)
+    // Draw selection brush
+    if (is_selected && view->getSelectionBrushImage())
     {
-        ImageRenderSettings renderSettings(
-            draw_rect,
-            item_clipper,
-            true,
-            view->getSelectionColourRect());
-
-        auto brushGeomBuffers = view->getSelectionBrushImage()->createRenderGeometry(
-            renderSettings);
-
-        view->appendGeometryBuffers(brushGeomBuffers);
+        ImageRenderSettings renderSettings(draw_rect, item_clipper, true, view->getSelectionColourRect());
+        auto geom = view->getSelectionBrushImage()->createRenderGeometry(renderSettings);
+        view->appendGeometryBuffers(geom);
     }
 
+    // Draw text
     glm::vec2 draw_pos(draw_rect.getPosition());
     for (size_t i = 0; i < rendered_string.getLineCount(); ++i)
     {
-        draw_pos.y += CoordConverter::alignToPixels(
-            (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
+        draw_pos.y += CoordConverter::alignToPixels((font->getLineSpacing() - font->getFontHeight()) * 0.5f);
 
-        auto stringGeomBuffers = rendered_string.createRenderGeometry(
-            view, i,
-            draw_pos, nullptr, item_clipper, 0.0f);
-
-        view->appendGeometryBuffers(stringGeomBuffers);
+        auto geom = rendered_string.createRenderGeometry(view, i, draw_pos, nullptr, item_clipper, 0.0f);
+        view->appendGeometryBuffers(geom);
 
         draw_pos.y += rendered_string.getPixelSize(view, i).d_height;
     }
 }
 
 void ItemViewRenderer::createRenderGeometryAndAddToItemView(
-    ItemView* view, FormattedRenderedString* formated_rendered_string,
+    ItemView* view, FormattedRenderedString* formatter,
     Rectf draw_rect, const Font* font, const Rectf* item_clipper, bool is_selected)
 {
-    if (view->getSelectionBrushImage() != nullptr && is_selected)
+    // Draw selection brush
+    if (is_selected && view->getSelectionBrushImage())
     {
-        ImageRenderSettings renderSettings(
-            draw_rect,
-            item_clipper,
-            true,
-            view->getSelectionColourRect());
-
-        auto brushGeomBuffers = view->getSelectionBrushImage()->createRenderGeometry(
-            renderSettings);
-
-        view->appendGeometryBuffers(brushGeomBuffers);
+        ImageRenderSettings renderSettings(draw_rect, item_clipper, true, view->getSelectionColourRect());
+        auto geom = view->getSelectionBrushImage()->createRenderGeometry(renderSettings);
+        view->appendGeometryBuffers(geom);
     }
 
+    // Draw text
     glm::vec2 draw_pos(draw_rect.getPosition());
-    draw_pos.y += CoordConverter::alignToPixels(
-        (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
-
-    auto stringGeomBuffers = formated_rendered_string->createRenderGeometry(
-        view, draw_pos, nullptr, item_clipper);
-
-    view->appendGeometryBuffers(stringGeomBuffers);
+    draw_pos.y += CoordConverter::alignToPixels((font->getLineSpacing() - font->getFontHeight()) * 0.5f);
+    auto geom = formatter->createRenderGeometry(view, draw_pos, nullptr, item_clipper);
+    view->appendGeometryBuffers(geom);
 }
 
 //----------------------------------------------------------------------------//

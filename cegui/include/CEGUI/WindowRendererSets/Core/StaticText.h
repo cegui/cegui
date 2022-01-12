@@ -519,12 +519,22 @@ protected:
     // event subscribers
     bool handleScrollbarChange(const EventArgs& e);
 
-    // implementation data
 
-    //! Class that renders RenderedString with some formatting.
     mutable std::unique_ptr<FormattedRenderedString> d_formatter;
-
     std::vector<Event::ScopedConnection> d_connections;
+    ColourRect d_textCols = 0xFFFFFFFF;       //!< Colours used when rendering the text.
+
+    /*
+    \brief
+        If the "AdjustHeightToContent" property of the window is "true",
+        then this is the number of text lines to show when adjusting the
+        height to the content.
+
+        See "getNumOfTextLinesToShow" for more details.
+
+    \see getNumOfTextLinesToShow
+    */
+    NumOfTextLinesToShow d_numOfTextLinesToShow;
 
     //! Horizontal formatting to be applied to the text.
     HorizontalTextFormatting d_horzFormatting = HorizontalTextFormatting::LeftAligned;
@@ -558,20 +568,6 @@ protected:
     \see d_actualHorzFormatting
     */
     mutable VerticalTextFormatting d_actualVertFormatting = VerticalTextFormatting::CentreAligned;
-
-    /*
-    \brief
-        If the "AdjustHeightToContent" property of the window is "true",
-        then this is the number of text lines to show when adjusting the
-        height to the content.
-
-        See "getNumOfTextLinesToShow" for more details.
-
-    \see getNumOfTextLinesToShow
-    */
-    NumOfTextLinesToShow d_numOfTextLinesToShow;
-
-    ColourRect d_textCols = 0xFFFFFFFF;       //!< Colours used when rendering the text.
 
     bool d_enableVertScrollbar = false; //!< true if vertical scroll bar is enabled.
     bool d_enableHorzScrollbar = false; //!< true if horizontal scroll bar is enabled.

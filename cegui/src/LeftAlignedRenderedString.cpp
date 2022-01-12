@@ -50,16 +50,13 @@ std::vector<GeometryBuffer*> LeftAlignedRenderedString::createRenderGeometry(
     const ColourRect* mod_colours,
     const Rectf* clip_rect) const
 {
-    glm::vec2 draw_pos(position);
     std::vector<GeometryBuffer*> geomBuffers;
 
+    glm::vec2 draw_pos(position);
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        std::vector<GeometryBuffer*> currentRenderGeometry = 
-            d_renderedString->createRenderGeometry(ref_wnd, i, draw_pos, mod_colours, clip_rect, 0.0f);
-
-        geomBuffers.insert(geomBuffers.end(), currentRenderGeometry.begin(),
-            currentRenderGeometry.end());
+        auto currGeom = d_renderedString->createRenderGeometry(ref_wnd, i, draw_pos, mod_colours, clip_rect, 0.0f);
+        geomBuffers.insert(geomBuffers.end(), currGeom.begin(), currGeom.end());
 
         draw_pos.y += d_renderedString->getPixelSize(ref_wnd, i).d_height;
     }
