@@ -30,6 +30,7 @@
 #include "CEGUI/WindowRendererSets/Core/Static.h"
 #include "CEGUI/falagard/Enums.h"
 #include "CEGUI/ColourRect.h"
+#include "CEGUI/Sizef.h"
 #include "CEGUI/Event.h"
 #include <sstream>
 
@@ -279,11 +280,8 @@ public:
     */
     void setHorizontalScrollbarEnabled(bool setting);
 
-    //! return the current horizontal formatted text extent in pixels.
-    float getHorizontalTextExtent() const;
-
-    //! return the current vertical formatted text extent in pixels.
-    float getVerticalTextExtent() const;
+    //! return the current formatted text extent in pixels.
+    Sizef getTextExtent() const;
 
     //! Get the height of a line of text, in pixels.
     float getLineHeight() const;
@@ -506,7 +504,6 @@ protected:
     Scrollbar* getHorzScrollbar() const;
     Rectf getTextRenderArea() const;
     const ComponentArea& getTextComponentArea() const;
-    Sizef getDocumentSize() const;
 
     // overridden event handlers
     bool onTextChanged(const EventArgs& e);
@@ -576,14 +573,17 @@ protected:
 
 private:
 
+    // For property access, use getTextExtent in a client code
+    float getHorizontalTextExtent() const { return getTextExtent().d_width; }
+    float getVerticalTextExtent() const { return getTextExtent().d_height; }
+
     Scrollbar* getVertScrollbarWithoutUpdate() const;
     Scrollbar* getHorzScrollbarWithoutUpdate() const;
     Rectf getTextRenderAreaWithoutUpdate() const;
     const ComponentArea& getTextComponentAreaWithoutUpdate() const;
-    Sizef getDocumentSizeWithoutUpdate() const;
-    void adjustSizeToContent_wordWrap_keepingAspectRatio(const LeftAlignedRenderedString& orig_str,
-        USize& size_func, float content_max_width, float window_max_width,
-        float epsilon);
+    Sizef getTextExtentWithoutUpdate() const;
+    void adjustSizeToContent_wordWrap_keepingAspectRatio(const Sizef& contentMaxSize,
+        USize& size_func, float window_max_width, float epsilon);
     void adjustSizeToContent_wordWrap_notKeepingAspectRatio(USize& size_func, float content_max_width,
         float window_max_width, float epsilon);
     void adjustSizeToContent_direct();

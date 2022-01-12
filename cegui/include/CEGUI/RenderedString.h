@@ -51,10 +51,8 @@ class Rectf;
 class CEGUIEXPORT RenderedString
 {
 public:
-    //! Constructor.
-    RenderedString();
 
-    //! Destructor.
+    RenderedString();
     virtual ~RenderedString();
 
     /*!
