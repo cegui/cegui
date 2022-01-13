@@ -55,9 +55,6 @@ public:
         const glm::vec2& position, const ColourRect* mod_colours,
         const Rectf* clip_rect) const override;
     size_t getFormattedLineCount() const override;
-    float getHorizontalExtent(const Window* ref_wnd) const override;
-    float getVerticalExtent(const Window* ref_wnd) const override;
-    std::size_t getNumOfFormattedTextLines() const override;
 
 protected:
     //! Delete the current formatters and associated RenderedStrings
@@ -95,7 +92,7 @@ void RenderedStringWordWrapper<T>::format(const Window* ref_wnd,
 {
     deleteFormatters();
 
-    bool was_word_split = false;
+    d_wasWordSplit = false;
 
     RenderedString rstring, lstring;
     rstring = *d_renderedString;
@@ -112,7 +109,7 @@ void RenderedStringWordWrapper<T>::format(const Window* ref_wnd,
                 break;
 
             // split rstring at width into lstring and remaining rstring
-            was_word_split = rstring.split(ref_wnd, line, area_size.d_width, lstring) || was_word_split;
+            d_wasWordSplit |= rstring.split(ref_wnd, line, area_size.d_width, lstring);
             frs = new T(*new RenderedString(lstring));
             frs->format(ref_wnd, area_size);
             d_lines.push_back(frs);
@@ -125,7 +122,16 @@ void RenderedStringWordWrapper<T>::format(const Window* ref_wnd,
     frs->format(ref_wnd, area_size);
     d_lines.push_back(frs);
 
-    setWasWordSplit(was_word_split);
+    // Update extent
+    d_extent.d_width = 0.f;
+    d_extent.d_height = 0.f;
+    for (const auto& line : d_lines)
+    {
+        const auto& lineExtent = line->getExtent();
+        if (d_extent.d_width < lineExtent.d_width)
+            d_extent.d_width = lineExtent.d_width;
+        d_extent.d_height += lineExtent.d_height;
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -158,49 +164,9 @@ std::vector<GeometryBuffer*> RenderedStringWordWrapper<T>::createRenderGeometry(
 template <typename T>
 size_t RenderedStringWordWrapper<T>::getFormattedLineCount() const
 {
-    return d_lines.size();
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-float RenderedStringWordWrapper<T>::getHorizontalExtent(const Window* ref_wnd) const
-{
-    // TODO: Cache at format time.
-
-    float w = 0;
-    typename LineList::const_iterator i = d_lines.begin();
-    for (; i != d_lines.end(); ++i)
-    {
-        const float cur_width = (*i)->getHorizontalExtent(ref_wnd);
-        if (cur_width > w)
-            w = cur_width;
-    }
-    
-    return w;
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-float RenderedStringWordWrapper<T>::getVerticalExtent(const Window* ref_wnd) const
-{
-    // TODO: Cache at format time.
-
-    float h = 0;
-    typename LineList::const_iterator i = d_lines.begin();
-    for (; i != d_lines.end(); ++i)
-        h += (*i)->getVerticalExtent(ref_wnd);
-
-    return h;
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-std::size_t RenderedStringWordWrapper<T>::getNumOfFormattedTextLines() const
-{
-    std::size_t ret(0);
-    for ( LineList::const_iterator line(d_lines.begin());
-          line != d_lines.end();  ++line)
-        ret += (*line)->getNumOfOriginalTextLines();
+    size_t ret = 0;
+    for (const auto& line : d_lines)
+        ret += line->getRenderedString().getLineCount();
     return ret;
 }
 

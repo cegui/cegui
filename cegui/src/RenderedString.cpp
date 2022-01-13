@@ -63,8 +63,8 @@ RenderedString& RenderedString::operator =(const RenderedString& rhs)
 
 //----------------------------------------------------------------------------//
 RenderedString::~RenderedString() = default;
-RenderedString::RenderedString(RenderedString&& other) = default;
-RenderedString& RenderedString::operator =(RenderedString&& rhs) = default;
+RenderedString::RenderedString(RenderedString&&) noexcept = default;
+RenderedString& RenderedString::operator =(RenderedString&&) noexcept = default;
 
 //----------------------------------------------------------------------------//
 void RenderedString::appendComponent(const RenderedStringComponent& component)

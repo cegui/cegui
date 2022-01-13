@@ -30,6 +30,7 @@
 #define _CEGUIListView_h_
 
 #include "CEGUI/views/ItemView.h"
+#include "CEGUI/RenderedString.h"
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -50,29 +51,27 @@ enum class HorizontalTextFormatting : int;
     shouldn't use this struct for interacting with the list, but rather use the
     attached ItemModel.
 */
-struct CEGUIEXPORT ListViewItemRenderingState
+// FIXME: CEGUIEXPORT here requires FormattedRenderedString to de a complete type (WTF?!) VS2019 16.11.9
+struct /*CEGUIEXPORT*/ ListViewItemRenderingState
 {
-    RenderedString* d_string = nullptr;
+    ListViewItemRenderingState(ListView* list_view);
+    ListViewItemRenderingState(const ListViewItemRenderingState&) = delete;
+    ListViewItemRenderingState(ListViewItemRenderingState&&) noexcept;
+
+    ListViewItemRenderingState& operator =(const ListViewItemRenderingState&) = delete;
+    ListViewItemRenderingState& operator =(ListViewItemRenderingState&&) noexcept;
+
+    bool operator <(const ListViewItemRenderingState& other) const;
+    bool operator >(const ListViewItemRenderingState& other) const;
+
     std::unique_ptr<FormattedRenderedString> d_formatter;
-    //! The name of the image that represents the icon
-    String d_icon;
+    RenderedString d_string;
+    String d_icon; //!< The name of the image that represents the icon
     Sizef d_size;
-    bool d_isSelected = false;
     ModelIndex d_index;
     String d_text;
     ListView* d_attachedListView = nullptr;
-
-    ListViewItemRenderingState(ListView* list_view);
-    ~ListViewItemRenderingState();
-
-    ListViewItemRenderingState(ListViewItemRenderingState&&) noexcept;
-    ListViewItemRenderingState& operator=(ListViewItemRenderingState&&) noexcept;
-
-    ListViewItemRenderingState(const ListViewItemRenderingState&) = delete;
-    ListViewItemRenderingState& operator=(const ListViewItemRenderingState&) = delete;
-
-    bool operator< (const ListViewItemRenderingState& other) const;
-    bool operator> (const ListViewItemRenderingState& other) const;
+    bool d_isSelected = false;
 };
 
 /*!

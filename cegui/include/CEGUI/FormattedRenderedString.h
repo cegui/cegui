@@ -27,11 +27,18 @@
 #ifndef _CEGUIFormattedRenderedString_h_
 #define _CEGUIFormattedRenderedString_h_
 
-#include "CEGUI/RenderedString.h"
+#include "./Sizef.h"
+#include <vector>
 
-// Start of CEGUI namespace section
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 namespace CEGUI
 {
+class RenderedString;
+
 /*!
 \brief
     Root of a class hierarchy that wrap RenderedString objects and render them
@@ -40,19 +47,27 @@ namespace CEGUI
 class CEGUIEXPORT FormattedRenderedString
 {
 public:
-    //! Destructor.
-    virtual ~FormattedRenderedString();
 
-    virtual void format(const Window* ref_wnd, const Sizef& area_size) = 0;
-    virtual std::vector<GeometryBuffer*> createRenderGeometry(const Window* ref_wnd, const glm::vec2& position, const ColourRect* mod_colours, const Rectf* clip_rect) const = 0;
-    virtual size_t getFormattedLineCount() const = 0;
-    virtual float getHorizontalExtent(const Window* ref_wnd) const = 0;
-    virtual float getVerticalExtent(const Window* ref_wnd) const = 0;
+    FormattedRenderedString(const RenderedString& string);
+    virtual ~FormattedRenderedString() = default;
+
+    virtual void format(const Window* refWnd, const Sizef& area_size) = 0;
+    virtual std::vector<GeometryBuffer*> createRenderGeometry(const Window* refWnd, const glm::vec2& position, const ColourRect* mod_colours, const Rectf* clip_rect) const = 0;
+
+    /*
+    \brief
+        Get the number of text lines in the formatted string.
+        That takes into account e.g. word-wrapping.
+    */
+    virtual size_t getFormattedLineCount() const;
 
     //! set the RenderedString.
-    void setRenderedString(const RenderedString& string);
+    void setRenderedString(const RenderedString& string) { d_renderedString = &string; }
 
-    const RenderedString& getRenderedString() const;
+    const RenderedString& getRenderedString() const { return *d_renderedString; }
+
+    //! Get pixel width and height of the formatted text
+    const Sizef& getExtent() const { return d_extent; }
 
     /*
     \brief
@@ -61,62 +76,20 @@ public:
 
         This can happen e.g. if word wrapping is used, and the width of a word
         is more than that of the area of the string.
-
-    \see setWasWordSplit
     */
-    bool wasWordSplit() const;
-
-    /*
-    \brief
-        Set a flag which indicates whether in the last call to "format", any
-        word split between 2 or more lines.
-
-        See the documentation for "wasWordSplit" for more details.
-
-    \see wasWordSplit
-    */
-    void setWasWordSplit(bool value);
-
-    /*
-    \brief
-        Get the number of text lines in the original (non-formatted) string
-        (i.e. "d_renderedString");
-
-    \see getNumOfFormattedTextLines
-    */
-    std::size_t getNumOfOriginalTextLines() const;
-
-    /*
-    \brief
-        Get the number of text lines in the formatted string.
-
-        That takes into account e.g. word-wrapping.
-
-    \see getNumOfOriginalTextLines
-    */
-    virtual std::size_t getNumOfFormattedTextLines() const;
+    bool wasWordSplit() const { return d_wasWordSplit; }
 
 protected:
-    //! Constructor.
-    FormattedRenderedString(const RenderedString& string);
 
-    //! RenderedString that we handle formatting for.
-    const RenderedString* d_renderedString;
-
-private:
-    /*
-    \brief
-        During the last call to "format", was any word split between 2 or more
-        lines?
-
-        See the documentation for "wasWordSplit" for more details.
-
-    \see wasWordSplit
-    \see setWasWordSplit
-    */
-    bool d_wasWordSplit;
+    const RenderedString* d_renderedString = nullptr; //!< RenderedString that we handle formatting for.
+    Sizef d_extent;
+    bool d_wasWordSplit = false; //!< \see wasWordSplit
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif // end of guard _CEGUIFormattedRenderedString_h_
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
+
+#endif

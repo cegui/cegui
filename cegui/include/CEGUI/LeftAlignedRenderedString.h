@@ -29,7 +29,6 @@
 
 #include "CEGUI/FormattedRenderedString.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
@@ -40,20 +39,16 @@ namespace CEGUI
 class CEGUIEXPORT LeftAlignedRenderedString : public FormattedRenderedString
 {
 public:
-    //! Constructor.
+
     LeftAlignedRenderedString(const RenderedString& string);
 
-    // implementation of base interface
-    void format(const Window* ref_wnd, const Sizef& area_size) override;
+    void format(const Window* refWnd, const Sizef& area_size) override;
+
     std::vector<GeometryBuffer*> createRenderGeometry(
-        const Window* ref_wnd,
-        const glm::vec2& position, const ColourRect* mod_colours,
-        const Rectf* clip_rect) const override;
-    size_t getFormattedLineCount() const override;
-    float getHorizontalExtent(const Window* ref_wnd) const override;
-    float getVerticalExtent(const Window* ref_wnd) const override;
+        const Window* refWnd, const glm::vec2& position,
+        const ColourRect* mod_colours, const Rectf* clip_rect) const override;
 };
     
-} // End of  CEGUI namespace section
+}
 
-#endif // end of guard _CEGUILeftAlignedRenderedString_h_
+#endif

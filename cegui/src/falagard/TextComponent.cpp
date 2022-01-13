@@ -47,62 +47,10 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-TextComponent::TextComponent() :
-    d_vertFormatting(VerticalTextFormatting::TopAligned),
-    d_horzFormatting(HorizontalTextFormatting::LeftAligned),
-    d_paragraphDir(DefaultParagraphDirection::Automatic)
-{
-}
-
-//----------------------------------------------------------------------------//
-TextComponent::TextComponent(const TextComponent& obj) :
-    FalagardComponentBase(obj),
-    d_text(obj.d_text),
-    d_renderedString(obj.d_renderedString),
-    d_lastFont(obj.d_lastFont),
-    d_lastParser(obj.d_lastParser),
-    d_lastText(obj.d_lastText),
-    d_font(obj.d_font),
-    d_vertFormatting(obj.d_vertFormatting),
-    d_horzFormatting(obj.d_horzFormatting),
-    d_paragraphDir(obj.d_paragraphDir),
-    d_textFromProperty(obj.d_textFromProperty),
-    d_fontFromProperty(obj.d_fontFromProperty)
-{
-    setupStringFormatter(obj.d_lastHorzFormatting);
-}
-
-//----------------------------------------------------------------------------//
+TextComponent::TextComponent() = default;
 TextComponent::~TextComponent() = default;
-
-//----------------------------------------------------------------------------//
-TextComponent& TextComponent::operator =(const TextComponent& other)
-{
-    if (this == &other)
-        return *this;
-
-    FalagardComponentBase::operator=(other);
-
-    d_text = other.d_text;
-    // note we do not assign the BidiVisualMapping object, we just mark our
-    // existing one as invalid so it's data gets regenerated next time it's
-    // needed.
-    d_renderedString = other.d_renderedString;
-    d_formatter.reset();
-    d_lastFont = other.d_lastFont;
-    d_lastParser = other.d_lastParser;
-    d_lastText = other.d_lastText;
-    d_font = other.d_font;
-    d_vertFormatting = other.d_vertFormatting;
-    d_horzFormatting = other.d_horzFormatting;
-    d_paragraphDir = other.d_paragraphDir;
-    d_textFromProperty = other.d_textFromProperty;
-    d_fontFromProperty = other.d_fontFromProperty;
-
-    setupStringFormatter(other.d_lastHorzFormatting);
-
-    return *this;
-}
+TextComponent::TextComponent(TextComponent&& obj) = default;
+TextComponent& TextComponent::operator =(TextComponent && other) = default;
 
 //----------------------------------------------------------------------------//
 String TextComponent::getEffectiveText(const Window& wnd) const
@@ -189,7 +137,7 @@ void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf
     updateFormatting(srcWindow, destRect.getSize());
 
     // Get total formatted height.
-    const float textHeight = d_formatter->getVerticalExtent(&srcWindow);
+    const float textHeight = d_formatter->getExtent().d_height;
 
     // Handle dest area adjustments for vertical formatting.
     // Default is VerticalTextFormatting::TopAligned, for which we take no action.
@@ -277,12 +225,10 @@ void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const
 }
 
 //----------------------------------------------------------------------------//
-Sizef TextComponent::getTextExtent(const Window& window) const
+const Sizef& TextComponent::getTextExtent(const Window& window) const
 {
-    //!!!TODO TEXT: unify!
     updateFormatting(window, d_area.getPixelRect(window).getSize());
-    return Sizef(d_formatter->getHorizontalExtent(&window),
-        d_formatter->getVerticalExtent(&window));
+    return d_formatter->getExtent();
 }
 
 //----------------------------------------------------------------------------//
@@ -366,6 +312,7 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
     else
         updateRenderedString(srcWindow, d_text.empty() ? srcWindow.getText() : d_text, font);
 
+    //!!!FIXME TEXT: re-format only if something changed!
     setupStringFormatter(d_horzFormatting.get(srcWindow));
     d_formatter->format(&srcWindow, size);   
 }
