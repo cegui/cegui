@@ -244,7 +244,7 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index, fl
     item.d_text = d_itemModel->getData(index);
     item.d_string = getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect, DefaultParagraphDirection::Automatic);
 
-    if (item.d_formatter && item.d_formatter->getCorrespondingFormatting() == d_horzFormatting)
+    if (!item.d_formatter || item.d_formatter->getCorrespondingFormatting() != d_horzFormatting)
     {
         switch (d_horzFormatting)
         {

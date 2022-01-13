@@ -537,6 +537,9 @@ Layout the widgets
 *************************************************************************/
 void TabControl::performChildLayout(bool client, bool nonClient)
 {
+    if (d_initialising)
+        return;
+
     Window* tabButtonPane = getTabButtonPane();
     Window* tabContentPane = getTabPane();
 

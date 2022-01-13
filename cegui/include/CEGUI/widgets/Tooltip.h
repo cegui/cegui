@@ -55,6 +55,7 @@ public:
 protected:
 
     void onTextChanged(WindowEventArgs& e) override;
+    void onFontChanged(WindowEventArgs& e) override;
 };
 
 }
