@@ -251,15 +251,11 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
     textPartRect.d_min.y += (textArea.getHeight() - font->getFontHeight()) * 0.5f;
 
     const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);
-    const ColourRect selectTextCol = getOptionalColour(SelectedTextColourPropertyName);
-    //const ColourRect selectBrushCol = getOptionalColour(
-    //    w->hasInputFocus() ? ActiveSelectionColourPropertyName : InactiveSelectionColourPropertyName);
 
-    const auto& selectBrushImagery = wlf.getStateImagery(w->hasInputFocus() ? "ActiveSelection" : "InactiveSelection");
+    const size_t selStart = w->getSelectionStart();
+    const size_t selEnd = w->getSelectionEnd();
 
-#ifdef CEGUI_BIDI_SUPPORT
-
-    if (w->getSelectionLength() == 0)
+    if (selStart >= selEnd)
     {
         // No highlighted text - we can draw the whole thing
         font->createTextRenderGeometry(w->getGeometryBuffers(),
@@ -269,13 +265,19 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
     }
     else
     {
+        Rectf brushArea(textArea);
+        const size_t lineLength = text.size();
+        const auto& selectBrushImagery = wlf.getStateImagery(w->hasInputFocus() ? "ActiveSelection" : "InactiveSelection");
+        const ColourRect selectTextCol = getOptionalColour(SelectedTextColourPropertyName);
+
+#ifdef CEGUI_BIDI_SUPPORT
+
         // There is highlighted text - because of the Bidi support - the
         // highlighted area can be in some cases nonconsecutive.
         // So - we need to draw it char by char (I guess we can optimize it more
         // but this is not that big performance hit because it only happens if
         // we have highlighted text - not that common...)
-        Rectf brushArea(textArea);
-        for (size_t i = 0 ; i < text.size() ; ++i)
+        for (size_t i = 0 ; i < lineLength; ++i)
         {
             // Get the visual pos of the char
             size_t realPos = i;
@@ -285,7 +287,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
             const String charStr(&text[i], 1);
 
             // Render the selection imagery
-            const bool selected = realPos >= w->getSelectionStart() && realPos < w->getSelectionEnd();
+            const bool selected = (realPos >= selStart && realPos < selEnd);
             if (selected)
             {
                 brushArea.d_min.x = textPartRect.d_min.x;
@@ -297,59 +299,51 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
                 charStr, textPartRect.d_min.x, textPartRect.getPosition(),
                 &textArea, true, selected ? selectTextCol : normalTextCol, w->getDefaultParagraphDirection());
         }
-    }
 
 #else // no CEGUI_BIDI_SUPPORT
 
-    if (w->getSelectionLength() != 0)
-    {
-        // calculate required start and end offsets of selection imagery.
-        float selStartOffset =
-            font->getTextAdvance(text.substr(0, w->getSelectionStart()));
-        float selEndOffset =
-            font->getTextAdvance(text.substr(0, w->getSelectionEnd()));
+        float selStartOffset = 0.f;
+        float selEndOffset = 0.f;
 
-        // calculate area for selection imagery.
-        Rectf brushArea(textArea);
+        if (selStart > 0)
+        {
+            const String sect = text.substr(0, selStart);
+
+            selStartOffset = font->getTextAdvance(sect);
+
+            // Create render geometry for pre-selected text
+            font->createTextRenderGeometry(w->getGeometryBuffers(),
+                sect, textPartRect.d_min.x,
+                textPartRect.getPosition(),
+                &textArea, true, normalTextCol, w->getDefaultParagraphDirection());
+        }
+
+        const bool hasPost = (selEnd < lineLength);
+        if (hasPost)
+            selEndOffset = font->getTextAdvance(text.substr(0, selEnd));
+        else
+            selEndOffset = font->getTextAdvance(text); // NB: if-else prevents temporary copy creation
+
+        // Render the selection imagery
         brushArea.d_min.x += textOffset + selStartOffset;
         brushArea.d_max.x = brushArea.d_min.x + (selEndOffset - selStartOffset);
-
-        // create render geometry for the selection imagery.
         selectBrushImagery.render(*w, brushArea, nullptr, &textArea);
-    }
 
-    // create render geometry for pre-highlight text
-    String sect = text.substr(0, w->getSelectionStart());
-    colours = unselectedColours;
+        // Create render geometry for selected text
+        font->createTextRenderGeometry(w->getGeometryBuffers(),
+            text.substr(selStart, selEnd - selStart), textPartRect.d_min.x, textPartRect.getPosition(),
+            &textArea, true, selectTextCol, w->getDefaultParagraphDirection());
 
-    auto preHighlightTextGeomBuffers = font->createTextRenderGeometry(
-        sect, textPartRect.d_min.x,
-        textPartRect.getPosition(),
-        &textArea, true, colours, w->getDefaultParagraphDirection());
-
-    w->appendGeometryBuffers(preHighlightTextGeomBuffers);
-
-    // create render geometry for highlight text
-    sect = text.substr(w->getSelectionStart(), w->getSelectionLength());
-    setColourRectToSelectedTextColour(colours);
-
-    auto highlitTextGeomBuffers = font->createTextRenderGeometry(
-        sect, textPartRect.d_min.x, textPartRect.getPosition(),
-        &textArea, true, colours, w->getDefaultParagraphDirection());
-
-    w->appendGeometryBuffers(highlitTextGeomBuffers);
-
-    // create render geometry for  post-highlight text
-    sect = text.substr(w->getSelectionEnd());
-    colours = unselectedColours;
-
-    auto postHighlitTextGeomBuffers = font->createTextRenderGeometry(
-        sect, textPartRect.d_min.x, textPartRect.getPosition(),
-        &textArea, true, colours, w->getDefaultParagraphDirection());
-
-    w->appendGeometryBuffers(postHighlitTextGeomBuffers);
+        // Create render geometry for post-selected text
+        if (hasPost)
+        {
+            font->createTextRenderGeometry(w->getGeometryBuffers(),
+                text.substr(selEnd), textPartRect.d_min.x, textPartRect.getPosition(),
+                &textArea, true, normalTextCol, w->getDefaultParagraphDirection());
+        }
 
 #endif
+    }
 }
 
 //----------------------------------------------------------------------------//
