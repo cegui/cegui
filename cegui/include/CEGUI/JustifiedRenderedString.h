@@ -46,13 +46,13 @@ class CEGUIEXPORT JustifiedRenderedString : public FormattedRenderedString
 {
 public:
 
-    JustifiedRenderedString(const RenderedString& string);
+    HorizontalTextFormatting getCorrespondingFormatting() const override { return HorizontalTextFormatting::Justified; }
 
-    void format(const Window* refWnd, const Sizef& area_size) override;
+    void format(const RenderedString& rs, const Window* refWnd, const Sizef& areaSize) override;
 
     std::vector<GeometryBuffer*> createRenderGeometry(
         const Window* refWnd, const glm::vec2& position,
-        const ColourRect* mod_colours, const Rectf* clip_rect) const override;
+        const ColourRect* modColours, const Rectf* clipRect) const override;
 
 protected:
 

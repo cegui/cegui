@@ -81,47 +81,41 @@ void TextComponent::setFontPropertySource(const String& property)
 //----------------------------------------------------------------------------//
 void TextComponent::setupStringFormatter(HorizontalTextFormatting horzFormatting) const
 {
-    // no formatting change
-    if (d_formatter && horzFormatting == d_lastHorzFormatting)
-    {
-        d_formatter->setRenderedString(d_renderedString);
+    if (d_formatter && d_formatter->getCorrespondingFormatting() == horzFormatting)
         return;
-    }
-
-    d_lastHorzFormatting = horzFormatting;
 
     switch (horzFormatting)
     {
         case HorizontalTextFormatting::LeftAligned:
-            d_formatter.reset(new LeftAlignedRenderedString(d_renderedString));
+            d_formatter.reset(new LeftAlignedRenderedString());
             break;
 
         case HorizontalTextFormatting::CentreAligned:
-            d_formatter.reset(new CentredRenderedString(d_renderedString));
+            d_formatter.reset(new CentredRenderedString());
             break;
 
         case HorizontalTextFormatting::RightAligned:
-            d_formatter.reset(new RightAlignedRenderedString(d_renderedString));
+            d_formatter.reset(new RightAlignedRenderedString());
             break;
 
         case HorizontalTextFormatting::Justified:
-            d_formatter.reset(new JustifiedRenderedString(d_renderedString));
+            d_formatter.reset(new JustifiedRenderedString());
             break;
 
         case HorizontalTextFormatting::WordWrapLeftAligned:
-            d_formatter.reset(new RenderedStringWordWrapper<LeftAlignedRenderedString>(d_renderedString));
+            d_formatter.reset(new RenderedStringWordWrapper<LeftAlignedRenderedString>());
             break;
 
         case HorizontalTextFormatting::WordWrapCentreAligned:
-            d_formatter.reset(new RenderedStringWordWrapper<CentredRenderedString>(d_renderedString));
+            d_formatter.reset(new RenderedStringWordWrapper<CentredRenderedString>());
             break;
 
         case HorizontalTextFormatting::WordWrapRightAligned:
-            d_formatter.reset(new RenderedStringWordWrapper<RightAlignedRenderedString>(d_renderedString));
+            d_formatter.reset(new RenderedStringWordWrapper<RightAlignedRenderedString>());
             break;
 
-        case HorizontalTextFormatting::WordWraperJustified:
-            d_formatter.reset(new RenderedStringWordWrapper<JustifiedRenderedString>(d_renderedString));
+        case HorizontalTextFormatting::WordWrapJustified:
+            d_formatter.reset(new RenderedStringWordWrapper<JustifiedRenderedString>());
             break;
 
         default:
@@ -305,6 +299,8 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
     if (!font)
         throw InvalidRequestException("TextComponent > Window doesn't have a font.");
 
+    //!!!FIXME TEXT: re-format only if something changed (either string of formatting)!
+
     // NB: made so to pass text by reference where possible
     //!!!FIXME TEXT: retrieve a reference to String from String-typed property!
     if (d_textFromProperty)
@@ -312,9 +308,10 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
     else
         updateRenderedString(srcWindow, d_text.empty() ? srcWindow.getText() : d_text, font);
 
-    //!!!FIXME TEXT: re-format only if something changed!
     setupStringFormatter(d_horzFormatting.get(srcWindow));
-    d_formatter->format(&srcWindow, size);   
+
+    if (d_formatter)
+        d_formatter->format(d_renderedString, &srcWindow, size);
 }
 
 }

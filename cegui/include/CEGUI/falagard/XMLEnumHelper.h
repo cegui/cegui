@@ -391,7 +391,7 @@ public:
         case HorizontalTextFormatting::WordWrapCentreAligned:
             return WordWrapCentreAligned;
 
-        case HorizontalTextFormatting::WordWraperJustified:
+        case HorizontalTextFormatting::WordWrapJustified:
             return WordWrapJustified;
 
         default:
@@ -420,7 +420,7 @@ public:
             return HorizontalTextFormatting::WordWrapRightAligned;
 
         else if (str == WordWrapJustified)
-            return HorizontalTextFormatting::WordWraperJustified;
+            return HorizontalTextFormatting::WordWrapJustified;
 
         else
             return HorizontalTextFormatting::LeftAligned;

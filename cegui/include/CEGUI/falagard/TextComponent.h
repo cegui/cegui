@@ -323,7 +323,6 @@ private:
     mutable const Font* d_lastFont = nullptr;
     mutable const RenderedStringParser* d_lastParser = nullptr;
     mutable String d_lastText;
-    mutable HorizontalTextFormatting d_lastHorzFormatting = HorizontalTextFormatting::LeftAligned;
 
     String d_text; //!< text rendered by this component, either string or property name.
     String d_font; //!< font to use, either font name or property name.

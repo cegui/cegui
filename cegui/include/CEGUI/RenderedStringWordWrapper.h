@@ -28,7 +28,6 @@
 #define _CEGUIRenderedStringWordWrapper_h_
 
 #include "CEGUI/FormattedRenderedString.h"
-#include "CEGUI/JustifiedRenderedString.h"
 #include <vector>
 
 namespace CEGUI
@@ -43,22 +42,19 @@ class RenderedStringWordWrapper : public FormattedRenderedString
 {
 public:
 
-    RenderedStringWordWrapper(const RenderedString& string)
-        : FormattedRenderedString(string)
-    {
-    }
+    HorizontalTextFormatting getCorrespondingFormatting() const override;
 
-    void format(const Window* refWnd, const Sizef& areaSize) override;
+    void format(const RenderedString& rs, const Window* refWnd, const Sizef& areaSize) override;
 
     std::vector<GeometryBuffer*> createRenderGeometry(
         const Window* refWnd, const glm::vec2& position,
-        const ColourRect* mod_colours, const Rectf* clip_rect) const override;
+        const ColourRect* modColours, const Rectf* clipRect) const override;
 
     size_t getFormattedLineCount() const override
     {
         size_t ret = 0;
         for (const auto& line : d_lines)
-            ret += line->getRenderedString().getLineCount();
+            ret += line->getFormattedLineCount();
         return ret;
     }
 
@@ -72,14 +68,48 @@ protected:
     bool d_wasWordSplit = false;
 };
 
-//! specialised version of format used with Justified text
+//----------------------------------------------------------------------------//
 template <> CEGUIEXPORT
-void RenderedStringWordWrapper<JustifiedRenderedString>::format(const Window* refWnd, const Sizef& areaSize);
+inline HorizontalTextFormatting RenderedStringWordWrapper<LeftAlignedRenderedString>::getCorrespondingFormatting() const
+{
+    return HorizontalTextFormatting::WordWrapLeftAligned;
+}
+template <> CEGUIEXPORT
+inline HorizontalTextFormatting RenderedStringWordWrapper<RightAlignedRenderedString>::getCorrespondingFormatting() const
+{
+    return HorizontalTextFormatting::WordWrapRightAligned;
+}
+template <> CEGUIEXPORT
+inline HorizontalTextFormatting RenderedStringWordWrapper<CentredRenderedString>::getCorrespondingFormatting() const
+{
+    return HorizontalTextFormatting::WordWrapCentreAligned;
+}
+template <> CEGUIEXPORT
+inline HorizontalTextFormatting RenderedStringWordWrapper<JustifiedRenderedString>::getCorrespondingFormatting() const
+{
+    return HorizontalTextFormatting::WordWrapJustified;
+}
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void RenderedStringWordWrapper<T>::format(const Window* refWnd, const Sizef& areaSize)
+HorizontalTextFormatting RenderedStringWordWrapper<T>::getCorrespondingFormatting() const
 {
+    //static_assert(false, "Unknown string formatter type");
+    return HorizontalTextFormatting::WordWrapLeftAligned;
+}
+
+//----------------------------------------------------------------------------//
+//! specialised version of format used with Justified text
+template <> CEGUIEXPORT
+void RenderedStringWordWrapper<JustifiedRenderedString>::format(
+    const RenderedString& rs, const Window* refWnd, const Sizef& areaSize);
+
+//----------------------------------------------------------------------------//
+template <typename T>
+void RenderedStringWordWrapper<T>::format(const RenderedString& rs, const Window* refWnd, const Sizef& areaSize)
+{
+    d_renderedString = &rs;
+
     d_strings.clear();
     d_lines.clear();
 
@@ -100,7 +130,7 @@ void RenderedStringWordWrapper<T>::format(const Window* refWnd, const Sizef& are
             // split rstring at width into lstring and remaining rstring
             d_wasWordSplit |= rstring.split(refWnd, line, areaSize.d_width, lstring);
             d_strings.push_back(std::move(lstring));
-            d_lines.push_back(std::make_unique<T>(d_strings.back()));
+            d_lines.push_back(std::make_unique<T>());
 
             line = 0;
         }
@@ -108,11 +138,11 @@ void RenderedStringWordWrapper<T>::format(const Window* refWnd, const Sizef& are
 
     // last line.
     d_strings.push_back(std::move(rstring));
-    d_lines.push_back(std::make_unique<T>(d_strings.back()));
+    d_lines.push_back(std::make_unique<T>());
 
     // Now format all lines
-    for (auto& line : d_lines)
-        line->format(refWnd, areaSize);
+    for (size_t i = 0; i < d_lines.size(); ++i)
+        d_lines[i]->format(d_strings[i], refWnd, areaSize);
 
     // Update extent
     d_extent.d_width = 0.f;
@@ -129,17 +159,17 @@ void RenderedStringWordWrapper<T>::format(const Window* refWnd, const Sizef& are
 //----------------------------------------------------------------------------//
 template <typename T>
 std::vector<GeometryBuffer*> RenderedStringWordWrapper<T>::createRenderGeometry(
-    const Window* refWnd, const glm::vec2& position, const ColourRect* mod_colours, const Rectf* clip_rect) const
+    const Window* refWnd, const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const
 {
     std::vector<GeometryBuffer*> geomBuffers;
 
-    glm::vec2 line_pos(position);
+    glm::vec2 linePos = position;
     for (const auto& line : d_lines)
     {
-        auto geom = line->createRenderGeometry(refWnd, line_pos, mod_colours, clip_rect);
+        auto geom = line->createRenderGeometry(refWnd, linePos, modColours, clipRect);
         geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
 
-        line_pos.y += line->getExtent().d_height;
+        linePos.y += line->getExtent().d_height;
     }
 
     return geomBuffers;

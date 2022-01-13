@@ -32,6 +32,7 @@
 #include "CEGUI/LeftAlignedRenderedString.h"
 #include "CEGUI/RightAlignedRenderedString.h"
 #include "CEGUI/CentredRenderedString.h"
+#include "CEGUI/JustifiedRenderedString.h"
 #include "CEGUI/RenderedStringWordWrapper.h"
 #include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/widgets/Scrollbar.h"
@@ -240,44 +241,45 @@ void ListView::resortView()
 //----------------------------------------------------------------------------//
 void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index, float& max_width, float& total_height)
 {
-    item.d_formatter.reset();
-
     item.d_text = d_itemModel->getData(index);
     item.d_string = getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect, DefaultParagraphDirection::Automatic);
 
-    switch (d_horzFormatting)
+    if (item.d_formatter && item.d_formatter->getCorrespondingFormatting() == d_horzFormatting)
     {
-        case HorizontalTextFormatting::LeftAligned:
-            item.d_formatter.reset(new LeftAlignedRenderedString(item.d_string));
-            break;
+        switch (d_horzFormatting)
+        {
+            case HorizontalTextFormatting::LeftAligned:
+                item.d_formatter.reset(new LeftAlignedRenderedString());
+                break;
 
-        case HorizontalTextFormatting::RightAligned:
-            item.d_formatter.reset(new RightAlignedRenderedString(item.d_string));
-            break;
+            case HorizontalTextFormatting::RightAligned:
+                item.d_formatter.reset(new RightAlignedRenderedString());
+                break;
 
-        case HorizontalTextFormatting::CentreAligned:
-            item.d_formatter.reset(new CentredRenderedString(item.d_string));
-            break;
+            case HorizontalTextFormatting::CentreAligned:
+                item.d_formatter.reset(new CentredRenderedString());
+                break;
 
-        case HorizontalTextFormatting::Justified:
-            item.d_formatter.reset(new JustifiedRenderedString(item.d_string));
-            break;
+            case HorizontalTextFormatting::Justified:
+                item.d_formatter.reset(new JustifiedRenderedString());
+                break;
 
-        case HorizontalTextFormatting::WordWrapLeftAligned:
-            item.d_formatter.reset(new RenderedStringWordWrapper<LeftAlignedRenderedString>(item.d_string));
-            break;
+            case HorizontalTextFormatting::WordWrapLeftAligned:
+                item.d_formatter.reset(new RenderedStringWordWrapper<LeftAlignedRenderedString>());
+                break;
 
-        case HorizontalTextFormatting::WordWrapRightAligned:
-            item.d_formatter.reset(new RenderedStringWordWrapper<RightAlignedRenderedString>(item.d_string));
-            break;
+            case HorizontalTextFormatting::WordWrapRightAligned:
+                item.d_formatter.reset(new RenderedStringWordWrapper<RightAlignedRenderedString>());
+                break;
 
-        case HorizontalTextFormatting::WordWrapCentreAligned:
-            item.d_formatter.reset(new RenderedStringWordWrapper<CentredRenderedString>(item.d_string));
-            break;
+            case HorizontalTextFormatting::WordWrapCentreAligned:
+                item.d_formatter.reset(new RenderedStringWordWrapper<CentredRenderedString>());
+                break;
 
-        case HorizontalTextFormatting::WordWraperJustified:
-            item.d_formatter.reset(new RenderedStringWordWrapper<JustifiedRenderedString>(item.d_string));
-            break;
+            case HorizontalTextFormatting::WordWrapJustified:
+                item.d_formatter.reset(new RenderedStringWordWrapper<JustifiedRenderedString>());
+                break;
+        }
     }
 
     Sizef itemsAreaSize = getPixelSize();
@@ -285,7 +287,7 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index, fl
     if (vertScrollbar->isVisible())
         itemsAreaSize.d_width = itemsAreaSize.d_width - vertScrollbar->getPixelSize().d_width;
     itemsAreaSize.d_width -= 2;
-    item.d_formatter->format(this, itemsAreaSize);
+    item.d_formatter->format(item.d_string, this, itemsAreaSize);
 
     item.d_index = index;
     item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);

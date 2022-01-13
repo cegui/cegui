@@ -29,18 +29,12 @@
 
 namespace CEGUI
 {
-
-//----------------------------------------------------------------------------//
-FormattedRenderedString::FormattedRenderedString(const RenderedString& string)
-    : d_renderedString(&string)
-{
-}
     
 //----------------------------------------------------------------------------//
 std::size_t FormattedRenderedString::getFormattedLineCount() const
 {
     // Return original line count by default
-    return d_renderedString->getLineCount();
+    return d_renderedString ? d_renderedString->getLineCount() : 0;
 }
 
 }

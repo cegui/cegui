@@ -31,14 +31,10 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-RightAlignedRenderedString::RightAlignedRenderedString(const RenderedString& string) :
-    FormattedRenderedString(string)
+void RightAlignedRenderedString::format(const RenderedString& rs, const Window* refWnd, const Sizef& areaSize)
 {
-}
+    d_renderedString = &rs;
 
-//----------------------------------------------------------------------------//
-void RightAlignedRenderedString::format(const Window* refWnd, const Sizef& area_size)
-{
     d_offsets.clear();
 
     d_extent.d_width = 0.f;
@@ -48,7 +44,7 @@ void RightAlignedRenderedString::format(const Window* refWnd, const Sizef& area_
     {
         const Sizef lineExtent = d_renderedString->getLineExtent(refWnd, i);
 
-        d_offsets.push_back(area_size.d_width - lineExtent.d_width);
+        d_offsets.push_back(areaSize.d_width - lineExtent.d_width);
 
         // NB: reuse lineExtent here instead of calling RenderedString::getExtent
         d_extent.d_height += lineExtent.d_height;
@@ -59,19 +55,22 @@ void RightAlignedRenderedString::format(const Window* refWnd, const Sizef& area_
 
 //----------------------------------------------------------------------------//
 std::vector<GeometryBuffer*> RightAlignedRenderedString::createRenderGeometry(
-    const Window* refWnd, const glm::vec2& position, const ColourRect* mod_colours, const Rectf* clip_rect) const
+    const Window* refWnd, const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const
 {
     std::vector<GeometryBuffer*> geomBuffers;
 
-    glm::vec2 draw_pos = position;
+    if (!d_renderedString)
+        return geomBuffers;
+
+    glm::vec2 drawPos = position;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        draw_pos.x = position.x + d_offsets[i];
+        drawPos.x = position.x + d_offsets[i];
 
-        auto geom = d_renderedString->createRenderGeometry(refWnd, i, draw_pos, mod_colours, clip_rect, 0.0f);
+        auto geom = d_renderedString->createRenderGeometry(refWnd, i, drawPos, modColours, clipRect, 0.0f);
         geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
 
-        draw_pos.y += d_renderedString->getLineExtent(refWnd, i).d_height;
+        drawPos.y += d_renderedString->getLineExtent(refWnd, i).d_height;
     }
 
     return geomBuffers;

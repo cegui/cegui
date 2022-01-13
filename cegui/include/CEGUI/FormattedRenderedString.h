@@ -28,6 +28,7 @@
 #define _CEGUIFormattedRenderedString_h_
 
 #include "./Sizef.h"
+#include "./falagard/Enums.h"
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -48,11 +49,20 @@ class CEGUIEXPORT FormattedRenderedString
 {
 public:
 
-    FormattedRenderedString(const RenderedString& string);
     virtual ~FormattedRenderedString() = default;
 
-    virtual void format(const Window* refWnd, const Sizef& area_size) = 0;
-    virtual std::vector<GeometryBuffer*> createRenderGeometry(const Window* refWnd, const glm::vec2& position, const ColourRect* mod_colours, const Rectf* clip_rect) const = 0;
+    virtual HorizontalTextFormatting getCorrespondingFormatting() const = 0;
+
+    //! \brief Calculate formatting data for the given string.
+    virtual void format(const RenderedString& rs, const Window* refWnd, const Sizef& areaSize) = 0;
+
+    /*
+    \brief
+        Create render geometry for the previously formatted string.
+
+    \see format
+    */
+    virtual std::vector<GeometryBuffer*> createRenderGeometry(const Window* refWnd, const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const = 0;
 
     /*
     \brief
@@ -61,23 +71,19 @@ public:
     */
     virtual size_t getFormattedLineCount() const;
 
-    //! set the RenderedString.
-    void setRenderedString(const RenderedString& string) { d_renderedString = &string; }
-
-    const RenderedString& getRenderedString() const { return *d_renderedString; }
-
-    //! Get pixel width and height of the formatted text
-    const Sizef& getExtent() const { return d_extent; }
-
     /*
     \brief
-        During the last call to "format", was any word split between 2 or more
-        lines?
+        During the last call to "format", was any word split between lines?
 
-        This can happen e.g. if word wrapping is used, and the width of a word
+        This can happen if word wrapping is used, and the width of a word
         is more than that of the area of the string.
     */
     virtual bool wasWordSplit() const { return false; }
+
+    const RenderedString* getRenderedString() const { return d_renderedString; }
+
+    //! Get pixel width and height of the formatted text
+    const Sizef& getExtent() const { return d_extent; }
 
 protected:
 
