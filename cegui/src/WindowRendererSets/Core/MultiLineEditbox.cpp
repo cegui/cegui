@@ -34,26 +34,19 @@
 #include "CEGUI/Font.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-
 const String FalagardMultiLineEditbox::TypeName("Core/MultiLineEditbox");
-
-const String FalagardMultiLineEditbox::UnselectedTextColourPropertyName( "NormalTextColour" );
-const String FalagardMultiLineEditbox::SelectedTextColourPropertyName( "SelectedTextColour" );
-const String FalagardMultiLineEditbox::ActiveSelectionColourPropertyName( "ActiveSelectionColour" );
-const String FalagardMultiLineEditbox::InactiveSelectionColourPropertyName( "InactiveSelectionColour" );
+const String FalagardMultiLineEditbox::UnselectedTextColourPropertyName("NormalTextColour");
+const String FalagardMultiLineEditbox::SelectedTextColourPropertyName("SelectedTextColour");
+const String FalagardMultiLineEditbox::ActiveSelectionColourPropertyName("ActiveSelectionColour");
+const String FalagardMultiLineEditbox::InactiveSelectionColourPropertyName("InactiveSelectionColour");
 const float FalagardMultiLineEditbox::DefaultCaretBlinkTimeout(0.66f);
 
+//----------------------------------------------------------------------------//
 FalagardMultiLineEditbox::FalagardMultiLineEditbox(const String& type) :
-    MultiLineEditboxWindowRenderer(type),
-    d_blinkCaret(false),
-    d_caretBlinkTimeout(DefaultCaretBlinkTimeout),
-    d_caretBlinkElapsed(0.0f),
-    d_showCaret(true)
+    MultiLineEditboxWindowRenderer(type)
 {
-
     CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardMultiLineEditbox,bool,
         "BlinkCaret", "Property to get/set whether the Editbox caret should blink.  "
         "Value is either \"true\" or \"false\".",
@@ -66,45 +59,37 @@ FalagardMultiLineEditbox::FalagardMultiLineEditbox(const String& type) :
         0.66f);
 }
 
-Rectf FalagardMultiLineEditbox::getTextRenderArea(void) const
+//----------------------------------------------------------------------------//
+Rectf FalagardMultiLineEditbox::getTextRenderArea() const
 {
     MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
     const WidgetLookFeel& wlf = getLookNFeel();
-    bool v_visible = w->getVertScrollbar()->isVisible();
-    bool h_visible = w->getHorzScrollbar()->isVisible();
+    const bool v_visible = w->getVertScrollbar()->isVisible();
+    const bool h_visible = w->getHorzScrollbar()->isVisible();
 
     // if either of the scrollbars are visible, we might want to use another text rendering area
     if (v_visible || h_visible)
     {
-        String area_name("TextArea");
+        String areaName("TextArea");
 
         if (h_visible)
-        {
-            area_name += "H";
-        }
+            areaName += "H";
         if (v_visible)
-        {
-            area_name += "V";
-        }
-        area_name += "Scroll";
+            areaName += "V";
+        areaName += "Scroll";
 
-        if (wlf.isNamedAreaPresent(area_name))
-        {
-            return wlf.getNamedArea(area_name).getArea().getPixelRect(*w);
-        }
+        if (wlf.isNamedAreaPresent(areaName))
+            return wlf.getNamedArea(areaName).getArea().getPixelRect(*w);
     }
 
     // default to plain TextArea
     return wlf.getNamedArea("TextArea").getArea().getPixelRect(*w);
 }
 
+//----------------------------------------------------------------------------//
 void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
 {
     MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
-    const StateImagery* imagery;
-
-    // get WidgetLookFeel for the assigned look.
-    const WidgetLookFeel& wlf = getLookNFeel();
 
     String state;
 
@@ -121,330 +106,224 @@ void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
             state += "Focused";
     }
 
-    // try and get imagery for our current state
-    imagery = &wlf.getStateImagery(state);
-    // Create the render geometry for the imagery
-    imagery->render(*w);
+    getLookNFeel().getStateImagery(state).render(*w);
 }
 
+//----------------------------------------------------------------------------//
 void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
 {
     MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
-    const Font* fnt = w->getActualFont();
+    const Font* font = w->getActualFont();
+    if (!font)
+        return;
 
-    // require a font so that we can calculate caret position.
-    if (fnt)
-    {
-        // get line that caret is in
-        size_t caretLine = w->getLineNumberFromIndex(w->getCaretIndex());
+    const size_t caretLine = w->getLineNumberFromIndex(w->getCaretIndex());
 
-        const MultiLineEditbox::LineList& d_lines = w->getFormattedLines();
+    const auto& lines = w->getFormattedLines();
 
-        // if caret line is valid.
-        if (caretLine < d_lines.size())
-        {
-            // calculate pixel offsets to where caret should be drawn
-            size_t caretLineIdx = w->getCaretIndex() - d_lines[caretLine].d_startIdx;
-            float ypos = caretLine * fnt->getLineSpacing();
-            float xpos = fnt->getTextAdvance(w->getText().substr(d_lines[caretLine].d_startIdx, caretLineIdx));
+    if (caretLine >= lines.size())
+        return;
 
-            // get WidgetLookFeel for the assigned look.
-            const WidgetLookFeel& wlf = getLookNFeel();
-            // get caret imagery
-            const ImagerySection& caretImagery = wlf.getImagerySection("Caret");
+    // Calculate pixel offsets to where caret should be drawn
+    const size_t caretLineIdx = w->getCaretIndex() - lines[caretLine].d_startIdx;
+    const float ypos = caretLine * font->getLineSpacing();
+    const float xpos = font->getTextAdvance(w->getText().substr(lines[caretLine].d_startIdx, caretLineIdx));
 
-            // calculate finat destination area for caret
-            Rectf caretArea;
-            caretArea.left(textArea.left() + xpos);
-            caretArea.top(textArea.top() + ypos);
-            caretArea.setWidth(caretImagery.getBoundingRect(*w).getSize().d_width);
-            caretArea.setHeight(fnt->getLineSpacing());
-            caretArea.offset(-glm::vec2(w->getHorzScrollbar()->getScrollPosition(), w->getVertScrollbar()->getScrollPosition()));
+    const ImagerySection& caretImagery = getLookNFeel().getImagerySection("Caret");
 
-            // Create the render geometry for the caret image
-            caretImagery.render(*w, caretArea, nullptr, &textArea);
-        }
-    }
+    // Calculate final destination area for caret
+    Rectf caretArea;
+    caretArea.left(textArea.left() + xpos - w->getHorzScrollbar()->getScrollPosition());
+    caretArea.top(textArea.top() + ypos - w->getVertScrollbar()->getScrollPosition());
+    caretArea.setWidth(caretImagery.getBoundingRect(*w).getSize().d_width);
+    caretArea.setHeight(font->getLineSpacing());
+
+    // Create the render geometry for the caret image
+    caretImagery.render(*w, caretArea, nullptr, &textArea);
 }
 
+//----------------------------------------------------------------------------//
 void FalagardMultiLineEditbox::createRenderGeometry()
 {
-    MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
     // Create the render geometry for the general frame and stuff before we handle the text itself
     cacheEditboxBaseImagery();
 
+    const Rectf textArea = getTextRenderArea();
+
     // Create the render geometry for the edit box text
-    Rectf textarea(getTextRenderArea());
-    cacheTextLines(textarea);
+    cacheTextLines(textArea);
 
     // Create the render geometry for the caret
-    if ((w->hasInputFocus() && !w->isReadOnly()) &&
-        (!d_blinkCaret || d_showCaret))
-            cacheCaretImagery(textarea);
+    auto w = static_cast<const MultiLineEditbox*>(d_window);
+    if (w->hasInputFocus() && !w->isReadOnly() && (!d_blinkCaret || d_showCaret))
+        cacheCaretImagery(textArea);
 }
 
-void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
+//----------------------------------------------------------------------------//
+void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
 {
     MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
-    // text is already formatted, we just grab the lines and
-    // create the render geometry for them with the required alignment.
-    Rectf drawArea(dest_area);
-    float vertScrollPos = w->getVertScrollbar()->getScrollPosition();
-    drawArea.offset(-glm::vec2(w->getHorzScrollbar()->getScrollPosition(), vertScrollPos));
 
-    const Font* fnt = w->getActualFont();
-
-    if (fnt == nullptr)
-    {
+    const Font* font = w->getActualFont();
+    if (!font)
         return;
-    }
 
-    // calculate final colours to use.
-    ColourRect colours;
-    ColourRect normalTextCol;
-    setColourRectToUnselectedTextColour(normalTextCol);
-    ColourRect selectTextCol;
-    setColourRectToSelectedTextColour(selectTextCol);
-    ColourRect selectBrushCol;
-    w->hasInputFocus() ?
-        setColourRectToActiveSelectionColour(selectBrushCol) :
-        setColourRectToInactiveSelectionColour(selectBrushCol);
+    const float vertScrollPos = w->getVertScrollbar()->getScrollPosition();
 
-    const MultiLineEditbox::LineList& d_lines = w->getFormattedLines();
-    const size_t numLines = d_lines.size();
+    // Calculate final colours to use
+    const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);
+    const ColourRect selectTextCol = getOptionalColour(SelectedTextColourPropertyName);
+    const ColourRect selectBrushCol = getOptionalColour(
+        w->hasInputFocus() ? ActiveSelectionColourPropertyName : InactiveSelectionColourPropertyName);
 
-    DefaultParagraphDirection defaultParagraphDir = w->getDefaultParagraphDirection();
+    const auto defaultParagraphDir = w->getDefaultParagraphDirection();
 
-    // calculate the range of visible lines
-    size_t sidx, eidx;
-    sidx = static_cast<size_t>(vertScrollPos / fnt->getLineSpacing());
-    eidx = 1 + sidx + static_cast<size_t>(dest_area.getHeight() / fnt->getLineSpacing());
-    eidx = std::min(eidx, numLines);
-    drawArea.d_min.y += fnt->getLineSpacing()*static_cast<float>(sidx);
+    const auto& lines = w->getFormattedLines();
+    const size_t numLines = lines.size();
 
-    // for each formatted line.
+    // Calculate the range of visible lines
+    const size_t sidx = static_cast<size_t>(vertScrollPos / font->getLineSpacing());
+    const size_t eidx = std::min(numLines, 1 + sidx + static_cast<size_t>(destArea.getHeight() / font->getLineSpacing()));
+
+    Rectf drawArea(destArea);
+    drawArea.offset(-glm::vec2(w->getHorzScrollbar()->getScrollPosition(), vertScrollPos));
+    drawArea.d_min.y += font->getLineSpacing() * static_cast<float>(sidx);
+
+    // Text is already formatted, we just grab the lines and
+    // create the render geometry for them with the required alignment.
     for (size_t i = sidx; i < eidx; ++i)
     {
-        Rectf lineRect(drawArea);
-        const MultiLineEditbox::LineInfo& currLine = d_lines[i];
-        String lineText(w->getTextVisual().substr(currLine.d_startIdx, currLine.d_length));
+        const MultiLineEditbox::LineInfo& currLine = lines[i];
+        const size_t lineStart = currLine.d_startIdx;
+        const size_t lineLength = currLine.d_length;
+        const size_t selStart = w->getSelectionStart();
+        const size_t selEnd = w->getSelectionEnd();
+
+        const String lineText(w->getTextVisual().substr(lineStart, lineLength));
 
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         if (!lineText.isUtf8StringValid())
-        {
             lineText = "";
-        }
 #endif
 
+        // Offset the font little down so that it's centered within its own spacing
+        Rectf lineRect(drawArea);
+        const float oldTop = lineRect.top();
+        lineRect.d_min.y += (font->getLineSpacing() - font->getFontHeight()) * 0.5f;
 
-        // offset the font little down so that it's centered within its own spacing
-        const float old_top = lineRect.top();
-        lineRect.d_min.y += (fnt->getLineSpacing() - fnt->getFontHeight()) * 0.5f;
-
-        // if it is a simple 'no selection area' case
-        if ((currLine.d_startIdx >= w->getSelectionEnd()) ||
-            ((currLine.d_startIdx + currLine.d_length) <= w->getSelectionStart()) ||
-            (w->getSelectionBrushImage() == nullptr))
+        // If it is a simple 'no selection area' case
+        if (!w->getSelectionBrushImage() ||
+            selStart >= selEnd ||
+            lineStart >= selEnd ||
+            lineStart + lineLength <= selStart)
         {
-            colours = normalTextCol;
-            
-            // Create Geometry buffers for the text and add to the Window
-            float nextGlyphPos = 0.0f;
-            fnt->createTextRenderGeometry(w->getGeometryBuffers(), lineText, nextGlyphPos,
-                lineRect.getPosition(), &dest_area, true, colours, defaultParagraphDir);
+            // Create geometry buffers for the text and add to the Window
+            font->createTextRenderGeometry(w->getGeometryBuffers(), lineText,
+                lineRect.getPosition(), &destArea, true, normalTextCol, defaultParagraphDir);
         }
-        // we have at least some selection highlighting to do
         else
         {
-            // Start of actual rendering section.
-            String sect;
-            size_t sectIdx = 0, sectLen;
-            float selStartOffset = 0.0f, selAreaWidth = 0.0f;
+            // Render text with selection area
+            size_t sectIdx = 0;
+            float selStartOffset = 0.f;
 
-            // Create the render geometry for any text prior to selected region of line.
-            if (currLine.d_startIdx < w->getSelectionStart())
+            // Create the render geometry for any text prior to selected region of line
+            if (lineStart < selStart)
             {
-                // calculate length of text section
-                sectLen = w->getSelectionStart() - currLine.d_startIdx;
+                const size_t sectLen = selStart - lineStart;
+                String sect = lineText.substr(0, sectLen);
+                sectIdx = sectLen;
 
-                // get text for this section
-                sect = lineText.substr(sectIdx, sectLen);
-                sectIdx += sectLen;
-
-#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
-                // get the pixel offset to the beginning of the selection area highlight.
-                selStartOffset = fnt->getTextAdvance(sect);
-#else
-                if (sect.isUtf8StringValid())
-                {
-                    selStartOffset = fnt->getTextAdvance(sect);
-                }
-                else
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+                if (!sect.isUtf8StringValid())
                 {
                     // The section string is invalid, use the entire line instead
                     sect = lineText;
                     sectIdx = lineText.size();
-                    selStartOffset = fnt->getTextAdvance(sect);
                     w->setCaretIndex(0);
                     w->setSelectionLength(0);
                 }
 #endif          
-                // Create the render geometry for this portion of the text
-                colours = normalTextCol;
-                fnt->createTextRenderGeometry(w->getGeometryBuffers(), sect,
-                    lineRect.getPosition(), &dest_area, true, colours,
+                // Get the pixel offset to the beginning of the selection area highlight.
+                selStartOffset = font->getTextAdvance(sect);
+
+                font->createTextRenderGeometry(w->getGeometryBuffers(), sect,
+                    lineRect.getPosition(), &destArea, true, normalTextCol,
                     defaultParagraphDir);
 
-                // set position ready for next portion of text
+                // Set position ready for next portion of text
                 lineRect.d_min.x += selStartOffset;
             }
 
-            // calculate the length of the selected section
-            sectLen = std::min(w->getSelectionEnd() - currLine.d_startIdx, currLine.d_length) - sectIdx;
-
-            // get the text for this section
-            sect = lineText.substr(sectIdx, sectLen);
+            // Get selected text section
+            const size_t sectLen = std::min(selEnd - lineStart, lineLength) - sectIdx;
+            const String sect = lineText.substr(sectIdx, sectLen);
             sectIdx += sectLen;
 
-            // get the extent to use as the width of the selection area highlight
-            selAreaWidth = fnt->getTextAdvance(sect);
+            // Get the extent to use as the width of the selection area highlight
+            const float selAreaWidth = font->getTextAdvance(sect);
 
-            const float text_top = lineRect.top();
-            lineRect.top(old_top);
+            const float textTop = lineRect.top();
+            lineRect.top(oldTop);
 
-            // calculate area for the selection brush on this line
+            // Calculate area for the selection brush on this line
             lineRect.left(drawArea.left() + selStartOffset);
-            lineRect.right(lineRect.left() + selAreaWidth);
-            lineRect.bottom(lineRect.top() + fnt->getLineSpacing());
+            lineRect.setWidth(selAreaWidth);
+            lineRect.setHeight(font->getLineSpacing());
 
             // Create the render geometry for the selection area brush for this line
-            colours = selectBrushCol;
-
-            ImageRenderSettings renderSettings(
-                lineRect, &dest_area, true, colours);
-
+            ImageRenderSettings renderSettings(lineRect, &destArea, true, selectBrushCol);
             w->getSelectionBrushImage()->createRenderGeometry(w->getGeometryBuffers(), renderSettings);
 
-            // Create the render geometry for the text for this section
-            colours = selectTextCol;
-            fnt->createTextRenderGeometry(w->getGeometryBuffers(), sect,
-                lineRect.getPosition(), &dest_area, true, colours, defaultParagraphDir);
+            lineRect.top(textTop);
 
-            lineRect.top(text_top);
+            // Create the render geometry for the selected text
+            font->createTextRenderGeometry(w->getGeometryBuffers(), sect,
+                lineRect.getPosition(), &destArea, true, selectTextCol, defaultParagraphDir);
 
             // Create the render geometry for any text beyond selected region of line
-            if (sectIdx < currLine.d_length)
+            if (sectIdx < lineLength)
             {
-                // update render position to the end of the selected area.
                 lineRect.d_min.x += selAreaWidth;
-
-                // calculate length of this section
-                sectLen = currLine.d_length - sectIdx;
-
-                // get the text for this section
-                sect = lineText.substr(sectIdx, sectLen);
-
-                // render the text for this section.
-                colours = normalTextCol;
-                fnt->createTextRenderGeometry(w->getGeometryBuffers(), sect,
-                    lineRect.getPosition(), &dest_area, true, colours, defaultParagraphDir);
+                const String sect = lineText.substr(sectIdx, lineLength - sectIdx);
+                font->createTextRenderGeometry(w->getGeometryBuffers(), sect,
+                    lineRect.getPosition(), &destArea, true, normalTextCol, defaultParagraphDir);
             }
         }
 
-        // update master position for next line in paragraph.
-        drawArea.d_min.y += fnt->getLineSpacing();
+        // Update master position for next line in paragraph
+        drawArea.d_min.y += font->getLineSpacing();
     }
 }
 
 //----------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::setColourRectToUnselectedTextColour(
-                                                ColourRect& colour_rect) const
+ColourRect FalagardMultiLineEditbox::getOptionalColour(const String& propertyName) const
 {
-    setColourRectToOptionalPropertyColour(UnselectedTextColourPropertyName,
-                                          colour_rect);
-}
-
-//----------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::setColourRectToSelectedTextColour(
-                                                ColourRect& colour_rect) const
-{
-    setColourRectToOptionalPropertyColour(SelectedTextColourPropertyName,
-                                          colour_rect);
-}
-
-//----------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::setColourRectToActiveSelectionColour(
-                                                ColourRect& colour_rect) const
-{
-    setColourRectToOptionalPropertyColour(ActiveSelectionColourPropertyName,
-                                          colour_rect);
-}
-
-//----------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::setColourRectToInactiveSelectionColour(
-                                                ColourRect& colour_rect) const
-{
-    setColourRectToOptionalPropertyColour(InactiveSelectionColourPropertyName,
-                                          colour_rect);
-}
-
-//----------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::setColourRectToOptionalPropertyColour(
-                                                const String& propertyName,
-                                                ColourRect& colour_rect) const
-{
+    ColourRect rect(0);
     if (d_window->isPropertyPresent(propertyName))
-        colour_rect = 
-            d_window->getProperty<ColourRect>(propertyName);
-    else
-        colour_rect.setColours(0);
+        rect = d_window->getProperty<ColourRect>(propertyName);
+    return rect;
 }
 
 //----------------------------------------------------------------------------//
 void FalagardMultiLineEditbox::update(float elapsed)
 {
-    // do base class stuff
     WindowRenderer::update(elapsed);
 
-    // only do the update if we absolutely have to
-    if (d_blinkCaret &&
-        !static_cast<MultiLineEditbox*>(d_window)->isReadOnly() &&
-        static_cast<MultiLineEditbox*>(d_window)->hasInputFocus())
+    // Only do the update if we absolutely have to
+    auto w = static_cast<const MultiLineEditbox*>(d_window);
+    if (d_blinkCaret && !w->isReadOnly() && w->hasInputFocus())
     {
         d_caretBlinkElapsed += elapsed;
-
         if (d_caretBlinkElapsed > d_caretBlinkTimeout)
         {
-            d_caretBlinkElapsed = 0.0f;
-            d_showCaret ^= true;
-            // state changed, so need a redraw
+            d_caretBlinkElapsed = 0.f;
+            d_showCaret = !d_showCaret;
+
+            // State changed, so need a redraw
             d_window->invalidate();
         }
     }
-}
-
-//----------------------------------------------------------------------------//
-bool FalagardMultiLineEditbox::isCaretBlinkEnabled() const
-{
-    return d_blinkCaret;
-}
-
-//----------------------------------------------------------------------------//
-float FalagardMultiLineEditbox::getCaretBlinkTimeout() const
-{
-    return d_caretBlinkTimeout;
-}
-
-//----------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::setCaretBlinkEnabled(bool enable)
-{
-    d_blinkCaret = enable;
-}
-
-//----------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::setCaretBlinkTimeout(float seconds)
-{
-    d_caretBlinkTimeout = seconds;
 }
 
 //----------------------------------------------------------------------------//
@@ -462,4 +341,4 @@ bool FalagardMultiLineEditbox::handleFontRenderSizeChange(const Font* const font
     return res;
 }
 
-} // End of  CEGUI namespace section
+}

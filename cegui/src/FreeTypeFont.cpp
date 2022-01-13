@@ -944,7 +944,7 @@ void FreeTypeFont::layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer
     const String& text,
     const Rectf* clip_rect, const ColourRect& colours,
     const float space_extra,
-    ImageRenderSettings imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
+    ImageRenderSettings& imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
     glm::vec2& penPosition) const
 {
 #ifdef CEGUI_USE_RAQM
@@ -960,7 +960,7 @@ void FreeTypeFont::layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer
 
 void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, const Rectf* clip_rect, const ColourRect& colours,
-    const float space_extra, ImageRenderSettings imgRenderSettings,
+    const float space_extra, ImageRenderSettings& imgRenderSettings,
     glm::vec2& penPosition) const
 {
     const std::vector<ColourRect> layerColours = { colours };
@@ -970,11 +970,13 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
 
 void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
-    const float space_extra, ImageRenderSettings imgRenderSettings,
+    const float space_extra, ImageRenderSettings& imgRenderSettings,
     glm::vec2& penPosition) const
 {
     if (text.empty())
         return;
+
+    const auto canCombineFromIdx = out.size();
 
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     std::u32string utf32Text = String::convertUtf8ToUtf32(text.c_str(), text.length());
@@ -1045,8 +1047,7 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
                     const CEGUI::ColourRect& currentlayerColour = (layer < layerColours.size()) ?
                         layerColours[layer] : fallbackColour;
 
-                    addGlyphRenderGeometry(out, image, imgRenderSettings,
-                        clip_rect, currentlayerColour);
+                    addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect, currentlayerColour);
                 }
 
             penPosition.x += glyph->getAdvance();
@@ -1065,7 +1066,7 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
 
 void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, const Rectf* clip_rect, const ColourRect& colours,
-    const float space_extra, ImageRenderSettings imgRenderSettings,
+    const float space_extra, ImageRenderSettings& imgRenderSettings,
     DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const
 {
     const std::vector<ColourRect> layerColours = {colours};
@@ -1075,11 +1076,13 @@ void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBu
 
 void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours, 
-    const float space_extra, ImageRenderSettings imgRenderSettings, 
+    const float space_extra, ImageRenderSettings& imgRenderSettings, 
     DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const
 {
     if (text.empty())
         return;
+
+    const auto canCombineFromIdx = out.size();
 
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     std::u32string utf32Text = String::convertUtf8ToUtf32(text.c_str());
@@ -1157,8 +1160,7 @@ void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBu
                 const CEGUI::ColourRect& currentlayerColour = (layer < layerColours.size()) ?
                     layerColours[layer] : fallbackColour;
 
-                addGlyphRenderGeometry(out, image, imgRenderSettings,
-                    clip_rect, currentlayerColour);
+                addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect, currentlayerColour);
             }
 
             penPosition.x += currentGlyph.x_advance * s_conversionMultCoeff;

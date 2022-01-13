@@ -259,7 +259,7 @@ void Font::createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
     const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
     const float space_extra) const
 {
-    float nextGlyphPos = 0.0f;
+    float nextGlyphPos = 0.f;
     createTextRenderGeometry(out, text, nextGlyphPos, position, clip_rect, clipping_enabled,
         colours, defaultParagraphDir, space_extra);
 }
@@ -274,12 +274,13 @@ void Font::layoutUsingFallbackAndCreateGlyphGeometry(
     const String& text,
     const Rectf* clip_rect, const ColourRect& colours,
     const float space_extra,
-    ImageRenderSettings imgRenderSettings, glm::vec2& glyphPos) const
+    ImageRenderSettings& imgRenderSettings, glm::vec2& glyphPos) const
 {
     if (text.empty())
         return;
 
     const float base_y = glyphPos.y + getBaseline();
+    const auto canCombineFromIdx = out.size();
 
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
@@ -291,9 +292,7 @@ void Font::layoutUsingFallbackAndCreateGlyphGeometry(
     {
         char32_t currentCodePoint = *currentCodePointIter;
 #endif
-        const FontGlyph* glyph = getPreparedGlyph(currentCodePoint);
-
-        if (glyph != nullptr)
+        if (const FontGlyph* glyph = getPreparedGlyph(currentCodePoint))
         {  
             const Image* const image = glyph->getImage();
 
@@ -307,8 +306,7 @@ void Font::layoutUsingFallbackAndCreateGlyphGeometry(
             imgRenderSettings.d_destArea =
                 Rectf(glyphPos, renderedSize);
 
-            addGlyphRenderGeometry(out, image, imgRenderSettings,
-                clip_rect, colours);
+            addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect, colours);
 
             glyphPos.x += glyph->getAdvance();
             // apply extra spacing to space chars
@@ -426,53 +424,41 @@ void Font::onRenderSizeChanged(FontEventArgs& e)
     fireEvent(EventRenderSizeChanged, e, EventNamespace);
 }
 
-GeometryBuffer* Font::findCombinableBuffer(const std::vector<GeometryBuffer*>& geomBuffers,
-    const Image* image)
-{
-    const BitmapImage* bitmapImage = static_cast<const BitmapImage*>(image);
-    if(bitmapImage == nullptr)
-    {
-        return nullptr;
-    }
-
-    const Texture* requiredTexture = bitmapImage->getTexture();
-
-    for(auto& currentGeomBuffer : geomBuffers)
-    {
-        const Texture* currentTexture = currentGeomBuffer->getTexture("texture0");
-
-        if(requiredTexture == currentTexture)
-        {
-            return currentGeomBuffer;
-        }
-    }
-
-    return nullptr;
-}
-
+//----------------------------------------------------------------------------//
 void Font::addGlyphRenderGeometry(std::vector<GeometryBuffer*>& textGeometryBuffers,
-    const Image* image, ImageRenderSettings& imgRenderSettings,
+    size_t canCombineFromIdx, const Image* image, ImageRenderSettings& imgRenderSettings,
     const Rectf* clip_rect, const ColourRect& colours) const
 {
-    // We only fully create a GeometryBuffer if no existing one
-    // is found that we can combine this one with. Render order is irrelevant since
-    // glyphs should never overlap
-    GeometryBuffer* matchingGeomBuffer = findCombinableBuffer(textGeometryBuffers, image);
-    if (!matchingGeomBuffer)
+    if (!image)
+        return;
+
+    // We only fully create a GeometryBuffer if no existing one is found that we can
+    // combine this one with. Render order is irrelevant since glyphs should never overlap.
+    auto it = std::find_if(textGeometryBuffers.begin() + canCombineFromIdx, textGeometryBuffers.end(),
+        [tex = static_cast<const BitmapImage*>(image)->getTexture()](const GeometryBuffer* buffer)
     {
+        return tex == buffer->getTexture("texture0");
+    });
+
+    if (it != textGeometryBuffers.end())
+    {
+        // Add geometry to the rendering batch of the existing geometry
+        image->addToRenderGeometry(*(*it), imgRenderSettings.d_destArea, clip_rect, colours);
+    }
+    else
+    {
+#if defined(DEBUG) || defined(_DEBUG)
         const size_t prevSize = textGeometryBuffers.size();
+#endif
 
         imgRenderSettings.d_multiplyColours = colours;
         image->createRenderGeometry(textGeometryBuffers, imgRenderSettings);
 
+#if defined(DEBUG) || defined(_DEBUG)
         assert((textGeometryBuffers.size() - prevSize) <= 1 &&
             "Glyphs are expected to be built from a single GeometryBuffer (or none)");
-    }
-    else
-    {
-        // Else we add geometry to the rendering batch of the existing geometry
-        image->addToRenderGeometry(*matchingGeomBuffer, imgRenderSettings.d_destArea, clip_rect, colours);
+#endif
     }
 }
 
-} // End of  CEGUI namespace section
+}

@@ -39,9 +39,6 @@
 
 namespace CEGUI
 {
-// forward declaration
-class UndoHandler;
-
 /*!
 \brief
     Base class for multi-line edit box window renderer objects.
@@ -49,10 +46,7 @@ class UndoHandler;
 class CEGUIEXPORT MultiLineEditboxWindowRenderer : public WindowRenderer
 {
 public:
-    /*!
-    \brief
-        Constructor
-    */
+
     MultiLineEditboxWindowRenderer(const String& name);
 
     /*!
@@ -66,7 +60,7 @@ public:
     virtual Rectf getTextRenderArea() const = 0;
 
 protected:
-    // base class overrides
+
     void onLookNFeelAssigned() override;
 };
 
