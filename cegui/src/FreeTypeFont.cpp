@@ -46,6 +46,7 @@
 
 namespace
 {
+
 void adjustPenPositionForBearingDeltas(glm::vec2& penPosition,
     FT_Pos previousRsbDelta, const CEGUI::FreeTypeFontGlyph* glyph)
 {
@@ -53,66 +54,43 @@ void adjustPenPositionForBearingDeltas(glm::vec2& penPosition,
     // Adjusting pen position according to the left side and right
     // side bearing deltas
     if (previousRsbDelta - glyph->getLsbDelta() >= 32)
-    {
         penPosition.x -= 1.0f;
-    }
     else if (previousRsbDelta - glyph->getLsbDelta() < -32)
-    {
         penPosition.x += 1.0f;
-    }
 }
 
 #ifdef CEGUI_USE_RAQM
-raqm_direction_t determineRaqmDirection(CEGUI::DefaultParagraphDirection defaultParagraphDir)
-{
-    switch (defaultParagraphDir)
-    {
-    case CEGUI::DefaultParagraphDirection::LeftToRight:
-        return RAQM_DIRECTION_LTR;
-    case CEGUI::DefaultParagraphDirection::RightToLeft:
-        return RAQM_DIRECTION_RTL;
-    case CEGUI::DefaultParagraphDirection::Automatic:
-        return RAQM_DIRECTION_DEFAULT;
-    }
-
-    return RAQM_DIRECTION_LTR;
-}
-
-raqm_t* createAndSetupRaqmTextObject(
-    const uint32_t* originalTextArray, const size_t textLength,
+raqm_t* createAndSetupRaqmTextObject(const uint32_t* text, const size_t textLength,
     CEGUI::DefaultParagraphDirection defaultParagraphDir, FT_Face face)
 {
     raqm_t* raqmObject = raqm_create();
 
-    bool wasSuccess = raqm_set_text(raqmObject, originalTextArray, textLength);
-    if (!wasSuccess)
-    {
+    if (!raqm_set_text(raqmObject, text, textLength))
         throw CEGUI::InvalidRequestException("Setting raqm text was unsuccessful");
-    }
 
     if (!raqm_set_freetype_face(raqmObject, face))
+        throw CEGUI::InvalidRequestException("Could not set the Freetype font Face for a raqm object");
+
+    raqm_direction_t textDefaultParagraphDirection = RAQM_DIRECTION_LTR;
+    switch (defaultParagraphDir)
     {
-        throw CEGUI::InvalidRequestException("Could not set the Freetype font Face for "
-            "a raqm object");
+        case CEGUI::DefaultParagraphDirection::RightToLeft:
+            textDefaultParagraphDirection = RAQM_DIRECTION_RTL;
+            break;
+        case CEGUI::DefaultParagraphDirection::Automatic:
+            textDefaultParagraphDirection = RAQM_DIRECTION_DEFAULT;
+            break;
     }
 
-    raqm_direction_t textDefaultParagraphDirection = determineRaqmDirection(defaultParagraphDir);
     if (!raqm_set_par_direction(raqmObject, textDefaultParagraphDirection))
-    {
-        throw CEGUI::InvalidRequestException("Could not set the parse direction for "
-            "a raqm object");
-    }
+        throw CEGUI::InvalidRequestException("Could not set the parse direction for a raqm object");
 
-    wasSuccess = raqm_layout(raqmObject);
-    if (!wasSuccess)
-    {
+    if (!raqm_layout(raqmObject))
         throw CEGUI::InvalidRequestException("Layouting raqm text was unsuccessful");
-    }
 
     return raqmObject;
 }
 #endif
-
 
 }
 
@@ -1063,7 +1041,6 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
 }
 
 #ifdef CEGUI_USE_RAQM
-
 void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, const Rectf* clip_rect, const ColourRect& colours,
     const float space_extra, ImageRenderSettings& imgRenderSettings,
