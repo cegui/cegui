@@ -483,7 +483,7 @@ protected:
     //! The old way of rendering glyphs, without kerning and extended layouting
     virtual void layoutUsingFallbackAndCreateGlyphGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect, const ColourRect& colours,
-        const float space_extra, ImageRenderSettings imgRenderSettings, glm::vec2& glyph_pos) const;
+        const float space_extra, ImageRenderSettings& imgRenderSettings, glm::vec2& glyph_pos) const;
 
     /*! 
     \brief
@@ -491,28 +491,20 @@ protected:
         might be added if necessary or data might be added to an existing one.
     */
     void addGlyphRenderGeometry(std::vector<GeometryBuffer*>& textGeometryBuffers,
-                                const Image* image, ImageRenderSettings &imgRenderSettings,
-                                const Rectf* clip_rect, const ColourRect& colours) const;
+        size_t canCombineFromIdx,
+        const Image* image, ImageRenderSettings& imgRenderSettings,
+        const Rectf* clip_rect, const ColourRect& colours) const;
 
     //! Manages the glyph layout and and creates the RenderGeometry for the text.
     virtual void layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect,
         const ColourRect& colours, const float space_extra,
-        ImageRenderSettings imgRenderSettings, DefaultParagraphDirection /*defaultParagraphDir*/,
+        ImageRenderSettings& imgRenderSettings, DefaultParagraphDirection /*defaultParagraphDir*/,
         glm::vec2& glyphPos) const
     {
         layoutUsingFallbackAndCreateGlyphGeometry(out, text, clip_rect,
             colours, space_extra, imgRenderSettings, glyphPos);
     }
-
-    /*!
-    \brief
-        Checks if the supplied GeometryBuffers contain a GeometryBuffer using the same Image.
-        If this is the case, the first found Geometrybuffer will be returned, otherwise 
-        a nullptr will be returned.
-    */
-    static GeometryBuffer* findCombinableBuffer(const std::vector<GeometryBuffer*>& geomBuffers,
-        const Image* image);
 
     /*!
     \brief

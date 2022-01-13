@@ -35,7 +35,6 @@
 #	pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
@@ -74,7 +73,8 @@ namespace CEGUI
 class COREWRSET_API FalagardMultiLineEditbox : public MultiLineEditboxWindowRenderer
 {
 public:
-    static const String TypeName;     //! type name for this widget.
+
+    static const String TypeName; //! type name for this widget.
 
     //! Name of the optional property to access for the unselected text colour.
     static const String UnselectedTextColourPropertyName;
@@ -87,83 +87,37 @@ public:
     //! The default timeout (in seconds) used when blinking the caret.
     static const float DefaultCaretBlinkTimeout;
 
-    /*!
-    \brief
-        Constructor
-    */
     FalagardMultiLineEditbox(const String& type);
 
-    Rectf getTextRenderArea(void) const override;
+    Rectf getTextRenderArea() const override;
     void createRenderGeometry() override;
     void update(float elapsed) override;
 
     //! return whether the blinking caret is enabled.
-    bool isCaretBlinkEnabled() const;
+    bool isCaretBlinkEnabled() const { return d_blinkCaret; }
     //! return the caret blink timeout period (only used if blink is enabled).
-    float getCaretBlinkTimeout() const;
+    float getCaretBlinkTimeout() const { return d_caretBlinkTimeout; }
     //! set whether the blinking caret is enabled.
-    void setCaretBlinkEnabled(bool enable);
+    void setCaretBlinkEnabled(bool enable) { d_blinkCaret = enable; }
     //! set the caret blink timeout period (only used if blink is enabled).
-    void setCaretBlinkTimeout(float seconds);
+    void setCaretBlinkTimeout(float seconds) { d_caretBlinkTimeout = seconds; }
 
     // overridden from base class
     bool handleFontRenderSizeChange(const Font* const font) override;
 
 protected:
+
     /*!
     \brief
         Perform rendering of the widget control frame and other 'static' areas.  This
-        method should not render the actual text.  Note that the text will be rendered
+        method should not render the actual text. Note that the text will be rendered
         to layer 4 and the selection brush to layer 3, other layers can be used for
-        rendering imagery behind and infront of the text & selection..
-
-    \return
-        Nothing.
+        rendering imagery behind and in front of the text & selection.
     */
     void cacheEditboxBaseImagery();
 
-    /*!
-    \brief
-        Render the caret.
-
-    \return
-        Nothing
-    */
     void cacheCaretImagery(const Rectf& textArea);
-
-    /*!
-    \brief
-        Render text lines.
-    */
-    void cacheTextLines(const Rectf& dest_area);
-
-    /*!
-    \brief
-        Set the given ColourRect to the colour to be used for rendering Editbox
-        text oustside of the selected region.
-    */
-    void setColourRectToUnselectedTextColour(ColourRect& colour_rect) const;
-
-    /*!
-    \brief
-        Set the given ColourRect to the colour to be used for rendering Editbox
-        text falling within the selected region.
-    */
-    void setColourRectToSelectedTextColour(ColourRect& colour_rect) const;
-
-    /*!
-    \brief
-        Set the given ColouRect to the colours to be used for rendering the
-        selection highlight when the editbox is active.
-    */
-    void setColourRectToActiveSelectionColour(ColourRect& colour_rect) const;
-
-    /*!
-    \brief
-        set the given ColourRect to the colours to be used for rendering the
-        selection highlight when the editbox is inactive.
-    */
-    void setColourRectToInactiveSelectionColour(ColourRect& colour_rect) const;
+    void cacheTextLines(const Rectf& destArea);
 
     /*!
     \brief
@@ -177,24 +131,22 @@ protected:
     \param colour_rect
         Reference to a ColourRect that will be set.
     */
-    void setColourRectToOptionalPropertyColour(const String& propertyName,
-                                               ColourRect& colour_rect) const;
+    ColourRect getOptionalColour(const String& propertyName) const;
 
-    //! true if the caret imagery should blink.
-    bool d_blinkCaret;
     //! time-out in seconds used for blinking the caret.
-    float d_caretBlinkTimeout;
+    float d_caretBlinkTimeout = DefaultCaretBlinkTimeout;
     //! current time elapsed since last caret blink state change.
-    float d_caretBlinkElapsed;
+    float d_caretBlinkElapsed = 0.f;
     //! true if caret should be shown.
-    bool d_showCaret;
+    bool d_showCaret = true;
+    //! true if the caret imagery should blink.
+    bool d_blinkCaret = false;
 };
 
-} // End of  CEGUI namespace section
-
+}
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)
 #endif
 
-#endif  // end of guard _FalMultiLineEditbox_h_
+#endif
