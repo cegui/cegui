@@ -43,7 +43,19 @@ RenderedStringTextComponent::RenderedStringTextComponent(const String& text, con
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringTextComponent::setSelection(const Window* ref_wnd,
+void RenderedStringTextComponent::setText(const String& text)
+{
+    d_text = text;
+
+    // Count the number of spaces in this component.
+    // NB: here I'm not counting tabs since those are really intended to be
+    // something other than just a bigger space.
+    // TODO: There are other space characters!
+    d_spaceCount = std::count(d_text.cbegin(), d_text.cend(), ' ');
+}
+
+//----------------------------------------------------------------------------//
+void RenderedStringTextComponent::setSelection(const Window* refWnd,
                                                const float start, const float end)
 {
     if (start >= end)
@@ -53,79 +65,42 @@ void RenderedStringTextComponent::setSelection(const Window* ref_wnd,
         return;
     }
 
-    const Font* fnt = getEffectiveFont(ref_wnd);
-
-    d_selectionStart = fnt->getCharAtPixel(d_text, start);
-    d_selectionLength = fnt->getCharAtPixel(d_text, end) - d_selectionStart;
+    const Font* font = getEffectiveFont(refWnd);
+    d_selectionStart = font->getCharAtPixel(d_text, start);
+    d_selectionLength = font->getCharAtPixel(d_text, end) - d_selectionStart;
 }
 
 //----------------------------------------------------------------------------//
 const Font* RenderedStringTextComponent::getEffectiveFont(const Window* window) const
 {
-    if (d_font)
-        return d_font;
-
-    if (window)
-        return window->getActualFont();
-
-    return nullptr;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringTextComponent::handleFormattingOptions(const Window* ref_wnd, const float vertical_space, glm::vec2& final_pos) const
-{
-    switch (d_verticalTextFormatting)
-    {
-        case VerticalTextFormatting::BottomAligned:
-            final_pos.y += vertical_space - getPixelSize(ref_wnd).d_height;
-            break;
-
-        case VerticalTextFormatting::CentreAligned:
-            final_pos.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
-            break;
-
-        case VerticalTextFormatting::TopAligned:
-            // nothing additional to do for this formatting option.
-            break;
-
-        default:
-            throw InvalidRequestException(
-                "unknown VerticalFormatting option specified.");
-    }
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringTextComponent::createSelectionRenderGeometry(const glm::vec2& position, const Rectf* clip_rect, const float vertical_space, const Font* fnt) const
-{
-    const float sel_start_extent = (d_selectionStart > 0) ? fnt->getTextExtent(d_text.substr(0, d_selectionStart)) : 0;
-    const float sel_end_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
-
-    Rectf sel_rect(position.x + sel_start_extent,
-                   position.y,
-                   position.x + sel_end_extent,
-                   position.y + vertical_space);
-
-    ImageRenderSettings imgRenderSettings(
-        sel_rect, clip_rect, true, ColourRect(0xFF002FFF));
-
-    d_selectionImage->createRenderGeometry(imgRenderSettings);
+    return d_font ? d_font : window ? window->getActualFont() : nullptr;
 }
 
 //----------------------------------------------------------------------------//
 std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
-    const Window* ref_wnd,
+    const Window* refWnd,
     const glm::vec2& position,
     const ColourRect* mod_colours,
     const Rectf* clip_rect,
     const float vertical_space,
     const float space_extra) const
 {
-    const Font* fnt = getEffectiveFont(ref_wnd); 
-    if (!fnt)
-        return std::vector<GeometryBuffer*>();
+    std::vector<GeometryBuffer*> geomBuffers;
 
-    glm::vec2 final_pos(position);
-    handleFormattingOptions(ref_wnd, vertical_space, final_pos);
+    const Font* font = getEffectiveFont(refWnd);
+    if (!font)
+        return geomBuffers;
+
+    glm::vec2 final_pos = position;
+    switch (d_verticalTextFormatting)
+    {
+        case VerticalTextFormatting::BottomAligned:
+            final_pos.y += vertical_space - getPixelSize(refWnd).d_height;
+            break;
+        case VerticalTextFormatting::CentreAligned:
+            final_pos.y += (vertical_space - getPixelSize(refWnd).d_height) / 2.f;
+            break;
+    }
 
     // apply padding to position:
     final_pos += d_padding.getPosition();
@@ -137,19 +112,28 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
 
     // render selection
     if (d_selectionImage && (d_selectionLength > 0))
-        createSelectionRenderGeometry(position, clip_rect, vertical_space, fnt);
+    {
+        const float selStartExtent = (d_selectionStart > 0) ? font->getTextExtent(d_text.substr(0, d_selectionStart)) : 0;
+        const float selEndExtent = font->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
+        const Rectf selRect(position.x + selStartExtent, position.y, position.x + selEndExtent, position.y + vertical_space);
+        ImageRenderSettings imgRenderSettings(selRect, clip_rect, true, ColourRect(0xFF002FFF));
+        auto geom = d_selectionImage->createRenderGeometry(imgRenderSettings);
+        geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
+    }
 
     // Create the geometry for rendering for the given text.
-    return fnt->createTextRenderGeometry(d_text, final_pos, clip_rect, true, final_cols, d_defaultParagraphDir, space_extra);
+    auto geom = font->createTextRenderGeometry(d_text, final_pos, clip_rect, true, final_cols, d_defaultParagraphDir, space_extra);
+    geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
+    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//
-Sizef RenderedStringTextComponent::getPixelSize(const Window* ref_wnd) const
+Sizef RenderedStringTextComponent::getPixelSize(const Window* refWnd) const
 {
     Sizef psz(d_padding.d_min.x + d_padding.d_max.x,
               d_padding.d_min.y + d_padding.d_max.y);
 
-    if (const Font* font = getEffectiveFont(ref_wnd))
+    if (const Font* font = getEffectiveFont(refWnd))
     {
         psz.d_width += font->getTextExtent(d_text);
         psz.d_height += font->getFontHeight();
@@ -159,24 +143,23 @@ Sizef RenderedStringTextComponent::getPixelSize(const Window* ref_wnd) const
 }
 
 //----------------------------------------------------------------------------//
-RenderedStringTextComponent* RenderedStringTextComponent::split(
-                                                        const Window* ref_wnd,
+RenderedStringComponentPtr RenderedStringTextComponent::split(
+                                                        const Window* refWnd,
                                                         float split_point,
                                                         bool first_component,
                                                         bool& was_word_split)
 {
-    const Font* fnt = getEffectiveFont(ref_wnd);
+    const Font* font = getEffectiveFont(refWnd);
 
     // This is checked, but should never fail, since if we had no font our
     // extent would be 0 and we would never cause a split to be needed here.
-    if (!fnt)
-        throw InvalidRequestException(
-            "unable to split with no font set.");
+    if (!font)
+        throw InvalidRequestException("unable to split with no font set.");
 
     was_word_split = false;
 
     // create 'left' side of split and clone our basic configuration
-    RenderedStringTextComponent* lhs = new RenderedStringTextComponent();
+    auto lhs = std::make_unique<RenderedStringTextComponent>();
     lhs->d_padding = d_padding;
     lhs->d_verticalTextFormatting = d_verticalTextFormatting;
     lhs->d_font = d_font;
@@ -188,13 +171,21 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
 
     while (left_len < d_text.length())
     {
-        size_t token_len = getNextTokenLength(d_text, left_len);
+        auto word_start = d_text.find_first_not_of(TextUtils::DefaultWrapDelimiters, left_len);
+        if (word_start == String::npos)
+            word_start = left_len;
+
+        auto word_end = d_text.find_first_of(TextUtils::DefaultWrapDelimiters, word_start);
+        if (word_end == String::npos)
+            word_end = d_text.length();
+
+        const size_t token_len = word_end - left_len;
+
         // exit loop if no more valid tokens.
         if (token_len == 0)
             break;
 
-        const float token_extent = 
-            fnt->getTextExtent(d_text.substr(left_len, token_len));
+        const float token_extent =  font->getTextExtent(d_text.substr(left_len, token_len));
 
         // does the next token extend past the split point?
         if (left_extent + token_extent > split_point)
@@ -205,7 +196,7 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
                 was_word_split = true;
                 left_len =
                     std::max(static_cast<size_t>(1),
-                             fnt->getCharAtPixel(
+                             font->getCharAtPixel(
                                  d_text.substr(0, token_len), split_point));
             }
             
@@ -222,8 +213,7 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
     lhs->d_text = d_text.substr(0, left_len);
 
     // here we're trimming leading delimiters from the substring range 
-    size_t rhs_start =
-        d_text.find_first_not_of(TextUtils::DefaultWrapDelimiters, left_len);
+    size_t rhs_start = d_text.find_first_not_of(TextUtils::DefaultWrapDelimiters, left_len);
     if (rhs_start == String::npos)
         rhs_start = left_len;
 
@@ -234,61 +224,22 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
         lhs->d_selectionStart = d_selectionStart;
         lhs->d_selectionLength = sel_end < left_len ? d_selectionLength : left_len - d_selectionStart;
 
+        d_selectionStart = 0;
         if (sel_end >= left_len)
-        {
-            d_selectionStart = 0;
             d_selectionLength -= rhs_start;
-        }
         else
-            setSelection(ref_wnd, 0, 0);
+            d_selectionLength = 0;
     }
 
-    d_text = d_text.substr(rhs_start);
+    setText(d_text.substr(rhs_start));
 
     return lhs;
 }
 
 //----------------------------------------------------------------------------//
-size_t RenderedStringTextComponent::getNextTokenLength(const String& text,
-                                                       size_t start_idx)
+RenderedStringComponentPtr RenderedStringTextComponent::clone() const
 {
-    String::size_type word_start =
-        text.find_first_not_of(TextUtils::DefaultWrapDelimiters, start_idx);
-
-    if (word_start == String::npos)
-        word_start = start_idx;
-
-    String::size_type word_end =
-        text.find_first_of(TextUtils::DefaultWrapDelimiters, word_start);
-
-    if (word_end == String::npos)
-        word_end = text.length();
-
-    return word_end - start_idx;
-}
-
-//----------------------------------------------------------------------------//
-RenderedStringTextComponent* RenderedStringTextComponent::clone() const
-{
-    return new RenderedStringTextComponent(*this);
-}
-
-//----------------------------------------------------------------------------//
-size_t RenderedStringTextComponent::getSpaceCount() const
-{
-    // TODO: The value calculated here is a good candidate for caching.
-
-    size_t space_count = 0;
-
-    // Count the number of spaces in this component.
-    // NB: here I'm not countng tabs since those are really intended to be
-    // something other than just a bigger space.
-    const size_t char_count = d_text.length();
-    for (size_t c = 0; c < char_count; ++c)
-        if (d_text[c] == ' ') // TODO: There are other space characters!
-            ++space_count;
-
-    return space_count;
+    return std::make_unique<RenderedStringTextComponent>(*this);
 }
 
 }

@@ -30,15 +30,14 @@
 #include "CEGUI/RenderedStringComponent.h"
 #include "CEGUI/String.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //! String component that moves a widget to appear as part of the string.
 class CEGUIEXPORT RenderedStringWidgetComponent : public RenderedStringComponent
 {
 public:
-    //! Constructor
-    RenderedStringWidgetComponent();
+
+    RenderedStringWidgetComponent() = default;
     RenderedStringWidgetComponent(const String& widget_name);
     RenderedStringWidgetComponent(Window* widget);
 
@@ -47,37 +46,44 @@ public:
     //! Set the window to be controlled by this component.
     void setWindow(Window* widget);
     //! return the window currently controlled by this component
-    const Window* getWindow() const;
+    const Window* getWindow() const { return getEffectiveWindow(nullptr); }
+    //! Set the VerticalTextFormatting option for this component.
+    void setVerticalTextFormatting(VerticalTextFormatting fmt) { d_verticalTextFormatting = fmt; }
+    //! return the current VerticalTextFormatting option.
+    VerticalTextFormatting getVerticalTextFormatting() const { return d_verticalTextFormatting; }
 
     // implementation of abstract base interface
-    std::vector<GeometryBuffer*> createRenderGeometry(const Window* ref_wnd,
+    std::vector<GeometryBuffer*> createRenderGeometry(const Window* refWnd,
         const glm::vec2& position, const ColourRect* mod_colours,
         const Rectf* clip_rect, const float vertical_space,
         const float space_extra) const override;
-    Sizef getPixelSize(const Window* ref_wnd) const override;
-    bool canSplit() const override;
-    RenderedStringWidgetComponent* split(const Window* ref_wnd,
+    Sizef getPixelSize(const Window* refWnd) const override;
+    bool canSplit() const override { return false; }
+    RenderedStringComponentPtr split(const Window* refWnd,
                                          float split_point,
                                          bool first_component,
                                          bool& was_word_split) override;
-    RenderedStringWidgetComponent* clone() const override;
-    size_t getSpaceCount() const override;
-    void setSelection(const Window* ref_wnd,
+    RenderedStringComponentPtr clone() const override;
+    size_t getSpaceCount() const override { return 0; }
+    void setSelection(const Window* refWnd,
                       const float start, const float end) override;
 
 protected:
-    Window* getEffectiveWindow(const Window* ref_wnd) const;
 
+    Window* getEffectiveWindow(const Window* refWnd) const;
+
+    //! pointer to the window controlled by this component.
+    mutable Window* d_window = nullptr;
     //! Name of window to manipulate
     String d_windowName;
+    //! Vertical formatting to be used for this component.
+    VerticalTextFormatting d_verticalTextFormatting = VerticalTextFormatting::BottomAligned;
     //! whether d_window is synched.
-    mutable bool d_windowPtrSynched;
-    //! pointer to the window controlled by this component.
-    mutable Window* d_window;
+    mutable bool d_windowPtrSynched = true;
     // whether the image is marked as selected.
-    bool d_selected;
+    bool d_selected = false;
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif // end of guard _CEGUIRenderedStringWidgetComponent_h_
+#endif

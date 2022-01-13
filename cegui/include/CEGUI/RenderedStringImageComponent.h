@@ -30,7 +30,6 @@
 #include "CEGUI/RenderedStringComponent.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/String.h"
-
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -38,34 +37,35 @@
 #	pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+
 //! String component that draws an image.
 class CEGUIEXPORT RenderedStringImageComponent : public RenderedStringComponent
 {
 public:
-    //! Constructor
-    RenderedStringImageComponent();
-    RenderedStringImageComponent(const String& name);
+
+    RenderedStringImageComponent() = default;
     RenderedStringImageComponent(const Image* image);
 
     //! Set the image to be drawn by this component.
-    void setImage(const String& name);
-    //! Set the image to be drawn by this component.
-    void setImage(const Image* image);
+    void setImage(const Image* image) { d_image = image; }
     //! return the current set image that will be drawn by this component
-    const Image* getImage() const;
+    const Image* getImage() const { return d_image; }
     //! Set the colour values used when rendering this component.
-    void setColours(const ColourRect& cr);
+    void setColours(const ColourRect& cr) { d_colours = cr; }
     //! Set the colour values used when rendering this component.
-    void setColours(const Colour& c);
+    void setColours(const Colour& c) { d_colours.setColours(c); }
     //! return the ColourRect object used when drawing this component.
-    const ColourRect& getColours() const;
+    const ColourRect& getColours() const { return d_colours; }
     //! set the size for rendering the image (0s mean 'normal' size)
-    void setSize(const Sizef& sz);
+    void setSize(const Sizef& sz) { d_size = sz; }
     //! return the size for rendering the image (0s mean 'normal' size)
-    const Sizef& getSize() const;
+    const Sizef& getSize() const { return d_size; }
+    //! Sets the vertical image formatting of this image
+    void setVerticalImageFormatting(VerticalImageFormatting fmt) { d_verticalImageFormatting = fmt; }
+    //! Gets the vertical image formatting of this image
+    VerticalImageFormatting getVerticalImageFormatting() const { return d_verticalImageFormatting; }
 
     // implementation of abstract base interface
     std::vector<GeometryBuffer*> createRenderGeometry(
@@ -74,38 +74,34 @@ public:
         const Rectf* clip_rect, const float vertical_space,
         const float space_extra) const override;
     Sizef getPixelSize(const Window* ref_wnd) const override;
-    bool canSplit() const override;
-    RenderedStringImageComponent* split(const Window* ref_wnd,
+    bool canSplit() const override { return false; }
+    RenderedStringComponentPtr split(const Window* ref_wnd,
                                         float split_point,
                                         bool first_component,
                                         bool& was_word_split) override;
-    RenderedStringImageComponent* clone() const override;
-    size_t getSpaceCount() const override;
+    RenderedStringComponentPtr clone() const override;
+    size_t getSpaceCount() const override { return 0; }
     void setSelection(const Window* ref_wnd,
                       const float start, const float end) override;
 
-    //! Sets the vertical image formatting of this image
-    void setVerticalImageFormatting(VerticalImageFormatting verticalImageFormatting);
-
-    //! Gets the vertical image formatting of this image
-    VerticalImageFormatting getVerticalImageFormatting() const;
 protected:
+
     //! pointer to the image drawn by the component.
-    const Image* d_image;
+    const Image* d_image = nullptr;
     //! ColourRect object describing the colours to use when rendering.
-    ColourRect d_colours;
+    ColourRect d_colours = 0xFFFFFFFF;
     //! target size to render the image at (0s mean natural size)
     Sizef d_size;
-    // whether the image is marked as selected.
-    bool d_selected = false;
     //! The vertical image formatting for the image
     VerticalImageFormatting d_verticalImageFormatting = VerticalImageFormatting::BottomAligned;
+    // whether the image is marked as selected.
+    bool d_selected = false;
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)
 #endif
 
-#endif // end of guard _CEGUIRenderedStringImageComponent_h_
+#endif

@@ -25,105 +25,17 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RenderedStringComponent.h"
-
 #include "CEGUI/ImageManager.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-RenderedStringComponent* RenderedStringComponent::split(
+RenderedStringComponentPtr RenderedStringComponent::split(
   const Window* ref_wnd, float split_point, bool first_component)
 {
     bool was_word_split = false;
     return split(ref_wnd, split_point, first_component, was_word_split);
 }
 
-//----------------------------------------------------------------------------//
-RenderedStringComponent::RenderedStringComponent() :
-    d_padding(0, 0, 0, 0),
-    d_selectionImage(nullptr)
-{
 }
-
-//----------------------------------------------------------------------------//
-RenderedStringComponent::~RenderedStringComponent()
-{
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringComponent::setVerticalTextFormatting(VerticalTextFormatting fmt)
-{
-    d_verticalTextFormatting = fmt;
-}
-
-//----------------------------------------------------------------------------//
-VerticalTextFormatting RenderedStringComponent::getVerticalTextFormatting() const
-{
-    return d_verticalTextFormatting;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringComponent::setPadding(const Rectf& padding)
-{
-    d_padding = padding;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringComponent::setLeftPadding(const float padding)
-{
-    d_padding.d_min.x = padding;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringComponent::setRightPadding(const float padding)
-{
-    d_padding.d_max.x = padding;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringComponent::setTopPadding(const float padding)
-{
-    d_padding.d_min.y = padding;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringComponent::setBottomPadding(const float padding)
-{
-    d_padding.d_max.y = padding;
-}
-
-//----------------------------------------------------------------------------//
-const Rectf& RenderedStringComponent::getPadding() const
-{
-    return d_padding;
-}
-
-//----------------------------------------------------------------------------//
-float RenderedStringComponent::getLeftPadding() const
-{
-    return d_padding.d_min.x;
-}
-
-//----------------------------------------------------------------------------//
-float RenderedStringComponent::getRightPadding() const
-{
-    return d_padding.d_max.x;
-}
-
-//----------------------------------------------------------------------------//
-float RenderedStringComponent::getTopPadding() const
-{
-    return d_padding.d_min.y;
-}
-
-//----------------------------------------------------------------------------//
-float RenderedStringComponent::getBottomPadding() const
-{
-    return d_padding.d_max.y;
-}
-
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section

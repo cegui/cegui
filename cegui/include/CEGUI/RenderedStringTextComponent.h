@@ -45,7 +45,7 @@ public:
     RenderedStringTextComponent(const String& text, const Font* font = nullptr);
 
     //! Set the text to be rendered by this component.
-    void setText(const String& text) { d_text = text; }
+    void setText(const String& text);
     //! return the text that will be rendered by this component
     const String& getText() const { return d_text; }
     //! set the font to use when rendering the text.
@@ -58,6 +58,10 @@ public:
     void setColours(const Colour& c) { d_colours.setColours(c); }
     //! return the ColourRect object used when drawing this component.
     const ColourRect& getColours() const { return d_colours; }
+    //! Set the VerticalTextFormatting option for this component.
+    void setVerticalTextFormatting(VerticalTextFormatting fmt) { d_verticalTextFormatting = fmt; }
+    //! return the current VerticalTextFormatting option.
+    VerticalTextFormatting getVerticalTextFormatting() const { return d_verticalTextFormatting; }
     //! set the default paragraph direction to use when rendering the text.
     void setDefaultParagraphDirection(DefaultParagraphDirection dir) { d_defaultParagraphDir = dir; }
     //! return the default paragraph direction to use when rendering the text.
@@ -65,37 +69,38 @@ public:
 
     // implementation of abstract base interface
     std::vector<GeometryBuffer*> createRenderGeometry(
-        const Window* ref_wnd,
+        const Window* refWnd,
         const glm::vec2& position, const ColourRect* mod_colours,
         const Rectf* clip_rect, const float vertical_space,
         const float space_extra) const override;
-    Sizef getPixelSize(const Window* ref_wnd) const override;
+    Sizef getPixelSize(const Window* refWnd) const override;
     bool canSplit() const override { return d_text.length() > 1; }
-    RenderedStringTextComponent* split(const Window* ref_wnd,
+    RenderedStringComponentPtr split(const Window* refWnd,
       float split_point, bool first_component, bool& was_word_split) override;
-    RenderedStringTextComponent* clone() const override;
-    size_t getSpaceCount() const override;
-    void setSelection(const Window* ref_wnd,
+    RenderedStringComponentPtr clone() const override;
+    size_t getSpaceCount() const override { return d_spaceCount; }
+    void setSelection(const Window* refWnd,
                       const float start, const float end) override;
 
 protected:
-    const Font* getEffectiveFont(const Window* window) const;
-    void handleFormattingOptions(const Window* ref_wnd, const float vertical_space, glm::vec2& final_pos) const;
-    void createSelectionRenderGeometry(const glm::vec2& position, const Rectf* clip_rect, const float vertical_space, const Font* fnt) const;
-    static size_t getNextTokenLength(const String& text, size_t start_idx);
 
-    //! text string drawn by the component.
-    String d_text;
+    const Font* getEffectiveFont(const Window* window) const;
+
     //! Font to use for text rendering, 0 for system default.
     const Font* d_font = nullptr;
+    //! text string drawn by the component.
+    String d_text;
     //! ColourRect object describing the colours to use when rendering.
     ColourRect d_colours = 0xFFFFFFFF;
     //! last set selection
     size_t d_selectionStart = 0;
     size_t d_selectionLength = 0;
+    size_t d_spaceCount = 0;
+    //! Vertical formatting to be used for this component.
+    VerticalTextFormatting d_verticalTextFormatting = VerticalTextFormatting::BottomAligned;
     DefaultParagraphDirection d_defaultParagraphDir = DefaultParagraphDirection::Automatic;
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif // end of guard _CEGUIRenderedStringTextComponent_h_
+#endif

@@ -25,30 +25,12 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RenderedStringImageComponent.h"
-#include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-
-//----------------------------------------------------------------------------//
-RenderedStringImageComponent::RenderedStringImageComponent() :
-    d_image(nullptr),
-    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-    d_size(0, 0)
-{
-}
-
-//----------------------------------------------------------------------------//
-RenderedStringImageComponent::RenderedStringImageComponent(const String& name) :
-    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-    d_size(0, 0)
-{
-    setImage(name);
-}
 
 //----------------------------------------------------------------------------//
 RenderedStringImageComponent::RenderedStringImageComponent(const Image* image) :
@@ -56,49 +38,6 @@ RenderedStringImageComponent::RenderedStringImageComponent(const Image* image) :
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
     d_size(0, 0)
 {
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringImageComponent::setImage(const String& name)
-{
-    if (!name.empty())
-    {
-        d_image = &ImageManager::getSingleton().get(name);
-    }
-    else
-    {
-        d_image = nullptr;
-    }
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringImageComponent::setImage(const Image* image)
-{
-    d_image = image;
-}
-
-//----------------------------------------------------------------------------//
-const Image* RenderedStringImageComponent::getImage() const
-{
-    return d_image;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringImageComponent::setColours(const ColourRect& cr)
-{
-    d_colours = cr;
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringImageComponent::setColours(const Colour& c)
-{
-    d_colours.setColours(c);
-}
-
-//----------------------------------------------------------------------------//
-const ColourRect& RenderedStringImageComponent::getColours() const
-{
-    return d_colours;
 }
 
 //----------------------------------------------------------------------------//
@@ -117,9 +56,18 @@ std::vector<GeometryBuffer*> RenderedStringImageComponent::createRenderGeometry(
     const float vertical_space,
     const float /*space_extra*/) const
 {
+    std::vector<GeometryBuffer*> geomBuffers;
+
     if (!d_image)
+        return geomBuffers;
+
+    // render the selection if needed
+    if (d_selectionImage && d_selected)
     {
-        return std::vector<GeometryBuffer*>();
+        const Rectf select_area(position, getPixelSize(ref_wnd));
+        ImageRenderSettings imgRenderSettings(select_area, clip_rect, true, ColourRect(0xFF002FFF));
+        auto geom = d_selectionImage->createRenderGeometry(imgRenderSettings);
+        geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
     }
 
     Rectf dest(position.x, position.y, 0, 0);
@@ -128,51 +76,31 @@ std::vector<GeometryBuffer*> RenderedStringImageComponent::createRenderGeometry(
     // handle formatting options
     switch (d_verticalImageFormatting)
     {
-    case VerticalImageFormatting::BottomAligned:
-        dest.d_min.y += vertical_space - getPixelSize(ref_wnd).d_height;
-        break;
+        case VerticalImageFormatting::BottomAligned:
+            dest.d_min.y += vertical_space - getPixelSize(ref_wnd).d_height;
+            break;
 
-    case VerticalImageFormatting::CentreAligned:
-        dest.d_min.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
-        break;
+        case VerticalImageFormatting::CentreAligned:
+            dest.d_min.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
+            break;
 
-    case VerticalImageFormatting::Stretched:
-        y_scale = vertical_space / getPixelSize(ref_wnd).d_height;
-        break;
+        case VerticalImageFormatting::Stretched:
+            y_scale = vertical_space / getPixelSize(ref_wnd).d_height;
+            break;
 
-    case VerticalImageFormatting::TopAligned:
-        // nothing additional to do for this formatting option.
-        break;
+        case VerticalImageFormatting::TopAligned:
+            // nothing additional to do for this formatting option.
+            break;
 
-    default:
-        throw InvalidRequestException(
-            "unknown VerticalImageFormatting option specified.");
+        default:
+            throw InvalidRequestException("unknown VerticalImageFormatting option specified.");
     }
 
-    Sizef sz(d_image->getRenderedSize());
-    if (d_size.d_width != 0.0)
-        sz.d_width = d_size.d_width;
-    if (d_size.d_height != 0.0)
-        sz.d_height = d_size.d_height;
-    
-    sz.d_height *= y_scale;
-    dest.setSize(sz);
+    dest.setWidth((d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width);
+    dest.setHeight(((d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height) * y_scale);
 
     // apply padding to position
     dest.offset(d_padding.getPosition());
-
-    // render the selection if needed
-    if (d_selectionImage && d_selected)
-    {
-        const Rectf select_area(position, getPixelSize(ref_wnd));
-
-        ImageRenderSettings imgRenderSettings(
-            select_area, clip_rect, true, ColourRect(0xFF002FFF));
-
-        auto geomBuffers = d_selectionImage->createRenderGeometry(imgRenderSettings);
-
-        geomBuffers.insert(geomBuffers.end(), geomBuffers.begin(), geomBuffers.end());
-    }
 
     // apply modulative colours if needed.
     ColourRect final_cols(d_colours);
@@ -180,13 +108,10 @@ std::vector<GeometryBuffer*> RenderedStringImageComponent::createRenderGeometry(
         final_cols *= *mod_colours;
 
     // Create the render geometry for the image
-    ImageRenderSettings imgRenderSettings(
-        dest, clip_rect, true, final_cols);
-
-    std::vector<GeometryBuffer*> imageGeomBuffers =
-        d_image->createRenderGeometry(imgRenderSettings);
-
-    return imageGeomBuffers;
+    ImageRenderSettings imgRenderSettings(dest, clip_rect, true, final_cols);
+    auto geom = d_image->createRenderGeometry(imgRenderSettings);
+    geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
+    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//
@@ -196,11 +121,8 @@ Sizef RenderedStringImageComponent::getPixelSize(const Window* /*ref_wnd*/) cons
 
     if (d_image)
     {
-        sz = d_image->getRenderedSize();
-        if (d_size.d_width != 0.0)
-            sz.d_width = d_size.d_width;
-        if (d_size.d_height != 0.0)
-            sz.d_height = d_size.d_height;
+        sz.d_width = (d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width;
+        sz.d_height = (d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height;
         sz.d_width += (d_padding.d_min.x + d_padding.d_max.x);
         sz.d_height += (d_padding.d_min.y + d_padding.d_max.y);
     }
@@ -209,56 +131,17 @@ Sizef RenderedStringImageComponent::getPixelSize(const Window* /*ref_wnd*/) cons
 }
 
 //----------------------------------------------------------------------------//
-bool RenderedStringImageComponent::canSplit() const
-{
-    return false;
-}
-
-//----------------------------------------------------------------------------//
-RenderedStringImageComponent* RenderedStringImageComponent::split(
+RenderedStringComponentPtr RenderedStringImageComponent::split(
     const Window* /*ref_wnd*/ ,float /*split_point*/, bool /*first_component*/,
     bool& /*was_word_split*/)
 {
-    throw InvalidRequestException(
-        "this component does not support being split.");
+    throw InvalidRequestException("this component does not support being split.");
 }
 
 //----------------------------------------------------------------------------//
-RenderedStringImageComponent* RenderedStringImageComponent::clone() const
+RenderedStringComponentPtr RenderedStringImageComponent::clone() const
 {
-    return new RenderedStringImageComponent(*this);
+    return std::make_unique<RenderedStringImageComponent>(*this);
 }
 
-//----------------------------------------------------------------------------//
-size_t RenderedStringImageComponent::getSpaceCount() const
-{
-    // images do not have spaces.
-    return 0;
 }
-
-//----------------------------------------------------------------------------//
-void RenderedStringImageComponent::setSize(const Sizef& sz)
-{
-    d_size = sz;
-}
-
-//----------------------------------------------------------------------------//
-const Sizef& RenderedStringImageComponent::getSize() const
-{
-    return d_size;
-}
-
-
-void RenderedStringImageComponent::setVerticalImageFormatting(VerticalImageFormatting verticalImageFormatting)
-{
-    d_verticalImageFormatting = verticalImageFormatting;
-}
-
-VerticalImageFormatting RenderedStringImageComponent::getVerticalImageFormatting() const
-{
-    return d_verticalImageFormatting;
-}
-
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section

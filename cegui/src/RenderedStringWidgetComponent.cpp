@@ -30,32 +30,19 @@
 #include "CEGUI/Image.h"
 #include "CEGUI/Exceptions.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+
 //----------------------------------------------------------------------------//
-RenderedStringWidgetComponent::RenderedStringWidgetComponent() :
-    d_windowPtrSynched(true),
-    d_window(nullptr),
-    d_selected(false)
+RenderedStringWidgetComponent::RenderedStringWidgetComponent(const String& widget_name)
+    : d_windowName(widget_name)
+    , d_windowPtrSynched(false)
 {
 }
 
 //----------------------------------------------------------------------------//
-RenderedStringWidgetComponent::RenderedStringWidgetComponent(
-                                                    const String& widget_name) :
-    d_windowName(widget_name),
-    d_windowPtrSynched(false),
-    d_window(nullptr),
-    d_selected(false)
-{
-}
-
-//----------------------------------------------------------------------------//
-RenderedStringWidgetComponent::RenderedStringWidgetComponent(Window* widget) :
-    d_windowPtrSynched(true),
-    d_window(widget),
-    d_selected(false)
+RenderedStringWidgetComponent::RenderedStringWidgetComponent(Window* widget)
+    : d_window(widget)
 {
 }
 
@@ -75,13 +62,7 @@ void RenderedStringWidgetComponent::setWindow(Window* widget)
 }
 
 //----------------------------------------------------------------------------//
-const Window* RenderedStringWidgetComponent::getWindow() const
-{
-    return getEffectiveWindow(nullptr); // FIXME: Perhaps?
-}
-
-//----------------------------------------------------------------------------//
-void RenderedStringWidgetComponent::setSelection(const Window* /*ref_wnd*/,
+void RenderedStringWidgetComponent::setSelection(const Window* /*refWnd*/,
                                                  const float start,
                                                  const float end)
 {
@@ -90,80 +71,59 @@ void RenderedStringWidgetComponent::setSelection(const Window* /*ref_wnd*/,
 
 //----------------------------------------------------------------------------//
 std::vector<GeometryBuffer*> RenderedStringWidgetComponent::createRenderGeometry(
-    const Window* ref_wnd,
+    const Window* refWnd,
     const glm::vec2& position,
     const CEGUI::ColourRect* /*mod_colours*/,
     const Rectf* clip_rect,
     const float vertical_space,
     const float /*space_extra*/) const
 {
-    Window* const window = getEffectiveWindow(ref_wnd);
     std::vector<GeometryBuffer*> geomBuffers;
 
+    Window* const window = getEffectiveWindow(refWnd);
     if (!window)
-        return std::vector<GeometryBuffer*>();
-
-    // HACK: re-adjust for inner-rect of parent
-    glm::vec2 adj(0.f, 0.f);
-    if (const Window* parent = window->getParent())
-        adj = parent->getUnclippedInnerRect().get().d_min - parent->getUnclippedOuterRect().get().d_min;
-    // HACK: re-adjust for inner-rect of parent (Ends)
+        return geomBuffers;
 
     glm::vec2 final_pos(position);
-    // handle formatting options
     switch (d_verticalTextFormatting)
     {
-    case VerticalTextFormatting::BottomAligned:
-        final_pos.y += vertical_space - getPixelSize(ref_wnd).d_height;
-        break;
-
-    case VerticalTextFormatting::CentreAligned:
-        final_pos.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
-        break;
-
-    case VerticalTextFormatting::TopAligned:
-        // nothing additional to do for this formatting option.
-        break;
-
-    default:
-        throw InvalidRequestException(
-                "unknown VerticalFormatting option specified.");
+        case VerticalTextFormatting::BottomAligned:
+            final_pos.y += vertical_space - getPixelSize(refWnd).d_height;
+            break;
+        case VerticalTextFormatting::CentreAligned:
+            final_pos.y += (vertical_space - getPixelSize(refWnd).d_height) / 2.f;
+            break;
     }
 
     // render the selection if needed
     if (d_selectionImage && d_selected)
     {
-        const Rectf select_area(position, getPixelSize(ref_wnd));
-
-        ImageRenderSettings imgRenderSettings(
-            select_area, clip_rect, true, ColourRect(0xFF002FFF));
-
-        auto currentRenderGeometry = 
-            d_selectionImage->createRenderGeometry(imgRenderSettings);
-
-        geomBuffers.insert(geomBuffers.end(), currentRenderGeometry.begin(),
-            currentRenderGeometry.end());
+        const Rectf select_area(position, getPixelSize(refWnd));
+        ImageRenderSettings imgRenderSettings(select_area, clip_rect, true, ColourRect(0xFF002FFF));
+        auto geom = d_selectionImage->createRenderGeometry(imgRenderSettings);
+        geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
     }
 
-    // we do not actually draw the widget, we just move it into position.
-    const glm::vec2 wposAbs = final_pos + d_padding.d_min - adj;
-    const UVector2 wpos(UDim(0, wposAbs.x), UDim(0, wposAbs.y));
+    // re-adjust for inner-rect of parent
+    if (const Window* parent = window->getParent())
+        final_pos -= (parent->getUnclippedInnerRect().get().d_min - parent->getUnclippedOuterRect().get().d_min);
 
-    window->setPosition(wpos);
+    // we do not actually draw the widget, we just move it into position.
+    const glm::vec2 wposAbs = final_pos + d_padding.d_min;
+    window->setPosition(UVector2(UDim(0, wposAbs.x), UDim(0, wposAbs.y)));
 
     return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//
-Window* RenderedStringWidgetComponent::getEffectiveWindow(
-                                                const Window* ref_wnd) const
+Window* RenderedStringWidgetComponent::getEffectiveWindow(const Window* refWnd) const
 {
     if (!d_windowPtrSynched)
     {
-        if (!ref_wnd)
+        if (!refWnd)
             return nullptr;
 
-        d_window = ref_wnd->getChild(d_windowName);
+        d_window = refWnd->getChild(d_windowName);
         d_windowPtrSynched = true;
     }
     
@@ -171,11 +131,11 @@ Window* RenderedStringWidgetComponent::getEffectiveWindow(
 }
 
 //----------------------------------------------------------------------------//
-Sizef RenderedStringWidgetComponent::getPixelSize(const Window* ref_wnd) const
+Sizef RenderedStringWidgetComponent::getPixelSize(const Window* refWnd) const
 {
-    Sizef sz(0, 0);
+    Sizef sz(0.f, 0.f);
 
-    if (Window* const window = getEffectiveWindow(ref_wnd))
+    if (auto window = getEffectiveWindow(refWnd))
     {
         sz = window->getPixelSize();
         sz.d_width += (d_padding.d_min.x + d_padding.d_max.x);
@@ -186,33 +146,17 @@ Sizef RenderedStringWidgetComponent::getPixelSize(const Window* ref_wnd) const
 }
 
 //----------------------------------------------------------------------------//
-bool RenderedStringWidgetComponent::canSplit() const
-{
-    return false;
-}
-
-//----------------------------------------------------------------------------//
-RenderedStringWidgetComponent* RenderedStringWidgetComponent::split(
-    const Window* /*ref_wnd*/, float /*split_point*/, bool /*first_component*/,
+RenderedStringComponentPtr RenderedStringWidgetComponent::split(
+    const Window* /*refWnd*/, float /*split_point*/, bool /*first_component*/,
     bool& /*was_word_split*/)
 {
-    throw InvalidRequestException(
-        "this component does not support being split.");
+    throw InvalidRequestException("this component does not support being split.");
 }
 
 //----------------------------------------------------------------------------//
-RenderedStringWidgetComponent* RenderedStringWidgetComponent::clone() const
+RenderedStringComponentPtr RenderedStringWidgetComponent::clone() const
 {
-    return new RenderedStringWidgetComponent(*this);
+    return std::make_unique<RenderedStringWidgetComponent>(*this);
 }
 
-//----------------------------------------------------------------------------//
-size_t RenderedStringWidgetComponent::getSpaceCount() const
-{
-    // widgets do not have spaces
-    return 0;
 }
-
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section
