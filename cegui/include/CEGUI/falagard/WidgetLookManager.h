@@ -179,7 +179,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void addWidgetLook(const WidgetLookFeel& look);
+        void addWidgetLook(WidgetLookFeel&& look);
 
 
         /*!

@@ -49,8 +49,6 @@ namespace CEGUI
     public:
         //! Vector of ImageryComponent Pointers
         typedef std::vector<ImageryComponent*> ImageryComponentPointerList;
-        //! Vector of TextComponent Pointers
-        typedef std::vector<TextComponent*> TextComponentPointerList;
         //! Vector of FrameComponent Pointers
         typedef std::vector<FrameComponent*> FrameComponentPointerList;
 
@@ -70,6 +68,12 @@ namespace CEGUI
             Name of the new ImagerySection.
         */
         ImagerySection(const String& name);
+
+        ImagerySection(const ImagerySection& obj) = delete;
+        ImagerySection(ImagerySection&& obj) noexcept = default;
+        ImagerySection& operator =(const ImagerySection& other) = delete;
+        ImagerySection& operator =(ImagerySection&& other) noexcept = default;
+        ~ImagerySection() = default;
 
         /*!
         \brief
@@ -302,7 +306,7 @@ namespace CEGUI
          \return
             A vector of pointers to the TextComponents that are currently added to this ImagerySection
         */
-        TextComponentPointerList getTextComponentPointers();
+        std::vector<TextComponent*> getTextComponentPointers();
 
         /*!
         \brief
@@ -316,7 +320,6 @@ namespace CEGUI
         FrameComponentPointerList getFrameComponentPointers();
 
         typedef std::vector<ImageryComponent> ImageryComponentList;
-        typedef std::vector<TextComponent> TextComponentList;
         typedef std::vector<FrameComponent> FrameComponentList;
 
         /*!
@@ -326,7 +329,7 @@ namespace CEGUI
          \return
             A const reference to the vector of ImageryComponents that are currently added to this ImagerySection
         */
-        const ImageryComponentList& getImageryComponents() const;
+        const ImageryComponentList& getImageryComponents() const { return d_images; }
 
         /*!
         \brief
@@ -335,7 +338,7 @@ namespace CEGUI
          \return
             A const reference to the vector of ImageryComponents that are currently added to this ImagerySection
         */
-        const TextComponentList& getTextComponents() const;
+        const std::vector<TextComponent>& getTextComponents() const { return d_texts; }
 
         /*!
         \brief
@@ -344,7 +347,7 @@ namespace CEGUI
          \return
             A const reference to the vector of ImageryComponents that are currently added to this ImagerySection
         */
-        const FrameComponentList& getFrameComponents() const;
+        const FrameComponentList& getFrameComponents() const { return d_frames; }
 
     protected:
         /*!
@@ -363,7 +366,7 @@ namespace CEGUI
         CEGUI::ColourRect           d_masterColours;    //!< Naster colours for the the ImagerySection (combined with colours of each ImageryComponent).
         FrameComponentList          d_frames;           //!< Collection of FrameComponent objects to be drawn for this ImagerySection.
         ImageryComponentList        d_images;           //!< Collection of ImageryComponent objects to be drawn for this ImagerySection.
-        TextComponentList           d_texts;            //!< Collection of TextComponent objects to be drawn for this ImagerySection.
+        std::vector<TextComponent>  d_texts;            //!< Collection of TextComponent objects to be drawn for this ImagerySection.
         String                      d_colourPropertyName;   //!< name of property to fetch colours from.
     };
 

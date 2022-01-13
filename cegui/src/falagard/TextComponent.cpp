@@ -49,8 +49,8 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 TextComponent::TextComponent() = default;
 TextComponent::~TextComponent() = default;
-TextComponent::TextComponent(TextComponent&& obj) = default;
-TextComponent& TextComponent::operator =(TextComponent && other) = default;
+TextComponent::TextComponent(TextComponent&& obj) noexcept = default;
+TextComponent& TextComponent::operator =(TextComponent && other) noexcept = default;
 
 //----------------------------------------------------------------------------//
 String TextComponent::getEffectiveText(const Window& wnd) const

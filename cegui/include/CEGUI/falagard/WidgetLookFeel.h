@@ -57,11 +57,14 @@ class PropertyDefinitionBase;
 class CEGUIEXPORT WidgetLookFeel
 {
 public:
-    WidgetLookFeel(const String& name, const String& inheritedLookName);
-    WidgetLookFeel() {}
-    WidgetLookFeel(const WidgetLookFeel& other);
 
-    WidgetLookFeel& operator=(const WidgetLookFeel& other);
+    WidgetLookFeel() = default;
+    WidgetLookFeel(const String& name, const String& inheritedLookName);
+    WidgetLookFeel(const WidgetLookFeel&) = delete;
+    WidgetLookFeel(WidgetLookFeel&& other) noexcept = default;
+
+    WidgetLookFeel& operator =(const WidgetLookFeel&) = delete;
+    WidgetLookFeel& operator =(WidgetLookFeel&& other) noexcept = default;
 
     virtual ~WidgetLookFeel();
 
@@ -203,7 +206,7 @@ public:
     \param section
         ImagerySection object to be added.
     */
-    void addImagerySection(const ImagerySection& section);
+    void addImagerySection(ImagerySection&& section);
 
     //! \deprecated This function is to be replaced by a new renameImagerySection function in the new version, which considers inheritance and accepts more appropriate parameters.
     void renameImagerySection(const String& oldName, const String& newName);
@@ -798,24 +801,6 @@ private:
     */
     WidgetLookFeel* getInheritedWidgetLookFeel();
 
-    /*!
-    \brief
-        Copies the PropertyDefinitions from another WidgetLookFeel.
-
-    \param widgetLook
-        WidgetLookFeel object to copy the PropertyDefinitions from.
-    */
-    void copyPropertyDefinitionsFrom(const WidgetLookFeel& widgetLook);
-
-    /*!
-    \brief
-        Copies the PropertyLinkDefinitions from another WidgetLookFeel.
-
-    \param widgetLook
-        WidgetLookFeel object to copy the PropertyLinkDefinitions from.
-    */
-    void copyPropertyLinkDefinitionsFrom(const WidgetLookFeel& widgetLook);
-
     //! Name of this WidgetLookFeel.
     CEGUI::String d_lookName;
     //! Name of a WidgetLookFeel inherited by this WidgetLookFeel.
@@ -857,8 +842,6 @@ private:
     void appendPropertyInitialisers(PropertyInitialiserCollator& col, bool inherits = true) const;
     void appendEventLinkDefinitions(EventLinkDefinitionCollator& col, bool inherits = true) const;
     void appendAnimationNames(std::unordered_set<String>& set, bool inherits = true) const;
-
-    void swap(WidgetLookFeel& other);
 };
 
 }

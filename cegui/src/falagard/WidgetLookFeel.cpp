@@ -34,53 +34,12 @@
 
 namespace CEGUI
 {
-//---------------------------------------------------------------------------//
-WidgetLookFeel::WidgetLookFeel(const String& name, const String& inheritedLookName) :
-    d_lookName(name),
-    d_inheritedLookName(inheritedLookName)
-{
-}
 
 //---------------------------------------------------------------------------//
-WidgetLookFeel::WidgetLookFeel(const WidgetLookFeel& other) :
-    d_lookName(other.d_lookName),
-    d_inheritedLookName(other.d_inheritedLookName),
-    d_imagerySectionMap(other.d_imagerySectionMap),
-    d_widgetComponentMap(other.d_widgetComponentMap),
-    d_stateImageryMap(other.d_stateImageryMap),
-    d_propertyInitialiserMap(other.d_propertyInitialiserMap),
-    d_namedAreaMap(other.d_namedAreaMap),
-    d_animations(other.d_animations),
-    d_animationInstances(other.d_animationInstances),
-    d_eventLinkDefinitionMap(other.d_eventLinkDefinitionMap)
+WidgetLookFeel::WidgetLookFeel(const String& name, const String& inheritedLookName)
+    : d_lookName(name)
+    , d_inheritedLookName(inheritedLookName)
 {
-    copyPropertyDefinitionsFrom(other);
-    copyPropertyLinkDefinitionsFrom(other);
-}
-
-//---------------------------------------------------------------------------//
-WidgetLookFeel& WidgetLookFeel::operator=(const WidgetLookFeel& other)
-{
-    WidgetLookFeel tmp(other);
-    swap(tmp);
-    return *this;
-}
-
-//---------------------------------------------------------------------------//
-void WidgetLookFeel::swap(WidgetLookFeel& other)
-{
-    std::swap(d_lookName, other.d_lookName);
-    std::swap(d_inheritedLookName, other.d_inheritedLookName);
-    std::swap(d_imagerySectionMap, other.d_imagerySectionMap);
-    std::swap(d_widgetComponentMap, other.d_widgetComponentMap);
-    std::swap(d_stateImageryMap, other.d_stateImageryMap);
-    std::swap(d_propertyInitialiserMap, other.d_propertyInitialiserMap);
-    std::swap(d_namedAreaMap, other.d_namedAreaMap);
-    std::swap(d_propertyDefinitionMap, other.d_propertyDefinitionMap);
-    std::swap(d_propertyLinkDefinitionMap, other.d_propertyLinkDefinitionMap);
-    std::swap(d_animations, other.d_animations);
-    std::swap(d_animationInstances, other.d_animationInstances);
-    std::swap(d_eventLinkDefinitionMap, other.d_eventLinkDefinitionMap);
 }
 
 //---------------------------------------------------------------------------//
@@ -209,7 +168,7 @@ const String& WidgetLookFeel::getName() const
 }
 
 //---------------------------------------------------------------------------//
-void WidgetLookFeel::addImagerySection(const ImagerySection& section)
+void WidgetLookFeel::addImagerySection(ImagerySection&& section)
 {
     auto foundIter = d_imagerySectionMap.find(section.getName());
 
@@ -220,14 +179,14 @@ void WidgetLookFeel::addImagerySection(const ImagerySection& section)
         d_imagerySectionMap.erase(foundIter);
     }
 
-    d_imagerySectionMap.emplace(section.getName(), section);
+    d_imagerySectionMap.emplace(section.getName(), std::move(section));
 }
 
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::renameImagerySection(const String& oldName, const String& newName)
 {
-	auto oldsection = d_imagerySectionMap.find(oldName);
-    if (oldsection == d_imagerySectionMap.end())
+	auto itOld = d_imagerySectionMap.find(oldName);
+    if (itOld == d_imagerySectionMap.end())
         throw UnknownObjectException("unknown imagery section: '" +
             oldName + "' in look '" + d_lookName + "'.");
 
@@ -235,9 +194,9 @@ void WidgetLookFeel::renameImagerySection(const String& oldName, const String& n
         throw UnknownObjectException("imagery section: '" + newName +
             "' already exists in look '" + d_lookName + "'.");
 
-    oldsection->second.setName(newName);
-    d_imagerySectionMap[newName] = d_imagerySectionMap[oldName];
-    d_imagerySectionMap.erase(oldsection);
+    itOld->second.setName(newName);
+    d_imagerySectionMap.emplace(newName, std::move(itOld->second));
+    d_imagerySectionMap.erase(itOld);
 }
 
 //---------------------------------------------------------------------------//
@@ -456,9 +415,7 @@ bool WidgetLookFeel::isStateImageryPresent(const String& name, bool includeInher
 //---------------------------------------------------------------------------//
 bool WidgetLookFeel::isImagerySectionPresent(const String& name, bool includeInheritedLook) const
 {
-    auto i = d_imagerySectionMap.find(name);
-    
-    if (i != d_imagerySectionMap.end())
+    if (d_imagerySectionMap.find(name) != d_imagerySectionMap.end())
         return true;
 
     if (d_inheritedLookName.empty() || !includeInheritedLook)
@@ -963,8 +920,7 @@ void WidgetLookFeel::appendAnimationNames(std::unordered_set<String>& set, bool 
 }
 
 //---------------------------------------------------------------------------//
-bool WidgetLookFeel::handleFontRenderSizeChange(Window& window,
-                                                const Font* font) const
+bool WidgetLookFeel::handleFontRenderSizeChange(Window& window, const Font* font) const
 {
     bool result = false;
 
@@ -1024,8 +980,7 @@ WidgetLookFeel::ImagerySectionPointerMap WidgetLookFeel::getImagerySectionMap(bo
         }
         else
         {
-            ImagerySection* imagerySection = &imagerySectionIter->second;
-            pointerMap.insert(ImagerySectionPointerMap::value_type(currentElementName, imagerySection));
+            pointerMap.emplace(currentElementName, &imagerySectionIter->second);
         }
     }
 
@@ -1205,22 +1160,6 @@ WidgetLookFeel* WidgetLookFeel::getInheritedWidgetLookFeel()
                                            + "\" cannot be found in the WidgetLookManager's map");
 
     return foundIter->second;
-}
-
-//---------------------------------------------------------------------------//
-void WidgetLookFeel::copyPropertyDefinitionsFrom(const WidgetLookFeel& widgetLook)
-{
-    for (const auto& pair : widgetLook.d_propertyDefinitionMap)
-        d_propertyDefinitionMap.emplace(pair.first,
-            dynamic_cast<PropertyDefinitionBase*>(dynamic_cast<Property*>(pair.second)->clone()));
-}
-
-//---------------------------------------------------------------------------//
-void WidgetLookFeel::copyPropertyLinkDefinitionsFrom(const WidgetLookFeel& widgetLook)
-{
-    for (const auto& pair : widgetLook.d_propertyLinkDefinitionMap)
-        d_propertyLinkDefinitionMap.emplace(pair.first,
-            dynamic_cast<PropertyDefinitionBase*>(dynamic_cast<Property*>(pair.second)->clone()));
 }
 
 }
