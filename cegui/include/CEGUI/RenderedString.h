@@ -56,12 +56,12 @@ public:
     RenderedString();
     //RenderedString(const RenderedString& other);
     RenderedString(const RenderedString& other) = delete; //!!!DBG TMP!
-    RenderedString(RenderedString&& other);
+    RenderedString(RenderedString&&) noexcept;
     virtual ~RenderedString();
 
     //RenderedString& operator =(const RenderedString& rhs);
     RenderedString& operator =(const RenderedString& rhs) = delete; //!!!DBG TMP!
-    RenderedString& operator =(RenderedString&& rhs);
+    RenderedString& operator =(RenderedString&&) noexcept;
 
     /*!
     \brief

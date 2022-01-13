@@ -35,7 +35,6 @@
 #	pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
@@ -46,28 +45,25 @@ namespace CEGUI
 class CEGUIEXPORT JustifiedRenderedString : public FormattedRenderedString
 {
 public:
-    //! Constructor.
+
     JustifiedRenderedString(const RenderedString& string);
 
-    // implementation of base interface
-    void format(const Window* ref_wnd, const Sizef& area_size) override;
+    void format(const Window* refWnd, const Sizef& area_size) override;
+
     std::vector<GeometryBuffer*> createRenderGeometry(
-        const Window* ref_wnd,
-        const glm::vec2& position, const ColourRect* mod_colours,
-        const Rectf* clip_rect) const override;
-    size_t getFormattedLineCount() const override;
-    float getHorizontalExtent(const Window* ref_wnd) const override;
-    float getVerticalExtent(const Window* ref_wnd) const override;
+        const Window* refWnd, const glm::vec2& position,
+        const ColourRect* mod_colours, const Rectf* clip_rect) const override;
 
 protected:
+
     //! space extra size for each line to achieve justified formatting.
     std::vector<float> d_spaceExtras;
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined (_MSC_VER)
 #	pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIJustifiedRenderedString_h_
+#endif

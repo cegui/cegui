@@ -29,23 +29,13 @@
 #include "CEGUI/widgets/ComboDropList.h"
 #include "CEGUI/widgets/Scrollbar.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 const String ComboDropList::EventNamespace("ComboDropList");
 const String ComboDropList::WidgetTypeName("CEGUI/ComboDropList");
-
-
-/*************************************************************************
-	Constants
-*************************************************************************/
-// Event names
 const String ComboDropList::EventListSelectionAccepted( "ListSelectionAccepted" );
 
-
-/*************************************************************************
-	Constructor for ComboDropList base class
-*************************************************************************/
+//----------------------------------------------------------------------------//
 ComboDropList::ComboDropList(const String& type, const String& name) :
     ListWidget(type, name)
 {
@@ -60,18 +50,12 @@ ComboDropList::ComboDropList(const String& type, const String& name) :
     banPropertyFromXML("DistributeCapturedInputs");
 }
 
-
-/*************************************************************************
-	Destructor for ComboDropList base class
-*************************************************************************/
+//----------------------------------------------------------------------------//
 ComboDropList::~ComboDropList(void)
 {
 }
 
-
-/*************************************************************************
-	Initialise the Window based object ready for use.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void ComboDropList::initialiseComponents()
 {
     ListWidget::initialiseComponents();
@@ -96,18 +80,14 @@ void ComboDropList::resizeToContent(bool fit_width, bool fit_height)
         resizeViewToContent(fit_width, fit_height);
 }
 
-/*************************************************************************
-	Handler for when list selection is confirmed.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void ComboDropList::onListSelectionAccepted(WindowEventArgs& e)
 {
     d_lastItemSelected = getFirstSelectedItem();
 	fireEvent(EventListSelectionAccepted, e, EventNamespace);
 }
 
-/*************************************************************************
-    Handler for when list content has changed
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void ComboDropList::onViewContentsChanged(WindowEventArgs& e)
 {
     // basically see if our 'sticky' selection was removed
@@ -118,9 +98,7 @@ void ComboDropList::onViewContentsChanged(WindowEventArgs& e)
     ListWidget::onViewContentsChanged(e);
 }
 
-/*************************************************************************
-    Handler for when list selection has changed
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void ComboDropList::onSelectionChanged(ItemViewEventArgs& e)
 {
     if (!isActive())
@@ -129,9 +107,7 @@ void ComboDropList::onSelectionChanged(ItemViewEventArgs& e)
     ListWidget::onSelectionChanged(e);
 }
 
-/*************************************************************************
-	Handler for cursor movement events
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void ComboDropList::onCursorMove(CursorInputEventArgs& e)
 {
     ListWidget::onCursorMove(e);
@@ -178,9 +154,7 @@ void ComboDropList::onCursorMove(CursorInputEventArgs& e)
 }
 
 
-/*************************************************************************
-    Handler for cursor pressed events
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void ComboDropList::onCursorPressHold(CursorInputEventArgs& e)
 {
     ListWidget::onCursorPressHold(e);
@@ -201,10 +175,7 @@ void ComboDropList::onCursorPressHold(CursorInputEventArgs& e)
 	}
 }
 
-
-/*************************************************************************
-	Handler for cursor activation events
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void ComboDropList::onCursorActivate(CursorInputEventArgs& e)
 {
     ListWidget::onCursorActivate(e);
@@ -233,10 +204,7 @@ void ComboDropList::onCursorActivate(CursorInputEventArgs& e)
 
 }
 
-
-/*************************************************************************
-	Handler for when input capture is lost
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void ComboDropList::onCaptureLost(WindowEventArgs& e)
 {
     ListWidget::onCaptureLost(e);
@@ -252,4 +220,4 @@ void ComboDropList::onCaptureLost(WindowEventArgs& e)
     }
 }
 
-} // End of  CEGUI namespace section
+}

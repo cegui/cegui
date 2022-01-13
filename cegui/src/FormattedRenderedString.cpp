@@ -25,56 +25,22 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/FormattedRenderedString.h"
+#include "CEGUI/RenderedString.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-FormattedRenderedString::FormattedRenderedString(const RenderedString& string) :
-    d_renderedString(&string),
-    d_wasWordSplit(false)
-{
-}
 
 //----------------------------------------------------------------------------//
-FormattedRenderedString::~FormattedRenderedString()
+FormattedRenderedString::FormattedRenderedString(const RenderedString& string)
+    : d_renderedString(&string)
 {
-}
-
-//----------------------------------------------------------------------------//
-void FormattedRenderedString::setRenderedString(const RenderedString& string)
-{
-    d_renderedString = &string;
-}
-
-//----------------------------------------------------------------------------//
-const RenderedString& FormattedRenderedString::getRenderedString() const
-{
-    return *d_renderedString;
-}
-
-//----------------------------------------------------------------------------//
-bool FormattedRenderedString::wasWordSplit() const
-{
-    return d_wasWordSplit;
-}
-
-//----------------------------------------------------------------------------//
-void FormattedRenderedString::setWasWordSplit(bool value)
-{
-    d_wasWordSplit = value;
-}
-
-//----------------------------------------------------------------------------//
-std::size_t FormattedRenderedString::getNumOfOriginalTextLines() const
-{
-    return getRenderedString().getLineCount();
 }
     
 //----------------------------------------------------------------------------//
-std::size_t FormattedRenderedString::getNumOfFormattedTextLines() const
+std::size_t FormattedRenderedString::getFormattedLineCount() const
 {
-    return getNumOfOriginalTextLines();
+    // Return original line count by default
+    return d_renderedString->getLineCount();
 }
 
-} // End of  CEGUI namespace section
+}

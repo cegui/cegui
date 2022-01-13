@@ -26,74 +26,38 @@
  ***************************************************************************/
 #include "CEGUI/LeftAlignedRenderedString.h"
 #include "CEGUI/RenderedString.h"
-#include "CEGUI/Sizef.h"
 
 namespace CEGUI
 {
+
 //----------------------------------------------------------------------------//
-LeftAlignedRenderedString::LeftAlignedRenderedString(
-        const RenderedString& string) :
-    FormattedRenderedString(string)
+LeftAlignedRenderedString::LeftAlignedRenderedString(const RenderedString& string)
+    : FormattedRenderedString(string)
 {
 }
 
 //----------------------------------------------------------------------------//
-void LeftAlignedRenderedString::format(const Window* /*ref_wnd*/,
-                                       const Sizef& /*area_size*/)
+void LeftAlignedRenderedString::format(const Window* refWnd, const Sizef& /*area_size*/)
 {
+    d_extent = d_renderedString->getExtent(refWnd);
 }
 
 //----------------------------------------------------------------------------//
 std::vector<GeometryBuffer*> LeftAlignedRenderedString::createRenderGeometry(
-    const Window* ref_wnd,
-    const glm::vec2& position,
-    const ColourRect* mod_colours,
-    const Rectf* clip_rect) const
+    const Window* refWnd, const glm::vec2& position, const ColourRect* mod_colours, const Rectf* clip_rect) const
 {
     std::vector<GeometryBuffer*> geomBuffers;
 
-    glm::vec2 draw_pos(position);
+    glm::vec2 draw_pos = position;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        auto currGeom = d_renderedString->createRenderGeometry(ref_wnd, i, draw_pos, mod_colours, clip_rect, 0.0f);
-        geomBuffers.insert(geomBuffers.end(), currGeom.begin(), currGeom.end());
+        auto geom = d_renderedString->createRenderGeometry(refWnd, i, draw_pos, mod_colours, clip_rect, 0.0f);
+        geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
 
-        draw_pos.y += d_renderedString->getLineExtent(ref_wnd, i).d_height;
+        draw_pos.y += d_renderedString->getLineExtent(refWnd, i).d_height;
     }
 
     return geomBuffers;
 }
-
-//----------------------------------------------------------------------------//
-size_t LeftAlignedRenderedString::getFormattedLineCount() const
-{
-    return d_renderedString->getLineCount();
-}
-
-//----------------------------------------------------------------------------//
-float LeftAlignedRenderedString::getHorizontalExtent(const Window* ref_wnd) const
-{
-    float w = 0.0f;
-    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
-    {
-        const float this_width = d_renderedString->getLineExtent(ref_wnd, i).d_width;
-        if (this_width > w)
-            w = this_width;
-    }
-
-    return w;
-}
-
-//----------------------------------------------------------------------------//
-float LeftAlignedRenderedString::getVerticalExtent(const Window* ref_wnd) const
-{
-    float h = 0.0f;
-    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
-        h += d_renderedString->getLineExtent(ref_wnd, i).d_height;
-
-    return h;
-}
-
-//----------------------------------------------------------------------------//
     
-} // End of  CEGUI namespace section
+}

@@ -36,7 +36,6 @@
 
 namespace CEGUI
 {
-typedef std::vector<TreeViewItemRenderingState> ViewItemsVector;
 
 //----------------------------------------------------------------------------//
 static bool treeViewItemPointerLess(
@@ -83,12 +82,10 @@ void TreeViewItemRenderingState::sortChildren()
 {
     d_renderedChildren.clear();
 
-    for (ViewItemsVector::iterator itor = d_children.begin();
-        itor != d_children.end(); ++itor)
+    for (auto& item : d_children)
     {
-        d_renderedChildren.push_back(&(*itor));
-
-        (*itor).sortChildren();
+        d_renderedChildren.push_back(&item);
+        item.sortChildren();
     }
 
     if (d_attachedTreeView->getSortMode() == ViewSortMode::NoSorting)
@@ -264,11 +261,10 @@ void TreeView::updateRenderingStateForItem(TreeViewItemRenderingState& item,
         d_itemModel->makeIndex(item.d_childId, item.d_parentIndex),
         rendered_max_width, rendered_total_height);
 
-    for (ItemStateVector::iterator itor = item.d_children.begin();
-        itor != item.d_children.end(); ++itor)
+    for (auto& child : item.d_children)
     {
-        (*itor).d_nestedLevel = item.d_nestedLevel + 1;
-        updateRenderingStateForItem(*itor, rendered_max_width, rendered_total_height);
+        child.d_nestedLevel = item.d_nestedLevel + 1;
+        updateRenderingStateForItem(child, rendered_max_width, rendered_total_height);
     }
 }
 
@@ -392,18 +388,12 @@ void TreeView::toggleSubtree(TreeViewItemRenderingState& item)
 }
 
 //----------------------------------------------------------------------------//
-void TreeView::clearItemRenderedChildren(TreeViewItemRenderingState& item,
-    float& renderedTotalHeight)
+void TreeView::clearItemRenderedChildren(TreeViewItemRenderingState& item, float& renderedTotalHeight)
 {
-    ViewItemsVector::iterator itor =
-        item.d_children.begin();
-
-    while (itor != item.d_children.end())
+    for (auto& child : item.d_children)
     {
-        clearItemRenderedChildren(*itor, renderedTotalHeight);
-
+        clearItemRenderedChildren(child, renderedTotalHeight);
         d_renderedTotalHeight -= item.d_size.d_height;
-        ++itor;
     }
 
     item.d_children.clear();
@@ -435,11 +425,11 @@ bool TreeView::onChildrenRemoved(const EventArgs& args)
     if (!item->d_subtreeIsExpanded)
         return true;
 
-    ViewItemsVector::iterator begin = item->d_children.begin() + margs.d_startId;
-    ViewItemsVector::iterator end = begin + margs.d_count;
+    auto begin = item->d_children.begin() + margs.d_startId;
+    auto end = begin + margs.d_count;
 
     // update existing child ids
-    for (ItemStateVector::iterator itor = begin; itor != item->d_children.end(); ++itor)
+    for (auto itor = begin; itor != item->d_children.end(); ++itor)
     {
         (*itor).d_childId -= margs.d_count;
 
@@ -470,7 +460,7 @@ bool TreeView::onChildrenAdded(const EventArgs& args)
     if (!item->d_subtreeIsExpanded)
         return true;
 
-    ViewItemsVector states;
+    std::vector<TreeViewItemRenderingState> states;
     for (size_t id = margs.d_startId; id < margs.d_startId + margs.d_count; ++id)
     {
         states.push_back(computeRenderingStateForIndex(margs.d_parentIndex, id,
@@ -478,16 +468,12 @@ bool TreeView::onChildrenAdded(const EventArgs& args)
     }
 
     // update existing child ids
-    for (ItemStateVector::iterator
-        itor = item->d_children.begin() + margs.d_startId;
-        itor != item->d_children.end(); ++itor)
-    {
+    for (auto itor = item->d_children.begin() + margs.d_startId; itor != item->d_children.end(); ++itor)
         (*itor).d_childId += margs.d_count;
-    }
 
     item->d_children.insert(
         item->d_children.begin() + margs.d_startId,
-        states.begin(), states.end());
+        std::make_move_iterator(states.begin()), std::make_move_iterator(states.end()));
 
     item->sortChildren();
     invalidateView(false);
@@ -563,12 +549,8 @@ void TreeView::expandSubtreeRecursive(TreeViewItemRenderingState& item)
     if (item.d_totalChildCount == 0)
         return;
 
-    for (ViewItemsVector::iterator
-        itor = item.d_children.begin();
-        itor != item.d_children.end(); ++itor)
-    {
-        expandSubtreeRecursive(*itor);
-    }
+    for (auto& child : item.d_children)
+        expandSubtreeRecursive(child);
 }
 
 //----------------------------------------------------------------------------//

@@ -45,10 +45,12 @@ class CEGUIEXPORT TextComponent : public FalagardComponentBase
 public:
 
     TextComponent();
-    TextComponent(const TextComponent& obj);
+    TextComponent(const TextComponent& obj) = delete;
+    TextComponent(TextComponent&& obj);
     ~TextComponent() override;
 
-    TextComponent& operator =(const TextComponent& other);
+    TextComponent& operator =(const TextComponent& other) = delete;
+    TextComponent& operator =(TextComponent&& other);
 
     /*!
     \brief
@@ -283,7 +285,7 @@ public:
     void setFontPropertySource(const String& property);
 
     //! return the pixel extent of the formatted rendered string.
-    Sizef getTextExtent(const Window& window) const;
+    const Sizef& getTextExtent(const Window& window) const;
 
     virtual bool handleFontRenderSizeChange(Window& window, const Font* font) const override;
 
@@ -327,9 +329,9 @@ private:
     String d_text; //!< text rendered by this component, either string or property name.
     String d_font; //!< font to use, either font name or property name.
 
-    FormattingSetting<VerticalTextFormatting> d_vertFormatting;
-    FormattingSetting<HorizontalTextFormatting> d_horzFormatting;
-    FormattingSetting<DefaultParagraphDirection> d_paragraphDir;
+    FormattingSetting<VerticalTextFormatting> d_vertFormatting = VerticalTextFormatting::TopAligned;
+    FormattingSetting<HorizontalTextFormatting> d_horzFormatting = HorizontalTextFormatting::LeftAligned;
+    FormattingSetting<DefaultParagraphDirection> d_paragraphDir = DefaultParagraphDirection::Automatic;
 
     bool d_fontFromProperty = false; //!< d_font is a property name in a source window
     bool d_textFromProperty = false; //!< d_text is a property name in a source window

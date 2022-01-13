@@ -142,7 +142,7 @@ void FalagardStaticText::createRenderGeometry()
     }
 
     // adjust y positioning according to formatting option
-    float textHeight = d_formatter->getVerticalExtent(d_window);
+    const float textHeight = d_formatter->getExtent().d_height;
     const Scrollbar* const vertScrollbar = getVertScrollbar();
     const float vertScrollPosition = vertScrollbar->getScrollPosition();
     if (vertScrollbar->isEffectiveVisible())
@@ -200,27 +200,27 @@ bool FalagardStaticText::isWordWrapOn() const
 //----------------------------------------------------------------------------//
 std::size_t FalagardStaticText::getNumOfOriginalTextLines() const
 {
-    return d_formatter->getNumOfOriginalTextLines();
+    return d_formatter->getRenderedString().getLineCount();
 }
 
 //----------------------------------------------------------------------------//
 std::size_t FalagardStaticText::getNumOfFormattedTextLines() const
 {
-    return d_formatter->getNumOfFormattedTextLines();
+    return d_formatter->getFormattedLineCount();
 }
 
 //----------------------------------------------------------------------------//
 Sizef FalagardStaticText::getContentSize() const
 {
-    //!!!TODO TEXT: unify formatter calls!
+    const Sizef extent = d_formatter->getExtent();
     return Sizef(
-        d_formatter->getHorizontalExtent(d_window),
+        extent.d_width,
 
         d_numOfTextLinesToShow.isAuto() ?
-        d_formatter->getVerticalExtent(d_window) + 1.f :
-        (d_numOfTextLinesToShow <= 1.f) ?
-        getLineHeight() * d_numOfTextLinesToShow :
-        getLineHeight() + (d_numOfTextLinesToShow - 1.f) * getVerticalAdvance());
+            extent.d_height + 1.f :
+            (d_numOfTextLinesToShow <= 1.f) ?
+                getLineHeight() * d_numOfTextLinesToShow :
+                getLineHeight() + (d_numOfTextLinesToShow - 1.f) * getVerticalAdvance());
 }
 
 //----------------------------------------------------------------------------//
@@ -243,11 +243,7 @@ void FalagardStaticText::adjustSizeToContent()
     getVertScrollbarWithoutUpdate()->hide();
     if (isWordWrapOn())
     {
-        const LeftAlignedRenderedString orig_str(d_formatter->getRenderedString());
-
-        //!!!TODO TEXT: unify calls!
-        const Sizef contentMaxSize(orig_str.getHorizontalExtent(d_window), orig_str.getVerticalExtent(d_window));
-
+        const Sizef contentMaxSize = d_formatter->getRenderedString().getExtent(d_window);
         USize sizeFunc(
             d_window->getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent(),
             d_window->getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent());
@@ -770,11 +766,9 @@ const ComponentArea& FalagardStaticText::getTextComponentAreaWithoutUpdate() con
 }
 
 //----------------------------------------------------------------------------//
-Sizef FalagardStaticText::getTextExtentWithoutUpdate() const
+const Sizef& FalagardStaticText::getTextExtentWithoutUpdate() const
 {
-    //!!!TODO TEXT: make one function!
-    return Sizef(d_formatter->getHorizontalExtent(d_window),
-                    d_formatter->getVerticalExtent(d_window));
+    return d_formatter->getExtent();
 }
 
 /*----------------------------------------------------------------------------//
@@ -806,7 +800,7 @@ void FalagardStaticText::adjustSizeToContent_wordWrap_keepingAspectRatio(
     UDim height_sequence(sizeFunc.d_height.d_scale*getVerticalAdvance() + sizeFunc.d_height.d_offset,
                          sizeFunc.d_height.d_scale*(getLineHeight()+epsilon) + sizeFunc.d_height.d_offset);
     float max_num_of_lines(std::max(
-      static_cast<float>(d_formatter->getNumOfOriginalTextLines() -1),
+      static_cast<float>(d_formatter->getRenderedString().getLineCount() - 1),
       (windowMaxWidth / d_window->getAspectRatio() - height_sequence_precise.d_offset)
         / height_sequence_precise.d_scale));
     window_size = d_window->getSizeAdjustedToContent_bisection(

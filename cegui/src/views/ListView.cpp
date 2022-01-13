@@ -39,7 +39,6 @@
 
 namespace CEGUI
 {
-typedef std::vector<ListViewItemRenderingState> ViewItemsVector;
 
 //----------------------------------------------------------------------------//
 static bool listViewItemPointerLess(
@@ -68,14 +67,8 @@ ListViewItemRenderingState::ListViewItemRenderingState(ListView* list_view) :
 }
 
 //----------------------------------------------------------------------------//
-ListViewItemRenderingState::~ListViewItemRenderingState()
-{
-    delete d_string;
-}
-
-//----------------------------------------------------------------------------//
 ListViewItemRenderingState::ListViewItemRenderingState(ListViewItemRenderingState&& src) noexcept :
-    d_string           (src.d_string),
+    d_string           (std::move(src.d_string)),
     d_formatter  (std::move(src.d_formatter)),
     d_icon             (std::move(src.d_icon)),
     d_size             (std::move(src.d_size)),
@@ -84,12 +77,12 @@ ListViewItemRenderingState::ListViewItemRenderingState(ListViewItemRenderingStat
     d_text             (std::move(src.d_text)),
     d_attachedListView (src.d_attachedListView)
 {
-    src.d_string = nullptr; // don't allow delete d_string by src
 }
 
 //----------------------------------------------------------------------------//
-ListViewItemRenderingState& ListViewItemRenderingState::operator=(ListViewItemRenderingState&& src) noexcept {
-    d_string           = src.d_string,
+ListViewItemRenderingState& ListViewItemRenderingState::operator=(ListViewItemRenderingState&& src) noexcept
+{
+    d_string = std::move(src.d_string);
     d_formatter  = std::move(src.d_formatter);
     d_icon             = std::move(src.d_icon);
     d_size             = std::move(src.d_size);
@@ -97,20 +90,17 @@ ListViewItemRenderingState& ListViewItemRenderingState::operator=(ListViewItemRe
     d_index            = std::move(src.d_index);
     d_text             = std::move(src.d_text);
     d_attachedListView = src.d_attachedListView;
-
-    src.d_string = nullptr; // don't allow delete d_string by src
-
     return *this;
 }
 
 //----------------------------------------------------------------------------//
-bool ListViewItemRenderingState::operator<(ListViewItemRenderingState const& other) const
+bool ListViewItemRenderingState::operator <(ListViewItemRenderingState const& other) const
 {
     return d_attachedListView->getModel()->compareIndices(d_index, other.d_index) < 0;
 }
 
 //----------------------------------------------------------------------------//
-bool ListViewItemRenderingState::operator>(const ListViewItemRenderingState& other) const
+bool ListViewItemRenderingState::operator >(const ListViewItemRenderingState& other) const
 {
     return d_attachedListView->getModel()->compareIndices(d_index, other.d_index) > 0;
 }
@@ -230,11 +220,8 @@ void ListView::resortListView()
 {
     d_sortedItems.clear();
 
-    for (ViewItemsVector::iterator itor = d_items.begin();
-        itor != d_items.end(); ++itor)
-    {
-        d_sortedItems.push_back(&(*itor));
-    }
+    for (auto& item : d_items)
+        d_sortedItems.push_back(&item);
 
     if (d_sortMode == ViewSortMode::NoSorting)
         return;
@@ -253,46 +240,43 @@ void ListView::resortView()
 //----------------------------------------------------------------------------//
 void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index, float& max_width, float& total_height)
 {
-    item.d_text = d_itemModel->getData(index);
-
     item.d_formatter.reset();
-    delete item.d_string;
 
-    auto rs = getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect, DefaultParagraphDirection::Automatic);
-    item.d_string = new RenderedString(rs);
+    item.d_text = d_itemModel->getData(index);
+    item.d_string = getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect, DefaultParagraphDirection::Automatic);
 
     switch (d_horzFormatting)
     {
         case HorizontalTextFormatting::LeftAligned:
-            item.d_formatter.reset(new LeftAlignedRenderedString(*item.d_string));
+            item.d_formatter.reset(new LeftAlignedRenderedString(item.d_string));
             break;
 
         case HorizontalTextFormatting::RightAligned:
-            item.d_formatter.reset(new RightAlignedRenderedString(*item.d_string));
+            item.d_formatter.reset(new RightAlignedRenderedString(item.d_string));
             break;
 
         case HorizontalTextFormatting::CentreAligned:
-            item.d_formatter.reset(new CentredRenderedString(*item.d_string));
+            item.d_formatter.reset(new CentredRenderedString(item.d_string));
             break;
 
         case HorizontalTextFormatting::Justified:
-            item.d_formatter.reset(new JustifiedRenderedString(*item.d_string));
+            item.d_formatter.reset(new JustifiedRenderedString(item.d_string));
             break;
 
         case HorizontalTextFormatting::WordWrapLeftAligned:
-            item.d_formatter.reset(new RenderedStringWordWrapper<LeftAlignedRenderedString>(*item.d_string));
+            item.d_formatter.reset(new RenderedStringWordWrapper<LeftAlignedRenderedString>(item.d_string));
             break;
 
         case HorizontalTextFormatting::WordWrapRightAligned:
-            item.d_formatter.reset(new RenderedStringWordWrapper<RightAlignedRenderedString>(*item.d_string));
+            item.d_formatter.reset(new RenderedStringWordWrapper<RightAlignedRenderedString>(item.d_string));
             break;
 
         case HorizontalTextFormatting::WordWrapCentreAligned:
-            item.d_formatter.reset(new RenderedStringWordWrapper<CentredRenderedString>(*item.d_string));
+            item.d_formatter.reset(new RenderedStringWordWrapper<CentredRenderedString>(item.d_string));
             break;
 
         case HorizontalTextFormatting::WordWraperJustified:
-            item.d_formatter.reset(new RenderedStringWordWrapper<JustifiedRenderedString>(*item.d_string));
+            item.d_formatter.reset(new RenderedStringWordWrapper<JustifiedRenderedString>(item.d_string));
             break;
     }
 
@@ -305,11 +289,7 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index, fl
 
     item.d_index = index;
     item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);
-
-    //!!!TODO TEXT: make one function!
-    item.d_size = Sizef(
-        item.d_formatter->getHorizontalExtent(this),
-        item.d_formatter->getVerticalExtent(this));
+    item.d_size = item.d_formatter->getExtent();
 
     max_width = std::max(item.d_size.d_width, max_width);
 
@@ -327,7 +307,7 @@ bool ListView::onChildrenAdded(const EventArgs& args)
     if (!d_itemModel->areIndicesEqual(margs.d_parentIndex, d_itemModel->getRootIndex()))
         return true;
 
-    ViewItemsVector items;
+    std::vector<ListViewItemRenderingState> items;
     for (size_t i = 0; i < margs.d_count; ++i)
     {
         ListViewItemRenderingState item(this);
@@ -356,13 +336,10 @@ bool ListView::onChildrenRemoved(const EventArgs& args)
     if (!d_itemModel->areIndicesEqual(margs.d_parentIndex, d_itemModel->getRootIndex()))
         return true;
 
-    ViewItemsVector::iterator begin = d_items.begin() + margs.d_startId;
-    ViewItemsVector::iterator end = begin + margs.d_count;
-
-    for (ViewItemsVector::iterator itor = begin; itor < end; ++itor)
-    {
+    auto begin = d_items.begin() + margs.d_startId;
+    auto end = begin + margs.d_count;
+    for (auto itor = begin; itor < end; ++itor)
         d_renderedTotalHeight -= (*itor).d_size.d_height;
-    }
 
     d_items.erase(begin, end);
 

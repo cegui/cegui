@@ -26,85 +26,55 @@
  ***************************************************************************/
 #include "CEGUI/RightAlignedRenderedString.h"
 #include "CEGUI/RenderedString.h"
-#include "CEGUI/Sizef.h"
 
 namespace CEGUI
 {
+
 //----------------------------------------------------------------------------//
-RightAlignedRenderedString::RightAlignedRenderedString(
-        const RenderedString& string) :
+RightAlignedRenderedString::RightAlignedRenderedString(const RenderedString& string) :
     FormattedRenderedString(string)
 {
 }
 
 //----------------------------------------------------------------------------//
-void RightAlignedRenderedString::format(const Window* ref_wnd,
-                                        const Sizef& area_size)
+void RightAlignedRenderedString::format(const Window* refWnd, const Sizef& area_size)
 {
     d_offsets.clear();
 
+    d_extent.d_width = 0.f;
+    d_extent.d_height = 0.f;
+
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
-        d_offsets.push_back(
-            area_size.d_width - d_renderedString->getLineExtent(ref_wnd, i).d_width);
+    {
+        const Sizef lineExtent = d_renderedString->getLineExtent(refWnd, i);
+
+        d_offsets.push_back(area_size.d_width - lineExtent.d_width);
+
+        // NB: reuse lineExtent here instead of calling RenderedString::getExtent
+        d_extent.d_height += lineExtent.d_height;
+        if (d_extent.d_width < lineExtent.d_width)
+            d_extent.d_width = lineExtent.d_width;
+    }
 }
 
 //----------------------------------------------------------------------------//
 std::vector<GeometryBuffer*> RightAlignedRenderedString::createRenderGeometry(
-    const Window* ref_wnd,
-    const glm::vec2& position,
-    const ColourRect* mod_colours,
-    const Rectf* clip_rect) const
+    const Window* refWnd, const glm::vec2& position, const ColourRect* mod_colours, const Rectf* clip_rect) const
 {
-    glm::vec2 draw_pos;
-    draw_pos.y = position.y;
     std::vector<GeometryBuffer*> geomBuffers;
 
+    glm::vec2 draw_pos = position;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
         draw_pos.x = position.x + d_offsets[i];
 
-        std::vector<GeometryBuffer*> currentRenderGeometry = 
-            d_renderedString->createRenderGeometry(ref_wnd, i, draw_pos, mod_colours, clip_rect, 0.0f);
+        auto geom = d_renderedString->createRenderGeometry(refWnd, i, draw_pos, mod_colours, clip_rect, 0.0f);
+        geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
 
-        geomBuffers.insert(geomBuffers.end(), currentRenderGeometry.begin(),
-            currentRenderGeometry.end());
-
-        draw_pos.y += d_renderedString->getLineExtent(ref_wnd, i).d_height;
+        draw_pos.y += d_renderedString->getLineExtent(refWnd, i).d_height;
     }
 
     return geomBuffers;
 }
-
-//----------------------------------------------------------------------------//
-size_t RightAlignedRenderedString::getFormattedLineCount() const
-{
-    return d_renderedString->getLineCount();
-}
-
-//----------------------------------------------------------------------------//
-float RightAlignedRenderedString::getHorizontalExtent(const Window* ref_wnd) const
-{
-    float w = 0.0f;
-    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
-    {
-        const float this_width = d_renderedString->getLineExtent(ref_wnd, i).d_width;
-        if (this_width > w)
-            w = this_width;
-    }
-
-    return w;
-}
-
-//----------------------------------------------------------------------------//
-float RightAlignedRenderedString::getVerticalExtent(const Window* ref_wnd) const
-{
-    float h = 0.0f;
-    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
-        h += d_renderedString->getLineExtent(ref_wnd, i).d_height;
-
-    return h;
-}
-
-//----------------------------------------------------------------------------//
     
-} // End of  CEGUI namespace section
+}

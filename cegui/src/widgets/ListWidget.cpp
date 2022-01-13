@@ -227,4 +227,5 @@ void ListWidget::ensureIndexIsVisible(const StandardItem* item)
 {
     ListView::ensureIndexIsVisible(d_itemModel.getIndexForItem(item));
 }
+
 }
