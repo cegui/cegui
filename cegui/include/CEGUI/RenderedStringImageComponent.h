@@ -68,7 +68,7 @@ public:
     VerticalImageFormatting getVerticalImageFormatting() const { return d_verticalImageFormatting; }
 
     // implementation of abstract base interface
-    std::vector<GeometryBuffer*> createRenderGeometry(
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const Window* ref_wnd,
         const glm::vec2& position, const ColourRect* mod_colours,
         const Rectf* clip_rect, const float vertical_space,

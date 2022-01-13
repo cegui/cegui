@@ -57,24 +57,18 @@ void JustifiedRenderedString::format(const RenderedString& rs, const Window* ref
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> JustifiedRenderedString::createRenderGeometry(
+void JustifiedRenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     const Window* refWnd, const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const
 {
-    std::vector<GeometryBuffer*> geomBuffers;
-
     if (!d_renderedString)
-        return geomBuffers;
+        return;
 
     glm::vec2 drawPos = position;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        auto geom = d_renderedString->createRenderGeometry(refWnd, i, drawPos, modColours, clipRect, d_spaceExtras[i]);
-        geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
-
+        d_renderedString->createRenderGeometry(out, refWnd, i, drawPos, modColours, clipRect, d_spaceExtras[i]);
         drawPos.y += d_renderedString->getLineExtent(refWnd, i).d_height;
     }
-
-    return geomBuffers;
 }
 
 }

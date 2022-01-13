@@ -166,8 +166,7 @@ void FalagardStaticText::createRenderGeometry()
     }
 
     // cache the text for rendering.
-    auto geomBuffers = d_formatter->createRenderGeometry(d_window, destRect.getPosition(), &d_textCols, &clipper);
-    d_window->appendGeometryBuffers(geomBuffers);
+    d_formatter->createRenderGeometry(d_window->getGeometryBuffers(), d_window, destRect.getPosition(), &d_textCols, &clipper);
 }
 
 //----------------------------------------------------------------------------//

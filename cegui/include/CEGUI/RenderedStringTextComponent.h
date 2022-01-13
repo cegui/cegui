@@ -68,7 +68,7 @@ public:
     DefaultParagraphDirection getDefaultParagraphDirection() const { return d_defaultParagraphDir; }
 
     // implementation of abstract base interface
-    std::vector<GeometryBuffer*> createRenderGeometry(
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const Window* refWnd,
         const glm::vec2& position, const ColourRect* mod_colours,
         const Rectf* clip_rect, const float vertical_space,

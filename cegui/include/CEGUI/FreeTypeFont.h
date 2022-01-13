@@ -316,31 +316,31 @@ protected:
     const FreeTypeFontGlyph* getPreparedGlyph(char32_t currentCodePoint) const override;
     void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;
 
-    std::vector<GeometryBuffer*> layoutAndCreateGlyphRenderGeometry(
+    void layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect,
         const ColourRect& colours, const float space_extra,
         ImageRenderSettings imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
         glm::vec2& penPosition) const override;
 
 #ifdef CEGUI_USE_RAQM
-    std::vector<GeometryBuffer*> layoutUsingRaqmAndCreateRenderGeometry(
+    void layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect, const ColourRect& colours,
         float space_extra, ImageRenderSettings imgRenderSettings,
         DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
 
-    std::vector<GeometryBuffer*> layoutUsingRaqmAndCreateRenderGeometry(
+    void layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
         float space_extra, ImageRenderSettings imgRenderSettings,
         DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
 #endif
 
-    std::vector<GeometryBuffer*> layoutUsingFreetypeAndCreateRenderGeometry(
+    void layoutUsingFreetypeAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect, const ColourRect& colours,
         float space_extra, ImageRenderSettings imgRenderSettings,
         glm::vec2& penPosition) const;
 
 
-    std::vector<GeometryBuffer*> layoutUsingFreetypeAndCreateRenderGeometry(
+    void layoutUsingFreetypeAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
         float space_extra, ImageRenderSettings imgRenderSettings,
         glm::vec2& penPosition) const;

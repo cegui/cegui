@@ -140,11 +140,7 @@ bool CEGuiBaseApplication::init(SampleBrowserBase* sampleApp,
     ImageRenderSettings imgRenderSettings(
         CEGUI::Rectf(0, 0, 183, 89));
 
-    auto ceguiLogoGeomBuffers = ceguiLogo.createRenderGeometry(
-        imgRenderSettings);
-
-    d_logoGeometry.insert(d_logoGeometry.end(), ceguiLogoGeomBuffers.begin(),
-        ceguiLogoGeomBuffers.end());
+    ceguiLogo.createRenderGeometry(d_logoGeometry, imgRenderSettings);
 
     // initial position update of the logo
     updateLogoGeometry();
@@ -338,12 +334,8 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
                 d_renderer->destroyGeometryBuffer(*d_FPSGeometry.at(i));
             d_FPSGeometry.clear();
 
-            auto textGeomBuffers = fnt->createTextRenderGeometry(
-                sstream.str(), glm::vec2(0, 0), nullptr, false,
+            fnt->createTextRenderGeometry(d_FPSGeometry, sstream.str(), glm::vec2(0, 0), nullptr, false,
                 CEGUI::Colour(0xFFFFFFFF), DefaultParagraphDirection::LeftToRight);
-
-            d_FPSGeometry.insert(d_FPSGeometry.end(), textGeomBuffers.begin(),
-                textGeomBuffers.end());
 
             updateFPSGeometry();
         }

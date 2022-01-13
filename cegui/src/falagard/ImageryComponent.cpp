@@ -255,10 +255,7 @@ namespace CEGUI
                 }
 
                 // add geometry for image to the target window.
-                std::vector<GeometryBuffer*> geomBuffers = 
-                    img->createRenderGeometry(imgRenderSettings);
-
-                srcWindow.appendGeometryBuffers(geomBuffers);
+                img->createRenderGeometry(srcWindow.getGeometryBuffers(), imgRenderSettings);
 
                 renderSettingDestArea.d_min.x += imgSz.d_width;
                 renderSettingDestArea.d_max.x += imgSz.d_width;

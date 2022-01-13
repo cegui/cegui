@@ -137,9 +137,7 @@ namespace CEGUI
                     }
 
                     // Create render geometry for this item and add it to the Window
-                    auto geomBuffers = item->createRenderGeometry(itemRect, alpha, &itemClipper);
-
-                    w->appendGeometryBuffers(geomBuffers);
+                    item->createRenderGeometry(w->getGeometryBuffers(), itemRect, alpha, &itemClipper);
                 }
 
                 // update position for next column.

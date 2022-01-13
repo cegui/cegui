@@ -81,7 +81,7 @@ void SVGTesselator::StrokeSegmentData::setPoints(const glm::vec2& prev_point,
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> SVGTesselator::tesselateRect(
+void SVGTesselator::tesselateRect(std::vector<GeometryBuffer*>& out,
     const SVGRect* rect,
     const SVGImage::SVGImageRenderSettings& render_settings)
 {
@@ -94,8 +94,7 @@ std::vector<GeometryBuffer*> SVGTesselator::tesselateRect(
     GeometryBuffer* fill_geometry_buffer;
     GeometryBuffer* stroke_geometry_buffer;
 
-    std::vector<GeometryBuffer*> geomBuffers = setupGeometryBuffers(
-        fill_geometry_buffer, stroke_geometry_buffer,
+    setupGeometryBuffers(out, fill_geometry_buffer, stroke_geometry_buffer,
         render_settings, transformation, false);
 
     //The shape's paint styles
@@ -117,12 +116,10 @@ std::vector<GeometryBuffer*> SVGTesselator::tesselateRect(
     //Create and append the rectangle's stroke geometry
     createStroke(rectangle_points, *stroke_geometry_buffer,
         paint_style, render_settings, scale_factors, true);
-
-    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> SVGTesselator::tesselateCircle(
+void SVGTesselator::tesselateCircle(std::vector<GeometryBuffer*>& out,
     const SVGCircle* circle,
     const SVGImage::SVGImageRenderSettings& render_settings)
 {
@@ -135,7 +132,7 @@ std::vector<GeometryBuffer*> SVGTesselator::tesselateCircle(
     GeometryBuffer* fill_geometry_buffer;
     GeometryBuffer* stroke_geometry_buffer;
 
-    std::vector<GeometryBuffer*> geomBuffers = setupGeometryBuffers(
+    setupGeometryBuffers(out,
         fill_geometry_buffer, stroke_geometry_buffer,
         render_settings, transformation, false);
 
@@ -159,19 +156,18 @@ std::vector<GeometryBuffer*> SVGTesselator::tesselateCircle(
     std::vector<glm::vec2> circle_points;
     createCirclePoints(radius, num_segments, cos_value, sin_value, circle_points);
 
-    if (circle_points.size() < 3)
-        return geomBuffers;
-
-    //Create and append the circle's fill geometry
-    createCircleFill(circle_points, max_scale, paint_style, *fill_geometry_buffer, render_settings, scale_factors);
-    //Create and append the circle's stroke geometry
-    createCircleStroke(circle_points, max_scale, paint_style, *stroke_geometry_buffer, render_settings, scale_factors);
-
-    return geomBuffers;
+    if (circle_points.size() > 2)
+    {
+        //Create and append the circle's fill geometry
+        createCircleFill(circle_points, max_scale, paint_style, *fill_geometry_buffer, render_settings, scale_factors);
+        //Create and append the circle's stroke geometry
+        createCircleStroke(circle_points, max_scale, paint_style, *stroke_geometry_buffer, render_settings, scale_factors);
+    }
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> SVGTesselator::tesselateEllipse(
+void SVGTesselator::tesselateEllipse(
+    std::vector<GeometryBuffer*>& out,
     const SVGEllipse* ellipse,
     const SVGImage::SVGImageRenderSettings& render_settings)
 {
@@ -184,7 +180,7 @@ std::vector<GeometryBuffer*> SVGTesselator::tesselateEllipse(
     GeometryBuffer* fill_geometry_buffer;
     GeometryBuffer* stroke_geometry_buffer;
 
-    std::vector<GeometryBuffer*> geomBuffers = setupGeometryBuffers(
+    setupGeometryBuffers(out,
         fill_geometry_buffer, stroke_geometry_buffer,
         render_settings, transformation, false);
 
@@ -205,19 +201,18 @@ std::vector<GeometryBuffer*> SVGTesselator::tesselateEllipse(
     std::vector<glm::vec2> ellipse_points;
     createEllipsePoints(radiusX, radiusY, max_scale, ellipse_points);
 
-    if (ellipse_points.size() < 3)
-        return geomBuffers;
-
-    //Create and append the ellipse's fill geometry
-    createEllipseFill(ellipse_points, max_scale, paint_style, *fill_geometry_buffer, render_settings, scale_factors);
-    //Create and append the ellipse's stroke geometry
-    createEllipseStroke(ellipse_points, max_scale, paint_style, *stroke_geometry_buffer, render_settings, scale_factors);
-
-    return geomBuffers;
+    if (ellipse_points.size() > 2)
+    {
+        //Create and append the ellipse's fill geometry
+        createEllipseFill(ellipse_points, max_scale, paint_style, *fill_geometry_buffer, render_settings, scale_factors);
+        //Create and append the ellipse's stroke geometry
+        createEllipseStroke(ellipse_points, max_scale, paint_style, *stroke_geometry_buffer, render_settings, scale_factors);
+    }
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> SVGTesselator::tesselateLine(
+void SVGTesselator::tesselateLine(
+    std::vector<GeometryBuffer*>& out,
     const SVGLine* line,
     const SVGImage::SVGImageRenderSettings& render_settings)
 {
@@ -226,7 +221,7 @@ std::vector<GeometryBuffer*> SVGTesselator::tesselateLine(
     GeometryBuffer* fill_geometry_buffer;
     GeometryBuffer* stroke_geometry_buffer;
 
-    std::vector<GeometryBuffer*> geomBuffers = setupGeometryBuffers(
+    setupGeometryBuffers(out,
         fill_geometry_buffer, stroke_geometry_buffer,
         render_settings, line->d_transformation, false);
 
@@ -243,13 +238,12 @@ std::vector<GeometryBuffer*> SVGTesselator::tesselateLine(
 
     //Create and append the polyline's stroke geometry
     createStroke(points, *stroke_geometry_buffer, paint_style, render_settings, scale_factors, false);
-
-    return geomBuffers;
 }
 
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> SVGTesselator::tesselatePolyline(
+void SVGTesselator::tesselatePolyline(
+    std::vector<GeometryBuffer*>& out,
     const SVGPolyline* polyline,
     const SVGImage::SVGImageRenderSettings& render_settings)
 {
@@ -257,7 +251,7 @@ std::vector<GeometryBuffer*> SVGTesselator::tesselatePolyline(
     GeometryBuffer* fill_geometry_buffer;
     GeometryBuffer* stroke_geometry_buffer;
 
-    std::vector<GeometryBuffer*> geomBuffers = setupGeometryBuffers(
+    setupGeometryBuffers(out,
         fill_geometry_buffer, stroke_geometry_buffer,
         render_settings, polyline->d_transformation, false);
 
@@ -275,12 +269,11 @@ std::vector<GeometryBuffer*> SVGTesselator::tesselatePolyline(
 
     //Create and append the polyline's stroke geometry
     createStroke(points, *stroke_geometry_buffer, paint_style, render_settings, scale_factors, false);
-
-    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> SVGTesselator::tesselatePolygon(
+void SVGTesselator::tesselatePolygon(
+    std::vector<GeometryBuffer*>& out,
     const SVGPolygon* polygon,
     const SVGImage::SVGImageRenderSettings& render_settings)
 {
@@ -288,7 +281,7 @@ std::vector<GeometryBuffer*> SVGTesselator::tesselatePolygon(
     GeometryBuffer* fill_geometry_buffer;
     GeometryBuffer* stroke_geometry_buffer;
 
-    std::vector<GeometryBuffer*> geomBuffers = setupGeometryBuffers(
+    setupGeometryBuffers(out,
         fill_geometry_buffer, stroke_geometry_buffer,
         render_settings, polygon->d_transformation, false);
 
@@ -306,27 +299,24 @@ std::vector<GeometryBuffer*> SVGTesselator::tesselatePolygon(
 
     //Create and append the polyline's stroke geometry
     createStroke(points, *stroke_geometry_buffer, paint_style, render_settings, scale_factors, true);
-
-    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> SVGTesselator::setupGeometryBuffers(
+void SVGTesselator::setupGeometryBuffers(
+    std::vector<GeometryBuffer*>& out,
     GeometryBuffer*& fill_geometry_buffer,
     GeometryBuffer*& stroke_geometry_buffer,
     const SVGImage::SVGImageRenderSettings& render_settings,
     const glm::mat3x3& svg_transformation,
     const bool is_fill_needing_stencil)
 {
-    std::vector<GeometryBuffer*> geometryBuffers;
-
     //Calculate the transformation matrix for the CEGUI rendering system based on the SVG transformation matrix
     glm::mat4 cegui_transformation_matrix = createRenderableMatrixFromSVGMatrix(svg_transformation);
 
     fill_geometry_buffer = &System::getSingleton().getRenderer()->createGeometryBufferColoured();
 
     setupGeometryBufferSettings(fill_geometry_buffer, render_settings, cegui_transformation_matrix);
-    geometryBuffers.push_back(fill_geometry_buffer);
+    out.push_back(fill_geometry_buffer);
 
     //TODO Ident: For gradients ability we will also need to perform a check for the DS_type here to see if we need a seperate buffer or not
     if(!is_fill_needing_stencil)
@@ -339,10 +329,8 @@ std::vector<GeometryBuffer*> SVGTesselator::setupGeometryBuffers(
         stroke_geometry_buffer = &System::getSingleton().getRenderer()->createGeometryBufferColoured();
 
         setupGeometryBufferSettings(stroke_geometry_buffer, render_settings, cegui_transformation_matrix);
-        geometryBuffers.push_back(stroke_geometry_buffer);
+        out.push_back(stroke_geometry_buffer);
     }
-
-    return geometryBuffers;
 }
 
 //----------------------------------------------------------------------------//

@@ -93,19 +93,18 @@ void BitmapImage::setTexture(Texture* texture)
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> BitmapImage::createRenderGeometry(const ImageRenderSettings& render_settings) const
+void BitmapImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
+    const ImageRenderSettings& render_settings) const
 {
     Rectf texRect;
     Rectf finalRect;
 
-    bool isFullClipped = calculateTextureAreaAndRenderArea(
+    const bool isFullClipped = calculateTextureAreaAndRenderArea(
         render_settings.d_destArea, render_settings.d_clipArea,
         finalRect, texRect);
 
-    if(isFullClipped)
-    {
-        return std::vector<GeometryBuffer*>();
-    }
+    if (isFullClipped)
+        return;
 
     TexturedColouredVertex vbuffer[6];
     const CEGUI::ColourRect& colours = render_settings.d_multiplyColours;
@@ -122,9 +121,7 @@ std::vector<GeometryBuffer*> BitmapImage::createRenderGeometry(const ImageRender
     buffer.appendGeometry(vbuffer, 6);
     buffer.setAlpha(render_settings.d_alpha);
 
-    std::vector<GeometryBuffer*> geomBuffers;
-    geomBuffers.push_back(&buffer);
-    return geomBuffers;
+    out.push_back(&buffer);
 }
 
 

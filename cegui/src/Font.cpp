@@ -253,16 +253,14 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel) 
     return char_count;
 }
 
-std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
+void Font::createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, const glm::vec2& position,
     const Rectf* clip_rect, const bool clipping_enabled,
     const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
     const float space_extra) const
 {
     float nextGlyphPos = 0.0f;
-
-    return createTextRenderGeometry(
-        text, nextGlyphPos, position, clip_rect, clipping_enabled,
+    createTextRenderGeometry(out, text, nextGlyphPos, position, clip_rect, clipping_enabled,
         colours, defaultParagraphDir, space_extra);
 }
 
@@ -271,20 +269,17 @@ const FontGlyph* Font::getPreparedGlyph(char32_t currentCodePoint) const
    return getGlyphForCodepoint(currentCodePoint);
 }
 
-std::vector<GeometryBuffer*> Font::layoutUsingFallbackAndCreateGlyphGeometry(
+void Font::layoutUsingFallbackAndCreateGlyphGeometry(
+    std::vector<GeometryBuffer*>& out,
     const String& text,
     const Rectf* clip_rect, const ColourRect& colours,
     const float space_extra,
     ImageRenderSettings imgRenderSettings, glm::vec2& glyphPos) const
 {
-    std::vector<GeometryBuffer*> textGeometryBuffers;
+    if (text.empty())
+        return;
 
     const float base_y = glyphPos.y + getBaseline();
-
-    if (text.empty())
-    {
-        return textGeometryBuffers;
-    }
 
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
@@ -312,7 +307,7 @@ std::vector<GeometryBuffer*> Font::layoutUsingFallbackAndCreateGlyphGeometry(
             imgRenderSettings.d_destArea =
                 Rectf(glyphPos, renderedSize);
 
-            addGlyphRenderGeometry(textGeometryBuffers, image, imgRenderSettings,
+            addGlyphRenderGeometry(out, image, imgRenderSettings,
                 clip_rect, colours);
 
             glyphPos.x += glyph->getAdvance();
@@ -326,29 +321,21 @@ std::vector<GeometryBuffer*> Font::layoutUsingFallbackAndCreateGlyphGeometry(
          ++currentCodePointIter;
 #endif
     }
-
-    return textGeometryBuffers;
 }
 
-std::vector<GeometryBuffer*> Font::createTextRenderGeometry(
+void Font::createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, float& nextPenPosX, const glm::vec2& position,
     const Rectf* clip_rect, const bool clipping_enabled,
     const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir, const float space_extra) const
 {
-    ImageRenderSettings imgRenderSettings(
-        Rectf(), clip_rect,
-        clipping_enabled, colours);
+    ImageRenderSettings imgRenderSettings(Rectf(), clip_rect, clipping_enabled, colours);
 
     glm::vec2 penPosition = position;
 
-    std::vector<GeometryBuffer*> geomBuffers = layoutAndCreateGlyphRenderGeometry(
-        text, clip_rect, colours, space_extra,
+    layoutAndCreateGlyphRenderGeometry(out, text, clip_rect, colours, space_extra,
         imgRenderSettings, defaultParagraphDir, penPosition);
 
     nextPenPosX = penPosition.x;
-
-    // Adding a single geometry buffer containing the batched glyphs
-    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//
@@ -471,24 +458,20 @@ void Font::addGlyphRenderGeometry(std::vector<GeometryBuffer*>& textGeometryBuff
     // is found that we can combine this one with. Render order is irrelevant since
     // glyphs should never overlap
     GeometryBuffer* matchingGeomBuffer = findCombinableBuffer(textGeometryBuffers, image);
-
-    if (matchingGeomBuffer == nullptr)
+    if (!matchingGeomBuffer)
     {
+        const size_t prevSize = textGeometryBuffers.size();
+
         imgRenderSettings.d_multiplyColours = colours;
-        std::vector<GeometryBuffer*> glyphGeomBuffer =
-            image->createRenderGeometry(imgRenderSettings);
+        image->createRenderGeometry(textGeometryBuffers, imgRenderSettings);
 
-        assert(glyphGeomBuffer.size() <= 1 && "Glyphs are expected to "
-            "be built from a single GeometryBuffer (or none)");
-
-        textGeometryBuffers.insert(textGeometryBuffers.end(),
-            glyphGeomBuffer.begin(), glyphGeomBuffer.end());
+        assert((textGeometryBuffers.size() - prevSize) <= 1 &&
+            "Glyphs are expected to be built from a single GeometryBuffer (or none)");
     }
     else
     {
         // Else we add geometry to the rendering batch of the existing geometry
-        image->addToRenderGeometry(*matchingGeomBuffer, imgRenderSettings.d_destArea,
-            clip_rect, colours);
+        image->addToRenderGeometry(*matchingGeomBuffer, imgRenderSettings.d_destArea, clip_rect, colours);
     }
 }
 

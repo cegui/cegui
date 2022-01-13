@@ -290,12 +290,10 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
     {
         // no highlighted text - we can draw the whole thing
         colours = unselectedColour;
-        auto textGeomBuffers = font->createTextRenderGeometry(
+        font->createTextRenderGeometry(w->getGeometryBuffers(),
             text, text_part_rect.d_min.x,
             text_part_rect.getPosition(),
             &text_area, true, colours, w->getDefaultParagraphDirection());
-
-        w->appendGeometryBuffers(textGeomBuffers);
     }
     else
     {
@@ -345,12 +343,10 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
                 colours = unselectedColour;
             }
 
-            auto textGeomBuffers = font->createTextRenderGeometry(
+            font->createTextRenderGeometry(w->getGeometryBuffers(),
                 currChar, text_part_rect.d_min.x,
                 text_part_rect.getPosition(),
                 &text_area, true, colours, w->getDefaultParagraphDirection());
-
-            w->appendGeometryBuffers(textGeomBuffers);
 
             // adjust rect for next section
             text_part_rect.d_min.x += charAdvance;

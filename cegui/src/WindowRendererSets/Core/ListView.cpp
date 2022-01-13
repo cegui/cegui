@@ -97,9 +97,7 @@ void FalagardListView::createRenderGeometry(ListView* list_view)
                 icon_rect, &icon_clipper,
                 true, ICON_COLOUR_RECT, 1.0f);
 
-            auto imgGeomBuffers = img.createRenderGeometry(renderSettings);
-
-            list_view->appendGeometryBuffers(imgGeomBuffers);
+            img.createRenderGeometry(list_view->getGeometryBuffers(), renderSettings);
 
             item_rect.left(item_rect.left() + icon_rect.getWidth());
         }
