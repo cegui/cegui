@@ -38,29 +38,6 @@ RenderedString::RenderedString()
     appendLineBreak();
 }
 
-/*
-//----------------------------------------------------------------------------//
-RenderedString::RenderedString(const RenderedString& other)
-{
-    d_components.clear();
-    for (const auto& component : other.d_components)
-        d_components.push_back(component->clone());
-
-    d_lines = other.d_lines;
-}
-
-//----------------------------------------------------------------------------//
-RenderedString& RenderedString::operator =(const RenderedString& rhs)
-{
-    d_components.clear();
-    for (const auto& component : rhs.d_components)
-        d_components.push_back(component->clone());
-
-    d_lines = rhs.d_lines;
-    return *this;
-}
-*/
-
 //----------------------------------------------------------------------------//
 RenderedString::~RenderedString() = default;
 RenderedString::RenderedString(RenderedString&&) noexcept = default;
@@ -294,6 +271,16 @@ bool RenderedString::split(const Window* refWnd, const size_t line,
     }
 
     return wasWordSplit;
+}
+
+//----------------------------------------------------------------------------//
+RenderedString RenderedString::clone() const
+{
+    RenderedString copy;
+    for (const auto& component : d_components)
+        copy.d_components.push_back(component->clone());
+    copy.d_lines = d_lines;
+    return copy;
 }
 
 }

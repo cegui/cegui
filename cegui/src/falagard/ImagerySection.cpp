@@ -128,9 +128,9 @@ namespace CEGUI
         d_images.clear();
     }
 
-    void ImagerySection::addTextComponent(const TextComponent& textComponent)
+    void ImagerySection::addTextComponent(TextComponent&& textComponent)
     {
-        d_texts.push_back(textComponent);
+        d_texts.push_back(std::move(textComponent));
     }
 
     void ImagerySection::removeTextComponent(const TextComponent& textComponent)
