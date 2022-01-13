@@ -99,7 +99,7 @@ namespace CEGUI
         WordWrapLeftAligned,        //!< Left of text should be aligned with the left of the destination area (word wrapped to multiple lines as needed).
         WordWrapRightAligned,       //!< Right of text should be aligned with the right of the destination area  (word wrapped to multiple lines as needed).
         WordWrapCentreAligned,      //!< text should be horizontally centred within the destination area  (word wrapped to multiple lines as needed).
-        WordWraperJustified         //!< text should be spaced so that it takes the full width of the destination area (word wrapped to multiple lines as needed).
+        WordWrapJustified           //!< text should be spaced so that it takes the full width of the destination area (word wrapped to multiple lines as needed).
     };
 
     /*!

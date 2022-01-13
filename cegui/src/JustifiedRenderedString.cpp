@@ -31,14 +31,10 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-JustifiedRenderedString::JustifiedRenderedString(const RenderedString& string) :
-    FormattedRenderedString(string)
+void JustifiedRenderedString::format(const RenderedString& rs, const Window* refWnd, const Sizef& areaSize)
 {
-}
+    d_renderedString = &rs;
 
-//----------------------------------------------------------------------------//
-void JustifiedRenderedString::format(const Window* refWnd, const Sizef& area_size)
-{
     d_spaceExtras.clear();
 
     d_extent.d_width = 0.f;
@@ -48,13 +44,13 @@ void JustifiedRenderedString::format(const Window* refWnd, const Sizef& area_siz
     {
         const size_t spaceCount = d_renderedString->getSpaceCount(i);
         const Sizef lineExtent = d_renderedString->getLineExtent(refWnd, i);
-        const bool justifyable = (spaceCount && lineExtent.d_width < area_size.d_width);
+        const bool justifyable = (spaceCount && lineExtent.d_width < areaSize.d_width);
 
-        d_spaceExtras.push_back(justifyable ? ((area_size.d_width - lineExtent.d_width) / spaceCount) : 0.f);
+        d_spaceExtras.push_back(justifyable ? ((areaSize.d_width - lineExtent.d_width) / spaceCount) : 0.f);
 
         d_extent.d_height += lineExtent.d_height;
 
-        const float lineWidth = justifyable ? area_size.d_width : lineExtent.d_width;
+        const float lineWidth = justifyable ? areaSize.d_width : lineExtent.d_width;
         if (d_extent.d_width < lineWidth)
             d_extent.d_width = lineWidth;
     }
@@ -62,17 +58,20 @@ void JustifiedRenderedString::format(const Window* refWnd, const Sizef& area_siz
 
 //----------------------------------------------------------------------------//
 std::vector<GeometryBuffer*> JustifiedRenderedString::createRenderGeometry(
-    const Window* refWnd, const glm::vec2& position, const ColourRect* mod_colours, const Rectf* clip_rect) const
+    const Window* refWnd, const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const
 {
     std::vector<GeometryBuffer*> geomBuffers;
 
-    glm::vec2 draw_pos = position;
+    if (!d_renderedString)
+        return geomBuffers;
+
+    glm::vec2 drawPos = position;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        auto geom = d_renderedString->createRenderGeometry(refWnd, i, draw_pos, mod_colours, clip_rect, d_spaceExtras[i]);
+        auto geom = d_renderedString->createRenderGeometry(refWnd, i, drawPos, modColours, clipRect, d_spaceExtras[i]);
         geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
 
-        draw_pos.y += d_renderedString->getLineExtent(refWnd, i).d_height;
+        drawPos.y += d_renderedString->getLineExtent(refWnd, i).d_height;
     }
 
     return geomBuffers;
