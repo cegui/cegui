@@ -40,6 +40,7 @@
 namespace CEGUI
 {
 class Rectf;
+using RenderedStringComponentPtr = std::unique_ptr<class RenderedStringComponent>;
 
 /*!
 \brief
@@ -53,10 +54,14 @@ class CEGUIEXPORT RenderedString
 public:
 
     RenderedString();
-    RenderedString(const RenderedString& other);
+    //RenderedString(const RenderedString& other);
+    RenderedString(const RenderedString& other) = delete; //!!!DBG TMP!
+    RenderedString(RenderedString&& other);
     virtual ~RenderedString();
 
-    RenderedString& operator =(const RenderedString& rhs);
+    //RenderedString& operator =(const RenderedString& rhs);
+    RenderedString& operator =(const RenderedString& rhs) = delete; //!!!DBG TMP!
+    RenderedString& operator =(RenderedString&& rhs);
 
     /*!
     \brief
@@ -101,6 +106,24 @@ public:
         const glm::vec2& position, const ColourRect* mod_colours,
         const Rectf* clip_rect, float space_extra) const;
 
+    //! append \a component to the list of components drawn for this string.
+    void appendComponent(const RenderedStringComponent& component);
+
+    //! clear the list of components drawn for this string.
+    void clearComponents();
+
+    //! linebreak the rendered string at the present position.
+    void appendLineBreak();
+
+    //! return the number of components that make up this string.
+    size_t getComponentCount() const { return d_components.size(); }
+
+    //! return number of lines in this string.
+    size_t getLineCount() const { return d_lines.size(); }
+
+    //! return the total number of spacing characters in the specified line.
+    size_t getSpaceCount(const size_t line) const;
+
     /*!
     \brief
         Return the pixel size of a specified line for the RenderedString.
@@ -127,17 +150,8 @@ public:
     */
     Sizef getExtent(const Window* refWnd) const;
 
-    //! append \a component to the list of components drawn for this string.
-    void appendComponent(const RenderedStringComponent& component);
-
-    //! clear the list of components drawn for this string.
-    void clearComponents();
-
-    //! return the number of components that make up this string.
-    size_t getComponentCount() const { return d_components.size(); }
-
-    //! return number of lines in this string.
-    size_t getLineCount() const { return d_lines.size(); }
+    //! set selection highlight
+    void setSelection(const Window* refWnd, float start, float end);
 
     /*!
     \brief
@@ -168,25 +182,10 @@ public:
     */
     bool split(const Window* refWnd, const size_t line, float splitPoint, RenderedString& left);
 
-    //! return the total number of spacing characters in the specified line.
-    size_t getSpaceCount(const size_t line) const;
-
-    //! linebreak the rendered string at the present position.
-    void appendLineBreak();
-
-    //! set selection highlight
-    void setSelection(const Window* refWnd, float start, float end);
-
 protected:
 
-    //! Make this object's component list a clone of \a list.
-    void cloneComponentList(const std::vector<RenderedStringComponent*>& list);
-
-    std::vector<RenderedStringComponent*>  d_components;
+    std::vector<RenderedStringComponentPtr> d_components;
     std::vector<std::pair<size_t, size_t>> d_lines; // first is component idx, second is component count.
-
-    mutable Sizef d_totalExtent;
-    mutable bool  d_totalExtentDirty = true;
 };
 
 }

@@ -36,9 +36,10 @@
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+using RenderedStringComponentPtr = std::unique_ptr<class RenderedStringComponent>;
+
 /*!
 \brief
     Base class representing a part of a rendered string.  The 'part' represented
@@ -47,33 +48,29 @@ namespace CEGUI
 class CEGUIEXPORT RenderedStringComponent
 {
 public:
-    //! Destructor.
-    virtual ~RenderedStringComponent();
 
-    //! Set the VerticalTextFormatting option for this component.
-    void setVerticalTextFormatting(VerticalTextFormatting fmt);
-    //! return the current VerticalTextFormatting option.
-    VerticalTextFormatting getVerticalTextFormatting() const;
+    virtual ~RenderedStringComponent() = default;
+
     //! set the padding values.
-    void setPadding(const Rectf& padding);
+    void setPadding(const Rectf& padding) { d_padding = padding; }
     //! set the left padding value.
-    void setLeftPadding(const float padding);
+    void setLeftPadding(const float padding) { d_padding.d_min.x = padding; }
     //! set the right padding value.
-    void setRightPadding(const float padding);
+    void setRightPadding(const float padding) { d_padding.d_max.x = padding; }
     //! set the top padding value.
-    void setTopPadding(const float padding);
+    void setTopPadding(const float padding) { d_padding.d_min.y = padding; }
     //! set the Bottom padding value.
-    void setBottomPadding(const float padding);
+    void setBottomPadding(const float padding) { d_padding.d_max.y = padding; }
     //! return the current padding value Rect.
-    const Rectf& getPadding() const;
+    const Rectf& getPadding() const { return d_padding; }
     //! return the left padding value.
-    float getLeftPadding() const;
+    float getLeftPadding() const { return d_padding.d_min.x; }
     //! return the right padding value.
-    float getRightPadding() const;
+    float getRightPadding() const { return d_padding.d_max.x; }
     //! return the top padding value.
-    float getTopPadding() const;
+    float getTopPadding() const { return d_padding.d_min.y; }
     //! return the bottom padding value.
-    float getBottomPadding() const;
+    float getBottomPadding() const { return d_padding.d_max.y; }
 
     //! draw the component.
     virtual std::vector<GeometryBuffer*> createRenderGeometry(
@@ -102,7 +99,7 @@ public:
     \exception InvalidRequestException
         thrown if the RenderedStringComponent does not support being split.
     */
-    virtual RenderedStringComponent* split(const Window* ref_wnd,
+    virtual RenderedStringComponentPtr split(const Window* ref_wnd,
                                            float split_point,
                                            bool first_component,
                                            bool& was_word_split) = 0;
@@ -117,12 +114,12 @@ public:
     \exception InvalidRequestException
         thrown if the RenderedStringComponent does not support being split.
     */
-    RenderedStringComponent* split(const Window* ref_wnd,
+    RenderedStringComponentPtr split(const Window* ref_wnd,
                                    float split_point,
                                    bool first_component);
 
     //! clone this component.
-    virtual RenderedStringComponent* clone() const = 0;
+    virtual RenderedStringComponentPtr clone() const = 0;
 
     //! return the total number of spacing characters in the string.
     virtual size_t getSpaceCount() const = 0;
@@ -132,21 +129,19 @@ public:
                               const float start, const float end) = 0;
 
 protected:
-    //! Protected constructor.
-    RenderedStringComponent();
+
+    RenderedStringComponent() = default;
 
     //! Rect object holding the padding values for this component.
-    Rectf d_padding;
-    //! Vertical formatting to be used for this component.
-    VerticalTextFormatting d_verticalTextFormatting = VerticalTextFormatting::BottomAligned;
+    Rectf d_padding = Rectf(0.f, 0.f, 0.f, 0.f);
     //! Image to draw for selection
-    const Image* d_selectionImage;
+    const Image* d_selectionImage = nullptr;
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
 
-#endif // end of guard _CEGUIRenderedStringComponent_h_
+#endif
