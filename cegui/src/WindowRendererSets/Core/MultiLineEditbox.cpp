@@ -176,8 +176,6 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
     const ColourRect selectBrushCol = getOptionalColour(
         w->hasInputFocus() ? ActiveSelectionColourPropertyName : InactiveSelectionColourPropertyName);
 
-    const auto defaultParagraphDir = w->getDefaultParagraphDirection();
-
     const auto& lines = w->getFormattedLines();
     const size_t numLines = lines.size();
 
@@ -189,6 +187,9 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
     drawArea.offset(-glm::vec2(w->getHorzScrollbar()->getScrollPosition(), vertScrollPos));
     drawArea.d_min.y += font->getLineSpacing() * static_cast<float>(sidx);
 
+    const size_t selStart = w->getSelectionStart();
+    const size_t selEnd = w->getSelectionEnd();
+
     // Text is already formatted, we just grab the lines and
     // create the render geometry for them with the required alignment.
     for (size_t i = sidx; i < eidx; ++i)
@@ -196,9 +197,6 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
         const auto& currLine = lines[i];
         const size_t lineStart = currLine.d_startIdx;
         const size_t lineLength = currLine.d_length;
-        const size_t selStart = w->getSelectionStart();
-        const size_t selEnd = w->getSelectionEnd();
-
         const String lineText(w->getTextVisual().substr(lineStart, lineLength));
 
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
@@ -219,7 +217,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
         {
             // Create geometry buffers for the text and add to the Window
             font->createTextRenderGeometry(w->getGeometryBuffers(), lineText,
-                lineRect.getPosition(), &destArea, true, normalTextCol, defaultParagraphDir);
+                lineRect.getPosition(), &destArea, true, normalTextCol, w->getDefaultParagraphDirection());
         }
         else
         {
@@ -249,7 +247,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
 
                 font->createTextRenderGeometry(w->getGeometryBuffers(), sect,
                     lineRect.getPosition(), &destArea, true, normalTextCol,
-                    defaultParagraphDir);
+                    w->getDefaultParagraphDirection());
 
                 // Set position ready for next portion of text
                 lineRect.d_min.x += selStartOffset;
@@ -279,7 +277,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
 
             // Create the render geometry for the selected text
             font->createTextRenderGeometry(w->getGeometryBuffers(), sect,
-                lineRect.getPosition(), &destArea, true, selectTextCol, defaultParagraphDir);
+                lineRect.getPosition(), &destArea, true, selectTextCol, w->getDefaultParagraphDirection());
 
             // Create the render geometry for any text beyond selected region of line
             if (sectIdx < lineLength)
@@ -287,7 +285,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
                 lineRect.d_min.x += selAreaWidth;
                 const String sect = lineText.substr(sectIdx, lineLength - sectIdx);
                 font->createTextRenderGeometry(w->getGeometryBuffers(), sect,
-                    lineRect.getPosition(), &destArea, true, normalTextCol, defaultParagraphDir);
+                    lineRect.getPosition(), &destArea, true, normalTextCol, w->getDefaultParagraphDirection());
             }
         }
 
