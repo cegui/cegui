@@ -31,9 +31,6 @@
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/Font.h"
-#ifdef CEGUI_BIDI_SUPPORT
-#include "CEGUI/FontGlyph.h" // FIXME: for getAdvance() in old code. Maybe now should be solved differently!
-#endif
 #include "CEGUI/BidiVisualMapping.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 #include <stdio.h>
@@ -42,10 +39,10 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const String FalagardEditbox::TypeName("Core/Editbox");
-const String FalagardEditbox::UnselectedTextColourPropertyName( "NormalTextColour" );
-const String FalagardEditbox::SelectedTextColourPropertyName( "SelectedTextColour" );
-const String FalagardEditbox::ActiveSelectionColourPropertyName( "ActiveSelectionColour" );
-const String FalagardEditbox::InactiveSelectionColourPropertyName( "InactiveSelectionColour" );
+const String FalagardEditbox::UnselectedTextColourPropertyName("NormalTextColour");
+const String FalagardEditbox::SelectedTextColourPropertyName("SelectedTextColour");
+const String FalagardEditbox::ActiveSelectionColourPropertyName("ActiveSelectionColour");
+const String FalagardEditbox::InactiveSelectionColourPropertyName("InactiveSelectionColour");
 const float FalagardEditbox::DefaultCaretBlinkTimeout(0.66f);
 
 //----------------------------------------------------------------------------//
@@ -235,25 +232,30 @@ float FalagardEditbox::getTextOffsetVisual(const Rectf& textArea, float textExte
 
 //----------------------------------------------------------------------------//
 void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
-    const String& text, const Rectf& textArea, float text_offset)
+    const String& text, const Rectf& textArea, float textOffset)
 {
+    if (text.empty())
+        return;
+
     Editbox* const w = static_cast<Editbox*>(d_window);
 
     const Font* const font = w->getActualFont();
     if (!font)
         return;
 
-    const bool active = w->hasInputFocus();
-
     // setup initial rect for text formatting
-    Rectf textPartRect(textArea);
+    Rectf textPartRect = textArea;
     // allow for scroll position
-    textPartRect.d_min.x += text_offset;
+    textPartRect.d_min.x += textOffset;
     // centre text vertically within the defined text area
     textPartRect.d_min.y += (textArea.getHeight() - font->getFontHeight()) * 0.5f;
 
     const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);
     const ColourRect selectTextCol = getOptionalColour(SelectedTextColourPropertyName);
+    //const ColourRect selectBrushCol = getOptionalColour(
+    //    w->hasInputFocus() ? ActiveSelectionColourPropertyName : InactiveSelectionColourPropertyName);
+
+    const auto& selectBrushImagery = wlf.getStateImagery(w->hasInputFocus() ? "ActiveSelection" : "InactiveSelection");
 
 #ifdef CEGUI_BIDI_SUPPORT
 
@@ -272,43 +274,28 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
         // So - we need to draw it char by char (I guess we can optimize it more
         // but this is not that big performance hit because it only happens if
         // we have highlighted text - not that common...)
-        for (size_t i = 0 ; i < text.size() ; i++)
+        Rectf brushArea(textArea);
+        for (size_t i = 0 ; i < text.size() ; ++i)
         {
-            // get the char
-            String currChar = text.substr(i, 1);
-            size_t realPos = 0;
-
-            // get he visual pos of the char
+            // Get the visual pos of the char
+            size_t realPos = i;
             if (w->getBidiVisualMapping()->getV2lMapping().size() > i)
-            {
                 realPos = w->getBidiVisualMapping()->getV2lMapping()[i];
-            }
 
-            // check if it is in the highlighted region
-            bool highlighted =
-                realPos >= w->getSelectionStart() &&
-                realPos < w->getSelectionStart() + w->getSelectionLength();
+            const String charStr(&text[i], 1);
 
-            float charAdvance = font->getGlyphForCodepoint(currChar[0])->getAdvance();
-
-            if (highlighted)
+            // Render the selection imagery
+            const bool selected = realPos >= w->getSelectionStart() && realPos < w->getSelectionEnd();
+            if (selected)
             {
-                // calculate area for selection imagery.
-                Rectf hlarea(textArea);
-                hlarea.d_min.x = textPartRect.d_min.x ;
-                hlarea.d_max.x = textPartRect.d_min.x + charAdvance;
-
-                // render the selection imagery.
-                wlf.getStateImagery(active ? "ActiveSelection" : "InactiveSelection").
-                    render(*w, hlarea, 0, &textArea);
+                brushArea.d_min.x = textPartRect.d_min.x;
+                brushArea.d_max.x = textPartRect.d_min.x + font->getTextAdvance(charStr);
+                selectBrushImagery.render(*w, brushArea, nullptr, &textArea);
             }
 
             font->createTextRenderGeometry(w->getGeometryBuffers(),
-                currChar, textPartRect.d_min.x, textPartRect.getPosition(),
-                &textArea, true, highlighted ? selectTextCol : normalTextCol, w->getDefaultParagraphDirection());
-
-            // adjust rect for next section
-            textPartRect.d_min.x += charAdvance;
+                charStr, textPartRect.d_min.x, textPartRect.getPosition(),
+                &textArea, true, selected ? selectTextCol : normalTextCol, w->getDefaultParagraphDirection());
         }
     }
 
@@ -323,13 +310,12 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
             font->getTextAdvance(text.substr(0, w->getSelectionEnd()));
 
         // calculate area for selection imagery.
-        Rectf hlarea(textArea);
-        hlarea.d_min.x += text_offset + selStartOffset;
-        hlarea.d_max.x = hlarea.d_min.x + (selEndOffset - selStartOffset);
+        Rectf brushArea(textArea);
+        brushArea.d_min.x += textOffset + selStartOffset;
+        brushArea.d_max.x = brushArea.d_min.x + (selEndOffset - selStartOffset);
 
         // create render geometry for the selection imagery.
-        const String& stateName = active ? "ActiveSelection" : "InactiveSelection";
-        wlf.getStateImagery(stateName).render(*w, hlarea, nullptr, &textArea);
+        selectBrushImagery.render(*w, brushArea, nullptr, &textArea);
     }
 
     // create render geometry for pre-highlight text
@@ -369,11 +355,11 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
 //----------------------------------------------------------------------------//
 void FalagardEditbox::renderCaret(const ImagerySection& imagery,
                                   const Rectf& textArea,
-                                  float text_offset,
+                                  float textOffset,
                                   float extent_to_caret) const
 {
     Rectf caretRect(textArea);
-    caretRect.d_min.x += extent_to_caret + text_offset;
+    caretRect.d_min.x += extent_to_caret + textOffset;
     imagery.render(*d_window, caretRect, nullptr, &textArea);
 }
 
