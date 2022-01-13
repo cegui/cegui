@@ -31,7 +31,6 @@
 #include "CEGUI/String.h"
 #include <pcre.h>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
@@ -47,26 +46,21 @@ namespace CEGUI
 class PCRERegexMatcher : public RegexMatcher
 {
 public:
-    //! Constructor.
-    PCRERegexMatcher();
-    //! Destructor.
+
     ~PCRERegexMatcher();
 
-    // implement required interface
     void setRegexString(const String& regex) override;
-    const String& getRegexString() const override;
-    MatchState getMatchStateOfString(const String& str) const override;
+    const String& getRegexString() const override { return d_string; }
+    RegexMatchState getMatchStateOfString(const String& str) const override;
 
 private:
-    //! free the compiled PCRE regex, if any.
-    void release();
 
+    //! Pointer to PCRE compiled RegEx.
+    pcre* d_regex = nullptr;
     //! Copy of the regex string assigned.
     String d_string;
-    //! Pointer to PCRE compiled RegEx.
-    pcre* d_regex;
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif  // end of guard _CEGUIPCRERegexMatcher_h_
+#endif

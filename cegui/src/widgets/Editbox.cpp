@@ -51,7 +51,7 @@ Editbox::Editbox(const String& type, const String& name) :
     d_readOnlyMouseCursorImage(nullptr),
     d_validator(System::getSingleton().createRegexMatcher()),
     d_weOwnValidator(true),
-    d_validatorMatchState(RegexMatcher::MatchState::Valid),
+    d_validatorMatchState(RegexMatchState::Valid),
     d_previousValidityChangeResponse(true)
 {
     addEditboxProperties();
@@ -72,7 +72,7 @@ Editbox::~Editbox(void)
 }
 
 
-Editbox::MatchState Editbox::getTextMatchState() const
+RegexMatchState Editbox::getTextMatchState() const
 {
     return d_validatorMatchState;
 }
@@ -136,7 +136,7 @@ void Editbox::setMaxTextLength(size_t max_len)
             onTextChanged(args);
             d_undoHandler->clearUndoHistory();
 
-            const MatchState state = getStringMatchState(getText());
+            const RegexMatchState state = getStringMatchState(getText());
             if (d_validatorMatchState != state)
             {
                 RegexMatchStateEventArgs rms_args(this, state);
@@ -178,10 +178,9 @@ void Editbox::eraseSelectedText(bool modify_text)
 }
 
 
-Editbox::MatchState Editbox::getStringMatchState(const String& str) const
+RegexMatchState Editbox::getStringMatchState(const String& str) const
 {
-    return d_validator ? d_validator->getMatchStateOfString(str) :
-                         RegexMatcher::MatchState::Valid;
+    return d_validator ? d_validator->getMatchStateOfString(str) : RegexMatchState::Valid;
 }
 
 
@@ -205,7 +204,7 @@ void Editbox::setValidator(RegexMatcher* validator)
 
 bool Editbox::handleValidityChangeForString(const String& str)
 {
-    const MatchState new_state = getStringMatchState(str);
+    const RegexMatchState new_state = getStringMatchState(str);
 
     if (new_state == d_validatorMatchState)
         return d_previousValidityChangeResponse;

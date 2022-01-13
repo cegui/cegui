@@ -95,15 +95,15 @@ bool EditboxValidationSample::validationChangeHandler(const CEGUI::EventArgs& ar
 
     switch(ra.matchState)
     {
-    case RegexMatcher::MatchState::Invalid:
+    case RegexMatchState::Invalid:
         eb->setProperty("NormalTextColour", "FFFF0000");
         break;
 
-    case RegexMatcher::MatchState::Partial:
+    case RegexMatchState::Partial:
         eb->setProperty("NormalTextColour", "FFFFBB11");
         break;
 
-    case RegexMatcher::MatchState::Valid:
+    case RegexMatchState::Valid:
         eb->setProperty("NormalTextColour", "FF00FF00");
         break;
     }

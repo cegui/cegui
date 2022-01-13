@@ -401,7 +401,9 @@ void FalagardStaticText::setHorizontalScrollbarEnabled(bool setting)
 // reformatting of the string, as well as cause the 2nd scrollbar to also be required.
 void FalagardStaticText::configureScrollbars() const
 {
-    const RenderedString& renderedString = d_window->getRenderedString();
+    //!!!DBG TMP!
+    RenderedString renderedString;
+    //const RenderedString& renderedString = d_window->getRenderedString();
 
     Scrollbar* vertScrollbar = getVertScrollbarWithoutUpdate();
     Scrollbar* horzScrollbar = getHorzScrollbarWithoutUpdate();
@@ -636,7 +638,9 @@ void FalagardStaticText::updateFormatting() const
     }
 
     // "Touch" the window's rendered string to ensure it's re-parsed if needed.
-    const RenderedString& renderedString = d_window->getRenderedString();
+    //!!!DBG TMP!
+    RenderedString renderedString;
+    //const RenderedString& renderedString = d_window->getRenderedString();
 
     d_actualVertFormatting = d_vertFormatting;
 
