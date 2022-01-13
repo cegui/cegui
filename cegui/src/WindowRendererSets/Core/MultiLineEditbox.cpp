@@ -193,7 +193,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
     // create the render geometry for them with the required alignment.
     for (size_t i = sidx; i < eidx; ++i)
     {
-        const MultiLineEditbox::LineInfo& currLine = lines[i];
+        const auto& currLine = lines[i];
         const size_t lineStart = currLine.d_startIdx;
         const size_t lineLength = currLine.d_length;
         const size_t selStart = w->getSelectionStart();
