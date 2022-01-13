@@ -173,7 +173,7 @@ namespace CEGUI
         d_widgetLooks.clear();
     }
 
-    void WidgetLookManager::addWidgetLook(const WidgetLookFeel& look)
+    void WidgetLookManager::addWidgetLook(WidgetLookFeel&& look)
     {
         if (isWidgetLookAvailable(look.getName()))
         {
@@ -181,7 +181,7 @@ namespace CEGUI
                 "WidgetLookManager::addWidgetLook - Widget look and feel '" + look.getName() + "' already exists.  Replacing previous definition.");
         }
 
-        d_widgetLooks[look.getName()] = look;
+        d_widgetLooks.emplace(look.getName(), std::move(look));
     }
 
     void WidgetLookManager::writeWidgetLookToStream(const String& name, OutStream& out_stream) const

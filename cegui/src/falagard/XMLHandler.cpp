@@ -1470,7 +1470,7 @@ namespace CEGUI
         assert(d_widgetlook != nullptr);
 
         Logger::getSingleton().logEvent("---< End of definition for widget look '" + d_widgetlook->getName() + "'.", LoggingLevel::Informative);
-        d_manager->addWidgetLook(*d_widgetlook);
+        d_manager->addWidgetLook(std::move(*d_widgetlook));
         delete d_widgetlook;
         d_widgetlook = nullptr;
     }
@@ -1506,7 +1506,7 @@ namespace CEGUI
         }
 
         CEGUI_LOGINSANE("-----< End of definition for imagery section '" + d_imagerysection->getName() + "'.");
-        d_widgetlook->addImagerySection(*d_imagerysection);
+        d_widgetlook->addImagerySection(std::move(*d_imagerysection));
         delete d_imagerysection;
         d_imagerysection = nullptr;
     }

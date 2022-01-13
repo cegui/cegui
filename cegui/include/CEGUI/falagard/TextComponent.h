@@ -46,11 +46,10 @@ public:
 
     TextComponent();
     TextComponent(const TextComponent& obj) = delete;
-    TextComponent(TextComponent&& obj);
-    ~TextComponent() override;
-
+    TextComponent(TextComponent&& obj) noexcept;
     TextComponent& operator =(const TextComponent& other) = delete;
-    TextComponent& operator =(TextComponent&& other);
+    TextComponent& operator =(TextComponent&& other) noexcept;
+    ~TextComponent() override;
 
     /*!
     \brief
