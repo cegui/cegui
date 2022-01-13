@@ -226,7 +226,7 @@ public:
     \param render_settings
         The ImageRenderSettings that contain render settings for new GeometryBuffers.
     */
-    virtual std::vector<GeometryBuffer*> createRenderGeometry(
+    virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const ImageRenderSettings& render_settings) const = 0;
 
     /*!

@@ -119,7 +119,7 @@ size_t RenderedString::getSpaceCount(const size_t line) const
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> RenderedString::createRenderGeometry(
+void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     const Window* refWnd, const size_t line, const glm::vec2& position,
     const ColourRect* mod_colours, const Rectf* clip_rect, const float space_extra) const
 {
@@ -128,20 +128,13 @@ std::vector<GeometryBuffer*> RenderedString::createRenderGeometry(
 
     const float render_height = getLineExtent(refWnd, line).d_height;
 
-    std::vector<GeometryBuffer*> geomBuffers;
-
     glm::vec2 pos = position;
     const size_t end_component = d_lines[line].first + d_lines[line].second;
     for (size_t i = d_lines[line].first; i < end_component; ++i)
     {
-        auto currGeom = d_components[i]->createRenderGeometry(refWnd, pos, mod_colours, clip_rect,
-                render_height, space_extra);
-        geomBuffers.insert(geomBuffers.end(), currGeom.begin(), currGeom.end());
-
+        d_components[i]->createRenderGeometry(out, refWnd, pos, mod_colours, clip_rect, render_height, space_extra);
         pos.x += d_components[i]->getPixelSize(refWnd).d_width;
     }
-
-    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//

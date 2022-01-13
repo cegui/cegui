@@ -66,7 +66,7 @@ public:
     \param render_settings
         The ImageRenderSettings that contain render settings for new GeometryBuffers.
      */
-    virtual std::vector<GeometryBuffer*> createRenderGeometry( 
+    virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const SVGImage::SVGImageRenderSettings& render_settings) const = 0;
         
 
@@ -103,7 +103,7 @@ public:
             const float rx = 0.0f, const float ry = 0.0f);
 
     //! Implementation of SVGBasicShape interface
-    std::vector<GeometryBuffer*> createRenderGeometry(
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const SVGImage::SVGImageRenderSettings& render_settings) const override;
 
     //! The x-axis coordinate of the side of the rectangle which has the smaller x-axis coordinate value in the current user coordinate system
@@ -144,7 +144,7 @@ public:
               const float r);
 
     //! Implementation of SVGBasicShape interface
-    std::vector<GeometryBuffer*> createRenderGeometry(
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const SVGImage::SVGImageRenderSettings& render_settings) const override;
 
     //! The x-axis coordinate of the center of the circle. 
@@ -181,7 +181,7 @@ public:
                const float ry);
 
     //! Implementation of SVGBasicShape interface
-    std::vector<GeometryBuffer*> createRenderGeometry(
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const SVGImage::SVGImageRenderSettings& render_settings) const override;
 
     //! The x-axis coordinate of the center of the ellipse. 
@@ -221,7 +221,7 @@ public:
     {}
 
     //! Implementation of SVGBasicShape interface
-    std::vector<GeometryBuffer*> createRenderGeometry(
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const SVGImage::SVGImageRenderSettings& render_settings) const override;
 
     //! The x-axis coordinate of the start of the line
@@ -254,7 +254,7 @@ public:
     {}
 
     //! Implementation of SVGBasicShape interface
-    std::vector<GeometryBuffer*> createRenderGeometry(
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const SVGImage::SVGImageRenderSettings& render_settings) const override;
 
     //! The points defining the line
@@ -281,7 +281,7 @@ public:
     {}
 
     //! Implementation of SVGBasicShape interface
-    std::vector<GeometryBuffer*> createRenderGeometry(
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const SVGImage::SVGImageRenderSettings& render_settings) const override;
 
     //! The points defining the line

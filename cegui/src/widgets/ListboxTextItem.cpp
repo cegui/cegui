@@ -83,17 +83,14 @@ Sizef ListboxTextItem::getPixelSize() const
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> ListboxTextItem::createRenderGeometry(
+void ListboxTextItem::createRenderGeometry(std::vector<GeometryBuffer*> out,
     const Rectf& targetRect, float alpha, const Rectf* clipper) const
 {
-    std::vector<GeometryBuffer*> geomBuffers;
-
     // Draw selection brush
     if (d_selected && d_selectBrush)
     {
         ImageRenderSettings imgRenderSettings(targetRect, clipper, true, d_selectCols, alpha);
-        auto brushGeomBuffers = d_selectBrush->createRenderGeometry(imgRenderSettings);
-        geomBuffers.insert(geomBuffers.end(), brushGeomBuffers.begin(), brushGeomBuffers.end());
+        d_selectBrush->createRenderGeometry(out, imgRenderSettings);
     }
 
     // Draw text
@@ -106,14 +103,10 @@ std::vector<GeometryBuffer*> ListboxTextItem::createRenderGeometry(
         draw_pos.y += CoordConverter::alignToPixels((font->getLineSpacing() - font->getFontHeight()) * 0.5f);
         for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
         {
-            auto geom = d_renderedString.createRenderGeometry(d_owner, i, draw_pos, nullptr, clipper, 0.0f);
-            geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
-
+            d_renderedString.createRenderGeometry(out, d_owner, i, draw_pos, nullptr, clipper, 0.0f);
             draw_pos.y += d_renderedString.getLineExtent(d_owner, i).d_height;
         }
     }
-
-    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//

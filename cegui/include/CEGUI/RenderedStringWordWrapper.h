@@ -46,9 +46,8 @@ public:
 
     void format(const RenderedString& rs, const Window* refWnd, const Sizef& areaSize) override;
 
-    std::vector<GeometryBuffer*> createRenderGeometry(
-        const Window* refWnd, const glm::vec2& position,
-        const ColourRect* modColours, const Rectf* clipRect) const override;
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out, const Window* refWnd,
+        const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const override;
 
     size_t getFormattedLineCount() const override
     {
@@ -158,21 +157,15 @@ void RenderedStringWordWrapper<T>::format(const RenderedString& rs, const Window
 
 //----------------------------------------------------------------------------//
 template <typename T>
-std::vector<GeometryBuffer*> RenderedStringWordWrapper<T>::createRenderGeometry(
+void RenderedStringWordWrapper<T>::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     const Window* refWnd, const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const
 {
-    std::vector<GeometryBuffer*> geomBuffers;
-
     glm::vec2 linePos = position;
     for (const auto& line : d_lines)
     {
-        auto geom = line->createRenderGeometry(refWnd, linePos, modColours, clipRect);
-        geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
-
+        line->createRenderGeometry(out, refWnd, linePos, modColours, clipRect);
         linePos.y += line->getExtent().d_height;
     }
-
-    return geomBuffers;
 }
 
 }

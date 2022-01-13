@@ -38,24 +38,18 @@ void LeftAlignedRenderedString::format(const RenderedString& rs, const Window* r
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> LeftAlignedRenderedString::createRenderGeometry(
+void LeftAlignedRenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     const Window* refWnd, const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const
 {
-    std::vector<GeometryBuffer*> geomBuffers;
-
     if (!d_renderedString)
-        return geomBuffers;
+        return;
 
     glm::vec2 drawPos = position;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        auto geom = d_renderedString->createRenderGeometry(refWnd, i, drawPos, modColours, clipRect, 0.0f);
-        geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
-
+        d_renderedString->createRenderGeometry(out, refWnd, i, drawPos, modColours, clipRect, 0.0f);
         drawPos.y += d_renderedString->getLineExtent(refWnd, i).d_height;
     }
-
-    return geomBuffers;
 }
     
 }

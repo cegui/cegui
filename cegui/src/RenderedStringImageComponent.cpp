@@ -48,7 +48,7 @@ void RenderedStringImageComponent::setSelection(const Window* /*ref_wnd*/,
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> RenderedStringImageComponent::createRenderGeometry(
+void RenderedStringImageComponent::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     const Window* ref_wnd,
     const glm::vec2& position,
     const ColourRect* mod_colours,
@@ -56,18 +56,15 @@ std::vector<GeometryBuffer*> RenderedStringImageComponent::createRenderGeometry(
     const float vertical_space,
     const float /*space_extra*/) const
 {
-    std::vector<GeometryBuffer*> geomBuffers;
-
     if (!d_image)
-        return geomBuffers;
+        return;
 
     // render the selection if needed
     if (d_selectionImage && d_selected)
     {
         const Rectf select_area(position, getPixelSize(ref_wnd));
         ImageRenderSettings imgRenderSettings(select_area, clip_rect, true, ColourRect(0xFF002FFF));
-        auto geom = d_selectionImage->createRenderGeometry(imgRenderSettings);
-        geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
+        d_selectionImage->createRenderGeometry(out, imgRenderSettings);
     }
 
     Rectf dest(position.x, position.y, 0, 0);
@@ -109,9 +106,7 @@ std::vector<GeometryBuffer*> RenderedStringImageComponent::createRenderGeometry(
 
     // Create the render geometry for the image
     ImageRenderSettings imgRenderSettings(dest, clip_rect, true, final_cols);
-    auto geom = d_image->createRenderGeometry(imgRenderSettings);
-    geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
-    return geomBuffers;
+    d_image->createRenderGeometry(out, imgRenderSettings);
 }
 
 //----------------------------------------------------------------------------//

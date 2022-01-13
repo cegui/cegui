@@ -155,7 +155,7 @@ public:
     void setText(const String& text) override;
     bool handleFontRenderSizeChange(const Font* font) override;
     Sizef getPixelSize() const override;
-    std::vector<GeometryBuffer*> createRenderGeometry(const Rectf& targetRect, float alpha, const Rectf* clipper) const override;
+    void createRenderGeometry(std::vector<GeometryBuffer*> out, const Rectf& targetRect, float alpha, const Rectf* clipper) const override;
 
 protected:
 

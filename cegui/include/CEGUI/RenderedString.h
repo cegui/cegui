@@ -99,7 +99,7 @@ public:
     \exception InvalidRequestException
         thrown if \a line is out of range.
     */
-    std::vector<GeometryBuffer*> createRenderGeometry(
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const Window* refWnd, size_t line,
         const glm::vec2& position, const ColourRect* mod_colours,
         const Rectf* clip_rect, float space_extra) const;

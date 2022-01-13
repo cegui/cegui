@@ -1193,15 +1193,6 @@ public:
         Reference to the list of GeometryBuffer objects for this Window.
     */
     std::vector<GeometryBuffer*>& getGeometryBuffers() { return d_geometryBuffers; }
-    
-    /*!
-    \brief
-        Adds GeometryBuffers to the end of the list of GeometryBuffers of this Window.
-
-    \param appendingGeomBuffers
-        The GeometryBuffers that will be appended to the window's GeometryBuffers
-    */
-    void appendGeometryBuffers(std::vector<GeometryBuffer*>& geomBuffers);
 
     /*!
     \brief

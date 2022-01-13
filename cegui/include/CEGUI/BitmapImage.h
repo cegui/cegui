@@ -49,7 +49,7 @@ public:
                const Rectf& tex_area, const glm::vec2& offset,
                const AutoScaledMode autoscaled, const Sizef& native_res);
 
-    std::vector<GeometryBuffer*> createRenderGeometry(
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const ImageRenderSettings& render_settings) const override;
 
     void addToRenderGeometry(

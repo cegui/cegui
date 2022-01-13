@@ -171,7 +171,7 @@ public:
         Returns a list of GeometryBuffers representing the render geometry of
         the text.
     */
-    std::vector<GeometryBuffer*> createTextRenderGeometry(
+    void createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, float& nextPenPosX,
         const glm::vec2& position, const Rectf* clip_rect,
         const bool clipping_enabled, const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
@@ -205,7 +205,7 @@ public:
         Returns a list of GeometryBuffers representing the render geometry of
         the text.
     */
-    std::vector<GeometryBuffer*> createTextRenderGeometry(
+    void createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text,
         const glm::vec2& position, const Rectf* clip_rect,
         const bool clipping_enabled, const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
@@ -481,29 +481,27 @@ protected:
     virtual void onRenderSizeChanged(FontEventArgs& args);
 
     //! The old way of rendering glyphs, without kerning and extended layouting
-    virtual std::vector<GeometryBuffer*> layoutUsingFallbackAndCreateGlyphGeometry(const String& text,
-        const Rectf* clip_rect, const ColourRect& colours,
-        const float space_extra,
-        ImageRenderSettings imgRenderSettings,
-        glm::vec2& glyph_pos) const;
+    virtual void layoutUsingFallbackAndCreateGlyphGeometry(std::vector<GeometryBuffer*>& out,
+        const String& text, const Rectf* clip_rect, const ColourRect& colours,
+        const float space_extra, ImageRenderSettings imgRenderSettings, glm::vec2& glyph_pos) const;
 
     /*! 
     \brief
         Adds the render geometry data to the supplied vector. A new GeometryBuffer
         might be added if necessary or data might be added to an existing one.
     */
-    void addGlyphRenderGeometry(std::vector<GeometryBuffer*> &textGeometryBuffers,
+    void addGlyphRenderGeometry(std::vector<GeometryBuffer*>& textGeometryBuffers,
                                 const Image* image, ImageRenderSettings &imgRenderSettings,
                                 const Rectf* clip_rect, const ColourRect& colours) const;
 
     //! Manages the glyph layout and and creates the RenderGeometry for the text.
-    virtual std::vector<GeometryBuffer*> layoutAndCreateGlyphRenderGeometry(
+    virtual void layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect,
         const ColourRect& colours, const float space_extra,
         ImageRenderSettings imgRenderSettings, DefaultParagraphDirection /*defaultParagraphDir*/,
         glm::vec2& glyphPos) const
     {
-        return layoutUsingFallbackAndCreateGlyphGeometry(text, clip_rect,
+        layoutUsingFallbackAndCreateGlyphGeometry(out, text, clip_rect,
             colours, space_extra, imgRenderSettings, glyphPos);
     }
 

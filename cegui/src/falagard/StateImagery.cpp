@@ -40,15 +40,15 @@ StateImagery::StateImagery(const String& name) :
 void StateImagery::render(Window& srcWindow, const ColourRect* modcols, const Rectf* clipper) const
 {
     // render all layers defined for this state
-    for(LayerSpecificationList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
-        (*curr).render(srcWindow, modcols, clipper, d_clipToDisplay);
+    for (const auto& layer : d_layers)
+        layer.render(srcWindow, modcols, clipper, d_clipToDisplay);
 }
 
 void StateImagery::render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols, const Rectf* clipper) const
 {
     // render all layers defined for this state
-    for(LayerSpecificationList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
-        (*curr).render(srcWindow, baseRect, modcols, clipper, d_clipToDisplay);
+    for (const auto& layer : d_layers)
+        layer.render(srcWindow, baseRect, modcols, clipper, d_clipToDisplay);
 }
 
 void StateImagery::addLayer(const LayerSpecification& layer)

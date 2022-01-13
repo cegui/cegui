@@ -73,7 +73,7 @@ public:
     float getBottomPadding() const { return d_padding.d_max.y; }
 
     //! draw the component.
-    virtual std::vector<GeometryBuffer*> createRenderGeometry(
+    virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const Window* ref_wnd,
         const glm::vec2& position, const ColourRect* mod_colours,
         const Rectf* clip_rect, const float vertical_space,

@@ -62,7 +62,8 @@ public:
 
     \see format
     */
-    virtual std::vector<GeometryBuffer*> createRenderGeometry(const Window* refWnd, const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const = 0;
+    virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out, const Window* refWnd,
+        const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const = 0;
 
     /*
     \brief

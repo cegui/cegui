@@ -1,4 +1,4 @@
-﻿/***********************************************************************
+/***********************************************************************
     created:    30th July 2013
     author:     Lukas Meindl
 *************************************************************************/
@@ -71,7 +71,7 @@ public:
     SVGImage(const XMLAttributes& attributes);
 
     // Implement CEGUI::Image interface
-    std::vector<GeometryBuffer*> createRenderGeometry(
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const ImageRenderSettings& render_settings) const override;
 
     void addToRenderGeometry(

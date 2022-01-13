@@ -116,8 +116,7 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
                 icon_rect, &icon_clipper,
                 true, ICON_COLOUR_RECT, 1.0f);
 
-            auto imgGeomBuffers = img.createRenderGeometry(renderSettings);
-            tree_view->appendGeometryBuffers(imgGeomBuffers);
+            img.createRenderGeometry(tree_view->getGeometryBuffers(), renderSettings);
 
             item_rect.left(item_rect.left() + icon_rect.getWidth());
         }

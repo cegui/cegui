@@ -385,7 +385,8 @@ protected:
         const CEGUI::ColourRect* modColours,
         const Rectf* clipper, bool clipToDisplay) const override;
 
-    std::vector<GeometryBuffer*> createRenderGeometryForImage(
+    void createRenderGeometryForImage(
+        std::vector<GeometryBuffer*>& out,
         const Image* image,
         VerticalImageFormatting vertFmt,
         HorizontalFormatting horzFmt,

@@ -44,9 +44,8 @@ public:
 
     void format(const RenderedString& rs, const Window* refWnd, const Sizef& areaSize) override;
 
-    std::vector<GeometryBuffer*> createRenderGeometry(
-        const Window* refWnd, const glm::vec2& position,
-        const ColourRect* modColours, const Rectf* clipRect) const override;
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out, const Window* refWnd,
+        const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const override;
 };
     
 }

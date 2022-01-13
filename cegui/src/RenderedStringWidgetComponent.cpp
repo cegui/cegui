@@ -70,7 +70,7 @@ void RenderedStringWidgetComponent::setSelection(const Window* /*refWnd*/,
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> RenderedStringWidgetComponent::createRenderGeometry(
+void RenderedStringWidgetComponent::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     const Window* refWnd,
     const glm::vec2& position,
     const CEGUI::ColourRect* /*mod_colours*/,
@@ -78,11 +78,9 @@ std::vector<GeometryBuffer*> RenderedStringWidgetComponent::createRenderGeometry
     const float vertical_space,
     const float /*space_extra*/) const
 {
-    std::vector<GeometryBuffer*> geomBuffers;
-
     Window* const window = getEffectiveWindow(refWnd);
     if (!window)
-        return geomBuffers;
+        return;
 
     glm::vec2 final_pos(position);
     switch (d_verticalTextFormatting)
@@ -100,8 +98,7 @@ std::vector<GeometryBuffer*> RenderedStringWidgetComponent::createRenderGeometry
     {
         const Rectf select_area(position, getPixelSize(refWnd));
         ImageRenderSettings imgRenderSettings(select_area, clip_rect, true, ColourRect(0xFF002FFF));
-        auto geom = d_selectionImage->createRenderGeometry(imgRenderSettings);
-        geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
+        d_selectionImage->createRenderGeometry(out, imgRenderSettings);
     }
 
     // re-adjust for inner-rect of parent
@@ -111,8 +108,6 @@ std::vector<GeometryBuffer*> RenderedStringWidgetComponent::createRenderGeometry
     // we do not actually draw the widget, we just move it into position.
     const glm::vec2 wposAbs = final_pos + d_padding.d_min;
     window->setPosition(UVector2(UDim(0, wposAbs.x), UDim(0, wposAbs.y)));
-
-    return geomBuffers;
 }
 
 //----------------------------------------------------------------------------//

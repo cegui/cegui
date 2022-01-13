@@ -136,7 +136,7 @@ public:
     \return
             Returns the tesselated render geometry for this shape.
     */
-    static std::vector<GeometryBuffer*> tesselateRect(
+    static void tesselateRect(std::vector<GeometryBuffer*>& out,
         const SVGRect* rect,
         const SVGImage::SVGImageRenderSettings& render_settings);
 
@@ -152,7 +152,7 @@ public:
     \return
             Returns the tesselated render geometry for this shape.
     */
-    static std::vector<GeometryBuffer*> tesselateCircle(
+    static void tesselateCircle(std::vector<GeometryBuffer*>& out,
         const SVGCircle* circle,
         const SVGImage::SVGImageRenderSettings& render_settings);
 
@@ -168,7 +168,7 @@ public:
     \return
             Returns the tesselated render geometry for this shape.
     */
-    static std::vector<GeometryBuffer*> tesselateEllipse(
+    static void tesselateEllipse(std::vector<GeometryBuffer*>& out,
         const SVGEllipse* ellipse,
         const SVGImage::SVGImageRenderSettings& render_settings);
 
@@ -184,7 +184,7 @@ public:
     \return
             Returns the tesselated render geometry for this shape.
     */
-    static std::vector<GeometryBuffer*> tesselateLine(
+    static void tesselateLine(std::vector<GeometryBuffer*>& out,
         const SVGLine* line,
         const SVGImage::SVGImageRenderSettings& render_settings);
 
@@ -200,7 +200,7 @@ public:
     \return
             Returns the tesselated render geometry for this shape.
     */
-    static std::vector<GeometryBuffer*> tesselatePolyline(
+    static void tesselatePolyline(std::vector<GeometryBuffer*>& out,
         const SVGPolyline* polyline,
         const SVGImage::SVGImageRenderSettings& render_settings);
 
@@ -216,7 +216,7 @@ public:
     \return
             Returns the tesselated render geometry for this shape.
     */
-    static std::vector<GeometryBuffer*> tesselatePolygon(
+    static void tesselatePolygon(std::vector<GeometryBuffer*>& out,
         const SVGPolygon* polyline,
         const SVGImage::SVGImageRenderSettings& render_settings);
 
@@ -380,7 +380,7 @@ private:
                                    const glm::vec2& point3);
 
     //! Helper function that creates and sets the parameters for a coloured geometry buffer
-    static std::vector<GeometryBuffer*> setupGeometryBuffers(
+    static void setupGeometryBuffers(std::vector<GeometryBuffer*>& out,
         GeometryBuffer*& fill_geometry_buffer,
         GeometryBuffer*& stroke_geometry_buffer,
         const SVGImage::SVGImageRenderSettings& render_settings,

@@ -54,17 +54,12 @@ namespace CEGUI
 
         ColourRect* finalColsPtr = (finalCols.isMonochromatic() && finalCols.d_top_left.getARGB() == 0xFFFFFFFF) ? 0 : &finalCols;
 
-        // render all frame components in this section
-        for(FrameComponentList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
-        {
-            (*frame).createRenderGeometryAndAddToWindow(srcWindow, finalColsPtr, clipper, clipToDisplay);
-        }
-        // render all image components in this section
-        for(ImageryComponentList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
-        {
-            (*image).createRenderGeometryAndAddToWindow(srcWindow, finalColsPtr, clipper, clipToDisplay);
-        }
-        // render all text components in this section
+        for (const auto& frame : d_frames)
+            frame.createRenderGeometryAndAddToWindow(srcWindow, finalColsPtr, clipper, clipToDisplay);
+
+        for (const auto& image : d_images)
+            image.createRenderGeometryAndAddToWindow(srcWindow, finalColsPtr, clipper, clipToDisplay);
+
         for (const auto& text : d_texts)
             text.createRenderGeometryAndAddToWindow(srcWindow, finalColsPtr, clipper, clipToDisplay);
     }

@@ -243,11 +243,7 @@ Window::Window(const String& type, const String& name):
 
 //----------------------------------------------------------------------------//
 // most of the cleanup actually happened earlier in Window::destroy.
-Window::~Window()
-{
-    for (auto buffer : d_geometryBuffers)
-        System::getSingleton().getRenderer()->destroyGeometryBuffer(*buffer);
-}
+Window::~Window() = default;
 
 //----------------------------------------------------------------------------//
 void Window::endInitialisation()
@@ -295,8 +291,7 @@ void Window::destroy()
     if (d_windowRenderer)
     {
         d_windowRenderer->onDetach();
-        WindowRendererManager::getSingleton().
-            destroyWindowRenderer(d_windowRenderer);
+        WindowRendererManager::getSingleton().destroyWindowRenderer(d_windowRenderer);
         d_windowRenderer = nullptr;
     }
 
@@ -306,6 +301,10 @@ void Window::destroy()
 
     releaseRenderingWindow();
     invalidate();
+
+    for (auto buffer : d_geometryBuffers)
+        System::getSingleton().getRenderer()->destroyGeometryBuffer(*buffer);
+    d_geometryBuffers.clear();
 }
 
 //----------------------------------------------------------------------------//
@@ -1280,7 +1279,6 @@ void Window::bufferGeometry(const RenderingContext&, std::uint32_t /*drawModeMas
     // TODO: reuse buffers instead of destroying?
     for (auto buffer : d_geometryBuffers)
         System::getSingleton().getRenderer()->destroyGeometryBuffer(*buffer);
-
     d_geometryBuffers.clear();
 
     // signal rendering started
@@ -2694,13 +2692,6 @@ void Window::setFalagardType(const String& type, const String& rendererType)
 
     // Apply the new look to the widget
     setLookNFeel(type);
-}
-
-//----------------------------------------------------------------------------//
-void Window::appendGeometryBuffers(std::vector<GeometryBuffer*>& geomBuffers)
-{
-    d_geometryBuffers.insert(d_geometryBuffers.end(), geomBuffers.begin(),
-        geomBuffers.end());
 }
 
 //----------------------------------------------------------------------------//

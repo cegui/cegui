@@ -151,8 +151,7 @@ void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf
     initColoursRect(srcWindow, modColours, finalColours);
 
     // add geometry for text to the target window.
-    auto geom = d_formatter->createRenderGeometry(&srcWindow, destRect.getPosition(), &finalColours, clipper);
-    srcWindow.appendGeometryBuffers(geom);
+    d_formatter->createRenderGeometry(srcWindow.getGeometryBuffers(), &srcWindow, destRect.getPosition(), &finalColours, clipper);
 }
 
 //----------------------------------------------------------------------------//

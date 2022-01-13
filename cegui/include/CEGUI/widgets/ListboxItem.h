@@ -344,7 +344,7 @@ public:
     \param clipper
         Rect object describing the clipping rectangle for the draw operation.
     */
-    virtual std::vector<GeometryBuffer*> createRenderGeometry(
+    virtual void createRenderGeometry(std::vector<GeometryBuffer*> out,
         const Rectf& targetRect,
         float alpha, const Rectf* clipper) const = 0;
 

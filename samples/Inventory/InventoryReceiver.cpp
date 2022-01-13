@@ -219,10 +219,7 @@ void InventoryReceiver::populateGeometryBuffer()
                 glm::vec2(x * square_size.d_width + 1, y * square_size.d_height + 1),
                 Sizef(square_size.d_width - 2, square_size.d_height - 2));
 
-            auto geomBuffers = img->createRenderGeometry(
-                imgRenderSettings);
-
-            appendGeometryBuffers(geomBuffers);
+            img->createRenderGeometry(getGeometryBuffers(), imgRenderSettings);
         }
     }
 }

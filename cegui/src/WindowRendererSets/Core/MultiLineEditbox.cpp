@@ -250,10 +250,8 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
             
             // Create Geometry buffers for the text and add to the Window
             float nextGlyphPos = 0.0f;
-            auto textGeomBuffers = fnt->createTextRenderGeometry(lineText, nextGlyphPos,
+            fnt->createTextRenderGeometry(w->getGeometryBuffers(), lineText, nextGlyphPos,
                 lineRect.getPosition(), &dest_area, true, colours, defaultParagraphDir);
-
-            w->appendGeometryBuffers(textGeomBuffers);
         }
         // we have at least some selection highlighting to do
         else
@@ -293,10 +291,9 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 #endif          
                 // Create the render geometry for this portion of the text
                 colours = normalTextCol;
-                auto geomBuffers = fnt->createTextRenderGeometry(sect,
+                fnt->createTextRenderGeometry(w->getGeometryBuffers(), sect,
                     lineRect.getPosition(), &dest_area, true, colours,
                     defaultParagraphDir);
-                w->appendGeometryBuffers(geomBuffers);
 
                 // set position ready for next portion of text
                 lineRect.d_min.x += selStartOffset;
@@ -326,15 +323,12 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
             ImageRenderSettings renderSettings(
                 lineRect, &dest_area, true, colours);
 
-            auto selectionGeomBuffers = w->getSelectionBrushImage()->createRenderGeometry(
-                renderSettings);
-            w->appendGeometryBuffers(selectionGeomBuffers);
+            w->getSelectionBrushImage()->createRenderGeometry(w->getGeometryBuffers(), renderSettings);
 
             // Create the render geometry for the text for this section
             colours = selectTextCol;
-            auto textGeomBuffers = fnt->createTextRenderGeometry(sect,
+            fnt->createTextRenderGeometry(w->getGeometryBuffers(), sect,
                 lineRect.getPosition(), &dest_area, true, colours, defaultParagraphDir);
-            w->appendGeometryBuffers(textGeomBuffers);
 
             lineRect.top(text_top);
 
@@ -352,9 +346,8 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 
                 // render the text for this section.
                 colours = normalTextCol;
-                auto textAfterSelectionGeomBuffers = fnt->createTextRenderGeometry(sect,
+                fnt->createTextRenderGeometry(w->getGeometryBuffers(), sect,
                     lineRect.getPosition(), &dest_area, true, colours, defaultParagraphDir);
-                w->appendGeometryBuffers(textAfterSelectionGeomBuffers);
             }
         }
 

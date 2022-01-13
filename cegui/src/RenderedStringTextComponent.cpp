@@ -77,7 +77,7 @@ const Font* RenderedStringTextComponent::getEffectiveFont(const Window* window) 
 }
 
 //----------------------------------------------------------------------------//
-std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
+void RenderedStringTextComponent::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     const Window* refWnd,
     const glm::vec2& position,
     const ColourRect* mod_colours,
@@ -85,11 +85,9 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
     const float vertical_space,
     const float space_extra) const
 {
-    std::vector<GeometryBuffer*> geomBuffers;
-
     const Font* font = getEffectiveFont(refWnd);
     if (!font)
-        return geomBuffers;
+        return;
 
     glm::vec2 final_pos = position;
     switch (d_verticalTextFormatting)
@@ -117,14 +115,11 @@ std::vector<GeometryBuffer*> RenderedStringTextComponent::createRenderGeometry(
         const float selEndExtent = font->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
         const Rectf selRect(position.x + selStartExtent, position.y, position.x + selEndExtent, position.y + vertical_space);
         ImageRenderSettings imgRenderSettings(selRect, clip_rect, true, ColourRect(0xFF002FFF));
-        auto geom = d_selectionImage->createRenderGeometry(imgRenderSettings);
-        geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
+        d_selectionImage->createRenderGeometry(out, imgRenderSettings);
     }
 
     // Create the geometry for rendering for the given text.
-    auto geom = font->createTextRenderGeometry(d_text, final_pos, clip_rect, true, final_cols, d_defaultParagraphDir, space_extra);
-    geomBuffers.insert(geomBuffers.end(), geom.begin(), geom.end());
-    return geomBuffers;
+    font->createTextRenderGeometry(out, d_text, final_pos, clip_rect, true, final_cols, d_defaultParagraphDir, space_extra);
 }
 
 //----------------------------------------------------------------------------//
