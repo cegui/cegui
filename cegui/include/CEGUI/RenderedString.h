@@ -54,13 +54,11 @@ class CEGUIEXPORT RenderedString
 public:
 
     RenderedString();
-    //RenderedString(const RenderedString& other);
-    RenderedString(const RenderedString& other) = delete; //!!!DBG TMP!
+    RenderedString(const RenderedString& other) = delete;
     RenderedString(RenderedString&&) noexcept;
     virtual ~RenderedString();
 
-    //RenderedString& operator =(const RenderedString& rhs);
-    RenderedString& operator =(const RenderedString& rhs) = delete; //!!!DBG TMP!
+    RenderedString& operator =(const RenderedString& rhs) = delete; // Use clone()
     RenderedString& operator =(RenderedString&&) noexcept;
 
     /*!
@@ -181,6 +179,9 @@ public:
         thrown if \a line is out of range.
     */
     bool split(const Window* refWnd, const size_t line, float splitPoint, RenderedString& left);
+
+    //! Explicit cloning method. Used instead of copy constructor and assignment operator.
+    RenderedString clone() const;
 
 protected:
 

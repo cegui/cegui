@@ -77,13 +77,12 @@ public:
         This can happen e.g. if word wrapping is used, and the width of a word
         is more than that of the area of the string.
     */
-    bool wasWordSplit() const { return d_wasWordSplit; }
+    virtual bool wasWordSplit() const { return false; }
 
 protected:
 
     const RenderedString* d_renderedString = nullptr; //!< RenderedString that we handle formatting for.
     Sizef d_extent;
-    bool d_wasWordSplit = false; //!< \see wasWordSplit
 };
 
 }

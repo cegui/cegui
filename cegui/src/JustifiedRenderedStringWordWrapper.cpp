@@ -26,7 +26,6 @@
  ***************************************************************************/
 #include "CEGUI/RenderedStringWordWrapper.h"
 #include "CEGUI/RenderedString.h"
-#include "CEGUI/JustifiedRenderedString.h"
 #include "CEGUI/LeftAlignedRenderedString.h"
 
 // The purpose of this file is to define a specialised RenderedStringWordWrapper
@@ -34,43 +33,42 @@
 
 namespace CEGUI
 {
+
 //----------------------------------------------------------------------------//
 template <>
-void RenderedStringWordWrapper<JustifiedRenderedString>::format(
-                                                        const Window* ref_wnd,
-                                                        const Sizef& area_size)
+void RenderedStringWordWrapper<JustifiedRenderedString>::format(const Window* refWnd, const Sizef& areaSize)
 {
-    deleteFormatters();
+    d_lines.clear();
+    d_strings.clear();
 
-    RenderedString rstring, lstring;
-    rstring = *d_renderedString;
-    float rs_width;
-
-    FormattedRenderedString* frs;
+    RenderedString lstring;
+    RenderedString rstring = d_renderedString->clone();
 
     for (size_t line = 0; line < rstring.getLineCount(); ++line)
     {
-        while ((rs_width = rstring.getLineExtent(ref_wnd, line).d_width) > 0)
+        float rsWidth;
+        while ((rsWidth = rstring.getLineExtent(refWnd, line).d_width) > 0)
         {
             // skip line if no wrapping occurs
-            if (rs_width <= area_size.d_width)
+            if (rsWidth <= areaSize.d_width)
                 break;
 
             // split rstring at width into lstring and remaining rstring
-            rstring.split(ref_wnd, line, area_size.d_width, lstring);
-            frs = new JustifiedRenderedString(*new RenderedString(lstring));
-            frs->format(ref_wnd, area_size);
-            d_lines.push_back(frs);
+            d_wasWordSplit |= rstring.split(refWnd, line, areaSize.d_width, lstring);
+            d_strings.push_back(std::move(lstring));
+            d_lines.push_back(std::make_unique<JustifiedRenderedString>(d_strings.back()));
+
             line = 0;
         }
     }
 
     // last line (which we do not justify)
-    frs = new LeftAlignedRenderedString(*new RenderedString(rstring));
-    frs->format(ref_wnd, area_size);
-    d_lines.push_back(frs);
-}
+    d_strings.push_back(std::move(rstring));
+    d_lines.push_back(std::make_unique<LeftAlignedRenderedString>(d_strings.back()));
 
-//----------------------------------------------------------------------------//
+    // Now format all lines
+    for (auto& line : d_lines)
+        line->format(refWnd, areaSize);
+}
     
-} // End of  CEGUI namespace section
+}

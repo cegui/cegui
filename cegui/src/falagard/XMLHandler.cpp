@@ -1594,7 +1594,7 @@ namespace CEGUI
             throwExceptionNotChildOfNode(d_widgetlook, TextComponentElement, ImagerySectionElement);
         }
 
-        d_imagerysection->addTextComponent(*d_textcomponent);
+        d_imagerysection->addTextComponent(std::move(*d_textcomponent));
         delete d_textcomponent;
         d_textcomponent = nullptr;
     }

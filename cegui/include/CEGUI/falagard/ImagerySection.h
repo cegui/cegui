@@ -140,7 +140,7 @@ namespace CEGUI
         \param textComponent
             TextComponent to be added to the section (a copy is made)
         */
-        void addTextComponent(const TextComponent& textComponent);
+        void addTextComponent(TextComponent&& textComponent);
 
         /*!
         \brief
