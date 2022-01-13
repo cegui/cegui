@@ -269,7 +269,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
                                      const Rectf& text_area,
                                      float text_offset)
 {
-    const Font* const font = d_window->getFont();
+    const Font* const font = d_window->getActualFont();
 
     // setup initial rect for text formatting
     Rectf text_part_rect(text_area);

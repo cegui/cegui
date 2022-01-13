@@ -42,14 +42,27 @@ void Tooltip::onTextChanged(WindowEventArgs& e)
     Window::onTextChanged(e);
 
     // Set size of the tooltip window to consider new text.
+    // We do not signal we handled it, in case user wants to hear about text changes too.
     // NB: only renderer can provide content size to us.
-    if (d_windowRenderer)
+    if (d_guiContext && d_windowRenderer)
     {
         const Sizef textSize = getContentSize();
         setSize(USize(cegui_absdim(textSize.d_width), cegui_absdim(textSize.d_height)));
     }
+}
 
-    // We do not signal we handled it, in case user wants to hear about text changes too.
+//----------------------------------------------------------------------------//
+void Tooltip::onFontChanged(WindowEventArgs& e)
+{
+    Window::onFontChanged(e);
+
+    // Set size of the tooltip window to consider new text.
+    // NB: only renderer can provide content size to us.
+    if (d_guiContext && d_windowRenderer)
+    {
+        const Sizef textSize = getContentSize();
+        setSize(USize(cegui_absdim(textSize.d_width), cegui_absdim(textSize.d_height)));
+    }
 }
 
 }

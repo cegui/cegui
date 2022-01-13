@@ -44,8 +44,6 @@ FalagardTabButton::FalagardTabButton(const String& type) :
 void FalagardTabButton::createRenderGeometry()
 {
     TabButton* w = static_cast<TabButton*>(d_window);
-    const WidgetLookFeel& wlf = getLookNFeel();
-
     TabControl* tc = w->getParent() ? dynamic_cast<TabControl*>(w->getParent()->getParent()) : nullptr;
     String prefix((tc && tc->getTabPanePosition() == TabControl::TabPanePosition::Bottom) ? "Bottom" : "Top");
 
@@ -63,6 +61,7 @@ void FalagardTabButton::createRenderGeometry()
     else
         state = "Normal";
 
+    const WidgetLookFeel& wlf = getLookNFeel();
     if (!wlf.isStateImageryPresent(prefix + state))
     {
         state = "Normal";
@@ -76,11 +75,23 @@ void FalagardTabButton::createRenderGeometry()
 //----------------------------------------------------------------------------//
 Sizef FalagardTabButton::getContentSize() const
 {
+    if (!d_window->getGUIContextPtr())
+        return Sizef(0.f, 0.f);
+
+    TabControl* tc = d_window->getParent() ? dynamic_cast<TabControl*>(d_window->getParent()->getParent()) : nullptr;
+    if (!tc)
+        return Sizef(0.f, 0.f);
+
     const WidgetLookFeel& lnf = getLookNFeel();
+
+    String state((tc->getTabPanePosition() == TabControl::TabPanePosition::Bottom) ? "Bottom" : "Top");
+    state += "Normal";
+    if (!lnf.isStateImageryPresent(state))
+        state = "Normal";
 
     // Find a text component responsible for a text
     //!!!FIXME: duplicated code, see FalagardTooltip::getTextComponentExtents!
-    const auto& layerSpecs = lnf.getStateImagery("Normal").getLayerSpecifications();
+    const auto& layerSpecs = lnf.getStateImagery(state).getLayerSpecifications();
     for (auto& layerSpec : layerSpecs)
     {
         const auto& sectionSpecs = layerSpec.getSectionSpecifications();
