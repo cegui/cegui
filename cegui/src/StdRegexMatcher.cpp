@@ -28,15 +28,6 @@
 
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-StdRegexMatcher::StdRegexMatcher()
-{
-}
-
-//----------------------------------------------------------------------------//
-StdRegexMatcher::~StdRegexMatcher()
-{
-}
 
 //----------------------------------------------------------------------------//
 void StdRegexMatcher::setRegexString(const String& regex)
@@ -59,7 +50,7 @@ const String& StdRegexMatcher::getRegexString() const
 }
 
 //----------------------------------------------------------------------------//
-bool StdRegexMatcher::matchRegex(const String& str) const
+RegexMatchState StdRegexMatcher::getMatchStateOfString(const String& str) const
 {
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8
     const std::string& str8bit = str.getString();
@@ -68,16 +59,12 @@ bool StdRegexMatcher::matchRegex(const String& str) const
 #elif CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII
     const std::string& str8bit = str;
 #endif
+
+    // There is no partial regex matching in std yet.
+    // TODO: try to use std::smatch to detect partial match?
     std::smatch smatch;
-    return std::regex_match(str8bit, smatch, d_regex) && !smatch.empty();
+    const bool match = std::regex_match(str8bit, smatch, d_regex) && !smatch.empty();
+    return match ? RegexMatchState::Valid : RegexMatchState::Invalid;
 }
 
-//----------------------------------------------------------------------------//
-RegexMatcher::MatchState StdRegexMatcher::getMatchStateOfString(const String& str) const
-{
-    // There is no partial regex matching in std yet
-    return matchRegex(str) ? MatchState::Valid : MatchState::Invalid;
 }
-
-//----------------------------------------------------------------------------//
-} // End of  CEGUI namespace section

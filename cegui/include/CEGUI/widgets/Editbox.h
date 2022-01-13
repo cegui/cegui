@@ -30,8 +30,8 @@
 #define _CEGUIEditbox_h_
 
 #include "CEGUI/widgets/EditboxBase.h"
-#include "CEGUI/RegexMatcher.h" // FIXME: RegexMatcher::MatchState requires this here
 #include "CEGUI/WindowRenderer.h"
+#include "CEGUI/RegexMatcher.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -73,7 +73,6 @@ public:
 class CEGUIEXPORT Editbox : public EditboxBase
 {
 public:
-    typedef RegexMatcher::MatchState MatchState;
 
     //! Namespace for global events
     static const String EventNamespace;
@@ -114,7 +113,7 @@ public:
 
     /*!
     \brief
-        return the validation MatchState for the current Editbox text, given the
+        return the validation RegexMatchState for the current Editbox text, given the
         currently set validation string.
 
     \note
@@ -129,9 +128,9 @@ public:
         http://perldoc.perl.org/perlre.html
 
     \return
-        One of the MatchState enumerated values indicating the current match state.
+        One of the RegexMatchState enumerated values indicating the current match state.
     */
-    MatchState getTextMatchState() const;
+    RegexMatchState getTextMatchState() const;
 
     /*!
     \brief
@@ -235,7 +234,7 @@ protected:
         return the match state of the given string for the validation regular
         expression.
     */
-    MatchState getStringMatchState(const String& str) const;
+    RegexMatchState getStringMatchState(const String& str) const;
 
     /** Helper to update validator match state as needed for the given string
      * and event handler return codes.
@@ -277,7 +276,7 @@ protected:
     //! specifies whether validator was created by us, or supplied by user.
     bool d_weOwnValidator;
     //! Current match state of EditboxText
-    MatchState d_validatorMatchState;
+    RegexMatchState d_validatorMatchState;
     //! Previous match state change response
     bool d_previousValidityChangeResponse;
 

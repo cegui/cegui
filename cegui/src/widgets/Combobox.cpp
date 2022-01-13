@@ -200,7 +200,7 @@ bool Combobox::isReadOnly(void) const
 	return true if the Editbox text is valid given the currently set
 	validation string.
 *************************************************************************/
-Combobox::MatchState Combobox::getTextMatchState() const
+RegexMatchState Combobox::getTextMatchState() const
 {
 	return getEditbox()->getTextMatchState();
 }

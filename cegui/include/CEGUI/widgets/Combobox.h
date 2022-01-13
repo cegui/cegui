@@ -30,19 +30,15 @@
 #define _CEGUICombobox_h_
 
 #include "CEGUI/Window.h"
-#include "CEGUI/RegexMatcher.h" // FIXME: RegexMatcher::MatchState requires this here
+#include "CEGUI/RegexMatcher.h"
 
 namespace CEGUI
 {
 
-/*!
-\brief
-	Base class for the Combobox widget
-*/
+//! \brief Base class for the Combobox widget
 class CEGUIEXPORT Combobox : public Window
 {
 public:
-    typedef RegexMatcher::MatchState MatchState;
 
 	static const String EventNamespace;				//!< Namespace for global events
     static const String WidgetTypeName;             //!< Window factory name
@@ -274,7 +270,7 @@ public:
 
     /*!
     \brief
-        return the validation MatchState for the current Combobox text, given
+        return the validation RegexMatchState for the current Combobox text, given
         the currently set validation string.
 
     \note
@@ -283,10 +279,10 @@ public:
         text does not match with the regex then the text fails validation.
 
     \return
-        One of the MatchState enumerated values indicating the current match
+        One of the RegexMatchState enumerated values indicating the current match
         state.
     */
-    MatchState getTextMatchState() const;
+    RegexMatchState getTextMatchState() const;
 
 
 	/*!

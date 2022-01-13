@@ -28,6 +28,7 @@
 #define _FalEditbox_h_
 
 #include "CEGUI/WindowRendererSets/Core/Module.h"
+#include "CEGUI/falagard/Enums.h"
 #include "CEGUI/widgets/Editbox.h"
 
 #if defined(_MSC_VER)
@@ -35,16 +36,14 @@
 #	pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-enum class HorizontalTextFormatting : int;
 
 /*!
 \brief
     Editbox class for the FalagardBase module.
 
-    This class requires LookNFeel to be assigned.  The LookNFeel should provide
+    This class requires LookNFeel to be assigned. The LookNFeel should provide
     the following:
 
     States:
@@ -81,8 +80,8 @@ enum class HorizontalTextFormatting : int;
 class COREWRSET_API FalagardEditbox : public EditboxWindowRenderer
 {
 public:
-    //! type name for this widget.
-    static const String TypeName;
+    
+    static const String TypeName; //!< type name for this widget.
 
     //! Name of the optional property to access for the unselected text colour.
     static const String UnselectedTextColourPropertyName;
@@ -95,25 +94,7 @@ public:
     //! The default timeout (in seconds) used when blinking the caret.
     static const float DefaultCaretBlinkTimeout;
 
-    /*!
-    \brief
-        Constructor
-    */
     FalagardEditbox(const String& type);
-
-    /*!
-    \brief
-        Set the given ColourRect to the colour to be used for rendering Editbox
-        text oustside of the selected region.
-    */
-    void setColourRectToUnselectedTextColour(ColourRect& colour_rect) const;
-
-    /*!
-    \brief
-        Set the given ColourRect to the colour to be used for rendering Editbox
-        text falling within the selected region.
-    */
-    void setColourRectToSelectedTextColour(ColourRect& colour_rect) const;
 
     /*!
     \brief
@@ -127,17 +108,16 @@ public:
     \param colour_rect
         Reference to a ColourRect that will be set.
     */
-    void setColourRectToOptionalPropertyColour(const String& propertyName,
-                                            ColourRect& colour_rect) const;
+    ColourRect getOptionalColour(const String& propertyName) const;
 
     //! return whether the blinking caret is enabled.
-    bool isCaretBlinkEnabled() const;
+    bool isCaretBlinkEnabled() const { return d_blinkCaret; }
     //! return the caret blink timeout period (only used if blink is enabled).
-    float getCaretBlinkTimeout() const;
+    float getCaretBlinkTimeout() const { return d_caretBlinkTimeout; }
     //! set whether the blinking caret is enabled.
-    void setCaretBlinkEnabled(bool enable);
+    void setCaretBlinkEnabled(bool enable) { d_blinkCaret = enable; }
     //! set the caret blink timeout period (only used if blink is enabled).
-    void setCaretBlinkTimeout(float seconds);
+    void setCaretBlinkTimeout(float seconds) { d_caretBlinkTimeout = seconds; }
 
     /*!
     \brief
@@ -146,12 +126,12 @@ public:
     \param format
         Specifies the formatting to use.  Currently can only be one of the
         following HorizontalTextFormatting values:
-            - HorizontalTextFormatting::LEFT_ALIGNED (default)
-            - HorizontalTextFormatting::RIGHT_ALIGNED
-            - HorizontalTextFormatting::CENTRE_ALIGNED
+            - HorizontalTextFormatting::LeftAligned (default)
+            - HorizontalTextFormatting::RightAligned
+            - HorizontalTextFormatting::CentreAligned
     */
     void setTextFormatting(const HorizontalTextFormatting format);
-    HorizontalTextFormatting getTextFormatting() const;
+    HorizontalTextFormatting getTextFormatting() const { return d_textFormatting; }
 
     void createRenderGeometry() override;
 
@@ -162,6 +142,7 @@ public:
     bool handleFontRenderSizeChange(const Font* const font) override;
 
 protected:
+
     //! helper to draw the base imagery (container and what have you)
     void renderBaseImagery(const WidgetLookFeel& wlf) const;
     //! helper to set 'visual' to the string we will render (part of)
@@ -173,50 +154,37 @@ protected:
         "Logical" here means that if the text is e.g. right aligned, then it's measured from the right end of the text,
         whereas "visual" is always measured from the left end of the text.
     */
-    float extentToCarretLogical(const float extent_to_caret_visual, const float text_extent,
-                                const float caret_width) const;
-
-    float calculateTextOffset(const Rectf& text_area,
-                              const float text_extent,
-                              const float caret_width,
-                              const float extent_to_caret);
+    float getExtentToCaretLogical(float extentToCaretVisual, float textExtent,
+                                float caretWidth) const;
 
     /*!
     \brief
         "Visual" here means that it's always measured from the right end of the text area rect, whereas "logical" means
         that if the text is e.g. right aligned, then it's measured from the right end of the text area rect.
     */
-    float textOffsetVisual(const Rectf& text_area, const float text_extent) const;
+    float getTextOffsetVisual(const Rectf& textArea, float textExtent) const;
 
-    void createRenderGeometryForText(const WidgetLookFeel& wlf,
-                                     const String& text,
-                                     const Rectf& text_area,
-                                     float text_offset);
+    void createRenderGeometryForText(const WidgetLookFeel& wlf, const String& text, const Rectf& textArea, float textOffset);
 
-    bool editboxIsFocused() const;
-    bool editboxIsReadOnly() const;
-    void renderCaret(const ImagerySection& imagery,
-                     const Rectf& text_area,
-                     const float text_offset,
-                     const float extent_to_caret) const;
+    void renderCaret(const ImagerySection& imagery, const Rectf& textArea, float textOffset, float extentToCaret) const;
 
-    bool isUnsupportedFormat(const HorizontalTextFormatting format);
+    bool isUnsupportedFormat(HorizontalTextFormatting format) const;
 
     //! x rendering offset used last time we drew the widget.
-    float d_lastTextOffset;
-    //! true if the caret imagery should blink.
-    bool d_blinkCaret;
+    float d_textOffset = 0.f;
     //! time-out in seconds used for blinking the caret.
-    float d_caretBlinkTimeout;
+    float d_caretBlinkTimeout = DefaultCaretBlinkTimeout;
     //! current time elapsed since last caret blink state change.
-    float d_caretBlinkElapsed;
-    //! true if caret should be shown.
-    bool d_showCaret;
+    float d_caretBlinkElapsed = 0.f;
     //! horizontal formatting.  Only supports left, right, and centred.
-    HorizontalTextFormatting d_textFormatting;
+    HorizontalTextFormatting d_textFormatting = HorizontalTextFormatting::LeftAligned;
+    //! true if caret should be shown.
+    bool d_showCaret = true;
+    //! true if the caret imagery should blink.
+    bool d_blinkCaret = false;
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)

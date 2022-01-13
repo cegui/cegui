@@ -32,48 +32,49 @@
 namespace CEGUI
 {
 
+//! Enumeration of possible states when cosidering a regex match.
+enum class RegexMatchState : int
+{
+    //! String matches the regular expression completely.
+    Valid,
+    //! String does not match the regular expression at all.
+    Invalid,
+    /** String partially matches. Changes to the string could result in
+     * either an Valid or Invalid state.
+     */
+     Partial
+};
+
 //! Interface for Regex matching support classes
 class CEGUIEXPORT RegexMatcher
 {
 public:
-    //! Enumeration of possible states when cosidering a regex match.
-    enum class MatchState : int
-    {
-        //! String matches the regular expression completely.
-        Valid,
-        //! String does not match the regular expression at all.
-        Invalid,
-        /** String partially matches. Changes to the string could result in
-         * either an MatchState::VALID or MatchState::INVALID MatchState.
-         */
-        Partial
-    };
 
-    //! Destructor.
-    virtual ~RegexMatcher() {}
+    virtual ~RegexMatcher() = default;
+
     //! Set the regex string that will be matched against.
     virtual void setRegexString(const String& regex) = 0;
     //! Return reference to current regex string set.
     virtual const String& getRegexString() const = 0;
-    //! Return the MatchState result for the given String.
-    virtual MatchState getMatchStateOfString(const String& str) const = 0;
+    //! Return the RegexMatchState result for the given String.
+    virtual RegexMatchState getMatchStateOfString(const String& str) const = 0;
 };
 
 /** WindowEventArgs based class that is used for notifications regarding
- * RegexMatcher::MatchState changes for some component.
+ * RegexMatchState changes for some component.
  */
 class CEGUIEXPORT RegexMatchStateEventArgs : public WindowEventArgs
 {
 public:
-    RegexMatchStateEventArgs(Window* wnd,
-                             RegexMatcher::MatchState state) :
+
+    RegexMatchStateEventArgs(Window* wnd, RegexMatchState state) :
         WindowEventArgs(wnd),
         matchState(state)
     {}
 
-    RegexMatcher::MatchState matchState;
+    RegexMatchState matchState;
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif  // end of guard _CEGUIRegexMatcher_h_
+#endif
