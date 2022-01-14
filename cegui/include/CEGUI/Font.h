@@ -174,42 +174,20 @@ public:
     void createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, float& nextPenPosX,
         const glm::vec2& position, const Rectf* clip_rect,
-        const bool clipping_enabled, const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
-        const float space_extra = 0.0f) const;
+        bool clipping_enabled, const ColourRect& colours,
+        const DefaultParagraphDirection defaultParagraphDir,
+        float space_extra = 0.f) const;
 
-        /*!
-    \brief
-        Create render geometry for the text that should be rendered into a
-        specified area of the display.
-
-    \param text
-        String object containing the text to be drawn.
-
-    \param position
-        Reference to a Vector2 object describing the location at which the text
-        is to be drawn.
-
-    \param clip_rect
-        Rect object describing the clipping area for the drawing.
-        No drawing will occur outside this Rect.
-
-    \param colours
-        ColourRect object describing the colours to be applied when drawing the
-        text.  NB: The colours specified in here are applied to each glyph,
-        rather than the text as a whole.
-
-    \param space_extra
-        Number of additional pixels of spacing to be added to space characters.
-
-    \return
-        Returns a list of GeometryBuffers representing the render geometry of
-        the text.
-    */
-    void createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const String& text,
-        const glm::vec2& position, const Rectf* clip_rect,
-        const bool clipping_enabled, const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
-        const float space_extra = 0.0f) const;
+    // \overload
+    inline void createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
+        const String& text, const glm::vec2& position, const Rectf* clipRect,
+        bool clippingEnabled, const ColourRect& colours,
+        const DefaultParagraphDirection defaultParagraphDir, float space_extra = 0.f) const
+    {
+        float nextGlyphPos = 0.f;
+        createTextRenderGeometry(out, text, nextGlyphPos, position, clipRect, clippingEnabled,
+            colours, defaultParagraphDir, space_extra);
+    }
   
     /*!
       \brief
