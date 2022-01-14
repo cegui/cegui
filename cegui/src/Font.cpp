@@ -134,7 +134,7 @@ float Font::getTextExtent(const String& text) const
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
     {
-        char32_t currentCodePoint = text[c];
+        const char32_t currentCodePoint = text[c];
 
         getGlyphExtents(currentCodePoint, cur_extent, adv_extent);
     }
@@ -143,7 +143,7 @@ float Font::getTextExtent(const String& text) const
 
     while (!codePointIter.isAtEnd())
     {
-        char32_t currentCodePoint = *codePointIter;
+        const char32_t currentCodePoint = *codePointIter;
 
         getGlyphExtents(currentCodePoint, cur_extent, adv_extent);
 
@@ -160,16 +160,12 @@ void Font::getGlyphExtents(
     float& cur_extent,
     float& adv_extent) const
 {
-    const FontGlyph* currentGlyph = getPreparedGlyph(currentCodePoint);
-
-    if (currentGlyph != nullptr)
+    if (const FontGlyph* currentGlyph = getPreparedGlyph(currentCodePoint))
     {
         float width = currentGlyph->getRenderedAdvance();
 
         if (adv_extent + width > cur_extent)
-        {
             cur_extent = adv_extent + width;
-        }
 
         adv_extent += currentGlyph->getAdvance();
     }
@@ -259,16 +255,14 @@ const FontGlyph* Font::getPreparedGlyph(char32_t currentCodePoint) const
 }
 
 void Font::layoutUsingFallbackAndCreateGlyphGeometry(
-    std::vector<GeometryBuffer*>& out,
-    const String& text,
+    std::vector<GeometryBuffer*>& out, const String& text,
     const Rectf* clip_rect, const ColourRect& colours,
-    const float space_extra,
-    ImageRenderSettings& imgRenderSettings, glm::vec2& glyphPos) const
+    float spaceExtra, ImageRenderSettings& imgRenderSettings, glm::vec2& glyphPos) const
 {
     if (text.empty())
         return;
 
-    const float base_y = glyphPos.y + getBaseline();
+    glyphPos.y += getBaseline();
     const auto canCombineFromIdx = out.size();
 
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
@@ -281,28 +275,17 @@ void Font::layoutUsingFallbackAndCreateGlyphGeometry(
     {
         char32_t currentCodePoint = *currentCodePointIter;
 #endif
-        if (const FontGlyph* glyph = getPreparedGlyph(currentCodePoint))
+        if (auto glyph = getPreparedGlyph(currentCodePoint))
         {  
-            const Image* const image = glyph->getImage();
-
-            glyphPos.y = base_y - (image->getRenderedOffset().y - 
-                image->getRenderedOffset().y);
-
-            Sizef renderedSize(
-                image->getRenderedSize().d_width,
-                image->getRenderedSize().d_height);
-
-            imgRenderSettings.d_destArea =
-                Rectf(glyphPos, renderedSize);
-
-            addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect, colours);
+            if (auto image = glyph->getImage())
+            {
+                imgRenderSettings.d_destArea = Rectf(glyphPos, image->getRenderedSize());
+                addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect, colours);
+            }
 
             glyphPos.x += glyph->getAdvance();
-            // apply extra spacing to space chars
             if (currentCodePoint == ' ')
-            {
-                glyphPos.x += space_extra;
-            }
+                glyphPos.x += spaceExtra;
         }
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
          ++currentCodePointIter;
@@ -314,13 +297,13 @@ void Font::layoutUsingFallbackAndCreateGlyphGeometry(
 void Font::createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, float& nextPenPosX, const glm::vec2& position,
     const Rectf* clip_rect, bool clipping_enabled,
-    const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir, float space_extra) const
+    const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir, float spaceExtra) const
 {
     ImageRenderSettings imgRenderSettings(Rectf(), clip_rect, clipping_enabled, colours);
 
     glm::vec2 penPosition = position;
 
-    layoutAndCreateGlyphRenderGeometry(out, text, clip_rect, colours, space_extra,
+    layoutAndCreateGlyphRenderGeometry(out, text, clip_rect, colours, spaceExtra,
         imgRenderSettings, defaultParagraphDir, penPosition);
 
     nextPenPosX = penPosition.x;
