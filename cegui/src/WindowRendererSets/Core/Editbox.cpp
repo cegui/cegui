@@ -259,8 +259,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
     {
         // No highlighted text - we can draw the whole thing
         font->createTextRenderGeometry(w->getGeometryBuffers(),
-            text, textPartRect.d_min.x,
-            textPartRect.getPosition(),
+            text, textPartRect.d_min.x, textPartRect.getPosition(),
             &textArea, true, normalTextCol, w->getDefaultParagraphDirection());
     }
     else
@@ -313,8 +312,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
 
             // Create render geometry for pre-selected text
             font->createTextRenderGeometry(w->getGeometryBuffers(),
-                sect, textPartRect.d_min.x,
-                textPartRect.getPosition(),
+                sect, textPartRect.d_min.x, textPartRect.getPosition(),
                 &textArea, true, normalTextCol, w->getDefaultParagraphDirection());
         }
 
