@@ -203,7 +203,7 @@ public:
     bool isAntiAliased() const;
 
     //! Returns the Freetype font face
-    const FT_Face& getFontFace() const;
+    const FT_Face& getFontFace() const { return d_fontFace; }
 
     //! Returns the initial size to be used for any new glyph atlas texture.
     int getInitialGlyphAtlasSize() const;
@@ -324,21 +324,10 @@ protected:
 
 #ifdef CEGUI_USE_RAQM
     void layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const String& text, const Rectf* clip_rect, const ColourRect& colours,
-        float space_extra, ImageRenderSettings& imgRenderSettings,
-        DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
-
-    void layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
         float space_extra, ImageRenderSettings& imgRenderSettings,
         DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
 #endif
-
-    void layoutUsingFreetypeAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const String& text, const Rectf* clip_rect, const ColourRect& colours,
-        float space_extra, ImageRenderSettings& imgRenderSettings,
-        glm::vec2& penPosition) const;
-
 
     void layoutUsingFreetypeAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
