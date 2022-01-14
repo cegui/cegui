@@ -122,7 +122,7 @@ public:
     \param size
         The font size.
     */
-    void setSize(const float size);
+    void setSize(float size) { setSizeAndUnit(size, d_sizeUnit); }
 
     /*!
     \brief
@@ -130,7 +130,7 @@ public:
     \return
         The font size.
     */
-    float getSize() const;
+    float getSize() const { return d_size; }
 
     /*!
     \brief
@@ -138,7 +138,7 @@ public:
     \param sizeUnit
         The font size unit.
     */
-    void setSizeUnit(FontSizeUnit sizeUnit);
+    void setSizeUnit(FontSizeUnit sizeUnit) { setSizeAndUnit(d_size, sizeUnit); }
 
     /*!
     \brief
@@ -146,7 +146,7 @@ public:
     \return
         The font size unit.
     */
-    FontSizeUnit getSizeUnit() const;
+    FontSizeUnit getSizeUnit() const { return d_sizeUnit; }
 
     /*!
     \brief
@@ -155,7 +155,7 @@ public:
     \param pixelSize
         The font size in pixels.
     */
-    void setSizeInPixels(const float pixelSize);
+    void setSizeInPixels(float pixelSize) { setSizeAndUnit(pixelSize, FontSizeUnit::Pixels); }
 
     /*!
     \brief
@@ -164,7 +164,7 @@ public:
     \param pointSize
         The font size in points.
     */
-    void setSizeInPoints(const float pointSize);
+    void setSizeInPoints(float pointSize) { setSizeAndUnit(pointSize, FontSizeUnit::Points); }
 
     /*!
     \brief
@@ -174,7 +174,7 @@ public:
     \param sizeUnit
         The font size unit.
     */
-    void setSizeAndUnit(const float size, const FontSizeUnit sizeUnit);
+    void setSizeAndUnit(float size, const FontSizeUnit sizeUnit);
 
     /*!
     \brief
@@ -200,16 +200,16 @@ public:
     void setAntiAliased(const bool anti_alaised);
 
     //! Returns whether the Freetype font is rendered anti-aliased or not.
-    bool isAntiAliased() const;
+    bool isAntiAliased() const { return d_antiAliased; }
 
     //! Returns the Freetype font face
     const FT_Face& getFontFace() const { return d_fontFace; }
 
     //! Returns the initial size to be used for any new glyph atlas texture.
-    int getInitialGlyphAtlasSize() const;
+    int getInitialGlyphAtlasSize() const { return d_initialGlyphAtlasSize; }
 
     //! Sets the initial size to be used for any new glyph atlas texture.
-    void setInitialGlyphAtlasSize(int val);
+    void setInitialGlyphAtlasSize(int val) { d_initialGlyphAtlasSize = val; }
 
 protected:
     /*!
