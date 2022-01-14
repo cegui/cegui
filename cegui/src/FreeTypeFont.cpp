@@ -891,6 +891,7 @@ float FreeTypeFont::getSizeInPoints() const
         "font size in pixels but the Font size unit is invalid.");
 }
 
+//----------------------------------------------------------------------------//
 void FreeTypeFont::handleFontSizeOrFontUnitChange()
 {
     updateFont();
@@ -898,7 +899,6 @@ void FreeTypeFont::handleFontSizeOrFontUnitChange()
     FontEventArgs args(this);
     onRenderSizeChanged(args);
 }
-
 
 //----------------------------------------------------------------------------//
 void FreeTypeFont::setAntiAliased(const bool antiAliased)
@@ -913,37 +913,20 @@ void FreeTypeFont::setAntiAliased(const bool antiAliased)
     onRenderSizeChanged(args);
 }
 
-const FT_Face& FreeTypeFont::getFontFace() const
-{
-    return d_fontFace;
-}
-
+//----------------------------------------------------------------------------//
 void FreeTypeFont::layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const String& text,
-    const Rectf* clip_rect, const ColourRect& colours,
-    const float space_extra,
-    ImageRenderSettings& imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
-    glm::vec2& penPosition) const
+    const String& text, const Rectf* clip_rect, const ColourRect& colours,
+    const float space_extra, ImageRenderSettings& imgRenderSettings,
+    DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const
 {
 #ifdef CEGUI_USE_RAQM
-    layoutUsingRaqmAndCreateRenderGeometry(out, text, clip_rect, colours,
+    layoutUsingRaqmAndCreateRenderGeometry(out, text, clip_rect, { colours },
         space_extra, imgRenderSettings, defaultParagraphDir, penPosition);
 #else
     CEGUI_UNUSED(defaultParagraphDir);
-    layoutUsingFreetypeAndCreateRenderGeometry(out, text, clip_rect, colours,
+    layoutUsingFreetypeAndCreateRenderGeometry(out, text, clip_rect, { colours },
         space_extra, imgRenderSettings, penPosition);
 #endif
-}
-
-
-void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const String& text, const Rectf* clip_rect, const ColourRect& colours,
-    const float space_extra, ImageRenderSettings& imgRenderSettings,
-    glm::vec2& penPosition) const
-{
-    const std::vector<ColourRect> layerColours = { colours };
-    layoutUsingFreetypeAndCreateRenderGeometry(out, text, clip_rect, layerColours, space_extra,
-        imgRenderSettings, penPosition);
 }
 
 void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
@@ -961,6 +944,7 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
 #elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) 
     const std::u32string& utf32Text = text.getString();
 #endif
+
     glm::vec2 penPositionStart = penPosition;
 
     unsigned int layerCount = d_fontLayers.size();
@@ -1015,18 +999,18 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
             }
             previousGlyphIndex = glyph->getGlyphIndex();
 
-                const Image* const image = glyph->getImage(layer);
-                if (image)
-                {
-                    imgRenderSettings.d_destArea =
-                        Rectf(penPosition, image->getRenderedSize());
+            const Image* const image = glyph->getImage(layer);
+            if (image)
+            {
+                imgRenderSettings.d_destArea =
+                    Rectf(penPosition, image->getRenderedSize());
 
-                    const CEGUI::ColourRect fallbackColour;
-                    const CEGUI::ColourRect& currentlayerColour = (layer < layerColours.size()) ?
-                        layerColours[layer] : fallbackColour;
+                const CEGUI::ColourRect fallbackColour;
+                const CEGUI::ColourRect& currentlayerColour = (layer < layerColours.size()) ?
+                    layerColours[layer] : fallbackColour;
 
-                    addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect, currentlayerColour);
-                }
+                addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect, currentlayerColour);
+            }
 
             penPosition.x += glyph->getAdvance();
 
@@ -1041,16 +1025,6 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
 }
 
 #ifdef CEGUI_USE_RAQM
-void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const String& text, const Rectf* clip_rect, const ColourRect& colours,
-    const float space_extra, ImageRenderSettings& imgRenderSettings,
-    DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const
-{
-    const std::vector<ColourRect> layerColours = {colours};
-    layoutUsingRaqmAndCreateRenderGeometry(out, text, clip_rect, layerColours,
-        space_extra, imgRenderSettings, defaultParagraphDir, penPosition);
-}
-
 void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours, 
     const float space_extra, ImageRenderSettings& imgRenderSettings, 
@@ -1075,7 +1049,8 @@ void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBu
         originalTextArray, origTextLength, defaultParagraphDir, getFontFace());
 
     const std::size_t layerCount = d_fontLayers.size();
-    for (int layerTmp = layerCount - 1; layerTmp >= 0; layerTmp--) {
+    for (int layerTmp = layerCount - 1; layerTmp >= 0; layerTmp--)
+    {
         unsigned int layer = static_cast<unsigned int>(layerTmp);
 
         size_t count = 0;
@@ -1119,7 +1094,8 @@ void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBu
             }
 
             const Image* const image = glyph->getImage(layer);
-            if (image) {
+            if (image)
+            {
                 imgRenderSettings.d_destArea =
                     Rectf(penPosition, image->getRenderedSize());
 
@@ -1162,13 +1138,8 @@ bool FreeTypeFont::isCodepointAvailable(char32_t codePoint) const
 
 FreeTypeFontGlyph* FreeTypeFont::getGlyphForCodepoint(const char32_t codepoint) const
 {
-    CodePointToGlyphMap::const_iterator pos = d_codePointToGlyphMap.find(codepoint);
-    if (pos != d_codePointToGlyphMap.end())
-    {
-        return pos->second;
-    }
-
-    return nullptr;
+    auto it = d_codePointToGlyphMap.find(codepoint);
+    return (it != d_codePointToGlyphMap.end()) ? it->second : nullptr;
 }
 
 int FreeTypeFont::getInitialGlyphAtlasSize() const
@@ -1184,14 +1155,9 @@ void FreeTypeFont::setInitialGlyphAtlasSize(int val)
 const FreeTypeFontGlyph* FreeTypeFont::getPreparedGlyph(char32_t currentCodePoint) const
 {
     FreeTypeFontGlyph* glyph = getGlyphForCodepoint(currentCodePoint);
-
-    if (glyph != nullptr)
-    {
+    if (glyph)
         prepareGlyph(glyph);
-    }
-
     return glyph;
 }
 
-
-} // End of  CEGUI namespace section
+}
