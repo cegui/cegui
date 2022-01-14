@@ -164,7 +164,7 @@ public:
         text.  NB: The colours specified in here are applied to each glyph,
         rather than the text as a whole.
 
-    \param space_extra
+    \param spaceExtra
         Number of additional pixels of spacing to be added to space characters.
 
     \return
@@ -176,17 +176,17 @@ public:
         const glm::vec2& position, const Rectf* clip_rect,
         bool clipping_enabled, const ColourRect& colours,
         const DefaultParagraphDirection defaultParagraphDir,
-        float space_extra = 0.f) const;
+        float spaceExtra = 0.f) const;
 
     // \overload
     inline void createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const glm::vec2& position, const Rectf* clipRect,
         bool clippingEnabled, const ColourRect& colours,
-        const DefaultParagraphDirection defaultParagraphDir, float space_extra = 0.f) const
+        const DefaultParagraphDirection defaultParagraphDir, float spaceExtra = 0.f) const
     {
         float nextGlyphPos = 0.f;
         createTextRenderGeometry(out, text, nextGlyphPos, position, clipRect, clippingEnabled,
-            colours, defaultParagraphDir, space_extra);
+            colours, defaultParagraphDir, spaceExtra);
     }
   
     /*!
@@ -461,7 +461,7 @@ protected:
     //! The old way of rendering glyphs, without kerning and extended layouting
     virtual void layoutUsingFallbackAndCreateGlyphGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect, const ColourRect& colours,
-        const float space_extra, ImageRenderSettings& imgRenderSettings, glm::vec2& glyph_pos) const;
+        float spaceExtra, ImageRenderSettings& imgRenderSettings, glm::vec2& glyph_pos) const;
 
     /*! 
     \brief
@@ -476,12 +476,12 @@ protected:
     //! Manages the glyph layout and and creates the RenderGeometry for the text.
     virtual void layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect,
-        const ColourRect& colours, const float space_extra,
+        const ColourRect& colours, const float spaceExtra,
         ImageRenderSettings& imgRenderSettings, DefaultParagraphDirection /*defaultParagraphDir*/,
         glm::vec2& glyphPos) const
     {
         layoutUsingFallbackAndCreateGlyphGeometry(out, text, clip_rect,
-            colours, space_extra, imgRenderSettings, glyphPos);
+            colours, spaceExtra, imgRenderSettings, glyphPos);
     }
 
     /*!

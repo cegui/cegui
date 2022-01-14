@@ -318,20 +318,20 @@ protected:
 
     void layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect,
-        const ColourRect& colours, const float space_extra,
+        const ColourRect& colours, const float spaceExtra,
         ImageRenderSettings& imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
         glm::vec2& penPosition) const override;
 
 #ifdef CEGUI_USE_RAQM
     void layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
-        float space_extra, ImageRenderSettings& imgRenderSettings,
+        float spaceExtra, ImageRenderSettings& imgRenderSettings,
         DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
 #endif
 
     void layoutUsingFreetypeAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
-        float space_extra, ImageRenderSettings& imgRenderSettings,
+        float spaceExtra, ImageRenderSettings& imgRenderSettings,
         glm::vec2& penPosition) const;
 
     //! If non-zero, the overridden line spacing that we're to report.

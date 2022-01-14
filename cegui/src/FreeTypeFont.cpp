@@ -47,18 +47,6 @@
 namespace
 {
 
-void adjustPenPositionForBearingDeltas(glm::vec2& penPosition,
-    FT_Pos previousRsbDelta, const CEGUI::FreeTypeFontGlyph* glyph)
-{
-    // Needed if using strong auto-hinting.
-    // Adjusting pen position according to the left side and right
-    // side bearing deltas
-    if (previousRsbDelta - glyph->getLsbDelta() >= 32)
-        penPosition.x -= 1.0f;
-    else if (previousRsbDelta - glyph->getLsbDelta() < -32)
-        penPosition.x += 1.0f;
-}
-
 #ifdef CEGUI_USE_RAQM
 raqm_t* createAndSetupRaqmTextObject(const uint32_t* text, const size_t textLength,
     CEGUI::DefaultParagraphDirection defaultParagraphDir, FT_Face face)
@@ -916,28 +904,25 @@ void FreeTypeFont::setAntiAliased(const bool antiAliased)
 //----------------------------------------------------------------------------//
 void FreeTypeFont::layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, const Rectf* clip_rect, const ColourRect& colours,
-    const float space_extra, ImageRenderSettings& imgRenderSettings,
+    const float spaceExtra, ImageRenderSettings& imgRenderSettings,
     DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const
 {
 #ifdef CEGUI_USE_RAQM
     layoutUsingRaqmAndCreateRenderGeometry(out, text, clip_rect, { colours },
-        space_extra, imgRenderSettings, defaultParagraphDir, penPosition);
+        spaceExtra, imgRenderSettings, defaultParagraphDir, penPosition);
 #else
     CEGUI_UNUSED(defaultParagraphDir);
     layoutUsingFreetypeAndCreateRenderGeometry(out, text, clip_rect, { colours },
-        space_extra, imgRenderSettings, penPosition);
+        spaceExtra, imgRenderSettings, penPosition);
 #endif
 }
 
 void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
-    const float space_extra, ImageRenderSettings& imgRenderSettings,
-    glm::vec2& penPosition) const
+    const float spaceExtra, ImageRenderSettings& imgRenderSettings, glm::vec2& penPosition) const
 {
     if (text.empty())
         return;
-
-    const auto canCombineFromIdx = out.size();
 
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     std::u32string utf32Text = String::convertUtf8ToUtf32(text.c_str(), text.length());
@@ -945,10 +930,12 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
     const std::u32string& utf32Text = text.getString();
 #endif
 
+    const auto canCombineFromIdx = out.size();
     glm::vec2 penPositionStart = penPosition;
+    const CEGUI::ColourRect fallbackColour;
 
     unsigned int layerCount = d_fontLayers.size();
-    for (int layerTmp = layerCount -1; layerTmp >= 0; layerTmp--)
+    for (int layerTmp = layerCount - 1; layerTmp >= 0; --layerTmp)
     {
         unsigned int layer = static_cast<unsigned int>(layerTmp);
 
@@ -957,77 +944,70 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
         penPosition = penPositionStart;
         penPosition.y += getBaseline();
 
-        size_t charCount = utf32Text.size();
+        const size_t charCount = utf32Text.size();
         for (size_t i = 0; i < charCount; ++i)
         {
-            const char32_t& codePoint = utf32Text[i];
+            const char32_t codePoint = utf32Text[i];
 
             // Ignore new line characters
             if (codePoint == '\n')
-            {
                 continue;
-            }
 
+            // Find glyph and handle missing glyph replacement
             const FreeTypeFontGlyph* glyph = getPreparedGlyph(codePoint);
-            if (glyph == nullptr)
+            if (!glyph)
             {
-                if(codePoint != UnicodeReplacementCharacter)
-                {
+                if (codePoint != UnicodeReplacementCharacter)
                     glyph = getPreparedGlyph(UnicodeReplacementCharacter);
-                }
 
-                if (glyph == nullptr)
-                {
+                if (!glyph)
                     continue;
-                }
             }
 
-     
-            adjustPenPositionForBearingDeltas(penPosition, previousRsbDelta, glyph);
+            // Adjust pen position according to the left side and right side
+            // bearing deltas. Needed if using strong auto-hinting.
+            const auto bearing = previousRsbDelta - glyph->getLsbDelta();
+            if (bearing >= 32)
+                penPosition.x -= 1.f;
+            else if (bearing < -32)
+                penPosition.x += 1.f;
+
             previousRsbDelta = glyph->getRsbDelta();
 
+            // Do kerning
             if (i >= 1)
             {
                 FT_Vector kerning;
-
-                unsigned int rightGlyphIndex = glyph->getGlyphIndex();
-
-                FT_Get_Kerning(d_fontFace, previousGlyphIndex, rightGlyphIndex,
+                FT_Get_Kerning(d_fontFace, previousGlyphIndex, glyph->getGlyphIndex(),
                     FT_KERNING_DEFAULT, &kerning);
 
                 penPosition.x += kerning.x * s_conversionMultCoeff;
             }
+
             previousGlyphIndex = glyph->getGlyphIndex();
 
-            const Image* const image = glyph->getImage(layer);
-            if (image)
+            // Render glyph
+            if (auto image = glyph->getImage(layer))
             {
-                imgRenderSettings.d_destArea =
-                    Rectf(penPosition, image->getRenderedSize());
-
-                const CEGUI::ColourRect fallbackColour;
-                const CEGUI::ColourRect& currentlayerColour = (layer < layerColours.size()) ?
-                    layerColours[layer] : fallbackColour;
-
-                addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect, currentlayerColour);
+                imgRenderSettings.d_destArea = Rectf(penPosition, image->getRenderedSize());
+                addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect,
+                    (layer < layerColours.size()) ? layerColours[layer] : fallbackColour);
             }
 
             penPosition.x += glyph->getAdvance();
 
+            // TODO: This is for justified text and probably wrong because the space was determined
+            // without considering kerning
             if (codePoint == ' ')
-            {
-                // TODO: This is for justified text and probably wrong because the space was determined
-                // without considering kerning
-                penPosition.x += space_extra;
-            }
+                penPosition.x += spaceExtra;
         }
-    } //for layers
+    }
 }
 
 #ifdef CEGUI_USE_RAQM
 void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours, 
-    const float space_extra, ImageRenderSettings& imgRenderSettings, 
+    const float spaceExtra, ImageRenderSettings& imgRenderSettings, 
     DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const
 {
     if (text.empty())
@@ -1122,7 +1102,7 @@ void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBu
             {
                 // TODO: This is for justified text and probably wrong because the space was determined
                 // without considering kerning
-                penPosition.x += space_extra;
+                penPosition.x += spaceExtra;
             }
         }
 
