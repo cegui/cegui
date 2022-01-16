@@ -8,7 +8,7 @@ find_package(Fribidi QUIET)
 find_package(Harfbuzz QUIET)
 
 
-find_path(RAQM_H_PATH NAMES raqm.h PATH_SUFFIXES libraqm/src)
+find_path(RAQM_H_PATH NAMES raqm.h PATH_SUFFIXES raqm)
 find_library(RAQM_LIB NAMES raqm PATH_SUFFIXES dynamic)
 find_library(RAQM_LIB_DBG NAMES raqm_d PATH_SUFFIXES dynamic)
 mark_as_advanced(RAQM_H_PATH RAQM_LIB RAQM_LIB_DBG)
