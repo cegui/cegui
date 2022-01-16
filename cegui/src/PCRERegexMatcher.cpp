@@ -68,8 +68,7 @@ void PCRERegexMatcher::setRegexString(const String& regex)
 }
 
 //----------------------------------------------------------------------------//
-RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
-                                                        const String& str) const
+RegexMatchState PCRERegexMatcher::getMatchStateOfString(const String& str) const
 {
     // if the regex is not valid, then an exception is thrown
     if (!d_regex)
@@ -102,15 +101,15 @@ RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
 #endif
 
     if (result == PCRE_ERROR_PARTIAL)
-        return MatchState::Partial;
+        return RegexMatchState::Partial;
 
     // a match must be for the entire string
     if (result >= 0)
-        return (match[1] - match[0] == len) ? MatchState::Valid : MatchState::Invalid;
+        return (match[1] - match[0] == len) ? RegexMatchState::Valid : RegexMatchState::Invalid;
 
     // no match found or if test string or regex is 0
     if (result == PCRE_ERROR_NOMATCH || result == PCRE_ERROR_NULL)
-        return MatchState::Invalid;
+        return RegexMatchState::Invalid;
 
     // anything else is an error
     throw InvalidRequestException(
