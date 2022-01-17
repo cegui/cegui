@@ -498,7 +498,7 @@ public:
         Move constructor. The String "other" is left in valid but unspecified state.
     */
     String(CEGUI::String&& other) noexcept
-        : d_string(other.d_string)
+        : d_string(std::move(other.d_string))
     {}
 
     /*!
@@ -506,7 +506,7 @@ public:
         Move constructor. The String "other" is left in valid but unspecified state.
     */
     String(std::basic_string<value_type>&& other)
-        : d_string(other)
+        : d_string(std::move(other))
     {}
 
 #if defined(CEGUI_STRING_CPP_11)
@@ -515,7 +515,7 @@ public:
         Move constructor. The String "other" is left in valid but unspecified state.
     */
     String(CEGUI::String&& other, const std::allocator<value_type>& alloc)
-        : d_string(other.d_string, alloc)
+        : d_string(std::move(other.d_string), alloc)
     {}
 
 
@@ -524,7 +524,7 @@ public:
         Move constructor. The String "other" is left in valid but unspecified state.
     */
     String(std::basic_string<value_type>&& other, const std::allocator<value_type>& alloc)
-        : d_string(other, alloc)
+        : d_string(std::move(other), alloc)
     {}
 
     /*!
@@ -693,7 +693,7 @@ public:
     */
     String& operator=(String&& str) noexcept
     {
-        d_string = str.d_string;
+        d_string = std::move(str.d_string);
         return *this;
     }
 
@@ -913,7 +913,7 @@ public:
     */ 
     String& assign(String&& str)
     {
-        d_string.assign(str.d_string);
+        d_string.assign(std::move(str.d_string));
         return *this;
     }
 

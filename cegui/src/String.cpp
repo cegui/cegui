@@ -574,7 +574,7 @@ String operator+(const std::u32string& lhs, String&& rhs)
 
 String operator+(String&& lhs, String&& rhs)
 {
-    return std::move(lhs.append(rhs));
+    return std::move(lhs.append(std::move(rhs)));
 }
 
 String operator+(const char32_t* lhs, String&& rhs)
