@@ -27,7 +27,6 @@
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
 #endif
-
 #include "CEGUI/Config.h"
 
 #ifdef CEGUI_USE_FRIBIDI
@@ -38,6 +37,7 @@
 
 namespace CEGUI
 {
+
 //----------------------------------------------------------------------------//
 BidiCharType FribidiVisualMapping::getBidiCharType(const char32_t char_to_check) const
 {
@@ -97,8 +97,6 @@ bool FribidiVisualMapping::reorderFromLogicalToVisual(const String& logical,
     return false;
 }
 
-//----------------------------------------------------------------------------//
+}
 
-} // End of  CEGUI namespace section
-
-#endif // CEGUI_USE_FRIBIDI
+#endif

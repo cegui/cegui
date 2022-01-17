@@ -34,6 +34,8 @@
 #include "CEGUI/Font.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 
+ //!!!FIXME TEXT: UTF-8 selection / caret positioning is broken, sometimes it breaks a multibyte codepoint in the middle
+
 namespace CEGUI
 {
 const String FalagardMultiLineEditbox::TypeName("Core/MultiLineEditbox");
@@ -201,11 +203,15 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
 
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         if (!lineText.isUtf8StringValid())
-            lineText = "";
+        {
+            // This line is invalid, skip to the next one
+            drawArea.d_min.y += font->getLineSpacing();
+            continue;
+        }
 #endif
 
         // Offset the font little down so that it's centered within its own spacing
-        Rectf lineRect(drawArea);
+        Rectf lineRect = drawArea;
         const float oldTop = lineRect.top();
         lineRect.d_min.y += (font->getLineSpacing() - font->getFontHeight()) * 0.5f;
 

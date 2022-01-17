@@ -839,15 +839,15 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
     if (text.empty())
         return;
 
+    const auto canCombineFromIdx = out.size();
+    glm::vec2 penPositionStart = penPosition;
+    const CEGUI::ColourRect fallbackColour;
+
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     std::u32string utf32Text = String::convertUtf8ToUtf32(text.c_str(), text.length());
 #elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) 
     const std::u32string& utf32Text = text.getString();
 #endif
-
-    const auto canCombineFromIdx = out.size();
-    glm::vec2 penPositionStart = penPosition;
-    const CEGUI::ColourRect fallbackColour;
 
     unsigned int layerCount = d_fontLayers.size();
     for (int layerTmp = layerCount - 1; layerTmp >= 0; --layerTmp)
@@ -930,6 +930,10 @@ void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBu
     if (text.empty())
         return;
 
+    const auto canCombineFromIdx = out.size();
+    glm::vec2 penPositionStart = penPosition;
+    const CEGUI::ColourRect fallbackColour;
+
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII)
     std::u32string utf32Text = String::convertUtf8ToUtf32(text.c_str());
     size_t origTextLength = utf32Text.length();
@@ -938,10 +942,6 @@ void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBu
     size_t origTextLength = text.length();
     const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(text.c_str());
 #endif
-
-    const auto canCombineFromIdx = out.size();
-    glm::vec2 penPositionStart = penPosition;
-    const CEGUI::ColourRect fallbackColour;
 
     raqm_t* raqmObject = createAndSetupRaqmTextObject(
         originalTextArray, origTextLength, defaultParagraphDir, getFontFace());

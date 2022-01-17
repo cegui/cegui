@@ -27,16 +27,13 @@
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
 #endif
-
 #include "CEGUI/Config.h"
 
 #ifdef CEGUI_USE_MINIBIDI
 
 #include "CEGUI/MinibidiVisualMapping.h"
 #include "CEGUI/Logger.h"
-
-// include minibidi code directly
-#include "minibidi.cpp"
+#include "minibidi.cpp" // include minibidi code directly
 
 namespace CEGUI
 {
@@ -58,22 +55,45 @@ bool MinibidiVisualMapping::reorderFromLogicalToVisual(const String& logical,
                                                        std::vector<int>& l2v,
                                                        std::vector<int>& v2l) const
 {
-    visual = logical;
+    if (logical.size() <= 1)
+    {
+        l2v.resize(logical.size());
+        v2l.resize(logical.size());
 
-    if (logical.length() <= 1)
+        visual = logical;
+
+        if (logical.size() == 1)
+        {
+            l2v[0] = 0;
+            v2l[0] = 0;
+        }
         return true;
+    }
 
-    l2v.resize(logical.length());
-    v2l.resize(logical.length());
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
+    visual = logical;
+    auto ptr = reinterpret_cast<const unsigned int*>(visual.c_str());
+    const size_t stringLength = logical.size();
+#else
+    std::u32string utf32Str = String::convertUtf8ToUtf32(logical.c_str());
+    auto ptr = reinterpret_cast<const unsigned int*>(utf32Str.c_str());
+    const size_t stringLength = utf32Str.size();
+    if (!stringLength)
+        return false;
+#endif
 
-    auto ptr = const_cast<unsigned int*>(reinterpret_cast<const unsigned int*>(visual.c_str()));
-    doBidi(ptr, static_cast<int>(logical.length()), true, false, &v2l[0], &l2v[0]);
+    l2v.resize(stringLength);
+    v2l.resize(stringLength);
+
+    doBidi(const_cast<unsigned int*>(ptr), static_cast<int>(stringLength), true, false, &v2l[0], &l2v[0]);
+
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32
+    visual = String::convertUtf32ToUtf8(utf32Str.c_str());
+#endif
 
     return true;
 }
 
-//----------------------------------------------------------------------------//
+}
 
-} // End of  CEGUI namespace section
-
-#endif // CEGUI_USE_MINIBIDI
+#endif
