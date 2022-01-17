@@ -29,6 +29,9 @@
 #endif
 #include "CEGUI/Config.h"
 
+// https://gitlab.com/arabeyes-dev/adawat/-/blob/master/minibidi/minibidi.c
+// TODO: check for modifications against our copy
+
 #ifdef CEGUI_USE_MINIBIDI
 
 #include "CEGUI/MinibidiVisualMapping.h"

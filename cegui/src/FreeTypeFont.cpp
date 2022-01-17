@@ -49,7 +49,7 @@ namespace
 
 #ifdef CEGUI_USE_RAQM
 raqm_t* createAndSetupRaqmTextObject(const uint32_t* text, const size_t textLength,
-    CEGUI::DefaultParagraphDirection defaultParagraphDir, FT_Face face)
+    CEGUI::DefaultParagraphDirection defaultParagraphDir, FT_Face face, FT_Int32 loadFlags)
 {
     raqm_t* raqmObject = raqm_create();
 
@@ -58,6 +58,9 @@ raqm_t* createAndSetupRaqmTextObject(const uint32_t* text, const size_t textLeng
 
     if (!raqm_set_freetype_face(raqmObject, face))
         throw CEGUI::InvalidRequestException("Could not set the Freetype font Face for a raqm object");
+
+    if (!raqm_set_freetype_load_flags(raqmObject, loadFlags))
+        throw CEGUI::InvalidRequestException("Could not set Freetype load flags for a raqm object");
 
     raqm_direction_t textDefaultParagraphDirection = RAQM_DIRECTION_LTR;
     switch (defaultParagraphDir)
@@ -648,9 +651,9 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
         FontLayerType fontLayerType = d_fontLayers[layer].d_fontLayerType;
 
         // Load the code point, "rendering" the glyph
-        FT_Int32 targetType = d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
-        FT_Int32 loadType = (fontLayerType == FontLayerType::Standard) ? FT_LOAD_RENDER : FT_LOAD_NO_BITMAP;
-        auto loadBitmask = loadType | FT_LOAD_FORCE_AUTOHINT | targetType;
+        const FT_Int32 targetType = d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
+        const FT_Int32 loadType = (fontLayerType == FontLayerType::Standard) ? FT_LOAD_RENDER : FT_LOAD_NO_BITMAP;
+        const FT_Int32 loadBitmask = loadType | FT_LOAD_FORCE_AUTOHINT | targetType;
         FT_Error error = FT_Load_Glyph(d_fontFace, glyphIndex, loadBitmask);
 
         glyph->markAsInitialised();
@@ -943,8 +946,13 @@ void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBu
     const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(text.c_str());
 #endif
 
+    // FIXME: different raqm objects for different layers? Do we really need different flags for non-Standard layers?
+    const FT_Int32 targetType = d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
+    const FT_Int32 loadType = /*(fontLayerType == FontLayerType::Standard) ?*/ FT_LOAD_RENDER /*: FT_LOAD_NO_BITMAP*/;
+    const FT_Int32 loadBitmask = loadType | FT_LOAD_FORCE_AUTOHINT | targetType;
+
     raqm_t* raqmObject = createAndSetupRaqmTextObject(
-        originalTextArray, origTextLength, defaultParagraphDir, getFontFace());
+        originalTextArray, origTextLength, defaultParagraphDir, getFontFace(), loadBitmask);
 
     const std::size_t layerCount = d_fontLayers.size();
     for (int layerTmp = layerCount - 1; layerTmp >= 0; --layerTmp)
