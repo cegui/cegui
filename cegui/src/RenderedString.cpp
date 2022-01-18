@@ -44,6 +44,110 @@ RenderedString::RenderedString(RenderedString&&) noexcept = default;
 RenderedString& RenderedString::operator =(RenderedString&&) noexcept = default;
 
 //----------------------------------------------------------------------------//
+bool RenderedString::renderText(const String& text, RenderedStringParser* parser,
+    Font* font, Colour color, DefaultParagraphDirection defaultParagraphDir)
+{
+    // Parse a string and obtain UTF-32 text with placeholders but without tags
+    std::u32string utf32Text;
+    std::vector<size_t> originalIndices; //!!!empty is treated as 1 to 1!
+    //std::vector<uint8_t> elementIndices; //!!!while index is the same, can reuse obtained type info!
+    //std::vector<RenderedStringComponentPtr> components; - either font style, image or widget [and font style may be subclassed as link?]
+    //???or store union and uint8_t type? virtual table requires 4 bytes, type - 1 byte. 
+    //!!!if elementIndices has no item for some codepoint, default to the default text style
+    if (parser)
+    {
+        //!!!???base style will be created empty, fill it outside?, font, color
+        //parser->parse(text);
+
+        //!!!in parser have to push new style at every change:
+        //[color=x][font=y]text[/font]text2[/color]
+        // Multivalue tags are better?
+        //[font type=y size=z]text[/font]
+        // Also may remove unused styles from output at the end of parsing! Can count uses inside style!
+        //???if style can't be created during parsing, reuse previous style on the stack?
+
+        //!!!TODO: bold, italic, underline, strikeout, outline (w/params, incl color), color
+        //!!!font must have a set of glyphs for each codepoint? e.g. regular, bold, stroke outline
+        //NB: if there is a separate bold font, may need no embolden glyphs in regular font
+        //???inside a font, store its regular, bold and italic variants? No italic -> oblique, no bold -> embolden.
+        //???need bold-italic? maybe need too!
+    }
+    else
+    {
+        //!!!this can be used instead of DefaultRenderedStringParser!
+
+        // When no parser specified, simply ensure that we have out UTF-32 string
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32)
+        utf32Text = String::convertUtf8ToUtf32(text.c_str(), &originalIndices);
+#else
+        utf32Text = text; //???can avoid copying? e.g. passing utf32Text further as an arg? or mutability is useful later?
+#endif
+    }
+
+    //!!!can std::move(utf32Text) into the next part!
+
+#if defined(CEGUI_USE_RAQM)
+    // run raqm layouting, breaking for non-freetype fonts
+    // for freetype can use 
+    // use defaultParagraphDir
+
+    // Glyph generation
+
+    // for each raqm glyph
+    //   ...
+
+#else
+
+    //!!!TODO TEXT: split into paragraphs, pass to BIDI one by one!
+
+    // Apply Unicode Bidirectional Algorithm to obtain a string with visual ordering of codepoints
+#if defined(CEGUI_BIDI_SUPPORT)
+    //!!!FIXME TEXT: IMPROVE BIDI
+    // 1. Can avoid virtualization and transfer internals here or into some wrapper
+    // 2. UTF-32 text is ready to be processed, need to pass it without redundant conversions
+    // 3. Since utf32Text is mutable, can use inplace transform where supported! (minibidi?)
+    // 4. Remove state from wrapper
+    // 5. Can make universal BIDI function for UTF-8 that converts to UTF-32 inside, not repeat in every impl
+    // 6. Can make inplace API variant for UTF-32? Impl that doesn't support it will make a copy internally.
+    // 7. Use default paragraph direction where supported: defaultParagraphDir
+    // 8. One wrapper function and #ifdef inside?
+    std::vector<int> l2v;
+    std::vector<int> v2l;
+    std::u32string textVisual;
+#if defined (CEGUI_USE_FRIBIDI)
+    FribidiVisualMapping().reorderFromLogicalToVisual(utf32Text, textVisual, l2v, v2l);
+#elif defined (CEGUI_USE_MINIBIDI)
+    MinibidiVisualMapping().reorderFromLogicalToVisual(utf32Text, textVisual, l2v, v2l);
+#else
+#error "BIDI configuration is inconsistent, check your config!"
+#endif
+
+    // Post-BIDI reindexing
+    //!!!originalIndices, elementIndices - permute based on l2v
+    //???use std::sort? or just use l2v as an additional indirection level?
+    //!!!can do it via macro! #define IDX(x) (l2v[x]) VS #define IDX(x) (x), don't forget to undef it!
+
+#else
+    const auto& textVisual = utf32Text;
+#endif
+
+    // Glyph generation
+
+    // for each codepoint
+    //   if references image or widget, process specially
+    //   if references a font, request glyph in a font
+    //      for freetype, consider layers and kerning (outline here?)
+    //      for image-based, simply get glyph image
+    //      apply styling (underline, strikeout etc)
+
+#endif
+
+    // Store glyphs by paragraph, also calculate paragraph extents before formatting
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
 void RenderedString::appendComponent(const RenderedStringComponent& component)
 {
     d_components.push_back(component.clone());

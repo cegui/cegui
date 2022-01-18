@@ -75,8 +75,8 @@
 #endif
 
 
-// include this to see if it defines _STLPOResourceType::VERION
-#	include <string>
+// include this to see if it defines _STLPOResourceType::VERSION
+#include <string>
 
 // fix to undefine _STLP_DEBUG if STLport is not actually being used
 // (resolves some unresolved externals concerning boost)

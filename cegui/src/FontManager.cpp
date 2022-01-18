@@ -130,7 +130,7 @@ Font& FontManager::createFreeTypeFont(
     const AutoScaledMode auto_scaled,
     const Sizef& native_res,
     float specificLineSpacing,
-    const FreeTypeFontLayerVector& fontLayers,
+    const std::vector<FreeTypeFontLayer>& fontLayers,
     XmlResourceExistsAction resourceExistsAction)
 {
 #ifdef CEGUI_HAS_FREETYPE

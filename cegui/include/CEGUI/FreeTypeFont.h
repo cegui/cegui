@@ -103,7 +103,7 @@ public:
     FreeTypeFont(const String& font_name, const float size,
                  const FontSizeUnit sizeUnit,
                  const bool anti_aliased, const String& font_filename,
-                 FreeTypeFontLayerVector  fontLayers = FreeTypeFontLayerVector{FreeTypeFontLayer()},
+                 std::vector<FreeTypeFontLayer> fontLayers = { FreeTypeFontLayer() },
                  const String& resource_group = "",
                  const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
                  const Sizef& native_res = Sizef(640.0f, 480.0f),
@@ -371,7 +371,7 @@ protected:
     mutable std::vector<TextureGlyphLine> d_textureGlyphLines;
 
     //! collection of outline image layers defined for this font.
-    mutable FreeTypeFontLayerVector d_fontLayers;
+    mutable std::vector<FreeTypeFontLayer> d_fontLayers;
 };
 
 } // End of  CEGUI namespace section

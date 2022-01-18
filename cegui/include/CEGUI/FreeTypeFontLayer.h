@@ -137,8 +137,6 @@ public:
     virtual ~FreeTypeFontLayer() = default;
 };
 
-typedef std::vector<FreeTypeFontLayer> FreeTypeFontLayerVector;
-
 } // End of  CEGUI namespace section
 
 #endif //_CEGUIFreeTypeFontLayer_h_
