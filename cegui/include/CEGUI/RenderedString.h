@@ -44,6 +44,11 @@ namespace CEGUI
 class Rectf;
 using RenderedStringComponentPtr = std::unique_ptr<class RenderedStringComponent>;
 
+struct RenderedParagraph
+{
+    int dbgtmp = 0;
+};
+
 /*!
 \brief
     Class representing a rendered string of entities.
@@ -189,6 +194,8 @@ public:
     RenderedString clone() const;
 
 protected:
+
+    std::vector<RenderedParagraph> d_paragraphs;
 
     std::vector<RenderedStringComponentPtr> d_components;
     std::vector<std::pair<size_t, size_t>> d_lines; // first is component idx, second is component count.
