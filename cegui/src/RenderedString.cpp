@@ -27,11 +27,11 @@
 #include "CEGUI/RenderedString.h"
 #include "CEGUI/RenderedStringTextComponent.h"
 #include "CEGUI/Exceptions.h"
-
 #ifdef CEGUI_USE_RAQM
 #include "CEGUI/FreeTypeFont.h"
 #include <raqm.h>
 #endif
+#include <algorithm>
 
 namespace CEGUI
 {
@@ -129,7 +129,7 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
     const size_t elementIdxCount = elementIndices.size();
 
     // Build font ranges an check if we can use raqm before we allocate something big inside it
-    std::vector<std::pair<FT_Face, size_t>> fontRanges;
+    std::vector<std::pair<const FreeTypeFont*, size_t>> fontRanges;
     fontRanges.reserve(16);
     uint16_t currElementIdx = std::numeric_limits<uint16_t>().max(); // NB: intentionally invalid, elementIndices are uint8_t
     const FreeTypeFont* currFont = nullptr;
@@ -173,7 +173,7 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
                 return false;
 
             if (fontLen)
-                fontRanges.emplace_back(currFont->getFontFace(), fontLen);
+                fontRanges.emplace_back(currFont, fontLen);
 
             currFont = ftCharFont;
             fontLen = 0;
@@ -184,7 +184,7 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
 
     // Add the final range
     if (fontLen)
-        fontRanges.emplace_back(currFont->getFontFace(), fontLen);
+        fontRanges.emplace_back(currFont, fontLen);
 
     // Now we know that we can use raqm for this paragraph
     if (!rq)
@@ -205,11 +205,12 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
 
     // Assign font ranges to raqm
     size_t fontStart = 0;
-    for (const auto& range : fontRanges)
+    for (auto& range : fontRanges)
     {
-        if (!raqm_set_freetype_face_range(rq, range.first, fontStart, range.second))
+        if (!raqm_set_freetype_face_range(rq, range.first->getFontFace(), fontStart, range.second))
             return false;
         fontStart += range.second;
+        range.second = fontStart; // Change (font, len) into sorted (font, end) for glyph font detection below
     }
 
     // TODO: request per-codepoint load flags in RAQM? May be needed for mixing [anti]aliased fonts.
@@ -223,9 +224,48 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
 
     // Glyph generation
 
-    // for each raqm glyph
-    //   ...
-    //!!!don't forget that source indices are offset by "start"!
+    //penPosition = penPositionStart;
+    //penPosition.y += getBaseline(); //!!!per font!
+
+    size_t rqGlyphCount = 0;
+    raqm_glyph_t* rqGlyphs = raqm_get_glyphs(rq, &rqGlyphCount);
+    for (size_t i = 0; i < rqGlyphCount; ++i)
+    {
+        const raqm_glyph_t& rqGlyph = rqGlyphs[i];
+
+        //const size_t originalIndex = rqGlyph.cluster + start;
+
+        // Find a font for our glyph
+        auto it = std::upper_bound(fontRanges.begin(), fontRanges.end(), rqGlyph.cluster,
+            [](uint32_t value, const std::pair<const FreeTypeFont*, size_t>& elm)
+        {
+            return elm.second < value;
+        });
+        auto font = (*it).first;
+        //font->getGlyphImage(rqGlyph.index [, size, outline etc]) // freetype font specific
+
+        //!!!NB: for placeholder glyphs need to calculate size now or to convert offsets into positions later!
+        //!!!may be THE BEST is to store offsets here, and set positions when generating geometry?! or at least
+        //in the common part of layouting?!
+        //???handle vertical positioning here. or requires embedded objects width?! or doesn't depend on it? seems so.
+        /*
+            if (auto image = glyph->getImage(layer))
+            {
+                penPosition.x = std::round(penPosition.x);
+
+                //The glyph pos will be rounded to full pixels internally
+                const glm::vec2 renderGlyphPos(
+                    penPosition.x + currentGlyph.x_offset * s_26dot6_toFloat,
+                    penPosition.y + currentGlyph.y_offset * s_26dot6_toFloat);
+
+                imgRenderSettings.d_destArea = Rectf(renderGlyphPos, image->getRenderedSize());
+                addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect,
+                    (layer < layerColours.size()) ? layerColours[layer] : fallbackColour);
+            }
+
+            penPosition.x += currentGlyph.x_advance * s_26dot6_toFloat;
+        */
+    }
 
     return true;
 }
