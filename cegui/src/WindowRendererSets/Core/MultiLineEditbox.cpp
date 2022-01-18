@@ -35,6 +35,7 @@
 #include "CEGUI/TplWindowRendererProperty.h"
 
  //!!!FIXME TEXT: UTF-8 selection / caret positioning is broken, sometimes it breaks a multibyte codepoint in the middle
+//See how RAQM internal _raqm_u8_to_u32_index(rq, idx) works, but it is O(n). Or just use cached mapping.
 
 namespace CEGUI
 {

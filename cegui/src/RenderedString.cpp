@@ -28,6 +28,10 @@
 #include "CEGUI/RenderedStringComponent.h"
 #include "CEGUI/Exceptions.h"
 
+#ifdef CEGUI_USE_RAQM
+#include <raqm.h>
+#endif
+
 namespace CEGUI
 {
 
@@ -42,6 +46,106 @@ RenderedString::RenderedString()
 RenderedString::~RenderedString() = default;
 RenderedString::RenderedString(RenderedString&&) noexcept = default;
 RenderedString& RenderedString::operator =(RenderedString&&) noexcept = default;
+
+//----------------------------------------------------------------------------//
+static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
+    size_t start, size_t end, DefaultParagraphDirection dir)
+{
+    //!!!if RAQM defined, may get here as a fallback, use fribidi then!
+
+    // Apply Unicode Bidirectional Algorithm to obtain a string with visual ordering of codepoints
+#if defined(CEGUI_BIDI_SUPPORT)
+    //!!!FIXME TEXT: IMPROVE BIDI
+    // 1. Can avoid virtualization and transfer internals here or into some wrapper
+    // 2. UTF-32 text is ready to be processed, need to pass it without redundant conversions
+    // 3. Since text can be passed here mutable, can use inplace transform where supported! (minibidi?)
+    // 4. Remove state from wrapper
+    // 5. Can make universal BIDI function for UTF-8 that converts to UTF-32 inside, not repeat in every impl
+    // 6. Can make inplace API variant for UTF-32? Impl that doesn't support it will make a copy internally.
+    // 7. Use default paragraph direction where supported: defaultParagraphDir
+    // 8. One wrapper function and #ifdef inside?
+    // 9. Make preprocessor definitions better for RAQM Fribidi fallback?
+    std::vector<int> l2v;
+    std::vector<int> v2l;
+    std::u32string textVisual;
+#if defined (CEGUI_USE_FRIBIDI)
+    FribidiVisualMapping().reorderFromLogicalToVisual(text, textVisual, l2v, v2l);
+#elif defined (CEGUI_USE_MINIBIDI)
+    MinibidiVisualMapping().reorderFromLogicalToVisual(text, textVisual, l2v, v2l);
+#else
+#error "BIDI configuration is inconsistent, check your config!"
+#endif
+
+    // Post-BIDI reindexing
+    //!!!originalIndices, elementIndices - permute based on l2v
+    //???use std::sort? or just use l2v as an additional indirection level?
+    //!!!can do it via macro! #define IDX(x) (l2v[x]) VS #define IDX(x) (x), don't forget to undef it!
+
+#else
+    const auto& textVisual = text;
+#endif
+
+    // Glyph generation
+
+    // for each codepoint
+    //   if references image or widget, process specially
+    //   if references a font
+    //     collect a range with the same font
+    //     process range inside that font
+    //     apply styling (underline, strikeout etc)
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_RAQM
+static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string& text,
+    size_t start, size_t end, DefaultParagraphDirection dir, raqm_t*& rq)
+{
+    //!!!run raqm layouting, breaking for non-freetype fonts
+    //use raqm_set_freetype_face_range, for non-freetpe may use any FT fallback font? or break?
+    //???or don't allow to use RAQM with non-freetype fonts? fallback to the second codepath completely?
+    //!!!NB: this may be done per paragraph, thus using RAQM whenever possible!
+    //!!!NB: fallback pass can use Fribidi because it is guaranteed to be present for RAQM!
+    // So our fribidi utility must be compiled if either FRIBIDI or RAQM is used!
+
+    //???don't create until check that all fonts are freetype?
+    //!!!otherwise can move creation to the main function, outside the loop!
+    if (!rq)
+    {
+        rq = raqm_create();
+
+        const raqm_direction_t raqmParagraphDir =
+            (dir == CEGUI::DefaultParagraphDirection::RightToLeft) ? RAQM_DIRECTION_RTL :
+            (dir == CEGUI::DefaultParagraphDirection::Automatic) ? RAQM_DIRECTION_DEFAULT :
+            RAQM_DIRECTION_LTR;
+        if (!raqm_set_par_direction(rq, raqmParagraphDir))
+            throw CEGUI::InvalidRequestException("Could not set the parse direction for a raqm object");
+
+        // TODO: request per-codepoint load flags in RAQM? May be needed for mixing [anti]aliased fonts.
+        const FT_Int32 targetType = d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
+        const FT_Int32 loadFlags = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT | targetType;
+        if (!raqm_set_freetype_load_flags(rq, loadFlags))
+            throw CEGUI::InvalidRequestException("Could not set Freetype load flags for a raqm object");
+    }
+
+    if (!raqm_set_text(rq, reinterpret_cast<const uint32_t*>(text.c_str() + start), end - start))
+        throw CEGUI::InvalidRequestException("Setting raqm text was unsuccessful");
+
+    if (!raqm_set_freetype_face_range(rq, face, start, len))
+        throw CEGUI::InvalidRequestException("Could not set the Freetype font Face for a raqm object");
+
+    if (!raqm_layout(rq))
+        throw CEGUI::InvalidRequestException("Layouting raqm text was unsuccessful");
+
+    // Glyph generation
+
+    // for each raqm glyph
+    //   ...
+
+    return true;
+}
+#endif
 
 //----------------------------------------------------------------------------//
 bool RenderedString::renderText(const String& text, RenderedStringParser* parser,
@@ -84,65 +188,48 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
 #endif
     }
 
-    //!!!can std::move(utf32Text) into the next part!
+    d_paragraphs.clear();
+#ifdef CEGUI_USE_RAQM
+    raqm_t* rq = nullptr;
+#endif
+
+    // Perform layouting per paragraph
+    const size_t textLength = utf32Text.size();
+    size_t start = 0;
+    do
+    {
+        size_t end = utf32Text.find('\n', start);
+        if (end == std::u32string::npos)
+            end = textLength;
+
+        // Always create a paragraph (new line), even if it is empty
+        d_paragraphs.push_back({});
+
+        if (end > start)
+        {
+            // Create a sequence of CEGUI glyphs for this paragraph
+#ifdef CEGUI_USE_RAQM
+            if (!layoutParagraphWithRaqm(d_paragraphs.back(), utf32Text, start, end, defaultParagraphDir, rq))
+#endif
+                layoutParagraph(d_paragraphs.back(), utf32Text, start, end, defaultParagraphDir);
+        }
+
+        if (end == textLength)
+            break;
+        else
+            start = end + 1;
+    }
+    while (true);
 
 #if defined(CEGUI_USE_RAQM)
-    // run raqm layouting, breaking for non-freetype fonts
-    // for freetype can use 
-    // use defaultParagraphDir
-
-    // Glyph generation
-
-    // for each raqm glyph
-    //   ...
-
-#else
-
-    //!!!TODO TEXT: split into paragraphs, pass to BIDI one by one!
-
-    // Apply Unicode Bidirectional Algorithm to obtain a string with visual ordering of codepoints
-#if defined(CEGUI_BIDI_SUPPORT)
-    //!!!FIXME TEXT: IMPROVE BIDI
-    // 1. Can avoid virtualization and transfer internals here or into some wrapper
-    // 2. UTF-32 text is ready to be processed, need to pass it without redundant conversions
-    // 3. Since utf32Text is mutable, can use inplace transform where supported! (minibidi?)
-    // 4. Remove state from wrapper
-    // 5. Can make universal BIDI function for UTF-8 that converts to UTF-32 inside, not repeat in every impl
-    // 6. Can make inplace API variant for UTF-32? Impl that doesn't support it will make a copy internally.
-    // 7. Use default paragraph direction where supported: defaultParagraphDir
-    // 8. One wrapper function and #ifdef inside?
-    std::vector<int> l2v;
-    std::vector<int> v2l;
-    std::u32string textVisual;
-#if defined (CEGUI_USE_FRIBIDI)
-    FribidiVisualMapping().reorderFromLogicalToVisual(utf32Text, textVisual, l2v, v2l);
-#elif defined (CEGUI_USE_MINIBIDI)
-    MinibidiVisualMapping().reorderFromLogicalToVisual(utf32Text, textVisual, l2v, v2l);
-#else
-#error "BIDI configuration is inconsistent, check your config!"
+    if (rq)
+        raqm_destroy(rq);
 #endif
 
-    // Post-BIDI reindexing
-    //!!!originalIndices, elementIndices - permute based on l2v
-    //???use std::sort? or just use l2v as an additional indirection level?
-    //!!!can do it via macro! #define IDX(x) (l2v[x]) VS #define IDX(x) (x), don't forget to undef it!
-
-#else
-    const auto& textVisual = utf32Text;
-#endif
-
-    // Glyph generation
-
-    // for each codepoint
-    //   if references image or widget, process specially
-    //   if references a font, request glyph in a font
-    //      for freetype, consider layers and kerning (outline here?)
-    //      for image-based, simply get glyph image
-    //      apply styling (underline, strikeout etc)
-
-#endif
-
-    // Store glyphs by paragraph, also calculate paragraph extents before formatting
+    //!!!Calculate paragraph extents for faster horizontal formatting!
+    for (auto& p : d_paragraphs)
+    {
+    }
 
     return true;
 }
