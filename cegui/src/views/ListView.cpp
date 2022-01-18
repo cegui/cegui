@@ -62,37 +62,16 @@ const String ListView::EventNamespace("ListView");
 const String ListView::WidgetTypeName("CEGUI/ListView");
 
 //----------------------------------------------------------------------------//
-ListViewItemRenderingState::ListViewItemRenderingState(ListView* list_view) :
-    d_attachedListView(list_view)
+ListViewItemRenderingState::ListViewItemRenderingState(ListView* list_view)
+    : d_attachedListView(list_view)
+    , d_renderedString(new RenderedString())
 {
 }
 
 //----------------------------------------------------------------------------//
-ListViewItemRenderingState::ListViewItemRenderingState(ListViewItemRenderingState&& src) noexcept :
-    d_string           (std::move(src.d_string)),
-    d_formatter  (std::move(src.d_formatter)),
-    d_icon             (std::move(src.d_icon)),
-    d_size             (std::move(src.d_size)),
-    d_isSelected       (src.d_isSelected),
-    d_index            (std::move(src.d_index)),
-    d_text             (std::move(src.d_text)),
-    d_attachedListView (src.d_attachedListView)
-{
-}
-
-//----------------------------------------------------------------------------//
-ListViewItemRenderingState& ListViewItemRenderingState::operator=(ListViewItemRenderingState&& src) noexcept
-{
-    d_string = std::move(src.d_string);
-    d_formatter  = std::move(src.d_formatter);
-    d_icon             = std::move(src.d_icon);
-    d_size             = std::move(src.d_size);
-    d_isSelected       = src.d_isSelected;
-    d_index            = std::move(src.d_index);
-    d_text             = std::move(src.d_text);
-    d_attachedListView = src.d_attachedListView;
-    return *this;
-}
+ListViewItemRenderingState::ListViewItemRenderingState(ListViewItemRenderingState&& src) noexcept = default;
+ListViewItemRenderingState& ListViewItemRenderingState::operator =(ListViewItemRenderingState&& src) noexcept = default;
+ListViewItemRenderingState::~ListViewItemRenderingState() = default;
 
 //----------------------------------------------------------------------------//
 bool ListViewItemRenderingState::operator <(ListViewItemRenderingState const& other) const
@@ -242,7 +221,7 @@ void ListView::resortView()
 void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index, float& max_width, float& total_height)
 {
     item.d_text = d_itemModel->getData(index);
-    item.d_string = getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect, DefaultParagraphDirection::Automatic);
+    *item.d_renderedString = std::move(getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect, DefaultParagraphDirection::Automatic));
 
     if (!item.d_formatter || item.d_formatter->getCorrespondingFormatting() != d_horzFormatting)
     {
@@ -287,7 +266,7 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index, fl
     if (vertScrollbar->isVisible())
         itemsAreaSize.d_width = itemsAreaSize.d_width - vertScrollbar->getPixelSize().d_width;
     itemsAreaSize.d_width -= 2;
-    item.d_formatter->format(item.d_string, this, itemsAreaSize);
+    item.d_formatter->format(*item.d_renderedString, this, itemsAreaSize);
 
     item.d_index = index;
     item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);
