@@ -124,7 +124,7 @@ FreeTypeFont::FreeTypeFont(
     const float size,
     const FontSizeUnit sizeUnit,
     const bool anti_aliased, const String& font_filename,
-    FreeTypeFontLayerVector fontLayers,
+    std::vector<FreeTypeFontLayer> fontLayers,
     const String& resource_group,
     const AutoScaledMode auto_scaled,
     const Sizef& native_res,

@@ -31,6 +31,7 @@
 #define _String_h_
 
 #include "CEGUI/Base.h"
+#include <vector>
 #include <stdexcept>
 
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
@@ -172,7 +173,13 @@ public:
     \return
         Returns an UTF-32 string (std::u32string) converted from the ASCII or UTF-8 encoded string or char array.
     */
-    static std::u32string convertUtf8ToUtf32(const char* utf8String);
+    static inline std::u32string convertUtf8ToUtf32(const char* utf8String, std::vector<size_t>* mapping = nullptr)
+    {
+        if (!utf8String)
+            return std::u32string();
+
+        return convertUtf8ToUtf32(utf8String, std::char_traits<char>::length(utf8String), mapping);
+    }
 
     /*
     \brief
@@ -188,7 +195,13 @@ public:
         Returns an UTF-32 string (std::u32string) converted
         from the ASCII or UTF-8 encoded string or char array.
     */
-    static std::u32string convertUtf8ToUtf32(const char* utf8StringStart, const char* utf8StringEnd);
+    static inline std::u32string convertUtf8ToUtf32(const char* utf8StringStart, const char* utf8StringEnd, std::vector<size_t>* mapping = nullptr)
+    {
+        if (!utf8StringStart)
+            return std::u32string();
+
+        return convertUtf8ToUtf32(utf8StringStart, utf8StringEnd - utf8StringStart, mapping);
+    }
 
     /*
     \brief
@@ -201,7 +214,10 @@ public:
         Returns an UTF-32 string (std::u32string) converted from
         the ASCII or UTF-8 encoded string or char array.
     */
-    static std::u32string convertUtf8ToUtf32(const std::string& utf8String);
+    static inline std::u32string convertUtf8ToUtf32(const std::string& utf8String, std::vector<size_t>* mapping = nullptr)
+    {
+        return convertUtf8ToUtf32(utf8String.data(), utf8String.size(), mapping);
+    }
 
     /*
     \brief
@@ -211,7 +227,10 @@ public:
     \return
         Returns an UTF-32 string (std::u32string) converted from the UTF-8 code unit.
     */
-    static std::u32string convertUtf8ToUtf32(const char utf8Char);
+    static inline std::u32string convertUtf8ToUtf32(const char utf8Char)
+    {
+        return convertUtf8ToUtf32(&utf8Char, 1);
+    }
 
     /*
     \brief
@@ -228,7 +247,7 @@ public:
         Returns an UTF-32 string (std::u32string)
         converted from the ASCII or UTF-8 encoded char array.
     */
-    static std::u32string convertUtf8ToUtf32(const char* utf8String, const size_t stringLength);
+    static std::u32string convertUtf8ToUtf32(const char* utf8String, const size_t stringLength, std::vector<size_t>* mapping = nullptr);
 
     /*
     \brief

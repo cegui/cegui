@@ -43,52 +43,30 @@ const String& String::GetEmpty()
     return emptyString;
 }
 
-std::u32string String::convertUtf8ToUtf32(const char* utf8String)
+std::u32string String::convertUtf8ToUtf32(const char* utf8String, const size_t stringLength, std::vector<size_t>* mapping)
 {
-    if(utf8String == nullptr)
-        return std::u32string();
-
-    std::size_t codeUnitCount = std::char_traits<char>::length(utf8String);
-    return convertUtf8ToUtf32(utf8String, codeUnitCount);
-}
-
-std::u32string String::convertUtf8ToUtf32(const char* utf8StringStart, const char* utf8StringEnd)
-{
-    if (utf8StringStart == nullptr)
-        return std::u32string();
-
-    return convertUtf8ToUtf32(utf8StringStart, utf8StringEnd - utf8StringStart);
-}
-
-std::u32string String::convertUtf8ToUtf32(const std::string& utf8String)
-{
-    return convertUtf8ToUtf32(utf8String.data(), utf8String.size());
-}
-
-std::u32string String::convertUtf8ToUtf32(const char utf8Char)
-{
-    return convertUtf8ToUtf32(&utf8Char, 1);
-}
-
-std::u32string String::convertUtf8ToUtf32(const char* utf8String, const size_t stringLength)
-{
-    if (utf8String == nullptr)
-        return std::u32string();
+    if (mapping)
+        mapping->clear();
 
     std::u32string utf32String;
+
+    if (!utf8String || !stringLength)
+        return utf32String;
 
     // Go through every UTF-8 code unit
     size_t currentCharIndex = 0;
     while (currentCharIndex < stringLength)
     {
-        size_t remainingCodeUnits = stringLength - currentCharIndex;
+        const size_t remainingCodeUnits = stringLength - currentCharIndex;
         size_t usedCodeUnits;
-        char32_t utf32CodePoint = getCodePointFromCodeUnits(utf8String + currentCharIndex,
-                                                            remainingCodeUnits,
-                                                            usedCodeUnits);
-        currentCharIndex += usedCodeUnits;
+        const char32_t utf32CodePoint = getCodePointFromCodeUnits(
+            utf8String + currentCharIndex, remainingCodeUnits, usedCodeUnits);
 
         utf32String.push_back(utf32CodePoint);
+        if (mapping)
+            mapping->push_back(currentCharIndex);
+
+        currentCharIndex += usedCodeUnits;
     }
 
     return utf32String;
