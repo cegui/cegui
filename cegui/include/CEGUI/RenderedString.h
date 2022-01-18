@@ -29,7 +29,6 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/Sizef.h"
-#include "CEGUI/Colour.h"
 #include "CEGUI/DefaultParagraphDirection.h"
 #include <glm/glm.hpp>
 #include <vector>
@@ -68,7 +67,7 @@ public:
     RenderedString& operator =(const RenderedString& rhs) = delete; // Use clone()
     RenderedString& operator =(RenderedString&&) noexcept;
 
-    bool renderText(const String& text, RenderedStringParser* parser = nullptr, Font* font = nullptr, Colour color = 0xFFFFFFFF,
+    bool renderText(const String& text, RenderedStringParser* parser = nullptr, Font* defaultFont = nullptr,
         DefaultParagraphDirection defaultParagraphDir = DefaultParagraphDirection::LeftToRight);
 
     /*!

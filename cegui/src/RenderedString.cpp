@@ -25,10 +25,11 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RenderedString.h"
-#include "CEGUI/RenderedStringComponent.h"
+#include "CEGUI/RenderedStringTextComponent.h"
 #include "CEGUI/Exceptions.h"
 
 #ifdef CEGUI_USE_RAQM
+#include "CEGUI/FreeTypeFont.h"
 #include <raqm.h>
 #endif
 
@@ -48,8 +49,29 @@ RenderedString::RenderedString(RenderedString&&) noexcept = default;
 RenderedString& RenderedString::operator =(RenderedString&&) noexcept = default;
 
 //----------------------------------------------------------------------------//
+static const Font* getElementFont(RenderedStringComponent* element, const Font* currFont, const Font* defaultFont, bool& isTextStyle)
+{
+    // Non-text elements don't break the range of the current font
+    auto textStyle = dynamic_cast<const RenderedStringTextComponent*>(element);
+    const Font* font = textStyle ? textStyle->getFont() : currFont;
+    isTextStyle = !!textStyle;
+
+    if (!font)
+    {
+        if (!defaultFont)
+            return false;
+
+        font = defaultFont;
+    }
+
+    return font;
+}
+
+//----------------------------------------------------------------------------//
 static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
-    size_t start, size_t end, DefaultParagraphDirection dir)
+    size_t start, size_t end, Font* defaultFont, DefaultParagraphDirection dir,
+    const std::vector<uint8_t>& elementIndices,
+    const std::vector<RenderedStringComponentPtr>& elements)
 {
     //!!!if RAQM defined, may get here as a fallback, use fribidi then!
 
@@ -100,17 +122,71 @@ static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
 //----------------------------------------------------------------------------//
 #ifdef CEGUI_USE_RAQM
 static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string& text,
-    size_t start, size_t end, DefaultParagraphDirection dir, raqm_t*& rq)
+    size_t start, size_t end, Font* defaultFont, DefaultParagraphDirection dir,
+    const std::vector<uint8_t>& elementIndices,
+    const std::vector<RenderedStringComponentPtr>& elements, raqm_t*& rq)
 {
-    //!!!run raqm layouting, breaking for non-freetype fonts
-    //use raqm_set_freetype_face_range, for non-freetpe may use any FT fallback font? or break?
-    //???or don't allow to use RAQM with non-freetype fonts? fallback to the second codepath completely?
-    //!!!NB: this may be done per paragraph, thus using RAQM whenever possible!
-    //!!!NB: fallback pass can use Fribidi because it is guaranteed to be present for RAQM!
-    // So our fribidi utility must be compiled if either FRIBIDI or RAQM is used!
+    const size_t elementIdxCount = elementIndices.size();
 
-    //???don't create until check that all fonts are freetype?
-    //!!!otherwise can move creation to the main function, outside the loop!
+    // Build font ranges an check if we can use raqm before we allocate something big inside it
+    std::vector<std::pair<FT_Face, size_t>> fontRanges;
+    fontRanges.reserve(16);
+    uint16_t currElementIdx = std::numeric_limits<uint16_t>().max(); // NB: intentionally invalid, elementIndices are uint8_t
+    const FreeTypeFont* currFont = nullptr;
+    size_t fontLen = 0;
+    for (size_t i = start; i < end; ++i)
+    {
+        // Get a font for the current character
+        const Font* charFont;
+        if (i >= elementIdxCount)
+        {
+            // Characters without an associated element use the default font
+            charFont = defaultFont;
+        }
+        else
+        {
+            const auto charElementIdx = elementIndices[i];
+            if (currElementIdx == charElementIdx)
+            {
+                // Font couldn't change if element didn't
+                charFont = currFont;
+            }
+            else
+            {
+                // Non-text elements have no font and are skipped for index comparison optimization
+                bool isTextStyle;
+                charFont = getElementFont(elements[charElementIdx].get(), currFont, defaultFont, isTextStyle);
+                if (isTextStyle)
+                    currElementIdx = charElementIdx;
+            }
+        }
+
+        // NB: this is necessary to fail if the first character has no font
+        if (!charFont)
+            return false;
+
+        if (charFont != currFont)
+        {
+            // Only freetype fonts can be laid out with raqm
+            auto ftCharFont = dynamic_cast<const FreeTypeFont*>(charFont);
+            if (!ftCharFont)
+                return false;
+
+            if (fontLen)
+                fontRanges.emplace_back(currFont->getFontFace(), fontLen);
+
+            currFont = ftCharFont;
+            fontLen = 0;
+        }
+
+        ++fontLen;
+    }
+
+    // Add the final range
+    if (fontLen)
+        fontRanges.emplace_back(currFont->getFontFace(), fontLen);
+
+    // Now we know that we can use raqm for this paragraph
     if (!rq)
     {
         rq = raqm_create();
@@ -120,28 +196,36 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
             (dir == CEGUI::DefaultParagraphDirection::Automatic) ? RAQM_DIRECTION_DEFAULT :
             RAQM_DIRECTION_LTR;
         if (!raqm_set_par_direction(rq, raqmParagraphDir))
-            throw CEGUI::InvalidRequestException("Could not set the parse direction for a raqm object");
-
-        // TODO: request per-codepoint load flags in RAQM? May be needed for mixing [anti]aliased fonts.
-        const FT_Int32 targetType = d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
-        const FT_Int32 loadFlags = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT | targetType;
-        if (!raqm_set_freetype_load_flags(rq, loadFlags))
-            throw CEGUI::InvalidRequestException("Could not set Freetype load flags for a raqm object");
+            return false;
     }
 
+    // Assign only the paragraph text to raqm object
     if (!raqm_set_text(rq, reinterpret_cast<const uint32_t*>(text.c_str() + start), end - start))
-        throw CEGUI::InvalidRequestException("Setting raqm text was unsuccessful");
+        return false;
 
-    if (!raqm_set_freetype_face_range(rq, face, start, len))
-        throw CEGUI::InvalidRequestException("Could not set the Freetype font Face for a raqm object");
+    // Assign font ranges to raqm
+    size_t fontStart = 0;
+    for (const auto& range : fontRanges)
+    {
+        if (!raqm_set_freetype_face_range(rq, range.first, fontStart, range.second))
+            return false;
+        fontStart += range.second;
+    }
+
+    // TODO: request per-codepoint load flags in RAQM? May be needed for mixing [anti]aliased fonts.
+    const FT_Int32 targetType = currFont->isAntiAliased() ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
+    const FT_Int32 loadFlags = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT | targetType;
+    if (!raqm_set_freetype_load_flags(rq, loadFlags))
+        return false;
 
     if (!raqm_layout(rq))
-        throw CEGUI::InvalidRequestException("Layouting raqm text was unsuccessful");
+        return false;
 
     // Glyph generation
 
     // for each raqm glyph
     //   ...
+    //!!!don't forget that source indices are offset by "start"!
 
     return true;
 }
@@ -149,13 +233,18 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
 
 //----------------------------------------------------------------------------//
 bool RenderedString::renderText(const String& text, RenderedStringParser* parser,
-    Font* font, Colour color, DefaultParagraphDirection defaultParagraphDir)
+    Font* defaultFont, DefaultParagraphDirection defaultParagraphDir)
 {
+    d_paragraphs.clear();
+
+    if (text.empty())
+        return true;
+
     // Parse a string and obtain UTF-32 text with placeholders but without tags
     std::u32string utf32Text;
     std::vector<size_t> originalIndices; //!!!empty is treated as 1 to 1!
-    //std::vector<uint8_t> elementIndices; //!!!while index is the same, can reuse obtained type info!
-    //std::vector<RenderedStringComponentPtr> components; - either font style, image or widget [and font style may be subclassed as link?]
+    std::vector<uint8_t> elementIndices;
+    std::vector<RenderedStringComponentPtr> elements; // either font style, image or widget [and font style may be subclassed as link?]
     //???or store union and uint8_t type? virtual table requires 4 bytes, type - 1 byte. 
     //!!!if elementIndices has no item for some codepoint, default to the default text style
     if (parser)
@@ -188,7 +277,14 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
 #endif
     }
 
-    d_paragraphs.clear();
+    // No text or placeholders left after parsing, there is nothing to render
+    if (utf32Text.empty())
+        return true;
+
+    // There is no chance to find explicit fonts for some characters. In this case a default font is required.
+    if (!defaultFont && elementIndices.size() < utf32Text.size())
+        return false;
+
 #ifdef CEGUI_USE_RAQM
     raqm_t* rq = nullptr;
 #endif
@@ -209,9 +305,11 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
         {
             // Create a sequence of CEGUI glyphs for this paragraph
 #ifdef CEGUI_USE_RAQM
-            if (!layoutParagraphWithRaqm(d_paragraphs.back(), utf32Text, start, end, defaultParagraphDir, rq))
+            if (!layoutParagraphWithRaqm(d_paragraphs.back(), utf32Text, start, end, defaultFont, defaultParagraphDir,
+                    elementIndices, elements, rq))
 #endif
-                layoutParagraph(d_paragraphs.back(), utf32Text, start, end, defaultParagraphDir);
+                layoutParagraph(d_paragraphs.back(), utf32Text, start, end, defaultFont, defaultParagraphDir,
+                    elementIndices, elements);
         }
 
         if (end == textLength)
@@ -226,6 +324,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
         raqm_destroy(rq);
 #endif
 
+    //!!!Replace placeholder glyphs in paragraphs with images and widgets!
     //!!!Calculate paragraph extents for faster horizontal formatting!
     for (auto& p : d_paragraphs)
     {
