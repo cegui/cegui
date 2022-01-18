@@ -30,7 +30,6 @@
 #define _CEGUIListView_h_
 
 #include "CEGUI/views/ItemView.h"
-#include "CEGUI/RenderedString.h"
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -51,12 +50,12 @@ enum class HorizontalTextFormatting : int;
     shouldn't use this struct for interacting with the list, but rather use the
     attached ItemModel.
 */
-// FIXME: CEGUIEXPORT here requires FormattedRenderedString to de a complete type (WTF?!) VS2019 16.11.9
-struct /*CEGUIEXPORT*/ ListViewItemRenderingState
+struct CEGUIEXPORT ListViewItemRenderingState
 {
     ListViewItemRenderingState(ListView* list_view);
     ListViewItemRenderingState(const ListViewItemRenderingState&) = delete;
     ListViewItemRenderingState(ListViewItemRenderingState&&) noexcept;
+    ~ListViewItemRenderingState();
 
     ListViewItemRenderingState& operator =(const ListViewItemRenderingState&) = delete;
     ListViewItemRenderingState& operator =(ListViewItemRenderingState&&) noexcept;
@@ -65,7 +64,7 @@ struct /*CEGUIEXPORT*/ ListViewItemRenderingState
     bool operator >(const ListViewItemRenderingState& other) const;
 
     std::unique_ptr<FormattedRenderedString> d_formatter;
-    RenderedString d_string;
+    std::unique_ptr<RenderedString> d_renderedString; // Need pointer for move constructor to work, otherwise formatter breaks
     String d_icon; //!< The name of the image that represents the icon
     Sizef d_size;
     ModelIndex d_index;
