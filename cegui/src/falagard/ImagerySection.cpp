@@ -43,7 +43,7 @@ namespace CEGUI
         d_masterColours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
     {}
 
-    void ImagerySection::render(Window& srcWindow, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const
+    void ImagerySection::render(Window& srcWindow, const CEGUI::ColourRect* modColours, const Rectf* clipper) const
     {
         // decide what to do as far as colours go
         ColourRect finalCols;
@@ -55,16 +55,16 @@ namespace CEGUI
         ColourRect* finalColsPtr = (finalCols.isMonochromatic() && finalCols.d_top_left.getARGB() == 0xFFFFFFFF) ? 0 : &finalCols;
 
         for (const auto& frame : d_frames)
-            frame.createRenderGeometryAndAddToWindow(srcWindow, finalColsPtr, clipper, clipToDisplay);
+            frame.createRenderGeometryAndAddToWindow(srcWindow, finalColsPtr, clipper);
 
         for (const auto& image : d_images)
-            image.createRenderGeometryAndAddToWindow(srcWindow, finalColsPtr, clipper, clipToDisplay);
+            image.createRenderGeometryAndAddToWindow(srcWindow, finalColsPtr, clipper);
 
         for (const auto& text : d_texts)
-            text.createRenderGeometryAndAddToWindow(srcWindow, finalColsPtr, clipper, clipToDisplay);
+            text.createRenderGeometryAndAddToWindow(srcWindow, finalColsPtr, clipper);
     }
 
-    void ImagerySection::render(Window& srcWindow, const Rectf& baseRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const
+    void ImagerySection::render(Window& srcWindow, const Rectf& baseRect, const CEGUI::ColourRect* modColours, const Rectf* clipper) const
     {
         // decide what to do as far as colours go
         ColourRect finalCols;
@@ -78,16 +78,16 @@ namespace CEGUI
         // render all frame components in this section
         for(FrameComponentList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
         {
-            (*frame).createRenderGeometryAndAddToWindow(srcWindow, baseRect, finalColsPtr, clipper, clipToDisplay);
+            (*frame).createRenderGeometryAndAddToWindow(srcWindow, baseRect, finalColsPtr, clipper);
         }
         // render all image components in this section
         for(ImageryComponentList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
-            (*image).createRenderGeometryAndAddToWindow(srcWindow, baseRect, finalColsPtr, clipper, clipToDisplay);
+            (*image).createRenderGeometryAndAddToWindow(srcWindow, baseRect, finalColsPtr, clipper);
         }
         // render all text components in this section
         for (const auto& text : d_texts)
-            text.createRenderGeometryAndAddToWindow(srcWindow, baseRect, finalColsPtr, clipper, clipToDisplay);
+            text.createRenderGeometryAndAddToWindow(srcWindow, baseRect, finalColsPtr, clipper);
     }
 
     void ImagerySection::addImageryComponent(const ImageryComponent& imageryComponent)

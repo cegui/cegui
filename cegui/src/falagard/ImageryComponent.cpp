@@ -122,8 +122,7 @@ namespace CEGUI
 
     void ImageryComponent::addImageRenderGeometryToWindow_impl(
         Window& srcWindow, Rectf& destRect,
-        const CEGUI::ColourRect* modColours, const Rectf* clipper,
-        bool clip_to_display) const
+        const CEGUI::ColourRect* modColours, const Rectf* clipper) const
     {
         // get final image to use.
         const Image* img = isImageFetchedFromProperty() ?
@@ -217,9 +216,7 @@ namespace CEGUI
         }
 
         // perform final rendering (actually is now a caching of the images which will be drawn)
-        ImageRenderSettings imgRenderSettings(
-            Rectf(), nullptr,
-            !clip_to_display, finalColours);
+        ImageRenderSettings imgRenderSettings(Rectf(), nullptr, finalColours);
 
         Rectf& renderSettingDestArea = imgRenderSettings.d_destArea;
         renderSettingDestArea.top(ypos);

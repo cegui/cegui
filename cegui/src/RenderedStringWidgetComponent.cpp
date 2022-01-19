@@ -98,7 +98,7 @@ void RenderedStringWidgetComponent::createRenderGeometry(std::vector<GeometryBuf
     if (d_selectionImage && d_selected)
     {
         const Rectf select_area(position, getPixelSize(refWnd));
-        ImageRenderSettings imgRenderSettings(select_area, clip_rect, true, ColourRect(0xFF002FFF));
+        ImageRenderSettings imgRenderSettings(select_area, clip_rect, ColourRect(0xFF002FFF));
         d_selectionImage->createRenderGeometry(out, imgRenderSettings);
     }
 

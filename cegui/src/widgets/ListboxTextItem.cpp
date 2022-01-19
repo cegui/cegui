@@ -89,7 +89,7 @@ void ListboxTextItem::createRenderGeometry(std::vector<GeometryBuffer*> out,
     // Draw selection brush
     if (d_selected && d_selectBrush)
     {
-        ImageRenderSettings imgRenderSettings(targetRect, clipper, true, d_selectCols, alpha);
+        ImageRenderSettings imgRenderSettings(targetRect, clipper, d_selectCols, alpha);
         d_selectBrush->createRenderGeometry(out, imgRenderSettings);
     }
 

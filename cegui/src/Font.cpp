@@ -296,10 +296,10 @@ void Font::layoutUsingFallbackAndCreateGlyphGeometry(
 //----------------------------------------------------------------------------//
 void Font::createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, float& nextPenPosX, const glm::vec2& position,
-    const Rectf* clip_rect, bool clipping_enabled,
-    const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir, float spaceExtra) const
+    const Rectf* clip_rect, const ColourRect& colours,
+    const DefaultParagraphDirection defaultParagraphDir, float spaceExtra) const
 {
-    ImageRenderSettings imgRenderSettings(Rectf(), clip_rect, clipping_enabled, colours);
+    ImageRenderSettings imgRenderSettings(Rectf(), clip_rect, colours);
 
     glm::vec2 penPosition = position;
 

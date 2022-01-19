@@ -126,8 +126,7 @@ void InventoryItem::populateGeometryBuffer()
 
     const argb_t colour = (d_dragging && !currentDropTargetIsValid()) ? 0xFFFF0000 : 0xFF00FF00;
 
-    ImageRenderSettings imgRenderSettings(
-        Rectf(), nullptr, false, ColourRect(colour));
+    ImageRenderSettings imgRenderSettings(Rectf(), nullptr, ColourRect(colour));
 
     for (int y = 0; y < d_content.height(); ++y)
     {

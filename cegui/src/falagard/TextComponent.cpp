@@ -126,7 +126,7 @@ void TextComponent::setupStringFormatter(HorizontalTextFormatting horzFormatting
 
 //----------------------------------------------------------------------------//
 void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf& destRect,
-    const ColourRect* modColours, const Rectf* clipper, bool /*clipToDisplay*/) const
+    const ColourRect* modColours, const Rectf* clipper) const
 {
     updateFormatting(srcWindow, destRect.getSize());
 

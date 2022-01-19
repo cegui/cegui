@@ -70,8 +70,7 @@ namespace CEGUI
 
     void SectionSpecification::render(Window& srcWindow,
                                       const ColourRect* modcols,
-                                      const Rectf* clipper,
-                                      bool clipToDisplay) const
+                                      const Rectf* clipper) const
     {
         // see if we need to bother rendering
         if (!shouldBeDrawn(srcWindow))
@@ -91,7 +90,7 @@ namespace CEGUI
                 finalColours *= *modcols;
 
             // render the imagery section
-            sect->render(srcWindow, &finalColours, clipper, clipToDisplay);
+            sect->render(srcWindow, &finalColours, clipper);
         }
         // do nothing here, errors are non-faltal and are logged for debugging purposes.
         catch (Exception&)
@@ -100,8 +99,7 @@ namespace CEGUI
 
     void SectionSpecification::render(Window& srcWindow, const Rectf& baseRect,
                                       const ColourRect* modcols,
-                                      const Rectf* clipper,
-                                      bool clipToDisplay) const
+                                      const Rectf* clipper) const
     {
         // see if we need to bother rendering
         if (!shouldBeDrawn(srcWindow))
@@ -121,7 +119,7 @@ namespace CEGUI
                 finalColours *= *modcols;
 
             // render the imagery section
-            sect->render(srcWindow, baseRect, &finalColours, clipper, clipToDisplay);
+            sect->render(srcWindow, baseRect, &finalColours, clipper);
         }
         // do nothing here, errors are non-faltal and are logged for debugging purposes.
         catch (Exception&)

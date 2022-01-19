@@ -41,14 +41,14 @@ void StateImagery::render(Window& srcWindow, const ColourRect* modcols, const Re
 {
     // render all layers defined for this state
     for (const auto& layer : d_layers)
-        layer.render(srcWindow, modcols, clipper, d_clipToDisplay);
+        layer.render(srcWindow, modcols, d_clipToDisplay ? nullptr : clipper);
 }
 
 void StateImagery::render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols, const Rectf* clipper) const
 {
     // render all layers defined for this state
     for (const auto& layer : d_layers)
-        layer.render(srcWindow, baseRect, modcols, clipper, d_clipToDisplay);
+        layer.render(srcWindow, baseRect, modcols, d_clipToDisplay ? nullptr : clipper);
 }
 
 void StateImagery::addLayer(const LayerSpecification& layer)

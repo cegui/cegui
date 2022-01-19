@@ -334,7 +334,7 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
                 d_renderer->destroyGeometryBuffer(*d_FPSGeometry.at(i));
             d_FPSGeometry.clear();
 
-            fnt->createTextRenderGeometry(d_FPSGeometry, sstream.str(), glm::vec2(0, 0), nullptr, false,
+            fnt->createTextRenderGeometry(d_FPSGeometry, sstream.str(), glm::vec2(0, 0), nullptr,
                 CEGUI::Colour(0xFFFFFFFF), DefaultParagraphDirection::LeftToRight);
 
             updateFPSGeometry();

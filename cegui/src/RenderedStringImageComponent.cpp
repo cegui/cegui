@@ -63,7 +63,7 @@ void RenderedStringImageComponent::createRenderGeometry(std::vector<GeometryBuff
     if (d_selectionImage && d_selected)
     {
         const Rectf select_area(position, getPixelSize(ref_wnd));
-        ImageRenderSettings imgRenderSettings(select_area, clip_rect, true, ColourRect(0xFF002FFF));
+        ImageRenderSettings imgRenderSettings(select_area, clip_rect, ColourRect(0xFF002FFF));
         d_selectionImage->createRenderGeometry(out, imgRenderSettings);
     }
 
@@ -107,7 +107,7 @@ void RenderedStringImageComponent::createRenderGeometry(std::vector<GeometryBuff
         final_cols *= *mod_colours;
 
     // Create the render geometry for the image
-    ImageRenderSettings imgRenderSettings(dest, clip_rect, true, final_cols);
+    ImageRenderSettings imgRenderSettings(dest, clip_rect, final_cols);
     d_image->createRenderGeometry(out, imgRenderSettings);
 }
 

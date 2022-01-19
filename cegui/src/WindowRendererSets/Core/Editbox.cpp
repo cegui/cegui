@@ -260,7 +260,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
         // No highlighted text - we can draw the whole thing
         font->createTextRenderGeometry(w->getGeometryBuffers(),
             text, textPartRect.d_min.x, textPartRect.getPosition(),
-            &textArea, true, normalTextCol, w->getDefaultParagraphDirection());
+            &textArea, normalTextCol, w->getDefaultParagraphDirection());
     }
     else
     {
@@ -313,7 +313,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
             // Create render geometry for pre-selected text
             font->createTextRenderGeometry(w->getGeometryBuffers(),
                 sect, textPartRect.d_min.x, textPartRect.getPosition(),
-                &textArea, true, normalTextCol, w->getDefaultParagraphDirection());
+                &textArea, normalTextCol, w->getDefaultParagraphDirection());
         }
 
         const bool hasPost = (selEnd < lineLength);
@@ -330,14 +330,14 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
         // Create render geometry for selected text
         font->createTextRenderGeometry(w->getGeometryBuffers(),
             text.substr(selStart, selEnd - selStart), textPartRect.d_min.x, textPartRect.getPosition(),
-            &textArea, true, selectTextCol, w->getDefaultParagraphDirection());
+            &textArea, selectTextCol, w->getDefaultParagraphDirection());
 
         // Create render geometry for post-selected text
         if (hasPost)
         {
             font->createTextRenderGeometry(w->getGeometryBuffers(),
                 text.substr(selEnd), textPartRect.d_min.x, textPartRect.getPosition(),
-                &textArea, true, normalTextCol, w->getDefaultParagraphDirection());
+                &textArea, normalTextCol, w->getDefaultParagraphDirection());
         }
 
 #endif

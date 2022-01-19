@@ -276,7 +276,7 @@ const String& FrameComponent::getImagePropertySource(
 void FrameComponent::addImageRenderGeometryToWindow_impl(
     Window& srcWindow, Rectf& destRect,
     const CEGUI::ColourRect* modColours,
-    const Rectf* clipper, bool clipToDisplay) const
+    const Rectf* clipper) const
 {
     Rectf backgroundRect(destRect);
     Sizef imageSize;
@@ -295,7 +295,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
     initColoursRect(srcWindow, modColours, renderSettingFinalColours);
 
     ImageRenderSettings renderSettings(
-        Rectf(), clipper, !clipToDisplay, renderSettingFinalColours);
+        Rectf(), clipper, renderSettingFinalColours);
 
     Rectf& renderSettingDestArea = renderSettings.d_destArea;
     ColourRect& renderSettingMultiplyColours = renderSettings.d_multiplyColours;
@@ -453,7 +453,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         createRenderGeometryForImage(srcWindow.getGeometryBuffers(), componentImage,
             VerticalImageFormatting::TopAligned, d_topEdgeFormatting.get(srcWindow),
-                renderSettingDestArea, renderSettingMultiplyColours, clipper, clipToDisplay);
+                renderSettingDestArea, renderSettingMultiplyColours, clipper);
     }
 
     // bottom image
@@ -484,7 +484,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         createRenderGeometryForImage(srcWindow.getGeometryBuffers(), componentImage,
             VerticalImageFormatting::BottomAligned, d_bottomEdgeFormatting.get(srcWindow),
-                renderSettingDestArea, renderSettingMultiplyColours, clipper, clipToDisplay);
+                renderSettingDestArea, renderSettingMultiplyColours, clipper);
     }
 
     // left image
@@ -515,7 +515,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         createRenderGeometryForImage(srcWindow.getGeometryBuffers(), componentImage,
             d_leftEdgeFormatting.get(srcWindow), HorizontalFormatting::LeftAligned,
-                renderSettingDestArea, renderSettingMultiplyColours, clipper, clipToDisplay);
+                renderSettingDestArea, renderSettingMultiplyColours, clipper);
     }
 
     // right image
@@ -546,7 +546,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         createRenderGeometryForImage(srcWindow.getGeometryBuffers(), componentImage,
             d_rightEdgeFormatting.get(srcWindow), HorizontalFormatting::RightAligned,
-                renderSettingDestArea, renderSettingMultiplyColours, clipper, clipToDisplay);
+                renderSettingDestArea, renderSettingMultiplyColours, clipper);
     }
 
     if (const Image* const componentImage = getImage(FrameImageComponent::Background, srcWindow))
@@ -571,7 +571,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         createRenderGeometryForImage(srcWindow.getGeometryBuffers(), componentImage,
                 vertFormatting, horzFormatting,
-                backgroundRect, renderSettingMultiplyColours, clipper, clipToDisplay);
+                backgroundRect, renderSettingMultiplyColours, clipper);
     }
 }
 
@@ -582,7 +582,7 @@ void FrameComponent::createRenderGeometryForImage(
     VerticalImageFormatting vertFmt,
     HorizontalFormatting horzFmt,
     Rectf& destRect, const ColourRect& colours,
-    const Rectf* clipper, bool clip_to_display) const
+    const Rectf* clipper) const
 {
     unsigned int horzTiles, vertTiles;
     float xpos, ypos;
@@ -659,7 +659,7 @@ void FrameComponent::createRenderGeometryForImage(
                 "An unknown VerticalFormatting value was specified.");
     }
 
-    ImageRenderSettings renderSettings(Rectf(), nullptr, !clip_to_display, colours);
+    ImageRenderSettings renderSettings(Rectf(), nullptr, colours);
 
     Rectf& renderSettingDestArea = renderSettings.d_destArea;
     renderSettingDestArea.d_min.y = ypos;

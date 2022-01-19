@@ -224,7 +224,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
         {
             // Create geometry buffers for the text and add to the Window
             font->createTextRenderGeometry(w->getGeometryBuffers(), lineText,
-                lineRect.getPosition(), &destArea, true, normalTextCol, w->getDefaultParagraphDirection());
+                lineRect.getPosition(), &destArea, normalTextCol, w->getDefaultParagraphDirection());
         }
         else
         {
@@ -253,7 +253,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
                 selStartOffset = font->getTextAdvance(sect);
 
                 font->createTextRenderGeometry(w->getGeometryBuffers(), sect,
-                    lineRect.getPosition(), &destArea, true, normalTextCol,
+                    lineRect.getPosition(), &destArea, normalTextCol,
                     w->getDefaultParagraphDirection());
 
                 // Set position ready for next portion of text
@@ -277,14 +277,14 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
             lineRect.setHeight(font->getLineSpacing());
 
             // Create the render geometry for the selection area brush for this line
-            ImageRenderSettings renderSettings(lineRect, &destArea, true, selectBrushCol);
+            ImageRenderSettings renderSettings(lineRect, &destArea, selectBrushCol);
             w->getSelectionBrushImage()->createRenderGeometry(w->getGeometryBuffers(), renderSettings);
 
             lineRect.top(textTop);
 
             // Create the render geometry for the selected text
             font->createTextRenderGeometry(w->getGeometryBuffers(), sect,
-                lineRect.getPosition(), &destArea, true, selectTextCol, w->getDefaultParagraphDirection());
+                lineRect.getPosition(), &destArea, selectTextCol, w->getDefaultParagraphDirection());
 
             // Create the render geometry for any text beyond selected region of line
             if (sectIdx < lineLength)
@@ -292,7 +292,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
                 lineRect.d_min.x += selAreaWidth;
                 const String sect = lineText.substr(sectIdx, lineLength - sectIdx);
                 font->createTextRenderGeometry(w->getGeometryBuffers(), sect,
-                    lineRect.getPosition(), &destArea, true, normalTextCol, w->getDefaultParagraphDirection());
+                    lineRect.getPosition(), &destArea, normalTextCol, w->getDefaultParagraphDirection());
             }
         }
 
