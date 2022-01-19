@@ -58,10 +58,6 @@ public:
     void setColours(const Colour& c) { d_colours.setColours(c); }
     //! return the ColourRect object used when drawing this component.
     const ColourRect& getColours() const { return d_colours; }
-    //! Set the VerticalTextFormatting option for this component.
-    void setVerticalTextFormatting(VerticalTextFormatting fmt) { d_verticalTextFormatting = fmt; }
-    //! return the current VerticalTextFormatting option.
-    VerticalTextFormatting getVerticalTextFormatting() const { return d_verticalTextFormatting; }
     //! set the default paragraph direction to use when rendering the text.
     void setDefaultParagraphDirection(DefaultParagraphDirection dir) { d_defaultParagraphDir = dir; }
     //! return the default paragraph direction to use when rendering the text.
@@ -96,8 +92,6 @@ protected:
     size_t d_selectionStart = 0;
     size_t d_selectionLength = 0;
     size_t d_spaceCount = 0;
-    //! Vertical formatting to be used for this component.
-    VerticalTextFormatting d_verticalTextFormatting = VerticalTextFormatting::BottomAligned;
     DefaultParagraphDirection d_defaultParagraphDir = DefaultParagraphDirection::Automatic;
 };
 

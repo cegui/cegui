@@ -49,6 +49,7 @@ const String BasicRenderedStringParser::ColourTagName("colour");
 const String BasicRenderedStringParser::FontTagName("font");
 const String BasicRenderedStringParser::ImageTagName("image");
 const String BasicRenderedStringParser::WindowTagName("window");
+const String BasicRenderedStringParser::VertFormattingTagName("vert-formatting");
 const String BasicRenderedStringParser::VertImageFormattingTagName("vert-image-formatting");
 const String BasicRenderedStringParser::VertTextFormattingTagName("vert-text-formatting");
 const String BasicRenderedStringParser::PaddingTagName("padding");
@@ -156,7 +157,7 @@ void BasicRenderedStringParser::appendRenderedText(RenderedString& rs, const Str
         RenderedStringTextComponent rtc(text.substr(cpos, len), d_font);
         rtc.setPadding(d_padding);
         rtc.setColours(d_colours);
-        rtc.setVerticalTextFormatting(d_vertTextFormatting);
+        rtc.setVerticalFormatting(d_vertFormatting);
         rtc.setDefaultParagraphDirection(dir);
         rs.appendComponent(rtc);
 
@@ -215,7 +216,7 @@ void BasicRenderedStringParser::initialiseDefaultState()
     d_font = nullptr;
     d_padding = Rectf(0, 0, 0, 0);
     d_imageSize.d_width = d_imageSize.d_height = 0.0f;
-    d_vertTextFormatting = VerticalTextFormatting::BottomAligned;
+    d_vertFormatting = VerticalImageFormatting::BottomAligned;
 }
 
 //----------------------------------------------------------------------------//
@@ -225,8 +226,12 @@ void BasicRenderedStringParser::initialiseTagHandlers()
     d_tagHandlers[FontTagName] = &BasicRenderedStringParser::handleFont;
     d_tagHandlers[ImageTagName] = &BasicRenderedStringParser::handleImage;
     d_tagHandlers[WindowTagName] = &BasicRenderedStringParser::handleWindow;
-    d_tagHandlers[VertImageFormattingTagName] = &BasicRenderedStringParser::handleVertImageFormatting;
-    d_tagHandlers[VertTextFormattingTagName] = &BasicRenderedStringParser::handleVertTextFormatting;
+
+    // FIXME: legacy separation on Image and Text, left for compatibility but may behave unexpectedly!
+    d_tagHandlers[VertFormattingTagName] = &BasicRenderedStringParser::handleVertFormatting;
+    d_tagHandlers[VertImageFormattingTagName] = &BasicRenderedStringParser::handleVertFormatting;
+    d_tagHandlers[VertTextFormattingTagName] = &BasicRenderedStringParser::handleVertFormatting;
+
     d_tagHandlers[PaddingTagName] = &BasicRenderedStringParser::handlePadding;
     d_tagHandlers[TopPaddingTagName] = &BasicRenderedStringParser::handleTopPadding;
     d_tagHandlers[BottomPaddingTagName] = &BasicRenderedStringParser::handleBottomPadding;
@@ -257,7 +262,7 @@ void BasicRenderedStringParser::handleImage(RenderedString& rs, const String& va
     RenderedStringImageComponent ric(PropertyHelper<Image*>::fromString(value));
     ric.setPadding(d_padding);
     ric.setColours(d_colours);
-    ric.setVerticalImageFormatting(d_vertImageFormatting);
+    ric.setVerticalFormatting(d_vertFormatting);
     ric.setSize(d_imageSize);
     rs.appendComponent(ric);
 }
@@ -267,20 +272,14 @@ void BasicRenderedStringParser::handleWindow(RenderedString& rs, const String& v
 {
     RenderedStringWidgetComponent rwc(value);
     rwc.setPadding(d_padding);
-    rwc.setVerticalTextFormatting(d_vertTextFormatting);
+    rwc.setVerticalFormatting(d_vertFormatting);
     rs.appendComponent(rwc);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleVertImageFormatting(RenderedString&, const String& value)
+void BasicRenderedStringParser::handleVertFormatting(RenderedString&, const String& value)
 {
-    d_vertImageFormatting = FalagardXMLHelper<VerticalImageFormatting>::fromString(value);
-}
-
-//----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleVertTextFormatting(RenderedString&, const String& value)
-{
-    d_vertTextFormatting = FalagardXMLHelper<VerticalTextFormatting>::fromString(value);
+    d_vertFormatting = FalagardXMLHelper<VerticalImageFormatting>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//

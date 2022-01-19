@@ -112,21 +112,15 @@ void SVGImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
 
     const CEGUI::Rectf*const&  clip_area = render_settings.d_clipArea;
     // Calculate the actual (clipped) area to which we want to render to
-    Rectf final_rect(clip_area ? dest.getIntersection(*clip_area) : dest );
+    Rectf finalRect(clip_area ? dest.getIntersection(*clip_area) : dest );
 
     // check if our Image is totally clipped and return if it is
-    if ((final_rect.getWidth() == 0) || (final_rect.getHeight() == 0))
+    if (finalRect.empty())
         return;
 
     // Calculate the scale factor for our Image which is the scaling of the Image
     // area to the destination area of our render call
     const glm::vec2 scale_factor(dest.getWidth() / d_imageArea.getWidth(), dest.getHeight() / d_imageArea.getHeight());
-
-    // URGENT FIXME: Shouldn't this be in the hands of the user?
-    final_rect.d_min.x = CoordConverter::alignToPixels(final_rect.d_min.x);
-    final_rect.d_min.y = CoordConverter::alignToPixels(final_rect.d_min.y);
-    final_rect.d_max.x = CoordConverter::alignToPixels(final_rect.d_max.x);
-    final_rect.d_max.y = CoordConverter::alignToPixels(final_rect.d_max.y);
 
     SVGImageRenderSettings svg_render_settings(render_settings,
                                                scale_factor,

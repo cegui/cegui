@@ -71,7 +71,7 @@ void RenderedStringImageComponent::createRenderGeometry(std::vector<GeometryBuff
     float y_scale = 1.0f;
 
     // handle formatting options
-    switch (d_verticalImageFormatting)
+    switch (d_verticalFormatting)
     {
         case VerticalImageFormatting::BottomAligned:
             dest.d_min.y += vertical_space - getPixelSize(ref_wnd).d_height;
@@ -89,8 +89,10 @@ void RenderedStringImageComponent::createRenderGeometry(std::vector<GeometryBuff
             // nothing additional to do for this formatting option.
             break;
 
+        // TODO TEXT: Tiled?
+
         default:
-            throw InvalidRequestException("unknown VerticalImageFormatting option specified.");
+            throw InvalidRequestException("unsupported VerticalImageFormatting option specified.");
     }
 
     dest.setWidth((d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width);

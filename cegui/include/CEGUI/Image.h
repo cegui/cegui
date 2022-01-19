@@ -163,12 +163,10 @@ struct ImageRenderSettings
     //! Constructor
     ImageRenderSettings(const Rectf& dest_area,
                         const Rectf* clip_area = nullptr,
-                        bool clipping_enabled = false,
                         const ColourRect& multiplication_colours = ColourRect(0XFFFFFFFF),
                         float alpha = 1.0f) :
         d_destArea(dest_area),
         d_clipArea(clip_area),
-        d_clippingEnabled(clipping_enabled),
         d_multiplyColours(multiplication_colours),
         d_alpha(alpha)
     {
@@ -177,7 +175,6 @@ struct ImageRenderSettings
     ImageRenderSettings(const ImageRenderSettings& source) :
         d_destArea(source.d_destArea),
         d_clipArea(source.d_clipArea),
-        d_clippingEnabled(source.d_clippingEnabled),
         d_multiplyColours(source.d_multiplyColours),
         d_alpha(source.d_alpha)
     {
@@ -185,10 +182,8 @@ struct ImageRenderSettings
 
     //! The destination area for the Image.
     Rectf d_destArea;
-    //! The clipping area of the Image.
+    //! The clipping area of the Image, nullptr if clipping should be disabled.
     const Rectf* d_clipArea;
-    //! True of clipping should be enabled for the geometry of this Image.
-    bool d_clippingEnabled;
     //! The colour rectangle set for this Image. The colours of the rectangle will be multiplied with
     //! the Image's colours when rendered, i.e. if the colours are all '0xFFFFFFFF' no effect will be seen.
     //! If this will be used depends on the underlying image.
@@ -361,6 +356,8 @@ protected:
     void updateScaledSize(const Sizef& renderer_display_size);
     //! Updates only the scaled offset values according to the new display size of the renderer 
     void updateScaledOffset(const Sizef& renderer_display_size);
+    //! Returns an area where an image must be rendered
+    Rectf calculateRenderArea(const ImageRenderSettings& renderSettings) const;
 
     //! Name used for the Image as defined during creation.
     String d_name;

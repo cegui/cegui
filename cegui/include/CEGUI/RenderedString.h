@@ -43,9 +43,27 @@ namespace CEGUI
 class Rectf;
 using RenderedStringComponentPtr = std::unique_ptr<class RenderedStringComponent>;
 
+struct RenderedGlyph
+{
+    //pointer to component? store type to avoid dynamic cast / virtualization?
+    // union FontGlyph / ImageElement / WidgetElement + type?
+
+    size_t originalIndex;
+    glm::vec2 offset;
+    Sizef advance;
+    // ColorRect - get from element?
+
+    bool isJustifyable : 1;
+    bool isBreakable : 1;
+    bool isRightToLeft : 1;
+};
+
 struct RenderedParagraph
 {
-    int dbgtmp = 0;
+    std::vector<RenderedGlyph> glyphs;
+    Sizef extents;
+    uint16_t justifyableSpaceCount = 0;
+    DefaultParagraphDirection bidiDir = DefaultParagraphDirection::Automatic;
 };
 
 /*!

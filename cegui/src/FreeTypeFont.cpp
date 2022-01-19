@@ -618,7 +618,7 @@ void FreeTypeFont::initialiseGlyphMap()
 
         FreeTypeFontGlyph* newFontGlyph = new FreeTypeFontGlyph(codepoint, gindex);
         d_codePointToGlyphMap[codepoint] = newFontGlyph;
-        d_indexToGlyphMap[gindex] = static_cast<char32_t>(codepoint);
+        d_indexToGlyphMap[gindex] = newFontGlyph;
 
         codepoint = FT_Get_Next_Char(d_fontFace, codepoint, &gindex);
     }
@@ -970,26 +970,22 @@ void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBu
             raqm_glyph_t& currentGlyph = glyphs[i];
 
             // Ignore new line characters
-            if (originalTextArray[currentGlyph.cluster] == '\n')
+            const auto codePoint = originalTextArray[currentGlyph.cluster];
+            if (codePoint == '\n')
                 continue;
 
-            char32_t codePoint;
-            auto foundCodePointIter = d_indexToGlyphMap.find(currentGlyph.index);
-            if (foundCodePointIter != d_indexToGlyphMap.end())
-                codePoint = foundCodePointIter->second;
-            else
-                codePoint = UnicodeReplacementCharacter;
-
             // Find glyph and handle missing glyph replacement
-            const FreeTypeFontGlyph* glyph = getPreparedGlyph(codePoint);
+            FreeTypeFontGlyph* glyph = getGlyphByIndex(currentGlyph.index);
             if (!glyph)
             {
                 if (codePoint != UnicodeReplacementCharacter)
-                    glyph = getPreparedGlyph(UnicodeReplacementCharacter);
+                    glyph = getGlyphForCodepoint(UnicodeReplacementCharacter);
 
                 if (!glyph)
                     continue;
             }
+
+            prepareGlyph(glyph);
 
             // Render glyph
             if (auto image = glyph->getImage(layer))
@@ -1030,6 +1026,13 @@ FreeTypeFontGlyph* FreeTypeFont::getGlyphForCodepoint(const char32_t codepoint) 
 {
     auto it = d_codePointToGlyphMap.find(codepoint);
     return (it != d_codePointToGlyphMap.end()) ? it->second : nullptr;
+}
+
+//----------------------------------------------------------------------------//
+FreeTypeFontGlyph* FreeTypeFont::getGlyphByIndex(uint32_t ftGlyphIndex) const
+{
+    auto it = d_indexToGlyphMap.find(ftGlyphIndex);
+    return (it != d_indexToGlyphMap.end()) ? it->second : nullptr;
 }
 
 //----------------------------------------------------------------------------//

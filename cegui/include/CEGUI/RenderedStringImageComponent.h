@@ -62,10 +62,6 @@ public:
     void setSize(const Sizef& sz) { d_size = sz; }
     //! return the size for rendering the image (0s mean 'normal' size)
     const Sizef& getSize() const { return d_size; }
-    //! Sets the vertical image formatting of this image
-    void setVerticalImageFormatting(VerticalImageFormatting fmt) { d_verticalImageFormatting = fmt; }
-    //! Gets the vertical image formatting of this image
-    VerticalImageFormatting getVerticalImageFormatting() const { return d_verticalImageFormatting; }
 
     // implementation of abstract base interface
     void createRenderGeometry(std::vector<GeometryBuffer*>& out,
@@ -92,8 +88,6 @@ protected:
     ColourRect d_colours = 0xFFFFFFFF;
     //! target size to render the image at (0s mean natural size)
     Sizef d_size;
-    //! The vertical image formatting for the image
-    VerticalImageFormatting d_verticalImageFormatting = VerticalImageFormatting::BottomAligned;
     // whether the image is marked as selected.
     bool d_selected = false;
 };

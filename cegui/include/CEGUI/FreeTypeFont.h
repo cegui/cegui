@@ -114,7 +114,8 @@ public:
     
     void updateFont() override;
     bool isCodepointAvailable(char32_t codePoint) const override;
-    FreeTypeFontGlyph* getGlyphForCodepoint(const char32_t codePoint) const override;
+    FreeTypeFontGlyph* getGlyphForCodepoint(char32_t codePoint) const override;
+    FreeTypeFontGlyph* getGlyphByIndex(uint32_t ftGlyphIndex) const;
 
     /*!
     \brief
@@ -238,11 +239,6 @@ protected:
         mutable int d_maximumExtentY = 0;
     };
 
-    //! Type for mapping codepoints to the corresponding Freetype Font glyphs
-    typedef std::unordered_map<char32_t, FreeTypeFontGlyph*> CodePointToGlyphMap;
-    //! Type for mapping Freetype indices to the corresponding Freetype Font glyphs
-    typedef std::unordered_map<FT_UInt, char32_t> IndexToCodePointMap;
-
     /*!
     \brief
         Updates a part of the buffer data, which equates to a sub-image inside the 
@@ -357,9 +353,9 @@ protected:
     mutable TextureVector d_glyphTextures;
 
     //! Contains mappings from code points to Font glyphs
-    mutable CodePointToGlyphMap d_codePointToGlyphMap;
+    mutable std::unordered_map<char32_t, FreeTypeFontGlyph*> d_codePointToGlyphMap;
     //! Contains mappings from freetype indices to Font glyphs
-    mutable IndexToCodePointMap d_indexToGlyphMap;
+    mutable std::unordered_map<FT_UInt, FreeTypeFontGlyph*> d_indexToGlyphMap;
 
     //! The size with which new texture atlases for glyphs are going to be initialised
     int d_initialGlyphAtlasSize = 32;

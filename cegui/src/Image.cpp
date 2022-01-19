@@ -254,5 +254,13 @@ void Image::updateScaledOffset(const Sizef& renderer_display_size)
 }
 
 //----------------------------------------------------------------------------//
+Rectf Image::calculateRenderArea(const ImageRenderSettings& renderSettings) const
+{
+    Rectf dest = renderSettings.d_destArea;
+    dest.offset(d_scaledOffset);
+    if (const Rectf* clip_area = renderSettings.d_clipArea)
+        dest = std::move(dest.getIntersection(*clip_area));
+    return dest;
+}
 
 }
