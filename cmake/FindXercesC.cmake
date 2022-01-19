@@ -15,7 +15,7 @@ if (WIN32 OR APPLE)
     mark_as_advanced(XERCESC_DEFINITIONS_STATIC XERCESC_LIB_STATIC XERCESC_LIB_STATIC_DBG)
 endif()
 
-cegui_find_package_handle_standard_args(XERCESC XERCESC_LIB XERCESC_H_PATH)
+cegui_find_package_handle_standard_args(XercesC XERCESC_LIB XERCESC_H_PATH)
 
 
 # set up output vars

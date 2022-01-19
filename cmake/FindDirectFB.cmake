@@ -14,7 +14,7 @@ if (WIN32)
     mark_as_advanced(DIRECTFB_LIB_STATIC DIRECTFB_LIB_STATIC_DBG)
 endif()
 
-cegui_find_package_handle_standard_args(DIRECTFB DIRECTFB_LIB DIRECTFB_H_PATH)
+cegui_find_package_handle_standard_args(DirectFB DIRECTFB_LIB DIRECTFB_H_PATH)
 
 
 # set up output vars

@@ -10,7 +10,7 @@ find_path(OPENGLES3_H_PATH NAMES GLES3/gl3.h)
 find_library(OPENGLES3_LIB NAMES GLESv3)
 mark_as_advanced(OPENGLES3_H_PATH OPENGLES3_LIB OPENGLES3_LIB_DBG)
 
-find_package_handle_standard_args(OPENGLES3 DEFAULT_MSG OPENGLES3_LIB OPENGLES3_H_PATH)
+find_package_handle_standard_args(OpenGLES3 DEFAULT_MSG OPENGLES3_LIB OPENGLES3_H_PATH)
 
 # set up output vars
 if (OPENGLES3_FOUND)

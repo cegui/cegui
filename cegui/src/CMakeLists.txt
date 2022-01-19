@@ -36,10 +36,6 @@ if (NOT CEGUI_HAS_FREETYPE)
     list (REMOVE_ITEM CORE_SOURCE_FILES FreeTypeFontGlyph.cpp)
 endif()
 
-if (NOT CEGUI_USE_RAQM)
-    list (REMOVE_ITEM CORE_SOURCE_FILES RaqmTextData.cpp)
-endif()
-
 if (NOT CEGUI_HAS_PCRE_REGEX)
     list (REMOVE_ITEM CORE_SOURCE_FILES PCRERegexMatcher.cpp)
 endif()

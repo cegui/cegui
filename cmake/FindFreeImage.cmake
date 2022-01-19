@@ -15,7 +15,7 @@ if (WIN32 OR APPLE)
     mark_as_advanced(FREEIMAGE_DEFINITIONS_STATIC FREEIMAGE_LIB_STATIC FREEIMAGE_LIB_STATIC_DBG)
 endif()
 
-cegui_find_package_handle_standard_args(FREEIMAGE FREEIMAGE_LIB FREEIMAGE_H_PATH)
+cegui_find_package_handle_standard_args(FreeImage FREEIMAGE_LIB FREEIMAGE_H_PATH)
 
 
 # set up output vars
