@@ -68,6 +68,7 @@ public:
     static const String FontTagName;
     static const String ImageTagName;
     static const String WindowTagName;
+    static const String VertFormattingTagName;
     static const String VertImageFormattingTagName;
     static const String VertTextFormattingTagName;
     static const String PaddingTagName;
@@ -104,8 +105,7 @@ protected:
     void handleFont(RenderedString& rs, const String& value);
     void handleImage(RenderedString& rs, const String& value);
     void handleWindow(RenderedString& rs, const String& value);
-    void handleVertImageFormatting(RenderedString& rs, const String& value);
-    void handleVertTextFormatting(RenderedString& rs, const String& value);
+    void handleVertFormatting(RenderedString& rs, const String& value);
     void handlePadding(RenderedString& rs, const String& value);
     void handleTopPadding(RenderedString& rs, const String& value);
     void handleBottomPadding(RenderedString& rs, const String& value);
@@ -122,9 +122,7 @@ protected:
     //! active font.
     const Font* d_font = nullptr;
     //! active vertical image formatting
-    VerticalImageFormatting d_vertImageFormatting = VerticalImageFormatting::BottomAligned;
-    //! active vertical image formatting
-    VerticalTextFormatting d_vertTextFormatting = VerticalTextFormatting::BottomAligned;
+    VerticalImageFormatting d_vertFormatting = VerticalImageFormatting::BottomAligned;
     //! active image size
     Sizef d_imageSize;
 

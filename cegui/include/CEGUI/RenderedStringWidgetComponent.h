@@ -47,10 +47,6 @@ public:
     void setWindow(Window* widget);
     //! return the window currently controlled by this component
     const Window* getWindow() const { return getEffectiveWindow(nullptr); }
-    //! Set the VerticalTextFormatting option for this component.
-    void setVerticalTextFormatting(VerticalTextFormatting fmt) { d_verticalTextFormatting = fmt; }
-    //! return the current VerticalTextFormatting option.
-    VerticalTextFormatting getVerticalTextFormatting() const { return d_verticalTextFormatting; }
 
     // implementation of abstract base interface
     void createRenderGeometry(std::vector<GeometryBuffer*>& out, const Window* refWnd,
@@ -76,8 +72,6 @@ protected:
     mutable Window* d_window = nullptr;
     //! Name of window to manipulate
     String d_windowName;
-    //! Vertical formatting to be used for this component.
-    VerticalTextFormatting d_verticalTextFormatting = VerticalTextFormatting::BottomAligned;
     //! whether d_window is synched.
     mutable bool d_windowPtrSynched = true;
     // whether the image is marked as selected.

@@ -83,14 +83,15 @@ void RenderedStringWidgetComponent::createRenderGeometry(std::vector<GeometryBuf
         return;
 
     glm::vec2 final_pos(position);
-    switch (d_verticalTextFormatting)
+    switch (d_verticalFormatting)
     {
-        case VerticalTextFormatting::BottomAligned:
+        case VerticalImageFormatting::BottomAligned:
             final_pos.y += vertical_space - getPixelSize(refWnd).d_height;
             break;
-        case VerticalTextFormatting::CentreAligned:
+        case VerticalImageFormatting::CentreAligned:
             final_pos.y += (vertical_space - getPixelSize(refWnd).d_height) / 2.f;
             break;
+        // Otherwise default to TopAligned
     }
 
     // render the selection if needed

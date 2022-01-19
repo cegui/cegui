@@ -50,7 +50,7 @@ public:
                const AutoScaledMode autoscaled, const Sizef& native_res);
 
     void createRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const ImageRenderSettings& render_settings) const override;
+        const ImageRenderSettings& renderSettings) const override;
 
     void addToRenderGeometry(
         GeometryBuffer& geomBuffer,
@@ -86,17 +86,8 @@ protected:
     void createTexturedQuadVertices(
         TexturedColouredVertex* vbuffer,
         const CEGUI::ColourRect& colours,
-        Rectf& finalRect,
+        const Rectf& finalRect,
         const Rectf& texRect) const;
-
-    /*!
-    \brief
-        Helper function for calculating the tecture and render areas.
-    */
-    bool calculateTextureAreaAndRenderArea(
-        const Rectf& renderSettingDestArea,
-        const Rectf* clippingArea,
-        Rectf &finalRect, Rectf &texRect) const;
 
     //! Texture used by this image.
     Texture* d_texture;

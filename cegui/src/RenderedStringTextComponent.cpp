@@ -90,14 +90,16 @@ void RenderedStringTextComponent::createRenderGeometry(std::vector<GeometryBuffe
         return;
 
     glm::vec2 final_pos = position;
-    switch (d_verticalTextFormatting)
+    switch (d_verticalFormatting)
     {
-        case VerticalTextFormatting::BottomAligned:
+        case VerticalImageFormatting::BottomAligned:
             final_pos.y += vertical_space - getPixelSize(refWnd).d_height;
             break;
-        case VerticalTextFormatting::CentreAligned:
+        case VerticalImageFormatting::CentreAligned:
             final_pos.y += (vertical_space - getPixelSize(refWnd).d_height) / 2.f;
             break;
+        // Otherwise default to TopAligned
+        // TODO TEXT: Stretched
     }
 
     // apply padding to position:
@@ -156,7 +158,7 @@ RenderedStringComponentPtr RenderedStringTextComponent::split(
     // create 'left' side of split and clone our basic configuration
     auto lhs = std::make_unique<RenderedStringTextComponent>();
     lhs->d_padding = d_padding;
-    lhs->d_verticalTextFormatting = d_verticalTextFormatting;
+    lhs->d_verticalFormatting = d_verticalFormatting;
     lhs->d_font = d_font;
     lhs->d_colours = d_colours;
 

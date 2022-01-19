@@ -94,32 +94,37 @@ void BitmapImage::setTexture(Texture* texture)
 
 //----------------------------------------------------------------------------//
 void BitmapImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const ImageRenderSettings& render_settings) const
+    const ImageRenderSettings& renderSettings) const
 {
-    Rectf texRect;
-    Rectf finalRect;
-
-    const bool isFullClipped = calculateTextureAreaAndRenderArea(
-        render_settings.d_destArea, render_settings.d_clipArea,
-        finalRect, texRect);
-
-    if (isFullClipped)
+    const Rectf finalRect = calculateRenderArea(renderSettings);
+    if (finalRect.empty())
         return;
 
+    const glm::vec2 tex_per_pix(d_imageArea.getWidth() / renderSettings.d_destArea.getWidth(),
+        d_imageArea.getHeight() / renderSettings.d_destArea.getHeight());
+
+    Rectf dest(renderSettings.d_destArea);
+    dest.offset(d_scaledOffset);
+    // dest.d_min += d_scaledOffset;
+    // dest.d_max += d_scaledOffset;
+    // return Rectf(d_min - r.d_min, d_max - r.d_max);
+    // return Rectf(d_min * vector, d_max * vector);
+    const Rectf texRect((d_imageArea + ((finalRect - dest) * tex_per_pix)) * d_texture->getTexelScaling());
+
     TexturedColouredVertex vbuffer[6];
-    const CEGUI::ColourRect& colours = render_settings.d_multiplyColours;
+    const CEGUI::ColourRect& colours = renderSettings.d_multiplyColours;
 
     createTexturedQuadVertices(vbuffer, colours, finalRect, texRect);
 
 
     CEGUI::GeometryBuffer& buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
 
-    buffer.setClippingActive(render_settings.d_clippingEnabled);
-    if(render_settings.d_clippingEnabled)
-        buffer.setClippingRegion(*render_settings.d_clipArea);
+    buffer.setClippingActive(!!renderSettings.d_clipArea);
+    if (renderSettings.d_clipArea)
+        buffer.setClippingRegion(*renderSettings.d_clipArea);
     buffer.setTexture("texture0", d_texture);
     buffer.appendGeometry(vbuffer, 6);
-    buffer.setAlpha(render_settings.d_alpha);
+    buffer.setAlpha(renderSettings.d_alpha);
 
     out.push_back(&buffer);
 }
@@ -131,61 +136,22 @@ void BitmapImage::addToRenderGeometry(
     const Rectf* clipArea,
     const ColourRect& colours) const
 {
-    Rectf texRect;
-    Rectf finalRect;
-
-    bool isFullClipped = calculateTextureAreaAndRenderArea(
-        renderArea, clipArea,
-        finalRect, texRect);
-
-    if (isFullClipped)
-    {
+    const Rectf finalRect = calculateRenderArea(renderSettings);
+    if (finalRect.empty())
         return;
-    }
-    
+
+    //
+
     TexturedColouredVertex vbuffer[6];
     createTexturedQuadVertices(vbuffer, colours, finalRect, texRect);
 
     geomBuffer.appendGeometry(vbuffer, 6);
 }
 
-
-bool BitmapImage::calculateTextureAreaAndRenderArea(
-    const Rectf& renderSettingDestArea,
-    const Rectf* clippingArea,
-    Rectf& finalRect, Rectf& texRect) const
-{
-    Rectf dest(renderSettingDestArea);
-    // apply rendering offset to the destination Rect
-    dest.offset(d_scaledOffset);
-
-    // get the rect area that we will actually draw to (i.e. perform clipping)
-    finalRect = Rectf(clippingArea ? dest.getIntersection(*clippingArea) : dest);
-
-    // check if rect was totally clipped
-    if ((finalRect.getWidth() == 0) || (finalRect.getHeight() == 0))
-        return true;
-
-    // Obtain correct scale values from the texture
-    const glm::vec2& texel_scale = d_texture->getTexelScaling();
-    const glm::vec2 tex_per_pix(d_imageArea.getWidth() / dest.getWidth(), d_imageArea.getHeight() / dest.getHeight());
-
-    // calculate final, clipped, texture co-ordinates
-    texRect = Rectf((d_imageArea + ((finalRect - dest) * tex_per_pix)) * texel_scale);
-
-    // Positions have to be rounded because the glyphs images have to be grid-aligned
-    finalRect.d_min.x = CoordConverter::alignToPixels(finalRect.d_min.x);
-    finalRect.d_min.y = CoordConverter::alignToPixels(finalRect.d_min.y);
-    finalRect.d_max.x = CoordConverter::alignToPixels(finalRect.d_max.x);
-    finalRect.d_max.y = CoordConverter::alignToPixels(finalRect.d_max.y);
-
-    return false;
-}
-
 void BitmapImage::createTexturedQuadVertices(
     TexturedColouredVertex* vbuffer,
     const CEGUI::ColourRect &colours,
-    Rectf &finalRect,
+    const Rectf &finalRect,
     const Rectf &texRect) const
 {
     // vertex 0

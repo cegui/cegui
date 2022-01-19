@@ -113,7 +113,7 @@ static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
     //   if references image or widget, process specially
     //   if references a font
     //     collect a range with the same font
-    //     process range inside that font
+    //     process range inside that font, to handle kerning and other font virtualization
     //     apply styling (underline, strikeout etc)
 
     return true;
@@ -222,6 +222,9 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
     if (!raqm_layout(rq))
         return false;
 
+    const raqm_direction_t rqDir = raqm_get_par_resolved_direction(rq);
+    out.bidiDir = (rqDir == RAQM_DIRECTION_RTL) ? DefaultParagraphDirection::RightToLeft : DefaultParagraphDirection::LeftToRight;
+
     // Glyph generation
 
     //penPosition = penPositionStart;
@@ -229,11 +232,24 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
 
     size_t rqGlyphCount = 0;
     raqm_glyph_t* rqGlyphs = raqm_get_glyphs(rq, &rqGlyphCount);
+    out.glyphs.resize(rqGlyphCount);
+
     for (size_t i = 0; i < rqGlyphCount; ++i)
     {
         const raqm_glyph_t& rqGlyph = rqGlyphs[i];
+        auto& ceguiGlyph = out.glyphs[i];
 
-        //const size_t originalIndex = rqGlyph.cluster + start;
+        ceguiGlyph.originalIndex = rqGlyph.cluster + start;
+        ceguiGlyph.isRightToLeft = (raqm_get_direction_at_index(rq, i) == RAQM_DIRECTION_RTL);
+
+        // A multiplication coefficient to convert 26.6 fixed point values into normal floats
+        constexpr float s_26dot6_toFloat = (1.0f / 64.f);
+
+        //???TODO TEXT: std::round or do it when generating rendering geometry?!
+        ceguiGlyph.offset.x = rqGlyph.x_offset * s_26dot6_toFloat;
+        ceguiGlyph.offset.y = rqGlyph.y_offset * s_26dot6_toFloat;
+        ceguiGlyph.advance.d_width = rqGlyph.x_advance * s_26dot6_toFloat;
+        ceguiGlyph.advance.d_height = rqGlyph.y_advance * s_26dot6_toFloat;
 
         // Find a font for our glyph
         auto it = std::upper_bound(fontRanges.begin(), fontRanges.end(), rqGlyph.cluster,
@@ -241,30 +257,25 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
         {
             return elm.second < value;
         });
-        auto font = (*it).first;
-        //font->getGlyphImage(rqGlyph.index [, size, outline etc]) // freetype font specific
 
-        //!!!NB: for placeholder glyphs need to calculate size now or to convert offsets into positions later!
-        //!!!may be THE BEST is to store offsets here, and set positions when generating geometry?! or at least
-        //in the common part of layouting?!
+        auto glyph = (*it).first->getGlyphByIndex(rqGlyph.index);
+        //!!!prepareGlyph!
+
         //???handle vertical positioning here. or requires embedded objects width?! or doesn't depend on it? seems so.
-        /*
-            if (auto image = glyph->getImage(layer))
-            {
-                penPosition.x = std::round(penPosition.x);
+        //!!!layers in the glyph! store basic image, outline image etc inside one glyph group?
+        if (auto image = glyph->getImage(0))
+        {
+            //penPosition.x = std::round(penPosition.x);
 
-                //The glyph pos will be rounded to full pixels internally
-                const glm::vec2 renderGlyphPos(
-                    penPosition.x + currentGlyph.x_offset * s_26dot6_toFloat,
-                    penPosition.y + currentGlyph.y_offset * s_26dot6_toFloat);
+            ////The glyph pos will be rounded to full pixels internally
+            //const glm::vec2 renderGlyphPos(
+            //    penPosition.x + currentGlyph.x_offset * s_26dot6_toFloat,
+            //    penPosition.y + currentGlyph.y_offset * s_26dot6_toFloat);
 
-                imgRenderSettings.d_destArea = Rectf(renderGlyphPos, image->getRenderedSize());
-                addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect,
-                    (layer < layerColours.size()) ? layerColours[layer] : fallbackColour);
-            }
-
-            penPosition.x += currentGlyph.x_advance * s_26dot6_toFloat;
-        */
+            //imgRenderSettings.d_destArea = Rectf(renderGlyphPos, image->getRenderedSize());
+            //addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect,
+            //    (layer < layerColours.size()) ? layerColours[layer] : fallbackColour);
+        }
     }
 
     return true;
@@ -282,11 +293,11 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
 
     // Parse a string and obtain UTF-32 text with placeholders but without tags
     std::u32string utf32Text;
-    std::vector<size_t> originalIndices; //!!!empty is treated as 1 to 1!
+    std::vector<size_t> originalIndices;
     std::vector<uint8_t> elementIndices;
     std::vector<RenderedStringComponentPtr> elements; // either font style, image or widget [and font style may be subclassed as link?]
-    //???or store union and uint8_t type? virtual table requires 4 bytes, type - 1 byte. 
-    //!!!if elementIndices has no item for some codepoint, default to the default text style
+    //???or store union and uint8_t type? virtual table requires 4 bytes, type - 1 byte.
+    //!!!in each elements store logical index of the codepoint (or first-last range for texts)
     if (parser)
     {
         //!!!???base style will be created empty, fill it outside?, font, color
@@ -365,9 +376,37 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
 #endif
 
     //!!!Replace placeholder glyphs in paragraphs with images and widgets!
+    //!!!NB: for embedded objects need to calculate size now or to convert offsets into positions later!
+    //!!!may be store offsets and advances here, and set positions when generating geometry?!
     //!!!Calculate paragraph extents for faster horizontal formatting!
+    //!!!Calculate justifyables and breakables!
     for (auto& p : d_paragraphs)
     {
+        for (auto& glyph : p.glyphs)
+        {
+            const auto& element = elements[elementIndices[glyph.originalIndex]];
+            // always:
+            //element->getTopPadding
+            //element->getBottomPadding
+            // if first:
+            //element->getLeftPadding
+            // if last:
+            //element->getRightPadding
+            //!!!handle RTL direction for horizontal padding!
+
+            // VerticalImageFormatting - store in glyph or get from element? or embed into offset and advance Y?!
+            // if embed, image size changes will require recalculation!?
+
+            //???!!!placeholders must not be justifyable but may be breakable!?
+
+            //!!!The if last (ot the first too?) char is justifyable, don't mark it as such!
+            //???for word-wrap, where to handle it? Or it will count justifyable counts for subranges inside?!
+        }
+    }
+
+    if (!originalIndices.empty())
+    {
+        //!!!recalculate glyph-to-logical mapping using originalIndices
     }
 
     return true;

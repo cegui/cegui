@@ -408,8 +408,7 @@ public:
     \return
         Nothing.
     */
-    static void setDefaultResourceGroup(const String& resourceGroup)
-    { d_defaultResourceGroup = resourceGroup; }
+    static void setDefaultResourceGroup(const String& resourceGroup) { d_defaultResourceGroup = resourceGroup; }
 
     /*!
     \brief
@@ -419,8 +418,7 @@ public:
         String describing the default resource group identifier that will be
         used when loading font data.
     */
-    static const String& getDefaultResourceGroup()
-    { return d_defaultResourceGroup; }
+    static const String& getDefaultResourceGroup() { return d_defaultResourceGroup; }
 
     /*!
     \brief
@@ -444,7 +442,7 @@ public:
     virtual void updateFont() = 0;
 
 protected:
-    //! Constructor.
+
     Font(const String& name, const String& type_name, const String& filename,
          const String& resource_group, const AutoScaledMode auto_scaled,
          const Sizef& native_res);

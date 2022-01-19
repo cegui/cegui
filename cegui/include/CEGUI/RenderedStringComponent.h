@@ -71,6 +71,10 @@ public:
     float getTopPadding() const { return d_padding.d_min.y; }
     //! return the bottom padding value.
     float getBottomPadding() const { return d_padding.d_max.y; }
+    //! Sets the vertical image formatting of this image
+    void setVerticalFormatting(VerticalImageFormatting fmt) { d_verticalFormatting = fmt; }
+    //! Gets the vertical image formatting of this image
+    VerticalImageFormatting getVerticalFormatting() const { return d_verticalFormatting; }
 
     //! draw the component.
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
@@ -136,6 +140,8 @@ protected:
     Rectf d_padding = Rectf(0.f, 0.f, 0.f, 0.f);
     //! Image to draw for selection
     const Image* d_selectionImage = nullptr;
+    //! The vertical image formatting for the image
+    VerticalImageFormatting d_verticalFormatting = VerticalImageFormatting::BottomAligned;
 };
 
 }

@@ -61,8 +61,10 @@ public:
         d_max(pos.x + size.d_width, pos.y + size.d_height)
     {}
 
-    Rectf(const Rectf& r) = default;
-    Rectf& operator =(const Rectf& rhs) = default;
+    Rectf(const Rectf&) = default;
+    Rectf(Rectf&&) noexcept = default;
+    Rectf& operator =(const Rectf&) = default;
+    Rectf& operator =(Rectf&&) noexcept = default;
 
     inline void left(float v)
     {

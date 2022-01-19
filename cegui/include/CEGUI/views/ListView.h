@@ -38,7 +38,7 @@
 
 namespace CEGUI
 {
-enum class HorizontalTextFormatting : int;
+enum class HorizontalTextFormatting : uint8_t;
 
 /*!
 \brief
