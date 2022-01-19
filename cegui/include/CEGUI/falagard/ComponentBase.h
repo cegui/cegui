@@ -56,7 +56,7 @@ public:
     */
     void createRenderGeometryAndAddToWindow(
         Window& srcWindow, const CEGUI::ColourRect* modColours = nullptr,
-        const Rectf* clipper = nullptr, bool clipToDisplay = false) const;
+        const Rectf* clipper = nullptr) const;
 
     /*!
     \brief
@@ -78,7 +78,7 @@ public:
     void createRenderGeometryAndAddToWindow(
         Window& srcWindow, const Rectf& baseRect,
         const CEGUI::ColourRect* modColours = nullptr,
-        const Rectf* clipper = nullptr, bool clipToDisplay = false) const;
+        const Rectf* clipper = nullptr) const;
 
     /*!
     \brief
@@ -157,7 +157,7 @@ protected:
     virtual void addImageRenderGeometryToWindow_impl(
         Window& srcWindow, Rectf& destRect,
         const CEGUI::ColourRect* modColours,
-        const Rectf* clipper, bool clipToDisplay) const = 0;
+        const Rectf* clipper) const = 0;
 
     /*!
     \brief

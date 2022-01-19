@@ -291,8 +291,7 @@ public:
 protected:
 
     void addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf& destRect,
-        const CEGUI::ColourRect* modColours, const Rectf* clipper,
-        bool clipToDisplay) const override;
+        const CEGUI::ColourRect* modColours, const Rectf* clipper) const override;
 
     //! helper to set up an appropriate FormattedRenderedString
     void setupStringFormatter(HorizontalTextFormatting horzFormatting) const;

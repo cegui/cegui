@@ -227,7 +227,7 @@ namespace CEGUI
         void addImageRenderGeometryToWindow_impl(
             Window& srcWindow, Rectf& destRect,
             const CEGUI::ColourRect* modColours,
-            const Rectf* clipper, bool clipToDisplay) const override;
+            const Rectf* clipper) const override;
 
         const Image*         d_image;           //!< CEGUI::Image to be drawn by this image component.
         //! Vertical formatting to be applied when rendering the image component.

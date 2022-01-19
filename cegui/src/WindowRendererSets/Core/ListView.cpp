@@ -93,9 +93,7 @@ void FalagardListView::createRenderGeometry(ListView* list_view)
 
             Rectf icon_clipper(icon_rect.getIntersection(items_area));
 
-            ImageRenderSettings renderSettings(
-                icon_rect, &icon_clipper,
-                true, ICON_COLOUR_RECT, 1.0f);
+            ImageRenderSettings renderSettings(icon_rect, &icon_clipper, ICON_COLOUR_RECT, 1.0f);
 
             img.createRenderGeometry(list_view->getGeometryBuffers(), renderSettings);
 

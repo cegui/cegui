@@ -174,18 +174,18 @@ public:
     void createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, float& nextPenPosX,
         const glm::vec2& position, const Rectf* clip_rect,
-        bool clipping_enabled, const ColourRect& colours,
+        const ColourRect& colours,
         const DefaultParagraphDirection defaultParagraphDir,
         float spaceExtra = 0.f) const;
 
     // \overload
     inline void createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, const glm::vec2& position, const Rectf* clipRect,
-        bool clippingEnabled, const ColourRect& colours,
-        const DefaultParagraphDirection defaultParagraphDir, float spaceExtra = 0.f) const
+        const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
+        float spaceExtra = 0.f) const
     {
         float nextGlyphPos = 0.f;
-        createTextRenderGeometry(out, text, nextGlyphPos, position, clipRect, clippingEnabled,
+        createTextRenderGeometry(out, text, nextGlyphPos, position, clipRect,
             colours, defaultParagraphDir, spaceExtra);
     }
   

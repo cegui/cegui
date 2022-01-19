@@ -93,7 +93,7 @@ void ItemViewRenderer::createRenderGeometryAndAddToItemView(
     // Draw selection brush
     if (is_selected && view->getSelectionBrushImage())
     {
-        ImageRenderSettings renderSettings(draw_rect, item_clipper, true, view->getSelectionColourRect());
+        ImageRenderSettings renderSettings(draw_rect, item_clipper, view->getSelectionColourRect());
         view->getSelectionBrushImage()->createRenderGeometry(view->getGeometryBuffers(), renderSettings);
     }
 
@@ -114,7 +114,7 @@ void ItemViewRenderer::createRenderGeometryAndAddToItemView(
     // Draw selection brush
     if (is_selected && view->getSelectionBrushImage())
     {
-        ImageRenderSettings renderSettings(draw_rect, item_clipper, true, view->getSelectionColourRect());
+        ImageRenderSettings renderSettings(draw_rect, item_clipper, view->getSelectionColourRect());
         view->getSelectionBrushImage()->createRenderGeometry(view->getGeometryBuffers(), renderSettings);
     }
 

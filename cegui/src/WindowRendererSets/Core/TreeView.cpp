@@ -112,9 +112,7 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
 
             Rectf icon_clipper(icon_rect.getIntersection(items_area));
 
-            ImageRenderSettings renderSettings(
-                icon_rect, &icon_clipper,
-                true, ICON_COLOUR_RECT, 1.0f);
+            ImageRenderSettings renderSettings(icon_rect, &icon_clipper, ICON_COLOUR_RECT, 1.0f);
 
             img.createRenderGeometry(tree_view->getGeometryBuffers(), renderSettings);
 

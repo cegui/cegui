@@ -116,12 +116,12 @@ void RenderedStringTextComponent::createRenderGeometry(std::vector<GeometryBuffe
         const float selStartExtent = (d_selectionStart > 0) ? font->getTextExtent(d_text.substr(0, d_selectionStart)) : 0;
         const float selEndExtent = font->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
         const Rectf selRect(position.x + selStartExtent, position.y, position.x + selEndExtent, position.y + vertical_space);
-        ImageRenderSettings imgRenderSettings(selRect, clip_rect, true, ColourRect(0xFF002FFF));
+        ImageRenderSettings imgRenderSettings(selRect, clip_rect, ColourRect(0xFF002FFF));
         d_selectionImage->createRenderGeometry(out, imgRenderSettings);
     }
 
     // Create the geometry for rendering for the given text.
-    font->createTextRenderGeometry(out, d_text, final_pos, clip_rect, true, final_cols, d_defaultParagraphDir, space_extra);
+    font->createTextRenderGeometry(out, d_text, final_pos, clip_rect, final_cols, d_defaultParagraphDir, space_extra);
 }
 
 //----------------------------------------------------------------------------//

@@ -37,8 +37,7 @@ namespace CEGUI
 void FalagardComponentBase::createRenderGeometryAndAddToWindow(
     Window& srcWindow,
     const CEGUI::ColourRect* modColours,
-    const Rectf* clipper,
-    bool clipToDisplay) const
+    const Rectf* clipper) const
 {
     Rectf dest_rect(d_area.getPixelRect(srcWindow));
 
@@ -47,7 +46,7 @@ void FalagardComponentBase::createRenderGeometryAndAddToWindow(
 
     const Rectf final_clip_rect(dest_rect.getIntersection(*clipper));
     addImageRenderGeometryToWindow_impl(srcWindow, dest_rect, modColours,
-        &final_clip_rect, clipToDisplay);
+        &final_clip_rect);
 }
 
 //----------------------------------------------------------------------------//
@@ -55,8 +54,7 @@ void FalagardComponentBase::createRenderGeometryAndAddToWindow(
     Window& srcWindow,
     const Rectf& baseRect,
     const CEGUI::ColourRect* modColours,
-    const Rectf* clipper,
-    bool clipToDisplay) const
+    const Rectf* clipper) const
 {
     Rectf dest_rect(d_area.getPixelRect(srcWindow, baseRect));
 
@@ -66,7 +64,7 @@ void FalagardComponentBase::createRenderGeometryAndAddToWindow(
     const Rectf final_clip_rect(dest_rect.getIntersection(*clipper));
 
     addImageRenderGeometryToWindow_impl(srcWindow, dest_rect, modColours,
-        &final_clip_rect, clipToDisplay);
+        &final_clip_rect);
 }
 
 //----------------------------------------------------------------------------//

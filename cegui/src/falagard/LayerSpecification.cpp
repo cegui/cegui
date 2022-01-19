@@ -35,18 +35,18 @@ LayerSpecification::LayerSpecification(unsigned int priority) :
     d_layerPriority(priority)
 {}
 
-void LayerSpecification::render(Window& srcWindow, const ColourRect* modcols, const Rectf* clipper, bool clipToDisplay) const
+void LayerSpecification::render(Window& srcWindow, const ColourRect* modcols, const Rectf* clipper) const
 {
     // render all sections in this layer
     for (const auto& curr : d_sections)
-        curr.render(srcWindow, modcols, clipper, clipToDisplay);
+        curr.render(srcWindow, modcols, clipper);
 }
 
-void LayerSpecification::render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols, const Rectf* clipper, bool clipToDisplay) const
+void LayerSpecification::render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols, const Rectf* clipper) const
 {
     // render all sections in this layer
     for (const auto& curr : d_sections)
-        curr.render(srcWindow, baseRect, modcols, clipper, clipToDisplay);
+        curr.render(srcWindow, baseRect, modcols, clipper);
 }
 
 void LayerSpecification::addSectionSpecification(const SectionSpecification& section)
