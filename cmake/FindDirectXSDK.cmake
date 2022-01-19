@@ -22,19 +22,35 @@ else ()
         set (DIRECTXSDK_ARCH x64)
     endif()
 
-find_path(DIRECTXSDK_H_PATH NAMES d3d11.h PATHS ENV DXSDK_DIR PATH_SUFFIXES Include NO_DEFAULT_PATH)
-find_path(DIRECTXSDK_LIB_PATH NAMES d3d11.lib PATHS ENV DXSDK_DIR PATH_SUFFIXES "Lib/${DIRECTXSDK_ARCH}")
+	set(DXSDK_INCLUDE_PATHS
+		"$ENV{DXSDK_DIR}/Include"
+		"C:/Program Files (x86)/Microsoft DirectX SDK/Include")
+	set(DXSDK_LIB_PATHS
+		"$ENV{DXSDK_DIR}/Lib/${DIRECTXSDK_ARCH}"
+		"C:/Program Files (x86)/Microsoft DirectX SDK/Lib/${DIRECTXSDK_ARCH}")
+
+	if (WIN32)
+		GET_FILENAME_COMPONENT(WIN_SDK_ROOT "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows Kits\\Installed Roots;KitsRoot10]" ABSOLUTE CACHE)
+		list(INSERT DXSDK_INCLUDE_PATHS 0 "${WIN_SDK_ROOT}/Include/${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION}/um")
+		list(INSERT DXSDK_LIB_PATHS 0 "${WIN_SDK_ROOT}/Lib/${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION}/um/${DIRECTXSDK_ARCH}")
+	endif()
+
+	find_path(DIRECTXSDK_H_PATH
+		NAMES d3d11.h
+		PATHS ${DXSDK_INCLUDE_PATHS}
+		NO_DEFAULT_PATH)
+	find_path(DIRECTXSDK_LIB_PATH
+		NAMES d3d11.lib
+		PATHS ${DXSDK_LIB_PATHS})
 
     # now test for the specific d3d lib versions and set MAX_D3D accordingly
     if (EXISTS "${DIRECTXSDK_LIB_PATH}/d3d11.lib")
         set (DIRECTXSDK_MAX_D3D 11)
-    elseif (EXISTS "${DIRECTXSDK_LIB_PATH}/d3d9.lib")
-        set (DIRECTXSDK_MAX_D3D 9)
     else()
         set (DIRECTXSDK_MAX_D3D)
     endif()
 
-    find_package_handle_standard_args(DIRECTXSDK DEFAULT_MSG DIRECTXSDK_LIB_PATH DIRECTXSDK_H_PATH DIRECTXSDK_MAX_D3D)
+    find_package_handle_standard_args(DirectXSDK DEFAULT_MSG DIRECTXSDK_LIB_PATH DIRECTXSDK_H_PATH DIRECTXSDK_MAX_D3D)
 
     mark_as_advanced(DIRECTXSDK_H_PATH DIRECTXSDK_LIB_PATH DIRECTXSDK_ARCH)
 

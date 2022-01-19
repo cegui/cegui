@@ -14,7 +14,7 @@ if (WIN32 OR APPLE)
     mark_as_advanced(HARFBUZZ_LIB_STATIC HARFBUZZ_LIB_DBG_STATIC)
 endif ()
 
-cegui_find_package_handle_standard_args(harfbuzz HARFBUZZ_LIB HARFBUZZ_H_PATH)
+cegui_find_package_handle_standard_args(Harfbuzz HARFBUZZ_LIB HARFBUZZ_H_PATH)
 
 # set up output vars
 if (HARFBUZZ_FOUND)

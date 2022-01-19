@@ -4,7 +4,7 @@
 # Locate SDL_image library
 # This module defines
 # SDL2IMAGE_LIBRARY, the name of the library to link against
-# SDLIMAGE_FOUND, if false, do not try to link to SDL
+# SDL2IMAGE_FOUND, if false, do not try to link to SDL
 # SDL2IMAGE_INCLUDE_DIR, where to find SDL/SDL.h
 #
 # $SDLDIR is an environment variable that would
@@ -81,9 +81,10 @@ FIND_LIBRARY(SDL2IMAGE_LIB_DBG
 
 mark_as_advanced(SDL2IMAGE_LIB SDL2IMAGE_LIB_DBG SDL2IMAGE_H_PATH)
 
-cegui_find_package_handle_standard_args(SDL2IMAGE SDL2IMAGE_LIB SDL2IMAGE_H_PATH)
+cegui_find_package_handle_standard_args(SDL2_image SDL2IMAGE_LIB SDL2IMAGE_H_PATH)
 
 # set up output vars
+set(SDL2IMAGE_FOUND ${SDL2_image_FOUND})
 if (SDL2IMAGE_FOUND)
     set (SDL2IMAGE_INCLUDE_DIR ${SDL2IMAGE_H_PATH})
     set (SDL2IMAGE_LIBRARIES ${SDL2IMAGE_LIB})

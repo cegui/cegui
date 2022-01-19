@@ -2,13 +2,6 @@
 # Top-level CMakeLists.txt file for Crazy Eddie's GUI System
 ################################################################################
 cmake_minimum_required(VERSION 3.1)
-if (POLICY CMP0017)
-    cmake_policy(SET CMP0017 OLD)
-endif()
-
-if (POLICY CMP0045)
-    cmake_policy(SET CMP0045 OLD)
-endif()
 
 if (APPLE AND NOT CMAKE_OSX_ARCHITECTURES)
     set( CMAKE_OSX_ARCHITECTURES x86_64 CACHE STRING "Build architectures for Mac OS X")
@@ -80,15 +73,11 @@ if(ANDROID)
     set (CMAKE_LIBRARY_ARCHITECTURE ${ANDROID_ABI})
 endif()
 
-if (CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-elseif (NOT CMAKE_VERSION VERSION_LESS "3.1")
-    set (CMAKE_C_STANDARD_REQUIRED TRUE)
-    set (CMAKE_C_STANDARD "11")
-    set (CMAKE_CXX_STANDARD_REQUIRED TRUE)
-    set (CMAKE_CXX_STANDARD "11")
-endif ()
+# Look for packages with CMake default Find* modules to prevent messing up our variables from CMake modules.
+# GTK2 finds freetype inside and sets FREETYPE_FOUND, so we must call our find_package(Freetype) after this.
+find_package(GTK2 COMPONENTS gtk)
+# set for consistency with other deps
+set (GTK2_INCLUDE_DIR ${GTK2_INCLUDE_DIRS})
 
 # Look for packages
 find_package(PCRE)
@@ -182,9 +171,6 @@ find_package(Boost 1.36.0 COMPONENTS python unit_test_framework system timer)
 find_package(SWIG 3.0.8)
 
 find_package(Doxygen)
-find_package(GTK2 COMPONENTS gtk)
-# set for consistency with other deps
-set (GTK2_INCLUDE_DIR ${GTK2_INCLUDE_DIRS})
 
 ## Search for ccache
 find_program(CCACHE_FOUND ccache)
@@ -250,7 +236,7 @@ option( CEGUI_BUILD_XMLPARSER_TINYXML "Specifies whether to build the TinyXML ba
 option( CEGUI_BUILD_XMLPARSER_TINYXML2 "Specifies whether to build the TinyXML2 based XMLParser module" ${TINYXML2_FOUND} )
 
 option( CEGUI_BUILD_IMAGECODEC_SILLY "Specifies whether to build the SILLY based ImageCodec module" ${SILLY_FOUND} )
-option( CEGUI_BUILD_IMAGECODEC_DEVIL "Specifies whether to build the DevIL based ImageCodec module" ${IL_FOUND} )
+option( CEGUI_BUILD_IMAGECODEC_DEVIL "Specifies whether to build the DevIL based ImageCodec module" ${DEVIL_FOUND} )
 option( CEGUI_BUILD_IMAGECODEC_FREEIMAGE "Specifies whether to build the FreeImage based ImageCodec module" ${FREEIMAGE_FOUND} )
 option( CEGUI_BUILD_IMAGECODEC_CORONA "Specifies whether to build the Corona based ImageCodec module" ${CORONA_FOUND} )
 option( CEGUI_BUILD_IMAGECODEC_STB "Specifies whether to build the STB based ImageCodec module" FALSE )

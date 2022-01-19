@@ -7,7 +7,7 @@ find_path(EPOXY_H_PATH NAMES epoxy/gl.h)
 find_library(EPOXY_LIB NAMES epoxy epoxy_0)
 mark_as_advanced(EPOXY_H_PATH EPOXY_LIB EPOXY_LIB_DBG)
 
-find_package_handle_standard_args(EPOXY DEFAULT_MSG EPOXY_LIB EPOXY_H_PATH)
+find_package_handle_standard_args(Epoxy DEFAULT_MSG EPOXY_LIB EPOXY_H_PATH)
 
 # set up output vars
 if (EPOXY_FOUND)

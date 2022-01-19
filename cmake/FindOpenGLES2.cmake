@@ -10,7 +10,7 @@ find_path(OPENGLES2_H_PATH NAMES GLES2/gl2.h)
 find_library(OPENGLES2_LIB NAMES GLESv2)
 mark_as_advanced(OPENGLES2_H_PATH OPENGLES2_LIB OPENGLES2_LIB_DBG)
 
-find_package_handle_standard_args(OPENGLES2 DEFAULT_MSG OPENGLES2_LIB OPENGLES2_H_PATH)
+find_package_handle_standard_args(OpenGLES2 DEFAULT_MSG OPENGLES2_LIB OPENGLES2_H_PATH)
 
 # set up output vars
 if (OPENGLES2_FOUND)

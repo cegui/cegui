@@ -19,7 +19,7 @@ if (WIN32 OR APPLE)
     mark_as_advanced(RAQM_LIB_STATIC RAQM_LIB_DBG_STATIC)
 endif ()
 
-cegui_find_package_handle_standard_args(raqm RAQM_LIB RAQM_H_PATH)
+cegui_find_package_handle_standard_args(Raqm RAQM_LIB RAQM_H_PATH)
 
 set(RAQM_DEPS_FOUND TRUE)
 

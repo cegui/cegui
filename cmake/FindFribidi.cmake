@@ -14,7 +14,7 @@ if (WIN32 OR APPLE)
     mark_as_advanced(FRIBIDI_LIB_STATIC FRIBIDI_LIB_STATIC_DBG)
 endif()
 
-cegui_find_package_handle_standard_args(FRIBIDI FRIBIDI_LIB FRIBIDI_H_PATH)
+cegui_find_package_handle_standard_args(Fribidi FRIBIDI_LIB FRIBIDI_H_PATH)
 
 
 # set up output vars

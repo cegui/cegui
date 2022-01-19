@@ -7,7 +7,7 @@ find_path(PVRTOOLS_H_PATH NAMES PVRTDecompress.h)
 find_library(PVRTOOLS_LIB NAMES oglestools)
 mark_as_advanced(PVRTOOLS_H_PATH PVRTOOLS_LIB PVRTOOLS_LIB_DBG)
 
-find_package_handle_standard_args(PVRTOOLS DEFAULT_MSG PVRTOOLS_LIB PVRTOOLS_H_PATH)
+find_package_handle_standard_args(PVRTools DEFAULT_MSG PVRTOOLS_LIB PVRTOOLS_H_PATH)
 
 # set up output vars
 if (PVRTOOLS_FOUND)

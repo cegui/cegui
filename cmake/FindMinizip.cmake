@@ -19,7 +19,7 @@ if (APPLE)
     mark_as_advanced(MINIZIP_DEFINITIONS)
 endif()
 
-cegui_find_package_handle_standard_args(MINIZIP MINIZIP_LIB MINIZIP_H_PATH)
+cegui_find_package_handle_standard_args(Minizip MINIZIP_LIB MINIZIP_H_PATH)
 
 # set up output vars
 if (MINIZIP_FOUND)

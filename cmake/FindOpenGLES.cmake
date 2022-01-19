@@ -10,7 +10,7 @@ find_path(OPENGLES_H_PATH NAMES GLES/gl.h)
 find_library(OPENGLES_LIB NAMES GLES_CM GLESv1_CM)
 mark_as_advanced(OPENGLES_H_PATH OPENGLES_LIB OPENGLES_LIB_DBG)
 
-find_package_handle_standard_args(OPENGLES DEFAULT_MSG OPENGLES_LIB OPENGLES_H_PATH)
+find_package_handle_standard_args(OpenGLES DEFAULT_MSG OPENGLES_LIB OPENGLES_H_PATH)
 
 # set up output vars
 if (OPENGLES_FOUND)

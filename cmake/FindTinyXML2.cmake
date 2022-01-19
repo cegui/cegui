@@ -12,7 +12,7 @@ if (WIN32 OR APPLE)
     mark_as_advanced(TINYXML2_LIB_STATIC TINYXML2_LIB_STATIC_DBG)
 endif()
 
-cegui_find_package_handle_standard_args(TINYXML2 TINYXML2_LIB TINYXML2_H_PATH)
+cegui_find_package_handle_standard_args(TinyXML2 TINYXML2_LIB TINYXML2_H_PATH)
 
 if (TINYXML2_FOUND)
     set (TINYXML2_INCLUDE_DIR ${TINYXML2_H_PATH})
