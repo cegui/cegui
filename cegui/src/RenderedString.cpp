@@ -49,12 +49,12 @@ RenderedString::RenderedString(RenderedString&&) noexcept = default;
 RenderedString& RenderedString::operator =(RenderedString&&) noexcept = default;
 
 //----------------------------------------------------------------------------//
-static const Font* getElementFont(RenderedStringComponent* element, const Font* currFont, const Font* defaultFont, bool& isTextStyle)
+static const Font* getElementFont(RenderedStringComponent* element, const Font* currFont, const Font* defaultFont, bool& isFontSource)
 {
     // Non-text elements don't break the range of the current font
     auto textStyle = dynamic_cast<const RenderedStringTextComponent*>(element);
     const Font* font = textStyle ? textStyle->getFont() : currFont;
-    isTextStyle = !!textStyle;
+    isFontSource = !!textStyle;
 
     if (!font)
     {
@@ -131,7 +131,7 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
     // Build font ranges an check if we can use raqm before we allocate something big inside it
     std::vector<std::pair<const FreeTypeFont*, size_t>> fontRanges;
     fontRanges.reserve(16);
-    uint16_t currElementIdx = std::numeric_limits<uint16_t>().max(); // NB: intentionally invalid, elementIndices are uint8_t
+    size_t fontSourceElementIdx = std::numeric_limits<size_t>().max(); // NB: intentionally invalid, elementIndices are uint8_t
     const FreeTypeFont* currFont = nullptr;
     size_t fontLen = 0;
     for (size_t i = start; i < end; ++i)
@@ -146,22 +146,22 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
         else
         {
             const auto charElementIdx = elementIndices[i];
-            if (currElementIdx == charElementIdx)
+            if (fontSourceElementIdx == charElementIdx)
             {
-                // Font couldn't change if element didn't
+                // Font couldn't change if the source element didn't
                 charFont = currFont;
             }
             else
             {
                 // Non-text elements have no font and are skipped for index comparison optimization
-                bool isTextStyle;
-                charFont = getElementFont(elements[charElementIdx].get(), currFont, defaultFont, isTextStyle);
-                if (isTextStyle)
-                    currElementIdx = charElementIdx;
+                bool isFontSource;
+                charFont = getElementFont(elements[charElementIdx].get(), currFont, defaultFont, isFontSource);
+                if (isFontSource)
+                    fontSourceElementIdx = charElementIdx;
             }
         }
 
-        // NB: this is necessary to fail if the first character has no font
+        // NB: this check is necessary for failing if the first character has no font
         if (!charFont)
             return false;
 
@@ -229,6 +229,7 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
 
     //penPosition = penPositionStart;
     //penPosition.y += getBaseline(); //!!!per font!
+    //???apply font baselines to y offset right here?!
 
     size_t rqGlyphCount = 0;
     raqm_glyph_t* rqGlyphs = raqm_get_glyphs(rq, &rqGlyphCount);
