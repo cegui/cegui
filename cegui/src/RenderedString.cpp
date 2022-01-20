@@ -69,7 +69,7 @@ static const Font* getElementFont(RenderedStringComponent* element, const Font* 
 
 //----------------------------------------------------------------------------//
 static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
-    size_t start, size_t end, Font* defaultFont, DefaultParagraphDirection dir,
+    size_t start, size_t end, const Font* defaultFont, DefaultParagraphDirection dir,
     const std::vector<uint8_t>& elementIndices,
     const std::vector<RenderedStringComponentPtr>& elements)
 {
@@ -122,7 +122,7 @@ static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
 //----------------------------------------------------------------------------//
 #ifdef CEGUI_USE_RAQM
 static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string& text,
-    size_t start, size_t end, Font* defaultFont, DefaultParagraphDirection dir,
+    size_t start, size_t end, const Font* defaultFont, DefaultParagraphDirection dir,
     const std::vector<uint8_t>& elementIndices,
     const std::vector<RenderedStringComponentPtr>& elements, raqm_t*& rq)
 {
@@ -130,61 +130,73 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
 
     // Build font ranges an check if we can use raqm before we allocate something big inside it
     std::vector<std::pair<const FreeTypeFont*, size_t>> fontRanges;
-    fontRanges.reserve(16);
-    size_t fontSourceElementIdx = std::numeric_limits<size_t>().max(); // NB: intentionally invalid, elementIndices are uint8_t
-    const FreeTypeFont* currFont = nullptr;
-    size_t fontLen = 0;
-    for (size_t i = start; i < end; ++i)
+    if (start >= elementIdxCount)
     {
-        // Get a font for the current character
-        const Font* charFont;
-        if (i >= elementIdxCount)
+        // Only freetype fonts can be laid out with raqm
+        auto ftDefaultFont = dynamic_cast<const FreeTypeFont*>(defaultFont);
+        if (!ftDefaultFont)
+            return false;
+
+        fontRanges.emplace_back(ftDefaultFont, end - start);
+    }
+    else
+    {
+        fontRanges.reserve(16);
+        size_t fontSourceElementIdx = std::numeric_limits<size_t>().max(); // NB: intentionally invalid, elementIndices are uint8_t
+        const FreeTypeFont* currFont = nullptr;
+        size_t fontLen = 0;
+        for (size_t i = start; i < end; ++i)
         {
-            // Characters without an associated element use the default font
-            charFont = defaultFont;
-        }
-        else
-        {
-            const auto charElementIdx = elementIndices[i];
-            if (fontSourceElementIdx == charElementIdx)
+            // Get a font for the current character
+            const Font* charFont;
+            if (i >= elementIdxCount)
             {
-                // Font couldn't change if the source element didn't
-                charFont = currFont;
+                // Characters without an associated element use the default font
+                charFont = defaultFont;
             }
             else
             {
-                // Non-text elements have no font and are skipped for index comparison optimization
-                bool isFontSource;
-                charFont = getElementFont(elements[charElementIdx].get(), currFont, defaultFont, isFontSource);
-                if (isFontSource)
-                    fontSourceElementIdx = charElementIdx;
+                const auto charElementIdx = elementIndices[i];
+                if (fontSourceElementIdx == charElementIdx)
+                {
+                    // Font couldn't change if the source element didn't
+                    charFont = currFont;
+                }
+                else
+                {
+                    // Non-text elements have no font and are skipped for index comparison optimization
+                    bool isFontSource;
+                    charFont = getElementFont(elements[charElementIdx].get(), currFont, defaultFont, isFontSource);
+                    if (isFontSource)
+                        fontSourceElementIdx = charElementIdx;
+                }
             }
-        }
 
-        // NB: this check is necessary for failing if the first character has no font
-        if (!charFont)
-            return false;
-
-        if (charFont != currFont)
-        {
-            // Only freetype fonts can be laid out with raqm
-            auto ftCharFont = dynamic_cast<const FreeTypeFont*>(charFont);
-            if (!ftCharFont)
+            // NB: this check is necessary for failing if the first character has no font
+            if (!charFont)
                 return false;
 
-            if (fontLen)
-                fontRanges.emplace_back(currFont, fontLen);
+            if (charFont != currFont)
+            {
+                // Only freetype fonts can be laid out with raqm
+                auto ftCharFont = dynamic_cast<const FreeTypeFont*>(charFont);
+                if (!ftCharFont)
+                    return false;
 
-            currFont = ftCharFont;
-            fontLen = 0;
+                if (fontLen)
+                    fontRanges.emplace_back(currFont, fontLen);
+
+                currFont = ftCharFont;
+                fontLen = 0;
+            }
+
+            ++fontLen;
         }
 
-        ++fontLen;
+        // Add the final range
+        if (fontLen)
+            fontRanges.emplace_back(currFont, fontLen);
     }
-
-    // Add the final range
-    if (fontLen)
-        fontRanges.emplace_back(currFont, fontLen);
 
     // Now we know that we can use raqm for this paragraph
     if (!rq)
@@ -209,15 +221,19 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
     {
         if (!raqm_set_freetype_face_range(rq, range.first->getFontFace(), fontStart, range.second))
             return false;
+
+        //!!!FIXME TEXT: request per-codepoint load flags in RAQM? May be needed for mixing [anti]aliased fonts.
+        if (fontStart == 0)
+        {
+            const FT_Int32 targetType = range.first->isAntiAliased() ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
+            const FT_Int32 loadFlags = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT | targetType;
+            if (!raqm_set_freetype_load_flags(rq, loadFlags))
+                return false;
+        }
+
         fontStart += range.second;
         range.second = fontStart; // Change (font, len) into sorted (font, end) for glyph font detection below
     }
-
-    // TODO: request per-codepoint load flags in RAQM? May be needed for mixing [anti]aliased fonts.
-    const FT_Int32 targetType = currFont->isAntiAliased() ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
-    const FT_Int32 loadFlags = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT | targetType;
-    if (!raqm_set_freetype_load_flags(rq, loadFlags))
-        return false;
 
     if (!raqm_layout(rq))
         return false;
@@ -238,19 +254,7 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
     for (size_t i = 0; i < rqGlyphCount; ++i)
     {
         const raqm_glyph_t& rqGlyph = rqGlyphs[i];
-        auto& ceguiGlyph = out.glyphs[i];
-
-        ceguiGlyph.originalIndex = rqGlyph.cluster + start;
-        ceguiGlyph.isRightToLeft = (raqm_get_direction_at_index(rq, i) == RAQM_DIRECTION_RTL);
-
-        // A multiplication coefficient to convert 26.6 fixed point values into normal floats
-        constexpr float s_26dot6_toFloat = (1.0f / 64.f);
-
-        //???TODO TEXT: std::round or do it when generating rendering geometry?!
-        ceguiGlyph.offset.x = rqGlyph.x_offset * s_26dot6_toFloat;
-        ceguiGlyph.offset.y = rqGlyph.y_offset * s_26dot6_toFloat;
-        ceguiGlyph.advance.d_width = rqGlyph.x_advance * s_26dot6_toFloat;
-        ceguiGlyph.advance.d_height = rqGlyph.y_advance * s_26dot6_toFloat;
+        auto& renderedGlyph = out.glyphs[i];
 
         // Find a font for our glyph
         auto it = std::upper_bound(fontRanges.begin(), fontRanges.end(), rqGlyph.cluster,
@@ -259,23 +263,21 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
             return elm.second < value;
         });
 
-        auto glyph = (*it).first->getGlyphByIndex(rqGlyph.index);
-        //!!!prepareGlyph!
+        auto fontGlyph = (*it).first->getGlyphByIndex(rqGlyph.index, true);
+        if (!fontGlyph)
+            fontGlyph = (*it).first->getGlyphForCodepoint(Font::UnicodeReplacementCharacter);
 
-        //???handle vertical positioning here. or requires embedded objects width?! or doesn't depend on it? seems so.
-        //!!!layers in the glyph! store basic image, outline image etc inside one glyph group?
-        if (auto image = glyph->getImage(0))
-        {
-            //penPosition.x = std::round(penPosition.x);
+        // A multiplication coefficient to convert 26.6 fixed point values into normal floats
+        constexpr float s_26dot6_toFloat = (1.0f / 64.f);
 
-            ////The glyph pos will be rounded to full pixels internally
-            //const glm::vec2 renderGlyphPos(
-            //    penPosition.x + currentGlyph.x_offset * s_26dot6_toFloat,
-            //    penPosition.y + currentGlyph.y_offset * s_26dot6_toFloat);
-
-            //!!!NB: advance and image size are different things!
-            //imgRenderSettings.d_destArea = Rectf(renderGlyphPos, image->getRenderedSize());
-        }
+        renderedGlyph.image = fontGlyph ? fontGlyph->getImage(0) : nullptr;
+        renderedGlyph.originalIndex = rqGlyph.cluster + start;
+        renderedGlyph.offset.x = rqGlyph.x_offset * s_26dot6_toFloat;
+        renderedGlyph.offset.y = rqGlyph.y_offset * s_26dot6_toFloat;
+        renderedGlyph.advance.d_width = rqGlyph.x_advance * s_26dot6_toFloat;
+        renderedGlyph.advance.d_height = rqGlyph.y_advance * s_26dot6_toFloat;
+        renderedGlyph.elementIndex = elementIndices[renderedGlyph.originalIndex];
+        renderedGlyph.isRightToLeft = (raqm_get_direction_at_index(rq, i) == RAQM_DIRECTION_RTL);
     }
 
     return true;
@@ -284,7 +286,7 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
 
 //----------------------------------------------------------------------------//
 bool RenderedString::renderText(const String& text, RenderedStringParser* parser,
-    Font* defaultFont, DefaultParagraphDirection defaultParagraphDir)
+    const Font* defaultFont, DefaultParagraphDirection defaultParagraphDir)
 {
     d_paragraphs.clear();
 
@@ -295,7 +297,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     std::u32string utf32Text;
     std::vector<size_t> originalIndices;
     std::vector<uint8_t> elementIndices;
-    std::vector<RenderedStringComponentPtr> elements; // either font style, image or widget [and font style may be subclassed as link?]
+    std::vector<RenderedStringComponentPtr> elements;
     //???or store union and uint8_t type? virtual table requires 4 bytes, type - 1 byte.
     //!!!in each elements store logical index of the codepoint (or first-last range for texts)
     if (parser)
@@ -393,6 +395,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             // if last:
             //element->getRightPadding
             //!!!handle RTL direction for horizontal padding!
+            //!!!note that offset is not counted in advance, so padding must be added to both sometimes!
 
             // VerticalImageFormatting - store in glyph or get from element? or embed into offset and advance Y?!
             // if embed, image size changes will require recalculation!?
@@ -490,18 +493,18 @@ size_t RenderedString::getSpaceCount(const size_t line) const
 //----------------------------------------------------------------------------//
 void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     const Window* refWnd, const size_t line, const glm::vec2& position,
-    const ColourRect* mod_colours, const Rectf* clip_rect, const float space_extra) const
+    const ColourRect* modColours, const Rectf* clipRect, float spaceExtra) const
 {
     if (line >= getLineCount())
         throw InvalidRequestException("line number specified is invalid.");
 
-    const float render_height = getLineExtent(refWnd, line).d_height;
+    const float renderHeight = getLineExtent(refWnd, line).d_height;
 
     glm::vec2 pos = position;
     const size_t end_component = d_lines[line].first + d_lines[line].second;
     for (size_t i = d_lines[line].first; i < end_component; ++i)
     {
-        d_components[i]->createRenderGeometry(out, refWnd, pos, mod_colours, clip_rect, render_height, space_extra);
+        d_components[i]->createRenderGeometry(out, refWnd, pos, modColours, clipRect, renderHeight, spaceExtra);
         pos.x += d_components[i]->getPixelSize(refWnd).d_width;
     }
 }

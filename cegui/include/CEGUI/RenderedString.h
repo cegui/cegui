@@ -43,15 +43,22 @@ namespace CEGUI
 class Rectf;
 using RenderedStringComponentPtr = std::unique_ptr<class RenderedStringComponent>;
 
+//???TODO TEXT: how to store outline image? Store FontGlyph* instead of images? Or a separate Image* field?
+//Or new RenderedGlyph w/out advance or with special flag?
 struct RenderedGlyph
 {
-    //pointer to component? store type to avoid dynamic cast / virtualization?
-    // union FontGlyph / ImageElement / WidgetElement + type?
+    const Image* image;
 
-    size_t originalIndex;
+    //???virtual Element::setupRenderer(RenderedGlyph&)? Will set colors etc inside based on the RenderedGlyph?
+    //or even virtual Element::render(RenderedGlyph&)
+    //or ranged - virtual Element::render(RenderedGlyph& from, RenderedGlyph& to), to minimize virtual calls!
+    //???return rendered size from this function?!
+
+    size_t originalIndex; //!< Starting index of the corresponding sequence in the logical text
     glm::vec2 offset;
     Sizef advance;
-    // ColorRect - get from element?
+
+    uint8_t elementIndex; //!< Index of controlling RenderedStringComponent, stored instead of pointer to reduce struct size
 
     bool isJustifyable : 1;
     bool isBreakable : 1;
@@ -85,7 +92,7 @@ public:
     RenderedString& operator =(const RenderedString& rhs) = delete; // Use clone()
     RenderedString& operator =(RenderedString&&) noexcept;
 
-    bool renderText(const String& text, RenderedStringParser* parser = nullptr, Font* defaultFont = nullptr,
+    bool renderText(const String& text, RenderedStringParser* parser = nullptr, const Font* defaultFont = nullptr,
         DefaultParagraphDirection defaultParagraphDir = DefaultParagraphDirection::LeftToRight);
 
     /*!
@@ -128,8 +135,8 @@ public:
     */
     void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const Window* refWnd, size_t line,
-        const glm::vec2& position, const ColourRect* mod_colours,
-        const Rectf* clip_rect, float space_extra) const;
+        const glm::vec2& position, const ColourRect* modColours,
+        const Rectf* clipRect, float spaceExtra) const;
 
     //! append \a component to the list of components drawn for this string.
     void appendComponent(const RenderedStringComponent& component);

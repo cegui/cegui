@@ -126,7 +126,7 @@ void ListboxTextItem::parseTextString() const
     const String& textVisual = d_textLogical;
 #endif
 
-    d_renderedString = d_renderedStringParser->parse(textVisual, getFont(), &d_textCols, DefaultParagraphDirection::Automatic);
+    d_renderedString = d_renderedStringParser->parse(textVisual, getFont(), &d_textCols, DefaultParagraphDirection::LeftToRight);
 
     d_renderedStringValid = true;
 }

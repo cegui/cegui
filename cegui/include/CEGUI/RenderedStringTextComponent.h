@@ -66,9 +66,9 @@ public:
     // implementation of abstract base interface
     void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const Window* refWnd,
-        const glm::vec2& position, const ColourRect* mod_colours,
-        const Rectf* clip_rect, const float vertical_space,
-        const float space_extra) const override;
+        const glm::vec2& position, const ColourRect* modColours,
+        const Rectf* clipRect, float verticalSpace,
+        float spaceExtra) const override;
     Sizef getPixelSize(const Window* refWnd) const override;
     bool canSplit() const override { return d_text.length() > 1; }
     RenderedStringComponentPtr split(const Window* refWnd,
@@ -92,7 +92,7 @@ protected:
     size_t d_selectionStart = 0;
     size_t d_selectionLength = 0;
     size_t d_spaceCount = 0;
-    DefaultParagraphDirection d_defaultParagraphDir = DefaultParagraphDirection::Automatic;
+    DefaultParagraphDirection d_defaultParagraphDir = DefaultParagraphDirection::LeftToRight;
 };
 
 }

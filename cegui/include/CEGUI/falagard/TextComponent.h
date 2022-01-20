@@ -328,7 +328,7 @@ private:
 
     FormattingSetting<VerticalTextFormatting> d_vertFormatting = VerticalTextFormatting::TopAligned;
     FormattingSetting<HorizontalTextFormatting> d_horzFormatting = HorizontalTextFormatting::LeftAligned;
-    FormattingSetting<DefaultParagraphDirection> d_paragraphDir = DefaultParagraphDirection::Automatic;
+    FormattingSetting<DefaultParagraphDirection> d_paragraphDir = DefaultParagraphDirection::LeftToRight;
 
     bool d_fontFromProperty = false; //!< d_font is a property name in a source window
     bool d_textFromProperty = false; //!< d_text is a property name in a source window
