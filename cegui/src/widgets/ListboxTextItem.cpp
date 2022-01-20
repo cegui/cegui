@@ -108,21 +108,18 @@ void ListboxTextItem::createRenderGeometry(std::vector<GeometryBuffer*> out,
 //----------------------------------------------------------------------------//
 void ListboxTextItem::parseTextString() const
 {
+    DefaultParagraphDirection bidiDir = DefaultParagraphDirection::LeftToRight;
+
 #if defined(CEGUI_BIDI_SUPPORT)
-#if defined (CEGUI_USE_FRIBIDI)
-    FribidiVisualMapping bidiVisualMapping;
-#elif defined (CEGUI_USE_MINIBIDI)
-    MinibidiVisualMapping bidiVisualMapping;
+    std::vector<int> l2v;
+    std::vector<int> v2l;
+    std::u32string textVisual;
+    BidiVisualMapping::applyBidi(d_textLogical, textVisual, l2v, v2l, bidiDir);
 #else
-#error "BIDI Configuration is inconsistant, check your config!"
-#endif
-    bidiVisualMapping.updateVisual(d_textLogical);
-    const String& textVisual = bidiVisualMapping.getTextVisual();
-#else
-    const String& textVisual = d_textLogical;
+    const String& textVisual = text;
 #endif
 
-    d_renderedString = d_renderedStringParser->parse(textVisual, getFont(), &d_textCols, DefaultParagraphDirection::LeftToRight);
+    d_renderedString = d_renderedStringParser->parse(textVisual, getFont(), &d_textCols, bidiDir);
 
     d_renderedStringValid = true;
 }

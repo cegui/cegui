@@ -83,7 +83,8 @@ bool BidiVisualMapping::applyBidi(const String& logical, String& outVisual,
 }
 
 //----------------------------------------------------------------------------//
-bool BidiVisualMapping::applyBidi(const String& logical, std::u32string& outVisual, std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir)
+bool BidiVisualMapping::applyBidi(const String& logical, std::u32string& outVisual,
+    std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir)
 {
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
     return applyBidi(logical.getString(), outVisual, l2v, v2l);
@@ -97,12 +98,12 @@ bool BidiVisualMapping::applyBidi(const String& logical, std::u32string& outVisu
 bool BidiVisualMapping::applyBidi(const char32_t* start, size_t length, std::u32string& outVisual,
     std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir)
 {
+    const bool inplace = (start == outVisual.c_str());
+
     // Forbid aliasing other than exact matching of source and destination pointers
     //???TODO TEXT: allow partial inplace conversions?
-    if (start > outVisual.c_str() && start <= &outVisual.back())
+    if (!inplace && start > outVisual.c_str() && start <= (outVisual.c_str() + length))
         return false;
-
-    const bool inplace = (start == outVisual.c_str());
 
     l2v.resize(length);
     v2l.resize(length);

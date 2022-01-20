@@ -114,7 +114,7 @@ static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
         const size_t logicalIndex = i;
 #endif
 
-        const auto& element = elements[elementIndices[logicalIndex]];
+        //const auto& element = elements[elementIndices[logicalIndex]];
 
         //   if references image or widget, process specially
         //   if references a font

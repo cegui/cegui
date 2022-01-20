@@ -85,24 +85,29 @@ public:
     \return
         true if successful, false if failed.
     */
-    static bool applyBidi(const String& logical, String& outVisual, std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir);
+    static bool applyBidi(const String& logical, String& outVisual, std::vector<int>& l2v,
+        std::vector<int>& v2l, DefaultParagraphDirection& dir);
 
-    static bool applyBidi(const String& logical, std::u32string& outVisual, std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir);
+    static bool applyBidi(const String& logical, std::u32string& outVisual, std::vector<int>& l2v,
+        std::vector<int>& v2l, DefaultParagraphDirection& dir);
 
     //! \overload
-    static inline bool applyBidi(const std::u32string& logical, std::u32string& outVisual, std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir)
+    static inline bool applyBidi(const std::u32string& logical, std::u32string& outVisual, std::vector<int>& l2v,
+        std::vector<int>& v2l, DefaultParagraphDirection& dir)
     {
         return applyBidi(logical.c_str(), logical.size(), outVisual, l2v, v2l, dir);
     }
 
     //! \overload applyBidi
-    static inline bool applyBidiInplace(std::u32string& text, std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir)
+    static inline bool applyBidiInplace(std::u32string& text, std::vector<int>& l2v,
+        std::vector<int>& v2l, DefaultParagraphDirection& dir)
     {
         return applyBidi(text.c_str(), text.size(), text, l2v, v2l, dir);
     }
 
     //! \overload
-    static bool applyBidi(const char32_t* start, size_t length, std::u32string& outVisual, std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir);
+    static bool applyBidi(const char32_t* start, size_t length, std::u32string& outVisual,
+        std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir);
 };
 
 }

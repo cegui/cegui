@@ -57,13 +57,6 @@ const String EditboxBase::ReadOnlyCursorImagePropertyName("ReadOnlyCursorImage")
 
 EditboxBase::EditboxBase(const String& type, const String& name) :
     Window(type, name),
-#if defined (CEGUI_USE_FRIBIDI)
-    d_bidiVisualMapping(new FribidiVisualMapping()),
-#elif defined (CEGUI_USE_MINIBIDI)
-    d_bidiVisualMapping(new MinibidiVisualMapping()),
-#elif defined (CEGUI_BIDI_SUPPORT)
-#error "BIDI Configuration is inconsistant, check your config!"
-#endif
     d_maxTextLen(String().max_size())
 {
     addEditboxBaseProperties();
@@ -155,17 +148,13 @@ void EditboxBase::setTextMaskingCodepoint(std::uint32_t code_point)
 const String& EditboxBase::getTextVisual() const
 {
 #if defined(CEGUI_BIDI_SUPPORT)
-    // no bidi support
-    if (!d_bidiVisualMapping)
-        return getText();
-
     if (!d_bidiDataValid)
     {
-        d_bidiVisualMapping->updateVisual(getText());
+        BidiVisualMapping::applyBidi(getText(), d_textVisual, d_l2vMapping, d_v2lMapping, d_defaultParagraphDirection);
         d_bidiDataValid = true;
     }
 
-    return d_bidiVisualMapping->getTextVisual();
+    return d_textVisual;
 #else
     return getText();
 #endif
@@ -330,9 +319,9 @@ void EditboxBase::onCursorPressHold(CursorInputEventArgs& e)
             d_dragging = true;
             d_dragAnchorIdx = getTextIndexFromPosition(e.position);
 #ifdef CEGUI_BIDI_SUPPORT
-            if (d_bidiVisualMapping->getV2lMapping().size() > d_dragAnchorIdx)
+            if (getV2lMapping().size() > d_dragAnchorIdx)
                 d_dragAnchorIdx =
-                    d_bidiVisualMapping->getV2lMapping()[d_dragAnchorIdx];
+                    getV2lMapping()[d_dragAnchorIdx];
 #endif
             setCaretIndex(d_dragAnchorIdx);
         }
@@ -363,8 +352,8 @@ void EditboxBase::onCursorMove(CursorInputEventArgs& e)
     {
         size_t anchorIdx = getTextIndexFromPosition(e.position);
 #ifdef CEGUI_BIDI_SUPPORT
-        if (d_bidiVisualMapping->getV2lMapping().size() > anchorIdx)
-            anchorIdx = d_bidiVisualMapping->getV2lMapping()[anchorIdx];
+        if (getV2lMapping().size() > anchorIdx)
+            anchorIdx = getV2lMapping()[anchorIdx];
 #endif
         setCaretIndex(anchorIdx);
 
@@ -638,8 +627,8 @@ size_t EditboxBase::getCaretIndex(void) const
 {
 #ifdef CEGUI_BIDI_SUPPORT
     size_t caretPos = d_caretPos;
-    if (d_bidiVisualMapping->getL2vMapping().size() > caretPos)
-        caretPos = d_bidiVisualMapping->getL2vMapping()[caretPos];
+    if (getL2vMapping().size() > caretPos)
+        caretPos = getL2vMapping()[caretPos];
 #endif
 
     return d_caretPos;
