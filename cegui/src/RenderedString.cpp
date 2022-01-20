@@ -70,7 +70,7 @@ static const Font* getElementFont(RenderedStringComponent* element, const Font* 
 //----------------------------------------------------------------------------//
 static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
     size_t start, size_t end, const Font* defaultFont, DefaultParagraphDirection dir,
-    const std::vector<uint8_t>& elementIndices,
+    const std::vector<uint16_t>& elementIndices,
     const std::vector<RenderedStringComponentPtr>& elements)
 {
     //!!!if RAQM defined, may get here as a fallback, use fribidi then!
@@ -123,7 +123,7 @@ static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
 #ifdef CEGUI_USE_RAQM
 static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string& text,
     size_t start, size_t end, const Font* defaultFont, DefaultParagraphDirection dir,
-    const std::vector<uint8_t>& elementIndices,
+    const std::vector<uint16_t>& elementIndices,
     const std::vector<RenderedStringComponentPtr>& elements, raqm_t*& rq)
 {
     const size_t elementIdxCount = elementIndices.size();
@@ -142,7 +142,7 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
     else
     {
         fontRanges.reserve(16);
-        size_t fontSourceElementIdx = std::numeric_limits<size_t>().max(); // NB: intentionally invalid, elementIndices are uint8_t
+        size_t fontSourceElementIdx = std::numeric_limits<size_t>().max(); // NB: intentionally invalid, elementIndices are uint16_t
         const FreeTypeFont* currFont = nullptr;
         size_t fontLen = 0;
         for (size_t i = start; i < end; ++i)
@@ -204,8 +204,8 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
         rq = raqm_create();
 
         const raqm_direction_t raqmParagraphDir =
-            (dir == CEGUI::DefaultParagraphDirection::RightToLeft) ? RAQM_DIRECTION_RTL :
-            (dir == CEGUI::DefaultParagraphDirection::Automatic) ? RAQM_DIRECTION_DEFAULT :
+            (dir == DefaultParagraphDirection::RightToLeft) ? RAQM_DIRECTION_RTL :
+            (dir == DefaultParagraphDirection::Automatic) ? RAQM_DIRECTION_DEFAULT :
             RAQM_DIRECTION_LTR;
         if (!raqm_set_par_direction(rq, raqmParagraphDir))
             return false;
@@ -225,6 +225,7 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
         //!!!FIXME TEXT: request per-codepoint load flags in RAQM? May be needed for mixing [anti]aliased fonts.
         if (fontStart == 0)
         {
+            //???!!!store flags inside a FreeTypeFont?! must not know these details here!
             const FT_Int32 targetType = range.first->isAntiAliased() ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
             const FT_Int32 loadFlags = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT | targetType;
             if (!raqm_set_freetype_load_flags(rq, loadFlags))
@@ -243,10 +244,6 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
 
     // Glyph generation
 
-    //penPosition = penPositionStart;
-    //penPosition.y += getBaseline(); //!!!per font!
-    //???apply font baselines to y offset right here?!
-
     size_t rqGlyphCount = 0;
     raqm_glyph_t* rqGlyphs = raqm_get_glyphs(rq, &rqGlyphCount);
     out.glyphs.resize(rqGlyphCount);
@@ -254,30 +251,33 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
     for (size_t i = 0; i < rqGlyphCount; ++i)
     {
         const raqm_glyph_t& rqGlyph = rqGlyphs[i];
+        const raqm_direction_t rqGlyphDir = raqm_get_direction_at_index(rq, i);
         auto& renderedGlyph = out.glyphs[i];
 
         // Find a font for our glyph
         auto it = std::upper_bound(fontRanges.begin(), fontRanges.end(), rqGlyph.cluster,
             [](uint32_t value, const std::pair<const FreeTypeFont*, size_t>& elm)
         {
-            return elm.second < value;
+            return value < elm.second;
         });
 
-        auto fontGlyph = (*it).first->getGlyphByIndex(rqGlyph.index, true);
+        const FreeTypeFont* font = (*it).first;
+        auto fontGlyph = font->getGlyphByIndex(rqGlyph.index, true);
         if (!fontGlyph)
-            fontGlyph = (*it).first->getGlyphForCodepoint(Font::UnicodeReplacementCharacter);
+            fontGlyph = font->getGlyphForCodepoint(Font::UnicodeReplacementCharacter);
 
         // A multiplication coefficient to convert 26.6 fixed point values into normal floats
         constexpr float s_26dot6_toFloat = (1.0f / 64.f);
 
         renderedGlyph.image = fontGlyph ? fontGlyph->getImage(0) : nullptr;
-        renderedGlyph.originalIndex = rqGlyph.cluster + start;
+        renderedGlyph.sourceIndex = rqGlyph.cluster + start;
         renderedGlyph.offset.x = rqGlyph.x_offset * s_26dot6_toFloat;
-        renderedGlyph.offset.y = rqGlyph.y_offset * s_26dot6_toFloat;
-        renderedGlyph.advance.d_width = rqGlyph.x_advance * s_26dot6_toFloat;
-        renderedGlyph.advance.d_height = rqGlyph.y_advance * s_26dot6_toFloat;
-        renderedGlyph.elementIndex = elementIndices[renderedGlyph.originalIndex];
-        renderedGlyph.isRightToLeft = (raqm_get_direction_at_index(rq, i) == RAQM_DIRECTION_RTL);
+        renderedGlyph.offset.y = rqGlyph.y_offset * s_26dot6_toFloat + font->getBaseline();
+        renderedGlyph.advance = ((rqGlyphDir == RAQM_DIRECTION_TTB) ? rqGlyph.y_advance : rqGlyph.x_advance)  * s_26dot6_toFloat;
+        renderedGlyph.elementIndex = (renderedGlyph.sourceIndex < elementIdxCount) ?
+            elementIndices[renderedGlyph.sourceIndex] :
+            (static_cast<uint16_t>(elements.size() - 1));
+        renderedGlyph.isRightToLeft = (rqGlyphDir == RAQM_DIRECTION_RTL);
     }
 
     return true;
@@ -293,13 +293,13 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     if (text.empty())
         return true;
 
+    //!!!TODO TEXT: in each elements store logical index of the codepoint (or first-last range for texts)
+
     // Parse a string and obtain UTF-32 text with placeholders but without tags
     std::u32string utf32Text;
     std::vector<size_t> originalIndices;
-    std::vector<uint8_t> elementIndices;
+    std::vector<uint16_t> elementIndices;
     std::vector<RenderedStringComponentPtr> elements;
-    //???or store union and uint8_t type? virtual table requires 4 bytes, type - 1 byte.
-    //!!!in each elements store logical index of the codepoint (or first-last range for texts)
     if (parser)
     {
         //!!!???base style will be created empty, fill it outside?, font, color
@@ -334,9 +334,15 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     if (utf32Text.empty())
         return true;
 
-    // There is no chance to find explicit fonts for some characters. In this case a default font is required.
-    if (!defaultFont && elementIndices.size() < utf32Text.size())
-        return false;
+    // There are characters without associated text style. Add default one.
+    if (elementIndices.size() < utf32Text.size())
+    {
+        // Characters without explicit styles require a default font
+        if (!defaultFont)
+            return false;
+
+        elements.emplace_back(new RenderedStringTextComponent("", defaultFont));
+    }
 
 #ifdef CEGUI_USE_RAQM
     raqm_t* rq = nullptr;
@@ -377,16 +383,16 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
         raqm_destroy(rq);
 #endif
 
-    //!!!Replace placeholder glyphs in paragraphs with images and widgets!
-    //!!!NB: for embedded objects need to calculate size now or to convert offsets into positions later!
-    //!!!may be store offsets and advances here, and set positions when generating geometry?!
-    //!!!Calculate paragraph extents for faster horizontal formatting!
-    //!!!Calculate justifyables and breakables!
+    const bool adjustSourceIndices = !originalIndices.empty();
     for (auto& p : d_paragraphs)
     {
         for (auto& glyph : p.glyphs)
         {
-            const auto& element = elements[elementIndices[glyph.originalIndex]];
+            // Make source index point to an original string passed in "text" arg
+            if (adjustSourceIndices)
+                glyph.sourceIndex = static_cast<uint32_t>(originalIndices[glyph.sourceIndex]);
+
+            const auto& element = elements[glyph.elementIndex];
             // always:
             //element->getTopPadding
             //element->getBottomPadding
@@ -399,17 +405,18 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
 
             // VerticalImageFormatting - store in glyph or get from element? or embed into offset and advance Y?!
             // if embed, image size changes will require recalculation!?
+            //!!!NB: this changes per element, no need to calculate for each glyph when creating geometry!
 
+            //!!!Replace placeholder glyphs in paragraphs with images and widgets!
+
+            //!!!only for non-placeholders, real texts!
             //???!!!placeholders must not be justifyable but may be breakable!?
-
-            //!!!The if last (ot the first too?) char is justifyable, don't mark it as such!
-            //???for word-wrap, where to handle it? Or it will count justifyable counts for subranges inside?!
+            const auto codePoint = text[glyph.sourceIndex];
+            glyph.isJustifyable = (codePoint == ' ');
+            glyph.isBreakable = (codePoint == ' ');
         }
-    }
 
-    if (!originalIndices.empty())
-    {
-        //!!!recalculate glyph-to-logical mapping using originalIndices
+        //!!!Calculate paragraph extents for faster horizontal formatting!
     }
 
     return true;
@@ -441,7 +448,7 @@ void RenderedString::appendLineBreak()
 //----------------------------------------------------------------------------//
 Sizef RenderedString::getLineExtent(const Window* refWnd, const size_t line) const
 {
-    if (line >= getLineCount())
+    if (line >= d_lines.size())
         throw InvalidRequestException("line number specified is invalid.");
 
     Sizef sz(0.f, 0.f);
@@ -478,7 +485,7 @@ Sizef RenderedString::getExtent(const Window* refWnd) const
 //----------------------------------------------------------------------------//
 size_t RenderedString::getSpaceCount(const size_t line) const
 {
-    if (line >= getLineCount())
+    if (line >= d_lines.size())
         throw InvalidRequestException("line number specified is invalid.");
 
     size_t space_count = 0;
@@ -495,7 +502,7 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     const Window* refWnd, const size_t line, const glm::vec2& position,
     const ColourRect* modColours, const Rectf* clipRect, float spaceExtra) const
 {
-    if (line >= getLineCount())
+    if (line >= d_lines.size())
         throw InvalidRequestException("line number specified is invalid.");
 
     const float renderHeight = getLineExtent(refWnd, line).d_height;
@@ -546,7 +553,7 @@ void RenderedString::setSelection(const Window* refWnd, float start, float end)
 bool RenderedString::split(const Window* refWnd, const size_t line,
     float splitPoint, RenderedString& left)
 {
-    if (line >= getLineCount())
+    if (line >= d_lines.size())
         throw InvalidRequestException("line number specified is invalid.");
 
     left.clearComponents();

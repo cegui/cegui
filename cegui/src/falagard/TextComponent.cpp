@@ -286,6 +286,10 @@ void TextComponent::updateRenderedString(const Window& srcWindow, const String& 
 
     d_renderedString = parser.parse(textVisual, font, nullptr, d_paragraphDir.get(srcWindow));
 
+    //!!!DBG TMP!
+    RenderedString tmp;
+    tmp.renderText(text, nullptr, font, d_paragraphDir.get(srcWindow));
+
     d_lastFont = font;
     d_lastParser = &parser;
     d_lastText = text;
