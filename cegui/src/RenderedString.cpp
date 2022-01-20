@@ -27,6 +27,8 @@
 #include "CEGUI/RenderedString.h"
 #include "CEGUI/RenderedStringTextComponent.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/BitmapImage.h" // FIXME TEXT: needed for buffer merging, move out of here?!
+#include "CEGUI/GeometryBuffer.h" // FIXME TEXT: needed for buffer merging, move out of here?!
 #ifdef CEGUI_USE_RAQM
 #include "CEGUI/FreeTypeFont.h"
 #include <raqm.h>
@@ -274,9 +276,6 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
         renderedGlyph.offset.x = rqGlyph.x_offset * s_26dot6_toFloat;
         renderedGlyph.offset.y = rqGlyph.y_offset * s_26dot6_toFloat + font->getBaseline();
         renderedGlyph.advance = ((rqGlyphDir == RAQM_DIRECTION_TTB) ? rqGlyph.y_advance : rqGlyph.x_advance)  * s_26dot6_toFloat;
-        renderedGlyph.elementIndex = (renderedGlyph.sourceIndex < elementIdxCount) ?
-            elementIndices[renderedGlyph.sourceIndex] :
-            (static_cast<uint16_t>(elements.size() - 1));
         renderedGlyph.isRightToLeft = (rqGlyphDir == RAQM_DIRECTION_RTL);
     }
 
@@ -293,7 +292,11 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     if (text.empty())
         return true;
 
-    //!!!TODO TEXT: in each elements store logical index of the codepoint (or first-last range for texts)
+    //!!!TODO TEXT: in each element store logical index of the codepoint (or first-last range for texts)
+
+    //!!!TODO TEXT: which changes require which updates?
+    // E.g. change of any of this function args requires renderText call.
+    // Does everything other need only geometry regeneration?
 
     // Parse a string and obtain UTF-32 text with placeholders but without tags
     std::u32string utf32Text;
@@ -320,7 +323,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     }
     else
     {
-        //!!!this can be used instead of DefaultRenderedStringParser!
+        //!!!TODO TEXT: this can be used instead of DefaultRenderedStringParser, delete it then!
 
         // When no parser specified, simply ensure that we have out UTF-32 string
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32)
@@ -383,11 +386,18 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
         raqm_destroy(rq);
 #endif
 
+    const uint16_t defaultStyleIdx = static_cast<uint16_t>(elements.size() - 1);
+    const size_t elementIdxCount = elementIndices.size();
     const bool adjustSourceIndices = !originalIndices.empty();
     for (auto& p : d_paragraphs)
     {
         for (auto& glyph : p.glyphs)
         {
+            // Find associated element or associate with default text style
+            glyph.elementIndex = (glyph.sourceIndex < elementIdxCount) ?
+                elementIndices[glyph.sourceIndex] :
+                defaultStyleIdx;
+
             // Make source index point to an original string passed in "text" arg
             if (adjustSourceIndices)
                 glyph.sourceIndex = static_cast<uint32_t>(originalIndices[glyph.sourceIndex]);
@@ -414,9 +424,13 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             const auto codePoint = text[glyph.sourceIndex];
             glyph.isJustifyable = (codePoint == ' ');
             glyph.isBreakable = (codePoint == ' ');
+
+            if (glyph.isJustifyable)
+                ++p.justifyableSpaceCount;
         }
 
         //!!!Calculate paragraph extents for faster horizontal formatting!
+        //???do word wrapping at the same time? can do per paragraph!
     }
 
     return true;
@@ -513,6 +527,72 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     {
         d_components[i]->createRenderGeometry(out, refWnd, pos, modColours, clipRect, renderHeight, spaceExtra);
         pos.x += d_components[i]->getPixelSize(refWnd).d_width;
+    }
+
+
+////////////////////// NEW CODE WIP:
+
+    //!!!DBG TMP!
+    if (line >= d_paragraphs.size())
+        return;
+
+    const auto& p = d_paragraphs[line];
+
+    //???when actualized?! embedded objects might have been resized. Update embedded only here?!
+    //!!!glyphs never change, use this fact! only embedded objects do. E.g. may cache only text glyph extents
+    //and count of embedded objects, and now add sizes of embedded objects until count reached!
+    //!!!need to distinguish embedded objects from text glyphs fast! nullptr image? or special flag?!
+    const float renderHeight___ = p.extents.d_height;
+
+    //!!!!!!!!FIXME TEXT: modColours may be null!!!!!! and it's not the same as default text, bg or outline color
+
+    //!!!TODO TEXT: how to render selection?! check each glyphs is it inside a selection range?!
+    //!!!may switch selection remdering on/off, to optimize rendering text that can't have selection!
+    //!!!may simply check selection length, it is effectively the same!
+
+    // TODO TEXT: ensure that necessary adjustment happens before this, or enable alignToPixels here
+    ImageRenderSettings settings(Rectf(), clipRect);// , true);
+
+    //???TODO TEXT: to what buffers really can merge?! need to see rendering order first!
+    const auto canCombineFromIdx = out.size();
+
+    //!!!TODO TEXT: may be useful to make pen modifyable, in-out arg!
+    glm::vec2 penPosition = position;
+    for (auto& glyph : p.glyphs)
+    {
+        //???process by chunks belonging to the same element?!
+
+        if (glyph.image)
+        {
+            settings.d_destArea = Rectf(penPosition + glyph.offset, glyph.image->getRenderedSize());
+            //!!!TODO TEXT:
+            //settings.d_multiplyColours = (layer < layerColours.size()) ? layerColours[layer] : fallbackColour;
+
+            //!!!FIXME TEXT: image is implied to be a BitmapImage here, otherwise a crash is possible!
+
+            // We only create a new GeometryBuffer if no existing one is found that we can
+            // combine this one with. Render order is irrelevant since glyphs should never overlap.
+            auto it = std::find_if(out.begin() + canCombineFromIdx, out.end(),
+                [tex = static_cast<const BitmapImage*>(glyph.image)->getTexture()](const GeometryBuffer* buffer)
+            {
+                return tex == buffer->getTexture("texture0");
+            });
+
+            if (it != out.end())
+                glyph.image->addToRenderGeometry(*(*it), settings);
+            else
+                glyph.image->createRenderGeometry(out, settings);
+        }
+
+        //!!!TODO TEXT:
+        //render outline if required for the curent glyph! must be already baked, because outline size is dynamic!
+        //use outline color from element or default one
+        //render underline, strikeout
+
+        penPosition.x += glyph.advance;
+
+        if (glyph.isJustifyable)
+            penPosition.x += spaceExtra;
     }
 }
 
