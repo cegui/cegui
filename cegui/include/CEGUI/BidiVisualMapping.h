@@ -27,6 +27,7 @@
 #ifndef _CEGUIBidiVisualMapping_h_
 #define _CEGUIBidiVisualMapping_h_
 
+#include "CEGUI/DefaultParagraphDirection.h"
 #include "CEGUI/String.h"
 #include <vector>
 
@@ -51,24 +52,21 @@ class CEGUIEXPORT BidiVisualMapping
 {
 public:
 
-    virtual ~BidiVisualMapping() = default;
-
     /*!
     \brief
         Gets the Bidi char type of a char.
 
-    \param charToCheck
-        The char / char32_t character code that will be checked.
+    \param codepoint
+        The char or char32_t character code that will be checked.
 
     \return
         One of the BidiCharType enumerated values indicating the Bidi char type.
     */
-    virtual BidiCharType getBidiCharType(const char32_t char_to_check) const = 0;
+    static BidiCharType getBidiCharType(const char32_t codepoint);
 
     /*!
     \brief
-        Reorder a string from a logical (type order) bidi string to a
-        visual (the way it displayed) string.
+        Reorder a string from a logical (type order) to a visual (the way it displayed) order.
 
     \param logical
         String object to be reordered.
@@ -85,38 +83,26 @@ public:
         the logical string.
 
     \return
-        - true if successful.
-        - false if the operation failed.
+        true if successful, false if failed.
     */
-    virtual bool reorderFromLogicalToVisual(const String& logical,
-                                            String& visual,
-                                            std::vector<int>& l2v,
-                                            std::vector<int>& v2l) const = 0;
+    static bool applyBidi(const String& logical, String& outVisual, std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir);
 
-    /*!
-    \brief
-        Use reorderFromLogicalToVisual to update the internal visual mapping
-        data and visual string representation based upon the logical string
-        \a logical.
+    static bool applyBidi(const String& logical, std::u32string& outVisual, std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir);
 
-    \param logical
-        String object representing the logical text order.
+    //! \overload
+    static inline bool applyBidi(const std::u32string& logical, std::u32string& outVisual, std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir)
+    {
+        return applyBidi(logical.c_str(), logical.size(), outVisual, l2v, v2l, dir);
+    }
 
-    \return
-        - true if the update was a success.
-        - false if something went wrong.
-    */
-    bool updateVisual(const String& logical);
+    //! \overload applyBidi
+    static inline bool applyBidiInplace(std::u32string& text, std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir)
+    {
+        return applyBidi(text.c_str(), text.size(), text, l2v, v2l, dir);
+    }
 
-    const std::vector<int>& getL2vMapping() const { return d_l2vMapping; }
-    const std::vector<int>& getV2lMapping() const { return d_v2lMapping; }
-    const String& getTextVisual() const { return d_textVisual; }
-
-protected:
-
-    std::vector<int> d_l2vMapping;
-    std::vector<int> d_v2lMapping;
-    String d_textVisual;
+    //! \overload
+    static bool applyBidi(const char32_t* start, size_t length, std::u32string& outVisual, std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir);
 };
 
 }

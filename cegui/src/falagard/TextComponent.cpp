@@ -37,11 +37,7 @@
 #include "CEGUI/RenderedStringWordWrapper.h"
 #include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/CoordConverter.h"
-#if defined (CEGUI_USE_FRIBIDI)
-    #include "CEGUI/FribidiVisualMapping.h"
-#elif defined (CEGUI_USE_MINIBIDI)
-    #include "CEGUI/MinibidiVisualMapping.h"
-#endif
+#include "CEGUI/BidiVisualMapping.h"
 
 namespace CEGUI
 {
@@ -270,25 +266,22 @@ void TextComponent::updateRenderedString(const Window& srcWindow, const String& 
     if (d_lastFont == font && d_lastParser == &parser && d_lastText == text)
         return;
 
+    auto bidiDir = d_paragraphDir.get(srcWindow);
+
 #if defined(CEGUI_BIDI_SUPPORT)
-#if defined (CEGUI_USE_FRIBIDI)
-    FribidiVisualMapping bidiVisualMapping;
-#elif defined (CEGUI_USE_MINIBIDI)
-    MinibidiVisualMapping bidiVisualMapping;
-#else
-    #error "BIDI Configuration is inconsistant, check your config!"
-#endif
-    bidiVisualMapping.updateVisual(text);
-    const String& textVisual = bidiVisualMapping.getTextVisual();
+    std::vector<int> l2v;
+    std::vector<int> v2l;
+    std::u32string textVisual;
+    BidiVisualMapping::applyBidi(text, textVisual, l2v, v2l, bidiDir);
 #else
     const String& textVisual = text;
 #endif
 
-    d_renderedString = parser.parse(textVisual, font, nullptr, d_paragraphDir.get(srcWindow));
+    d_renderedString = parser.parse(textVisual, font, nullptr, bidiDir);
 
     //!!!DBG TMP!
     RenderedString tmp;
-    tmp.renderText(text, nullptr, font, d_paragraphDir.get(srcWindow));
+    tmp.renderText(text, nullptr, font, bidiDir);
 
     d_lastFont = font;
     d_lastParser = &parser;

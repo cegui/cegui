@@ -34,12 +34,7 @@
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/BidiVisualMapping.h"
 #include "CEGUI/UndoHandler.h"
-#if defined (CEGUI_USE_FRIBIDI)
-#include "CEGUI/FribidiVisualMapping.h"
-#elif defined (CEGUI_USE_MINIBIDI)
-#include "CEGUI/MinibidiVisualMapping.h"
-#endif
-
+#include "CEGUI/BidiVisualMapping.h"
 #include <string.h>
 
 namespace CEGUI

@@ -44,14 +44,6 @@ if (NOT CEGUI_HAS_STD11_REGEX)
     list (REMOVE_ITEM CORE_SOURCE_FILES StdRegexMatcher.cpp)
 endif()
 
-if (NOT CEGUI_USE_FRIBIDI)
-    list (REMOVE_ITEM CORE_SOURCE_FILES FribidiVisualMapping.cpp)
-endif()
-
-if (NOT CEGUI_USE_MINIBIDI)
-    list (REMOVE_ITEM CORE_SOURCE_FILES MinibidiVisualMapping.cpp)
-endif ()
-
 if (NOT CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
     list (REMOVE_ITEM CORE_SOURCE_FILES MinizipResourceProvider.cpp)
 endif()

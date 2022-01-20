@@ -33,11 +33,7 @@
 #include "CEGUI/Window.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/RenderedStringParser.h"
-#if defined (CEGUI_USE_FRIBIDI)
-#include "CEGUI/FribidiVisualMapping.h"
-#elif defined (CEGUI_USE_MINIBIDI)
-#include "CEGUI/MinibidiVisualMapping.h"
-#endif
+#include "CEGUI/BidiVisualMapping.h"
 
 namespace CEGUI
 {

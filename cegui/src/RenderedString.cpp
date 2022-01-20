@@ -27,6 +27,7 @@
 #include "CEGUI/RenderedString.h"
 #include "CEGUI/RenderedStringTextComponent.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/BidiVisualMapping.h"
 #include "CEGUI/BitmapImage.h" // FIXME TEXT: needed for buffer merging, move out of here?!
 #include "CEGUI/GeometryBuffer.h" // FIXME TEXT: needed for buffer merging, move out of here?!
 #ifdef CEGUI_USE_RAQM
@@ -78,7 +79,7 @@ static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
     //!!!if RAQM defined, may get here as a fallback, use fribidi then!
 
     // Apply Unicode Bidirectional Algorithm to obtain a string with visual ordering of codepoints
-#if defined(CEGUI_BIDI_SUPPORT)
+#if defined(CEGUI_BIDI_SUPPORT) //|| defined(CEGUI_USE_RAQM)
     //!!!FIXME TEXT: IMPROVE BIDI
     // 1. Can avoid virtualization and transfer internals here or into some wrapper
     // 2. UTF-32 text is ready to be processed, need to pass it without redundant conversions
@@ -89,34 +90,37 @@ static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
     // 7. Use default paragraph direction where supported: defaultParagraphDir
     // 8. One wrapper function and #ifdef inside?
     // 9. Make preprocessor definitions better for RAQM Fribidi fallback?
+    //10. Need explicit start + length!!!
     std::vector<int> l2v;
     std::vector<int> v2l;
     std::u32string textVisual;
-#if defined (CEGUI_USE_FRIBIDI)
-    FribidiVisualMapping().reorderFromLogicalToVisual(text, textVisual, l2v, v2l);
-#elif defined (CEGUI_USE_MINIBIDI)
-    MinibidiVisualMapping().reorderFromLogicalToVisual(text, textVisual, l2v, v2l);
-#else
-#error "BIDI configuration is inconsistent, check your config!"
-#endif
+    if (!BidiVisualMapping::applyBidi(text.c_str() + start, end - start, textVisual, l2v, v2l, dir))
+        return false;
 
-    // Post-BIDI reindexing
-    //!!!originalIndices, elementIndices - permute based on l2v
-    //???use std::sort? or just use l2v as an additional indirection level?
-    //!!!can do it via macro! #define IDX(x) (l2v[x]) VS #define IDX(x) (x), don't forget to undef it!
-
+    out.bidiDir = dir;
 #else
     const auto& textVisual = text;
 #endif
 
     // Glyph generation
 
-    // for each codepoint
-    //   if references image or widget, process specially
-    //   if references a font
-    //     collect a range with the same font
-    //     process range inside that font, to handle kerning and other font virtualization
-    //     apply styling (underline, strikeout etc)
+    for (size_t i = start; i < end; ++i)
+    {
+#if defined(CEGUI_BIDI_SUPPORT)
+        const size_t visualIndex = i - start;
+        const size_t logicalIndex = v2l[visualIndex];
+#else
+        const size_t visualIndex = i;
+        const size_t logicalIndex = i;
+#endif
+
+        const auto& element = elements[elementIndices[logicalIndex]];
+
+        //   if references image or widget, process specially
+        //   if references a font
+        //     collect a range with the same font
+        //     process range inside that font, to handle kerning and other font virtualization
+    }
 
     return true;
 }
@@ -560,7 +564,9 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     glm::vec2 penPosition = position;
     for (auto& glyph : p.glyphs)
     {
-        //???process by chunks belonging to the same element?!
+        //???TODO TEXT: process by chunks belonging to the same element?! profit only for glyphs, but what exactly?
+
+        //!!!TODO TEXT: render embedded elements, adjust the pen accordingly!
 
         if (glyph.image)
         {
@@ -591,6 +597,7 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
 
         penPosition.x += glyph.advance;
 
+        //!!!FIXME TEXT: where to get extra space for justified text?!
         if (glyph.isJustifyable)
             penPosition.x += spaceExtra;
     }
