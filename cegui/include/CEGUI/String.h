@@ -4533,14 +4533,9 @@ public:
         Returns the underlying std::basic_string that
         is used to store the code units for this
         String class.
-    \return
-        A const reference to the std::basic_string stored in
-        this String class.
     */
-    const std::basic_string<value_type>& getString() const
-    {
-        return d_string;
-    }
+    const std::basic_string<value_type>& getString() const { return d_string; }
+    std::basic_string<value_type>& getString() { return d_string; }
 
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
     /*

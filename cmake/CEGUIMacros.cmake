@@ -232,16 +232,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
             CXX_STANDARD_REQUIRED ON)
 
         if (NOT CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
-            # Starting with CMake 2.8.12 LINK_INTERFACE_LIBRARIES was renamed to INTERFACE_LINK_LIBRARIES
-            if (${CMAKE_VERSION} VERSION_GREATER 2.8.12 OR ${CMAKE_VERSION} VERSION_EQUAL 2.8.12)
-                set_target_properties(${_LIB_NAME} PROPERTIES
-                    INTERFACE_LINK_LIBRARIES ""
-                    )
-            else()
-                set_target_properties(${_LIB_NAME} PROPERTIES
-                    LINK_INTERFACE_LIBRARIES ""
-                    )
-            endif()
+            set_target_properties(${_LIB_NAME} PROPERTIES INTERFACE_LINK_LIBRARIES "")
         endif()
 
         if (APPLE)
