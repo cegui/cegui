@@ -115,7 +115,7 @@ public:
     void updateFont() override;
     bool isCodepointAvailable(char32_t codePoint) const override;
     FreeTypeFontGlyph* getGlyphForCodepoint(char32_t codePoint) const override;
-    FreeTypeFontGlyph* getGlyphByIndex(uint32_t ftGlyphIndex) const;
+    FreeTypeFontGlyph* getGlyphByIndex(uint32_t ftGlyphIndex, bool prepare = false) const;
 
     /*!
     \brief
@@ -253,8 +253,8 @@ protected:
     \param subImageData
         The pixel data of the subimage 
     */
-    void updateTextureBufferSubImage(argb_t* buffer, unsigned int bitmapWidth,
-        unsigned int bitmapHeight, const std::vector<argb_t>& subImageData) const;
+    void updateTextureBufferSubImage(argb_t* buffer, uint32_t bitmapWidth,
+        uint32_t bitmapHeight, const std::vector<argb_t>& subImageData) const;
 
     /*
     \brief
@@ -285,20 +285,20 @@ protected:
     //! Rasterises the glyph and adds it into a glyph atlas texture
     void rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap,
         int glyphLeft, int glyphTop, int glyphWidth, int glyphHeight,
-        unsigned int layer) const;
+        uint32_t layer) const;
     
     //! Helper functions for rasterisation
     void addRasterisedGlyphToTextureAndSetupGlyphImage(
         FreeTypeFontGlyph* glyph, Texture* texture,
         FT_Bitmap& glyphBitmap, int glyphLeft, int glyphTop,
-        int glyphWidth, int glyphHeight, unsigned int layer,
+        int glyphWidth, int glyphHeight, uint32_t layer,
         const TextureGlyphLine& glyphTexLine) const;
 
     void findFittingSpotInGlyphTextureLines(int glyphWidth, int glyphHeight,
         bool &fittingLineWasFound, size_t &fittingLineIndex) const;
 
     //! Adds a new glyph atlas line if the glyph would fit into there.
-    bool addNewLineIfFitting(unsigned int glyphHeight, unsigned int glyphWidth,
+    bool addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWidth,
         size_t & fittingLineIndex) const;
 
     void createGlyphAtlasTexture() const;

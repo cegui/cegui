@@ -240,7 +240,7 @@ public:
     \return
         The name of the Image.
     */
-    virtual const String& getName() const;
+    const String& getName() const { return d_name; }
         
     /*!
     \brief
@@ -250,7 +250,7 @@ public:
     \return
         The rendered size of this Image.
     */
-    virtual const Sizef& getRenderedSize() const;
+    const Sizef& getRenderedSize() const { return d_scaledSize; }
 
         
     /*!
@@ -261,7 +261,7 @@ public:
     \return
         The rendered offset of this Image.
     */
-    virtual const glm::vec2& getRenderedOffset() const;
+    const glm::vec2& getRenderedOffset() const { return d_scaledOffset; }
 
     /*!
     \brief
@@ -289,7 +289,7 @@ public:
     \return
         The rectangular image area of this Image.
      */
-    Rectf getImageArea() const;
+    const Rectf& getImageArea() const { return d_imageArea; }
 
     /*!
     \brief

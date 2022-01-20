@@ -133,41 +133,14 @@ void Image::elementEndLocal(const String& element)
 }
 
 //----------------------------------------------------------------------------//
-const String& Image::getName() const
-{
-    return d_name;
-}
-
-//----------------------------------------------------------------------------//
-const Sizef& Image::getRenderedSize() const
-{
-    return d_scaledSize;
-}
-
-//----------------------------------------------------------------------------//
-const glm::vec2& Image::getRenderedOffset() const
-{
-    return d_scaledOffset;
-}
-
-//----------------------------------------------------------------------------//
 void Image::setImageArea(const Rectf& image_area)
 {
     d_imageArea = image_area;
 
     if (d_autoScaled != AutoScaledMode::Disabled)
-        updateScaledSizeAndOffset(
-            System::getSingleton().getRenderer()->getDisplaySize());
+        updateScaledSizeAndOffset(System::getSingleton().getRenderer()->getDisplaySize());
     else
-    {
         d_scaledSize = d_imageArea.getSize();
-    }
-}
-
-//----------------------------------------------------------------------------//
-Rectf Image::getImageArea() const
-{
-    return d_imageArea;
 }
 
 //----------------------------------------------------------------------------//
@@ -176,8 +149,7 @@ void Image::setOffset(const glm::vec2& pixel_offset)
     d_pixelOffset = pixel_offset;
 
     if (d_autoScaled != AutoScaledMode::Disabled)
-        updateScaledOffset(
-            System::getSingleton().getRenderer()->getDisplaySize());
+        updateScaledOffset(System::getSingleton().getRenderer()->getDisplaySize());
     else
         d_scaledOffset = d_pixelOffset;
 }
@@ -189,8 +161,7 @@ void Image::setAutoScaled(const AutoScaledMode autoscaled)
 
     if (d_autoScaled != AutoScaledMode::Disabled)
     {
-        updateScaledSizeAndOffset(
-            System::getSingleton().getRenderer()->getDisplaySize());
+        updateScaledSizeAndOffset(System::getSingleton().getRenderer()->getDisplaySize());
     }
     else
     {
@@ -205,10 +176,8 @@ void Image::setNativeResolution(const Sizef& native_res)
     d_nativeResolution = native_res;
 
     if (d_autoScaled != AutoScaledMode::Disabled)
-        updateScaledSizeAndOffset(
-            System::getSingleton().getRenderer()->getDisplaySize());
+        updateScaledSizeAndOffset(System::getSingleton().getRenderer()->getDisplaySize());
 }
-
 
 //----------------------------------------------------------------------------//
 void Image::notifyDisplaySizeChanged(const Sizef& renderer_display_size)
@@ -219,11 +188,9 @@ void Image::notifyDisplaySizeChanged(const Sizef& renderer_display_size)
 }
 
 //----------------------------------------------------------------------------//
-
 void Image::updateScaledSizeAndOffset(const Sizef& renderer_display_size)
 {
     glm::vec2 scaleFactors;
-
     computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
         scaleFactors.x, scaleFactors.y);
 
@@ -235,7 +202,6 @@ void Image::updateScaledSizeAndOffset(const Sizef& renderer_display_size)
 void Image::updateScaledSize(const Sizef& renderer_display_size)
 {
     glm::vec2 scaleFactors;
-
     computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
         scaleFactors.x, scaleFactors.y);
 
@@ -246,7 +212,6 @@ void Image::updateScaledSize(const Sizef& renderer_display_size)
 void Image::updateScaledOffset(const Sizef& renderer_display_size)
 {
     glm::vec2 scaleFactors;
-
     computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
         scaleFactors.x, scaleFactors.y);
 

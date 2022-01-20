@@ -34,9 +34,9 @@
 #	pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+
 /*!
 \brief
     internal class representing a single font glyph.
@@ -47,27 +47,16 @@ namespace CEGUI
 class CEGUIEXPORT FontGlyph
 {
 public:
-    //! Constructor.
-    FontGlyph(char32_t codePoint, float advance = 0.0f, Image* image = nullptr) :
+
+    FontGlyph(char32_t codePoint, float advance = 0.f, Image* image = nullptr) :
         d_advance(advance),
         d_codePoint(codePoint)
     {
-      if (image != nullptr)
-        d_imageLayers.push_back(image);
+        if (image)
+            d_imageLayers.push_back(image);
     }
 
-    virtual ~FontGlyph()
-    {}
-
-    //! Return the CEGUI::Image object rendered for this glyph.
-    Image* getImage(unsigned int layer = 0) const
-    {
-        if (d_imageLayers.size() > layer)
-        {
-            return d_imageLayers[layer];
-        }
-        return nullptr;
-    }
+    virtual ~FontGlyph() = default;
 
     /*!
     \brief
@@ -76,14 +65,11 @@ public:
         The rendered advance value is the total number of pixels from the
         current pen position that will be occupied by this glyph when rendered.
     */
-    virtual float getRenderedAdvance(
-    ) const
+    virtual float getRenderedAdvance() const
     {
-        float max = 0;
-        for (Image* d_image : d_imageLayers)
-        {
-            max = std::max (max, d_image->getRenderedSize().d_width + d_image->getRenderedOffset().x);
-        }
+        float max = 0.f;
+        for (const Image* d_image : d_imageLayers)
+            max = std::max(max, d_image->getRenderedSize().d_width + d_image->getRenderedOffset().x);
         return max;
     }
 
@@ -96,30 +82,36 @@ public:
         is not always the same as the glyph image width or rendered advance,
         since it allows for horizontal overhangs.
     */
-    float getAdvance() const
-    { return d_advance; }
+    float getAdvance() const { return d_advance; }
 
     //! Set the horizontal advance value for the glyph.
-    void setAdvance(float advance)
-    { d_advance = advance; }
+    void setAdvance(float advance) { d_advance = advance; }
+
+    //! Return the CEGUI::Image object rendered for this glyph.
+    Image* getImage(unsigned int layer = 0) const
+    {
+        return (layer < d_imageLayers.size()) ? d_imageLayers[layer] : nullptr;
+    }
 
     //! Set the CEGUI::Image object rendered for this glyph.
     void setImage(Image* image, unsigned int layer = 0)
     {
         if (d_imageLayers.size() <= layer)
         {
-            d_imageLayers.resize(layer+1);
+            if (image)
+                d_imageLayers.resize(layer + 1, nullptr);
+            else
+                return;
         }
+
         d_imageLayers[layer] = image;
     }
 
     //! Returns the code point that this glyph is based on
-    char32_t getCodePoint() const
-    {
-        return d_codePoint;
-    }
+    char32_t getCodePoint() const { return d_codePoint; }
 
 private:
+
     //! The image which will be rendered for this glyph.
     std::vector<Image*> d_imageLayers;
     //! Amount to advance the pen after rendering this glyph
@@ -128,10 +120,10 @@ private:
     const char32_t d_codePoint;
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIFontGlyph_h_
+#endif

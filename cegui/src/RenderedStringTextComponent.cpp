@@ -25,10 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RenderedStringTextComponent.h"
-#include "CEGUI/FontManager.h"
 #include "CEGUI/Font.h"
-#include "CEGUI/System.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/TextUtils.h"
 #include "CEGUI/Window.h"
 
@@ -78,50 +75,43 @@ const Font* RenderedStringTextComponent::getEffectiveFont(const Window* window) 
 
 //----------------------------------------------------------------------------//
 void RenderedStringTextComponent::createRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const Window* refWnd,
-    const glm::vec2& position,
-    const ColourRect* mod_colours,
-    const Rectf* clip_rect,
-    const float vertical_space,
-    const float space_extra) const
+    const Window* refWnd, const glm::vec2& position, const ColourRect* modColours,
+    const Rectf* clipRect, float verticalSpace, float spaceExtra) const
 {
     const Font* font = getEffectiveFont(refWnd);
     if (!font)
         return;
 
-    glm::vec2 final_pos = position;
+    glm::vec2 penPosition = position + d_padding.getPosition();
     switch (d_verticalFormatting)
     {
         case VerticalImageFormatting::BottomAligned:
-            final_pos.y += vertical_space - getPixelSize(refWnd).d_height;
+            penPosition.y += verticalSpace - getPixelSize(refWnd).d_height;
             break;
         case VerticalImageFormatting::CentreAligned:
-            final_pos.y += (vertical_space - getPixelSize(refWnd).d_height) / 2.f;
+            penPosition.y += (verticalSpace - getPixelSize(refWnd).d_height) / 2.f;
             break;
         // Otherwise default to TopAligned
         // TODO TEXT: Stretched
     }
 
-    // apply padding to position:
-    final_pos += d_padding.getPosition();
+    // Apply modulative colours if needed
+    ColourRect finalColours(d_colours);
+    if (modColours)
+        finalColours *= *modColours;
 
-    // apply modulative colours if needed.
-    ColourRect final_cols(d_colours);
-    if (mod_colours)
-        final_cols *= *mod_colours;
-
-    // render selection
-    if (d_selectionImage && (d_selectionLength > 0))
+    // Render selection background before text
+    if (d_selectionImage && d_selectionLength)
     {
         const float selStartExtent = (d_selectionStart > 0) ? font->getTextExtent(d_text.substr(0, d_selectionStart)) : 0;
         const float selEndExtent = font->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
-        const Rectf selRect(position.x + selStartExtent, position.y, position.x + selEndExtent, position.y + vertical_space);
-        ImageRenderSettings imgRenderSettings(selRect, clip_rect, ColourRect(0xFF002FFF));
+        const Rectf selRect(position.x + selStartExtent, position.y, position.x + selEndExtent, position.y + verticalSpace);
+        ImageRenderSettings imgRenderSettings(selRect, clipRect, ColourRect(0xFF002FFF));
         d_selectionImage->createRenderGeometry(out, imgRenderSettings);
     }
 
-    // Create the geometry for rendering for the given text.
-    font->createTextRenderGeometry(out, d_text, final_pos, clip_rect, final_cols, d_defaultParagraphDir, space_extra);
+    // Create the geometry for rendering for the given text
+    font->createTextRenderGeometry(out, d_text, penPosition, clipRect, finalColours, d_defaultParagraphDir, spaceExtra);
 }
 
 //----------------------------------------------------------------------------//
@@ -141,10 +131,7 @@ Sizef RenderedStringTextComponent::getPixelSize(const Window* refWnd) const
 
 //----------------------------------------------------------------------------//
 RenderedStringComponentPtr RenderedStringTextComponent::split(
-                                                        const Window* refWnd,
-                                                        float split_point,
-                                                        bool first_component,
-                                                        bool& was_word_split)
+    const Window* refWnd, float split_point, bool first_component, bool& was_word_split)
 {
     const Font* font = getEffectiveFont(refWnd);
 

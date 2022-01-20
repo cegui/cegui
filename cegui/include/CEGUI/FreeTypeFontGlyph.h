@@ -29,17 +29,8 @@
 
 #include "CEGUI/FontGlyph.h"
 
-
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4251)
-#endif
-
-
 namespace CEGUI
 {
-
-class FreeTypeFont;
 
 /*!
 \brief
@@ -51,49 +42,42 @@ class FreeTypeFont;
 class CEGUIEXPORT FreeTypeFontGlyph : public FontGlyph
 {
 public:
-    FreeTypeFontGlyph(char32_t codePoint, unsigned int glyphIndex,
-        float advance = 0.0f, Image* image = nullptr, bool valid = false)
+
+    FreeTypeFontGlyph(char32_t codePoint, uint32_t glyphIndex,
+        float advance = 0.f, Image* image = nullptr, bool valid = false)
         : FontGlyph(codePoint, advance, image)
         , d_glyphIndex(glyphIndex)
         , d_initialised(valid)
     {}
 
-    ~FreeTypeFontGlyph()
-    {}
-
-    float getRenderedAdvance(
-    ) const override;
+    float getRenderedAdvance() const override;
 
     //! mark the FontGlyph as initialised
-    void markAsInitialised();
+    void markAsInitialised() { d_initialised = true; }
 
     //! return whether the glyph is valid
-    bool isInitialised() const;
+    bool isInitialised() const { return d_initialised; }
 
-    void setLsbDelta(const long lsbDelta);
-    long getLsbDelta() const;
-    void setRsbDelta(const long rsbDelta);
-    long getRsbDelta() const;
+    void setLsbDelta(long lsbDelta) { d_lsbDelta = lsbDelta; }
+    long getLsbDelta() const { return d_lsbDelta; }
+    void setRsbDelta(long rsbDelta) { d_rsbDelta = rsbDelta; }
+    long getRsbDelta() const { return d_rsbDelta; }
 
-    unsigned int getGlyphIndex() const;
-
+    uint32_t getGlyphIndex() const { return d_glyphIndex; }
 
 private:
-    //! The difference between hinted and unhinted left side bearing while auto-hinting is active. Zero otherwise.
-    long d_lsbDelta = 0;
-    long d_rsbDelta = 0;
 
     //! The index of the glyph in FreeType
-    const unsigned int d_glyphIndex;
+    const uint32_t d_glyphIndex;
+
+    //! The difference between hinted and unhinted side bearing while auto-hinting is active. Zero otherwise.
+    long d_lsbDelta = 0;
+    long d_rsbDelta = 0;
 
     //! Says whether this glyph is initialised or not
     bool d_initialised = false;
 };
 
 }
-
-#if defined(_MSC_VER)
-#   pragma warning(pop)
-#endif
 
 #endif

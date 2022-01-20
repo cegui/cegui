@@ -24,12 +24,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-
 #include "CEGUI/FreeTypeFontGlyph.h"
 
 namespace CEGUI
 {
 
+//----------------------------------------------------------------------------//
 float FreeTypeFontGlyph::getRenderedAdvance() const
 {
     const Image* img = getImage();
@@ -37,48 +37,11 @@ float FreeTypeFontGlyph::getRenderedAdvance() const
         return 0.f;
 
 #ifdef CEGUI_USE_RAQM
-    //TODO: This is incorrect, the estimate based on the advance should not be used when raqm is on
-    float sizeX = img->getRenderedSize().d_width + img->getRenderedOffset().x;
+    //!!!TODO TEXT: This is incorrect, the estimate based on the advance should not be used when raqm is on
+    return img->getRenderedSize().d_width + img->getRenderedOffset().x;
 #else
-    float sizeX = img->getRenderedSize().d_width + img->getRenderedOffset().x;
+    return img->getRenderedSize().d_width + img->getRenderedOffset().x;
 #endif
-
-    return sizeX;
-}
-
-void FreeTypeFontGlyph::markAsInitialised()
-{
-    d_initialised = true;
-}
-
-bool FreeTypeFontGlyph::isInitialised() const
-{
-    return d_initialised;
-}
-
-void FreeTypeFontGlyph::setLsbDelta(const long lsbDelta)
-{
-    d_lsbDelta = lsbDelta;
-}
-
-long FreeTypeFontGlyph::getLsbDelta() const
-{
-    return d_lsbDelta;
-}
-
-void FreeTypeFontGlyph::setRsbDelta(const long rsbDelta)
-{
-    d_rsbDelta = rsbDelta;
-}
-
-long FreeTypeFontGlyph::getRsbDelta() const
-{
-    return d_rsbDelta;
-}
-
-unsigned FreeTypeFontGlyph::getGlyphIndex() const
-{
-    return d_glyphIndex;
 }
 
 }

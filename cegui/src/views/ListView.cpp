@@ -221,7 +221,7 @@ void ListView::resortView()
 void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index, float& max_width, float& total_height)
 {
     item.d_text = d_itemModel->getData(index);
-    *item.d_renderedString = std::move(getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect, DefaultParagraphDirection::Automatic));
+    *item.d_renderedString = std::move(getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect, DefaultParagraphDirection::LeftToRight));
 
     if (!item.d_formatter || item.d_formatter->getCorrespondingFormatting() != d_horzFormatting)
     {
