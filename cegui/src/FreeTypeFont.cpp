@@ -820,23 +820,22 @@ void FreeTypeFont::setAntiAliased(const bool antiAliased)
 
 //----------------------------------------------------------------------------//
 void FreeTypeFont::layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const String& text, const Rectf* clip_rect, const ColourRect& colours,
-    const float spaceExtra, ImageRenderSettings& imgRenderSettings,
+    const String& text, const float spaceExtra, ImageRenderSettings& imgRenderSettings,
     DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const
 {
 #ifdef CEGUI_USE_RAQM
-    layoutUsingRaqmAndCreateRenderGeometry(out, text, clip_rect, { colours },
+    layoutUsingRaqmAndCreateRenderGeometry(out, text, { imgRenderSettings.d_multiplyColours },
         spaceExtra, imgRenderSettings, defaultParagraphDir, penPosition);
 #else
     CEGUI_UNUSED(defaultParagraphDir);
-    layoutUsingFreetypeAndCreateRenderGeometry(out, text, clip_rect, { colours },
+    layoutUsingFreetypeAndCreateRenderGeometry(out, text, { imgRenderSettings.d_multiplyColours },
         spaceExtra, imgRenderSettings, penPosition);
 #endif
 }
 
 //----------------------------------------------------------------------------//
 void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
+    const String& text, const std::vector<ColourRect>& layerColours,
     const float spaceExtra, ImageRenderSettings& imgRenderSettings, glm::vec2& penPosition) const
 {
     if (text.empty())
@@ -909,8 +908,8 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
             if (auto image = glyph->getImage(layer))
             {
                 imgRenderSettings.d_destArea = Rectf(penPosition, image->getRenderedSize());
-                addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect,
-                    (layer < layerColours.size()) ? layerColours[layer] : fallbackColour);
+                imgRenderSettings.d_multiplyColours = (layer < layerColours.size()) ? layerColours[layer] : fallbackColour;
+                addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings);
             }
 
             penPosition.x += glyph->getAdvance();
@@ -926,7 +925,7 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
 #ifdef CEGUI_USE_RAQM
 //----------------------------------------------------------------------------//
 void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours, 
+    const String& text, const std::vector<ColourRect>& layerColours, 
     const float spaceExtra, ImageRenderSettings& imgRenderSettings, 
     DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const
 {
@@ -998,8 +997,8 @@ void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBu
                     penPosition.y + currentGlyph.y_offset * s_26dot6_toFloat);
 
                 imgRenderSettings.d_destArea = Rectf(renderGlyphPos, image->getRenderedSize());
-                addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect,
-                    (layer < layerColours.size()) ? layerColours[layer] : fallbackColour);
+                imgRenderSettings.d_multiplyColours = (layer < layerColours.size()) ? layerColours[layer] : fallbackColour;
+                addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings);
             }
 
             penPosition.x += currentGlyph.x_advance * s_26dot6_toFloat;

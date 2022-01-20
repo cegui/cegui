@@ -154,43 +154,34 @@ public:
 };
 
 
-/*!
-\brief
-    A struct that contains the render settings for the Image class.
-*/
+//! \brief Rendering settings for the Image class.
 struct ImageRenderSettings
 {
-    //! Constructor
     ImageRenderSettings(const Rectf& dest_area,
                         const Rectf* clip_area = nullptr,
-                        const ColourRect& multiplication_colours = ColourRect(0XFFFFFFFF),
-                        float alpha = 1.0f) :
-        d_destArea(dest_area),
-        d_clipArea(clip_area),
-        d_multiplyColours(multiplication_colours),
-        d_alpha(alpha)
-    {
-    }
-
-    ImageRenderSettings(const ImageRenderSettings& source) :
-        d_destArea(source.d_destArea),
-        d_clipArea(source.d_clipArea),
-        d_multiplyColours(source.d_multiplyColours),
-        d_alpha(source.d_alpha)
+                        const ColourRect& multiplication_colours = ColourRect(0xFFFFFFFF),
+                        float alpha = 1.0f,
+                        bool alignToPixels = false)
+        : d_destArea(dest_area)
+        , d_clipArea(clip_area)
+        , d_multiplyColours(multiplication_colours)
+        , d_alpha(alpha)
+        , d_alignToPixels(alignToPixels)
     {
     }
 
     //! The destination area for the Image.
     Rectf d_destArea;
     //! The clipping area of the Image, nullptr if clipping should be disabled.
-    const Rectf* d_clipArea;
+    const Rectf* d_clipArea = nullptr;
     //! The colour rectangle set for this Image. The colours of the rectangle will be multiplied with
     //! the Image's colours when rendered, i.e. if the colours are all '0xFFFFFFFF' no effect will be seen.
     //! If this will be used depends on the underlying image.
-    ColourRect d_multiplyColours;
-    //! The alpha value for this image, should be set as the GeometryBuffer's
-    //! alpha by the underlying image class
-    float d_alpha;
+    ColourRect d_multiplyColours = 0xFFFFFFFF;
+    //! The alpha value for this image, should be set as the GeometryBuffer's alpha by the image class
+    float d_alpha = 1.f;
+    //! True to round drawn image portion to whole pixels
+    bool d_alignToPixels = false;
 };
 
 /*!
@@ -240,11 +231,7 @@ public:
     \param colours
         Multiplicative colours to be applied to the text.
     */
-    virtual void addToRenderGeometry(
-        GeometryBuffer& geomBuffer,
-        const Rectf& renderArea,
-        const Rectf* clipArea,
-        const ColourRect& colours) const = 0;
+    virtual void addToRenderGeometry(GeometryBuffer& geomBuffer, const ImageRenderSettings& renderSettings) const = 0;
         
     /*!
     \brief

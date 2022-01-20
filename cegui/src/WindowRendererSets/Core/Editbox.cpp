@@ -258,8 +258,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
     if (selStart >= selEnd)
     {
         // No highlighted text - we can draw the whole thing
-        font->createTextRenderGeometry(w->getGeometryBuffers(),
-            text, textPartRect.d_min.x, textPartRect.getPosition(),
+        font->createTextRenderGeometry(w->getGeometryBuffers(), text, textPartRect.d_min,
             &textArea, normalTextCol, w->getDefaultParagraphDirection());
     }
     else
@@ -294,8 +293,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
                 selectBrushImagery.render(*w, brushArea, nullptr, &textArea);
             }
 
-            font->createTextRenderGeometry(w->getGeometryBuffers(),
-                charStr, textPartRect.d_min.x, textPartRect.getPosition(),
+            font->createTextRenderGeometry(w->getGeometryBuffers(), charStr, textPartRect.d_min,
                 &textArea, true, selected ? selectTextCol : normalTextCol, w->getDefaultParagraphDirection());
         }
 
@@ -311,8 +309,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
             selStartOffset = font->getTextAdvance(sect);
 
             // Create render geometry for pre-selected text
-            font->createTextRenderGeometry(w->getGeometryBuffers(),
-                sect, textPartRect.d_min.x, textPartRect.getPosition(),
+            font->createTextRenderGeometry(w->getGeometryBuffers(), sect, textPartRect.d_min,
                 &textArea, normalTextCol, w->getDefaultParagraphDirection());
         }
 
@@ -329,14 +326,13 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
 
         // Create render geometry for selected text
         font->createTextRenderGeometry(w->getGeometryBuffers(),
-            text.substr(selStart, selEnd - selStart), textPartRect.d_min.x, textPartRect.getPosition(),
+            text.substr(selStart, selEnd - selStart), textPartRect.d_min,
             &textArea, selectTextCol, w->getDefaultParagraphDirection());
 
         // Create render geometry for post-selected text
         if (hasPost)
         {
-            font->createTextRenderGeometry(w->getGeometryBuffers(),
-                text.substr(selEnd), textPartRect.d_min.x, textPartRect.getPosition(),
+            font->createTextRenderGeometry(w->getGeometryBuffers(), text.substr(selEnd), textPartRect.d_min,
                 &textArea, normalTextCol, w->getDefaultParagraphDirection());
         }
 
