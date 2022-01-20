@@ -28,76 +28,35 @@
 #define _CEGUIBitmapImage_h_
 
 #include "CEGUI/Image.h"
-#include "CEGUI/String.h"
-#include "CEGUI/Rectf.h"
 
-#if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4251)
-#endif
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 class CEGUIEXPORT BitmapImage : public Image
 {
 public:
+
     BitmapImage(const String& name);
     BitmapImage(const XMLAttributes& attributes);
-
     BitmapImage(const String& name, Texture* texture,
                const Rectf& tex_area, const glm::vec2& offset,
                const AutoScaledMode autoscaled, const Sizef& native_res);
 
-    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const ImageRenderSettings& renderSettings) const override;
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out, const ImageRenderSettings& renderSettings) const override;
+    void addToRenderGeometry(GeometryBuffer& geomBuffer, const ImageRenderSettings& renderSettings) const override;
 
-    void addToRenderGeometry(
-        GeometryBuffer& geomBuffer,
-        const Rectf& renderArea,
-        const Rectf* clipArea,
-        const ColourRect& colours) const override;
-
-    /*!
-    \brief
-        Sets the Texture object of this Image.
-
-    \param texture
-        The pointer to the Texture of this Image.
-    */
-    void setTexture(Texture* texture);
-
-    /*!
-    \brief
-        Returns the pointer to the Texture object used by this image.
-
-    \return
-        The pointer to the Texture object used by this image.
-    */
-    const Texture* getTexture() const;
+    //! \brief Sets the Texture object of this Image.
+    void setTexture(Texture* texture) { d_texture = texture; }
+    //! \brief Returns the pointer to the Texture object used by this image.
+    const Texture* getTexture() const { return d_texture; }
 
 protected:
-    /*!
-    \brief
-        Fills the vertices data for the textured quad based on the supplied
-        parameters. The supplied pointer must point to an array of size 6
-        for the quad.
-    */
-    void createTexturedQuadVertices(
-        TexturedColouredVertex* vbuffer,
-        const CEGUI::ColourRect& colours,
-        const Rectf& finalRect,
-        const Rectf& texRect) const;
+
+    bool createVertices(TexturedColouredVertex* out, const ImageRenderSettings& renderSettings) const;
 
     //! Texture used by this image.
-    Texture* d_texture;
+    Texture* d_texture = nullptr;
 };
 
-} // End of  CEGUI namespace section
+}
 
-#if defined(_MSC_VER)
-#	pragma warning(pop)
 #endif
-
-#endif  // end of guard _CEGUIBitmapImage_h_
-

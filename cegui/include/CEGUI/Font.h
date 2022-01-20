@@ -95,7 +95,7 @@ public:
     \see Render::ReferenceDpiValue
     \see Font::convertPixelsToPoints
     */
-    static float convertPointsToPixels(const float pointSize, const int dotsPerInch);
+    static float convertPointsToPixels(float pointSize, int dotsPerInch);
 
         /*!
     \brief
@@ -116,16 +116,16 @@ public:
     \see Render::ReferenceDpiValue
     \see Font::convertPointsToPixels
     */
-    static float convertPixelsToPoints(const float pixelSize, const int dotsPerInch);
+    static float convertPixelsToPoints(float pixelSize, int dotsPerInch);
 
     //! Return the string holding the font name.
-    const String& getName() const;
+    const String& getName() const { return d_name; }
 
     //! Return the type of the font.
-    const String& getTypeName() const;
+    const String& getTypeName() const { return d_type; }
 
     //! Return the filename of the used font.
-    const String& getFileName() const;
+    const String& getFileName() const { return d_filename; }
     
     /*!
     \brief
@@ -145,17 +145,17 @@ public:
         Create render geometry for the text that should be rendered into a
         specified area of the display.
 
+    \param out
+        A collection to which new geometry buffers are added.
+
     \param text
         String object containing the text to be drawn.
 
-    \param nextPenPosX
-        The x-coordinate where the pen is positioned after rendering
+    \param penPosition
+        [in, out] Location at which the text is to be drawn. At the end of
+        the call it stores a position where the next glyph would be drawn.
 
-    \param position
-        Reference to a Vector2 object describing the location at which the text
-        is to be drawn.
-
-    \param clip_rect
+    \param clipRect
         Rect object describing the clipping area for the drawing.
         No drawing will occur outside this Rect.
 
@@ -164,19 +164,21 @@ public:
         text.  NB: The colours specified in here are applied to each glyph,
         rather than the text as a whole.
 
+    \param defaultParagraphDir
+        A BIDI hint for layouting with raqm, otherwise unused.
+
     \param spaceExtra
         Number of additional pixels of spacing to be added to space characters.
-
-    \return
-        Returns a list of GeometryBuffers representing the render geometry of
-        the text.
     */
-    void createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const String& text, float& nextPenPosX,
-        const glm::vec2& position, const Rectf* clip_rect,
-        const ColourRect& colours,
-        const DefaultParagraphDirection defaultParagraphDir,
-        float spaceExtra = 0.f) const;
+    inline void createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
+        const String& text, glm::vec2& penPosition, const Rectf* clipRect,
+        const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
+        float spaceExtra = 0.f) const
+    {
+        // TODO TEXT: ensure that rounding to pixels happens before this, or enable it here
+        ImageRenderSettings settings(Rectf(), clipRect, colours, 1.f);// , true);
+        layoutAndCreateGlyphRenderGeometry(out, text, spaceExtra, settings, defaultParagraphDir, penPosition);
+    }
 
     // \overload
     inline void createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
@@ -184,8 +186,8 @@ public:
         const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
         float spaceExtra = 0.f) const
     {
-        float nextGlyphPos = 0.f;
-        createTextRenderGeometry(out, text, nextGlyphPos, position, clipRect,
+        glm::vec2 penPosition = position;
+        createTextRenderGeometry(out, text, penPosition, clipRect,
             colours, defaultParagraphDir, spaceExtra);
     }
   
@@ -206,7 +208,7 @@ public:
     \return
         Size object describing the native display size for this Font.
     */
-    const Sizef& getNativeResolution() const;
+    const Sizef& getNativeResolution() const { return d_nativeResolution; }
 
     /*!
     \brief
@@ -226,7 +228,7 @@ public:
     \return
         AutoScaledMode describing how this font should be auto scaled
     */
-    AutoScaledMode getAutoScaled() const;
+    AutoScaledMode getAutoScaled() const { return d_autoScaled; }
 
     /*!
     \brief
@@ -249,8 +251,7 @@ public:
         Number of pixels between vertical base lines, i.e. The minimum
         pixel space between two lines of text.
     */
-    float getLineSpacing(float y_scale = 1.0f) const
-    { return d_height * y_scale; }
+    float getLineSpacing(float y_scale = 1.0f) const { return d_height * y_scale; }
 
     /*!
     \brief
@@ -264,8 +265,7 @@ public:
         float value describing the pixel height of the font without
         any additional padding.
     */
-    float getFontHeight(float y_scale = 1.0f) const
-    { return (d_ascender - d_descender) * y_scale; }
+    float getFontHeight(float y_scale = 1.0f) const { return (d_ascender - d_descender) * y_scale; }
 
     /*!
     \brief
@@ -279,8 +279,7 @@ public:
     \return
         pixel spacing from top of front glyphs to baseline
     */
-    float getBaseline(float y_scale = 1.0f) const
-    { return d_ascender * y_scale; }
+    float getBaseline(float y_scale = 1.0f) const { return d_ascender * y_scale; }
 
     /*!
     \brief
@@ -369,8 +368,7 @@ public:
         0 to text.length(), so may actually return an index past the end of
         the string, which indicates \a pixel was beyond the last character.
     */
-    size_t getCharAtPixel(const String& text, float pixel) const
-    { return getCharAtPixel(text, 0, pixel); }
+    size_t getCharAtPixel(const String& text, float pixel) const { return getCharAtPixel(text, 0, pixel); }
 
     /*!
     \brief
@@ -444,7 +442,7 @@ public:
 protected:
 
     Font(const String& name, const String& type_name, const String& filename,
-         const String& resource_group, const AutoScaledMode auto_scaled,
+         const String& resource_group, AutoScaledMode auto_scaled,
          const Sizef& native_res);
 
     //! implementation version of writeXMLToStream.
@@ -456,31 +454,18 @@ protected:
     //! event trigger function for when the font rendering size changes.
     virtual void onRenderSizeChanged(FontEventArgs& args);
 
-    //! The old way of rendering glyphs, without kerning and extended layouting
-    virtual void layoutUsingFallbackAndCreateGlyphGeometry(std::vector<GeometryBuffer*>& out,
-        const String& text, const Rectf* clip_rect, const ColourRect& colours,
-        float spaceExtra, ImageRenderSettings& imgRenderSettings, glm::vec2& glyph_pos) const;
-
     /*! 
     \brief
         Adds the render geometry data to the supplied vector. A new GeometryBuffer
         might be added if necessary or data might be added to an existing one.
     */
     void addGlyphRenderGeometry(std::vector<GeometryBuffer*>& textGeometryBuffers,
-        size_t canCombineFromIdx,
-        const Image* image, ImageRenderSettings& imgRenderSettings,
-        const Rectf* clip_rect, const ColourRect& colours) const;
+        size_t canCombineFromIdx, const Image* image, ImageRenderSettings& imgRenderSettings) const;
 
     //! Manages the glyph layout and and creates the RenderGeometry for the text.
     virtual void layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const String& text, const Rectf* clip_rect,
-        const ColourRect& colours, const float spaceExtra,
-        ImageRenderSettings& imgRenderSettings, DefaultParagraphDirection /*defaultParagraphDir*/,
-        glm::vec2& glyphPos) const
-    {
-        layoutUsingFallbackAndCreateGlyphGeometry(out, text, clip_rect,
-            colours, spaceExtra, imgRenderSettings, glyphPos);
-    }
+        const String& text, float spaceExtra, ImageRenderSettings& imgRenderSettings,
+        DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
 
     /*!
     \brief
@@ -502,11 +487,11 @@ protected:
     static String d_defaultResourceGroup;
 
     //! maximal font ascender (pixels above the baseline)
-    float d_ascender;
+    float d_ascender = 0.f;
     //! maximal font descender (negative pixels below the baseline)
-    float d_descender;
+    float d_descender = 0.f;
     //! (ascender - descender) + linegap
-    float d_height;
+    float d_height = 0.f;
 
     //! which mode should we use for auto-scaling
     AutoScaledMode d_autoScaled;

@@ -272,9 +272,8 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
             //    penPosition.x + currentGlyph.x_offset * s_26dot6_toFloat,
             //    penPosition.y + currentGlyph.y_offset * s_26dot6_toFloat);
 
+            //!!!NB: advance and image size are different things!
             //imgRenderSettings.d_destArea = Rectf(renderGlyphPos, image->getRenderedSize());
-            //addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings, clip_rect,
-            //    (layer < layerColours.size()) ? layerColours[layer] : fallbackColour);
         }
     }
 

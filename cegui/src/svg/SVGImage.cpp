@@ -104,36 +104,26 @@ SVGData* SVGImage::getSVGData()
 
 //----------------------------------------------------------------------------//
 void SVGImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const ImageRenderSettings& render_settings) const
+    const ImageRenderSettings& renderSettings) const
 {
-    Rectf dest(render_settings.d_destArea);
-    // apply rendering offset to the destination Rect
-    dest.offset(d_scaledOffset);
-
-    const CEGUI::Rectf*const&  clip_area = render_settings.d_clipArea;
-    // Calculate the actual (clipped) area to which we want to render to
-    Rectf finalRect(clip_area ? dest.getIntersection(*clip_area) : dest );
-
-    // check if our Image is totally clipped and return if it is
+    const Rectf finalRect = calculateRenderArea(renderSettings);
     if (finalRect.empty())
         return;
 
     // Calculate the scale factor for our Image which is the scaling of the Image
     // area to the destination area of our render call
+    const Rectf& dest = renderSettings.d_destArea;
     const glm::vec2 scale_factor(dest.getWidth() / d_imageArea.getWidth(), dest.getHeight() / d_imageArea.getHeight());
 
-    SVGImageRenderSettings svg_render_settings(render_settings,
-                                               scale_factor,
-                                               d_useGeometryAntialiasing);
+    SVGImageRenderSettings svgSettings(renderSettings, scale_factor, d_useGeometryAntialiasing);
 
+    // TODO: can use single buffer?
     for (const SVGBasicShape* currentShape : d_svgData->getShapes())
-        currentShape->createRenderGeometry(out, svg_render_settings);
+        currentShape->createRenderGeometry(out, svgSettings);
 }
 
-void SVGImage::addToRenderGeometry(
-    GeometryBuffer&, const Rectf& /*renderArea*/,
-    const Rectf* /*clipArea*/, const ColourRect& /*colours*/
-    ) const
+//----------------------------------------------------------------------------//
+void SVGImage::addToRenderGeometry(GeometryBuffer& /*geomBuffer*/, const ImageRenderSettings& /*renderSettings*/) const
 {
     throw std::runtime_error("not implemented");
 }

@@ -34,7 +34,6 @@
 #include "CEGUI/System.h" // this being here is a bit nasty IMO
 #include "CEGUI/CoordConverter.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 const String ImageTypeAttribute( "type" );
@@ -52,14 +51,13 @@ const String ImageNativeVertResAttribute( "nativeVertRes" );
 
 //----------------------------------------------------------------------------//
 BitmapImage::BitmapImage(const String& name) :
-    Image(name),
-    d_texture(nullptr)
+    Image(name)
 {
 }
 
 //----------------------------------------------------------------------------//
-BitmapImage::BitmapImage(const XMLAttributes& attributes) :
-    Image(attributes.getValueAsString(ImageNameAttribute),
+BitmapImage::BitmapImage(const XMLAttributes& attributes)
+    : Image(attributes.getValueAsString(ImageNameAttribute),
           glm::vec2(static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0)),
                     static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0))),
           Rectf(glm::vec2(static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute, 0)),
@@ -77,130 +75,93 @@ BitmapImage::BitmapImage(const XMLAttributes& attributes) :
 //----------------------------------------------------------------------------//
 BitmapImage::BitmapImage(const String& name, Texture* texture,
                        const Rectf& pixel_area, const glm::vec2& pixel_offset,
-                       const AutoScaledMode autoscaled, const Sizef& native_res) :
-    Image(name,
-          pixel_offset,
-          pixel_area,
-          autoscaled,
-          native_res),
-    d_texture(texture)
+                       const AutoScaledMode autoscaled, const Sizef& native_res)
+    : Image(name, pixel_offset, pixel_area, autoscaled, native_res)
+    , d_texture(texture)
 {}
-
-//----------------------------------------------------------------------------//
-void BitmapImage::setTexture(Texture* texture)
-{
-    d_texture = texture;
-}
 
 //----------------------------------------------------------------------------//
 void BitmapImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     const ImageRenderSettings& renderSettings) const
 {
-    const Rectf finalRect = calculateRenderArea(renderSettings);
-    if (finalRect.empty())
-        return;
-
-    const glm::vec2 tex_per_pix(d_imageArea.getWidth() / renderSettings.d_destArea.getWidth(),
-        d_imageArea.getHeight() / renderSettings.d_destArea.getHeight());
-
-    Rectf dest(renderSettings.d_destArea);
-    dest.offset(d_scaledOffset);
-    // dest.d_min += d_scaledOffset;
-    // dest.d_max += d_scaledOffset;
-    // return Rectf(d_min - r.d_min, d_max - r.d_max);
-    // return Rectf(d_min * vector, d_max * vector);
-    const Rectf texRect((d_imageArea + ((finalRect - dest) * tex_per_pix)) * d_texture->getTexelScaling());
-
     TexturedColouredVertex vbuffer[6];
-    const CEGUI::ColourRect& colours = renderSettings.d_multiplyColours;
+    if (createVertices(vbuffer, renderSettings))
+    {
+        auto& buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
+        buffer.setClippingActive(!!renderSettings.d_clipArea);
+        if (renderSettings.d_clipArea)
+            buffer.setClippingRegion(*renderSettings.d_clipArea);
+        buffer.setTexture("texture0", d_texture);
+        buffer.setAlpha(renderSettings.d_alpha);
 
-    createTexturedQuadVertices(vbuffer, colours, finalRect, texRect);
+        buffer.appendGeometry(vbuffer, 6);
 
-
-    CEGUI::GeometryBuffer& buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-
-    buffer.setClippingActive(!!renderSettings.d_clipArea);
-    if (renderSettings.d_clipArea)
-        buffer.setClippingRegion(*renderSettings.d_clipArea);
-    buffer.setTexture("texture0", d_texture);
-    buffer.appendGeometry(vbuffer, 6);
-    buffer.setAlpha(renderSettings.d_alpha);
-
-    out.push_back(&buffer);
-}
-
-
-void BitmapImage::addToRenderGeometry(
-    GeometryBuffer& geomBuffer,
-    const Rectf& renderArea,
-    const Rectf* clipArea,
-    const ColourRect& colours) const
-{
-    const Rectf finalRect = calculateRenderArea(renderSettings);
-    if (finalRect.empty())
-        return;
-
-    //
-
-    TexturedColouredVertex vbuffer[6];
-    createTexturedQuadVertices(vbuffer, colours, finalRect, texRect);
-
-    geomBuffer.appendGeometry(vbuffer, 6);
-}
-
-void BitmapImage::createTexturedQuadVertices(
-    TexturedColouredVertex* vbuffer,
-    const CEGUI::ColourRect &colours,
-    const Rectf &finalRect,
-    const Rectf &texRect) const
-{
-    // vertex 0
-    vbuffer[0].setColour(colours.d_top_left);
-    vbuffer[0].d_position = glm::vec3(finalRect.left(), finalRect.top(), 0.0f);
-    vbuffer[0].d_texCoords = glm::vec2(texRect.left(), texRect.top());
-
-    // vertex 1
-    vbuffer[1].setColour(colours.d_bottom_left);
-    vbuffer[1].d_position = glm::vec3(finalRect.left(), finalRect.bottom(), 0.0f);
-    vbuffer[1].d_texCoords = glm::vec2(texRect.left(), texRect.bottom());
-
-    // vertex 2
-    vbuffer[2].setColour(colours.d_bottom_right);
-    vbuffer[2].d_position.x = finalRect.right();
-    vbuffer[2].d_position.z = 0.0f;
-    vbuffer[2].d_texCoords.x = texRect.right();
-
-    // Quad splitting done from top-left to bottom-right diagonal
-    vbuffer[2].d_position.y = finalRect.bottom();
-    vbuffer[2].d_texCoords.y = texRect.bottom();
-
-
-    // vertex 3
-    vbuffer[3].setColour(colours.d_top_right);
-    vbuffer[3].d_position = glm::vec3(finalRect.right(), finalRect.top(), 0.0f);
-    vbuffer[3].d_texCoords = glm::vec2(texRect.right(), texRect.top());
-
-    // vertex 4
-    vbuffer[4].setColour(colours.d_top_left);
-    vbuffer[4].d_position.x = finalRect.left();
-    vbuffer[4].d_position.z = 0.0f;
-    vbuffer[4].d_texCoords.x = texRect.left();
-
-    // Quad splitting done from top-left to bottom-right diagonal
-    vbuffer[4].d_position.y = finalRect.top();
-    vbuffer[4].d_texCoords.y = texRect.top();
-
-    // vertex 5
-    vbuffer[5].setColour(colours.d_bottom_right);
-    vbuffer[5].d_position = glm::vec3(finalRect.right(), finalRect.bottom(), 0.0f);
-    vbuffer[5].d_texCoords = glm::vec2(texRect.right(), texRect.bottom());
+        out.push_back(&buffer);
+    }
 }
 
 //----------------------------------------------------------------------------//
-const Texture* BitmapImage::getTexture() const
+void BitmapImage::addToRenderGeometry(GeometryBuffer& geomBuffer,
+    const ImageRenderSettings& renderSettings) const
 {
-    return d_texture;
+    TexturedColouredVertex vbuffer[6];
+    if (createVertices(vbuffer, renderSettings))
+        geomBuffer.appendGeometry(vbuffer, 6);
 }
 
-} // End of  CEGUI namespace section
+//----------------------------------------------------------------------------//
+bool BitmapImage::createVertices(TexturedColouredVertex* out, const ImageRenderSettings& renderSettings) const
+{
+    const Rectf finalRect = calculateRenderArea(renderSettings);
+    if (finalRect.empty())
+        return false;
 
+    const Rectf& dest = renderSettings.d_destArea;
+    const glm::vec2 tex_per_pix(d_imageArea.getWidth() / dest.getWidth(), d_imageArea.getHeight() / dest.getHeight());
+    const Rectf destWithOffset(dest.d_min + d_scaledOffset, dest.d_max + d_scaledOffset);
+    const Rectf texRect((d_imageArea + ((finalRect - destWithOffset) * tex_per_pix)) * d_texture->getTexelScaling());
+
+    // vertex 0
+    out[0].setColour(renderSettings.d_multiplyColours.d_top_left);
+    out[0].d_position = glm::vec3(finalRect.left(), finalRect.top(), 0.0f);
+    out[0].d_texCoords = glm::vec2(texRect.left(), texRect.top());
+
+    // vertex 1
+    out[1].setColour(renderSettings.d_multiplyColours.d_bottom_left);
+    out[1].d_position = glm::vec3(finalRect.left(), finalRect.bottom(), 0.0f);
+    out[1].d_texCoords = glm::vec2(texRect.left(), texRect.bottom());
+
+    // vertex 2
+    out[2].setColour(renderSettings.d_multiplyColours.d_bottom_right);
+    out[2].d_position.x = finalRect.right();
+    out[2].d_position.z = 0.0f;
+    out[2].d_texCoords.x = texRect.right();
+
+    // Quad splitting done from top-left to bottom-right diagonal
+    out[2].d_position.y = finalRect.bottom();
+    out[2].d_texCoords.y = texRect.bottom();
+
+    // vertex 3
+    out[3].setColour(renderSettings.d_multiplyColours.d_top_right);
+    out[3].d_position = glm::vec3(finalRect.right(), finalRect.top(), 0.0f);
+    out[3].d_texCoords = glm::vec2(texRect.right(), texRect.top());
+
+    // vertex 4
+    out[4].setColour(renderSettings.d_multiplyColours.d_top_left);
+    out[4].d_position.x = finalRect.left();
+    out[4].d_position.z = 0.0f;
+    out[4].d_texCoords.x = texRect.left();
+
+    // Quad splitting done from top-left to bottom-right diagonal
+    out[4].d_position.y = finalRect.top();
+    out[4].d_texCoords.y = texRect.top();
+
+    // vertex 5
+    out[5].setColour(renderSettings.d_multiplyColours.d_bottom_right);
+    out[5].d_position = glm::vec3(finalRect.right(), finalRect.bottom(), 0.0f);
+    out[5].d_texCoords = glm::vec2(texRect.right(), texRect.bottom());
+
+    return true;
+}
+
+}

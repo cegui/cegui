@@ -313,22 +313,20 @@ protected:
     void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;
 
     void layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const String& text, const Rectf* clip_rect,
-        const ColourRect& colours, const float spaceExtra,
-        ImageRenderSettings& imgRenderSettings, DefaultParagraphDirection defaultParagraphDir,
-        glm::vec2& penPosition) const override;
+        const String& text, const float spaceExtra, ImageRenderSettings& imgRenderSettings,
+        DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const override;
+
+    void layoutUsingFreetypeAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
+        const String& text, const std::vector<ColourRect>& layerColours,
+        float spaceExtra, ImageRenderSettings& imgRenderSettings,
+        glm::vec2& penPosition) const;
 
 #ifdef CEGUI_USE_RAQM
     void layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
+        const String& text, const std::vector<ColourRect>& layerColours,
         float spaceExtra, ImageRenderSettings& imgRenderSettings,
         DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
 #endif
-
-    void layoutUsingFreetypeAndCreateRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const String& text, const Rectf* clip_rect, const std::vector<ColourRect>& layerColours,
-        float spaceExtra, ImageRenderSettings& imgRenderSettings,
-        glm::vec2& penPosition) const;
 
     //! If non-zero, the overridden line spacing that we're to report.
     float d_specificLineSpacing;
