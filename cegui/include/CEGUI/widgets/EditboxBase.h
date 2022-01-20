@@ -364,8 +364,8 @@ public:
     void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);
 
 #ifdef CEGUI_BIDI_SUPPORT
-    //! return the pointer to the BidiVisualMapping for this window, if any.
-    const BidiVisualMapping* getBidiVisualMapping() const { return d_bidiVisualMapping.get(); }
+    const std::vector<int>& getL2vMapping() const { return d_l2vMapping; }
+    const std::vector<int>& getV2lMapping() const { return d_v2lMapping; }
 #endif
 
     //! \copydoc Window::performCopy
@@ -572,8 +572,9 @@ protected:
     void onSemanticInputEvent(SemanticEventArgs& e) override = 0;
 
 #ifdef CEGUI_BIDI_SUPPORT
-    //! pointer to bidirection support object
-    std::unique_ptr<BidiVisualMapping> d_bidiVisualMapping;
+    mutable std::vector<int> d_l2vMapping;
+    mutable std::vector<int> d_v2lMapping;
+    mutable String d_textVisual;
 #endif
 
     //! The read only mouse cursor image.
@@ -595,7 +596,7 @@ protected:
     //! Undo handler
     UndoHandler *d_undoHandler;
     //! Default direction of the paragraph, relevant for bidirectional text.
-    DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
+    mutable DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
     //! True if the editbox is in read-only mode
     bool d_readOnly = false;
     //! True if the editbox text should be rendered masked.

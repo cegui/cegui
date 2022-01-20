@@ -160,10 +160,10 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
     if (!visual_text.empty() && caretIndex > 0)
     {
         size_t curCaretIndex = w->getCaretIndex();
-        auto charBeforeCaretType = w->getBidiVisualMapping()->getBidiCharType(visual_text[curCaretIndex - 1]);
+        auto charBeforeCaretType = BidiVisualMapping::getBidiCharType(visual_text[curCaretIndex - 1]);
         // for neutral chars you decide by the char after
         for (; BidiCharType::NEUTRAL == charBeforeCaretType && (visual_text.size() > curCaretIndex); curCaretIndex++)
-            charBeforeCaretType = w->getBidiVisualMapping()->getBidiCharType(visual_text[curCaretIndex - 1]);
+            charBeforeCaretType = BidiVisualMapping::getBidiCharType(visual_text[curCaretIndex - 1]);
 
         currCharIsRtl = (BidiCharType::RIGHT_TO_LEFT == charBeforeCaretType);
     }
@@ -175,8 +175,8 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
         --caretIndex;
 
     // we need to find the caret pos by the logical to visual map
-    if (w->getBidiVisualMapping()->getV2lMapping().size() > caretIndex)
-        caretIndex = w->getBidiVisualMapping()->getL2vMapping()[caretIndex];
+    if (w->getV2lMapping().size() > caretIndex)
+        caretIndex = w->getL2vMapping()[caretIndex];
 
     // for non RTL char - the caret pos is after the char
     if (!currCharIsRtl)
@@ -186,7 +186,7 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
     if (isFirstChar)
     {
         const bool firstCharRtl = !visual_text.empty() &&
-            (BidiCharType::RIGHT_TO_LEFT == w->getBidiVisualMapping()->getBidiCharType(visual_text[0]));
+            (BidiCharType::RIGHT_TO_LEFT == BidiVisualMapping::getBidiCharType(visual_text[0]));
         if (!firstCharRtl)
             --caretIndex;
     }
@@ -279,8 +279,8 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
         {
             // Get the visual pos of the char
             size_t realPos = i;
-            if (w->getBidiVisualMapping()->getV2lMapping().size() > i)
-                realPos = w->getBidiVisualMapping()->getV2lMapping()[i];
+            if (w->getV2lMapping().size() > i)
+                realPos = w->getV2lMapping()[i];
 
             const String charStr(&text[i], 1);
 
@@ -294,7 +294,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
             }
 
             font->createTextRenderGeometry(w->getGeometryBuffers(), charStr, textPartRect.d_min,
-                &textArea, true, selected ? selectTextCol : normalTextCol, w->getDefaultParagraphDirection());
+                &textArea, selected ? selectTextCol : normalTextCol, w->getDefaultParagraphDirection());
         }
 
 #else // no CEGUI_BIDI_SUPPORT
