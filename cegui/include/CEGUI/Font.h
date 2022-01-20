@@ -175,7 +175,7 @@ public:
         const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
         float spaceExtra = 0.f) const
     {
-        // TODO TEXT: ensure that rounding to pixels happens before this, or enable it here
+        // TODO TEXT: ensure that necessary adjustment happens before this, or enable alignToPixels here
         ImageRenderSettings settings(Rectf(), clipRect, colours, 1.f);// , true);
         layoutAndCreateGlyphRenderGeometry(out, text, spaceExtra, settings, defaultParagraphDir, penPosition);
     }
@@ -243,43 +243,31 @@ public:
     \brief
         Return the pixel line spacing value for.
 
-    \param y_scale
-        Scaling factor to be applied to the line spacing, where 1.0f
-        is considered to be 'normal'.
-
     \return
         Number of pixels between vertical base lines, i.e. The minimum
         pixel space between two lines of text.
     */
-    float getLineSpacing(float y_scale = 1.0f) const { return d_height * y_scale; }
+    float getLineSpacing() const { return d_height; }
 
     /*!
     \brief
         return the exact pixel height of the font.
 
-    \param y_scale
-        Scaling factor to be applied to the height, where 1.0f
-        is considered to be 'normal'.
-
     \return
         float value describing the pixel height of the font without
         any additional padding.
     */
-    float getFontHeight(float y_scale = 1.0f) const { return (d_ascender - d_descender) * y_scale; }
+    float getFontHeight() const { return (d_ascender - d_descender); }
 
     /*!
     \brief
         Return the number of pixels from the top of the highest glyph
         to the baseline
 
-    \param y_scale
-        Scaling factor to be applied to the baseline distance, where 1.0f
-        is considered to be 'normal'.
-
     \return
         pixel spacing from top of front glyphs to baseline
     */
-    float getBaseline(float y_scale = 1.0f) const { return d_ascender * y_scale; }
+    float getBaseline() const { return d_ascender; }
 
     /*!
     \brief

@@ -54,11 +54,11 @@ struct RenderedGlyph
     //or ranged - virtual Element::render(RenderedGlyph& from, RenderedGlyph& to), to minimize virtual calls!
     //???return rendered size from this function?!
 
-    size_t originalIndex; //!< Starting index of the corresponding sequence in the logical text
     glm::vec2 offset;
-    Sizef advance;
+    float advance;
 
-    uint8_t elementIndex; //!< Index of controlling RenderedStringComponent, stored instead of pointer to reduce struct size
+    uint32_t sourceIndex;  //!< Starting index of the corresponding sequence in the logical text
+    uint16_t elementIndex; //!< Index of controlling RenderedStringComponent, stored instead of pointer to reduce struct size
 
     bool isJustifyable : 1;
     bool isBreakable : 1;

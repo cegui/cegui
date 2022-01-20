@@ -46,7 +46,10 @@ const String& String::GetEmpty()
 std::u32string String::convertUtf8ToUtf32(const char* utf8String, const size_t stringLength, std::vector<size_t>* mapping)
 {
     if (mapping)
+    {
         mapping->clear();
+        mapping->reserve(stringLength); // May be excessive
+    }
 
     std::u32string utf32String;
 
