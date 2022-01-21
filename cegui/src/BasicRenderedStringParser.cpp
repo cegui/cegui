@@ -106,6 +106,19 @@ RenderedString BasicRenderedStringParser::parse(
 }
 
 //----------------------------------------------------------------------------//
+bool BasicRenderedStringParser::parse(const String& input, std::u32string& outText,
+    std::vector<size_t>& originalIndices, std::vector<uint16_t>& elementIndices,
+    std::vector<RenderedStringComponentPtr>& elements)
+{
+    //!!!TODO TEXT: IMPLEMENT!
+    // each param is a stack
+    // style is assembled from stacks when the first real style user is being processed
+    // can try to find already created style instead of creating extra one
+    // need to somehow export paragraph-level params from here! horz align, BIDI dir
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 bool parse_section(String::const_iterator& pos, const String::const_iterator& end,
                    String::value_type delim, String& out)
 {

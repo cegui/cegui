@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/RenderedString.h"
 #include "CEGUI/RenderedStringTextComponent.h"
+#include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/BidiVisualMapping.h"
 #include "CEGUI/BitmapImage.h" // FIXME TEXT: needed for buffer merging, move out of here?!
@@ -312,30 +313,21 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     if (text.empty())
         return true;
 
+    //???if style can't be created during parsing, reuse previous style on the stack?
+    //!!!TODO: bold, italic, underline, strikeout, outline (w/params, incl color), font color, bg color
+    //!!!font must have a set of glyphs for each codepoint? e.g. regular, bold, stroke outline
+    //NB: if there is a separate bold font, may need no embolden glyphs in regular font
+    //???inside a font, store its regular, bold and italic variants? No italic -> oblique, no bold -> embolden.
+    //???need bold-italic? maybe need too!
+
     // Parse a string and obtain UTF-32 text with embedded object placeholders but without tags
     std::u32string utf32Text;
     std::vector<size_t> originalIndices;
     std::vector<uint16_t> elementIndices;
     std::vector<RenderedStringComponentPtr> elements;
-    if (parser)
-    {
-        //!!!???base style will be created empty, fill it outside?, font, color
-        //parser->parse(text);
 
-        //!!!in parser have to push new style at every change:
-        //[color=x][font=y]text[/font]text2[/color]
-        // Multivalue tags are better?
-        //[font type=y size=z]text[/font]
-        // Also may remove unused styles from output at the end of parsing! Can count uses inside style!
-        //???if style can't be created during parsing, reuse previous style on the stack?
-
-        //!!!TODO: bold, italic, underline, strikeout, outline (w/params, incl color), color
-        //!!!font must have a set of glyphs for each codepoint? e.g. regular, bold, stroke outline
-        //NB: if there is a separate bold font, may need no embolden glyphs in regular font
-        //???inside a font, store its regular, bold and italic variants? No italic -> oblique, no bold -> embolden.
-        //???need bold-italic? maybe need too!
-    }
-    else
+    // If no parser or parsing failed, render the text verbatim
+    if (!parser || !parser->parse(text, utf32Text, originalIndices, elementIndices, elements))
     {
         //!!!TODO TEXT: this can be used instead of DefaultRenderedStringParser, delete it then!
 
@@ -343,6 +335,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32)
         utf32Text = String::convertUtf8ToUtf32(text.c_str(), &originalIndices);
 #else
+        originalIndices.clear();
         utf32Text = text.getString(); //???can avoid copying? e.g. passing utf32Text further as an arg? or mutability is useful later?
 #endif
     }

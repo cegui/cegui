@@ -44,6 +44,12 @@ public:
                          const Font* initial_font,
                          const ColourRect* initial_colours,
                          DefaultParagraphDirection defaultParagraphDir) override;
+
+    virtual bool parse(const String& input, std::u32string& outText, std::vector<size_t>& originalIndices,
+        std::vector<uint16_t>& elementIndices, std::vector<RenderedStringComponentPtr>& elements) override
+    {
+        return false;
+    }
 };
 
 }
