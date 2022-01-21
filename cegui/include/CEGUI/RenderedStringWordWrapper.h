@@ -120,13 +120,8 @@ void RenderedStringWordWrapper<T>::format(const RenderedString& rs, const Window
     for (size_t line = 0; line < rstring.getLineCount(); ++line)
     {
         float rsWidth;
-        while ((rsWidth = rstring.getLineExtent(refWnd, line).d_width) > 0)
+        while ((rsWidth = rstring.getLineExtent(refWnd, line).d_width) > areaSize.d_width)
         {
-            // skip line if no wrapping occurs
-            if (rsWidth <= areaSize.d_width)
-                break;
-
-            // split rstring at width into lstring and remaining rstring
             d_wasWordSplit |= rstring.split(refWnd, line, areaSize.d_width, lstring);
             d_strings.push_back(std::move(lstring));
             d_lines.push_back(std::make_unique<T>());

@@ -312,13 +312,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     if (text.empty())
         return true;
 
-    //!!!TODO TEXT: in each element store logical index of the codepoint (or first-last range for texts)
-
-    //!!!TODO TEXT: which changes require which updates?
-    // E.g. change of any of this function args requires renderText call.
-    // Does everything other need only geometry regeneration?
-
-    // Parse a string and obtain UTF-32 text with placeholders but without tags
+    // Parse a string and obtain UTF-32 text with embedded object placeholders but without tags
     std::u32string utf32Text;
     std::vector<size_t> originalIndices;
     std::vector<uint16_t> elementIndices;
@@ -345,7 +339,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     {
         //!!!TODO TEXT: this can be used instead of DefaultRenderedStringParser, delete it then!
 
-        // When no parser specified, simply ensure that we have out UTF-32 string
+        // When no parser specified, simply ensure that we have UTF-32 string
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32)
         utf32Text = String::convertUtf8ToUtf32(text.c_str(), &originalIndices);
 #else
@@ -357,14 +351,15 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     if (utf32Text.empty())
         return true;
 
-    // There are characters without associated text style. Add default one.
+    // There are characters without associated text style. Add a default one.
     if (elementIndices.size() < utf32Text.size())
     {
         // Characters without explicit styles require a default font
         if (!defaultFont)
             return false;
 
-        elements.emplace_back(new RenderedStringTextComponent("", defaultFont));
+        //!!!FIXME TEXT: need no text string in text style elements!
+        elements.emplace_back(new RenderedStringTextComponent(String::GetEmpty(), defaultFont));
     }
 
 #ifdef CEGUI_USE_RAQM
@@ -406,6 +401,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
         raqm_destroy(rq);
 #endif
 
+    // Do common setup for generated glyphs
     const uint16_t defaultStyleIdx = static_cast<uint16_t>(elements.size() - 1);
     const size_t elementIdxCount = elementIndices.size();
     const bool adjustSourceIndices = !originalIndices.empty();
@@ -442,19 +438,28 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             //!!!NB: this changes per element, no need to calculate for each glyph when creating geometry!
 
             //!!!Replace placeholder glyphs in paragraphs with images and widgets!
+            //???if embedded image, store is at Image field for faster access?
 
             //!!!only for non-placeholders, real texts!
             //???!!!placeholders must not be justifyable but may be breakable!?
+            //!!!TODO TEXT: what side isBreakable affects? See how RenderedStringTextComponent::split is implemented currently!
             const auto codePoint = text[glyph.sourceIndex];
             glyph.isJustifyable = (codePoint == ' ');
-            glyph.isBreakable = (codePoint == ' ');
+            glyph.isBreakable = (codePoint == ' '); //!!!TextUtils::DefaultWrapDelimiters, use String::find or hardcoded == checks?
 
             if (glyph.isJustifyable)
                 ++p.justifyableSpaceCount;
         }
 
         //!!!Calculate paragraph extents for faster horizontal formatting!
+        // - skip embedded objects from extents, their size is added on formatting / geometry generation
         //???do word wrapping at the same time? can do per paragraph!
+        //if formatting is per-paragraph, there is no profit in storing calculated data in a separate formatter
+        //but still we can show the same text in different viewports at the same time, reusing string but not cache
+        //???but what about embedded windows in this case? still very rare thing to be a blocker
+        // Formatting input: window, area size. Window is needed only for getting a line extent.
+        //???or maybe word wrap when generating geometry? simply do newline when the next glyph exceeds?
+        //???or calc. distance to the next breakable? if prefer to break not splitting words.
     }
 
     return true;
@@ -555,6 +560,9 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
 
 
 ////////////////////// NEW CODE WIP:
+
+    //!!!TODO TEXT: need default style here! not only colors but also underline flag etc!
+    //???how to know where to apply a default style? now this style element is the same as explicit ones!
 
     //!!!DBG TMP!
     if (line >= d_paragraphs.size())
@@ -686,12 +694,14 @@ bool RenderedString::split(const Window* refWnd, const size_t line,
 
     // Find the component where the requested split point lies.
     size_t idx = 0;
-    float partial_extent = 0.f;
+    float partialExtent = 0.f;
+    float splittedComponentWidth = 0.f;
     const size_t last_component = d_lines[0].second;
     for (; idx < last_component; ++idx)
     {
-        partial_extent += d_components[idx]->getPixelSize(refWnd).d_width;
-        if (splitPoint <= partial_extent)
+        splittedComponentWidth = d_components[idx]->getPixelSize(refWnd).d_width;
+        partialExtent += splittedComponentWidth;
+        if (splitPoint <= partialExtent)
             break;
     }
 
@@ -723,7 +733,8 @@ bool RenderedString::split(const Window* refWnd, const size_t line,
         RenderedStringComponent* c = d_components[0].get();
         if (c->canSplit())
         {
-            const float localPt = splitPoint - (partial_extent - c->getPixelSize(refWnd).d_width);
+            const float splittedComponentStart = partialExtent - splittedComponentWidth;
+            const float localPt = splitPoint - splittedComponentStart;
             if (auto lc = c->split(refWnd, localPt, idx == 0, wasWordSplit))
             {
                 left.d_components.push_back(std::move(lc));
@@ -732,7 +743,7 @@ bool RenderedString::split(const Window* refWnd, const size_t line,
         }
         // Can't split, if component width is >= splitPoint xfer the whole
         // component to it's own line in the left part (FIX #306)
-        else if (c->getPixelSize(refWnd).d_width >= splitPoint)
+        else if (splittedComponentWidth >= splitPoint)
         {
             left.appendLineBreak();
             left.d_components.push_back(std::move(d_components[0]));

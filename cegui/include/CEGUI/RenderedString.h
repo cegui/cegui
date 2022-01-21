@@ -60,9 +60,10 @@ struct RenderedGlyph
     uint32_t sourceIndex;  //!< Starting index of the corresponding sequence in the logical text
     uint16_t elementIndex; //!< Index of controlling RenderedStringComponent, stored instead of pointer to reduce struct size
 
-    bool isJustifyable : 1;
-    bool isBreakable : 1;
-    bool isRightToLeft : 1;
+    bool isJustifyable : 1;    //!< This glyph can be expanded in a justified text
+    bool isBreakable : 1;      //!< This glyph can be transferred to the next line due to word wrapping
+    bool isRightToLeft : 1;    //!< Is this glyph directed from right to left? This affects caret etc.
+    //bool isEmbeddedObject : 1; //!< Is this glyph a placeholder for an embedded object
 };
 
 struct RenderedParagraph
