@@ -652,10 +652,7 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
         FontLayerType fontLayerType = d_fontLayers[layer].d_fontLayerType;
 
         // Load the code point, "rendering" the glyph
-        const FT_Int32 targetType = d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
-        const FT_Int32 loadType = (fontLayerType == FontLayerType::Standard) ? FT_LOAD_RENDER : FT_LOAD_NO_BITMAP;
-        const FT_Int32 loadBitmask = loadType | FT_LOAD_FORCE_AUTOHINT | targetType;
-        FT_Error error = FT_Load_Glyph(d_fontFace, glyphIndex, loadBitmask);
+        FT_Error error = FT_Load_Glyph(d_fontFace, glyphIndex, getGlyphLoadFlags(layer));
 
         glyph->markAsInitialised();
 
@@ -805,7 +802,7 @@ void FreeTypeFont::handleFontSizeOrFontUnitChange()
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::setAntiAliased(const bool antiAliased)
+void FreeTypeFont::setAntiAliased(bool antiAliased)
 {
     if (antiAliased == d_antiAliased)
         return;
@@ -815,6 +812,19 @@ void FreeTypeFont::setAntiAliased(const bool antiAliased)
 
     FontEventArgs args(this);
     onRenderSizeChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+FT_Int32 FreeTypeFont::getGlyphLoadFlags(uint32_t layer) const
+{
+    if (layer >= d_fontLayers.size())
+        return 0;
+
+    const FontLayerType fontLayerType = d_fontLayers[layer].d_fontLayerType;
+
+    const FT_Int32 targetType = d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
+    const FT_Int32 loadType = (fontLayerType == FontLayerType::Standard) ? FT_LOAD_RENDER : FT_LOAD_NO_BITMAP;
+    return loadType | FT_LOAD_FORCE_AUTOHINT | targetType;
 }
 
 //----------------------------------------------------------------------------//
@@ -954,10 +964,7 @@ void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBu
     const uint32_t* originalTextArray = reinterpret_cast<const std::uint32_t*>(text.c_str());
 #endif
 
-    // FIXME: different raqm objects for different layers? Do we really need different flags for non-Standard layers?
-    const FT_Int32 targetType = d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
-    const FT_Int32 loadType = /*(fontLayerType == FontLayerType::Standard) ?*/ FT_LOAD_RENDER /*: FT_LOAD_NO_BITMAP*/;
-    const FT_Int32 loadBitmask = loadType | FT_LOAD_FORCE_AUTOHINT | targetType;
+    const FT_Int32 loadBitmask = getGlyphLoadFlags(0);
 
     raqm_t* raqmObject = createAndSetupRaqmTextObject(
         originalTextArray, origTextLength, defaultParagraphDir, getFontFace(), loadBitmask);

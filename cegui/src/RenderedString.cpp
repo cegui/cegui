@@ -250,10 +250,7 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
         //!!!FIXME TEXT: request per-codepoint load flags in RAQM? May be needed for mixing [anti]aliased fonts.
         if (fontStart == 0)
         {
-            //???!!!store flags inside a FreeTypeFont?! must not know these details here!
-            const FT_Int32 targetType = range.first->isAntiAliased() ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
-            const FT_Int32 loadFlags = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT | targetType;
-            if (!raqm_set_freetype_load_flags(rq, loadFlags))
+            if (!raqm_set_freetype_load_flags(rq, range.first->getGlyphLoadFlags(0)))
                 return false;
         }
 
@@ -425,7 +422,11 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             if (adjustSourceIndices)
                 glyph.sourceIndex = static_cast<uint32_t>(originalIndices[glyph.sourceIndex]);
 
-            const auto& element = elements[glyph.elementIndex];
+            //!!!element ranges:
+            // 1. What if single element affects multiple ranges? Can't store range inside!
+            // 2. How to apply padding to the visual ordering of characters?
+
+            const RenderedStringComponent* element = elements[glyph.elementIndex].get();
             // always:
             //element->getTopPadding
             //element->getBottomPadding

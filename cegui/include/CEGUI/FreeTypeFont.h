@@ -199,13 +199,16 @@ public:
         Sets whether the Freetype font should be rendered anti-aliased
         or not.
     */
-    void setAntiAliased(const bool anti_alaised);
+    void setAntiAliased(bool anti_alaised);
 
     //! Returns whether the Freetype font is rendered anti-aliased or not.
     bool isAntiAliased() const { return d_antiAliased; }
 
     //! Returns the Freetype font face
     const FT_Face& getFontFace() const { return d_fontFace; }
+
+    //! Returns the FreeType load flags for the layer
+    FT_Int32 getGlyphLoadFlags(uint32_t layer = 0) const;
 
     //! Returns the initial size to be used for any new glyph atlas texture.
     int getInitialGlyphAtlasSize() const { return d_initialGlyphAtlasSize; }
