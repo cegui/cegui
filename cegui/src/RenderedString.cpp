@@ -320,18 +320,16 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     //???inside a font, store its regular, bold and italic variants? No italic -> oblique, no bold -> embolden.
     //???need bold-italic? maybe need too!
 
+    //!!!TODO TEXT: delete DefaultRenderedStringParser, it is now equal to nullptr parser!
+
     // Parse a string and obtain UTF-32 text with embedded object placeholders but without tags
     std::u32string utf32Text;
     std::vector<size_t> originalIndices;
     std::vector<uint16_t> elementIndices;
     std::vector<RenderedStringComponentPtr> elements;
-
-    // If no parser or parsing failed, render the text verbatim
     if (!parser || !parser->parse(text, utf32Text, originalIndices, elementIndices, elements))
     {
-        //!!!TODO TEXT: this can be used instead of DefaultRenderedStringParser, delete it then!
-
-        // When no parser specified, simply ensure that we have UTF-32 string
+        // If no parser or parsing failed, render the text verbatim
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32)
         utf32Text = String::convertUtf8ToUtf32(text.c_str(), &originalIndices);
 #else
@@ -411,10 +409,6 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             if (adjustSourceIndices)
                 glyph.sourceIndex = static_cast<uint32_t>(originalIndices[glyph.sourceIndex]);
 
-            //!!!element ranges:
-            // 1. What if single element affects multiple ranges? Can't store range inside!
-            // 2. How to apply padding to the visual ordering of characters?
-
             const RenderedStringComponent* element = elements[glyph.elementIndex].get();
             // always:
             //element->getTopPadding
@@ -426,12 +420,17 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             //!!!handle RTL direction for horizontal padding!
             //!!!note that offset is not counted in advance, so padding must be added to both sometimes!
 
+            //!!!element ranges:
+            // 1. What if single element affects multiple ranges? Can't store range inside!
+            // 2. How to apply padding to the visual ordering of characters?
+
             // VerticalImageFormatting - store in glyph or get from element? or embed into offset and advance Y?!
             // if embed, image size changes will require recalculation!?
             //!!!NB: this changes per element, no need to calculate for each glyph when creating geometry!
 
             //!!!Replace placeholder glyphs in paragraphs with images and widgets!
             //???if embedded image, store is at Image field for faster access?
+            //???virtual RenderedTextElement::setupGlyph()?!
 
             //!!!only for non-placeholders, real texts!
             //???!!!placeholders must not be justifyable but may be breakable!?
@@ -450,7 +449,14 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
         //if formatting is per-paragraph, there is no profit in storing calculated data in a separate formatter
         //but still we can show the same text in different viewports at the same time, reusing string but not cache
         //???but what about embedded windows in this case? still very rare thing to be a blocker
-        // Formatting input: window, area size. Window is needed only for getting a line extent.
+        // Formatting input: window, area size. Window is needed only for getting a line extent -> component
+        // pixel size. Image ignores window. Text uses window font. Widget accesses child through parent.
+        //???subscribe some events? Window::EventSized? Rare, will be cheap. Invalidates a paragraph.
+        // Images are never resized? Even if resized, can subscribe too. WIndow font change requires renderText
+        // if any of glyphs uses default font. For now may do this always, but can optimize! Changes in fonts
+        // are too hard to track and may require redrawing all texts, but changes in fonts are rare.
+        // So can simply store extents/formatting validity bool flag, maybe even per paragraph.
+        // For area size, can store the last area size for which formatting was calculated!
         //???or maybe word wrap when generating geometry? simply do newline when the next glyph exceeds?
         //???or calc. distance to the next breakable? if prefer to break not splitting words.
     }
@@ -557,7 +563,6 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     //!!!TODO TEXT: need default style here! not only colors but also underline flag etc!
     //???how to know where to apply a default style? now this style element is the same as explicit ones!
 
-    //!!!DBG TMP!
     if (line >= d_paragraphs.size())
         return;
 
@@ -567,7 +572,7 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     //!!!glyphs never change, use this fact! only embedded objects do. E.g. may cache only text glyph extents
     //and count of embedded objects, and now add sizes of embedded objects until count reached!
     //!!!need to distinguish embedded objects from text glyphs fast! nullptr image? or special flag?!
-    const float renderHeight___ = p.extents.d_height;
+    //const float renderHeight = p.extents.d_height;
 
     //!!!!!!!!FIXME TEXT: modColours may be null!!!!!! and it's not the same as default text, bg or outline color
 
@@ -575,8 +580,8 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     //!!!may switch selection remdering on/off, to optimize rendering text that can't have selection!
     //!!!may simply check selection length, it is effectively the same!
 
-    // TODO TEXT: ensure that necessary adjustment happens before this, or enable alignToPixels here
-    ImageRenderSettings settings(Rectf(), clipRect);// , true);
+    //!!!TODO TEXT: ensure that necessary adjustment happens before this, or enable alignToPixels here
+    ImageRenderSettings settings(Rectf(), clipRect);//, 0xFFFFFFFF, 1.f, true);
 
     //???TODO TEXT: to what buffers really can merge?! need to see rendering order first!
     const auto canCombineFromIdx = out.size();
