@@ -269,6 +269,9 @@ public:
     */
     float getBaseline() const { return d_ascender; }
 
+    //! \brief Calculates and returns kerning between two glyphs (in pixels, not rounded)
+    virtual float getKerning(const FontGlyph* prev, const FontGlyph& curr) const { return 0.f; }
+
     /*!
     \brief
         Return the pixel width of the specified text if rendered with
@@ -309,7 +312,7 @@ public:
         float& adv_extent) const;
 
     //! Returns the FontGlyph corresponding to the codepoint or 0 if it can't be found.
-    virtual FontGlyph* getGlyphForCodepoint(const char32_t codePoint) const = 0;
+    virtual FontGlyph* getGlyphForCodepoint(const char32_t codePoint, bool prepare = false) const = 0;
 
     /*!
     \brief
@@ -454,14 +457,6 @@ protected:
     virtual void layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, float spaceExtra, ImageRenderSettings& imgRenderSettings,
         DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
-
-    /*!
-    \brief
-        Tries to find the FontGlyph for the supplied codepoint. Before returning it,
-        extra steps might be taking, such as initialising and rasterising the glyph
-        if necessary.
-    */
-    virtual const FontGlyph* getPreparedGlyph(char32_t currentCodePoint) const;
 
     //! Name of this font.
     String d_name;

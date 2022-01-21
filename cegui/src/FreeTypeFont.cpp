@@ -818,6 +818,33 @@ void FreeTypeFont::setAntiAliased(const bool antiAliased)
 }
 
 //----------------------------------------------------------------------------//
+float FreeTypeFont::getKerning(const FontGlyph* prev, const FontGlyph& curr) const
+{
+    auto ftPrev = static_cast<const FreeTypeFontGlyph*>(prev);
+    auto ftCurr = static_cast<const FreeTypeFontGlyph*>(&curr);
+
+    // Get freetype kerning in 1/64th of the pixel
+    int32_t kerningX = 0;
+
+    if (ftPrev)
+    {
+        // Do kerning
+        FT_Vector kerning;
+        FT_Get_Kerning(d_fontFace, ftPrev->getGlyphIndex(), ftCurr->getGlyphIndex(), FT_KERNING_DEFAULT, &kerning);
+        kerningX = kerning.x;
+
+        // Adjust for side bearing changes due to FreeType auto-hinting
+        kerningX -= ftPrev->getRsbDelta();
+    }
+
+    // Adjust for side bearing changes due to FreeType auto-hinting
+    kerningX += ftCurr->getLsbDelta();
+
+    // Return value in pixels
+    return kerningX * s_26dot6_toFloat;
+}
+
+//----------------------------------------------------------------------------//
 void FreeTypeFont::layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, const float spaceExtra, ImageRenderSettings& imgRenderSettings,
     DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const
@@ -857,11 +884,10 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
     {
         uint32_t layer = static_cast<uint32_t>(layerTmp);
 
-        FT_Pos previousRsbDelta = 0;
-        uint32_t previousGlyphIndex = 0;
-
         // Each layer starts from the same position
         penPosition = penPositionStart;
+
+        const FreeTypeFontGlyph* prevGlyph = nullptr;
 
         const size_t charCount = utf32Text.size();
         for (size_t i = 0; i < charCount; ++i)
@@ -873,34 +899,20 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
                 continue;
 
             // Find glyph and handle missing glyph replacement
-            const FreeTypeFontGlyph* glyph = getPreparedGlyph(codePoint);
+            const FreeTypeFontGlyph* glyph = getGlyphForCodepoint(codePoint, true);
             if (!glyph)
             {
+                //!!!FIXME TEXT: could cache in a variable to skip search!
                 if (codePoint != UnicodeReplacementCharacter)
-                    glyph = getPreparedGlyph(UnicodeReplacementCharacter);
+                    glyph = getGlyphForCodepoint(UnicodeReplacementCharacter, true);
 
                 if (!glyph)
                     continue;
             }
 
-            // Do kerning
-            {
-                int32_t kerningX = 0;
-                if (i >= 1)
-                {
-                    FT_Vector kerning;
-                    FT_Get_Kerning(d_fontFace, previousGlyphIndex, glyph->getGlyphIndex(),
-                        FT_KERNING_DEFAULT, &kerning);
-                    kerningX = kerning.x;
-                }
-                previousGlyphIndex = glyph->getGlyphIndex();
-
-                // Adjust side bearings changed due to FreeType auto-hinting
-                kerningX -= (previousRsbDelta - glyph->getLsbDelta());
-                previousRsbDelta = glyph->getRsbDelta();
-
-                penPosition.x += kerningX * s_26dot6_toFloat;
-            }
+            // Do kerning and FreeType auto-hinting LSB/RSB delta compensation
+            penPosition.x += getKerning(prevGlyph, *glyph);
+            prevGlyph = glyph;
 
             // Render glyph
             if (auto image = glyph->getImage(layer))
@@ -974,17 +986,16 @@ void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBu
                 continue;
 
             // Find glyph and handle missing glyph replacement
-            FreeTypeFontGlyph* glyph = getGlyphByIndex(currentGlyph.index);
+            FreeTypeFontGlyph* glyph = getGlyphByIndex(currentGlyph.index, true);
             if (!glyph)
             {
+                //!!!FIXME TEXT: could cache in a variable to skip search!
                 if (codePoint != UnicodeReplacementCharacter)
-                    glyph = getGlyphForCodepoint(UnicodeReplacementCharacter);
+                    glyph = getGlyphForCodepoint(UnicodeReplacementCharacter, true);
 
                 if (!glyph)
                     continue;
             }
-
-            prepareGlyph(glyph);
 
             // Render glyph
             if (auto image = glyph->getImage(layer))
@@ -1019,10 +1030,16 @@ bool FreeTypeFont::isCodepointAvailable(char32_t codePoint) const
 }
 
 //----------------------------------------------------------------------------//
-FreeTypeFontGlyph* FreeTypeFont::getGlyphForCodepoint(const char32_t codepoint) const
+FreeTypeFontGlyph* FreeTypeFont::getGlyphForCodepoint(const char32_t codepoint, bool prepare) const
 {
     auto it = d_codePointToGlyphMap.find(codepoint);
-    return (it != d_codePointToGlyphMap.end()) ? it->second : nullptr;
+    if (it == d_codePointToGlyphMap.end() || !it->second)
+        return nullptr;
+
+    if (prepare)
+        prepareGlyph(it->second);
+
+    return it->second;
 }
 
 //----------------------------------------------------------------------------//
@@ -1036,15 +1053,6 @@ FreeTypeFontGlyph* FreeTypeFont::getGlyphByIndex(uint32_t ftGlyphIndex, bool pre
         prepareGlyph(it->second);
 
     return it->second;
-}
-
-//----------------------------------------------------------------------------//
-const FreeTypeFontGlyph* FreeTypeFont::getPreparedGlyph(char32_t currentCodePoint) const
-{
-    FreeTypeFontGlyph* glyph = getGlyphForCodepoint(currentCodePoint);
-    if (glyph)
-        prepareGlyph(glyph);
-    return glyph;
 }
 
 }

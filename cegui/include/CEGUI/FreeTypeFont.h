@@ -113,8 +113,9 @@ public:
     virtual ~FreeTypeFont();
     
     void updateFont() override;
+    float getKerning(const FontGlyph* prev, const FontGlyph& curr) const override;
     bool isCodepointAvailable(char32_t codePoint) const override;
-    FreeTypeFontGlyph* getGlyphForCodepoint(char32_t codePoint) const override;
+    FreeTypeFontGlyph* getGlyphForCodepoint(char32_t codePoint, bool prepare = false) const override;
     FreeTypeFontGlyph* getGlyphByIndex(uint32_t ftGlyphIndex, bool prepare = false) const;
 
     /*!
@@ -309,7 +310,6 @@ protected:
     //! Converts the FreeTypeLineLine to the assocated freetype library data type value
     static FT_Stroker_LineJoin getLineJoin(FreeTypeLineJoin line_join);
 
-    const FreeTypeFontGlyph* getPreparedGlyph(char32_t currentCodePoint) const override;
     void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;
 
     void layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,

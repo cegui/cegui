@@ -132,7 +132,7 @@ float Font::getTextExtent(const String& text) const
 //----------------------------------------------------------------------------//
 void Font::getGlyphExtents(char32_t currentCodePoint, float& cur_extent, float& adv_extent) const
 {
-    if (const FontGlyph* currentGlyph = getPreparedGlyph(currentCodePoint))
+    if (const FontGlyph* currentGlyph = getGlyphForCodepoint(currentCodePoint, true))
     {
         float width = currentGlyph->getRenderedAdvance();
 
@@ -161,7 +161,7 @@ String::codepoint_iterator currentCodePointIter(text.begin(), text.begin(), text
 while (!currentCodePointIter.isAtEnd())
 {
     char32_t currentCodePoint = *currentCodePointIter;
-    if (const FontGlyph* glyph = getPreparedGlyph(currentCodePoint))
+    if (const FontGlyph* glyph = getGlyphForCodepoint(currentCodePoint, true))
     {
         advance += glyph->getAdvance();
     }
@@ -222,12 +222,6 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel) 
 }
 
 //----------------------------------------------------------------------------//
-const FontGlyph* Font::getPreparedGlyph(char32_t currentCodePoint) const
-{
-   return getGlyphForCodepoint(currentCodePoint);
-}
-
-//----------------------------------------------------------------------------//
 // The old way of rendering glyphs, without kerning and extended layouting
 void Font::layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
     const String& text, float spaceExtra, ImageRenderSettings& imgRenderSettings,
@@ -249,7 +243,7 @@ void Font::layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
     {
         char32_t currentCodePoint = *currentCodePointIter;
 #endif
-        if (auto glyph = getPreparedGlyph(currentCodePoint))
+        if (auto glyph = getGlyphForCodepoint(currentCodePoint, true))
         {  
             if (auto image = glyph->getImage())
             {
