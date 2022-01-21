@@ -77,9 +77,7 @@ static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
     const std::vector<RenderedStringComponentPtr>& elements)
 {
     // Apply Unicode Bidirectional Algorithm to obtain a string with visual ordering of codepoints
-#if defined(CEGUI_BIDI_SUPPORT) //|| defined(CEGUI_USE_RAQM)
-    //!!!FIXME TEXT: make preprocessor definitions better for RAQM Fribidi fallback!
-    //!!!Raqm may set FRIBIDI enabled definition in CMake! Ensure include dirs are added.
+#if defined(CEGUI_BIDI_SUPPORT)
     std::vector<int> l2v;
     std::vector<int> v2l;
     std::u32string textVisual;
@@ -320,7 +318,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32)
         utf32Text = String::convertUtf8ToUtf32(text.c_str(), &originalIndices);
 #else
-        utf32Text = text; //???can avoid copying? e.g. passing utf32Text further as an arg? or mutability is useful later?
+        utf32Text = text.getString(); //???can avoid copying? e.g. passing utf32Text further as an arg? or mutability is useful later?
 #endif
     }
 

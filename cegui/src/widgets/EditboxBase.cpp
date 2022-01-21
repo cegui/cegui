@@ -147,7 +147,7 @@ void EditboxBase::setTextMaskingCodepoint(std::uint32_t code_point)
 //----------------------------------------------------------------------------//
 const String& EditboxBase::getTextVisual() const
 {
-#if defined(CEGUI_BIDI_SUPPORT)
+#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
     if (!d_bidiDataValid)
     {
         BidiVisualMapping::applyBidi(getText(), d_textVisual, d_l2vMapping, d_v2lMapping, d_defaultParagraphDirection);
@@ -318,7 +318,7 @@ void EditboxBase::onCursorPressHold(CursorInputEventArgs& e)
             clearSelection();
             d_dragging = true;
             d_dragAnchorIdx = getTextIndexFromPosition(e.position);
-#ifdef CEGUI_BIDI_SUPPORT
+#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
             if (getV2lMapping().size() > d_dragAnchorIdx)
                 d_dragAnchorIdx =
                     getV2lMapping()[d_dragAnchorIdx];
@@ -351,7 +351,7 @@ void EditboxBase::onCursorMove(CursorInputEventArgs& e)
     if (d_dragging)
     {
         size_t anchorIdx = getTextIndexFromPosition(e.position);
-#ifdef CEGUI_BIDI_SUPPORT
+#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
         if (getV2lMapping().size() > anchorIdx)
             anchorIdx = getV2lMapping()[anchorIdx];
 #endif
@@ -365,7 +365,7 @@ void EditboxBase::onCursorMove(CursorInputEventArgs& e)
 
 void EditboxBase::onTextChanged(WindowEventArgs& e)
 {
-#ifdef CEGUI_BIDI_SUPPORT
+#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
     d_bidiDataValid = false;
 #endif
 
@@ -625,7 +625,7 @@ void EditboxBase::addEditboxBaseProperties(void)
 
 size_t EditboxBase::getCaretIndex(void) const
 {
-#ifdef CEGUI_BIDI_SUPPORT
+#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
     size_t caretPos = d_caretPos;
     if (getL2vMapping().size() > caretPos)
         caretPos = getL2vMapping()[caretPos];

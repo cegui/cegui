@@ -363,7 +363,7 @@ public:
     //! Sets the default paragraph direction for the displayed text.
     void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);
 
-#ifdef CEGUI_BIDI_SUPPORT
+#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
     const std::vector<int>& getL2vMapping() const { return d_l2vMapping; }
     const std::vector<int>& getV2lMapping() const { return d_v2lMapping; }
 #endif
@@ -571,7 +571,7 @@ protected:
     void onTextChanged(WindowEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override = 0;
 
-#ifdef CEGUI_BIDI_SUPPORT
+#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
     mutable std::vector<int> d_l2vMapping;
     mutable std::vector<int> d_v2lMapping;
     mutable String d_textVisual;
@@ -603,7 +603,7 @@ protected:
     bool d_textMaskingEnabled = false;
     //! true when a selection is being dragged.
     bool d_dragging = false;
-#ifdef CEGUI_BIDI_SUPPORT
+#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
     //! whether bidi visual mapping has been updated since last text change.
     mutable bool d_bidiDataValid = false;
 #endif

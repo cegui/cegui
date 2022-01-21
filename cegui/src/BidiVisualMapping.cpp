@@ -67,7 +67,7 @@ bool BidiVisualMapping::applyBidi(const String& logical, String& outVisual,
     std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir)
 {
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    return applyBidi(logical.getString(), outVisual.getString(), l2v, v2l);
+    return applyBidi(logical.getString(), outVisual.getString(), l2v, v2l, dir);
 #else
     std::u32string utf32Str = String::convertUtf8ToUtf32(logical.c_str());
     if (utf32Str.empty())
@@ -87,7 +87,7 @@ bool BidiVisualMapping::applyBidi(const String& logical, std::u32string& outVisu
     std::vector<int>& l2v, std::vector<int>& v2l, DefaultParagraphDirection& dir)
 {
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32
-    return applyBidi(logical.getString(), outVisual, l2v, v2l);
+    return applyBidi(logical.getString(), outVisual, l2v, v2l, dir);
 #else
     outVisual = String::convertUtf8ToUtf32(logical.c_str());
     return !outVisual.empty() && applyBidiInplace(outVisual, l2v, v2l, dir);

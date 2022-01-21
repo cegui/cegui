@@ -84,23 +84,23 @@ if (NOT WIN32 AND NOT ANDROID)
     cegui_add_dependency(${CEGUI_TARGET_NAME} ICONV)
 endif()
 
-if (CEGUI_HAS_FREETYPE)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} FREETYPE)
-endif ()
-
 if (CEGUI_HAS_PCRE_REGEX)
     cegui_add_dependency(${CEGUI_TARGET_NAME} PCRE)
 endif ()
 
-if (CEGUI_USE_FRIBIDI)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} FRIBIDI)
-endif ()
-
 if (CEGUI_USE_RAQM)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} FRIBIDI)
     cegui_add_dependency(${CEGUI_TARGET_NAME} FREETYPE)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} FRIBIDI)
     cegui_add_dependency(${CEGUI_TARGET_NAME} HARFBUZZ)
     cegui_add_dependency(${CEGUI_TARGET_NAME} RAQM)
+else()
+	if (CEGUI_HAS_FREETYPE)
+		cegui_add_dependency(${CEGUI_TARGET_NAME} FREETYPE)
+	endif ()
+
+	if (CEGUI_USE_FRIBIDI)
+		cegui_add_dependency(${CEGUI_TARGET_NAME} FRIBIDI)
+	endif ()
 endif ()
 
 if (CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)

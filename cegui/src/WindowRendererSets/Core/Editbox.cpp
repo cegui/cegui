@@ -154,7 +154,7 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
 
     size_t caretIndex = w->getCaretIndex();
 
-#ifdef CEGUI_BIDI_SUPPORT
+#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
     // the char before the caret bidi type
     bool currCharIsRtl = false;
     if (!visual_text.empty() && caretIndex > 0)
@@ -268,7 +268,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
         const auto& selectBrushImagery = wlf.getStateImagery(w->hasInputFocus() ? "ActiveSelection" : "InactiveSelection");
         const ColourRect selectTextCol = getOptionalColour(SelectedTextColourPropertyName);
 
-#ifdef CEGUI_BIDI_SUPPORT
+#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
 
         // There is highlighted text - because of the Bidi support - the
         // highlighted area can be in some cases nonconsecutive.

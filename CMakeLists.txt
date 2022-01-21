@@ -207,20 +207,12 @@ if (NOT CEGUI_BUILD_DYNAMIC_CONFIGURATION AND NOT ANDROID)
     message(SEND_ERROR "You may not disable CEGUI_BUILD_DYNAMIC_CONFIGURATION in any scenario except android builds.")
 endif()
 
-set( CEGUI_STRING_CLASS "2" CACHE STRING "CEGUI offers three CEGUI::String class configurations
-1 - UTF-8 : ASCII, UTF-8 and UTF-32 aware, minimal storage, slightly less efficient, stores code units as char (std::string) internally - mind this fact when manipulating the String
-2 - UTF-32 : ASCII, UTF-8 and UTF-32 aware, stores 32 bit per character, stores code points as char32_t (std::u32string) internally
-3 - std::string : regular std::string used as CEGUI::String, not Unicode aware"
-)
-
 if (PCRE_FOUND)
     set (CEGUI_NEED_STD11_REGEX FALSE)
 else ()
     set (CEGUI_NEED_STD11_REGEX TRUE)
 endif ()
 
-option( CEGUI_FONT_USE_GLYPH_PAGE_LOAD "Specifies whether to let fonts use glyph page load" TRUE )
-option( CEGUI_HAS_FREETYPE "Specifies whether to include Freetype font support" ${FREETYPE_FOUND} )
 option( CEGUI_HAS_PCRE_REGEX "Specifies whether to include PCRE regexp matching for editbox string validation" ${PCRE_FOUND} )
 option( CEGUI_HAS_STD11_REGEX "Specifies whether to include C++11 Regular expressions library for editbox string validation" ${CEGUI_NEED_STD11_REGEX} )
 option( CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER "Specifies whether to build the minizip based resource provider" ${MINIZIP_FOUND} )
@@ -262,22 +254,44 @@ cegui_dependent_option( CEGUI_BUILD_PYTHON_MODULES_SWIG "Specifies whether to bu
 
 option( CEGUI_OPTION_SAFE_LUA_MODULE "Specifies whether to enable extra validation in the Lua script module in non-debug builds" FALSE )
 
-cegui_dependent_option( CEGUI_USE_FRIBIDI "Specifies whether bi-directional text will be supported via the fribidi library." FALSE )
-cegui_dependent_option( CEGUI_USE_MINIBIDI "Specifies whether bi-directional text will be supported via the embedded minibidi." FALSE )
+set( CEGUI_STRING_CLASS "UTF-32" CACHE STRING "CEGUI offers three CEGUI::String class configurations
+UTF-8 : ASCII, UTF-8 and UTF-32 aware, minimal storage, slightly less efficient, stores code units as char (std::string) internally - mind this fact when manipulating the String
+UTF-32 : ASCII, UTF-8 and UTF-32 aware, stores 32 bit per character, stores code points as char32_t (std::u32string) internally
+std : regular std::string used as CEGUI::String, not Unicode aware"
+)
+set_property(CACHE CEGUI_STRING_CLASS PROPERTY STRINGS "UTF-8" "UTF-32" "std")
 
+if (CEGUI_STRING_CLASS STREQUAL "UTF-8")
+	set(CEGUI_STRING_CLASS 1)
+elseif (CEGUI_STRING_CLASS STREQUAL "std")
+	set(CEGUI_STRING_CLASS 3)
+else()
+	set(CEGUI_STRING_CLASS 2) # UTF-32 by default
+endif()
+
+# Text rendering, BIDI
+
+option( CEGUI_HAS_FREETYPE "Specifies whether to include Freetype font support" ${FREETYPE_FOUND} )
+option( CEGUI_USE_FRIBIDI "Specifies whether bi-directional text will be supported via the fribidi library." OFF )
+option( CEGUI_USE_MINIBIDI "Specifies whether bi-directional text will be supported via the embedded minibidi." OFF )
 cegui_dependent_option( CEGUI_USE_RAQM "Specifies whether to include support for kerning and for complex text layout using in CEGUI. This requires libraqm, harfbuzz, freetype and fribidi" "RAQM_FOUND;HARFBUZZ_FOUND;FREETYPE_FOUND;FRIBIDI_FOUND" )
 
-# sanity check on bidi options
+if (CEGUI_USE_RAQM AND NOT CEGUI_USE_FRIBIDI)
+	set(CEGUI_USE_FRIBIDI ON)
+endif()
+if (CEGUI_USE_FRIBIDI AND NOT FRIBIDI_FOUND)
+    message(WARNING "CEGUI_USE_FRIBIDI was disabled because Fribidi is not found.")
+	set(CEGUI_USE_FRIBIDI OFF)
+endif()
 if (CEGUI_USE_MINIBIDI AND CEGUI_USE_FRIBIDI)
-    message(SEND_ERROR "You may not enable both CEGUI_USE_FRIBIDI and CEGUI_USE_MINIBIDI. Please choose only one of these options.")
+    message(WARNING "You may not enable both CEGUI_USE_FRIBIDI and CEGUI_USE_MINIBIDI. Only CEGUI_USE_FRIBIDI will be left.")
+	set(CEGUI_USE_MINIBIDI OFF)
 endif()
-if (CEGUI_USE_FRIBIDI OR CEGUI_USE_MINIBIDI)
-    if (CEGUI_USE_RAQM)
-        message(SEND_ERROR "You may not enable both CEGUI_USE_RAQM and one of the bidi options (CEGUI_USE_FRIBIDI or CEGUI_USE_MINIBIDI). Please choose only libraqm, which internally uses fribidi, if you want the latest layouting AND kerning support.")
-    else()
-        set(CEGUI_BIDI_SUPPORT 1)
-    endif()
+if (CEGUI_USE_FRIBIDI OR CEGUI_USE_MINIBIDI OR CEGUI_USE_RAQM)
+    set(CEGUI_BIDI_SUPPORT 1)
 endif()
+
+# Samples
 
 set( CEGUI_SAMPLES_DESKTOP_OPENGL_CONTEXT_CREATION_API NONE )
 if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)

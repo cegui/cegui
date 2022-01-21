@@ -268,7 +268,7 @@ void TextComponent::updateRenderedString(const Window& srcWindow, const String& 
 
     auto bidiDir = d_paragraphDir.get(srcWindow);
 
-#if defined(CEGUI_BIDI_SUPPORT)
+#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
     std::vector<int> l2v;
     std::vector<int> v2l;
     std::u32string textVisual;

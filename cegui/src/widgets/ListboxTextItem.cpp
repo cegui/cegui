@@ -110,13 +110,13 @@ void ListboxTextItem::parseTextString() const
 {
     DefaultParagraphDirection bidiDir = DefaultParagraphDirection::LeftToRight;
 
-#if defined(CEGUI_BIDI_SUPPORT)
+#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
     std::vector<int> l2v;
     std::vector<int> v2l;
     std::u32string textVisual;
     BidiVisualMapping::applyBidi(d_textLogical, textVisual, l2v, v2l, bidiDir);
 #else
-    const String& textVisual = text;
+    const String& textVisual = d_textLogical;
 #endif
 
     d_renderedString = d_renderedStringParser->parse(textVisual, getFont(), &d_textCols, bidiDir);
