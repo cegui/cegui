@@ -290,6 +290,9 @@ endif()
 if (CEGUI_USE_FRIBIDI OR CEGUI_USE_MINIBIDI OR CEGUI_USE_RAQM)
     set(CEGUI_BIDI_SUPPORT 1)
 endif()
+if (CEGUI_USE_FRIBIDI)
+    list(APPEND FRIBIDI_DEFINITIONS FRIBIDI_NO_DEPRECATED) # FIXME: fribidi doesn't check this through config.h
+endif()
 
 # Samples
 

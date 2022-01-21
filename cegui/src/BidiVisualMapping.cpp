@@ -44,7 +44,7 @@ namespace CEGUI
 BidiCharType BidiVisualMapping::getBidiCharType(const char32_t codepoint)
 {
 #if defined (CEGUI_USE_FRIBIDI)
-    switch (fribidi_get_type((FriBidiChar)codepoint))
+    switch (fribidi_get_bidi_type((FriBidiChar)codepoint))
     {
         case FRIBIDI_TYPE_RTL: return BidiCharType::RIGHT_TO_LEFT;
         case FRIBIDI_TYPE_LTR: return BidiCharType::LEFT_TO_RIGHT;
