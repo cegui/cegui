@@ -31,7 +31,7 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-void LeftAlignedRenderedString::format(const RenderedString& rs, const Window* refWnd, const Sizef& areaSize)
+void LeftAlignedRenderedString::format(const RenderedString& rs, const Window* refWnd, const Sizef& /*areaSize*/)
 {
     d_renderedString = &rs;
     d_extent = d_renderedString->getExtent(refWnd);

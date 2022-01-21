@@ -131,7 +131,7 @@ Sizef RenderedStringTextComponent::getPixelSize(const Window* refWnd) const
 
 //----------------------------------------------------------------------------//
 RenderedStringComponentPtr RenderedStringTextComponent::split(
-    const Window* refWnd, float split_point, bool first_component, bool& was_word_split)
+    const Window* refWnd, float splitPoint, bool firstComponent, bool& wasWordSplit)
 {
     const Font* font = getEffectiveFont(refWnd);
 
@@ -140,7 +140,7 @@ RenderedStringComponentPtr RenderedStringTextComponent::split(
     if (!font)
         throw InvalidRequestException("unable to split with no font set.");
 
-    was_word_split = false;
+    wasWordSplit = false;
 
     // create 'left' side of split and clone our basic configuration
     auto lhs = std::make_unique<RenderedStringTextComponent>();
@@ -151,8 +151,7 @@ RenderedStringComponentPtr RenderedStringTextComponent::split(
 
     // calculate the 'best' place to split the text
     size_t left_len = 0;
-    float left_extent = 0.0f;
-
+    float left_extent = 0.f;
     while (left_len < d_text.length())
     {
         auto word_start = d_text.find_first_not_of(TextUtils::DefaultWrapDelimiters, left_len);
@@ -172,16 +171,14 @@ RenderedStringComponentPtr RenderedStringTextComponent::split(
         const float token_extent =  font->getTextExtent(d_text.substr(left_len, token_len));
 
         // does the next token extend past the split point?
-        if (left_extent + token_extent > split_point)
+        if (left_extent + token_extent > splitPoint)
         {
             // if it was the first token, split the token itself
-            if (first_component && left_len == 0)
+            if (firstComponent && left_len == 0)
             {
-                was_word_split = true;
-                left_len =
-                    std::max(static_cast<size_t>(1),
-                             font->getCharAtPixel(
-                                 d_text.substr(0, token_len), split_point));
+                wasWordSplit = true;
+                left_len = std::max(static_cast<size_t>(1),
+                    font->getCharAtPixel(d_text.substr(0, token_len), splitPoint));
             }
             
             // left_len is now the character index at which to split the line
@@ -194,9 +191,10 @@ RenderedStringComponentPtr RenderedStringTextComponent::split(
     }
     
     // perform the split.
-    lhs->d_text = d_text.substr(0, left_len);
+    lhs->setText(d_text.substr(0, left_len));
 
-    // here we're trimming leading delimiters from the substring range 
+    // here we're trimming leading delimiters from the substring range
+    //!!!FIXME TEXT: what if they were selected? And how to restore them after resizing text area?
     size_t rhs_start = d_text.find_first_not_of(TextUtils::DefaultWrapDelimiters, left_len);
     if (rhs_start == String::npos)
         rhs_start = left_len;
@@ -206,13 +204,17 @@ RenderedStringComponentPtr RenderedStringTextComponent::split(
     {
         const size_t sel_end = d_selectionStart + d_selectionLength - 1;
         lhs->d_selectionStart = d_selectionStart;
-        lhs->d_selectionLength = sel_end < left_len ? d_selectionLength : left_len - d_selectionStart;
-
         d_selectionStart = 0;
-        if (sel_end >= left_len)
-            d_selectionLength -= rhs_start;
-        else
+        if (sel_end < left_len)
+        {
+            lhs->d_selectionLength = d_selectionLength;
             d_selectionLength = 0;
+        }
+        else
+        {
+            lhs->d_selectionLength = left_len - d_selectionStart;
+            d_selectionLength -= std::min(d_selectionLength, rhs_start);
+        }
     }
 
     setText(d_text.substr(rhs_start));
