@@ -301,16 +301,6 @@ public:
     */
     float getTextExtent(const String& text) const;
 
-    /*!
-    \brief
-        Calculates and returns the size this glyph takes up if it is the last character, or 
-        the size the glyph takes until the next character begins (considering kerning).
-    */
-    void getGlyphExtents(
-        char32_t currentCodePoint,
-        float& cur_extent,
-        float& adv_extent) const;
-
     //! Returns the FontGlyph corresponding to the codepoint or 0 if it can't be found.
     virtual FontGlyph* getGlyphForCodepoint(const char32_t codePoint, bool prepare = false) const = 0;
 

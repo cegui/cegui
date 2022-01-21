@@ -102,45 +102,32 @@ void Font::addFontProperties()
 //----------------------------------------------------------------------------//
 float Font::getTextExtent(const String& text) const
 {
-    float cur_extent = 0.0f;
-    float adv_extent = 0.0f;
+    float curExtent = 0.0f;
+    float advExtent = 0.0f;
 
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
-    for (size_t c = 0; c < text.length(); ++c)
+    for (const char32_t currentCodePoint : text)
     {
-        const char32_t currentCodePoint = text[c];
-
-        getGlyphExtents(currentCodePoint, cur_extent, adv_extent);
-    }
 #else
-    String::codepoint_iterator codePointIter(text.begin(), text.begin(), text.end());
-
-    while (!codePointIter.isAtEnd())
+    String::codepoint_iterator currentCodePointIter(text.begin(), text.begin(), text.end());
+    while (!currentCodePointIter.isAtEnd())
     {
-        const char32_t currentCodePoint = *codePointIter;
-
-        getGlyphExtents(currentCodePoint, cur_extent, adv_extent);
-
-        ++codePointIter;
-    }
+        const char32_t currentCodePoint = *currentCodePointIter;
 #endif
+        if (const FontGlyph* currentGlyph = getGlyphForCodepoint(currentCodePoint, true))
+        {
+            const float width = currentGlyph->getRenderedAdvance();
+            if (curExtent < advExtent + width)
+                curExtent = advExtent + width;
 
-
-    return std::max(adv_extent, cur_extent);
-}
-
-//----------------------------------------------------------------------------//
-void Font::getGlyphExtents(char32_t currentCodePoint, float& cur_extent, float& adv_extent) const
-{
-    if (const FontGlyph* currentGlyph = getGlyphForCodepoint(currentCodePoint, true))
-    {
-        float width = currentGlyph->getRenderedAdvance();
-
-        if (adv_extent + width > cur_extent)
-            cur_extent = adv_extent + width;
-
-        adv_extent += currentGlyph->getAdvance();
+            advExtent += currentGlyph->getAdvance();
+        }
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+        ++currentCodePointIter;
+#endif
     }
+
+    return std::max(advExtent, curExtent);
 }
 
 //----------------------------------------------------------------------------//
@@ -149,26 +136,20 @@ float Font::getTextAdvance(const String& text) const
     float advance = 0.0f;
 
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
-    for (size_t c = 0; c < text.length(); ++c)
+    for (const char32_t currentCodePoint : text)
     {
-        if (const FontGlyph* glyph = getPreparedGlyph(text[c]))
-        {
-            advance += glyph->getAdvance();
-        }
-    }
 #else
-String::codepoint_iterator currentCodePointIter(text.begin(), text.begin(), text.end());
-while (!currentCodePointIter.isAtEnd())
-{
-    char32_t currentCodePoint = *currentCodePointIter;
-    if (const FontGlyph* glyph = getGlyphForCodepoint(currentCodePoint, true))
+    String::codepoint_iterator currentCodePointIter(text.begin(), text.begin(), text.end());
+    while (!currentCodePointIter.isAtEnd())
     {
-        advance += glyph->getAdvance();
-    }
-
-    ++currentCodePointIter;
-}
+        const char32_t currentCodePoint = *currentCodePointIter;
 #endif
+        if (const FontGlyph* glyph = getGlyphForCodepoint(currentCodePoint, true))
+            advance += glyph->getAdvance();
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+        ++currentCodePointIter;
+#endif
+    }
 
     return advance;
 }
@@ -236,7 +217,7 @@ void Font::layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = 0; c < text.length(); ++c)
     {
-        const char32_t& currentCodePoint = text[c];
+        const char32_t currentCodePoint = text[c];
 #else
     String::codepoint_iterator currentCodePointIter(text.begin(), text.begin(), text.end());
     while (!currentCodePointIter.isAtEnd())
