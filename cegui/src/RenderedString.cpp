@@ -33,6 +33,9 @@
 #ifdef CEGUI_USE_RAQM
 #include "CEGUI/FreeTypeFont.h"
 #include <raqm.h>
+#else
+#include "CEGUI/Font.h"
+#include "CEGUI/FontGlyph.h"
 #endif
 #include <algorithm>
 
@@ -52,22 +55,29 @@ RenderedString::RenderedString(RenderedString&&) noexcept = default;
 RenderedString& RenderedString::operator =(RenderedString&&) noexcept = default;
 
 //----------------------------------------------------------------------------//
-static const Font* getElementFont(RenderedStringComponent* element, const Font* currFont, const Font* defaultFont, bool& isFontSource)
+static const Font* getFontAtIndex(size_t i, const std::vector<uint16_t>& elementIndices,
+    const std::vector<RenderedStringComponentPtr>& elements,
+    size_t& currFontSourceIdx, const Font* currFont)
 {
-    // Non-text elements don't break the range of the current font
-    auto textStyle = dynamic_cast<const RenderedStringTextComponent*>(element);
-    const Font* font = textStyle ? textStyle->getFont() : currFont;
-    isFontSource = !!textStyle;
+    // Characters without an associated element use the default font
+    if (i >= elementIndices.size())
+        return nullptr;
 
-    if (!font)
-    {
-        if (!defaultFont)
-            return false;
+    const auto charElementIdx = elementIndices[i];
 
-        font = defaultFont;
-    }
+    // Font couldn't change if the source element didn't
+    if (currFontSourceIdx == charElementIdx)
+        return currFont;
 
-    return font;
+    auto textStyle = dynamic_cast<const RenderedStringTextComponent*>(elements[charElementIdx].get());
+
+    // Non-text elements have no font and are skipped
+    if (!textStyle)
+        return currFont;
+
+    currFontSourceIdx = charElementIdx;
+
+    return textStyle->getFont();
 }
 
 //----------------------------------------------------------------------------//
@@ -78,6 +88,7 @@ static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
 {
     // Apply Unicode Bidirectional Algorithm to obtain a string with visual ordering of codepoints
 #if defined(CEGUI_BIDI_SUPPORT)
+    //!!!TODO TEXT: implement partial inplace BIDI, can pass mutable "text" here!
     std::vector<int> l2v;
     std::vector<int> v2l;
     std::u32string textVisual;
@@ -91,20 +102,62 @@ static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
 
     // Glyph generation
 
+    out.glyphs.resize(end - start);
+
+    size_t currFontSourceIdx = std::numeric_limits<size_t>().max(); // NB: intentionally invalid, elementIndices are uint16_t
+    const Font* currFont = nullptr;
+    const FontGlyph* prevGlyph = nullptr;
+
     for (size_t i = start; i < end; ++i)
     {
 #if defined(CEGUI_BIDI_SUPPORT)
         const size_t visualIndex = i - start;
-        const size_t logicalIndex = v2l[visualIndex];
+        const size_t logicalIndex = v2l[visualIndex] + start;
 #else
         const size_t visualIndex = i;
         const size_t logicalIndex = i;
 #endif
 
-        //!!!layouting must happen here in chains belonging to the same font / the same element!
-        //can skip non-font elements
+        const auto codePoint = textVisual[visualIndex];
+        auto& renderedGlyph = out.glyphs[i - start];
 
-        //const auto& element = elements[elementIndices[logicalIndex]];
+        // Get a font for the current character
+        const Font* font = getFontAtIndex(logicalIndex, elementIndices, elements, currFontSourceIdx, currFont);
+        if (!font)
+        {
+            if (!defaultFont)
+                return false;
+
+            font = defaultFont;
+        }
+
+        auto fontGlyph = font->getGlyphForCodepoint(codePoint, true);
+
+        //!!!FIXME TEXT: could cache in a variable to skip search!
+        if (!fontGlyph)
+            fontGlyph = font->getGlyphForCodepoint(Font::UnicodeReplacementCharacter);
+
+        if (fontGlyph)
+        {
+            renderedGlyph.image = fontGlyph->getImage(0);
+            renderedGlyph.offset.x = font->getKerning(prevGlyph, *fontGlyph);
+            renderedGlyph.advance = fontGlyph->getAdvance();
+        }
+        else
+        {
+            renderedGlyph.image = nullptr;
+            renderedGlyph.offset.x = 0.f;
+            renderedGlyph.advance = 0.f;
+        }
+        renderedGlyph.sourceIndex = static_cast<uint32_t>(logicalIndex);
+        renderedGlyph.offset.y = font->getBaseline();
+#if defined(CEGUI_BIDI_SUPPORT)
+        renderedGlyph.isRightToLeft = (BidiVisualMapping::getBidiCharType(codePoint) == BidiCharType::RIGHT_TO_LEFT);
+#else
+        renderedGlyph.isRightToLeft = false;
+#endif
+
+        prevGlyph = fontGlyph;
     }
 
     return true;
@@ -133,39 +186,20 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
     else
     {
         fontRanges.reserve(16);
-        size_t fontSourceElementIdx = std::numeric_limits<size_t>().max(); // NB: intentionally invalid, elementIndices are uint16_t
-        const FreeTypeFont* currFont = nullptr;
         size_t fontLen = 0;
+        size_t currFontSourceIdx = std::numeric_limits<size_t>().max(); // NB: intentionally invalid, elementIndices are uint16_t
+        const FreeTypeFont* currFont = nullptr;
         for (size_t i = start; i < end; ++i)
         {
             // Get a font for the current character
-            const Font* charFont;
-            if (i >= elementIdxCount)
+            const Font* charFont = getFontAtIndex(i, elementIndices, elements, currFontSourceIdx, currFont);
+            if (!charFont)
             {
-                // Characters without an associated element use the default font
+                if (!defaultFont)
+                    return false;
+
                 charFont = defaultFont;
             }
-            else
-            {
-                const auto charElementIdx = elementIndices[i];
-                if (fontSourceElementIdx == charElementIdx)
-                {
-                    // Font couldn't change if the source element didn't
-                    charFont = currFont;
-                }
-                else
-                {
-                    // Non-text elements have no font and are skipped for index comparison optimization
-                    bool isFontSource;
-                    charFont = getElementFont(elements[charElementIdx].get(), currFont, defaultFont, isFontSource);
-                    if (isFontSource)
-                        fontSourceElementIdx = charElementIdx;
-                }
-            }
-
-            // NB: this check is necessary for failing if the first character has no font
-            if (!charFont)
-                return false;
 
             if (charFont != currFont)
             {
@@ -261,7 +295,7 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
         constexpr float s_26dot6_toFloat = (1.0f / 64.f);
 
         renderedGlyph.image = fontGlyph ? fontGlyph->getImage(0) : nullptr;
-        renderedGlyph.sourceIndex = rqGlyph.cluster + start;
+        renderedGlyph.sourceIndex = static_cast<uint32_t>(rqGlyph.cluster + start);
         renderedGlyph.offset.x = rqGlyph.x_offset * s_26dot6_toFloat;
         renderedGlyph.offset.y = rqGlyph.y_offset * s_26dot6_toFloat + font->getBaseline();
         renderedGlyph.advance = ((rqGlyphDir == RAQM_DIRECTION_TTB) ? rqGlyph.y_advance : rqGlyph.x_advance)  * s_26dot6_toFloat;

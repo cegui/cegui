@@ -24,7 +24,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-
 #include "CEGUI/PixmapFont.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/BitmapImage.h"
@@ -35,11 +34,9 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/SharedStringStream.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-static const String BuiltInResourceGroup ("*");
+static const String BuiltInResourceGroup("*");
 
 //----------------------------------------------------------------------------//
 PixmapFont::PixmapFont(const String& font_name, const String& imageset_filename,
@@ -224,34 +221,24 @@ void PixmapFont::defineMapping(const String& value)
 }
 
 //----------------------------------------------------------------------------//
-const String& PixmapFont::getImageNamePrefix() const
-{
-    return d_imageNamePrefix;
-}
-
-//----------------------------------------------------------------------------//
 void PixmapFont::setImageNamePrefix(const String& name_prefix)
 {
-    d_resourceGroup = "*";
+    d_resourceGroup = BuiltInResourceGroup;
     d_imageNamePrefix = name_prefix;
     reinit();
 }
 
-
+//----------------------------------------------------------------------------//
 bool PixmapFont::isCodepointAvailable(char32_t codePoint) const
 {
     return d_codePointToGlyphMap.find(codePoint) != d_codePointToGlyphMap.end();
 }
 
-FontGlyph* PixmapFont::getGlyphForCodepoint(const char32_t codepoint) const
+//----------------------------------------------------------------------------//
+FontGlyph* PixmapFont::getGlyphForCodepoint(const char32_t codepoint, bool /*prepare*/) const
 {
-    CodePointToGlyphMap::iterator pos = d_codePointToGlyphMap.find(codepoint);
-    if (pos != d_codePointToGlyphMap.end())
-    {
-        return pos->second;
-    }
-
-    return nullptr;
+    auto it = d_codePointToGlyphMap.find(codepoint);
+    return (it != d_codePointToGlyphMap.end()) ? it->second : nullptr;
 }
 
 }

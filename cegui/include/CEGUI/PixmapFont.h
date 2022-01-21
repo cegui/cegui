@@ -85,13 +85,13 @@ public:
 
     void updateFont () override;
     bool isCodepointAvailable(char32_t codePoint) const override;
-    FontGlyph* getGlyphForCodepoint(const char32_t codePoint) const override;
+    FontGlyph* getGlyphForCodepoint(const char32_t codePoint, bool prepare = false) const override;
 
     void defineMapping(const char32_t codePoint, const String& imageName, 
                        const float horzAdvance);
     void defineMapping(const String& value);
     //! Return the image name prefix that the font is using for it's glyphs.
-    const String& getImageNamePrefix() const;
+    const String& getImageNamePrefix() const { return d_imageNamePrefix; }
 
     /*!
     \brief
