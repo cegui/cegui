@@ -76,21 +76,10 @@ static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
     const std::vector<uint16_t>& elementIndices,
     const std::vector<RenderedStringComponentPtr>& elements)
 {
-    //!!!if RAQM defined, may get here as a fallback, use fribidi then!
-
     // Apply Unicode Bidirectional Algorithm to obtain a string with visual ordering of codepoints
 #if defined(CEGUI_BIDI_SUPPORT) //|| defined(CEGUI_USE_RAQM)
-    //!!!FIXME TEXT: IMPROVE BIDI
-    // 1. Can avoid virtualization and transfer internals here or into some wrapper
-    // 2. UTF-32 text is ready to be processed, need to pass it without redundant conversions
-    // 3. Since text can be passed here mutable, can use inplace transform where supported! (minibidi?)
-    // 4. Remove state from wrapper
-    // 5. Can make universal BIDI function for UTF-8 that converts to UTF-32 inside, not repeat in every impl
-    // 6. Can make inplace API variant for UTF-32? Impl that doesn't support it will make a copy internally.
-    // 7. Use default paragraph direction where supported: defaultParagraphDir
-    // 8. One wrapper function and #ifdef inside?
-    // 9. Make preprocessor definitions better for RAQM Fribidi fallback?
-    //10. Need explicit start + length!!!
+    //!!!FIXME TEXT: make preprocessor definitions better for RAQM Fribidi fallback!
+    //!!!Raqm may set FRIBIDI enabled definition in CMake! Ensure include dirs are added.
     std::vector<int> l2v;
     std::vector<int> v2l;
     std::u32string textVisual;
@@ -114,12 +103,10 @@ static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
         const size_t logicalIndex = i;
 #endif
 
-        //const auto& element = elements[elementIndices[logicalIndex]];
+        //!!!layouting must happen here in chains belonging to the same font / the same element!
+        //can skip non-font elements
 
-        //   if references image or widget, process specially
-        //   if references a font
-        //     collect a range with the same font
-        //     process range inside that font, to handle kerning and other font virtualization
+        //const auto& element = elements[elementIndices[logicalIndex]];
     }
 
     return true;
