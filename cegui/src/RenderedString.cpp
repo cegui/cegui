@@ -369,7 +369,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             end = textLength;
 
         // Always create a paragraph (new line), even if it is empty
-        d_paragraphs.push_back({});
+        d_paragraphs.emplace_back();
 
         if (end > start)
         {
@@ -427,7 +427,6 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             //???if embedded image, store is at Image field for faster access?
             //???virtual RenderedTextElement::setupGlyph()?!
             //???is image caching useful? ensure it allows not to access image element when generating geometry!
-            //!!!otherwise nullptr image is a good substitute for isEmbeddedObject, no need in additional flag!
 
             if (glyph.isEmbeddedObject)
             {
@@ -455,8 +454,10 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
     //???where to get default horizontal alignment and word wrapping?! arg or member field?
     //!!!paragraphs without embedded objects may be skipped if alignment didn't change!
     //!!!listen to embedded windows EventSized, mark corresponding paragraph formatting dirty!
-    constexpr bool wordWrap = true;
 
+    //???store the last area width and host window to which formatting happened?
+
+    //!!!TODO TEXT: need partial re-formatting of only dirty paragraphs!
     d_lines___.clear();
     d_lines___.reserve(d_paragraphs.size());
 
@@ -470,6 +471,8 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
 
     for (auto& p : d_paragraphs)
     {
+        //!!!TODO TEXT: if formatting flag is not dirty, skip! separate valign and word wrapping!
+
         p.firstLineIndex = static_cast<uint16_t>(d_lines___.size());
 
         // Add the first line of this paragraph
@@ -506,7 +509,9 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
                     auto textStyle = static_cast<const RenderedStringTextComponent*>(element);
                     currFont = textStyle->getFont();
 
-                    glyphSize.d_width = std::max(glyph.advance, glyph.image->getRenderedSize().d_width +
+                    const float imageWidth = glyph.image ? glyph.image->getRenderedSize().d_width : 0.f;
+
+                    glyphSize.d_width = std::max(glyph.advance, imageWidth +
                         element->getLeftPadding() + element->getRightPadding());
                     glyphSize.d_height = currFont->getFontHeight() +
                         element->getTopPadding() + element->getBottomPadding();
@@ -514,7 +519,7 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
             }
 
             // Break too long lines if word wrapping is enabled
-            if (wordWrap)
+            if (p.wordWrap)
             {
                 float excessWidth = currLine->extents.d_width + glyphSize.d_width - areaWidth;
                 if (excessWidth > 0.f)
@@ -522,7 +527,7 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
                     // If there is a good break point for word wrapping in the current line, use it
                     if (lastBreakPointIdx < glyphCount)
                     {
-                        // Transfer everything from the last breakpoint to the new line
+                        // Transfer everything starting at the last breakpoint to the new line
                         d_lines___.push_back({});
                         auto newLine = &d_lines___.back();
                         newLine->firstGlyphIdx = lastBreakPointIdx;
@@ -584,7 +589,7 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
         }
 
         // Track the paragraph exceeding an area width
-        if (!wordWrap)
+        if (!p.wordWrap)
         {
             const float excessWidth = d_lines___.back().extents.d_width - areaWidth;
             if (maxExcessWidth < excessWidth)
@@ -595,14 +600,48 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
         // Use full width for the last glyph
         //currLine->extents.d_width += (prevGlyphWidth - p.glyphs.back().advance);
 
-        //???when justified word wrap, where to get last line alignment preference? any of 4 alignments is allowed!
-        //paragraph property, may be styled in tags or defaulted!
-
-        //!!!remove formatting dirty flag from a paragraph!
+        //!!!remove formatting dirty flag from a paragraph! invalidate halign and valign!
         //if alignment type or areaWidth changes, line extents cache may be reused!
         //!!!if width of some object changes, word wrapping / justification / h.align is dirty
         //!!!if height of some object is changed, vertical alignment inside a corresponding line is dirty
         //NB: if width changed and word wrapping is ON, we have to recalculate each line height nevertheless!
+
+        //???cache valign offset as a separate float?! much better than recalculating it each time when generating geometry!
+    }
+
+    // Update horizontal alignment of lines
+    for (auto it = d_paragraphs.begin(); it != d_paragraphs.end(); ++it)
+    {
+        auto& p = *it;
+
+        //!!!TODO TEXT: if horz alignment flag is not dirty, skip!
+
+        //!!!FIXME TEXT: if partial re-formatting will be implemented, must stop at the next paragraph, not d_lines end!
+        //!!!FIXME TEXT: if partial, also make sure lines are cleared, so offset & justify are defaulted to 0.f!
+        //???is better to store last line idx instead of first in a paragraph? iterations will be easier!
+        const auto nextIt = std::next(it);
+        const size_t lastOurLineIndex = ((nextIt == d_paragraphs.end()) ? d_lines___.size() : (*nextIt).firstLineIndex) - 1;
+        for (size_t i = p.firstLineIndex; i <= lastOurLineIndex; ++i)
+        {
+            auto lineHorzFormat = p.horzFormat;
+            if (i == lastOurLineIndex && p.horzFormat == HorizontalTextFormatting::Justified)
+                lineHorzFormat = p.lastJustifiedLineHorzFormat;
+
+            auto& line = d_lines___[i];
+            switch (lineHorzFormat)
+            {
+                case HorizontalTextFormatting::RightAligned:
+                    line.horzOffset = areaWidth - line.extents.d_width;
+                    break;
+                case HorizontalTextFormatting::CentreAligned:
+                    line.horzOffset = (areaWidth - line.extents.d_width) * 0.5f;
+                    break;
+                case HorizontalTextFormatting::Justified:
+                    if (line.justifyableCount && line.extents.d_width < areaWidth)
+                        line.justifySpaceSize = (areaWidth - line.extents.d_width) / line.justifyableCount;
+                    break;
+            }
+        }
     }
 
     return maxExcessWidth;
