@@ -69,9 +69,9 @@ struct RenderedGlyph
 struct RenderedParagraph
 {
     std::vector<RenderedGlyph> glyphs;
-    Sizef extents;
-    uint16_t justifyableSpaceCount = 0;
+    uint16_t firstLineIndex;
     DefaultParagraphDirection bidiDir = DefaultParagraphDirection::Automatic;
+    //???1 byte of dirty flags?! e.g. when embedded widget EventSized or image resizing detected!
 };
 
 /*!
@@ -222,7 +222,15 @@ public:
 
 protected:
 
+    struct Line
+    {
+        uint32_t firstGlyphIdx;
+        Sizef    extents;
+        uint16_t justifyableSpaceCount = 0;
+    };
+
     std::vector<RenderedParagraph> d_paragraphs;
+    std::vector<Line> d_lines___;
     std::vector<RenderedStringComponentPtr> d_elements;
 
     std::vector<RenderedStringComponentPtr> d_components;
