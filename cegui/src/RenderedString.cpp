@@ -309,6 +309,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     const Font* defaultFont, DefaultParagraphDirection defaultParagraphDir)
 {
     d_paragraphs.clear();
+    d_elements.clear();
 
     if (text.empty())
         return true;
@@ -326,8 +327,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     std::u32string utf32Text;
     std::vector<size_t> originalIndices;
     std::vector<uint16_t> elementIndices;
-    std::vector<RenderedStringComponentPtr> elements;
-    if (!parser || !parser->parse(text, utf32Text, originalIndices, elementIndices, elements))
+    if (!parser || !parser->parse(text, utf32Text, originalIndices, elementIndices, d_elements))
     {
         // If no parser or parsing failed, render the text verbatim
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32)
@@ -350,7 +350,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             return false;
 
         //!!!FIXME TEXT: need no text string in text style elements!
-        elements.emplace_back(new RenderedStringTextComponent(String::GetEmpty(), defaultFont));
+        d_elements.emplace_back(new RenderedStringTextComponent(String::GetEmpty(), defaultFont));
     }
 
 #ifdef CEGUI_USE_RAQM
@@ -374,10 +374,10 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             // Create a sequence of CEGUI glyphs for this paragraph
 #ifdef CEGUI_USE_RAQM
             if (!layoutParagraphWithRaqm(d_paragraphs.back(), utf32Text, start, end, defaultFont, defaultParagraphDir,
-                    elementIndices, elements, rq))
+                    elementIndices, d_elements, rq))
 #endif
                 layoutParagraph(d_paragraphs.back(), utf32Text, start, end, defaultFont, defaultParagraphDir,
-                    elementIndices, elements);
+                    elementIndices, d_elements);
         }
 
         if (end == textLength)
@@ -393,7 +393,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
 #endif
 
     // Do common setup for generated glyphs
-    const uint16_t defaultStyleIdx = static_cast<uint16_t>(elements.size() - 1);
+    const uint16_t defaultStyleIdx = static_cast<uint16_t>(d_elements.size() - 1);
     const size_t elementIdxCount = elementIndices.size();
     const bool adjustSourceIndices = !originalIndices.empty();
     for (auto& p : d_paragraphs)
@@ -409,58 +409,96 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             if (adjustSourceIndices)
                 glyph.sourceIndex = static_cast<uint32_t>(originalIndices[glyph.sourceIndex]);
 
-            const RenderedStringComponent* element = elements[glyph.elementIndex].get();
-            // always:
-            //element->getTopPadding
-            //element->getBottomPadding
-            // if first:
-            //element->getLeftPadding
-            // if last:
-            //element->getRightPadding
-            //!!!handle RTL direction for horizontal padding!
-            //!!!note that offset is not counted in advance, so padding must be added to both sometimes!
+            const RenderedStringComponent* element = d_elements[glyph.elementIndex].get();
+            glyph.isEmbeddedObject = !dynamic_cast<const RenderedStringTextComponent*>(element);
 
-            //!!!element ranges:
-            // 1. What if single element affects multiple ranges? Can't store range inside!
-            // 2. How to apply padding to the visual ordering of characters?
+            // Bake padding into glyph metrics. Text glyphs are never resized and will
+            // remain actual. Embedded objects advance will be calculated in format().
+            glyph.offset += element->getPadding().getPosition();
+            if (!glyph.isEmbeddedObject)
+                glyph.advance += element->getLeftPadding() + element->getRightPadding();
 
-            // VerticalImageFormatting - store in glyph or get from element? or embed into offset and advance Y?!
-            // if embed, image size changes will require recalculation!?
-            //!!!NB: this changes per element, no need to calculate for each glyph when creating geometry!
+            //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
+            //if (glyph.isRightToLeft) ...
 
             //!!!Replace placeholder glyphs in paragraphs with images and widgets!
             //???if embedded image, store is at Image field for faster access?
             //???virtual RenderedTextElement::setupGlyph()?!
+            //???is image caching useful? ensure it allows not to access image element when generating geometry!
+            //!!!otherwise nullptr image is a good substitute for isEmbeddedObject, no need in additional flag!
 
-            //!!!only for non-placeholders, real texts!
-            //???!!!placeholders must not be justifyable but may be breakable!?
-            //!!!TODO TEXT: what side isBreakable affects? See how RenderedStringTextComponent::split is implemented currently!
-            const auto codePoint = text[glyph.sourceIndex];
-            glyph.isJustifyable = (codePoint == ' ');
-            glyph.isBreakable = (codePoint == ' '); //!!!TextUtils::DefaultWrapDelimiters, use String::find or hardcoded == checks?
+            if (glyph.isEmbeddedObject)
+            {
+                glyph.isJustifyable = false;
+                glyph.isBreakable = true; // May be not always, but for now this is OK
+            }
+            else
+            {
+                //!!!TODO TEXT: what side isBreakable affects? See how RenderedStringTextComponent::split is implemented currently!
+                const auto codePoint = text[glyph.sourceIndex];
+                glyph.isJustifyable = (codePoint == ' ');
+                glyph.isBreakable = (codePoint == ' ' || codePoint == '\t' || codePoint == '\r');
 
-            if (glyph.isJustifyable)
-                ++p.justifyableSpaceCount;
+                if (glyph.isJustifyable)
+                    ++p.justifyableSpaceCount;
+            }
         }
-
-        //!!!Calculate paragraph extents for faster horizontal formatting!
-        // - skip embedded objects from extents, their size is added on formatting / geometry generation
-        //???do word wrapping at the same time? can do per paragraph!
-        //if formatting is per-paragraph, there is no profit in storing calculated data in a separate formatter
-        //but still we can show the same text in different viewports at the same time, reusing string but not cache
-        //???but what about embedded windows in this case? still very rare thing to be a blocker
-        // Formatting input: window, area size. Window is needed only for getting a line extent -> component
-        // pixel size. Image ignores window. Text uses window font. Widget accesses child through parent.
-        //???subscribe some events? Window::EventSized? Rare, will be cheap. Invalidates a paragraph.
-        // Images are never resized? Even if resized, can subscribe too. WIndow font change requires renderText
-        // if any of glyphs uses default font. For now may do this always, but can optimize! Changes in fonts
-        // are too hard to track and may require redrawing all texts, but changes in fonts are rare.
-        // So can simply store extents/formatting validity bool flag, maybe even per paragraph.
-        // For area size, can store the last area size for which formatting was calculated!
-        //???or maybe word wrap when generating geometry? simply do newline when the next glyph exceeds?
-        //???or calc. distance to the next breakable? if prefer to break not splitting words.
     }
 
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool RenderedString::format(float areaWidth, const Window* hostWindow)
+{
+    //???where to get default horizontal alignment and word wrapping?! arg or member field?
+    //!!!paragraphs without embedded objects may be skipped if alignment didn't change!
+    //!!!listen to embedded windows EventSized, mark corresponding paragraph formatting dirty!
+    constexpr bool wordWrap = true;
+
+    for (auto& p : d_paragraphs)
+    {
+        Sizef lineExtent;
+        for (auto& glyph : p.glyphs)
+        {
+            // Calculate padded glyph extents, update advance for embedded objects
+            float glyphHeight = 0.f;
+            if (auto element = d_elements[glyph.elementIndex].get())
+            {
+                if (glyph.isEmbeddedObject)
+                {
+                    // NB: padding is already counted inside
+                    const auto size = element->getPixelSize(hostWindow);
+                    glyph.advance = size.d_width;
+                    glyphHeight = size.d_height;
+                }
+                else
+                {
+                    auto textStyle = static_cast<const RenderedStringTextComponent*>(element);
+                    glyphHeight = textStyle->getFont()->getFontHeight() +
+                        element->getTopPadding() + element->getBottomPadding();
+                }
+            }
+
+            //!!!FIXME: for this text may need not glyph advance but real image size, to compensate kerning!
+            if (wordWrap && (lineExtent.d_width + glyph.advance > areaWidth))
+            {
+                //!!!check what will happen if the new glyph is wider than areaWidth! Must align it to a separate line!
+
+                //!!!add new line
+                lineExtent.d_width = 0.f;
+                lineExtent.d_height = 0.f;
+            }
+
+            //???when justified word wrap, where to get last line alignment preference? any of 4 alignments is allowed!
+
+            //fill vector of lines, reference starting line in the paragraph, starting glyph in the line
+            //cache offset/spacing values for the paragraph horz. align, or default horz. align if not specified
+            //when adding new line, bake inline vertical alignment into its glyphs? or can't restore and must do on geom generation?
+        }
+    }
+
+    //!!!return whether alignment didn't require word breaking!
     return true;
 }
 
@@ -559,6 +597,8 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
 
 
 ////////////////////// NEW CODE WIP:
+
+    //???force using embedded image advance instead of current size until re-formatted?
 
     //!!!TODO TEXT: need default style here! not only colors but also underline flag etc!
     //???how to know where to apply a default style? now this style element is the same as explicit ones!
