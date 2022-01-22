@@ -596,18 +596,18 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
                 maxExcessWidth = excessWidth;
         }
 
-        // NB: this is most likely not needed because the last glyph in the paragraph is not a subject for kerning
-        // Use full width for the last glyph
-        //currLine->extents.d_width += (prevGlyphWidth - p.glyphs.back().advance);
+        // Count full width for the last glyph in a line
+        currLine->extents.d_width += (prevGlyphWidth - p.glyphs.back().advance);
 
         //!!!remove formatting dirty flag from a paragraph! invalidate halign and valign!
         //if alignment type or areaWidth changes, line extents cache may be reused!
         //!!!if width of some object changes, word wrapping / justification / h.align is dirty
         //!!!if height of some object is changed, vertical alignment inside a corresponding line is dirty
         //NB: if width changed and word wrapping is ON, we have to recalculate each line height nevertheless!
-
-        //???cache valign offset as a separate float?! much better than recalculating it each time when generating geometry!
     }
+
+    //???cache valign offset as a separate float?! much better than recalculating it each time when generating geometry!
+    //???in the same loop as horz align or separate one?
 
     // Update horizontal alignment of lines
     for (auto it = d_paragraphs.begin(); it != d_paragraphs.end(); ++it)
