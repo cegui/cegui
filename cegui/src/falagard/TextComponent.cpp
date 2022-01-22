@@ -279,10 +279,6 @@ void TextComponent::updateRenderedString(const Window& srcWindow, const String& 
 
     d_renderedString = parser.parse(textVisual, font, nullptr, bidiDir);
 
-    //!!!DBG TMP!
-    RenderedString tmp;
-    tmp.renderText(text, nullptr, font, bidiDir);
-
     d_lastFont = font;
     d_lastParser = &parser;
     d_lastText = text;
@@ -308,6 +304,11 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
 
     if (d_formatter)
         d_formatter->format(d_renderedString, &srcWindow, size);
+
+    //!!!DBG TMP!
+    RenderedString tmp;
+    tmp.renderText(getEffectiveText(srcWindow), nullptr, font, d_paragraphDir.get(srcWindow));
+    tmp.format(size.d_width, &srcWindow);
 }
 
 }

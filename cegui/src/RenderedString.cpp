@@ -311,6 +311,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     d_paragraphs.clear();
     d_lines___.clear();
     d_elements.clear();
+    d_defaultFont = defaultFont;
 
     if (text.empty())
         return true;
@@ -432,6 +433,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             {
                 glyph.isJustifyable = false;
                 glyph.isBreakable = true; // May be not always, but for now this is OK
+                glyph.isWhitespace = false;
             }
             else
             {
@@ -439,6 +441,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
                 const auto codePoint = text[glyph.sourceIndex];
                 glyph.isJustifyable = (codePoint == ' ');
                 glyph.isBreakable = (codePoint == ' ' || codePoint == '\t' || codePoint == '\r');
+                glyph.isWhitespace = glyph.isBreakable;
             }
         }
     }
@@ -447,7 +450,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
 }
 
 //----------------------------------------------------------------------------//
-bool RenderedString::format(float areaWidth, const Window* hostWindow)
+float RenderedString::format(float areaWidth, const Window* hostWindow)
 {
     //???where to get default horizontal alignment and word wrapping?! arg or member field?
     //!!!paragraphs without embedded objects may be skipped if alignment didn't change!
@@ -455,78 +458,154 @@ bool RenderedString::format(float areaWidth, const Window* hostWindow)
     constexpr bool wordWrap = true;
 
     d_lines___.clear();
+    d_lines___.reserve(d_paragraphs.size());
 
-    bool wordBroken = false;
+    const Font* currFont = d_defaultFont;
+    float prevGlyphWidth = 0.f;
+
+    size_t lastBreakPointIdx = std::numeric_limits<size_t>().max();
+    Line lastBreakPointState;
+    float lastBreakPointWidthAdjustment = 0.f;
+    float maxExcessWidth = 0.f;
 
     for (auto& p : d_paragraphs)
     {
         p.firstLineIndex = static_cast<uint16_t>(d_lines___.size());
-        d_lines___.push_back({});
 
+        // Add the first line of this paragraph
+        d_lines___.push_back({});
         auto* currLine = &d_lines___.back();
         currLine->firstGlyphIdx = 0;
 
-        //!!!if paragraph has no glyphs, need to set line height to the font height or like that!
+        const auto glyphCount = p.glyphs.size();
 
-        for (size_t i = 0; i < p.glyphs.size(); ++i)
+        if (!glyphCount)
+        {
+            // Empty line has a height of the most recently used font
+            if (currFont)
+                currLine->extents.d_height = currFont->getFontHeight();
+            continue;
+        }
+
+        for (size_t i = 0; i < glyphCount; ++i)
         {
             auto& glyph = p.glyphs[i];
 
             // Calculate padded glyph extents, update advance for embedded objects
-            float glyphHeight = 0.f;
+            Sizef glyphSize;
             if (auto element = d_elements[glyph.elementIndex].get())
             {
                 if (glyph.isEmbeddedObject)
                 {
                     // NB: padding is already counted inside
-                    const auto size = element->getPixelSize(hostWindow);
-                    glyph.advance = size.d_width;
-                    glyphHeight = size.d_height;
+                    glyphSize = element->getPixelSize(hostWindow);
+                    glyph.advance = glyphSize.d_width;
                 }
                 else
                 {
                     auto textStyle = static_cast<const RenderedStringTextComponent*>(element);
-                    glyphHeight = textStyle->getFont()->getFontHeight() +
+                    currFont = textStyle->getFont();
+
+                    glyphSize.d_width = std::max(glyph.advance, glyph.image->getRenderedSize().d_width +
+                        element->getLeftPadding() + element->getRightPadding());
+                    glyphSize.d_height = currFont->getFontHeight() +
                         element->getTopPadding() + element->getBottomPadding();
                 }
             }
 
-            //!!!FIXME: for this test may need not glyph advance but real image size, to compensate kerning!
-            if (wordWrap && (currLine->extents.d_width + glyph.advance > areaWidth))
+            // Break too long lines if word wrapping is enabled
+            if (wordWrap)
             {
-                //!!!check what will happen if the new glyph is wider than areaWidth! Must align it to a separate line!
-                //!!!NB: if it was the first element on the line, no need to create a new line!
+                float excessWidth = currLine->extents.d_width + glyphSize.d_width - areaWidth;
+                if (excessWidth > 0.f)
+                {
+                    // If there is a good break point for word wrapping in the current line, use it
+                    if (lastBreakPointIdx < glyphCount)
+                    {
+                        // Transfer everything from the last breakpoint to the new line
+                        d_lines___.push_back({});
+                        auto newLine = &d_lines___.back();
+                        newLine->firstGlyphIdx = lastBreakPointIdx;
+                        newLine->extents = currLine->extents - lastBreakPointState.extents;
+                        newLine->justifyableCount = currLine->justifyableCount - lastBreakPointState.justifyableCount;
 
-                //!!!finalize the current line!
+                        // Restore the current line to the saved state and compensate possible difference
+                        // between the last glyph's advance and full width (e.g. due to kerning at the breakpoint)
+                        *currLine = lastBreakPointState;
+                        currLine->extents.d_width += lastBreakPointWidthAdjustment;
 
-                d_lines___.push_back({});
-                currLine = &d_lines___.back();
-                currLine->firstGlyphIdx = i;
+                        // NB: in the new line this glyph is no more a valid breakpoint (infinite loop breaking)
+                        currLine = newLine;
+                        lastBreakPointIdx = std::numeric_limits<size_t>().max();
+
+                        // The current glyph may still be wider than our reference area
+                        excessWidth = currLine->extents.d_width + glyphSize.d_width - areaWidth;
+                    }
+
+                    // Either no break point was found or the glyph itself is too wide
+                    if (excessWidth > 0.f)
+                    {
+                        // Track the word broken in the middle
+                        if (maxExcessWidth < excessWidth)
+                            maxExcessWidth = excessWidth;
+
+                        // If this glyph is not the first in its line, transfer it to its own new line
+                        if (i > currLine->firstGlyphIdx)
+                        {
+                            // Compensate possible difference (e.g. due to kerning at the breakpoint)
+                            currLine->extents.d_width += (prevGlyphWidth - p.glyphs[i - 1].advance);
+
+                            d_lines___.push_back({});
+                            currLine = &d_lines___.back();
+                            currLine->firstGlyphIdx = i;
+                        }
+                    }
+                }
+                else if (glyph.isBreakable)
+                {
+                    // Remember this glyph as the most recent word wrapping point
+                    lastBreakPointIdx = i;
+                    lastBreakPointState = *currLine;
+                    lastBreakPointWidthAdjustment =
+                        (i > currLine->firstGlyphIdx) ? (prevGlyphWidth - p.glyphs[i - 1].advance) : 0.f;
+                }
+
+                prevGlyphWidth = glyphSize.d_width;
             }
 
-            //!!!FIXME: for the _last_ character in the line may need not glyph advance but real image size, to compensate kerning!
-            //may apply this on the line finish: x = x - advance + fullWidth;
+            // Add the current glyph to the current line
+
             currLine->extents.d_width += glyph.advance;
-            if (currLine->extents.d_height < glyphHeight)
-                currLine->extents.d_height = glyphHeight;
+            if (currLine->extents.d_height < glyphSize.d_height)
+                currLine->extents.d_height = glyphSize.d_height;
 
-            //???need cache in line, or can calculate local var and turn into spacing immediately?!
             if (glyph.isJustifyable)
-                ++currLine->justifyableSpaceCount;
-
-            //???when justified word wrap, where to get last line alignment preference? any of 4 alignments is allowed!
-
-            //fill vector of lines, reference starting line in the paragraph, starting glyph in the line
-            //cache offset/spacing values for the paragraph horz. align, or default horz. align if not specified
-            //when adding new line, bake inline vertical alignment into its glyphs? or can't restore and must do on geom generation?
+                ++currLine->justifyableCount;
         }
 
-        //!!!finalize the last line!
+        // Track the paragraph exceeding an area width
+        if (!wordWrap)
+        {
+            const float excessWidth = d_lines___.back().extents.d_width - areaWidth;
+            if (maxExcessWidth < excessWidth)
+                maxExcessWidth = excessWidth;
+        }
+
+        // NB: this is most likely not needed because the last glyph in the paragraph is not a subject for kerning
+        // Use full width for the last glyph
+        //currLine->extents.d_width += (prevGlyphWidth - p.glyphs.back().advance);
+
+        //???when justified word wrap, where to get last line alignment preference? any of 4 alignments is allowed!
+        //paragraph property, may be styled in tags or defaulted!
 
         //!!!remove formatting dirty flag from a paragraph!
+        //if alignment type or areaWidth changes, line extents cache may be reused!
+        //!!!if width of some object changes, word wrapping / justification / h.align is dirty
+        //!!!if height of some object is changed, vertical alignment inside a corresponding line is dirty
+        //NB: if width changed and word wrapping is ON, we have to recalculate each line height nevertheless!
     }
 
-    return !wordBroken;
+    return maxExcessWidth;
 }
 
 //----------------------------------------------------------------------------//
@@ -626,6 +705,8 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
 ////////////////////// NEW CODE WIP:
 
     //???force using embedded image advance instead of current size until re-formatted?
+
+    //!!!pass selection range here, draw selection brush under instances with logical(?) index inside selection!
 
     //!!!TODO TEXT: need default style here! not only colors but also underline flag etc!
     //???how to know where to apply a default style? now this style element is the same as explicit ones!
