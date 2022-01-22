@@ -309,6 +309,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     const Font* defaultFont, DefaultParagraphDirection defaultParagraphDir)
 {
     d_paragraphs.clear();
+    d_lines___.clear();
     d_elements.clear();
 
     if (text.empty())
@@ -438,9 +439,6 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
                 const auto codePoint = text[glyph.sourceIndex];
                 glyph.isJustifyable = (codePoint == ' ');
                 glyph.isBreakable = (codePoint == ' ' || codePoint == '\t' || codePoint == '\r');
-
-                if (glyph.isJustifyable)
-                    ++p.justifyableSpaceCount;
             }
         }
     }
@@ -456,11 +454,24 @@ bool RenderedString::format(float areaWidth, const Window* hostWindow)
     //!!!listen to embedded windows EventSized, mark corresponding paragraph formatting dirty!
     constexpr bool wordWrap = true;
 
+    d_lines___.clear();
+
+    bool wordBroken = false;
+
     for (auto& p : d_paragraphs)
     {
-        Sizef lineExtent;
-        for (auto& glyph : p.glyphs)
+        p.firstLineIndex = static_cast<uint16_t>(d_lines___.size());
+        d_lines___.push_back({});
+
+        auto* currLine = &d_lines___.back();
+        currLine->firstGlyphIdx = 0;
+
+        //!!!if paragraph has no glyphs, need to set line height to the font height or like that!
+
+        for (size_t i = 0; i < p.glyphs.size(); ++i)
         {
+            auto& glyph = p.glyphs[i];
+
             // Calculate padded glyph extents, update advance for embedded objects
             float glyphHeight = 0.f;
             if (auto element = d_elements[glyph.elementIndex].get())
@@ -480,15 +491,28 @@ bool RenderedString::format(float areaWidth, const Window* hostWindow)
                 }
             }
 
-            //!!!FIXME: for this text may need not glyph advance but real image size, to compensate kerning!
-            if (wordWrap && (lineExtent.d_width + glyph.advance > areaWidth))
+            //!!!FIXME: for this test may need not glyph advance but real image size, to compensate kerning!
+            if (wordWrap && (currLine->extents.d_width + glyph.advance > areaWidth))
             {
                 //!!!check what will happen if the new glyph is wider than areaWidth! Must align it to a separate line!
+                //!!!NB: if it was the first element on the line, no need to create a new line!
 
-                //!!!add new line
-                lineExtent.d_width = 0.f;
-                lineExtent.d_height = 0.f;
+                //!!!finalize the current line!
+
+                d_lines___.push_back({});
+                currLine = &d_lines___.back();
+                currLine->firstGlyphIdx = i;
             }
+
+            //!!!FIXME: for the _last_ character in the line may need not glyph advance but real image size, to compensate kerning!
+            //may apply this on the line finish: x = x - advance + fullWidth;
+            currLine->extents.d_width += glyph.advance;
+            if (currLine->extents.d_height < glyphHeight)
+                currLine->extents.d_height = glyphHeight;
+
+            //???need cache in line, or can calculate local var and turn into spacing immediately?!
+            if (glyph.isJustifyable)
+                ++currLine->justifyableSpaceCount;
 
             //???when justified word wrap, where to get last line alignment preference? any of 4 alignments is allowed!
 
@@ -496,10 +520,13 @@ bool RenderedString::format(float areaWidth, const Window* hostWindow)
             //cache offset/spacing values for the paragraph horz. align, or default horz. align if not specified
             //when adding new line, bake inline vertical alignment into its glyphs? or can't restore and must do on geom generation?
         }
+
+        //!!!finalize the last line!
+
+        //!!!remove formatting dirty flag from a paragraph!
     }
 
-    //!!!return whether alignment didn't require word breaking!
-    return true;
+    return !wordBroken;
 }
 
 //----------------------------------------------------------------------------//
