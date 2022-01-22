@@ -168,7 +168,7 @@ RenderedStringComponentPtr RenderedStringTextComponent::split(
         if (token_len == 0)
             break;
 
-        const float token_extent =  font->getTextExtent(d_text.substr(left_len, token_len));
+        const float token_extent = font->getTextExtent(d_text.substr(left_len, token_len));
 
         // does the next token extend past the split point?
         if (left_extent + token_extent > splitPoint)

@@ -62,6 +62,7 @@ struct RenderedGlyph
 
     bool isJustifyable : 1;    //!< This glyph can be expanded in a justified text
     bool isBreakable : 1;      //!< This glyph can be transferred to the next line due to word wrapping
+    bool isWhitespace : 1;     //!< This glyph is a whitespace that should not be rendered at the wrapped line start
     bool isRightToLeft : 1;    //!< Is this glyph directed from right to left? This affects caret etc.
     bool isEmbeddedObject : 1; //!< Is this glyph a placeholder for an embedded object
 };
@@ -96,7 +97,7 @@ public:
     bool renderText(const String& text, RenderedStringParser* parser = nullptr, const Font* defaultFont = nullptr,
         DefaultParagraphDirection defaultParagraphDir = DefaultParagraphDirection::LeftToRight);
 
-    bool format(float areaWidth, const Window* hostWindow = nullptr);
+    float format(float areaWidth, const Window* hostWindow = nullptr);
 
     /*!
     \brief
@@ -224,14 +225,15 @@ protected:
 
     struct Line
     {
-        uint32_t firstGlyphIdx;
+        uint32_t firstGlyphIdx = std::numeric_limits<uint32_t>().max(); //???store last glyph index instead?
         Sizef    extents;
-        uint16_t justifyableSpaceCount = 0;
+        uint16_t justifyableCount = 0;
     };
 
     std::vector<RenderedParagraph> d_paragraphs;
     std::vector<Line> d_lines___;
     std::vector<RenderedStringComponentPtr> d_elements;
+    const Font* d_defaultFont = nullptr;
 
     std::vector<RenderedStringComponentPtr> d_components;
     std::vector<std::pair<size_t, size_t>> d_lines; // first is component idx, second is component count.
