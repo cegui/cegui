@@ -30,6 +30,7 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/Sizef.h"
 #include "CEGUI/DefaultParagraphDirection.h"
+#include "CEGUI/falagard/Enums.h"
 #include <glm/glm.hpp>
 #include <vector>
 
@@ -72,6 +73,9 @@ struct RenderedParagraph
     std::vector<RenderedGlyph> glyphs;
     uint16_t firstLineIndex;
     DefaultParagraphDirection bidiDir = DefaultParagraphDirection::Automatic;
+    HorizontalTextFormatting horzFormat = HorizontalTextFormatting::Justified;
+    HorizontalTextFormatting lastJustifiedLineHorzFormat = HorizontalTextFormatting::LeftAligned;
+    bool wordWrap = true; //!!!TODO TEXT: to bit field, if other flags are added!
     //???1 byte of dirty flags?! e.g. when embedded widget EventSized or image resizing detected!
 };
 
@@ -227,6 +231,8 @@ protected:
     {
         uint32_t firstGlyphIdx = std::numeric_limits<uint32_t>().max(); //???store last glyph index instead?
         Sizef    extents;
+        float    horzOffset = 0.f;
+        float    justifySpaceSize = 0.f;
         uint16_t justifyableCount = 0;
     };
 
