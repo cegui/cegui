@@ -463,6 +463,8 @@ void FreeTypeFont::free()
     if (!d_fontFace)
         return;
 
+    d_replacementGlyph = nullptr;
+
     for (auto codePointMapEntry : d_codePointToGlyphMap)
         delete codePointMapEntry.second;
 
@@ -623,6 +625,8 @@ void FreeTypeFont::initialiseGlyphMap()
 
         codepoint = FT_Get_Next_Char(d_fontFace, codepoint, &gindex);
     }
+
+    d_replacementGlyph = getGlyphForCodepoint(UnicodeReplacementCharacter);
 }
 
 //----------------------------------------------------------------------------//
@@ -914,7 +918,7 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
             {
                 //!!!FIXME TEXT: could cache in a variable to skip search!
                 if (codePoint != UnicodeReplacementCharacter)
-                    glyph = getGlyphForCodepoint(UnicodeReplacementCharacter, true);
+                    glyph = static_cast<const FreeTypeFontGlyph*>(d_replacementGlyph);
 
                 if (!glyph)
                     continue;
@@ -993,12 +997,12 @@ void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBu
                 continue;
 
             // Find glyph and handle missing glyph replacement
-            FreeTypeFontGlyph* glyph = getGlyphByIndex(currentGlyph.index, true);
+            const FreeTypeFontGlyph* glyph = getGlyphByIndex(currentGlyph.index, true);
             if (!glyph)
             {
                 //!!!FIXME TEXT: could cache in a variable to skip search!
                 if (codePoint != UnicodeReplacementCharacter)
-                    glyph = getGlyphForCodepoint(UnicodeReplacementCharacter, true);
+                    glyph = static_cast<const FreeTypeFontGlyph*>(d_replacementGlyph);
 
                 if (!glyph)
                     continue;
