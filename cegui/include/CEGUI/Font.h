@@ -304,6 +304,9 @@ public:
     //! Returns the FontGlyph corresponding to the codepoint or 0 if it can't be found.
     virtual FontGlyph* getGlyphForCodepoint(const char32_t codePoint, bool prepare = false) const = 0;
 
+    //! Returns cached glyph used for replacing unknown glyphs
+    FontGlyph* getReplacementGlyph() const { return d_replacementGlyph; }
+
     /*!
     \brief
         Return pixel advance of the specified text when rendered with this Font.
@@ -450,6 +453,8 @@ protected:
     String d_resourceGroup;
     //! Holds default resource group for font loading.
     static String d_defaultResourceGroup;
+
+    FontGlyph* d_replacementGlyph = nullptr;
 
     //! maximal font ascender (pixels above the baseline)
     float d_ascender = 0.f;

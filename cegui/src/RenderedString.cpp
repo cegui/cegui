@@ -131,11 +131,9 @@ static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
             font = defaultFont;
         }
 
-        auto fontGlyph = font->getGlyphForCodepoint(codePoint, true);
-
-        //!!!FIXME TEXT: could cache in a variable to skip search!
+        const FontGlyph* fontGlyph = font->getGlyphForCodepoint(codePoint, true);
         if (!fontGlyph)
-            fontGlyph = font->getGlyphForCodepoint(Font::UnicodeReplacementCharacter);
+            fontGlyph = font->getReplacementGlyph();
 
         if (fontGlyph)
         {
@@ -280,9 +278,9 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
         });
 
         const FreeTypeFont* font = (*it).first;
-        auto fontGlyph = font->getGlyphByIndex(rqGlyph.index, true);
+        const FontGlyph* fontGlyph = font->getGlyphByIndex(rqGlyph.index, true);
         if (!fontGlyph)
-            fontGlyph = font->getGlyphForCodepoint(Font::UnicodeReplacementCharacter);
+            fontGlyph = font->getReplacementGlyph();
 
         // A multiplication coefficient to convert 26.6 fixed point values into normal floats
         constexpr float s_26dot6_toFloat = (1.0f / 64.f);
@@ -310,15 +308,6 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
 
     if (text.empty())
         return true;
-
-    //???if style can't be created during parsing, reuse previous style on the stack?
-    //!!!TODO: bold, italic, underline, strikeout, outline (w/params, incl color), font color, bg color
-    //!!!font must have a set of glyphs for each codepoint? e.g. regular, bold, stroke outline
-    //NB: if there is a separate bold font, may need no embolden glyphs in regular font
-    //???inside a font, store its regular, bold and italic variants? No italic -> oblique, no bold -> embolden.
-    //???need bold-italic? maybe need too!
-
-    //!!!TODO TEXT: delete DefaultRenderedStringParser, it is now equal to nullptr parser!
 
     // Parse a string and obtain UTF-32 text with embedded object placeholders but without tags
     std::u32string utf32Text;
@@ -415,9 +404,9 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
             //if (glyph.isRightToLeft) ...
 
+            // FIXME TEXT: virtual RenderedTextElement::setupGlyph() instead of dynamic casts?!
             if (glyph.isEmbeddedObject)
             {
-                // FIXME TEXT: virtual RenderedTextElement::setupGlyph() instead of dynamic cast?!
                 if (auto embeddedImage = dynamic_cast<const RenderedStringImageComponent*>(element))
                     glyph.image = embeddedImage->getImage();
 
@@ -447,30 +436,20 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
 //----------------------------------------------------------------------------//
 float RenderedString::format(float areaWidth, const Window* hostWindow)
 {
-    //???where to get default horizontal alignment and word wrapping?! arg or member field?
-    //!!!paragraphs without embedded objects may be skipped if alignment didn't change!
-    //!!!listen to embedded windows EventSized, mark corresponding paragraph formatting dirty!
-
-    //???store the last area width and host window to which formatting happened? for dirty flag tracking
-    //then instead of format(...) here will be SetA, setB ... and updateFormatting() with dirty checks.
-
-    //!!!TODO TEXT: need partial re-formatting of only dirty paragraphs!
     d_lines___.clear();
     d_lines___.reserve(d_paragraphs.size());
 
     float prevGlyphWidth = 0.f;
     float prevTextHeight = d_defaultFont->getFontHeight();
+    float maxExcessWidth = std::numeric_limits<float>().lowest();
 
     size_t lastBreakPointIdx = std::numeric_limits<size_t>().max();
     Line lastBreakPointState;
     float lastBreakPointWidthAdjustment = 0.f;
-    float maxExcessWidth = 0.f;
 
-    //???TODO TEXT: separate line width+word wrapping from line height+vertical alignment of glyphs?!
+    // Update line extents and word wrapping
     for (auto& p : d_paragraphs)
     {
-        //!!!TODO TEXT: if formatting flag is not dirty, skip! separate valign and word wrapping!
-
         p.firstLineIndex = static_cast<uint16_t>(d_lines___.size());
 
         // Add the first line of this paragraph
@@ -490,7 +469,7 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
         {
             auto& glyph = p.glyphs[i];
 
-            // Calculate padded glyph extents, update advance for embedded objects
+            // Calculate padded glyph extents, update mertics of embedded objects
             float glyphWidth = 0.f;
             if (auto element = d_elements[glyph.elementIndex].get())
             {
@@ -591,29 +570,13 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
 
         // Count full width for the last glyph in a line
         currLine->extents.d_width += (prevGlyphWidth - p.glyphs.back().advance);
-
-        //!!!remove formatting dirty flag from a paragraph! invalidate halign and valign!
-        //if alignment type or areaWidth changes, line extents cache may be reused!
-        //!!!if width of some object changes, word wrapping / justification / h.align is dirty
-        //!!!if height of some object is changed, vertical alignment inside a corresponding line is dirty
-        //NB: if area or line width changed and word wrapping is ON, we have to recalculate each line height nevertheless!
     }
 
     // Update horizontal alignment of lines
-    // Depends on:
-    // - p.horzFormat - changes from outside for this p or default, if p uses default
-    // - p.lastJustifiedLineHorzFormat - horzFormat=Justify only, changes from outside for this p or default, if p uses default
-    // - areaWidth - changes from outside
-    // - line widths (justifyableCount changes only in sync with this)
     for (auto it = d_paragraphs.begin(); it != d_paragraphs.end(); ++it)
     {
         auto& p = *it;
 
-        //!!!TODO TEXT: if horz alignment flag is not dirty, skip!
-
-        //!!!FIXME TEXT: if partial re-formatting will be implemented, must stop at the next paragraph, not d_lines end!
-        //!!!FIXME TEXT: if partial, also make sure lines are cleared, so offset & justify are defaulted to 0.f!
-        //???is better to store last line idx instead of first in a paragraph? iterations will be simpler!
         const auto nextIt = std::next(it);
         const size_t lastOurLineIndex = ((nextIt == d_paragraphs.end()) ? d_lines___.size() : (*nextIt).firstLineIndex) - 1;
         for (size_t i = p.firstLineIndex; i <= lastOurLineIndex; ++i)
@@ -627,11 +590,14 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
             {
                 case HorizontalTextFormatting::RightAligned:
                     line.horzOffset = areaWidth - line.extents.d_width;
+                    line.justifySpaceSize = 0.f;
                     break;
                 case HorizontalTextFormatting::CentreAligned:
                     line.horzOffset = (areaWidth - line.extents.d_width) * 0.5f;
+                    line.justifySpaceSize = 0.f;
                     break;
                 case HorizontalTextFormatting::Justified:
+                    line.horzOffset = 0.f;
                     if (line.justifyableCount && line.extents.d_width < areaWidth)
                         line.justifySpaceSize = (areaWidth - line.extents.d_width) / line.justifyableCount;
                     break;
@@ -776,6 +742,8 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     glm::vec2 penPosition = position;
     for (auto& glyph : p.glyphs)
     {
+        //!!!skip all isWhitespace at the start of the rapped line (not first line in a paragraph)
+
         auto verticalFmt = VerticalImageFormatting::BottomAligned;
         if (auto element = d_elements[glyph.elementIndex].get())
             verticalFmt = element->getVerticalFormatting();

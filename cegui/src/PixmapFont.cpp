@@ -184,6 +184,9 @@ void PixmapFont::defineMapping(const char32_t codePoint, const String& imageName
     }
 
     d_codePointToGlyphMap[codePoint] = glyph;
+
+    if (codePoint == UnicodeReplacementCharacter)
+        d_replacementGlyph = glyph;
 }
 
 //----------------------------------------------------------------------------//
