@@ -209,29 +209,22 @@ public:
         Creates a container of GeometryBuffers based on the Image, providing the 
         geometry data needed for rendering.
 
-    \param render_settings
+    \param renderSettings
         The ImageRenderSettings that contain render settings for new GeometryBuffers.
+
+    \param canCombineFromIdx
+        An index in 'out' from which we are allowed to try combining the current
+        image geoetry into an existing geometry buffer instead of allocating a new one.
     */
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const ImageRenderSettings& render_settings) const = 0;
+        const ImageRenderSettings& renderSettings, size_t canCombineFromIdx) const = 0;
 
-    /*!
-    \brief
-        Appends additional render geometry for this image to an GeometryBuffers.
-        The GeometryBuffer must be created beforehand and must feature render
-        settings that allow adding this image geometry into the same render batch.
-        Batching compatibility has to be ensured before this call.
-
-    \param geomBuffer
-        The existing GeometryBuffers to which the new render geometry will be appended.
-
-    \param renderArea
-        The target area at which the image should be rendered.
-
-    \param colours
-        Multiplicative colours to be applied to the text.
-    */
-    virtual void addToRenderGeometry(GeometryBuffer& geomBuffer, const ImageRenderSettings& renderSettings) const = 0;
+    //! \overload
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
+        const ImageRenderSettings& renderSettings) const
+    {
+        createRenderGeometry(out, renderSettings, out.size());
+    }
         
     /*!
     \brief

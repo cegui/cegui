@@ -30,8 +30,6 @@
 #include "CEGUI/System.h"
 #include "CEGUI/Renderer.h"
 #include "CEGUI/FontGlyph.h"
-#include "CEGUI/BitmapImage.h"
-#include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/InputEvent.h"
 
 namespace CEGUI
@@ -229,7 +227,7 @@ void Font::layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
             if (auto image = glyph->getImage())
             {
                 imgRenderSettings.d_destArea = Rectf(penPosition, image->getRenderedSize());
-                addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings);
+                image->createRenderGeometry(out, imgRenderSettings, canCombineFromIdx);
             }
 
             penPosition.x += glyph->getAdvance();
@@ -316,29 +314,6 @@ void Font::writeXMLToStream(XMLSerializer& xml_stream) const
 void Font::onRenderSizeChanged(FontEventArgs& e)
 {
     fireEvent(EventRenderSizeChanged, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-void Font::addGlyphRenderGeometry(std::vector<GeometryBuffer*>& textGeometryBuffers,
-    size_t canCombineFromIdx, const Image* image, ImageRenderSettings& imgRenderSettings) const
-{
-    if (!image)
-        return;
-
-    //!!!FIXME TEXT: image is implied to be a BitmapImage here, otherwise a crash is possible!
-
-    // We only create a new GeometryBuffer if no existing one is found that we can
-    // combine this one with. Render order is irrelevant since glyphs should never overlap.
-    auto it = std::find_if(textGeometryBuffers.begin() + canCombineFromIdx, textGeometryBuffers.end(),
-        [tex = static_cast<const BitmapImage*>(image)->getTexture()](const GeometryBuffer* buffer)
-    {
-        return tex == buffer->getTexture("texture0");
-    });
-
-    if (it != textGeometryBuffers.end())
-        image->addToRenderGeometry(*(*it), imgRenderSettings);
-    else
-        image->createRenderGeometry(textGeometryBuffers, imgRenderSettings);
 }
 
 }

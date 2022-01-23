@@ -298,7 +298,7 @@ protected:
     //! helper to get the font object to use
     const Font* getFontObject(const Window& window) const;
     //! helper to get a rendered string parser for the current window
-    RenderedStringParser& getRenderedStringParser(const Window& window) const;
+    RenderedStringParser* getRenderedStringParser(const Window& window) const;
     //! Update rendered string from a logical text.
     void updateRenderedString(const Window& srcWindow, const String& text, const Font* font) const;
 
@@ -329,6 +329,9 @@ private:
     FormattingSetting<VerticalTextFormatting> d_vertFormatting = VerticalTextFormatting::TopAligned;
     FormattingSetting<HorizontalTextFormatting> d_horzFormatting = HorizontalTextFormatting::LeftAligned;
     FormattingSetting<DefaultParagraphDirection> d_paragraphDir = DefaultParagraphDirection::LeftToRight;
+
+    // Cache for avoiding redundant calulations
+    mutable DefaultParagraphDirection d_lastBidiDir = DefaultParagraphDirection::Automatic;
 
     bool d_fontFromProperty = false; //!< d_font is a property name in a source window
     bool d_textFromProperty = false; //!< d_text is a property name in a source window

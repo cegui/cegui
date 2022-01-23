@@ -36,6 +36,7 @@
 
 namespace CEGUI
 {
+const std::string ImageTextureParameterName("texture0");
 const String ImageTypeAttribute( "type" );
 const String ImageNameAttribute( "name" );
 const String ImageTextureAttribute( "texture" );
@@ -82,31 +83,39 @@ BitmapImage::BitmapImage(const String& name, Texture* texture,
 
 //----------------------------------------------------------------------------//
 void BitmapImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const ImageRenderSettings& renderSettings) const
+    const ImageRenderSettings& renderSettings, size_t canCombineFromIdx) const
 {
     TexturedColouredVertex vbuffer[6];
-    if (createVertices(vbuffer, renderSettings))
+    if (!createVertices(vbuffer, renderSettings))
+        return;
+
+    // Try to find an existing buffer suitable for combining. Note that we
+    // don't check the whole 'out' because geometry ordering may be important.
+    GeometryBuffer* buffer = nullptr;
+    if (canCombineFromIdx < out.size())
     {
-        auto& buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        buffer.setClippingActive(!!renderSettings.d_clipArea);
-        if (renderSettings.d_clipArea)
-            buffer.setClippingRegion(*renderSettings.d_clipArea);
-        buffer.setTexture("texture0", d_texture);
-        buffer.setAlpha(renderSettings.d_alpha);
-
-        buffer.appendGeometry(vbuffer, 6);
-
-        out.push_back(&buffer);
+        // TODO: need more checks than just a texture? Clipping region, alpha.
+        auto it = std::find_if(out.begin() + canCombineFromIdx, out.end(),
+            [tex = d_texture](const GeometryBuffer* buffer)
+        {
+            return tex == buffer->getTexture(ImageTextureParameterName);
+        });
+        if (it != out.end())
+            buffer = *it;
     }
-}
 
-//----------------------------------------------------------------------------//
-void BitmapImage::addToRenderGeometry(GeometryBuffer& geomBuffer,
-    const ImageRenderSettings& renderSettings) const
-{
-    TexturedColouredVertex vbuffer[6];
-    if (createVertices(vbuffer, renderSettings))
-        geomBuffer.appendGeometry(vbuffer, 6);
+    if (!buffer)
+    {
+        buffer = &System::getSingleton().getRenderer()->createGeometryBufferTextured();
+        buffer->setClippingActive(!!renderSettings.d_clipArea);
+        if (renderSettings.d_clipArea)
+            buffer->setClippingRegion(*renderSettings.d_clipArea);
+        buffer->setTexture(ImageTextureParameterName, d_texture);
+        buffer->setAlpha(renderSettings.d_alpha);
+        out.push_back(buffer);
+    }
+
+    buffer->appendGeometry(vbuffer, 6);
 }
 
 //----------------------------------------------------------------------------//

@@ -44,19 +44,13 @@ namespace CEGUI
 class Rectf;
 using RenderedStringComponentPtr = std::unique_ptr<class RenderedStringComponent>;
 
-//???TODO TEXT: how to store outline image? Store FontGlyph* instead of images? Or a separate Image* field?
-//Or new RenderedGlyph w/out advance or with special flag?
 struct RenderedGlyph
 {
-    const Image* image;
+    const Image* image; //!< Actual graphics of this glyph, may be nullptr for missing font glyphs and some embedded objects
 
-    //???virtual Element::setupRenderer(RenderedGlyph&)? Will set colors etc inside based on the RenderedGlyph?
-    //or even virtual Element::render(RenderedGlyph&)
-    //or ranged - virtual Element::render(RenderedGlyph& from, RenderedGlyph& to), to minimize virtual calls!
-    //???return rendered size from this function?!
-
-    glm::vec2 offset;
-    float advance;
+    glm::vec2 offset; //!< Offset from the current pen position where the content must be drawn
+    float advance;    //!< Shift to be applied to the pen after drawing this glyph
+    float height;     //!< The full height of this glyph, including padding, used for vertical alignment
 
     uint32_t sourceIndex;  //!< Starting index of the corresponding sequence in the logical text
     uint16_t elementIndex; //!< Index of controlling RenderedStringComponent, stored instead of pointer to reduce struct size

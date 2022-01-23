@@ -70,8 +70,7 @@ public:
     SVGImage(const String& name, SVGData& svg_data);
     SVGImage(const XMLAttributes& attributes);
 
-    void createRenderGeometry(std::vector<GeometryBuffer*>& out, const ImageRenderSettings& render_settings) const override;
-    void addToRenderGeometry(GeometryBuffer& geomBuffer, const ImageRenderSettings& renderSettings) const override;
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out, const ImageRenderSettings& renderSettings, size_t canCombineFromIdx) const override;
 
     /*!
     \brief

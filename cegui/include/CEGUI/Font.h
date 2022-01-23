@@ -435,14 +435,6 @@ protected:
     //! event trigger function for when the font rendering size changes.
     virtual void onRenderSizeChanged(FontEventArgs& args);
 
-    /*! 
-    \brief
-        Adds the render geometry data to the supplied vector. A new GeometryBuffer
-        might be added if necessary or data might be added to an existing one.
-    */
-    void addGlyphRenderGeometry(std::vector<GeometryBuffer*>& textGeometryBuffers,
-        size_t canCombineFromIdx, const Image* image, ImageRenderSettings& imgRenderSettings) const;
-
     //! Manages the glyph layout and and creates the RenderGeometry for the text.
     virtual void layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
         const String& text, float spaceExtra, ImageRenderSettings& imgRenderSettings,

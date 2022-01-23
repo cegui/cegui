@@ -230,12 +230,12 @@ void EditboxBase::setSelection(size_t start_pos, size_t end_pos)
 
 void EditboxBase::setSelectionStart(size_t start_pos)
 {
-	this->setSelection(start_pos, start_pos + this->getSelectionLength());
+	setSelection(start_pos, start_pos + getSelectionLength());
 }
 
 void EditboxBase::setSelectionLength(size_t length)
 {
-	this->setSelection(this->getSelectionStart(), this->getSelectionStart() + length);
+	setSelection(getSelectionStart(), getSelectionStart() + length);
 }
 
 void EditboxBase::clearSelection(void)
