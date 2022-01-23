@@ -451,7 +451,8 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
     //!!!paragraphs without embedded objects may be skipped if alignment didn't change!
     //!!!listen to embedded windows EventSized, mark corresponding paragraph formatting dirty!
 
-    //???store the last area width and host window to which formatting happened?
+    //???store the last area width and host window to which formatting happened? for dirty flag tracking
+    //then instead of format(...) here will be SetA, setB ... and updateFormatting() with dirty checks.
 
     //!!!TODO TEXT: need partial re-formatting of only dirty paragraphs!
     d_lines___.clear();
@@ -595,13 +596,8 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
         //if alignment type or areaWidth changes, line extents cache may be reused!
         //!!!if width of some object changes, word wrapping / justification / h.align is dirty
         //!!!if height of some object is changed, vertical alignment inside a corresponding line is dirty
-        //NB: if width changed and word wrapping is ON, we have to recalculate each line height nevertheless!
+        //NB: if area or line width changed and word wrapping is ON, we have to recalculate each line height nevertheless!
     }
-
-    //!!!instead of valign offset can store glyph total height! then ertical alignment will be countead cheaply in geom,
-    // without invalidation, because glyph height change = chance of line height change and will be processed here!
-    //???cache valign offset as a separate float?! much better than recalculating it each time when generating geometry!
-    //???in the same loop as horz align or separate one?
 
     // Update horizontal alignment of lines
     // Depends on:
@@ -617,7 +613,7 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
 
         //!!!FIXME TEXT: if partial re-formatting will be implemented, must stop at the next paragraph, not d_lines end!
         //!!!FIXME TEXT: if partial, also make sure lines are cleared, so offset & justify are defaulted to 0.f!
-        //???is better to store last line idx instead of first in a paragraph? iterations will be easier!
+        //???is better to store last line idx instead of first in a paragraph? iterations will be simpler!
         const auto nextIt = std::next(it);
         const size_t lastOurLineIndex = ((nextIt == d_paragraphs.end()) ? d_lines___.size() : (*nextIt).firstLineIndex) - 1;
         for (size_t i = p.firstLineIndex; i <= lastOurLineIndex; ++i)
