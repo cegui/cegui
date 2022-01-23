@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/RenderedString.h"
 #include "CEGUI/RenderedStringTextComponent.h"
+#include "CEGUI/RenderedStringImageComponent.h"
 #include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/BidiVisualMapping.h"
@@ -248,12 +249,8 @@ static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string
         if (!raqm_set_freetype_face_range(rq, range.first->getFontFace(), fontStart, range.second))
             return false;
 
-        //!!!FIXME TEXT: request per-codepoint load flags in RAQM? May be needed for mixing [anti]aliased fonts.
-        if (fontStart == 0)
-        {
-            if (!raqm_set_freetype_load_flags(rq, range.first->getGlyphLoadFlags(0)))
-                return false;
-        }
+        if (!raqm_set_freetype_load_flags_range(rq, range.first->getGlyphLoadFlags(0), fontStart, range.second))
+            return false;
 
         fontStart += range.second;
         range.second = fontStart; // Change (font, len) into sorted (font, end) for glyph font detection below
@@ -414,28 +411,27 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             const RenderedStringComponent* element = d_elements[glyph.elementIndex].get();
             glyph.isEmbeddedObject = !dynamic_cast<const RenderedStringTextComponent*>(element);
 
-            // Bake padding into glyph metrics. Text glyphs are never resized and will
-            // remain actual. Embedded objects advance will be calculated in format().
             glyph.offset += element->getPadding().getPosition();
-            if (!glyph.isEmbeddedObject)
-                glyph.advance += element->getLeftPadding() + element->getRightPadding();
 
             //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
             //if (glyph.isRightToLeft) ...
 
-            //!!!Replace placeholder glyphs in paragraphs with images and widgets!
-            //???if embedded image, store is at Image field for faster access?
-            //???virtual RenderedTextElement::setupGlyph()?!
-            //???is image caching useful? ensure it allows not to access image element when generating geometry!
-
             if (glyph.isEmbeddedObject)
             {
+                // FIXME TEXT: virtual RenderedTextElement::setupGlyph() instead of dynamic cast?!
+                if (auto embeddedImage = dynamic_cast<const RenderedStringImageComponent*>(element))
+                    glyph.image = embeddedImage->getImage();
+
                 glyph.isJustifyable = false;
                 glyph.isBreakable = true; // May be not always, but for now this is OK
                 glyph.isWhitespace = false;
             }
             else
             {
+                // Bake padding into glyph advance. Text glyphs are never resized and will
+                // remain actual. Embedded objects advance will be calculated in format().
+                glyph.advance += element->getLeftPadding() + element->getRightPadding();
+
                 //!!!TODO TEXT: what side isBreakable affects? See how RenderedStringTextComponent::split is implemented currently!
                 const auto codePoint = text[glyph.sourceIndex];
                 glyph.isJustifyable = (codePoint == ' ');
