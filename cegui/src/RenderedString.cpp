@@ -30,8 +30,6 @@
 #include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/BidiVisualMapping.h"
-#include "CEGUI/BitmapImage.h" // FIXME TEXT: needed for buffer merging, move out of here?!
-#include "CEGUI/GeometryBuffer.h" // FIXME TEXT: needed for buffer merging, move out of here?!
 #ifdef CEGUI_USE_RAQM
 #include "CEGUI/FreeTypeFont.h"
 #include <raqm.h>
@@ -328,7 +326,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
     std::vector<uint16_t> elementIndices;
     if (!parser || !parser->parse(text, utf32Text, originalIndices, elementIndices, d_elements))
     {
-        // If no parser or parsing failed, render the text verbatim
+        // If no parser specified or parsing failed, render the text verbatim
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32)
         utf32Text = String::convertUtf8ToUtf32(text.c_str(), &originalIndices);
 #else
@@ -409,7 +407,8 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
                 glyph.sourceIndex = static_cast<uint32_t>(originalIndices[glyph.sourceIndex]);
 
             const RenderedStringComponent* element = d_elements[glyph.elementIndex].get();
-            glyph.isEmbeddedObject = !dynamic_cast<const RenderedStringTextComponent*>(element);
+            auto textStyle = static_cast<const RenderedStringTextComponent*>(element);
+            glyph.isEmbeddedObject = !textStyle;
 
             glyph.offset += element->getPadding().getPosition();
 
@@ -428,11 +427,12 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
             }
             else
             {
-                // Bake padding into glyph advance. Text glyphs are never resized and will
-                // remain actual. Embedded objects advance will be calculated in format().
+                // Bake padding into glyph metrics. Text glyphs are never resized and will
+                // remain actual. Embedded objects metrics will be calculated in format().
                 glyph.advance += element->getLeftPadding() + element->getRightPadding();
+                glyph.height = textStyle->getFont()->getFontHeight() +
+                    element->getTopPadding() + element->getBottomPadding();
 
-                //!!!TODO TEXT: what side isBreakable affects? See how RenderedStringTextComponent::split is implemented currently!
                 const auto codePoint = text[glyph.sourceIndex];
                 glyph.isJustifyable = (codePoint == ' ');
                 glyph.isBreakable = (codePoint == ' ' || codePoint == '\t' || codePoint == '\r');
@@ -457,14 +457,15 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
     d_lines___.clear();
     d_lines___.reserve(d_paragraphs.size());
 
-    const Font* currFont = d_defaultFont;
     float prevGlyphWidth = 0.f;
+    float prevTextHeight = d_defaultFont->getFontHeight();
 
     size_t lastBreakPointIdx = std::numeric_limits<size_t>().max();
     Line lastBreakPointState;
     float lastBreakPointWidthAdjustment = 0.f;
     float maxExcessWidth = 0.f;
 
+    //???TODO TEXT: separate line width+word wrapping from line height+vertical alignment of glyphs?!
     for (auto& p : d_paragraphs)
     {
         //!!!TODO TEXT: if formatting flag is not dirty, skip! separate valign and word wrapping!
@@ -480,9 +481,7 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
 
         if (!glyphCount)
         {
-            // Empty line has a height of the most recently used font
-            if (currFont)
-                currLine->extents.d_height = currFont->getFontHeight();
+            currLine->extents.d_height = prevTextHeight;
             continue;
         }
 
@@ -491,33 +490,30 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
             auto& glyph = p.glyphs[i];
 
             // Calculate padded glyph extents, update advance for embedded objects
-            Sizef glyphSize;
+            float glyphWidth = 0.f;
             if (auto element = d_elements[glyph.elementIndex].get())
             {
                 if (glyph.isEmbeddedObject)
                 {
                     // NB: padding is already counted inside
-                    glyphSize = element->getPixelSize(hostWindow);
+                    const Sizef glyphSize = element->getPixelSize(hostWindow);
+                    glyphWidth = glyphSize.d_width;
                     glyph.advance = glyphSize.d_width;
+                    glyph.height = glyphSize.d_height;
                 }
                 else
                 {
-                    auto textStyle = static_cast<const RenderedStringTextComponent*>(element);
-                    currFont = textStyle->getFont();
-
                     const float imageWidth = glyph.image ? glyph.image->getRenderedSize().d_width : 0.f;
-
-                    glyphSize.d_width = std::max(glyph.advance, imageWidth +
+                    glyphWidth = std::max(glyph.advance, imageWidth +
                         element->getLeftPadding() + element->getRightPadding());
-                    glyphSize.d_height = currFont->getFontHeight() +
-                        element->getTopPadding() + element->getBottomPadding();
+                    prevTextHeight = glyph.height;
                 }
             }
 
             // Break too long lines if word wrapping is enabled
             if (p.wordWrap)
             {
-                float excessWidth = currLine->extents.d_width + glyphSize.d_width - areaWidth;
+                float excessWidth = currLine->extents.d_width + glyphWidth - areaWidth;
                 if (excessWidth > 0.f)
                 {
                     // If there is a good break point for word wrapping in the current line, use it
@@ -540,7 +536,7 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
                         lastBreakPointIdx = std::numeric_limits<size_t>().max();
 
                         // The current glyph may still be wider than our reference area
-                        excessWidth = currLine->extents.d_width + glyphSize.d_width - areaWidth;
+                        excessWidth = currLine->extents.d_width + glyphWidth - areaWidth;
                     }
 
                     // Either no break point was found or the glyph itself is too wide
@@ -571,14 +567,14 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
                         (i > currLine->firstGlyphIdx) ? (prevGlyphWidth - p.glyphs[i - 1].advance) : 0.f;
                 }
 
-                prevGlyphWidth = glyphSize.d_width;
+                prevGlyphWidth = glyphWidth;
             }
 
             // Add the current glyph to the current line
 
             currLine->extents.d_width += glyph.advance;
-            if (currLine->extents.d_height < glyphSize.d_height)
-                currLine->extents.d_height = glyphSize.d_height;
+            if (currLine->extents.d_height < glyph.height)
+                currLine->extents.d_height = glyph.height;
 
             if (glyph.isJustifyable)
                 ++currLine->justifyableCount;
@@ -602,10 +598,17 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
         //NB: if width changed and word wrapping is ON, we have to recalculate each line height nevertheless!
     }
 
+    //!!!instead of valign offset can store glyph total height! then ertical alignment will be countead cheaply in geom,
+    // without invalidation, because glyph height change = chance of line height change and will be processed here!
     //???cache valign offset as a separate float?! much better than recalculating it each time when generating geometry!
     //???in the same loop as horz align or separate one?
 
     // Update horizontal alignment of lines
+    // Depends on:
+    // - p.horzFormat - changes from outside for this p or default, if p uses default
+    // - p.lastJustifiedLineHorzFormat - horzFormat=Justify only, changes from outside for this p or default, if p uses default
+    // - areaWidth - changes from outside
+    // - line widths (justifyableCount changes only in sync with this)
     for (auto it = d_paragraphs.begin(); it != d_paragraphs.end(); ++it)
     {
         auto& p = *it;
@@ -769,13 +772,50 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     //???TODO TEXT: to what buffers really can merge?! need to see rendering order first!
     const auto canCombineFromIdx = out.size();
 
+    //!!!!FIXME TEXT: need to know current line!!!
+    constexpr float lineHeight = 0.f;
+    constexpr float lineJustifySpacing = 0.f;
+
     //!!!TODO TEXT: may be useful to make pen modifyable, in-out arg!
     glm::vec2 penPosition = position;
     for (auto& glyph : p.glyphs)
     {
-        //???TODO TEXT: process by chunks belonging to the same element?! profit only for glyphs, but what exactly?
+        auto verticalFmt = VerticalImageFormatting::BottomAligned;
+        if (auto element = d_elements[glyph.elementIndex].get())
+            verticalFmt = element->getVerticalFormatting();
 
-        //!!!TODO TEXT: render embedded elements, adjust the pen accordingly!
+        //!!!text inside the same line and element (non-embedded) is aligned exactly the same! can avoid recalc!
+
+        Rectf dest(position.x, position.y, 0.f, 0.f);
+        float y_scale = 1.0f;
+        switch (verticalFmt)
+        {
+            case VerticalImageFormatting::BottomAligned:
+                dest.d_min.y += lineHeight - glyph.height;
+                break;
+
+            case VerticalImageFormatting::CentreAligned:
+                dest.d_min.y += (lineHeight - glyph.height) * 0.5f;
+                break;
+
+            case VerticalImageFormatting::Stretched:
+                y_scale = (glyph.height > 0.f) ? (lineHeight / glyph.height) : 0.f;
+                break;
+
+            // TODO TEXT: Tiled?
+
+            // TopAligned requires no operations
+        }
+
+        //!!!for embedded objects it is in advance and height, but w/out padding!
+        //dest.setWidth((d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width);
+        //dest.setHeight(((d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height) * y_scale);
+
+        //???virtual Element::setupRenderer(RenderedGlyph&)? Will set colors etc inside based on the RenderedGlyph?
+        //or even virtual Element::render(RenderedGlyph&)
+        //or ranged - virtual Element::render(RenderedGlyph& from, RenderedGlyph& to), to minimize virtual calls!
+        //???return rendered size from this function?!
+        //!!!NB: element can treat union of pointers FontGlyph/Image/Window correctly without 'type' field in RenderedGlyph!
 
         if (glyph.image)
         {
@@ -783,32 +823,20 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
             //!!!TODO TEXT:
             //settings.d_multiplyColours = (layer < layerColours.size()) ? layerColours[layer] : fallbackColour;
 
-            //!!!FIXME TEXT: image is implied to be a BitmapImage here, otherwise a crash is possible!
-
-            // We only create a new GeometryBuffer if no existing one is found that we can
-            // combine this one with. Render order is irrelevant since glyphs should never overlap.
-            auto it = std::find_if(out.begin() + canCombineFromIdx, out.end(),
-                [tex = static_cast<const BitmapImage*>(glyph.image)->getTexture()](const GeometryBuffer* buffer)
-            {
-                return tex == buffer->getTexture("texture0");
-            });
-
-            if (it != out.end())
-                glyph.image->addToRenderGeometry(*(*it), settings);
-            else
-                glyph.image->createRenderGeometry(out, settings);
+            glyph.image->createRenderGeometry(out, settings, canCombineFromIdx);
         }
 
         //!!!TODO TEXT:
         //render outline if required for the curent glyph! must be already baked, because outline size is dynamic!
         //use outline color from element or default one
         //render underline, strikeout
+        //???TODO TEXT: how to store outline image? Store FontGlyph* instead of images? Or a separate Image* field?
+        //Or new RenderedGlyph w/out advance or with special flag?
 
         penPosition.x += glyph.advance;
 
-        //!!!FIXME TEXT: where to get extra space for justified text?!
         if (glyph.isJustifyable)
-            penPosition.x += spaceExtra;
+            penPosition.x += lineJustifySpacing;
     }
 }
 
@@ -947,6 +975,7 @@ bool RenderedString::split(const Window* refWnd, const size_t line,
 //----------------------------------------------------------------------------//
 RenderedString RenderedString::clone() const
 {
+    //!!!TODO TEXT: rewrite for the new logic!
     RenderedString copy;
     for (const auto& component : d_components)
         copy.d_components.push_back(component->clone());

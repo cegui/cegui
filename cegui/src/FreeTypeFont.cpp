@@ -929,7 +929,7 @@ void FreeTypeFont::layoutUsingFreetypeAndCreateRenderGeometry(std::vector<Geomet
             {
                 imgRenderSettings.d_destArea = Rectf(penPosition, image->getRenderedSize());
                 imgRenderSettings.d_multiplyColours = (layer < layerColours.size()) ? layerColours[layer] : fallbackColour;
-                addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings);
+                image->createRenderGeometry(out, imgRenderSettings, canCombineFromIdx);
             }
 
             penPosition.x += glyph->getAdvance();
@@ -1014,7 +1014,7 @@ void FreeTypeFont::layoutUsingRaqmAndCreateRenderGeometry(std::vector<GeometryBu
 
                 imgRenderSettings.d_destArea = Rectf(renderGlyphPos, image->getRenderedSize());
                 imgRenderSettings.d_multiplyColours = (layer < layerColours.size()) ? layerColours[layer] : fallbackColour;
-                addGlyphRenderGeometry(out, canCombineFromIdx, image, imgRenderSettings);
+                image->createRenderGeometry(out, imgRenderSettings, canCombineFromIdx);
             }
 
             penPosition.x += currentGlyph.x_advance * s_26dot6_toFloat;

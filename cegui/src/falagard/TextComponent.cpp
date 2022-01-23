@@ -235,38 +235,38 @@ bool TextComponent::handleFontRenderSizeChange(Window& window, const Font* font)
 }
 
 //----------------------------------------------------------------------------//
-RenderedStringParser& TextComponent::getRenderedStringParser(const Window& window) const
+RenderedStringParser* TextComponent::getRenderedStringParser(const Window& window) const
 {
     if (auto renderer = window.getWindowRenderer())
     {
         // if parsing is disabled, we use a DefaultRenderedStringParser that creates
         // a rendered string to render the input text verbatim (i.e. no parsing).
         if (!renderer->isTextParsingEnabled())
-            return CEGUI::System::getSingleton().getDefaultRenderedStringParser();
+            return &CEGUI::System::getSingleton().getDefaultRenderedStringParser();
 
         // Next prefer a custom RenderedStringParser assigned to this Window.
         if (auto parser = renderer->getCustomRenderedStringParser())
-            return *parser;
+            return parser;
     }
 
     // Next prefer any globally set RenderedStringParser.
     if (auto parser = CEGUI::System::getSingleton().getDefaultCustomRenderedStringParser())
-        return *parser;
+        return parser;
 
     // if parsing is enabled and no custom RenderedStringParser is set anywhere,
     // use the system's BasicRenderedStringParser to do the parsing.
-    return CEGUI::System::getSingleton().getBasicRenderedStringParser();
+    return &CEGUI::System::getSingleton().getBasicRenderedStringParser();
 }
 
 //------------------------------------------------------------------------//
 void TextComponent::updateRenderedString(const Window& srcWindow, const String& text, const Font* font) const
 {
-    RenderedStringParser& parser = getRenderedStringParser(srcWindow);
-
-    if (d_lastFont == font && d_lastParser == &parser && d_lastText == text)
-        return;
+    RenderedStringParser* parser = getRenderedStringParser(srcWindow);
 
     auto bidiDir = d_paragraphDir.get(srcWindow);
+
+    if (d_lastFont == font && d_lastParser == parser && d_lastBidiDir == bidiDir && d_lastText == text)
+        return;
 
 #if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
     std::vector<int> l2v;
@@ -277,10 +277,11 @@ void TextComponent::updateRenderedString(const Window& srcWindow, const String& 
     const String& textVisual = text;
 #endif
 
-    d_renderedString = parser.parse(textVisual, font, nullptr, bidiDir);
+    d_renderedString = parser->parse(textVisual, font, nullptr, bidiDir);
 
     d_lastFont = font;
-    d_lastParser = &parser;
+    d_lastParser = parser;
+    d_lastBidiDir = bidiDir;
     d_lastText = text;
 }
 

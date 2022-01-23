@@ -104,7 +104,7 @@ SVGData* SVGImage::getSVGData()
 
 //----------------------------------------------------------------------------//
 void SVGImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const ImageRenderSettings& renderSettings) const
+    const ImageRenderSettings& renderSettings, size_t /*canCombineFromIdx*/) const
 {
     const Rectf finalRect = calculateRenderArea(renderSettings);
     if (finalRect.empty())
@@ -120,12 +120,6 @@ void SVGImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     // TODO: can use single buffer?
     for (const SVGBasicShape* currentShape : d_svgData->getShapes())
         currentShape->createRenderGeometry(out, svgSettings);
-}
-
-//----------------------------------------------------------------------------//
-void SVGImage::addToRenderGeometry(GeometryBuffer& /*geomBuffer*/, const ImageRenderSettings& /*renderSettings*/) const
-{
-    throw std::runtime_error("not implemented");
 }
 
 //----------------------------------------------------------------------------//
