@@ -136,7 +136,6 @@
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="VertScrollbar" value="True" />
                 <Property name="HorzScrollPageSize" value="313.667" />
-                <Property name="TextParsingEnabled" value="False" />
                 <Property name="VertScrollPageSize" value="88.6667" />
                 <Property name="HorzScrollDocumentSize" value="83" />
                 <Property name="VertScrollDocumentSize" value="18.625" />
@@ -164,7 +163,6 @@
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="VertScrollbar" value="True" />
                 <Property name="HorzScrollPageSize" value="313.667" />
-                <Property name="TextParsingEnabled" value="False" />
                 <Property name="VertScrollPageSize" value="55.6667" />
                 <Property name="HorzScrollDocumentSize" value="62" />
                 <Property name="VertScrollDocumentSize" value="18.625" />
