@@ -27,12 +27,7 @@
 #ifndef _CEGUIRenderedString_h_
 #define _CEGUIRenderedString_h_
 
-#include "CEGUI/Base.h"
-#include "CEGUI/Sizef.h"
-#include "CEGUI/DefaultParagraphDirection.h"
-#include "CEGUI/falagard/Enums.h"
-#include <glm/glm.hpp>
-#include <vector>
+#include "CEGUI/text/RenderedTextParagraph.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -43,59 +38,6 @@ namespace CEGUI
 {
 class Rectf;
 using RenderedStringComponentPtr = std::unique_ptr<class RenderedStringComponent>;
-
-struct RenderedGlyph
-{
-    const Image* image; //!< Actual graphics of this glyph, may be nullptr for missing font glyphs and some embedded objects
-
-    glm::vec2 offset; //!< Offset from the current pen position where the content must be drawn
-    float advance;    //!< Shift to be applied to the pen after drawing this glyph
-    float height;     //!< The full height of this glyph, including padding, used for vertical alignment
-
-    uint32_t sourceIndex;  //!< Starting index of the corresponding sequence in the logical text
-    uint16_t elementIndex; //!< Index of controlling RenderedStringComponent, stored instead of pointer to reduce struct size
-
-    bool isJustifyable : 1;    //!< This glyph can be expanded in a justified text
-    bool isBreakable : 1;      //!< This glyph can be transferred to the next line due to word wrapping
-    bool isWhitespace : 1;     //!< This glyph is a whitespace that should not be rendered at the wrapped line start
-    bool isRightToLeft : 1;    //!< Is this glyph directed from right to left? This affects caret etc.
-    bool isEmbeddedObject : 1; //!< Is this glyph a placeholder for an embedded object
-};
-
-struct RenderedParagraph
-{
-    struct Line
-    {
-        uint32_t glyphEndIdx = std::numeric_limits<uint32_t>().max();
-        Sizef    extents;
-        float    horzOffset = 0.f;
-        float    justifySpaceSize = 0.f;
-        uint16_t justifyableCount = 0;
-    };
-
-    RenderedParagraph()
-        : wordWrap(false)
-        , defaultWordWrap(true)
-        , defaultHorzFormatting(true)
-        , defaultLastJustifiedLineHorzFormatting(true)
-        , linesDirty(true)
-    {}
-
-    std::vector<RenderedGlyph> glyphs;
-    std::vector<Line> lines;
-
-    DefaultParagraphDirection bidiDir = DefaultParagraphDirection::Automatic;
-    HorizontalTextFormatting horzFormatting = HorizontalTextFormatting::Justified;
-    HorizontalTextFormatting lastJustifiedLineHorzFormatting = HorizontalTextFormatting::LeftAligned;
-    bool wordWrap : 1;
-
-    bool defaultWordWrap : 1;
-    bool defaultHorzFormatting : 1;
-    bool defaultLastJustifiedLineHorzFormatting : 1;
-
-    //bool dynamicGlyphSizesDirty : 1;
-    bool linesDirty : 1;
-};
 
 /*!
 \brief
@@ -245,7 +187,7 @@ public:
 
 protected:
 
-    std::vector<RenderedParagraph> d_paragraphs;
+    std::vector<RenderedTextParagraph> d_paragraphs;
     std::vector<RenderedStringComponentPtr> d_elements;
     const Font* d_defaultFont = nullptr;
 

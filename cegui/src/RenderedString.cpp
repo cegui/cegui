@@ -83,7 +83,7 @@ static const Font* getFontAtIndex(size_t i, const std::vector<uint16_t>& element
 }
 
 //----------------------------------------------------------------------------//
-static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
+static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& text,
     size_t start, size_t end, const Font* defaultFont, DefaultParagraphDirection dir,
     const std::vector<uint16_t>& elementIndices,
     const std::vector<RenderedStringComponentPtr>& elements)
@@ -165,7 +165,7 @@ static bool layoutParagraph(RenderedParagraph& out, const std::u32string& text,
 
 //----------------------------------------------------------------------------//
 #ifdef CEGUI_USE_RAQM
-static bool layoutParagraphWithRaqm(RenderedParagraph& out, const std::u32string& text,
+static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32string& text,
     size_t start, size_t end, const Font* defaultFont, DefaultParagraphDirection dir,
     const std::vector<uint16_t>& elementIndices,
     const std::vector<RenderedStringComponentPtr>& elements, raqm_t*& rq)
@@ -503,7 +503,7 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
 
         // Word wrapping breakpoint tracking
         size_t lastBreakPointIdx = std::numeric_limits<size_t>().max();
-        RenderedParagraph::Line lastBreakPointState;
+        RenderedTextParagraph::Line lastBreakPointState;
         float lastBreakPointWidthAdjustment = 0.f;
 
         float prevGlyphWidth = 0.f;
@@ -608,74 +608,11 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
 
     // Update cached line heights
     for (auto& p : d_paragraphs)
-    {
-        uint32_t lineStartGlyphIdx = 0;
-        for (auto& line : p.lines)
-        {
-            //if (p/line.heightDirty)
-            {
-                //p/line.heightDirty = false;
-
-                if (lineStartGlyphIdx == line.glyphEndIdx)
-                {
-                    // An empty line uses the height of the previous text glyph
-                    uint32_t i = lineStartGlyphIdx;
-                    for (; i > 0; --i)
-                    {
-                        if (!p.glyphs[i].isEmbeddedObject)
-                        {
-                            line.extents.d_height = p.glyphs[i].height;
-                            break;
-                        }
-                    }
-
-                    if (!i)
-                        line.extents.d_height = (!p.glyphs[i].isEmbeddedObject) ? p.glyphs[i].height : d_defaultFont->getFontHeight();
-                }
-                else
-                {
-                    line.extents.d_height = 0.f;
-                    for (size_t i = lineStartGlyphIdx; i < line.glyphEndIdx; ++i)
-                    {
-                        const float glyphHeight = p.glyphs[i].height;
-                        if (line.extents.d_height < glyphHeight)
-                            line.extents.d_height = glyphHeight;
-                    }
-                }
-            }
-
-            lineStartGlyphIdx = line.glyphEndIdx;
-        }
-    }
+        p.updateLineHeights(d_defaultFont->getFontHeight());
 
     // Update horizontal alignment of lines
     for (auto& p : d_paragraphs)
-    {
-        for (auto& line : p.lines)
-        {
-            const bool isLastLine = (&line == &p.lines.back());
-            const auto lineHorzFmt = (isLastLine && p.horzFormatting == HorizontalTextFormatting::Justified) ?
-                p.lastJustifiedLineHorzFormatting :
-                p.horzFormatting;
-
-            switch (lineHorzFmt)
-            {
-                case HorizontalTextFormatting::RightAligned:
-                    line.horzOffset = areaWidth - line.extents.d_width;
-                    line.justifySpaceSize = 0.f;
-                    break;
-                case HorizontalTextFormatting::CentreAligned:
-                    line.horzOffset = (areaWidth - line.extents.d_width) * 0.5f;
-                    line.justifySpaceSize = 0.f;
-                    break;
-                case HorizontalTextFormatting::Justified:
-                    line.horzOffset = 0.f;
-                    if (line.justifyableCount && line.extents.d_width < areaWidth)
-                        line.justifySpaceSize = (areaWidth - line.extents.d_width) / line.justifyableCount;
-                    break;
-            }
-        }
-    }
+        p.updateHorizontalFormatting(areaWidth);
 
     return maxExcessWidth;
 }
