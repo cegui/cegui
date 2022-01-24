@@ -64,13 +64,37 @@ struct RenderedGlyph
 
 struct RenderedParagraph
 {
+    struct Line
+    {
+        uint32_t glyphEndIdx = std::numeric_limits<uint32_t>().max();
+        Sizef    extents;
+        float    horzOffset = 0.f;
+        float    justifySpaceSize = 0.f;
+        uint16_t justifyableCount = 0;
+    };
+
+    RenderedParagraph()
+        : wordWrap(false)
+        , defaultWordWrap(true)
+        , defaultHorzFormatting(true)
+        , defaultLastJustifiedLineHorzFormatting(true)
+        , linesDirty(true)
+    {}
+
     std::vector<RenderedGlyph> glyphs;
-    uint16_t firstLineIndex;
+    std::vector<Line> lines;
+
     DefaultParagraphDirection bidiDir = DefaultParagraphDirection::Automatic;
-    HorizontalTextFormatting horzFormat = HorizontalTextFormatting::Justified;
-    HorizontalTextFormatting lastJustifiedLineHorzFormat = HorizontalTextFormatting::LeftAligned;
-    bool wordWrap = true; //!!!TODO TEXT: to bit field, if other flags are added!
-    //???1 byte of dirty flags?! e.g. when embedded widget EventSized or image resizing detected!
+    HorizontalTextFormatting horzFormatting = HorizontalTextFormatting::Justified;
+    HorizontalTextFormatting lastJustifiedLineHorzFormatting = HorizontalTextFormatting::LeftAligned;
+    bool wordWrap : 1;
+
+    bool defaultWordWrap : 1;
+    bool defaultHorzFormatting : 1;
+    bool defaultLastJustifiedLineHorzFormatting : 1;
+
+    //bool dynamicGlyphSizesDirty : 1;
+    bool linesDirty : 1;
 };
 
 /*!
@@ -221,17 +245,7 @@ public:
 
 protected:
 
-    struct Line
-    {
-        uint32_t firstGlyphIdx = std::numeric_limits<uint32_t>().max(); //???store last glyph index instead?
-        Sizef    extents;
-        float    horzOffset = 0.f;
-        float    justifySpaceSize = 0.f;
-        uint16_t justifyableCount = 0;
-    };
-
     std::vector<RenderedParagraph> d_paragraphs;
-    std::vector<Line> d_lines___;
     std::vector<RenderedStringComponentPtr> d_elements;
     const Font* d_defaultFont = nullptr;
 
