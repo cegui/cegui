@@ -437,7 +437,9 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
 //----------------------------------------------------------------------------//
 float RenderedString::format(float areaWidth, const Window* hostWindow)
 {
-    float prevTextHeight = d_defaultFont->getFontHeight();
+    //!!!FIXME TEXT: for word wrapped lines this is the next glyph size only, not the whole wrapped tail of the word!
+    //???calc and cache per paragraph?! move code from here to a paragraph class?! too many paragraph loops!
+    //!!!invalidate paragraph dirty flags from RenderedString! don't store areaWidth etc in each!
     float maxExcessWidth = std::numeric_limits<float>().lowest();
 
     // Update extents of dynamically sizeable objects
@@ -445,30 +447,46 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
     {
         for (auto& glyph : p.glyphs)
         {
-            if (glyph.isEmbeddedObject)
-            {
-                if (auto element = d_elements[glyph.elementIndex].get())
-                {
-                    // NB: padding is already counted inside
-                    const Sizef glyphSize = element->getPixelSize(hostWindow);
-                    glyph.advance = glyphSize.d_width;
-                    glyph.height = glyphSize.d_height;
+            if (!glyph.isEmbeddedObject)
+                continue;
 
-                    //!!!TODO TEXT: detect changes!
-                    // but only if lines not dirty
-                    //!!!if !linesDirty && !wordWrap, can update line width immediately from diff!
-                    //but height must still be invalidated!
-                    //!!!if lines are not dirty, can calculate exact line to be invalidated by the glyph!
+            auto element = d_elements[glyph.elementIndex].get();
+            if (!element)
+                continue;
+
+            // NB: padding is already counted inside
+            const Sizef size = element->getPixelSize(hostWindow);
+
+            if (!p.linesDirty)
+            {
+                if (size.d_width != glyph.advance)
+                {
+                    if (p.wordWrap)
+                        p.linesDirty = true;
+                    else
+                    {
+                        //get line, patch its width += (glyphSize.d_width - glyph.advance);
+                    }
+                }
+
+                if (!p.linesDirty && size.d_height != glyph.height)
+                {
+                    //get line, invalidate its height
                 }
             }
+
+            glyph.advance = size.d_width;
+            glyph.height = size.d_height;
         }
     }
 
-    // Update line extents and word wrapping
+    // Build paragraph lines with optional word wrapping, cache line widths
     for (auto& p : d_paragraphs)
     {
         if (!p.linesDirty)
             continue;
+
+        p.linesDirty = false;
 
         p.lines.clear();
 
@@ -479,7 +497,6 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
         const auto glyphCount = p.glyphs.size();
         if (!glyphCount)
         {
-            currLine->extents.d_height = prevTextHeight;
             currLine->glyphEndIdx = 0;
             continue;
         }
@@ -494,10 +511,6 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
         for (size_t i = 0; i < glyphCount; ++i)
         {
             auto& glyph = p.glyphs[i];
-
-            // Remember the current text height to use it for empty paragraphs
-            if (!glyph.isEmbeddedObject)
-                prevTextHeight = glyph.height;
 
             // Break too long lines if word wrapping is enabled
             if (p.wordWrap)
@@ -574,12 +587,8 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
                 prevGlyphWidth = glyphWidth;
             }
 
-            // Add the current glyph to the current line
-
+            // Count the current glyph in the current line
             currLine->extents.d_width += glyph.advance;
-            if (currLine->extents.d_height < glyph.height)
-                currLine->extents.d_height = glyph.height;
-
             if (glyph.isJustifyable)
                 ++currLine->justifyableCount;
         }
@@ -597,12 +606,51 @@ float RenderedString::format(float areaWidth, const Window* hostWindow)
         currLine->glyphEndIdx = glyphCount;
     }
 
-    // Update horizontal alignment of lines
-    for (auto it = d_paragraphs.begin(); it != d_paragraphs.end(); ++it)
+    // Update cached line heights
+    for (auto& p : d_paragraphs)
     {
-        auto& p = *it;
+        uint32_t lineStartGlyphIdx = 0;
+        for (auto& line : p.lines)
+        {
+            //if (p/line.heightDirty)
+            {
+                //p/line.heightDirty = false;
 
-        const auto nextIt = std::next(it);
+                if (lineStartGlyphIdx == line.glyphEndIdx)
+                {
+                    // An empty line uses the height of the previous text glyph
+                    uint32_t i = lineStartGlyphIdx;
+                    for (; i > 0; --i)
+                    {
+                        if (!p.glyphs[i].isEmbeddedObject)
+                        {
+                            line.extents.d_height = p.glyphs[i].height;
+                            break;
+                        }
+                    }
+
+                    if (!i)
+                        line.extents.d_height = (!p.glyphs[i].isEmbeddedObject) ? p.glyphs[i].height : d_defaultFont->getFontHeight();
+                }
+                else
+                {
+                    line.extents.d_height = 0.f;
+                    for (size_t i = lineStartGlyphIdx; i < line.glyphEndIdx; ++i)
+                    {
+                        const float glyphHeight = p.glyphs[i].height;
+                        if (line.extents.d_height < glyphHeight)
+                            line.extents.d_height = glyphHeight;
+                    }
+                }
+            }
+
+            lineStartGlyphIdx = line.glyphEndIdx;
+        }
+    }
+
+    // Update horizontal alignment of lines
+    for (auto& p : d_paragraphs)
+    {
         for (auto& line : p.lines)
         {
             const bool isLastLine = (&line == &p.lines.back());
