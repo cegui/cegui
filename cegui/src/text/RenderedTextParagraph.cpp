@@ -105,6 +105,107 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text, const std::v
 }
 
 //----------------------------------------------------------------------------//
+void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& out, glm::vec2& penPosition,
+    const ColourRect* modColours, const Rectf* clipRect, const std::vector<RenderedStringComponentPtr>& elements) const
+{
+    if (d_linesDirty)
+        return;
+
+    //???force using cached advance of embedded image instead of current size until re-formatted?
+
+    //!!!pass selection range here, draw selection brush under instances with logical(?) index inside selection!
+    //!!!TODO TEXT: how to render selection?! check each glyphs is it inside a selection range?!
+    //!!!may switch selection remdering on/off, to optimize rendering text that can't have selection!
+    //!!!may simply check selection length, it is effectively the same!
+
+    //!!!TODO TEXT: need default style here! not only colors but also underline flag etc!
+    //???how to know where to apply a default style? now this style element is the same as explicit ones! Last is not always default!
+
+    //!!!!!!!!FIXME TEXT: modColours may be null!!!!!! and it's not the same as default text, bg or outline color
+
+    //???TODO TEXT: to what buffers really can merge?! need to see rendering order first!
+    //???!!!merge between paragraphs?! pass canCombineFromIdx as arg!!!
+    //???what about outline glyphs? may be in another texture, or generally the same?
+    const auto canCombineFromIdx = out.size();
+
+    uint32_t lineStartGlyphIdx = 0;
+    for (const auto& line : d_lines)
+    {
+        for (size_t i = lineStartGlyphIdx; i < line.glyphEndIdx; ++i)
+        {
+            const auto& glyph = d_glyphs[i];
+
+            // Skip leading whitespaces in word wrapped lines
+            if (lineStartGlyphIdx && glyph.isWhitespace)
+                continue;
+
+            auto verticalFmt = VerticalImageFormatting::BottomAligned;
+            if (auto element = elements[glyph.elementIndex].get())
+                verticalFmt = element->getVerticalFormatting();
+
+            //!!!text inside the same line and text style element is aligned exactly the same! can avoid recalc!
+
+            Rectf dest(penPosition.x, penPosition.y, 0.f, 0.f);
+            float scaleY = 1.f;
+            switch (verticalFmt)
+            {
+                case VerticalImageFormatting::BottomAligned:
+                    dest.d_min.y += line.extents.d_height - glyph.height;
+                    break;
+
+                case VerticalImageFormatting::CentreAligned:
+                    dest.d_min.y += (line.extents.d_height - glyph.height) * 0.5f;
+                    break;
+
+                case VerticalImageFormatting::Stretched:
+                    scaleY = (glyph.height > 0.f) ? (line.extents.d_height / glyph.height) : 0.f;
+                    break;
+
+                    // TODO TEXT: Tiled, at least for embedded images?
+
+                    // TopAligned requires no operations
+            }
+
+            //!!!for embedded objects it is in advance and height, but w/out padding!
+            //dest.setWidth((d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width);
+            //dest.setHeight(((d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height) * scaleY);
+
+            //???virtual Element::setupRenderer(RenderedGlyph&)? Will set colors etc inside based on the RenderedGlyph?
+            //or even virtual Element::render(RenderedGlyph&)
+            //or ranged - virtual Element::render(RenderedGlyph& from, RenderedGlyph& to), to minimize virtual calls!
+            //???return rendered size from this function?!
+            //!!!NB: element can treat union of pointers FontGlyph/Image/Window correctly without 'type' field in RenderedGlyph!
+
+            if (glyph.image)
+            {
+                //!!!TODO TEXT: ensure that necessary adjustment happens before this, or enable alignToPixels here
+                ImageRenderSettings settings(Rectf(), clipRect);//, 0xFFFFFFFF, 1.f, true);
+
+                settings.d_destArea = Rectf(penPosition + glyph.offset, glyph.image->getRenderedSize());
+                //!!!TODO TEXT:
+                //settings.d_multiplyColours = (layer < layerColours.size()) ? layerColours[layer] : fallbackColour;
+
+                glyph.image->createRenderGeometry(out, settings, canCombineFromIdx);
+            }
+
+            //!!!TODO TEXT:
+            //render outline if required for the curent glyph! must be already baked, because outline size is dynamic!
+            //use outline color from element or default one
+            //render underline, strikeout
+            //???TODO TEXT: how to store outline image? Store FontGlyph* instead of images? Or a separate Image* field?
+            //Or new RenderedGlyph w/out advance or with special flag?
+
+            penPosition.x += glyph.advance;
+
+            if (glyph.isJustifyable)
+                penPosition.x += line.justifySpaceSize;
+        }
+
+        lineStartGlyphIdx = line.glyphEndIdx;
+    }
+}
+
+//----------------------------------------------------------------------------//
 void RenderedTextParagraph::updateEmbeddedObjectExtents(const std::vector<RenderedStringComponentPtr>& elements, const Window* hostWindow)
 {
     for (size_t i = 0; i < d_glyphs.size(); ++i)

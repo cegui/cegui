@@ -62,6 +62,9 @@ public:
 
     bool format(float areaWidth, const Window* hostWindow = nullptr);
 
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
+        const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const;
+
     /*!
     \brief
         Draw the string to a GeometryBuffer.
