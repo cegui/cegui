@@ -76,6 +76,9 @@ public:
     void setupGlyphs(const std::u32string& text, const std::vector<size_t>& originalIndices,
         const std::vector<uint16_t>& elementIndices, const std::vector<RenderedStringComponentPtr>& elements);
 
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out, glm::vec2& penPosition,
+        const ColourRect* modColours, const Rectf* clipRect, const std::vector<RenderedStringComponentPtr>& elements) const;
+
     //! Update extents of dynamically sizeable objects
     void updateEmbeddedObjectExtents(const std::vector<RenderedStringComponentPtr>& elements, const Window* hostWindow);
     //! Build paragraph lines with optional word wrapping, cache line widths

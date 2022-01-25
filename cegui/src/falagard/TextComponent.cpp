@@ -310,6 +310,7 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
     RenderedString tmp;
     tmp.renderText(getEffectiveText(srcWindow), nullptr, font, d_paragraphDir.get(srcWindow));
     tmp.format(size.d_width, &srcWindow);
+    tmp.createRenderGeometry(const_cast<Window&>(srcWindow).getGeometryBuffers(), glm::vec2{ 0.f, 0.f }, nullptr, nullptr);
 }
 
 }
