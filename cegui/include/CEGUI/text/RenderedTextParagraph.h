@@ -40,6 +40,7 @@
 
 namespace CEGUI
 {
+using RenderedStringComponentPtr = std::unique_ptr<class RenderedStringComponent>;
 
 struct CEGUIEXPORT RenderedGlyph
 {
@@ -63,40 +64,67 @@ class CEGUIEXPORT RenderedTextParagraph
 {
 public:
 
+    RenderedTextParagraph()
+        : d_wordWrap(false)
+        , d_defaultWordWrap(true)
+        , d_defaultHorzFormatting(true)
+        , d_defaultLastJustifiedLineHorzFormatting(true)
+        , d_linesDirty(true)
+        , d_fitsIntoAreaWidth(false)
+    {}
+
+    void setupGlyphs(const std::u32string& text, const std::vector<size_t>& originalIndices,
+        const std::vector<uint16_t>& elementIndices, const std::vector<RenderedStringComponentPtr>& elements);
+
+    //! Update extents of dynamically sizeable objects
+    void updateEmbeddedObjectExtents(const std::vector<RenderedStringComponentPtr>& elements, const Window* hostWindow);
+    //! Build paragraph lines with optional word wrapping, cache line widths
+    void updateLines(const std::vector<RenderedStringComponentPtr>& elements, float areaWidth);
+    //! Update cached line heights
+    void updateLineHeights(float defaultFontHeight);
+    //! Update horizontal alignment of lines
+    void updateHorizontalFormatting(float areaWidth);
+
+    void onAreaWidthChanged();
+
+    bool isFittingIntoAreaWidth() const { return d_fitsIntoAreaWidth; }
+    //!!!TODO TEXT: float getRequiredWidthChangeToFit() or like that - for word-wrapped count from line start to break point, otherwise lineW-areaW
+
+    std::vector<RenderedGlyph> d_glyphs;
+
+    //???TODO TEXT: store elements array ref (or RenderedString ref) here?! This simplifies signatures and binds a paragraph to the whole text!
+
+    DefaultParagraphDirection d_bidiDir = DefaultParagraphDirection::Automatic;
+    HorizontalTextFormatting d_horzFormatting = HorizontalTextFormatting::Justified;
+    HorizontalTextFormatting d_lastJustifiedLineHorzFormatting = HorizontalTextFormatting::LeftAligned;
+    bool d_wordWrap : 1;
+
+    bool d_defaultWordWrap : 1;
+    bool d_defaultHorzFormatting : 1;
+    bool d_defaultLastJustifiedLineHorzFormatting : 1;
+
+    //bool d_dynamicGlyphSizesDirty : 1;
+    bool d_linesDirty : 1;
+    bool d_fitsIntoAreaWidth : 1;
+
+protected:
+
     struct Line
     {
+        Line() : heightDirty(true), horzFmtDirty(true) {}
+
         uint32_t glyphEndIdx = std::numeric_limits<uint32_t>().max();
         Sizef    extents;
         float    horzOffset = 0.f;
         float    justifySpaceSize = 0.f;
         uint16_t justifyableCount = 0;
+        bool     heightDirty : 1;
+        bool     horzFmtDirty : 1;
     };
 
-    RenderedTextParagraph()
-        : wordWrap(false)
-        , defaultWordWrap(true)
-        , defaultHorzFormatting(true)
-        , defaultLastJustifiedLineHorzFormatting(true)
-        , linesDirty(true)
-    {}
+    Line* getGlyphLine(size_t glyphIndex);
 
-    void updateLineHeights(float defaultFontHeight);
-    void updateHorizontalFormatting(float areaWidth);
-
-    std::vector<RenderedGlyph> glyphs;
-    std::vector<Line> lines;
-
-    DefaultParagraphDirection bidiDir = DefaultParagraphDirection::Automatic;
-    HorizontalTextFormatting horzFormatting = HorizontalTextFormatting::Justified;
-    HorizontalTextFormatting lastJustifiedLineHorzFormatting = HorizontalTextFormatting::LeftAligned;
-    bool wordWrap : 1;
-
-    bool defaultWordWrap : 1;
-    bool defaultHorzFormatting : 1;
-    bool defaultLastJustifiedLineHorzFormatting : 1;
-
-    //bool dynamicGlyphSizesDirty : 1;
-    bool linesDirty : 1;
+    std::vector<Line> d_lines;
 };
 
 }
