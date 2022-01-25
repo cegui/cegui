@@ -97,14 +97,14 @@ static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& te
     if (!BidiVisualMapping::applyBidi(text.c_str() + start, end - start, textVisual, l2v, v2l, dir))
         return false;
 
-    out.bidiDir = dir;
+    out.d_bidiDir = dir;
 #else
     const auto& textVisual = text;
 #endif
 
     // Glyph generation
 
-    out.glyphs.resize(end - start);
+    out.d_glyphs.resize(end - start);
 
     size_t currFontSourceIdx = std::numeric_limits<size_t>().max(); // NB: intentionally invalid, elementIndices are uint16_t
     const Font* currFont = nullptr;
@@ -121,7 +121,7 @@ static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& te
 #endif
 
         const auto codePoint = textVisual[visualIndex];
-        auto& renderedGlyph = out.glyphs[i - start];
+        auto& renderedGlyph = out.d_glyphs[i - start];
 
         // Get a font for the current character
         const Font* font = getFontAtIndex(logicalIndex, elementIndices, elements, currFontSourceIdx, currFont);
@@ -139,9 +139,10 @@ static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& te
 
         if (fontGlyph)
         {
+            const float kerning = font->getKerning(prevGlyph, *fontGlyph);
             renderedGlyph.image = fontGlyph->getImage(0);
-            renderedGlyph.offset.x = font->getKerning(prevGlyph, *fontGlyph);
-            renderedGlyph.advance = fontGlyph->getAdvance();
+            renderedGlyph.offset.x = kerning;
+            renderedGlyph.advance = fontGlyph->getAdvance() + kerning;
         }
         else
         {
@@ -258,19 +259,19 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
         return false;
 
     const raqm_direction_t rqDir = raqm_get_par_resolved_direction(rq);
-    out.bidiDir = (rqDir == RAQM_DIRECTION_RTL) ? DefaultParagraphDirection::RightToLeft : DefaultParagraphDirection::LeftToRight;
+    out.d_bidiDir = (rqDir == RAQM_DIRECTION_RTL) ? DefaultParagraphDirection::RightToLeft : DefaultParagraphDirection::LeftToRight;
 
     // Glyph generation
 
     size_t rqGlyphCount = 0;
     raqm_glyph_t* rqGlyphs = raqm_get_glyphs(rq, &rqGlyphCount);
-    out.glyphs.resize(rqGlyphCount);
+    out.d_glyphs.resize(rqGlyphCount);
 
     for (size_t i = 0; i < rqGlyphCount; ++i)
     {
         const raqm_glyph_t& rqGlyph = rqGlyphs[i];
         const raqm_direction_t rqGlyphDir = raqm_get_direction_at_index(rq, i);
-        auto& renderedGlyph = out.glyphs[i];
+        auto& renderedGlyph = out.d_glyphs[i];
 
         // Find a font for our glyph
         auto it = std::upper_bound(fontRanges.begin(), fontRanges.end(), rqGlyph.cluster,
@@ -358,13 +359,15 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
 
         if (end > start)
         {
-            // Create a sequence of CEGUI glyphs for this paragraph
+            // Create and setup a sequence of CEGUI glyphs for this paragraph
 #ifdef CEGUI_USE_RAQM
             if (!layoutParagraphWithRaqm(d_paragraphs.back(), utf32Text, start, end, defaultFont, defaultParagraphDir,
                     elementIndices, d_elements, rq))
 #endif
                 layoutParagraph(d_paragraphs.back(), utf32Text, start, end, defaultFont, defaultParagraphDir,
                     elementIndices, d_elements);
+
+            d_paragraphs.back().setupGlyphs(utf32Text, originalIndices, elementIndices, d_elements);
         }
 
         if (end == textLength)
@@ -379,242 +382,35 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
         raqm_destroy(rq);
 #endif
 
-    // Do common setup for generated glyphs
-    const uint16_t defaultStyleIdx = static_cast<uint16_t>(d_elements.size() - 1);
-    const size_t elementIdxCount = elementIndices.size();
-    const bool adjustSourceIndices = !originalIndices.empty();
-    for (auto& p : d_paragraphs)
-    {
-        for (auto& glyph : p.glyphs)
-        {
-            // Find associated element or associate with default text style
-            glyph.elementIndex = (glyph.sourceIndex < elementIdxCount) ?
-                elementIndices[glyph.sourceIndex] :
-                defaultStyleIdx;
-
-            // Make source index point to an original string passed in "text" arg
-            if (adjustSourceIndices)
-                glyph.sourceIndex = static_cast<uint32_t>(originalIndices[glyph.sourceIndex]);
-
-            const RenderedStringComponent* element = d_elements[glyph.elementIndex].get();
-            auto textStyle = static_cast<const RenderedStringTextComponent*>(element);
-            glyph.isEmbeddedObject = !textStyle;
-
-            glyph.offset += element->getPadding().getPosition();
-
-            //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
-            //if (glyph.isRightToLeft) ...
-
-            // FIXME TEXT: virtual RenderedTextElement::setupGlyph() instead of dynamic casts?!
-            if (glyph.isEmbeddedObject)
-            {
-                if (auto embeddedImage = dynamic_cast<const RenderedStringImageComponent*>(element))
-                    glyph.image = embeddedImage->getImage();
-
-                glyph.isJustifyable = false;
-                glyph.isBreakable = true; // May be not always, but for now this is OK
-                glyph.isWhitespace = false;
-            }
-            else
-            {
-                // Bake padding into glyph metrics. Text glyphs are never resized and will
-                // remain actual. Embedded objects metrics will be calculated in format().
-                glyph.advance += element->getLeftPadding() + element->getRightPadding();
-                glyph.height = textStyle->getFont()->getFontHeight() +
-                    element->getTopPadding() + element->getBottomPadding();
-
-                const auto codePoint = text[glyph.sourceIndex];
-                glyph.isJustifyable = (codePoint == ' ');
-                glyph.isBreakable = (codePoint == ' ' || codePoint == '\t' || codePoint == '\r');
-                glyph.isWhitespace = glyph.isBreakable;
-            }
-        }
-    }
-
     return true;
 }
 
 //----------------------------------------------------------------------------//
-float RenderedString::format(float areaWidth, const Window* hostWindow)
+bool RenderedString::format(float areaWidth, const Window* hostWindow)
 {
-    //!!!FIXME TEXT: for word wrapped lines this is the next glyph size only, not the whole wrapped tail of the word!
-    //???calc and cache per paragraph?! move code from here to a paragraph class?! too many paragraph loops!
-    //!!!invalidate paragraph dirty flags from RenderedString! don't store areaWidth etc in each!
-    float maxExcessWidth = std::numeric_limits<float>().lowest();
+    if (areaWidth < 0.f)
+        return false;
 
-    // Update extents of dynamically sizeable objects
+    const bool areaWidthChanged = (d_areaWidth != areaWidth);
+
+    d_areaWidth = areaWidth;
+
+    bool fitsIntoAreaWidth = true;
+
     for (auto& p : d_paragraphs)
     {
-        for (auto& glyph : p.glyphs)
-        {
-            if (!glyph.isEmbeddedObject)
-                continue;
+        if (areaWidthChanged)
+            p.onAreaWidthChanged();
 
-            auto element = d_elements[glyph.elementIndex].get();
-            if (!element)
-                continue;
-
-            // NB: padding is already counted inside
-            const Sizef size = element->getPixelSize(hostWindow);
-
-            if (!p.linesDirty)
-            {
-                if (size.d_width != glyph.advance)
-                {
-                    if (p.wordWrap)
-                        p.linesDirty = true;
-                    else
-                    {
-                        //get line, patch its width += (glyphSize.d_width - glyph.advance);
-                    }
-                }
-
-                if (!p.linesDirty && size.d_height != glyph.height)
-                {
-                    //get line, invalidate its height
-                }
-            }
-
-            glyph.advance = size.d_width;
-            glyph.height = size.d_height;
-        }
-    }
-
-    // Build paragraph lines with optional word wrapping, cache line widths
-    for (auto& p : d_paragraphs)
-    {
-        if (!p.linesDirty)
-            continue;
-
-        p.linesDirty = false;
-
-        p.lines.clear();
-
-        // Always add the first line of the paragraph
-        p.lines.emplace_back();
-        auto* currLine = &p.lines.back();
-
-        const auto glyphCount = p.glyphs.size();
-        if (!glyphCount)
-        {
-            currLine->glyphEndIdx = 0;
-            continue;
-        }
-
-        // Word wrapping breakpoint tracking
-        size_t lastBreakPointIdx = std::numeric_limits<size_t>().max();
-        RenderedTextParagraph::Line lastBreakPointState;
-        float lastBreakPointWidthAdjustment = 0.f;
-
-        float prevGlyphWidth = 0.f;
-        uint32_t lineStartGlyphIdx = 0;
-        for (size_t i = 0; i < glyphCount; ++i)
-        {
-            auto& glyph = p.glyphs[i];
-
-            // Break too long lines if word wrapping is enabled
-            if (p.wordWrap)
-            {
-                // Calculate the full width of the glyph, including padding
-                float glyphWidth = glyph.advance;
-                if (!glyph.isEmbeddedObject)
-                {
-                    // For text glyphs the full width may be greater than advance due to kerning
-                    float visualWidth = glyph.image ? glyph.image->getRenderedSize().d_width : 0.f;
-                    if (auto element = d_elements[glyph.elementIndex].get())
-                        visualWidth += (element->getLeftPadding() + element->getRightPadding());
-                    if (glyphWidth < visualWidth)
-                        glyphWidth = visualWidth;
-                }
-
-                float excessWidth = currLine->extents.d_width + glyphWidth - areaWidth;
-                if (excessWidth > 0.f)
-                {
-                    // If there is a good break point for word wrapping in the current line, use it
-                    if (lastBreakPointIdx < glyphCount)
-                    {
-                        // Transfer everything past the last breakpoint to the new line
-                        p.lines.emplace_back();
-                        auto newLine = &p.lines.back();
-                        newLine->extents = currLine->extents - lastBreakPointState.extents;
-                        newLine->justifyableCount = currLine->justifyableCount - lastBreakPointState.justifyableCount;
-
-                        // Restore the current line to the saved state and compensate possible difference
-                        // between the last glyph's advance and full width (e.g. due to kerning at the breakpoint)
-                        *currLine = lastBreakPointState;
-                        currLine->extents.d_width += lastBreakPointWidthAdjustment;
-                        currLine->glyphEndIdx = static_cast<uint32_t>(lastBreakPointIdx);
-                        lineStartGlyphIdx = currLine->glyphEndIdx;
-
-                        currLine = newLine;
-
-                        // NB: in the new line this glyph is no more a valid breakpoint (infinite loop breaking)
-                        lastBreakPointIdx = std::numeric_limits<size_t>().max();
-
-                        // The current glyph may still be wider than our reference area
-                        excessWidth = currLine->extents.d_width + glyphWidth - areaWidth;
-                    }
-
-                    // Either no break point was found or the glyph itself is too wide
-                    if (excessWidth > 0.f)
-                    {
-                        // Track the word broken in the middle
-                        if (maxExcessWidth < excessWidth)
-                            maxExcessWidth = excessWidth;
-
-                        // If this glyph is not the first in its line, transfer it to its own new line
-                        if (i > lineStartGlyphIdx)
-                        {
-                            // Compensate possible difference (e.g. due to kerning at the breakpoint)
-                            currLine->extents.d_width += (prevGlyphWidth - p.glyphs[i - 1].advance);
-                            currLine->glyphEndIdx = static_cast<uint32_t>(i);
-                            lineStartGlyphIdx = currLine->glyphEndIdx;
-
-                            p.lines.emplace_back();
-                            currLine = &p.lines.back();
-                        }
-                    }
-                }
-                else if (glyph.isBreakable)
-                {
-                    // Remember this glyph as the most recent word wrapping point
-                    lastBreakPointIdx = i;
-                    lastBreakPointState = *currLine;
-                    lastBreakPointWidthAdjustment =
-                        (i > lineStartGlyphIdx) ? (prevGlyphWidth - p.glyphs[i - 1].advance) : 0.f;
-                }
-
-                prevGlyphWidth = glyphWidth;
-            }
-
-            // Count the current glyph in the current line
-            currLine->extents.d_width += glyph.advance;
-            if (glyph.isJustifyable)
-                ++currLine->justifyableCount;
-        }
-
-        // Track the paragraph exceeding an area width
-        if (!p.wordWrap)
-        {
-            const float excessWidth = p.lines.back().extents.d_width - areaWidth;
-            if (maxExcessWidth < excessWidth)
-                maxExcessWidth = excessWidth;
-        }
-
-        // Count full width for the last glyph in a line
-        currLine->extents.d_width += (prevGlyphWidth - p.glyphs.back().advance);
-        currLine->glyphEndIdx = glyphCount;
-    }
-
-    // Update cached line heights
-    for (auto& p : d_paragraphs)
+        p.updateEmbeddedObjectExtents(d_elements, hostWindow);
+        p.updateLines(d_elements, areaWidth);
         p.updateLineHeights(d_defaultFont->getFontHeight());
-
-    // Update horizontal alignment of lines
-    for (auto& p : d_paragraphs)
         p.updateHorizontalFormatting(areaWidth);
 
-    return maxExcessWidth;
+        fitsIntoAreaWidth &= p.isFittingIntoAreaWidth();
+    }
+
+    return fitsIntoAreaWidth;
 }
 
 //----------------------------------------------------------------------------//
@@ -675,7 +471,7 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
 
     //!!!TODO TEXT: may be useful to make pen modifyable, in-out arg!
     glm::vec2 penPosition = position;
-    for (auto& glyph : p.glyphs)
+    for (auto& glyph : p.d_glyphs)
     {
         //!!!skip all isWhitespace at the start of the word-wrapped line (not first line in a paragraph)
 
@@ -686,7 +482,7 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
         //!!!text inside the same line and element (non-embedded) is aligned exactly the same! can avoid recalc!
 
         Rectf dest(position.x, position.y, 0.f, 0.f);
-        float y_scale = 1.0f;
+        float scaleY = 1.0f;
         switch (verticalFmt)
         {
             case VerticalImageFormatting::BottomAligned:
@@ -698,17 +494,17 @@ void RenderedString::createRenderGeometry(std::vector<GeometryBuffer*>& out,
                 break;
 
             case VerticalImageFormatting::Stretched:
-                y_scale = (glyph.height > 0.f) ? (lineHeight / glyph.height) : 0.f;
+                scaleY = (glyph.height > 0.f) ? (lineHeight / glyph.height) : 0.f;
                 break;
 
-                // TODO TEXT: Tiled?
+                // TODO TEXT: Tiled, at least for embedded images?
 
                 // TopAligned requires no operations
         }
 
         //!!!for embedded objects it is in advance and height, but w/out padding!
         //dest.setWidth((d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width);
-        //dest.setHeight(((d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height) * y_scale);
+        //dest.setHeight(((d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height) * scaleY);
 
         //???virtual Element::setupRenderer(RenderedGlyph&)? Will set colors etc inside based on the RenderedGlyph?
         //or even virtual Element::render(RenderedGlyph&)

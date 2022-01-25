@@ -37,7 +37,6 @@
 namespace CEGUI
 {
 class Rectf;
-using RenderedStringComponentPtr = std::unique_ptr<class RenderedStringComponent>;
 
 /*!
 \brief
@@ -55,13 +54,13 @@ public:
     RenderedString(RenderedString&&) noexcept;
     virtual ~RenderedString();
 
-    RenderedString& operator =(const RenderedString& rhs) = delete; // Use clone()
+    RenderedString& operator =(const RenderedString& rhs) = delete; // Use clone() instead
     RenderedString& operator =(RenderedString&&) noexcept;
 
     bool renderText(const String& text, RenderedStringParser* parser = nullptr, const Font* defaultFont = nullptr,
         DefaultParagraphDirection defaultParagraphDir = DefaultParagraphDirection::LeftToRight);
 
-    float format(float areaWidth, const Window* hostWindow = nullptr);
+    bool format(float areaWidth, const Window* hostWindow = nullptr);
 
     /*!
     \brief
@@ -190,6 +189,7 @@ protected:
     std::vector<RenderedTextParagraph> d_paragraphs;
     std::vector<RenderedStringComponentPtr> d_elements;
     const Font* d_defaultFont = nullptr;
+    float d_areaWidth = -1.f;
 
     std::vector<RenderedStringComponentPtr> d_components;
     std::vector<std::pair<size_t, size_t>> d_lines; // first is component idx, second is component count.
