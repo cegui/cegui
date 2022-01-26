@@ -60,14 +60,16 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text, const std::v
 
     for (auto& glyph : d_glyphs)
     {
+        const auto utf32SourceIndex = glyph.sourceIndex;
+
         // Find associated element or associate with default text style
-        glyph.elementIndex = (glyph.sourceIndex < elementIdxCount) ?
-            elementIndices[glyph.sourceIndex] :
+        glyph.elementIndex = (utf32SourceIndex < elementIdxCount) ?
+            elementIndices[utf32SourceIndex] :
             defaultStyleIdx;
 
         // Make source index point to an original string passed in "text" arg
         if (adjustSourceIndices)
-            glyph.sourceIndex = static_cast<uint32_t>(originalIndices[glyph.sourceIndex]);
+            glyph.sourceIndex = static_cast<uint32_t>(originalIndices[utf32SourceIndex]);
 
         const RenderedStringComponent* element = elements[glyph.elementIndex].get();
         auto textStyle = static_cast<const RenderedStringTextComponent*>(element);
@@ -96,7 +98,7 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text, const std::v
             glyph.height = textStyle->getFont()->getFontHeight() +
                 element->getTopPadding() + element->getBottomPadding();
 
-            const auto codePoint = text[glyph.sourceIndex];
+            const auto codePoint = text[utf32SourceIndex];
             glyph.isJustifyable = (codePoint == ' ');
             glyph.isBreakable = (codePoint == ' ' || codePoint == '\t' || codePoint == '\r');
             glyph.isWhitespace = glyph.isBreakable;
