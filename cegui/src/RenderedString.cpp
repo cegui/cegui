@@ -225,7 +225,11 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
     }
 
     // Now we know that we can use raqm for this paragraph
-    if (!rq)
+    if (rq)
+    {
+        raqm_clear_contents(rq, false);
+    }
+    else
     {
         rq = raqm_create();
 
