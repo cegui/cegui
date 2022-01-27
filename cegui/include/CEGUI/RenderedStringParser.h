@@ -32,6 +32,7 @@
 
 namespace CEGUI
 {
+using RenderedTextElementPtr = std::unique_ptr<class RenderedTextElement>;
 
 //! Specifies interface for classes that parse text into RenderedString objects.
 class CEGUIEXPORT RenderedStringParser

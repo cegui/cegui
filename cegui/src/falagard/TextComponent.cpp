@@ -38,6 +38,7 @@
 #include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/BidiVisualMapping.h"
+#include "CEGUI/text/RenderedText.h"
 
 namespace CEGUI
 {
@@ -307,7 +308,7 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
         d_formatter->format(d_renderedString, &srcWindow, size);
 
     //!!!DBG TMP!
-    RenderedString tmp;
+    RenderedText tmp;
     tmp.renderText(getEffectiveText(srcWindow), nullptr, font, d_paragraphDir.get(srcWindow));
     tmp.format(size.d_width, &srcWindow);
     tmp.createRenderGeometry(const_cast<Window&>(srcWindow).getGeometryBuffers(), glm::vec2{ 0.f, 0.f }, nullptr, nullptr);
