@@ -27,7 +27,9 @@
 #ifndef _CEGUIRenderedString_h_
 #define _CEGUIRenderedString_h_
 
-#include "CEGUI/text/RenderedTextParagraph.h"
+#include "CEGUI/Sizef.h"
+#include <glm/glm.hpp>
+#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -57,14 +59,6 @@ public:
 
     RenderedString& operator =(const RenderedString& rhs) = delete; // Use clone() instead
     RenderedString& operator =(RenderedString&&) noexcept;
-
-    bool renderText(const String& text, RenderedStringParser* parser = nullptr, const Font* defaultFont = nullptr,
-        DefaultParagraphDirection defaultParagraphDir = DefaultParagraphDirection::LeftToRight);
-
-    bool format(float areaWidth, const Window* hostWindow = nullptr);
-
-    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const;
 
     /*!
     \brief
@@ -189,11 +183,6 @@ public:
     RenderedString clone() const;
 
 protected:
-
-    std::vector<RenderedTextParagraph> d_paragraphs;
-    std::vector<RenderedTextElementPtr> d_elements;
-    const Font* d_defaultFont = nullptr;
-    float d_areaWidth = -1.f;
 
     std::vector<RenderedStringComponentPtr> d_components;
     std::vector<std::pair<size_t, size_t>> d_lines; // first is component idx, second is component count.
