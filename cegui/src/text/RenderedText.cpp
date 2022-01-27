@@ -43,6 +43,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+RenderedText::RenderedText() = default;
 RenderedText::~RenderedText() = default;
 RenderedText::RenderedText(RenderedText&&) noexcept = default;
 RenderedText& RenderedText::operator =(RenderedText&&) noexcept = default;
@@ -418,6 +419,13 @@ void RenderedText::createRenderGeometry(std::vector<GeometryBuffer*>& out,
 
     //???Do CR-LF after paragraphs here, not inside a paragraph? The last paragraph doesn't end with \n!
     //!!!but this would require to get paragraph's last line height here!
+}
+
+//----------------------------------------------------------------------------//
+RenderedText RenderedText::clone() const
+{
+    //!!!FIXME TEXT: implement!
+    return {};
 }
 
 }
