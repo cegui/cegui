@@ -1,9 +1,9 @@
 /***********************************************************************
-    created:    24/05/2009
-    author:     Paul Turner
+    created:    27/01/2022
+    author:     Vladimir Orlov
  *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2022 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,17 +24,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/RenderedStringComponent.h"
+#include "CEGUI/text/RenderedTextElement.h"
 
 namespace CEGUI
 {
-
-//----------------------------------------------------------------------------//
-RenderedStringComponentPtr RenderedStringComponent::split(
-  const Window* ref_wnd, float split_point, bool first_component)
-{
-    bool was_word_split = false;
-    return split(ref_wnd, split_point, first_component, was_word_split);
-}
 
 }

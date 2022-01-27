@@ -37,6 +37,7 @@
 namespace CEGUI
 {
 class Rectf;
+using RenderedStringComponentPtr = std::unique_ptr<class RenderedStringComponent>;
 
 /*!
 \brief
@@ -190,7 +191,7 @@ public:
 protected:
 
     std::vector<RenderedTextParagraph> d_paragraphs;
-    std::vector<RenderedStringComponentPtr> d_elements;
+    std::vector<RenderedTextElementPtr> d_elements;
     const Font* d_defaultFont = nullptr;
     float d_areaWidth = -1.f;
 

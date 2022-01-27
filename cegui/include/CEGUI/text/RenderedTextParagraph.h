@@ -1,9 +1,9 @@
 /***********************************************************************
-    created:    25/05/2009
-    author:     Paul Turner
+    created:    27/01/2022
+    author:     Vladimir Orlov
  *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2022 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -40,7 +40,7 @@
 
 namespace CEGUI
 {
-using RenderedStringComponentPtr = std::unique_ptr<class RenderedStringComponent>;
+using RenderedTextElementPtr = std::unique_ptr<class RenderedTextElement>;
 
 struct CEGUIEXPORT RenderedGlyph
 {
@@ -51,7 +51,7 @@ struct CEGUIEXPORT RenderedGlyph
     float height;     //!< The full height of this glyph, including padding, used for vertical alignment
 
     uint32_t sourceIndex;  //!< Starting index of the corresponding sequence in the logical text
-    uint16_t elementIndex; //!< Index of controlling RenderedStringComponent, stored instead of pointer to reduce struct size
+    uint16_t elementIndex; //!< Index of controlling RenderedTextElement, stored instead of pointer to reduce struct size
 
     bool isJustifyable : 1;    //!< This glyph can be expanded in a justified text
     bool isBreakable : 1;      //!< This glyph can be transferred to the next line due to word wrapping
@@ -74,15 +74,15 @@ public:
     {}
 
     void setupGlyphs(const std::u32string& text, const std::vector<size_t>& originalIndices,
-        const std::vector<uint16_t>& elementIndices, const std::vector<RenderedStringComponentPtr>& elements);
+        const std::vector<uint16_t>& elementIndices, const std::vector<RenderedTextElementPtr>& elements);
 
     void createRenderGeometry(std::vector<GeometryBuffer*>& out, glm::vec2& penPosition,
-        const ColourRect* modColours, const Rectf* clipRect, const std::vector<RenderedStringComponentPtr>& elements) const;
+        const ColourRect* modColours, const Rectf* clipRect, const std::vector<RenderedTextElementPtr>& elements) const;
 
     //! Update extents of dynamically sizeable objects
-    void updateEmbeddedObjectExtents(const std::vector<RenderedStringComponentPtr>& elements, const Window* hostWindow);
+    void updateEmbeddedObjectExtents(const std::vector<RenderedTextElementPtr>& elements, const Window* hostWindow);
     //! Build paragraph lines with optional word wrapping, cache line widths
-    void updateLines(const std::vector<RenderedStringComponentPtr>& elements, float areaWidth);
+    void updateLines(const std::vector<RenderedTextElementPtr>& elements, float areaWidth);
     //! Update cached line heights
     void updateLineHeights(float defaultFontHeight);
     //! Update horizontal alignment of lines
