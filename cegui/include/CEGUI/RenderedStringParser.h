@@ -65,7 +65,7 @@ public:
                                  DefaultParagraphDirection defaultParagraphDir) = 0;
 
     virtual bool parse(const String& input, std::u32string& outText, std::vector<size_t>& originalIndices,
-        std::vector<uint16_t>& elementIndices, std::vector<RenderedStringComponentPtr>& elements) = 0;
+        std::vector<uint16_t>& elementIndices, std::vector<RenderedTextElementPtr>& elements) = 0;
 };
 
 } // End of  CEGUI namespace section

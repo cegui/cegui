@@ -108,7 +108,7 @@ RenderedString BasicRenderedStringParser::parse(
 //----------------------------------------------------------------------------//
 bool BasicRenderedStringParser::parse(const String& input, std::u32string& outText,
     std::vector<size_t>& originalIndices, std::vector<uint16_t>& elementIndices,
-    std::vector<RenderedStringComponentPtr>& elements)
+    std::vector<RenderedTextElementPtr>& elements)
 {
     //!!!TODO TEXT: IMPLEMENT!
     // each param is a stack

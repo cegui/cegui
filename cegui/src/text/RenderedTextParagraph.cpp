@@ -1,9 +1,9 @@
 /***********************************************************************
-    created:    25/05/2009
-    author:     Paul Turner
+    created:    27/01/2022
+    author:     Vladimir Orlov
  *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2022 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,7 +25,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/text/RenderedTextParagraph.h"
-#include "CEGUI/RenderedStringTextComponent.h"
+#include "CEGUI/text/RenderedTextElement.h"
+#include "CEGUI/text/RenderedTextStyle.h"
 #include "CEGUI/RenderedStringImageComponent.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/Font.h"
@@ -36,7 +37,7 @@ namespace CEGUI
 
 //----------------------------------------------------------------------------//
 // Calculate the full width of the glyph, including padding
-static float getGlyphFullWidth(const RenderedGlyph& glyph, const std::vector<RenderedStringComponentPtr>& elements)
+static float getGlyphFullWidth(const RenderedGlyph& glyph, const std::vector<RenderedTextElementPtr>& elements)
 {
     if (glyph.isEmbeddedObject)
         return glyph.advance;
@@ -50,7 +51,7 @@ static float getGlyphFullWidth(const RenderedGlyph& glyph, const std::vector<Ren
 
 //----------------------------------------------------------------------------//
 void RenderedTextParagraph::setupGlyphs(const std::u32string& text, const std::vector<size_t>& originalIndices,
-    const std::vector<uint16_t>& elementIndices, const std::vector<RenderedStringComponentPtr>& elements)
+    const std::vector<uint16_t>& elementIndices, const std::vector<RenderedTextElementPtr>& elements)
 {
     d_linesDirty = true;
 
@@ -71,44 +72,14 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text, const std::v
         if (adjustSourceIndices)
             glyph.sourceIndex = static_cast<uint32_t>(originalIndices[utf32SourceIndex]);
 
-        const RenderedStringComponent* element = elements[glyph.elementIndex].get();
-        auto textStyle = static_cast<const RenderedStringTextComponent*>(element);
-        glyph.isEmbeddedObject = !textStyle;
-
-        glyph.offset += element->getPadding().getPosition();
-
-        //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
-        //if (glyph.isRightToLeft) ...
-
-        // FIXME TEXT: virtual RenderedTextElement::setupGlyph() instead of dynamic casts?!
-        if (glyph.isEmbeddedObject)
-        {
-            if (auto embeddedImage = dynamic_cast<const RenderedStringImageComponent*>(element))
-                glyph.image = embeddedImage->getImage();
-
-            glyph.isJustifyable = false;
-            glyph.isBreakable = true; // May be not always, but for now this is OK
-            glyph.isWhitespace = false;
-        }
-        else
-        {
-            // Bake padding into glyph metrics. Text glyphs are never resized and will
-            // remain actual. Embedded objects metrics will be calculated in format().
-            glyph.advance += element->getLeftPadding() + element->getRightPadding();
-            glyph.height = textStyle->getFont()->getFontHeight() +
-                element->getTopPadding() + element->getBottomPadding();
-
-            const auto codePoint = text[utf32SourceIndex];
-            glyph.isJustifyable = (codePoint == ' ');
-            glyph.isBreakable = (codePoint == ' ' || codePoint == '\t' || codePoint == '\r');
-            glyph.isWhitespace = glyph.isBreakable;
-        }
+        // Let an element initialize its glyph
+        elements[glyph.elementIndex]->setupGlyph(glyph, text[utf32SourceIndex]);
     }
 }
 
 //----------------------------------------------------------------------------//
 void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& out, glm::vec2& penPosition,
-    const ColourRect* modColours, const Rectf* clipRect, const std::vector<RenderedStringComponentPtr>& elements) const
+    const ColourRect* modColours, const Rectf* clipRect, const std::vector<RenderedTextElementPtr>& elements) const
 {
     if (d_linesDirty)
         return;
@@ -208,7 +179,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
 }
 
 //----------------------------------------------------------------------------//
-void RenderedTextParagraph::updateEmbeddedObjectExtents(const std::vector<RenderedStringComponentPtr>& elements, const Window* hostWindow)
+void RenderedTextParagraph::updateEmbeddedObjectExtents(const std::vector<RenderedTextElementPtr>& elements, const Window* hostWindow)
 {
     for (size_t i = 0; i < d_glyphs.size(); ++i)
     {
@@ -221,11 +192,15 @@ void RenderedTextParagraph::updateEmbeddedObjectExtents(const std::vector<Render
         if (!element)
             continue;
 
-        // NB: padding is already counted inside
-        const Sizef size = element->getPixelSize(hostWindow);
+        const float prevWidth = glyph.advance;
+        const float prevHeight = glyph.height;
+
+        //!!!TODO TEXT: set advance and height there!
+        //???reuse setupGlyph? args are different!
+        element->updateDynamicObject(glyph, hostWindow);
 
         // Any width change in a word wrapped paragraph may lead to line changes
-        if (!d_linesDirty && d_wordWrap && size.d_width != glyph.advance)
+        if (!d_linesDirty && d_wordWrap && glyph.advance != prevWidth)
             d_linesDirty = true;
 
         // Otherwise much lighter recalculations are needed
@@ -233,24 +208,21 @@ void RenderedTextParagraph::updateEmbeddedObjectExtents(const std::vector<Render
         {
             if (auto line = getGlyphLine(i))
             {
-                if (size.d_width != glyph.advance)
+                if (glyph.advance != prevWidth)
                 {
-                    line->extents.d_width += (size.d_width - glyph.advance);
+                    line->extents.d_width += (glyph.advance - prevWidth);
                     line->horzFmtDirty = true;
                 }
 
-                if (size.d_height != glyph.height)
+                if (glyph.height != prevHeight)
                     line->heightDirty = true;
             }
         }
-
-        glyph.advance = size.d_width;
-        glyph.height = size.d_height;
     }
 }
 
 //----------------------------------------------------------------------------//
-void RenderedTextParagraph::updateLines(const std::vector<RenderedStringComponentPtr>& elements, float areaWidth)
+void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr>& elements, float areaWidth)
 {
     if (!d_linesDirty)
         return;

@@ -25,7 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RenderedString.h"
-#include "CEGUI/RenderedStringTextComponent.h"
+#include "CEGUI/text/RenderedTextStyle.h"
 #include "CEGUI/RenderedStringImageComponent.h"
 #include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/Exceptions.h"
@@ -58,7 +58,7 @@ RenderedString& RenderedString::operator =(RenderedString&&) noexcept = default;
 
 //----------------------------------------------------------------------------//
 static const Font* getFontAtIndex(size_t i, const std::vector<uint16_t>& elementIndices,
-    const std::vector<RenderedStringComponentPtr>& elements,
+    const std::vector<RenderedTextElementPtr>& elements,
     size_t& currFontSourceIdx, const Font* currFont)
 {
     // Characters without an associated element use the default font
@@ -71,7 +71,8 @@ static const Font* getFontAtIndex(size_t i, const std::vector<uint16_t>& element
     if (currFontSourceIdx == charElementIdx)
         return currFont;
 
-    auto textStyle = dynamic_cast<const RenderedStringTextComponent*>(elements[charElementIdx].get());
+    //???TODO TEXT: isEmbeddedObject can be set here or even pre-calculated before this!
+    auto textStyle = dynamic_cast<const RenderedTextStyle*>(elements[charElementIdx].get());
 
     // Non-text elements have no font and are skipped
     if (!textStyle)
@@ -86,7 +87,7 @@ static const Font* getFontAtIndex(size_t i, const std::vector<uint16_t>& element
 static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& text,
     size_t start, size_t end, const Font* defaultFont, DefaultParagraphDirection dir,
     const std::vector<uint16_t>& elementIndices,
-    const std::vector<RenderedStringComponentPtr>& elements)
+    const std::vector<RenderedTextElementPtr>& elements)
 {
     // Apply Unicode Bidirectional Algorithm to obtain a string with visual ordering of codepoints
 #if defined(CEGUI_BIDI_SUPPORT)
@@ -169,7 +170,7 @@ static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& te
 static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32string& text,
     size_t start, size_t end, const Font* defaultFont, DefaultParagraphDirection dir,
     const std::vector<uint16_t>& elementIndices,
-    const std::vector<RenderedStringComponentPtr>& elements, raqm_t*& rq)
+    const std::vector<RenderedTextElementPtr>& elements, raqm_t*& rq)
 {
     const size_t elementIdxCount = elementIndices.size();
 
@@ -341,8 +342,7 @@ bool RenderedString::renderText(const String& text, RenderedStringParser* parser
         if (!defaultFont)
             return false;
 
-        //!!!FIXME TEXT: need no text string in text style elements!
-        d_elements.emplace_back(new RenderedStringTextComponent(String::GetEmpty(), defaultFont));
+        d_elements.emplace_back(new RenderedTextStyle(defaultFont));
     }
 
 #ifdef CEGUI_USE_RAQM
