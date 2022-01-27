@@ -38,7 +38,7 @@ void RenderedTextWidget::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) co
     glyph.advance = 0.f;
     glyph.height = 0.f;
 
-    glyph.userData = getWidget(); // replace placeholder glyph with an embedded object
+    glyph.userData = findWidget(d_widgetPath); // replace placeholder glyph with an embedded object
 
     glyph.isEmbeddedObject = true;
     glyph.isJustifyable = false;

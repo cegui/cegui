@@ -26,6 +26,7 @@
  ***************************************************************************/
 #pragma once
 #include "CEGUI/text/RenderedTextElement.h"
+#include "CEGUI/ColourRect.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -40,6 +41,10 @@ class CEGUIEXPORT RenderedTextStyle : public RenderedTextElement
 {
 public:
 
+    RenderedTextStyle(const Font* font = nullptr) : d_font(font) {}
+
+    const Font* getFont() const { return d_font; }
+
     virtual void setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const override;
 
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
@@ -50,7 +55,10 @@ public:
 
 protected:
 
-    //outline, color, font etc
+    const Font* d_font = nullptr;
+    ColourRect d_colours = 0xFFFFFFFF; //???TODO TEXT: need rect? how will look?
+
+    //!!!TODO TEXT: outlines, underline, strikeout, bg color etc!
 };
 
 }

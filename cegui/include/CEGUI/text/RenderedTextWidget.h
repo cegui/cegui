@@ -40,6 +40,8 @@ class CEGUIEXPORT RenderedTextWidget : public RenderedTextElement
 {
 public:
 
+    RenderedTextWidget(const String& widgetPath) : d_widgetPath(widgetPath) {}
+
     virtual void setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const override;
 
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
@@ -50,9 +52,7 @@ public:
 
 protected:
 
-    //widget name, will be resolved when update glyph
-    //???update glyph with setupGlyph? rename isEmbeddedObject to isDynamicObject?! will be able to easily
-    //switch images to static objects if don't want to support runtime resizing
+    String d_widgetPath; //!!!TODO: replace with a StringAtom!
 };
 
 }

@@ -26,6 +26,7 @@
   ***************************************************************************/
 #pragma once
 #include "CEGUI/text/RenderedTextElement.h"
+#include "CEGUI/ColourRect.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -40,6 +41,8 @@ class CEGUIEXPORT RenderedTextImage : public RenderedTextElement
 {
 public:
 
+    RenderedTextImage(const Image* image) : d_image(image) {}
+
     virtual void setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const override;
 
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
@@ -50,9 +53,9 @@ public:
 
 protected:
 
-    //image name or pointer, pointer is better, less storage, search once even if reference multiple times
-    //size or <=0.f for defaults, per dimension
-    //color
+    const Image* d_image = nullptr;
+    ColourRect d_colours = 0xFFFFFFFF;   
+    Sizef d_size; //<! target size to render the image at (0.f means natural size at the dimension)
 };
 
 }
