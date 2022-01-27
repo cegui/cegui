@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUI/text/RenderedTextStyle.h"
 #include "CEGUI/text/RenderedTextParagraph.h"
+#include "CEGUI/Font.h"
 
 namespace CEGUI
 {
@@ -37,7 +38,7 @@ void RenderedTextStyle::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) con
     // remain actual. Embedded objects metrics will be calculated in format().
     glyph.offset += getPadding().getPosition();
     glyph.advance += getLeftPadding() + getRightPadding();
-    glyph.height = getFont()->getFontHeight() + getTopPadding() + getBottomPadding();
+    glyph.height = d_font->getFontHeight() + getTopPadding() + getBottomPadding();
 
     glyph.isEmbeddedObject = false;
     glyph.isJustifyable = (codePoint == ' ');

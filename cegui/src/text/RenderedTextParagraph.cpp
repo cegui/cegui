@@ -197,6 +197,8 @@ void RenderedTextParagraph::updateEmbeddedObjectExtents(const std::vector<Render
 
         //!!!TODO TEXT: set advance and height there!
         //???reuse setupGlyph? args are different!
+        //???rename isEmbeddedObject to isDynamicObject?! will be able to easily
+        //switch images to static objects if don't want to support runtime resizing
         element->updateDynamicObject(glyph, hostWindow);
 
         // Any width change in a word wrapped paragraph may lead to line changes

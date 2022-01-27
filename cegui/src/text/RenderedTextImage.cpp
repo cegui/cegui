@@ -38,7 +38,7 @@ void RenderedTextImage::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) con
     glyph.advance = 0.f;
     glyph.height = 0.f;
 
-    glyph.userData = getImage(); // replace placeholder glyph with an embedded object
+    glyph.userData = d_image; // replace placeholder glyph with an embedded object
 
     glyph.isEmbeddedObject = true;
     glyph.isJustifyable = false;
