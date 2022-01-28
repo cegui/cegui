@@ -38,13 +38,6 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-// Internal helper to parse part of a string, using backslash as an escape char
-static bool parse_section(String::const_iterator& pos,
-                          const String::const_iterator& end,
-                          String::value_type delim,
-                          String& out);
-
-//----------------------------------------------------------------------------//
 const String LegacyTextParser::ColourTagName("colour");
 const String LegacyTextParser::FontTagName("font");
 const String LegacyTextParser::ImageTagName("image");
@@ -85,60 +78,16 @@ LegacyTextParser::LegacyTextParser()
 }
 
 //----------------------------------------------------------------------------//
-bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
-    std::vector<size_t>& outOriginalIndices, std::vector<uint16_t>& outElementIndices,
-    std::vector<RenderedTextElementPtr>& outElements)
-{
-    //!!!TODO TEXT: IMPLEMENT!
-    // each param is a stack
-    // style is assembled from stacks when the first real style user is being processed
-    // can try to find already created style instead of creating extra one
-    // need to somehow export paragraph-level params from here! horz align, BIDI dir
-
-    d_colours = initial_colours ? *initial_colours : 0xFFFFFFFF;
-    d_font = initial_font;
-    d_padding = Rectf(0, 0, 0, 0);
-    d_imageSize.d_width = d_imageSize.d_height = 0.0f;
-    d_vertFormatting = VerticalImageFormatting::BottomAligned;
-
-    String curr_section, tag_string;
-
-    for (auto itIn = inText.begin(); itIn != inText.end(); /* no-op*/)
-    {
-        const bool found_tag = parse_section(itIn, inText.end(), '[', curr_section);
-
-        RenderedStringTextComponent rtc(curr_section, d_font);
-        rtc.setPadding(d_padding);
-        rtc.setColours(d_colours);
-        rtc.setVerticalFormatting(d_vertFormatting);
-        rs.appendComponent(rtc);
-
-        if (!found_tag)
-            return true;
-
-        if (!parse_section(itIn, inText.end(), ']', tag_string))
-        {
-            Logger::getSingleton().logEvent(
-                "LegacyTextParser::parse: Ignoring unterminated tag : [" + tag_string);
-            return false;
-        }
-
-        processControlString(rs, tag_string);
-    }
-
-    return true;
-}
-
-//----------------------------------------------------------------------------//
-bool parse_section(String::const_iterator& pos, const String::const_iterator& end,
-                   String::value_type delim, String& out)
+// Internal helper to parse part of a string, using backslash as an escape char
+static bool parseSection(String::const_iterator pos, const String::const_iterator end,
+    String::value_type delim, String& out)
 {
     const String::value_type escape('\\');
+
     out.resize(0);
 
-    String::const_iterator start_iter(pos);
-
-    for ( ; pos != end; ++pos)
+    auto start_iter(pos);
+    for (; pos != end; ++pos)
     {
         if (*pos == delim)
         {
@@ -162,7 +111,52 @@ bool parse_section(String::const_iterator& pos, const String::const_iterator& en
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::processControlString(RenderedString& rs, const String& ctrl_str)
+bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
+    std::vector<size_t>& outOriginalIndices, std::vector<uint16_t>& outElementIndices,
+    std::vector<RenderedTextElementPtr>& outElements)
+{
+    //!!!TODO TEXT: IMPLEMENT!
+    // each param is a stack
+    // style is assembled from stacks when the first real style user is being processed
+    // can try to find already created style instead of creating extra one
+    // need to somehow export paragraph-level params from here! horz align, BIDI dir
+
+    //d_colours = initial_colours ? *initial_colours : 0xFFFFFFFF;
+    //d_font = initial_font;
+    d_padding = Rectf(0, 0, 0, 0);
+    d_imageSize.d_width = d_imageSize.d_height = 0.0f;
+    d_vertFormatting = VerticalImageFormatting::BottomAligned;
+
+    String curr_section, tag_string;
+
+    for (auto itIn = inText.begin(); itIn != inText.end(); /* no-op*/)
+    {
+        const bool found_tag = parseSection(itIn, inText.end(), '[', curr_section);
+
+        RenderedStringTextComponent rtc(curr_section, d_font);
+        rtc.setPadding(d_padding);
+        rtc.setColours(d_colours);
+        rtc.setVerticalFormatting(d_vertFormatting);
+        //rs.appendComponent(rtc);
+
+        if (!found_tag)
+            return true;
+
+        if (!parseSection(itIn, inText.end(), ']', tag_string))
+        {
+            Logger::getSingleton().logEvent(
+                "LegacyTextParser::parse: Ignoring unterminated tag : [" + tag_string);
+            return false;
+        }
+
+        processControlString(tag_string);
+    }
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+void LegacyTextParser::processControlString(const String& ctrl_str)
 {
     // All our default strings are of the form <var> = '<val>'
     // so let's get the variables using '=' as delimiter:
@@ -192,7 +186,7 @@ void LegacyTextParser::processControlString(RenderedString& rs, const String& ct
 
         // Since the handler was found, we are sure that if the second variable
         // couldn't be read, it is empty. We will supply and empty string
-        (this->*(*i).second)(rs, correctValueFormat ? value : String::GetEmpty());
+        (this->*(*i).second)(correctValueFormat ? value : String::GetEmpty());
     }
     else
         Logger::getSingleton().logEvent(
@@ -201,87 +195,87 @@ void LegacyTextParser::processControlString(RenderedString& rs, const String& ct
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handleColour(RenderedString&, const String& value)
+void LegacyTextParser::handleColour(const String& value)
 {
     d_colours.setColours(PropertyHelper<Colour>::fromString(value));
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handleFont(RenderedString&, const String& value)
+void LegacyTextParser::handleFont(const String& value)
 {
     d_font = value.empty() ? nullptr : &FontManager::getSingleton().get(value);
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handleImage(RenderedString& rs, const String& value)
+void LegacyTextParser::handleImage(const String& value)
 {
     RenderedStringImageComponent ric(PropertyHelper<Image*>::fromString(value));
     ric.setPadding(d_padding);
     ric.setColours(d_colours);
     ric.setVerticalFormatting(d_vertFormatting);
     ric.setSize(d_imageSize);
-    rs.appendComponent(ric);
+    //rs.appendComponent(ric);
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handleWindow(RenderedString& rs, const String& value)
+void LegacyTextParser::handleWindow(const String& value)
 {
     RenderedStringWidgetComponent rwc(value);
     rwc.setPadding(d_padding);
     rwc.setVerticalFormatting(d_vertFormatting);
-    rs.appendComponent(rwc);
+    //rs.appendComponent(rwc);
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handleVertFormatting(RenderedString&, const String& value)
+void LegacyTextParser::handleVertFormatting(const String& value)
 {
     d_vertFormatting = FalagardXMLHelper<VerticalImageFormatting>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handlePadding(RenderedString&, const String& value)
+void LegacyTextParser::handlePadding(const String& value)
 {
     d_padding = PropertyHelper<Rectf>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handleTopPadding(RenderedString&, const String& value)
+void LegacyTextParser::handleTopPadding(const String& value)
 {
     d_padding.d_min.y = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handleBottomPadding(RenderedString&, const String& value)
+void LegacyTextParser::handleBottomPadding(const String& value)
 {
     d_padding.d_max.y = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handleLeftPadding(RenderedString&, const String& value)
+void LegacyTextParser::handleLeftPadding(const String& value)
 {
     d_padding.d_min.x = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handleRightPadding(RenderedString&, const String& value)
+void LegacyTextParser::handleRightPadding(const String& value)
 {
     d_padding.d_max.x = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handleImageSize(RenderedString&, const String& value)
+void LegacyTextParser::handleImageSize(const String& value)
 {
     d_imageSize = PropertyHelper<Sizef >::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handleImageWidth(RenderedString&, const String& value)
+void LegacyTextParser::handleImageWidth(const String& value)
 {
     d_imageSize.d_width = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handleImageHeight(RenderedString&, const String& value)
+void LegacyTextParser::handleImageHeight(const String& value)
 {
     d_imageSize.d_height = PropertyHelper<float>::fromString(value);
 }

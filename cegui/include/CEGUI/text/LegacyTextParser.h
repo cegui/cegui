@@ -41,7 +41,7 @@ namespace CEGUI
 {
 /*!
 \brief
-    Basic RenderedStringParser class that offers support for the following tags:
+    Basic text parser class that offers support for the following legacy (v0.8) tags:
     - 'colour' value is a CEGUI colour property value.
     - 'font' value is the name of a font.
     - 'image' value is a CEGUI image property value.
@@ -86,22 +86,22 @@ public:
 protected:
 
     //! Process the control string \a ctrl_str.
-    virtual void processControlString(RenderedString& rs, const String& ctrl_str);
+    virtual void processControlString(const String& ctrl_str);
 
     //! handlers for the various tags supported
-    void handleColour(RenderedString& rs, const String& value);
-    void handleFont(RenderedString& rs, const String& value);
-    void handleImage(RenderedString& rs, const String& value);
-    void handleWindow(RenderedString& rs, const String& value);
-    void handleVertFormatting(RenderedString& rs, const String& value);
-    void handlePadding(RenderedString& rs, const String& value);
-    void handleTopPadding(RenderedString& rs, const String& value);
-    void handleBottomPadding(RenderedString& rs, const String& value);
-    void handleLeftPadding(RenderedString& rs, const String& value);
-    void handleRightPadding(RenderedString& rs, const String& value);
-    void handleImageSize(RenderedString& rs, const String& value);
-    void handleImageWidth(RenderedString& rs, const String& value);
-    void handleImageHeight(RenderedString& rs, const String& value);
+    void handleColour(const String& value);
+    void handleFont(const String& value);
+    void handleImage(const String& value);
+    void handleWindow(const String& value);
+    void handleVertFormatting(const String& value);
+    void handlePadding(const String& value);
+    void handleTopPadding(const String& value);
+    void handleBottomPadding(const String& value);
+    void handleLeftPadding(const String& value);
+    void handleRightPadding(const String& value);
+    void handleImageSize(const String& value);
+    void handleImageWidth(const String& value);
+    void handleImageHeight(const String& value);
 
     //! active padding values.
     Rectf d_padding;
@@ -115,7 +115,7 @@ protected:
     Sizef d_imageSize;
 
     //! definition of type used for handler functions
-    typedef void (LegacyTextParser::*TagHandler)(RenderedString&, const String&);
+    typedef void (LegacyTextParser::*TagHandler)(const String&);
     //! Collection to map tag names to their handler functions.
     std::unordered_map<String, TagHandler> d_tagHandlers;
 };
