@@ -27,9 +27,9 @@
 #include "CEGUI/text/RenderedText.h"
 #include "CEGUI/text/RenderedTextParagraph.h"
 #include "CEGUI/text/RenderedTextStyle.h"
-#include "CEGUI/RenderedStringParser.h"
+#include "CEGUI/text/TextParser.h"
 #ifdef CEGUI_BIDI_SUPPORT
-#include "CEGUI/BidiVisualMapping.h"
+#include "CEGUI/text/BidiVisualMapping.h"
 #endif
 #ifdef CEGUI_USE_RAQM
 #include "CEGUI/FreeTypeFont.h"
@@ -298,7 +298,7 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
 #endif
 
 //----------------------------------------------------------------------------//
-bool RenderedText::renderText(const String& text, RenderedStringParser* parser,
+bool RenderedText::renderText(const String& text, TextParser* parser,
     const Font* defaultFont, DefaultParagraphDirection defaultParagraphDir)
 {
     d_paragraphs.clear();
@@ -416,9 +416,6 @@ void RenderedText::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     glm::vec2 penPosition = position;
     for (const auto& p : d_paragraphs)
         p.createRenderGeometry(out, penPosition, modColours, clipRect, d_elements);
-
-    //???Do CR-LF after paragraphs here, not inside a paragraph? The last paragraph doesn't end with \n!
-    //!!!but this would require to get paragraph's last line height here!
 }
 
 //----------------------------------------------------------------------------//

@@ -33,7 +33,7 @@
 #include "CEGUI/Window.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/RenderedStringParser.h"
-#include "CEGUI/BidiVisualMapping.h"
+#include "CEGUI/text/BidiVisualMapping.h"
 
 namespace CEGUI
 {

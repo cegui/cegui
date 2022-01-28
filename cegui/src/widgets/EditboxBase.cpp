@@ -32,9 +32,8 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/Clipboard.h"
-#include "CEGUI/BidiVisualMapping.h"
 #include "CEGUI/UndoHandler.h"
-#include "CEGUI/BidiVisualMapping.h"
+#include "CEGUI/text/BidiVisualMapping.h"
 #include <string.h>
 
 namespace CEGUI
