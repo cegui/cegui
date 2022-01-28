@@ -34,10 +34,6 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 void RenderedTextStyle::setupGlyph(RenderedGlyph& glyph, const Window* /*hostWindow*/) const
 {
-    // Bake padding into glyph metrics. Text glyphs are never resized and will
-    // remain actual. Embedded objects metrics will be calculated in format().
-    // NB: this += relies on isEmbeddedObject being false!
-    glyph.advance += getLeftPadding() + getRightPadding();
     glyph.height = d_font->getFontHeight() + getTopPadding() + getBottomPadding();
 
     glyph.isEmbeddedObject = false;
@@ -54,7 +50,7 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     //!!!TODO TEXT: draw main glyph, draw outlines, underline, strikeout!
 
     // Render the main image of the glyph
-    if (glyph.image)
+    if (glyph.image) //!!!FIXME TEXT: glyph image may change!? store font glyph ptr instead!
     {
         //???!!!TODO TEXT: can do some operations once per element, not per glyph?!
         //valign, color calculation etc?! maybe pass glyph ranges here?!
