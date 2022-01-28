@@ -185,7 +185,7 @@ void LegacyTextParser::processControlString(const String& ctrl_str)
         }
 
         // Since the handler was found, we are sure that if the second variable
-        // couldn't be read, it is empty. We will supply and empty string
+        // couldn't be read, it is empty. We will supply an empty string.
         (this->*(*i).second)(correctValueFormat ? value : String::GetEmpty());
     }
     else
@@ -265,7 +265,7 @@ void LegacyTextParser::handleRightPadding(const String& value)
 //----------------------------------------------------------------------------//
 void LegacyTextParser::handleImageSize(const String& value)
 {
-    d_imageSize = PropertyHelper<Sizef >::fromString(value);
+    d_imageSize = PropertyHelper<Sizef>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//

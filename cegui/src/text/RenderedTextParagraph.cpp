@@ -78,10 +78,14 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text, const std::v
         glyph.isBreakable = (codePoint == ' ' || codePoint == '\t' || codePoint == '\r');
         glyph.isWhitespace = glyph.isBreakable;
 
-        // Let an element initialize its glyph
+        // Do element-dependent initialization of the glyph
         if (auto element = elements[glyph.elementIndex].get())
         {
+            // Bake padding into glyph metrics. Text glyphs are never resized and will
+            // remain actual. Dynamic object metrics will be updated in format().
             glyph.offset += element->getPadding().getPosition();
+            glyph.advance += element->getLeftPadding() + element->getRightPadding();
+
             elements[glyph.elementIndex]->setupGlyph(glyph);
         }
     }
@@ -116,13 +120,19 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
     uint32_t lineStartGlyphIdx = 0;
     for (const auto& line : d_lines)
     {
-        for (size_t i = lineStartGlyphIdx; i < line.glyphEndIdx; ++i)
+        size_t i = lineStartGlyphIdx;
+
+        // Skip leading whitespaces in word wrapped lines
+        if (lineStartGlyphIdx)
+        {
+            for (; i < line.glyphEndIdx; ++i)
+                if (!d_glyphs[i].isWhitespace)
+                    break;
+        }
+
+        for (; i < line.glyphEndIdx; ++i)
         {
             const auto& glyph = d_glyphs[i];
-
-            // Skip leading whitespaces in word wrapped lines
-            if (lineStartGlyphIdx && glyph.isWhitespace)
-                continue;
 
             auto element = elements[glyph.elementIndex].get();
             if (!element)
