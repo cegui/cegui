@@ -32,18 +32,15 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-void RenderedTextStyle::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const
+void RenderedTextStyle::setupGlyph(RenderedGlyph& glyph, const Window* /*hostWindow*/) const
 {
     // Bake padding into glyph metrics. Text glyphs are never resized and will
     // remain actual. Embedded objects metrics will be calculated in format().
-    glyph.offset += getPadding().getPosition();
+    // NB: this += relies on isEmbeddedObject being false!
     glyph.advance += getLeftPadding() + getRightPadding();
     glyph.height = d_font->getFontHeight() + getTopPadding() + getBottomPadding();
 
     glyph.isEmbeddedObject = false;
-    glyph.isJustifyable = (codePoint == ' ');
-    glyph.isBreakable = (codePoint == ' ' || codePoint == '\t' || codePoint == '\r');
-    glyph.isWhitespace = glyph.isBreakable;
 
     //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
     //if (glyph.isRightToLeft) ...
@@ -51,9 +48,24 @@ void RenderedTextStyle::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) con
 
 //----------------------------------------------------------------------------//
 void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const Window* refWnd, const glm::vec2& position, const ColourRect* modColours,
-    const Rectf* clipRect) const
+    const RenderedGlyph& glyph, const glm::vec2& pos, const ColourRect* modColours,
+    const Rectf* clipRect, float heightScale, size_t canCombineFromIdx) const
 {
+    //!!!TODO TEXT: draw main glyph, draw outlines, underline, strikeout!
+
+    // Render the main image of the glyph
+    if (glyph.image)
+    {
+        //???!!!TODO TEXT: can do some operations once per element, not per glyph?!
+        //valign, color calculation etc?! maybe pass glyph ranges here?!
+        ColourRect finalColours = d_colours;
+        if (modColours)
+            finalColours *= *modColours;
+
+        //!!!TODO TEXT: ensure that necessary adjustment happens before this, or enable alignToPixels here
+        ImageRenderSettings settings(Rectf(pos + glyph.offset, glyph.image->getRenderedSize()), clipRect, finalColours);//, 1.f, true);
+        glyph.image->createRenderGeometry(out, settings, canCombineFromIdx);
+    }
 }
 
 //----------------------------------------------------------------------------//

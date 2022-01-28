@@ -43,11 +43,11 @@ public:
 
     RenderedTextImage(const Image* image) : d_image(image) {}
 
-    virtual void setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const override;
+    virtual void setupGlyph(RenderedGlyph& glyph, const Window* hostWindow = nullptr) const override;
 
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const Window* refWnd, const glm::vec2& position, const ColourRect* modColours,
-        const Rectf* clipRect) const override;
+        const RenderedGlyph& glyph, const glm::vec2& pos, const ColourRect* modColours,
+        const Rectf* clipRect, float heightScale, size_t canCombineFromIdx) const override;
 
     virtual RenderedTextElementPtr clone() const override;
 

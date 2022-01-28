@@ -50,11 +50,11 @@ public:
 
     virtual ~RenderedTextElement() = default;
 
-    virtual void setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const = 0;
+    virtual void setupGlyph(RenderedGlyph& glyph, const Window* hostWindow = nullptr) const = 0;
 
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const Window* refWnd, const glm::vec2& position, const ColourRect* modColours,
-        const Rectf* clipRect) const = 0;
+        const RenderedGlyph& glyph, const glm::vec2& pos, const ColourRect* modColours,
+        const Rectf* clipRect, float heightScale, size_t canCombineFromIdx) const = 0;
 
     virtual RenderedTextElementPtr clone() const = 0;
 

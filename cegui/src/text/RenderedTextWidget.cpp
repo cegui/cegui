@@ -26,23 +26,29 @@
   ***************************************************************************/
 #include "CEGUI/text/RenderedTextWidget.h"
 #include "CEGUI/text/RenderedTextParagraph.h"
+#include "CEGUI/Window.h"
 
 namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-void RenderedTextWidget::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const
+void RenderedTextWidget::setupGlyph(RenderedGlyph& glyph, const Window* hostWindow) const
 {
-    // Advance and height may change and are not set up here
-    glyph.offset += getPadding().getPosition();
-    glyph.advance = 0.f;
-    glyph.height = 0.f;
-
-    glyph.userData = findWidget(d_widgetPath); // replace placeholder glyph with an embedded object
+    if (const Window* window = hostWindow ? hostWindow->findChild(d_widgetName) : nullptr)
+    {
+        glyph.advance = window->getPixelSize().d_width + getLeftPadding() + getRightPadding();
+        glyph.height = window->getPixelSize().d_height + getTopPadding() + getBottomPadding();
+        //glyph.userData = nullptr; 
+    }
+    else
+    {
+        glyph.advance = 0.f;
+        glyph.height = 0.f;
+        //glyph.userData = nullptr; 
+    }
 
     glyph.isEmbeddedObject = true;
     glyph.isJustifyable = false;
-    glyph.isBreakable = true; // May be not always, but for now this is OK
     glyph.isWhitespace = false;
 
     //!!!TODO TEXT: how must be padding applied to RTL objects? Should L/R padding be inverted or not?
@@ -51,9 +57,22 @@ void RenderedTextWidget::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) co
 
 //----------------------------------------------------------------------------//
 void RenderedTextWidget::createRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const Window* refWnd, const glm::vec2& position, const ColourRect* modColours,
-    const Rectf* clipRect) const
+    const RenderedGlyph& glyph, const glm::vec2& pos, const ColourRect* modColours,
+    const Rectf* clipRect, float heightScale, size_t canCombineFromIdx) const
 {
+    Window* window = nullptr; //!!!DBG TMP! must get from glyph.userData;
+    if (!window)
+        return;
+
+    glm::vec2 finalPos = pos;
+
+    // Re-adjust for inner-rect of parent
+    if (const Window* parent = window->getParent())
+        finalPos -= (parent->getUnclippedInnerRect().get().d_min - parent->getUnclippedOuterRect().get().d_min);
+
+    // We do not actually draw the widget, we just move it into position
+    const glm::vec2 wposAbs = finalPos + d_padding.d_min;
+    window->setPosition(UVector2(UDim(0, wposAbs.x), UDim(0, wposAbs.y)));
 }
 
 //----------------------------------------------------------------------------//

@@ -26,23 +26,29 @@
   ***************************************************************************/
 #include "CEGUI/text/RenderedTextImage.h"
 #include "CEGUI/text/RenderedTextParagraph.h"
+#include "CEGUI/Image.h"
 
 namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-void RenderedTextImage::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const
+void RenderedTextImage::setupGlyph(RenderedGlyph& glyph, const Window* /*hostWindow*/) const
 {
-    // Advance and height may change and are not set up here
-    glyph.offset += getPadding().getPosition();
-    glyph.advance = 0.f;
-    glyph.height = 0.f;
-
-    glyph.userData = d_image; // replace placeholder glyph with an embedded object
+    if (d_image)
+    {
+        const float imgWidth = (d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width;
+        const float imgHeight = (d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height;
+        glyph.advance = imgWidth + getLeftPadding() + getRightPadding();
+        glyph.height = imgHeight + getTopPadding() + getBottomPadding();
+    }
+    else
+    {
+        glyph.advance = 0.f;
+        glyph.height = 0.f;
+    }
 
     glyph.isEmbeddedObject = true;
     glyph.isJustifyable = false;
-    glyph.isBreakable = true; // May be not always, but for now this is OK
     glyph.isWhitespace = false;
 
     //!!!TODO TEXT: how must be padding applied to RTL objects? Should L/R padding be inverted or not?
@@ -51,9 +57,20 @@ void RenderedTextImage::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) con
 
 //----------------------------------------------------------------------------//
 void RenderedTextImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const Window* refWnd, const glm::vec2& position, const ColourRect* modColours,
-    const Rectf* clipRect) const
+    const RenderedGlyph& glyph, const glm::vec2& pos, const ColourRect* modColours,
+    const Rectf* clipRect, float heightScale, size_t canCombineFromIdx) const
 {
+    if (!d_image)
+        return;
+
+    ColourRect finalColours = d_colours;
+    if (modColours)
+        finalColours *= *modColours;
+
+    const float imgWidth = (d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width;
+    const float imgHeight = (d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height;
+    ImageRenderSettings settings(Rectf(pos.x, pos.y, imgWidth, imgHeight * heightScale), clipRect, finalColours);
+    d_image->createRenderGeometry(out, settings);
 }
 
 //----------------------------------------------------------------------------//
