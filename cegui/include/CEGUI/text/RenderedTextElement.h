@@ -72,6 +72,8 @@ public:
     void setVerticalFormatting(VerticalImageFormatting fmt) { d_verticalFormatting = fmt; }
     VerticalImageFormatting getVerticalFormatting() const { return d_verticalFormatting; }
 
+    void applyVerticalFormatting(float lineHeight, glm::vec2& pos, float& heightScale) const;
+
 protected:
 
     Rectf                   d_padding = Rectf(0.f, 0.f, 0.f, 0.f);

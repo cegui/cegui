@@ -140,25 +140,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
 
             auto pos = penPosition;
             float heightScale = 1.f;
-            switch (element->getVerticalFormatting())
-            {
-                case VerticalImageFormatting::BottomAligned:
-                    pos.y += line.extents.d_height - glyph.height;
-                    break;
-
-                case VerticalImageFormatting::CentreAligned:
-                    pos.y += (line.extents.d_height - glyph.height) * 0.5f;
-                    break;
-
-                case VerticalImageFormatting::Stretched:
-                    heightScale = (glyph.height > 0.f) ? (line.extents.d_height / glyph.height) : 0.f;
-                    break;
-
-                    // TODO TEXT: Tiled, at least for embedded images?
-
-                    // TopAligned requires no operations
-            }
-
+            element->applyVerticalFormatting(line.extents.d_height, pos, heightScale);
             element->createRenderGeometry(out, glyph, pos, modColours, clipRect, heightScale, canCombineFromIdx);
 
             penPosition.x += glyph.advance;
