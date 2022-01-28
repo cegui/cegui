@@ -25,7 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/Config.h"
-#include "CEGUI/BidiVisualMapping.h"
+#include "CEGUI/text/BidiVisualMapping.h"
 #include "CEGUI/Logger.h"
 
 #if defined (CEGUI_USE_FRIBIDI)

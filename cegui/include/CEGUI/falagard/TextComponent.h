@@ -29,6 +29,7 @@
 
 #include "./ComponentBase.h"
 #include "CEGUI/RenderedString.h"
+#include "CEGUI/text/RenderedText.h"
 #include "CEGUI/falagard/FormattingSetting.h"
 
 #if defined(_MSC_VER)
@@ -317,6 +318,8 @@ private:
     mutable std::unique_ptr<FormattedRenderedString> d_formatter;
     //! RenderedString used when not using the one from the target Window.
     mutable RenderedString d_renderedString;
+
+    mutable RenderedText d_renderedText;
 
     // Cache for avoiding redundant calulations
     mutable const Font* d_lastFont = nullptr;

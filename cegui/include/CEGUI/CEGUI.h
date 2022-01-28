@@ -37,7 +37,7 @@
 #include "CEGUI/AspectMode.h"
 #include "CEGUI/BitmapImage.h"
 #include "CEGUI/BasicRenderedStringParser.h"
-#include "CEGUI/BidiVisualMapping.h"
+#include "CEGUI/text/BidiVisualMapping.h"
 #include "CEGUI/BoundSlot.h"
 #include "CEGUI/CentredRenderedString.h"
 #include "CEGUI/Clipboard.h"

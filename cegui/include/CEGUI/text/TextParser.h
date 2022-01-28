@@ -1,5 +1,5 @@
 /***********************************************************************
-    created:    27/01/2022
+    created:    28/01/2022
     author:     Vladimir Orlov
  *************************************************************************/
 /***************************************************************************
@@ -25,54 +25,44 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #pragma once
-#include "CEGUI/text/RenderedTextParagraph.h"
-
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4251)
-#endif
+#include "CEGUI/String.h"
+#include <memory>
 
 namespace CEGUI
 {
-class TextParser;
+using RenderedTextElementPtr = std::unique_ptr<class RenderedTextElement>;
 
-/*!
-\brief
-    A text prepared to be rendered as graphics. Supports styles and embedded objects.
-*/
-class CEGUIEXPORT RenderedText final
+//! Specifies interface for classes that parse text to extract style info and embedded objects
+class CEGUIEXPORT TextParser
 {
 public:
 
-    RenderedText();
-    RenderedText(const RenderedText& other) = delete;
-    RenderedText(RenderedText&&) noexcept;
-    virtual ~RenderedText();
+    virtual ~TextParser() = default;
 
-    RenderedText& operator =(const RenderedText& rhs) = delete; // Use clone() instead
-    RenderedText& operator =(RenderedText&&) noexcept;
+    /*!
+    \brief
+        parse a text string and fill meta-info extracted from it.
 
-    bool renderText(const String& text, TextParser* parser = nullptr, const Font* defaultFont = nullptr,
-        DefaultParagraphDirection defaultParagraphDir = DefaultParagraphDirection::LeftToRight);
+    \param inText
+        String object holding the text that is to be parsed.
 
-    bool format(float areaWidth, const Window* hostWindow = nullptr);
+    \param outText
+        UTF-32 text with tags and meta parsed out of it.
 
-    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const;
+    \param outOriginalIndices
+        Mapping from outText to inText. Empty if they map 1 to 1.
 
-    //! Explicit cloning method. Used instead of copy constructor and assignment operator.
-    RenderedText clone() const;
+    \param outElementIndices
+        Mapping from outText indices to their affecting element indices.
 
-protected:
+    \param outElements
+        'RenderedTextElement's that control appearance and behaviour of outText parts.
 
-    std::vector<RenderedTextParagraph> d_paragraphs;
-    std::vector<RenderedTextElementPtr> d_elements;
-    const Font* d_defaultFont = nullptr;
-    float d_areaWidth = -1.f;
+    \return
+        Whether parsing was successful.
+    */
+    virtual bool parse(const String& inText, std::u32string& outText, std::vector<size_t>& outOriginalIndices,
+        std::vector<uint16_t>& outElementIndices, std::vector<RenderedTextElementPtr>& outElements) = 0;
 };
 
 }
-
-#if defined(_MSC_VER)
-#   pragma warning(pop)
-#endif
