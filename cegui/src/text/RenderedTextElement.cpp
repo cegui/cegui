@@ -29,4 +29,29 @@
 namespace CEGUI
 {
 
+//----------------------------------------------------------------------------//
+void RenderedTextElement::applyVerticalFormatting(float lineHeight, glm::vec2& pos, float& heightScale) const
+{
+    switch (d_verticalFormatting)
+    {
+        case VerticalImageFormatting::BottomAligned:
+            pos.y += lineHeight - glyph.height;
+            heightScale = 1.f;
+            break;
+
+        case VerticalImageFormatting::CentreAligned:
+            pos.y += (lineHeight - glyph.height) * 0.5f;
+            heightScale = 1.f;
+            break;
+
+        case VerticalImageFormatting::Stretched:
+            heightScale = (glyph.height > 0.f) ? (lineHeight / glyph.height) : 0.f;
+            break;
+
+            // TODO TEXT: Tiled, at least for embedded images?
+
+            // TopAligned requires no operations
+    }
+}
+
 }
