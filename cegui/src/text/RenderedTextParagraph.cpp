@@ -128,15 +128,16 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
             if (!element)
                 continue;
 
+            auto pos = penPosition;
             float heightScale = 1.f;
             switch (element->getVerticalFormatting())
             {
                 case VerticalImageFormatting::BottomAligned:
-                    penPosition.y += line.extents.d_height - glyph.height;
+                    pos.y += line.extents.d_height - glyph.height;
                     break;
 
                 case VerticalImageFormatting::CentreAligned:
-                    penPosition.y += (line.extents.d_height - glyph.height) * 0.5f;
+                    pos.y += (line.extents.d_height - glyph.height) * 0.5f;
                     break;
 
                 case VerticalImageFormatting::Stretched:
@@ -148,7 +149,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
                     // TopAligned requires no operations
             }
 
-            element->createRenderGeometry(out, glyph, penPosition, modColours, clipRect, heightScale, canCombineFromIdx);
+            element->createRenderGeometry(out, glyph, pos, modColours, clipRect, heightScale, canCombineFromIdx);
 
             penPosition.x += glyph.advance;
 
