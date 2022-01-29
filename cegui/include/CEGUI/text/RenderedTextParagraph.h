@@ -30,6 +30,7 @@
 #include "CEGUI/Sizef.h"
 #include "CEGUI/DefaultParagraphDirection.h"
 #include "CEGUI/falagard/Enums.h"
+#include "CEGUI/ColourRect.h"
 #include <glm/glm.hpp>
 #include <vector>
 
@@ -41,6 +42,15 @@
 namespace CEGUI
 {
 using RenderedTextElementPtr = std::unique_ptr<class RenderedTextElement>;
+
+struct CEGUIEXPORT SelectionInfo
+{
+    const Image* bgBrush = nullptr;
+    ColourRect   bgColours = 0xFF002FFF;
+    ColourRect   textColours = 0;         //!< Zero means keeping existing text colour
+    size_t       start = 0;
+    size_t       end = 0;
+};
 
 struct CEGUIEXPORT RenderedGlyph
 {
@@ -75,7 +85,8 @@ public:
         const std::vector<uint16_t>& elementIndices, const std::vector<RenderedTextElementPtr>& elements);
 
     void createRenderGeometry(std::vector<GeometryBuffer*>& out, glm::vec2& penPosition,
-        const ColourRect* modColours, const Rectf* clipRect, const std::vector<RenderedTextElementPtr>& elements) const;
+        const ColourRect* modColours, const Rectf* clipRect, const SelectionInfo* selection,
+        const std::vector<RenderedTextElementPtr>& elements) const;
 
     //! Build paragraph lines with optional word wrapping, cache line widths
     void updateLines(const std::vector<RenderedTextElementPtr>& elements, float areaWidth);
@@ -88,25 +99,21 @@ public:
     void onElementHeightChanged(size_t elementIndex, float diff);
     void onAreaWidthChanged();
 
+    void setHorizontalFormatting(HorizontalTextFormatting fmt, bool breakDefault);
+    void setLastJustifiedLineHorizontalFormatting(HorizontalTextFormatting fmt, bool breakDefault);
+    void setWordWrappingEnabled(bool wrap, bool breakDefault);
+
+    bool isHorzFormattingDefault() const { return d_defaultHorzFormatting; }
+    bool isLastJustifiedLineHorzFormattingDefault() const { return d_defaultLastJustifiedLineHorzFormatting; }
+    bool isWordWrappingDefault() const { return d_defaultWordWrap; }
     bool isFittingIntoAreaWidth() const { return d_fitsIntoAreaWidth; }
     //!!!TODO TEXT: float getRequiredWidthChangeToFit() or like that - for word-wrapped count from line start to break point, otherwise lineW-areaW
 
-    std::vector<RenderedGlyph> d_glyphs;
+    void setBidiDirection(DefaultParagraphDirection dir) { d_bidiDir = dir; }
+    DefaultParagraphDirection getBidiDirection() const { return d_bidiDir; }
 
-    //???TODO TEXT: store elements array ref (or RenderedString ref) here?! This simplifies signatures and binds a paragraph to the whole text!
-
-    DefaultParagraphDirection d_bidiDir = DefaultParagraphDirection::Automatic;
-    HorizontalTextFormatting d_horzFormatting = HorizontalTextFormatting::Justified;
-    HorizontalTextFormatting d_lastJustifiedLineHorzFormatting = HorizontalTextFormatting::LeftAligned;
-    bool d_wordWrap : 1;
-
-    bool d_defaultWordWrap : 1;
-    bool d_defaultHorzFormatting : 1;
-    bool d_defaultLastJustifiedLineHorzFormatting : 1;
-
-    //bool d_dynamicGlyphSizesDirty : 1;
-    bool d_linesDirty : 1;
-    bool d_fitsIntoAreaWidth : 1;
+    std::vector<RenderedGlyph>& glyphs() { return d_glyphs; }
+    const std::vector<RenderedGlyph>& glyphs() const { return d_glyphs; }
 
 protected:
 
@@ -125,7 +132,20 @@ protected:
 
     Line* getGlyphLine(size_t glyphIndex);
 
+    std::vector<RenderedGlyph> d_glyphs;
     std::vector<Line> d_lines;
+
+    DefaultParagraphDirection d_bidiDir = DefaultParagraphDirection::Automatic;
+    HorizontalTextFormatting d_horzFormatting = HorizontalTextFormatting::LeftAligned;
+    HorizontalTextFormatting d_lastJustifiedLineHorzFormatting = HorizontalTextFormatting::LeftAligned;
+    bool d_wordWrap : 1;
+
+    bool d_defaultWordWrap : 1;
+    bool d_defaultHorzFormatting : 1;
+    bool d_defaultLastJustifiedLineHorzFormatting : 1;
+
+    bool d_linesDirty : 1;
+    bool d_fitsIntoAreaWidth : 1;
 };
 
 }

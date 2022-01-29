@@ -308,6 +308,38 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
         d_formatter->format(d_renderedString, &srcWindow, size);
 
     //!!!DBG TMP!
+    auto horzFmt = d_horzFormatting.get(srcWindow);
+    switch (horzFmt)
+    {
+        //!!!FIXME TEXT: turn into 2 properties, support old enum values read-only and parse into 2 values
+        case HorizontalTextFormatting::LeftAligned:
+        case HorizontalTextFormatting::CentreAligned:
+        case HorizontalTextFormatting::RightAligned:
+        case HorizontalTextFormatting::Justified:
+            d_renderedText.setHorizontalFormatting(horzFmt);
+            d_renderedText.setWordWrappingEnabled(false);
+            break;
+
+        case HorizontalTextFormatting::WordWrapLeftAligned:
+            d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::LeftAligned);
+            d_renderedText.setWordWrappingEnabled(true);
+            break;
+
+        case HorizontalTextFormatting::WordWrapCentreAligned:
+            d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::CentreAligned);
+            d_renderedText.setWordWrappingEnabled(true);
+            break;
+
+        case HorizontalTextFormatting::WordWrapRightAligned:
+            d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::RightAligned);
+            d_renderedText.setWordWrappingEnabled(true);
+            break;
+
+        case HorizontalTextFormatting::WordWrapJustified:
+            d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::Justified);
+            d_renderedText.setWordWrappingEnabled(true);
+            break;
+    }
     d_renderedText.renderText(getEffectiveText(srcWindow), nullptr, font, d_paragraphDir.get(srcWindow));
     d_renderedText.format(size.d_width, &srcWindow);
     d_renderedText.createRenderGeometry(const_cast<Window&>(srcWindow).getGeometryBuffers(), glm::vec2{ 0.f, 0.f }, nullptr, nullptr);
