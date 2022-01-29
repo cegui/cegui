@@ -46,7 +46,7 @@ public:
     virtual float getGlyphWidth(const RenderedGlyph& glyph) const override;
     virtual float getHeight() const override;
 
-    virtual Sizef updateMetrics(RenderedGlyph* begin, size_t count) override;
+    virtual Sizef updateMetrics() override;
 
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,
@@ -59,7 +59,7 @@ protected:
     const Image* d_image = nullptr;
     ColourRect d_colours = 0xFFFFFFFF;   
     Sizef d_size; //<! target size to render the image at (0.f means natural size at the dimension)
-    float d_height = 0.f;
+    Sizef d_effectiveSize; //!< An effective size after the last updateMetrics() call
 };
 
 }

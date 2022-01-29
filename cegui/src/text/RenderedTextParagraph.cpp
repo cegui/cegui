@@ -383,6 +383,39 @@ void RenderedTextParagraph::updateHorizontalFormatting(float areaWidth)
 }
 
 //----------------------------------------------------------------------------//
+void RenderedTextParagraph::onElementWidthChanged(size_t elementIndex, float diff)
+{
+    //check every element inside glyphs of this p
+    //
+
+    // Any width change in a word wrapped paragraph may lead to changes in wrapping
+    if (d_wordWrap && !d_linesDirty && diff.d_width != 0.f)
+        d_linesDirty = true;
+
+    // Otherwise much lighter recalculations are needed
+    if (!d_linesDirty)
+    {
+        if (auto line = getGlyphLine(i))
+        {
+            if (diff.d_width != 0.f)
+            {
+                line->extents.d_width += diff.d_width;
+                line->horzFmtDirty = true;
+            }
+
+            if (diff.d_height != 0.f)
+                line->heightDirty = true;
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
+void RenderedTextParagraph::onElementHeightChanged(size_t elementIndex, float diff)
+{
+    //
+}
+
+//----------------------------------------------------------------------------//
 void RenderedTextParagraph::onAreaWidthChanged()
 {
     if (d_wordWrap)

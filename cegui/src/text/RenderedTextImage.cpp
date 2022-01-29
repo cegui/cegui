@@ -47,29 +47,17 @@ float RenderedTextImage::getHeight() const
 }
 
 //----------------------------------------------------------------------------//
-Sizef RenderedTextImage::updateMetrics(RenderedGlyph* begin, size_t count)
+Sizef RenderedTextImage::updateMetrics()
 {
-    const float newAdvance = (!d_image) ? 0.f :
-        (d_size.d_width > 0.f) ? d_size.d_width :
-        d_image->getRenderedSize().d_width;
-    const float newHeight = (!d_image) ? 0.f :
-        (d_size.d_height > 0.f) ? d_size.d_height :
-        d_image->getRenderedSize().d_height;
-
-    Sizef diff(0.f, newHeight - d_height);
-
-    d_height = newHeight;
-
-    const RenderedGlyph* end = begin + count;
-    for (auto glyph = begin; glyph != end; ++glyph)
+    Sizef newSize;
+    if (d_image)
     {
-        diff.d_width += newAdvance - glyph->advance;
-        glyph->advance = newAdvance;
-
-        glyph->isJustifyable = false;
-        glyph->isWhitespace = false;
+        newSize.d_width = (d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width;
+        newSize.d_height = (d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height;
     }
 
+    const auto diff = newSize - d_effectiveSize;
+    d_effectiveSize = newSize;
     return diff;
 }
 
@@ -81,13 +69,13 @@ void RenderedTextImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     if (!d_image)
         return;
 
-    const float imgWidth = (d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width;
-    const float imgHeight = (d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height;
-    ImageRenderSettings settings(Rectf(pos.x, pos.y, imgWidth, imgHeight * heightScale), clipRect, d_colours);
+    ImageRenderSettings settings(Rectf(pos.x, pos.y, d_effectiveSize.d_width, d_effectiveSize.d_height * heightScale), clipRect, d_colours);
     if (modColours)
         settings.d_multiplyColours *= *modColours;
 
     d_image->createRenderGeometry(out, settings);
+
+    penPosition.x += d_effectiveSize.d_width + getLeftPadding() + getRightPadding();
 }
 
 //----------------------------------------------------------------------------//

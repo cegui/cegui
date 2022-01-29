@@ -77,8 +77,6 @@ public:
     void createRenderGeometry(std::vector<GeometryBuffer*>& out, glm::vec2& penPosition,
         const ColourRect* modColours, const Rectf* clipRect, const std::vector<RenderedTextElementPtr>& elements) const;
 
-    //! Update metrics of dynamically sizeable objects
-    void updateMetrics(const std::vector<RenderedTextElementPtr>& elements, const Window* hostWindow);
     //! Build paragraph lines with optional word wrapping, cache line widths
     void updateLines(const std::vector<RenderedTextElementPtr>& elements, float areaWidth);
     //! Update cached line heights
@@ -86,6 +84,8 @@ public:
     //! Update horizontal alignment of lines
     void updateHorizontalFormatting(float areaWidth);
 
+    void onElementWidthChanged(size_t elementIndex, float diff);
+    void onElementHeightChanged(size_t elementIndex, float diff);
     void onAreaWidthChanged();
 
     bool isFittingIntoAreaWidth() const { return d_fitsIntoAreaWidth; }

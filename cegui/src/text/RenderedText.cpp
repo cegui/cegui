@@ -357,20 +357,20 @@ bool RenderedText::format(float areaWidth, const Window* hostWindow)
     const bool areaWidthChanged = (d_areaWidth != areaWidth);
     d_areaWidth = areaWidth;
 
-    //!!!TODO TEXT: now we do this in a poll mode! can react on events instead?! sub per element is not expensive!
-    for (auto& element : d_elements)
+    for (size_t i = 0; i < d_elements.size(); ++i)
     {
-        //check w/h changes, set dirty flags in using paragraphs/lines
-        // text elements never report any changes
-        // image elements report changes when image size is 'from source' and changes
-        // widget elements report changes when the widget itself or its size changed
+        const auto diff = d_elements[i]->updateMetrics();
+        if (diff.d_width)
+            for (auto& p : d_paragraphs)
+                p.onElementWidthChanged(i, diff.d_width);
+        if (diff.d_height)
+            for (auto& p : d_paragraphs)
+                p.onElementHeightChanged(i, diff.d_height);
     }
 
     bool fitsIntoAreaWidth = true;
     for (auto& p : d_paragraphs)
     {
-        p.updateMetrics(d_elements, hostWindow);
-
         if (areaWidthChanged)
             p.onAreaWidthChanged();
 
