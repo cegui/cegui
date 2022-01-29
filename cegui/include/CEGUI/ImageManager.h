@@ -31,6 +31,9 @@
 #include "CEGUI/ChainedXMLHandler.h"
 #include "CEGUI/String.h"
 #include "CEGUI/IteratorBase.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/ImageFactory.h"
 #include <unordered_map>
 
 #if defined(_MSC_VER)
@@ -117,7 +120,7 @@ public:
 
     \param name
         String object describing the name that the newly created instance will
-        be created with.  This name must be unique within the system. 
+        be created with.  This name must be unique within the system.
 
     \exception UnknownObjectException
         thrown if no Image subclass has been registered using identifier \a type.

@@ -28,6 +28,7 @@
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/XMLSerializer.h"
+#include <algorithm>
 
 namespace CEGUI
 {
@@ -401,7 +402,7 @@ void GridLayoutContainer::layout_impl()
     {
         cellX.d_scale = 0.f;
         cellX.d_offset = 0.f;
-        
+
         for (size_t x = 0; x < d_gridWidth; ++x)
         {
             Window* window = getChildAtIndex(mapCellToIndex(x, y));

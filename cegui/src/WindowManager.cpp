@@ -38,6 +38,7 @@
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/SharedStringStream.h"
 #include <fstream>
+#include <algorithm>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -59,7 +60,7 @@ const String WindowManager::GeneratedWindowNameBase("__cewin_uid_");
 const String WindowManager::EventNamespace("WindowManager");
 const String WindowManager::EventWindowCreated("WindowCreated");
 const String WindowManager::EventWindowDestroyed("WindowDestroyed");
-    
+
 
 /*************************************************************************
     Constructor
@@ -129,7 +130,7 @@ Window* WindowManager::createWindow(const String& type, const String& name)
     // fire event to notify interested parites about the new window.
     WindowEventArgs args(newWindow);
     fireEvent(EventWindowCreated, args, EventNamespace);
-    
+
 	return newWindow;
 }
 
@@ -354,7 +355,7 @@ void WindowManager::writeLayoutToStream(const Window& window, OutStream& out_str
     xml.openTag(GUILayout_xmlHandler::GUILayoutElement);
     xml.attribute(GUILayout_xmlHandler::GUILayoutVersionAttribute,
                   GUILayout_xmlHandler::NativeVersion);
-    
+
     // write windows
     window.writeXMLToStream(xml);
     // write closing GUILayout element

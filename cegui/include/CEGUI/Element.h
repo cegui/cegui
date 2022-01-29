@@ -36,6 +36,8 @@
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/Rectf.h"
 
+#include <vector>
+
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
@@ -265,7 +267,7 @@ public:
 
     /*!
     \brief Retrieves parent of this element
-   
+
     \returns
         pointer to parent or 0, 0 means that this Element is a root of
         the subtree it represents
@@ -658,7 +660,7 @@ public:
     /*!
     \brief
         Sets whether this Element is pixel aligned (both position and size, basically the 4 "corners").
-        
+
     \par Impact on the element tree
         Lets say we have Element A with child Element B, A is pixel aligned
         and it's position is 99.5, 99.5 px in screenspace. This gives us
@@ -681,7 +683,7 @@ public:
     /*!
     \brief
         Checks whether this Element is pixel aligned
-        
+
     \see
         Element::setPixelAligned
     */
@@ -717,7 +719,7 @@ public:
     /*!
     \brief Calculates this element's pixel size
 
-    \param skipAllPixelAlignment 
+    \param skipAllPixelAlignment
         Should all pixel-alignment be skipped when calculating the pixel size?
 
     If you want to get the pixel size you most probably want to use the
@@ -823,7 +825,7 @@ public:
     /*!
     \brief
         Remove the Element Element's child list.
-        
+
     \exception InvalidRequestException
         thrown if Element \a element is NULL.
 
@@ -978,7 +980,7 @@ public:
         which the whole element content is visible without the
         need for a horizontal scrollbar (if possible), and while the content
         remains "intact" (if possible).
-        
+
         See the documentation of "isWidthAdjustedToContent" for more details.
 
     \see isWidthAdjustedToContent
@@ -992,7 +994,7 @@ public:
         which the whole element content is visible without the
         need for a vertical scrollbar (if possible), and while the content
         remains "intact" (if possible).
-        
+
         See the documentation of "isHeightAdjustedToContent" for more details.
 
     \see isHeightAdjustedToContent
@@ -1119,7 +1121,7 @@ public:
 
     It is used as the reference area for positioning and its size is used for
     the scale components of position and size.
- 
+
     \note
         By and large the area returned here will be the same as the unclipped
         inner rect (for client content) or the unclipped outer rect (for non
@@ -1185,7 +1187,7 @@ public:
         "FalagardStaticText::adjustSizeToContent" for a detailed description on
         how this method behaves for a "FalagardStaticText" widget, which serves
         as a great example.
-    
+
         There are 2 helper methods that you may want to use when implementing
         this method:
         1. "adjustSizeToContent_direct"
@@ -1194,7 +1196,7 @@ public:
         The default implementations of "onIsSizeAdjustedToContentChanged" and
         "onSized" call this method. Make sure you call this method whenever the
         size should be re-adjusted to the content in any other case.
-    
+
         The default implementation calls "adjustSizeToContent_direct".
 
     \see FalagardStaticText::adjustSizeToContent
@@ -1226,7 +1228,7 @@ public:
         This method is used by "adjustSizeToContent_direct".
     */
     virtual float getContentHeight() const;
-    
+
     /*!
     \brief
         Get a lower bound for the width of the area of the element which is
@@ -1257,7 +1259,7 @@ public:
     \see getContentWidth
     */
     virtual UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfElementWidth() const;
-    
+
     /*!
     \brief
         Get a lower bound for the height of the area of the element which is
@@ -1326,7 +1328,7 @@ public:
     \see getContentWidth
     */
     virtual UDim getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent() const;
-      
+
     /*!
     \brief
         Get a lower bound for the element height as an affine function of the
@@ -1364,7 +1366,7 @@ public:
     \see getContentHeight
     */
     virtual UDim getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent() const;
-      
+
     /*!
     \brief
         An implementation of "adjustSizeToContent" that works for simple cases.
@@ -1451,7 +1453,7 @@ public:
 
     \return
         f(n)
-    
+
     \see contentFitsForSpecifiedElementSize
     \see adjustSizeToContent
     \see FalagardStaticText::adjustSizeToContent
@@ -1481,7 +1483,7 @@ public:
     \see getSizeAdjustedToContent_bisection
     */
     virtual bool contentFitsForSpecifiedElementSize(const Sizef& element_size) const;
-      
+
     /*!
     \brief
         A possible implementation of "contentFitsForSpecifiedElementSize".
@@ -1598,7 +1600,7 @@ protected:
 
     /*************************************************************************
         Event trigger methods
-    *************************************************************************/    
+    *************************************************************************/
     /*!
     \brief
         Handler called when the element's size changes.
@@ -1755,7 +1757,7 @@ protected:
 
         See the documentation for "isWidthAdjustedToContent" for a more detailed
         description.
-    
+
     \see isWidthAdjustedToContent
     \see d_isHeightAdjustedToContent
     */
@@ -1770,7 +1772,7 @@ protected:
 
         See the documentation for "isHeightAdjustedToContent" for a more
         detailed description.
-    
+
     \see isHeightAdjustedToContent
     \see d_isWidthAdjustedToContent
     */

@@ -40,6 +40,8 @@
 #include "CEGUI/svg/SVGData.h"
 #include "CEGUI/svg/SVGDataManager.h"
 
+#include <algorithm>
+
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
@@ -168,7 +170,7 @@ Image& ImageManager::create(const String& type, const String& name)
         String addressStr = SharedStringstream::GetPointerAddressAsString(&image);
 
     Logger::getSingleton().logEvent(
-        "[ImageManager] Created image: '" + name + "' (" + addressStr + 
+        "[ImageManager] Created image: '" + name + "' (" + addressStr +
         ") of type: " + type);
 
     return image;
@@ -203,7 +205,7 @@ Image& ImageManager::create(const XMLAttributes& attributes)
         const String message(
             "Factory for type: " + s_imagesetType + " created Image named: " +
             image.getName() + ".  Was expecting name: " + name);
-            
+
         factory->destroy(image);
 
         throw InvalidRequestException(message);
@@ -213,7 +215,7 @@ Image& ImageManager::create(const XMLAttributes& attributes)
 
     String addressStr = SharedStringstream::GetPointerAddressAsString(&image);
     Logger::getSingleton().logEvent(
-        "[ImageManager] Created image: '" + name + "' (" + addressStr + 
+        "[ImageManager] Created image: '" + name + "' (" + addressStr +
         ") of type: " + s_imagesetType);
 
     return image;
@@ -257,7 +259,7 @@ void ImageManager::destroyAll()
 Image& ImageManager::get(const String& name) const
 {
     ImageMap::const_iterator i = d_images.find(name);
-    
+
     if (i == d_images.end())
         throw UnknownObjectException(
             "Image not defined: " + name);
@@ -384,7 +386,7 @@ void ImageManager::elementImagesetStart(const XMLAttributes& attributes)
     // get name of the imageset.
     s_imagesetType = attributes.getValueAsString(ImagesetTypeAttribute,
                                                  "BitmapImage");
-    
+
     // get texture image filename
     const String filename(
         attributes.getValueAsString(ImagesetImageFileAttribute));
@@ -410,7 +412,7 @@ void ImageManager::elementImagesetStart(const XMLAttributes& attributes)
         CEGUI::String message = "Imageset type: \"" + s_imagesetType + "\" is unknown.";
         throw UnknownObjectException(message);
     }
-            
+
 
     // set native resolution for imageset
     s_nativeResolution = Sizef(

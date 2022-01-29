@@ -30,6 +30,7 @@
 #include "../ChainedXMLHandler.h"
 #include "./Dimensions.h"
 #include <unordered_map>
+#include <vector>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -73,7 +74,7 @@ namespace CEGUI
             Destructor for Falagard_xmlHandler objects
         */
         ~Falagard_xmlHandler();
-        
+
         //! Stores the native version, the only version we are supposed to load
         static const String NativeVersion;
 
@@ -457,7 +458,7 @@ namespace CEGUI
 
         //! Function to handle PropertyLinkTarget elements.
         void elementPropertyLinkTargetStart(const XMLAttributes& attributes);
-        
+
         //! Function to handle AnimationDefinition elements
         void elementAnimationDefinitionStart(const XMLAttributes& attributes);
 
@@ -567,7 +568,7 @@ namespace CEGUI
             Register a handler for the closing tag of an XML element
         */
         void registerElementEndHandler(const String& element, ElementEndHandler handler);
-    
+
         //! helper to add an event link target as dictated by the input strings.
         void processEventLinkTarget(const String& widget, const String& event);
 

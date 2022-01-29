@@ -29,6 +29,7 @@
 
 #include "../Singleton.h"
 #include "../String.h"
+#include "WidgetLookFeel.h"
 #include <unordered_map>
 #include <unordered_set>
 
@@ -291,7 +292,7 @@ namespace CEGUI
 
     private:
         //! Name of schema file used for XML validation.
-        static const String FalagardSchemaName; 
+        static const String FalagardSchemaName;
         //! holds default resource group
         static String d_defaultResourceGroup;
 
@@ -300,7 +301,7 @@ namespace CEGUI
         typedef std::unordered_map<String, WidgetLookFeel> WidgetLookList;
 
         //! List of WidgetLookFeels added to this Manager
-        WidgetLookList  d_widgetLooks;  
+        WidgetLookList  d_widgetLooks;
     };
 
 } // End of  CEGUI namespace section

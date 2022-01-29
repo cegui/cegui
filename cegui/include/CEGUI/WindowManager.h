@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Defines the interface for the WindowManager object
 *************************************************************************/
 /***************************************************************************
@@ -31,6 +31,8 @@
 
 #include "CEGUI/Singleton.h"
 #include "CEGUI/EventSet.h"
+
+#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -93,7 +95,7 @@ public:
 		- false if the property should not be set,
 	*/
 	typedef bool PropertyCallback(Window* window, String& propname, String& propvalue, void* userdata);
-	
+
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -429,7 +431,7 @@ public:
     \return
     Nothing.
     */
-    void DEBUG_dumpWindowNames(String zone) const;    
+    void DEBUG_dumpWindowNames(String zone) const;
 };
 
 } // End of  CEGUI namespace section

@@ -29,6 +29,7 @@
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/GUIContext.h"
+#include <cmath>
 
 namespace CEGUI
 {
@@ -170,8 +171,8 @@ void DragContainer::addDragContainerProperties()
 //----------------------------------------------------------------------------//
 bool DragContainer::isDraggingThresholdExceeded(const glm::vec2& local_cursor)
 {
-    return d_dragThreshold < std::fabsf(local_cursor.x - CoordConverter::asAbsolute(d_dragPoint.d_x, d_pixelSize.d_width)) ||
-        d_dragThreshold < std::fabsf(local_cursor.y - CoordConverter::asAbsolute(d_dragPoint.d_y, d_pixelSize.d_height));
+    return d_dragThreshold < std::fabs(local_cursor.x - CoordConverter::asAbsolute(d_dragPoint.d_x, d_pixelSize.d_width)) ||
+        d_dragThreshold < std::fabs(local_cursor.y - CoordConverter::asAbsolute(d_dragPoint.d_y, d_pixelSize.d_height));
 }
 
 //----------------------------------------------------------------------------//

@@ -30,6 +30,8 @@ purpose:	This codec provide FreeImage based image loading
 #include "CEGUI/ImageCodecModules/FreeImage/ImageCodec.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Sizef.h"
+#include "CEGUI/DataContainer.h"
+#include "CEGUI/Texture.h"
 
 #include <FreeImage.h>
 
@@ -134,7 +136,7 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
         unsigned int width = FreeImage_GetWidth(img);
         std::uint8_t *rawBuf = new std::uint8_t[width * height << 2];
 
-        // convert the bitmap to raw bits (top-left pixel first) 
+        // convert the bitmap to raw bits (top-left pixel first)
         FreeImage_ConvertToRawBits(rawBuf, img, pitch, 32,
             FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK, true);
 

@@ -1,7 +1,7 @@
 /***********************************************************************
 	created:	22/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Defines interface for WindowFactoryManager class
 *************************************************************************/
 /***************************************************************************
@@ -33,6 +33,7 @@
 #include "CEGUI/IteratorBase.h"
 #include "CEGUI/TplWindowFactory.h"
 #include <unordered_map>
+#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -41,7 +42,7 @@
 
 namespace CEGUI
 {
-/*! 
+/*!
 \brief
 	Class that manages WindowFactory objects
 
@@ -144,7 +145,7 @@ public:
 
 	\return
 		Nothing
-	
+
 	\exception NullObjectException		\a factory was null.
 	\exception AlreadyExistsException	\a factory provided a Window type name which is in use by another registered WindowFactory.
 	*/
@@ -154,7 +155,7 @@ public:
     \brief
         Creates a WindowFactory of the type \a T and adds it to the system for
         use.  The created WindowFactory will automatically be deleted when the
-        factory is removed from the system (either directly or at system 
+        factory is removed from the system (either directly or at system
         deletion time).
 
     \tparam T
@@ -186,7 +187,7 @@ public:
 	/*!
 	\brief
 		Removes a WindowFactory from the list of registered factories.
-		
+
 	\note
 		The WindowFactory object is not destroyed (since it was created externally), instead it is just removed from the list.
 
