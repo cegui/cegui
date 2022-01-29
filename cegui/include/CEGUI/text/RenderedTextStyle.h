@@ -43,10 +43,10 @@ public:
 
     RenderedTextStyle(const Font* font = nullptr) { d_font = font; }
 
+    virtual void setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const override;
+    virtual Sizef updateMetrics(const Window* /*hostWindow*/) override { /*Never changes*/ return {}; }
     virtual float getGlyphWidth(const RenderedGlyph& glyph) const override;
     virtual float getHeight() const override;
-
-    virtual Sizef updateMetrics(const Window* /*hostWindow*/) override { return {}; }
 
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,

@@ -33,6 +33,22 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
+void RenderedTextStyle::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const
+{
+    // Bake padding into glyph metrics. Text glyphs are never resized and will remain actual.
+    glyph.offset += getPadding().getPosition();
+    glyph.advance += getLeftPadding() + getRightPadding();
+
+    // Setup traits based on the character
+    glyph.isJustifyable = (codePoint == ' ');
+    glyph.isBreakable = (codePoint == ' ' || codePoint == '\t' || codePoint == '\r');
+    glyph.isWhitespace = glyph.isBreakable;
+
+    //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
+    //if (glyph.isRightToLeft) ...
+}
+
+//----------------------------------------------------------------------------//
 float RenderedTextStyle::getGlyphWidth(const RenderedGlyph& glyph) const
 {
     const Image* image = glyph.fontGlyph ? glyph.fontGlyph->getImage(0) : nullptr;

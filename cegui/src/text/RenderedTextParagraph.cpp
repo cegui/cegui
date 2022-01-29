@@ -59,29 +59,9 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text, const std::v
         if (adjustSourceIndices)
             glyph.sourceIndex = static_cast<uint32_t>(originalIndices[utf32SourceIndex]);
 
-        // Setup traits based on the character. This may be overridden by the element.
-        const auto codePoint = text[utf32SourceIndex];
-        glyph.isJustifyable = (codePoint == ' ');
-        glyph.isBreakable = (codePoint == ' ' || codePoint == '\t' || codePoint == '\r');
-        glyph.isWhitespace = glyph.isBreakable;
-
         // Do element-dependent initialization of the glyph
         if (auto element = elements[glyph.elementIndex].get())
-        {
-            // Bake padding into glyph metrics. Text glyphs are never resized and will
-            // remain actual. Dynamic object metrics will be updated in format().
-            glyph.offset += element->getPadding().getPosition();
-            glyph.advance += element->getLeftPadding() + element->getRightPadding();
-
-            //!!!FIXME:
-            //glyph.advance = 0.f; // d_effectiveSize.d_width;
-            //glyph.isEmbeddedObject = true;
-            //glyph.isJustifyable = false;
-            //glyph.isWhitespace = false;
-
-            //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
-            //if (glyph.isRightToLeft) ...
-        }
+            element->setupGlyph(glyph, text[utf32SourceIndex]);
     }
 }
 
@@ -111,16 +91,14 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
     const auto canCombineFromIdx = out.size();
     const float startX = penPosition.x;
 
-    uint32_t lineStartGlyphIdx = 0;
+    uint32_t i = 0;
     for (const auto& line : d_lines)
     {
         penPosition.x += line.horzOffset;
 
-        size_t i = lineStartGlyphIdx;
-
-        //!!!FIXME TEXT: if do this, need to do the same when counting line width!
+        //!!!FIXME TEXT: if do this, need to do the same when counting line width etc!
         //// Skip leading whitespaces in word wrapped lines
-        //if (lineStartGlyphIdx)
+        //if (i > 0)
         //    while (i < line.glyphEndIdx && d_glyphs[i].isWhitespace)
         //        ++i;
 
@@ -139,8 +117,6 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
         // Move the pen to the new line
         penPosition.x = startX;
         penPosition.y += line.extents.d_height;
-
-        lineStartGlyphIdx = line.glyphEndIdx;
     }
 }
 

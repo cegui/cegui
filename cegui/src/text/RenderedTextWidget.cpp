@@ -32,30 +32,68 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
+void RenderedTextWidget::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const
+{
+    glyph.offset = getPadding().getPosition();
+    glyph.advance = d_effectiveSize.d_width;
+
+    glyph.isJustifyable = false;
+    glyph.isBreakable = true;
+    glyph.isWhitespace = false;
+
+    //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
+    //if (glyph.isRightToLeft) ...
+}
+
+//----------------------------------------------------------------------------//
+Sizef RenderedTextWidget::updateMetrics(const Window* hostWindow)
+{
+    //!!!TODO TEXT: subscribe destruction to clear the cached pointer?!
+    widget = hostWindow ? hostWindow->findChild(d_widgetName) : nullptr;
+
+    const Sizef oldSize = d_effectiveSize;
+    if (widget)
+    {
+        d_effectiveSize = widget->getPixelSize();
+        d_effectiveSize.d_width += getLeftPadding() + getRightPadding();
+        d_effectiveSize.d_height += getTopPadding() + getBottomPadding();
+    }
+    else
+    {
+        d_effectiveSize.d_width = 0.f;
+        d_effectiveSize.d_height = 0.f;
+    }
+
+    return d_effectiveSize - oldSize;
+}
+
+//----------------------------------------------------------------------------//
 float RenderedTextWidget::getGlyphWidth(const RenderedGlyph& glyph) const
 {
-    //???TODO TEXT: or return actual current width?!
+    //???TODO TEXT: or return d_effectiveSize.d_width?!
     return glyph.advance;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedTextWidget::createRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,
-    const Rectf* clipRect, float lineHeight, float justifySpaceSize, size_t canCombineFromIdx) const
+    const RenderedGlyph* begin, size_t /*count*/, glm::vec2& penPosition, const ColourRect* /*modColours*/,
+    const Rectf* /*clipRect*/, float lineHeight, float /*justifySpaceSize*/, size_t /*canCombineFromIdx*/) const
 {
-    Window* window = nullptr; //!!!DBG TMP! must get from glyph.userData;
-    if (!window)
+    if (!widget)
         return;
 
-    glm::vec2 finalPos = penPosition;
+    glm::vec2 pos = penPosition;
+    float heightScale = 1.f;
+    applyVerticalFormatting(lineHeight, pos, heightScale);
+
+    pos += begin->offset;
 
     // Re-adjust for inner-rect of parent
-    if (const Window* parent = window->getParent())
-        finalPos -= (parent->getUnclippedInnerRect().get().d_min - parent->getUnclippedOuterRect().get().d_min);
+    if (const Window* parent = widget->getParent())
+        pos -= (parent->getUnclippedInnerRect().get().d_min - parent->getUnclippedOuterRect().get().d_min);
 
     // We do not actually draw the widget, we just move it into position
-    const glm::vec2 wposAbs = finalPos + d_padding.d_min;
-    window->setPosition(UVector2(UDim(0, wposAbs.x), UDim(0, wposAbs.y)));
+    widget->setPosition(UVector2(UDim(0, pos.x), UDim(0, pos.y)));
 
     penPosition.x += begin->advance;
 }
