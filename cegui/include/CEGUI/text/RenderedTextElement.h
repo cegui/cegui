@@ -50,10 +50,10 @@ public:
 
     virtual ~RenderedTextElement() = default;
 
+    virtual void setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const = 0;
+    virtual Sizef updateMetrics(const Window* hostWindow) = 0;
     virtual float getGlyphWidth(const RenderedGlyph& glyph) const = 0;
     virtual float getHeight() const = 0;
-
-    virtual Sizef updateMetrics(const Window* hostWindow) = 0;
 
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,

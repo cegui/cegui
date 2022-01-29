@@ -43,10 +43,10 @@ public:
 
     RenderedTextImage(const Image* image) : d_image(image) {}
 
-    virtual float getGlyphWidth(const RenderedGlyph& glyph) const override;
-    virtual float getHeight() const override;
-
+    virtual void setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const override;
     virtual Sizef updateMetrics(const Window* hostWindow) override;
+    virtual float getGlyphWidth(const RenderedGlyph& glyph) const override;
+    virtual float getHeight() const override { return d_effectiveSize.d_height; }
 
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,

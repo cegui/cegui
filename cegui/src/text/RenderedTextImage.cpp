@@ -32,16 +32,17 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-float RenderedTextImage::getGlyphWidth(const RenderedGlyph& glyph) const
+void RenderedTextImage::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const
 {
-    //???TODO TEXT: or return actual current width?!
-    return glyph.advance;
-}
+    glyph.offset = getPadding().getPosition();
+    glyph.advance = d_effectiveSize.d_width;
 
-//----------------------------------------------------------------------------//
-float RenderedTextImage::getHeight() const
-{
-    return d_effectiveSize.d_height;
+    glyph.isJustifyable = false;
+    glyph.isBreakable = true;
+    glyph.isWhitespace = false;
+
+    //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
+    //if (glyph.isRightToLeft) ...
 }
 
 //----------------------------------------------------------------------------//
@@ -65,6 +66,13 @@ Sizef RenderedTextImage::updateMetrics(const Window* /*hostWindow*/)
 }
 
 //----------------------------------------------------------------------------//
+float RenderedTextImage::getGlyphWidth(const RenderedGlyph& glyph) const
+{
+    //???TODO TEXT: or return d_effectiveSize.d_width?!
+    return glyph.advance;
+}
+
+//----------------------------------------------------------------------------//
 void RenderedTextImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,
     const Rectf* clipRect, float lineHeight, float justifySpaceSize, size_t canCombineFromIdx) const
@@ -72,13 +80,30 @@ void RenderedTextImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     if (!d_image)
         return;
 
-    ImageRenderSettings settings(Rectf(pos.x, pos.y, d_effectiveSize.d_width, d_effectiveSize.d_height * heightScale), clipRect, d_colours);
+    glm::vec2 pos = penPosition;
+    float heightScale = 1.f;
+    applyVerticalFormatting(lineHeight, pos, heightScale);
+
+    const float imgWidth = (d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width;
+    const float imgHeight = (d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height;
+    const Sizef imgSize(imgWidth, imgHeight * heightScale);
+
+    ImageRenderSettings settings(Rectf(), clipRect, d_colours);
     if (modColours)
         settings.d_multiplyColours *= *modColours;
 
-    d_image->createRenderGeometry(out, settings);
+    const RenderedGlyph* end = begin + count;
+    for (auto glyph = begin; glyph != end; ++glyph)
+    {
+        settings.d_destArea.set(pos + glyph->offset, imgSize);
+        d_image->createRenderGeometry(out, settings);
 
-    penPosition.x += d_effectiveSize.d_width + getLeftPadding() + getRightPadding();
+        pos.x += glyph->advance;
+        if (glyph->isJustifyable)
+            pos.x += justifySpaceSize;
+    }
+
+    penPosition.x = pos.x;
 }
 
 //----------------------------------------------------------------------------//
