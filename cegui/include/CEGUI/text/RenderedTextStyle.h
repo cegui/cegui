@@ -46,7 +46,7 @@ public:
     virtual float getGlyphWidth(const RenderedGlyph& glyph) const override;
     virtual float getHeight() const override;
 
-    virtual Sizef updateMetrics() override { return {}; }
+    virtual Sizef updateMetrics(const Window* /*hostWindow*/) override { return {}; }
 
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
         const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,
