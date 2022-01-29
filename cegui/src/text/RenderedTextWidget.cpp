@@ -32,7 +32,7 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-void RenderedTextWidget::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const
+void RenderedTextWidget::setupGlyph(RenderedGlyph& glyph, uint32_t /*codePoint*/) const
 {
     glyph.offset = getPadding().getPosition();
     glyph.advance = d_effectiveSize.d_width;

@@ -31,6 +31,9 @@
 #include "CEGUI/Image.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/FontGlyph.h"
+#ifdef CEGUI_BIDI_SUPPORT
+#include "CEGUI/text/BidiVisualMapping.h"
+#endif
 #include <algorithm>
 
 namespace CEGUI
@@ -42,8 +45,8 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text, const std::v
 {
     d_linesDirty = true;
 
-    const uint16_t defaultStyleIdx = static_cast<uint16_t>(elements.size() - 1);
     const size_t elementIdxCount = elementIndices.size();
+    const uint16_t defaultStyleIdx = static_cast<uint16_t>(elements.size() - 1);
     const bool adjustSourceIndices = !originalIndices.empty();
 
     for (auto& glyph : d_glyphs)
@@ -55,30 +58,23 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text, const std::v
             elementIndices[utf32SourceIndex] :
             defaultStyleIdx;
 
-        // Make source index point to an original string passed in "text" arg
-        if (adjustSourceIndices)
-            glyph.sourceIndex = static_cast<uint32_t>(originalIndices[utf32SourceIndex]);
-
         // Do element-dependent initialization of the glyph
         if (auto element = elements[glyph.elementIndex].get())
             element->setupGlyph(glyph, text[utf32SourceIndex]);
+
+        // Make source index point to an original text string
+        if (adjustSourceIndices)
+            glyph.sourceIndex = static_cast<uint32_t>(originalIndices[utf32SourceIndex]);
     }
 }
 
 //----------------------------------------------------------------------------//
 void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& out, glm::vec2& penPosition,
-    const ColourRect* modColours, const Rectf* clipRect, const std::vector<RenderedTextElementPtr>& elements) const
+    const ColourRect* modColours, const Rectf* clipRect, const SelectionInfo* selection,
+    const std::vector<RenderedTextElementPtr>& elements) const
 {
     if (d_linesDirty)
         return;
-
-    //???force using cached advance of embedded image instead of current size until re-formatted?
-
-    //!!!pass selection range here, draw selection brush under instances with logical(?) index inside selection!
-    //!!!TODO TEXT: how to render selection?! check each glyphs is it inside a selection range?!
-    //!!!may switch selection remdering on/off, to optimize rendering text that can't have selection!
-    //!!!may simply check selection length, it is effectively the same!
-    //???draw background color the same as selection?! use line height
 
     //!!!TODO TEXT: need default style here! not only colors but also underline flag etc!
     //???how to know where to apply a default style? now this style element is the same as explicit ones! Last is not always default!
@@ -101,6 +97,19 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
         //if (i > 0)
         //    while (i < line.glyphEndIdx && d_glyphs[i].isWhitespace)
         //        ++i;
+
+        // Render selection background
+        if (selection && selection->bgBrush && selection->end > selection->start)
+        {
+            //!!!TODO TEXT: render selection / background. Check if a glyph logical index is inside selection range passed.
+            // Loop glyphs, collect sequences with the same bg color and image, draw batches! BG params may be defaulted?
+            // Selection has a priority over BG. Can quickly skip selection rendering if range is empty. Can't do so with BG!
+            //    const float selStartExtent = (d_selectionStart > 0) ? font->getTextExtent(d_text.substr(0, d_selectionStart)) : 0;
+            //    const float selEndExtent = font->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
+            //    const Rectf selRect(pos.x + selStartExtent, pos.y, pos.x + selEndExtent, pos.y + line.extents.d_height);
+            //    ImageRenderSettings imgRenderSettings(selRect, clipRect, ColourRect(0xFF002FFF));
+            //    d_selectionImage->createRenderGeometry(out, imgRenderSettings);
+        }
 
         // Render glyph chunks using their associated elements
         while (i < line.glyphEndIdx)
@@ -385,6 +394,21 @@ void RenderedTextParagraph::onAreaWidthChanged()
     else if (!d_linesDirty)
         for (auto& line : d_lines)
             line.horzFmtDirty = true;
+}
+
+//----------------------------------------------------------------------------//
+void RenderedTextParagraph::setHorizontalFormatting(HorizontalTextFormatting fmt, bool breakDefault)
+{
+}
+
+//----------------------------------------------------------------------------//
+void RenderedTextParagraph::setLastJustifiedLineHorizontalFormatting(HorizontalTextFormatting fmt, bool breakDefault)
+{
+}
+
+//----------------------------------------------------------------------------//
+void RenderedTextParagraph::setWordWrappingEnabled(bool wrap, bool breakDefault)
+{
 }
 
 //----------------------------------------------------------------------------//

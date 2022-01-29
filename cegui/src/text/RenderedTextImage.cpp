@@ -32,7 +32,7 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-void RenderedTextImage::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const
+void RenderedTextImage::setupGlyph(RenderedGlyph& glyph, uint32_t /*codePoint*/) const
 {
     glyph.offset = getPadding().getPosition();
     glyph.advance = d_effectiveSize.d_width;
@@ -96,7 +96,7 @@ void RenderedTextImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     for (auto glyph = begin; glyph != end; ++glyph)
     {
         settings.d_destArea.set(pos + glyph->offset, imgSize);
-        d_image->createRenderGeometry(out, settings);
+        d_image->createRenderGeometry(out, settings, canCombineFromIdx);
 
         pos.x += glyph->advance;
         if (glyph->isJustifyable)

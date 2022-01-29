@@ -63,14 +63,14 @@ static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& te
     if (!BidiVisualMapping::applyBidi(text.c_str() + start, end - start, textVisual, l2v, v2l, dir))
         return false;
 
-    out.d_bidiDir = dir;
+    out.setBidiDirection(dir);
 #else
     const auto& textVisual = text;
 #endif
 
     // Glyph generation
 
-    out.d_glyphs.resize(end - start);
+    out.glyphs().resize(end - start);
 
     const Font* currFont = nullptr;
     const FontGlyph* prevGlyph = nullptr;
@@ -86,7 +86,7 @@ static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& te
 #endif
 
         const auto codePoint = textVisual[visualIndex];
-        auto& renderedGlyph = out.d_glyphs[i - start];
+        auto& renderedGlyph = out.glyphs()[i - start];
 
         // Get a font for the current character
         const Font* font = elements[elementIndices[std::min(logicalIndex, elementIndices.size() - 1)]]->getFont();
@@ -217,19 +217,21 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
         return false;
 
     const raqm_direction_t rqDir = raqm_get_par_resolved_direction(rq);
-    out.d_bidiDir = (rqDir == RAQM_DIRECTION_RTL) ? DefaultParagraphDirection::RightToLeft : DefaultParagraphDirection::LeftToRight;
+    out.setBidiDirection((rqDir == RAQM_DIRECTION_RTL) ?
+        DefaultParagraphDirection::RightToLeft :
+        DefaultParagraphDirection::LeftToRight);
 
     // Glyph generation
 
     size_t rqGlyphCount = 0;
     raqm_glyph_t* rqGlyphs = raqm_get_glyphs(rq, &rqGlyphCount);
-    out.d_glyphs.resize(rqGlyphCount);
+    out.glyphs().resize(rqGlyphCount);
 
     for (size_t i = 0; i < rqGlyphCount; ++i)
     {
         const raqm_glyph_t& rqGlyph = rqGlyphs[i];
         const raqm_direction_t rqGlyphDir = raqm_get_direction_at_index(rq, i);
-        auto& renderedGlyph = out.d_glyphs[i];
+        auto& renderedGlyph = out.glyphs()[i];
 
         // Find a font for our glyph
         auto it = std::upper_bound(fontRanges.begin(), fontRanges.end(), rqGlyph.cluster,
@@ -319,18 +321,19 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
 
         // Always create a paragraph (new line), even if it is empty
         d_paragraphs.emplace_back();
+        auto& p = d_paragraphs.back();
 
         if (end > start)
         {
             // Create and setup a sequence of CEGUI glyphs for this paragraph
 #ifdef CEGUI_USE_RAQM
-            if (!layoutParagraphWithRaqm(d_paragraphs.back(), utf32Text, start, end, defaultParagraphDir,
+            if (!layoutParagraphWithRaqm(p, utf32Text, start, end, defaultParagraphDir,
                 elementIndices, d_elements, rq))
 #endif
-                layoutParagraph(d_paragraphs.back(), utf32Text, start, end, defaultParagraphDir,
+                layoutParagraph(p, utf32Text, start, end, defaultParagraphDir,
                     elementIndices, d_elements);
 
-            d_paragraphs.back().setupGlyphs(utf32Text, originalIndices, elementIndices, d_elements);
+            p.setupGlyphs(utf32Text, originalIndices, elementIndices, d_elements);
         }
 
         if (end == textLength)
@@ -387,11 +390,12 @@ bool RenderedText::format(float areaWidth, const Window* hostWindow)
 
 //----------------------------------------------------------------------------//
 void RenderedText::createRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const
+    const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect,
+    const SelectionInfo* selection) const
 {
     glm::vec2 penPosition = position;
     for (const auto& p : d_paragraphs)
-        p.createRenderGeometry(out, penPosition, modColours, clipRect, d_elements);
+        p.createRenderGeometry(out, penPosition, modColours, clipRect, selection, d_elements);
 }
 
 //----------------------------------------------------------------------------//
@@ -399,6 +403,29 @@ RenderedText RenderedText::clone() const
 {
     //!!!FIXME TEXT: implement!
     return {};
+}
+
+//----------------------------------------------------------------------------//
+void RenderedText::setHorizontalFormatting(HorizontalTextFormatting fmt)
+{
+    d_horzFormatting = fmt;
+
+    //!!!TODO TEXT: also set when paragraphs are created!
+    //for (const auto& p : d_paragraphs)
+    //    if (p.isHorzFormattingDefault())
+    //        p.seth
+}
+
+//----------------------------------------------------------------------------//
+void RenderedText::setLastJustifiedLineHorizontalFormatting(HorizontalTextFormatting fmt)
+{
+    d_lastJustifiedLineHorzFormatting = fmt;
+}
+
+//----------------------------------------------------------------------------//
+void RenderedText::setWordWrappingEnabled(bool wrap)
+{
+    d_wordWrap = erap;
 }
 
 }

@@ -57,11 +57,16 @@ public:
 
     bool format(float areaWidth, const Window* hostWindow = nullptr);
 
-    void createRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const glm::vec2& position, const ColourRect* modColours, const Rectf* clipRect) const;
+    void createRenderGeometry(std::vector<GeometryBuffer*>& out, const glm::vec2& position,
+        const ColourRect* modColours = nullptr, const Rectf* clipRect = nullptr,
+        const SelectionInfo* selection = nullptr) const;
 
     //! Explicit cloning method. Used instead of copy constructor and assignment operator.
     RenderedText clone() const;
+
+    void setHorizontalFormatting(HorizontalTextFormatting fmt);
+    void setLastJustifiedLineHorizontalFormatting(HorizontalTextFormatting fmt);
+    void setWordWrappingEnabled(bool wrap);
 
 protected:
 
@@ -69,6 +74,10 @@ protected:
     std::vector<RenderedTextElementPtr> d_elements;
     const Font* d_defaultFont = nullptr;
     float d_areaWidth = -1.f;
+
+    HorizontalTextFormatting d_horzFormatting = HorizontalTextFormatting::LeftAligned;
+    HorizontalTextFormatting d_lastJustifiedLineHorzFormatting = HorizontalTextFormatting::LeftAligned;
+    bool d_wordWrap = false;
 };
 
 }
