@@ -357,9 +357,10 @@ bool RenderedText::format(float areaWidth, const Window* hostWindow)
     const bool areaWidthChanged = (d_areaWidth != areaWidth);
     d_areaWidth = areaWidth;
 
+    // Update metrics of dynamic objects and notify the text about their resizing
     for (size_t i = 0; i < d_elements.size(); ++i)
     {
-        const auto diff = d_elements[i]->updateMetrics();
+        const auto diff = d_elements[i]->updateMetrics(hostWindow);
         if (diff.d_width)
             for (auto& p : d_paragraphs)
                 p.onElementWidthChanged(i, diff.d_width);

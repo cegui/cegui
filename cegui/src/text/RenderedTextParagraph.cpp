@@ -73,6 +73,12 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text, const std::v
             glyph.offset += element->getPadding().getPosition();
             glyph.advance += element->getLeftPadding() + element->getRightPadding();
 
+            //!!!FIXME:
+            //glyph.advance = 0.f; // d_effectiveSize.d_width;
+            //glyph.isEmbeddedObject = true;
+            //glyph.isJustifyable = false;
+            //glyph.isWhitespace = false;
+
             //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
             //if (glyph.isRightToLeft) ...
         }
@@ -133,47 +139,6 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
         // Move the pen to the new line
         penPosition.x = startX;
         penPosition.y += line.extents.d_height;
-
-        lineStartGlyphIdx = line.glyphEndIdx;
-    }
-}
-
-//----------------------------------------------------------------------------//
-void RenderedTextParagraph::updateMetrics(const std::vector<RenderedTextElementPtr>& elements, const Window* hostWindow)
-{
-    uint32_t lineStartGlyphIdx = 0;
-    for (const auto& line : d_lines)
-    {
-        size_t i = lineStartGlyphIdx;
-
-        while (i < line.glyphEndIdx)
-        {
-            const auto startElementIdx = d_glyphs[i].elementIndex;
-            const auto start = i;
-            do ++i; while (i < line.glyphEndIdx && d_glyphs[i].elementIndex == startElementIdx);
-
-            const auto diff = elements[startElementIdx]->updateMetrics(&d_glyphs[start], i - start);
-
-            // Any width change in a word wrapped paragraph may lead to changes in wrapping
-            if (d_wordWrap && !d_linesDirty && diff.d_width != 0.f)
-                d_linesDirty = true;
-
-            // Otherwise much lighter recalculations are needed
-            if (!d_linesDirty)
-            {
-                if (auto line = getGlyphLine(i))
-                {
-                    if (diff.d_width != 0.f)
-                    {
-                        line->extents.d_width += diff.d_width;
-                        line->horzFmtDirty = true;
-                    }
-
-                    if (diff.d_height != 0.f)
-                        line->heightDirty = true;
-                }
-            }
-        }
 
         lineStartGlyphIdx = line.glyphEndIdx;
     }
@@ -385,26 +350,28 @@ void RenderedTextParagraph::updateHorizontalFormatting(float areaWidth)
 //----------------------------------------------------------------------------//
 void RenderedTextParagraph::onElementWidthChanged(size_t elementIndex, float diff)
 {
-    //check every element inside glyphs of this p
-    //
+    if (d_linesDirty)
+        return;
 
-    // Any width change in a word wrapped paragraph may lead to changes in wrapping
-    if (d_wordWrap && !d_linesDirty && diff.d_width != 0.f)
-        d_linesDirty = true;
-
-    // Otherwise much lighter recalculations are needed
-    if (!d_linesDirty)
+    uint32_t i = 0;
+    for (auto& line : d_lines)
     {
-        if (auto line = getGlyphLine(i))
+        for (; i < line.glyphEndIdx; ++i)
         {
-            if (diff.d_width != 0.f)
+            if (elementIndex == d_glyphs[i].elementIndex)
             {
-                line->extents.d_width += diff.d_width;
-                line->horzFmtDirty = true;
-            }
+                // Any width change in a word wrapped paragraph may lead to changes in wrapping
+                if (d_wordWrap)
+                {
+                    d_linesDirty = true;
+                    return;
+                }
 
-            if (diff.d_height != 0.f)
-                line->heightDirty = true;
+                // Otherwise only line level recalculations are needed
+                d_glyphs[i].advance += diff;
+                line.extents.d_width += diff;
+                line.horzFmtDirty = true;
+            }
         }
     }
 }
@@ -412,7 +379,26 @@ void RenderedTextParagraph::onElementWidthChanged(size_t elementIndex, float dif
 //----------------------------------------------------------------------------//
 void RenderedTextParagraph::onElementHeightChanged(size_t elementIndex, float diff)
 {
-    //
+    if (d_linesDirty)
+        return;
+
+    uint32_t i = 0;
+    for (auto& line : d_lines)
+    {
+        while (i < line.glyphEndIdx)
+        {
+            if (elementIndex == d_glyphs[i].elementIndex)
+            {
+                // Invalidate line height and skip to the next line immediately
+                line.heightDirty = true;
+                i = line.glyphEndIdx;
+            }
+            else
+            {
+                ++i;
+            }
+        }
+    }
 }
 
 //----------------------------------------------------------------------------//

@@ -36,14 +36,14 @@ void RenderedTextElement::applyVerticalFormatting(float lineHeight, glm::vec2& p
     {
         case VerticalImageFormatting::BottomAligned:
         {
-            const float heightPadded = getHeight() + getTopPadding() + getBottomPadding();
+            const float heightPadded = getHeight();
             pos.y += lineHeight - heightPadded;
             heightScale = 1.f;
             break;
         }
         case VerticalImageFormatting::CentreAligned:
         {
-            const float heightPadded = getHeight() + getTopPadding() + getBottomPadding();
+            const float heightPadded = getHeight();
             pos.y += (lineHeight - heightPadded) * 0.5f;
             heightScale = 1.f;
             break;
@@ -51,14 +51,12 @@ void RenderedTextElement::applyVerticalFormatting(float lineHeight, glm::vec2& p
         case VerticalImageFormatting::Stretched:
         {
             const float padding = getTopPadding() + getBottomPadding();
-            const float height = getHeight();
+            const float height = getHeight() - padding;
             heightScale = (height > 0.f) ? ((lineHeight - padding) / height) : 0.f;
             break;
         }
-
-            // TODO TEXT: Tiled, at least for embedded images?
-
-            // TopAligned requires no operations
+        // TopAligned requires no operations
+        // Tiled is not supported here
     }
 }
 

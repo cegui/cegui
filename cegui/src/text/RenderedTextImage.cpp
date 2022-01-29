@@ -41,24 +41,27 @@ float RenderedTextImage::getGlyphWidth(const RenderedGlyph& glyph) const
 //----------------------------------------------------------------------------//
 float RenderedTextImage::getHeight() const
 {
-    return (!d_image) ? 0.f :
-        (d_size.d_height > 0.f) ? d_size.d_height :
-        d_image->getRenderedSize().d_height;
+    return d_effectiveSize.d_height;
 }
 
 //----------------------------------------------------------------------------//
-Sizef RenderedTextImage::updateMetrics()
+Sizef RenderedTextImage::updateMetrics(const Window* /*hostWindow*/)
 {
-    Sizef newSize;
+    const Sizef oldSize = d_effectiveSize;
     if (d_image)
     {
-        newSize.d_width = (d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width;
-        newSize.d_height = (d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height;
+        d_effectiveSize.d_width = ((d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width)
+            + getLeftPadding() + getRightPadding();
+        d_effectiveSize.d_height = ((d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height)
+            + getTopPadding() + getBottomPadding();
+    }
+    else
+    {
+        d_effectiveSize.d_width = 0.f;
+        d_effectiveSize.d_height = 0.f;
     }
 
-    const auto diff = newSize - d_effectiveSize;
-    d_effectiveSize = newSize;
-    return diff;
+    return d_effectiveSize - oldSize;
 }
 
 //----------------------------------------------------------------------------//
