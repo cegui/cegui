@@ -32,44 +32,61 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-void RenderedTextImage::setupGlyph(RenderedGlyph& glyph, const Window* /*hostWindow*/) const
+float RenderedTextImage::getGlyphWidth(const RenderedGlyph& glyph) const
 {
-    if (d_image)
+    //???TODO TEXT: or return actual current width?!
+    return glyph.advance;
+}
+
+//----------------------------------------------------------------------------//
+float RenderedTextImage::getHeight() const
+{
+    return (!d_image) ? 0.f :
+        (d_size.d_height > 0.f) ? d_size.d_height :
+        d_image->getRenderedSize().d_height;
+}
+
+//----------------------------------------------------------------------------//
+Sizef RenderedTextImage::updateMetrics(RenderedGlyph* begin, size_t count)
+{
+    const float newAdvance = (!d_image) ? 0.f :
+        (d_size.d_width > 0.f) ? d_size.d_width :
+        d_image->getRenderedSize().d_width;
+    const float newHeight = (!d_image) ? 0.f :
+        (d_size.d_height > 0.f) ? d_size.d_height :
+        d_image->getRenderedSize().d_height;
+
+    Sizef diff(0.f, newHeight - d_height);
+
+    d_height = newHeight;
+
+    const RenderedGlyph* end = begin + count;
+    for (auto glyph = begin; glyph != end; ++glyph)
     {
-        const float imgWidth = (d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width;
-        const float imgHeight = (d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height;
-        glyph.advance = imgWidth + getLeftPadding() + getRightPadding();
-        glyph.height = imgHeight + getTopPadding() + getBottomPadding();
-    }
-    else
-    {
-        glyph.advance = 0.f;
-        glyph.height = 0.f;
+        diff.d_width += newAdvance - glyph->advance;
+        glyph->advance = newAdvance;
+
+        glyph->isJustifyable = false;
+        glyph->isWhitespace = false;
     }
 
-    glyph.isEmbeddedObject = true;
-    glyph.isJustifyable = false;
-    glyph.isWhitespace = false;
-
-    //!!!TODO TEXT: how must be padding applied to RTL objects? Should L/R padding be inverted or not?
-    //if (glyph.isRightToLeft) ...
+    return diff;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedTextImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const RenderedGlyph& glyph, const glm::vec2& pos, const ColourRect* modColours,
-    const Rectf* clipRect, float heightScale, size_t canCombineFromIdx) const
+    const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,
+    const Rectf* clipRect, float lineHeight, float justifySpaceSize, size_t canCombineFromIdx) const
 {
     if (!d_image)
         return;
 
-    ColourRect finalColours = d_colours;
-    if (modColours)
-        finalColours *= *modColours;
-
     const float imgWidth = (d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width;
     const float imgHeight = (d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height;
-    ImageRenderSettings settings(Rectf(pos.x, pos.y, imgWidth, imgHeight * heightScale), clipRect, finalColours);
+    ImageRenderSettings settings(Rectf(pos.x, pos.y, imgWidth, imgHeight * heightScale), clipRect, d_colours);
+    if (modColours)
+        settings.d_multiplyColours *= *modColours;
+
     d_image->createRenderGeometry(out, settings);
 }
 

@@ -30,24 +30,11 @@
 #include "CEGUI/RenderedStringImageComponent.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/Font.h"
+#include "CEGUI/FontGlyph.h"
 #include <algorithm>
 
 namespace CEGUI
 {
-
-//----------------------------------------------------------------------------//
-// Calculate the full width of the glyph, including padding
-static float getGlyphFullWidth(const RenderedGlyph& glyph, const std::vector<RenderedTextElementPtr>& elements)
-{
-    if (glyph.isEmbeddedObject)
-        return glyph.advance;
-
-    // For text glyphs the full width may be greater than advance due to kerning
-    float visualWidth = glyph.image ? glyph.image->getRenderedSize().d_width : 0.f;
-    if (auto element = elements[glyph.elementIndex].get())
-        visualWidth += (element->getLeftPadding() + element->getRightPadding());
-    return std::max(glyph.advance, visualWidth);
-}
 
 //----------------------------------------------------------------------------//
 void RenderedTextParagraph::setupGlyphs(const std::u32string& text, const std::vector<size_t>& originalIndices,
@@ -86,7 +73,8 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text, const std::v
             glyph.offset += element->getPadding().getPosition();
             glyph.advance += element->getLeftPadding() + element->getRightPadding();
 
-            elements[glyph.elementIndex]->setupGlyph(glyph);
+            //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
+            //if (glyph.isRightToLeft) ...
         }
     }
 }
@@ -120,33 +108,26 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
     uint32_t lineStartGlyphIdx = 0;
     for (const auto& line : d_lines)
     {
+        penPosition.x += line.horzOffset;
+
         size_t i = lineStartGlyphIdx;
 
-        // Skip leading whitespaces in word wrapped lines
-        if (lineStartGlyphIdx)
+        //!!!FIXME TEXT: if do this, need to do the same when counting line width!
+        //// Skip leading whitespaces in word wrapped lines
+        //if (lineStartGlyphIdx)
+        //    while (i < line.glyphEndIdx && d_glyphs[i].isWhitespace)
+        //        ++i;
+
+        // Render glyph chunks using their associated elements
+        while (i < line.glyphEndIdx)
         {
-            for (; i < line.glyphEndIdx; ++i)
-                if (!d_glyphs[i].isWhitespace)
-                    break;
-        }
+            const auto startElementIdx = d_glyphs[i].elementIndex;
+            const auto start = i;
+            do ++i; while (i < line.glyphEndIdx && d_glyphs[i].elementIndex == startElementIdx);
 
-        for (; i < line.glyphEndIdx; ++i)
-        {
-            const auto& glyph = d_glyphs[i];
-
-            auto element = elements[glyph.elementIndex].get();
-            if (!element)
-                continue;
-
-            auto pos = penPosition;
-            float heightScale = 1.f;
-            element->applyVerticalFormatting(line.extents.d_height, pos, heightScale);
-            element->createRenderGeometry(out, glyph, pos, modColours, clipRect, heightScale, canCombineFromIdx);
-
-            penPosition.x += glyph.advance;
-
-            if (glyph.isJustifyable)
-                penPosition.x += line.justifySpaceSize;
+            if (auto element = elements[startElementIdx].get())
+                element->createRenderGeometry(out, &d_glyphs[start], i - start, penPosition,
+                    modColours, clipRect, line.extents.d_height, line.justifySpaceSize, canCombineFromIdx);
         }
 
         // Move the pen to the new line
@@ -158,43 +139,43 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
 }
 
 //----------------------------------------------------------------------------//
-void RenderedTextParagraph::updateEmbeddedObjectExtents(const std::vector<RenderedTextElementPtr>& elements, const Window* hostWindow)
+void RenderedTextParagraph::updateMetrics(const std::vector<RenderedTextElementPtr>& elements, const Window* hostWindow)
 {
-    for (size_t i = 0; i < d_glyphs.size(); ++i)
+    uint32_t lineStartGlyphIdx = 0;
+    for (const auto& line : d_lines)
     {
-        auto& glyph = d_glyphs[i];
+        size_t i = lineStartGlyphIdx;
 
-        if (!glyph.isEmbeddedObject)
-            continue;
-
-        auto element = elements[glyph.elementIndex].get();
-        if (!element)
-            continue;
-
-        const float prevWidth = glyph.advance;
-        const float prevHeight = glyph.height;
-
-        element->setupGlyph(glyph, hostWindow);
-
-        // Any width change in a word wrapped paragraph may lead to line changes
-        if (!d_linesDirty && d_wordWrap && glyph.advance != prevWidth)
-            d_linesDirty = true;
-
-        // Otherwise much lighter recalculations are needed
-        if (!d_linesDirty)
+        while (i < line.glyphEndIdx)
         {
-            if (auto line = getGlyphLine(i))
-            {
-                if (glyph.advance != prevWidth)
-                {
-                    line->extents.d_width += (glyph.advance - prevWidth);
-                    line->horzFmtDirty = true;
-                }
+            const auto startElementIdx = d_glyphs[i].elementIndex;
+            const auto start = i;
+            do ++i; while (i < line.glyphEndIdx && d_glyphs[i].elementIndex == startElementIdx);
 
-                if (glyph.height != prevHeight)
-                    line->heightDirty = true;
+            const auto diff = elements[startElementIdx]->updateMetrics(&d_glyphs[start], i - start);
+
+            // Any width change in a word wrapped paragraph may lead to changes in wrapping
+            if (d_wordWrap && !d_linesDirty && diff.d_width != 0.f)
+                d_linesDirty = true;
+
+            // Otherwise much lighter recalculations are needed
+            if (!d_linesDirty)
+            {
+                if (auto line = getGlyphLine(i))
+                {
+                    if (diff.d_width != 0.f)
+                    {
+                        line->extents.d_width += diff.d_width;
+                        line->horzFmtDirty = true;
+                    }
+
+                    if (diff.d_height != 0.f)
+                        line->heightDirty = true;
+                }
             }
         }
+
+        lineStartGlyphIdx = line.glyphEndIdx;
     }
 }
 
@@ -234,7 +215,7 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
         // Break too long lines if word wrapping is enabled
         if (d_wordWrap)
         {
-            const float glyphWidth = getGlyphFullWidth(glyph, elements);
+            const float glyphWidth = elements[glyph.elementIndex]->getGlyphWidth(glyph);
 
             float excessWidth = currLine->extents.d_width + glyphWidth - areaWidth;
             if (excessWidth > 0.f)
@@ -303,7 +284,7 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
 
     // Calculate the full width of the last glyph if not done during word wrapping
     if (!d_wordWrap)
-        prevGlyphWidth = getGlyphFullWidth(d_glyphs.back(), elements);
+        prevGlyphWidth = elements[d_glyphs.back().elementIndex]->getGlyphWidth(d_glyphs.back());
 
     // Count full width for the last glyph in a line
     currLine->extents.d_width += (prevGlyphWidth - d_glyphs.back().advance);
@@ -315,50 +296,52 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
 }
 
 //----------------------------------------------------------------------------//
-void RenderedTextParagraph::updateLineHeights(float defaultFontHeight)
+void RenderedTextParagraph::updateLineHeights(const std::vector<RenderedTextElementPtr>& elements, float defaultFontHeight)
 {
     if (d_linesDirty)
         return;
 
-    uint32_t lineStartGlyphIdx = 0;
+    uint32_t i = 0;
     for (auto& line : d_lines)
     {
         if (!line.heightDirty)
         {
-            lineStartGlyphIdx = line.glyphEndIdx;
+            i = line.glyphEndIdx;
             continue;
         }
 
         line.heightDirty = false;
 
-        if (lineStartGlyphIdx == line.glyphEndIdx)
+        if (i == line.glyphEndIdx)
         {
-            // An empty line uses the height of the previous text glyph
-            uint32_t i = lineStartGlyphIdx;
-            for (; i > 0; --i)
+            // An empty line has the height of the previous glyph's font
+            if (i)
             {
-                if (!d_glyphs[i].isEmbeddedObject)
-                {
-                    line.extents.d_height = d_glyphs[i].height;
-                    break;
-                }
+                const auto fontSrc = elements[d_glyphs[i - 1].elementIndex].get();
+                line.extents.d_height = fontSrc->getFont()->getFontHeight() +
+                    fontSrc->getTopPadding() + fontSrc->getBottomPadding();
             }
-
-            if (!i)
-                line.extents.d_height = (!d_glyphs[i].isEmbeddedObject) ? d_glyphs[i].height : defaultFontHeight;
+            else
+            {
+                line.extents.d_height = defaultFontHeight;
+            }
         }
         else
         {
+            // A non-empty line has the height of the tallest element in it
             line.extents.d_height = 0.f;
-            for (size_t i = lineStartGlyphIdx; i < line.glyphEndIdx; ++i)
+            while (i < line.glyphEndIdx)
             {
-                const float glyphHeight = d_glyphs[i].height;
-                if (line.extents.d_height < glyphHeight)
-                    line.extents.d_height = glyphHeight;
+                // Count height of the current element
+                const auto elementIdx = d_glyphs[i].elementIndex;
+                const float height = elements[elementIdx]->getHeight();
+                if (line.extents.d_height < height)
+                    line.extents.d_height = height;
+
+                // Skip to the next element
+                do ++i; while (i < line.glyphEndIdx && d_glyphs[i].elementIndex == elementIdx);
             }
         }
-
-        lineStartGlyphIdx = line.glyphEndIdx;
     }
 }
 

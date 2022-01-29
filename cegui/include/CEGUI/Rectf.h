@@ -168,6 +168,14 @@ public:
         return d_max.y - d_min.y;
     }
 
+    inline void set(const glm::vec2& pos, const Sizef& size)
+    {
+        d_min.x = pos.x;
+        d_min.y = pos.y;
+        d_max.x = pos.x + size.d_width;
+        d_max.y = pos.y + size.d_height;
+    }
+
     bool empty() const { return d_max.x <= d_min.x || d_max.y <= d_min.y; }
 
     /*!

@@ -44,11 +44,10 @@ using RenderedTextElementPtr = std::unique_ptr<class RenderedTextElement>;
 
 struct CEGUIEXPORT RenderedGlyph
 {
-    const Image* image; //!< Actual graphics of this glyph, may be nullptr for missing font glyphs and some embedded objects
+    const FontGlyph* fontGlyph; //!< Actual font glyph, may be nullptr for missing glyphs and for embedded objects
 
     glm::vec2 offset; //!< Offset from the current pen position where the content must be drawn
     float advance;    //!< Shift to be applied to the pen after drawing this glyph
-    float height;     //!< The full height of this glyph, including padding, used for vertical alignment
 
     uint32_t sourceIndex;  //!< Starting index of the corresponding sequence in the logical text
     uint16_t elementIndex; //!< Index of controlling RenderedTextElement, stored instead of pointer to reduce struct size
@@ -57,7 +56,6 @@ struct CEGUIEXPORT RenderedGlyph
     bool isBreakable : 1;      //!< This glyph can be transferred to the next line due to word wrapping
     bool isWhitespace : 1;     //!< This glyph is a whitespace that should not be rendered at the wrapped line start
     bool isRightToLeft : 1;    //!< Is this glyph directed from right to left? This affects caret etc.
-    bool isEmbeddedObject : 1; //!< Is this glyph a placeholder for an embedded object
 };
 
 class CEGUIEXPORT RenderedTextParagraph
@@ -79,12 +77,12 @@ public:
     void createRenderGeometry(std::vector<GeometryBuffer*>& out, glm::vec2& penPosition,
         const ColourRect* modColours, const Rectf* clipRect, const std::vector<RenderedTextElementPtr>& elements) const;
 
-    //! Update extents of dynamically sizeable objects
-    void updateEmbeddedObjectExtents(const std::vector<RenderedTextElementPtr>& elements, const Window* hostWindow);
+    //! Update metrics of dynamically sizeable objects
+    void updateMetrics(const std::vector<RenderedTextElementPtr>& elements, const Window* hostWindow);
     //! Build paragraph lines with optional word wrapping, cache line widths
     void updateLines(const std::vector<RenderedTextElementPtr>& elements, float areaWidth);
     //! Update cached line heights
-    void updateLineHeights(float defaultFontHeight);
+    void updateLineHeights(const std::vector<RenderedTextElementPtr>& elements, float defaultFontHeight);
     //! Update horizontal alignment of lines
     void updateHorizontalFormatting(float areaWidth);
 

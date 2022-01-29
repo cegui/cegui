@@ -35,18 +35,26 @@ void RenderedTextElement::applyVerticalFormatting(float lineHeight, glm::vec2& p
     switch (d_verticalFormatting)
     {
         case VerticalImageFormatting::BottomAligned:
-            pos.y += lineHeight - glyph.height;
+        {
+            const float heightPadded = getHeight() + getTopPadding() + getBottomPadding();
+            pos.y += lineHeight - heightPadded;
             heightScale = 1.f;
             break;
-
+        }
         case VerticalImageFormatting::CentreAligned:
-            pos.y += (lineHeight - glyph.height) * 0.5f;
+        {
+            const float heightPadded = getHeight() + getTopPadding() + getBottomPadding();
+            pos.y += (lineHeight - heightPadded) * 0.5f;
             heightScale = 1.f;
             break;
-
+        }
         case VerticalImageFormatting::Stretched:
-            heightScale = (glyph.height > 0.f) ? (lineHeight / glyph.height) : 0.f;
+        {
+            const float padding = getTopPadding() + getBottomPadding();
+            const float height = getHeight();
+            heightScale = (height > 0.f) ? ((lineHeight - padding) / height) : 0.f;
             break;
+        }
 
             // TODO TEXT: Tiled, at least for embedded images?
 

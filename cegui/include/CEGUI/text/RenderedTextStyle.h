@@ -36,29 +36,33 @@
 namespace CEGUI
 {
 
-//! A text element that represents styled text glyphs
+//! A text element that represents a style for rendering text glyphs
 class CEGUIEXPORT RenderedTextStyle : public RenderedTextElement
 {
 public:
 
-    RenderedTextStyle(const Font* font = nullptr) : d_font(font) {}
+    RenderedTextStyle(const Font* font = nullptr) { d_font = font; }
 
-    const Font* getFont() const { return d_font; }
+    virtual float getGlyphWidth(const RenderedGlyph& glyph) const override;
+    virtual float getHeight() const override;
 
-    virtual void setupGlyph(RenderedGlyph& glyph, const Window* hostWindow = nullptr) const override;
+    virtual Sizef updateMetrics(RenderedGlyph* begin, size_t count) override { return {}; }
 
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const RenderedGlyph& glyph, const glm::vec2& pos, const ColourRect* modColours,
-        const Rectf* clipRect, float heightScale, size_t canCombineFromIdx) const override;
+        const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,
+        const Rectf* clipRect, float lineHeight, float justifySpaceSize, size_t canCombineFromIdx) const override;
 
     virtual RenderedTextElementPtr clone() const override;
 
 protected:
 
-    const Font* d_font = nullptr;
-    ColourRect d_colours = 0xFFFFFFFF; //???TODO TEXT: need rect? how will look?
-
-    //!!!TODO TEXT: outlines, underline, strikeout, bg color etc!
+    ColourRect d_colours = 0xFFFFFFFF;
+    ColourRect d_backgroundColours = 0xFFFFFFFF;
+    ColourRect d_outlineColours = 0xFFFFFFFF;
+    float d_outlineSize = 0.f;
+    bool d_underline = false;
+    bool d_strikeout = false;
+    bool d_drawBackground = false;
 };
 
 }

@@ -43,11 +43,14 @@ public:
 
     RenderedTextImage(const Image* image) : d_image(image) {}
 
-    virtual void setupGlyph(RenderedGlyph& glyph, const Window* hostWindow = nullptr) const override;
+    virtual float getGlyphWidth(const RenderedGlyph& glyph) const override;
+    virtual float getHeight() const override;
+
+    virtual Sizef updateMetrics(RenderedGlyph* begin, size_t count) override;
 
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const RenderedGlyph& glyph, const glm::vec2& pos, const ColourRect* modColours,
-        const Rectf* clipRect, float heightScale, size_t canCombineFromIdx) const override;
+        const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,
+        const Rectf* clipRect, float lineHeight, float justifySpaceSize, size_t canCombineFromIdx) const override;
 
     virtual RenderedTextElementPtr clone() const override;
 
@@ -56,6 +59,7 @@ protected:
     const Image* d_image = nullptr;
     ColourRect d_colours = 0xFFFFFFFF;   
     Sizef d_size; //<! target size to render the image at (0.f means natural size at the dimension)
+    float d_height = 0.f;
 };
 
 }
