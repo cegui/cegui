@@ -49,35 +49,8 @@ RenderedText::RenderedText(RenderedText&&) noexcept = default;
 RenderedText& RenderedText::operator =(RenderedText&&) noexcept = default;
 
 //----------------------------------------------------------------------------//
-static const Font* getFontAtIndex(size_t i, const std::vector<uint16_t>& elementIndices,
-    const std::vector<RenderedTextElementPtr>& elements,
-    size_t& currFontSourceIdx, const Font* currFont)
-{
-    // Characters without an associated element use the default font
-    if (i >= elementIndices.size())
-        return nullptr;
-
-    const auto charElementIdx = elementIndices[i];
-
-    // Font couldn't change if the source element didn't
-    if (currFontSourceIdx == charElementIdx)
-        return currFont;
-
-    //???TODO TEXT: isEmbeddedObject can be set here or even pre-calculated before this!
-    auto textStyle = dynamic_cast<const RenderedTextStyle*>(elements[charElementIdx].get());
-
-    // Non-text elements have no font and are skipped
-    if (!textStyle)
-        return currFont;
-
-    currFontSourceIdx = charElementIdx;
-
-    return textStyle->getFont();
-}
-
-//----------------------------------------------------------------------------//
 static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& text,
-    size_t start, size_t end, const Font* defaultFont, DefaultParagraphDirection dir,
+    size_t start, size_t end, DefaultParagraphDirection dir,
     const std::vector<uint16_t>& elementIndices,
     const std::vector<RenderedTextElementPtr>& elements)
 {
@@ -99,7 +72,6 @@ static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& te
 
     out.d_glyphs.resize(end - start);
 
-    size_t currFontSourceIdx = std::numeric_limits<size_t>().max(); // NB: intentionally invalid, elementIndices are uint16_t
     const Font* currFont = nullptr;
     const FontGlyph* prevGlyph = nullptr;
 
@@ -117,14 +89,9 @@ static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& te
         auto& renderedGlyph = out.d_glyphs[i - start];
 
         // Get a font for the current character
-        const Font* font = getFontAtIndex(logicalIndex, elementIndices, elements, currFontSourceIdx, currFont);
+        const Font* font = elements[elementIndices[std::min(logicalIndex, elementIndices.size() - 1)]]->getFont();
         if (!font)
-        {
-            if (!defaultFont)
-                return false;
-
-            font = defaultFont;
-        }
+            return false;
 
         const FontGlyph* fontGlyph = font->getGlyphForCodepoint(codePoint, true);
         if (!fontGlyph)
@@ -133,13 +100,13 @@ static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& te
         if (fontGlyph)
         {
             const float kerning = font->getKerning(prevGlyph, *fontGlyph);
-            renderedGlyph.image = fontGlyph->getImage(0);
+            renderedGlyph.fontGlyph = fontGlyph;
             renderedGlyph.offset.x = kerning;
             renderedGlyph.advance = fontGlyph->getAdvance() + kerning;
         }
         else
         {
-            renderedGlyph.image = nullptr;
+            renderedGlyph.fontGlyph = nullptr;
             renderedGlyph.offset.x = 0.f;
             renderedGlyph.advance = 0.f;
         }
@@ -160,7 +127,7 @@ static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& te
 //----------------------------------------------------------------------------//
 #ifdef CEGUI_USE_RAQM
 static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32string& text,
-    size_t start, size_t end, const Font* defaultFont, DefaultParagraphDirection dir,
+    size_t start, size_t end, DefaultParagraphDirection dir,
     const std::vector<uint16_t>& elementIndices,
     const std::vector<RenderedTextElementPtr>& elements, raqm_t*& rq)
 {
@@ -171,7 +138,7 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
     if (start >= elementIdxCount)
     {
         // Only freetype fonts can be laid out with raqm
-        auto ftDefaultFont = dynamic_cast<const FreeTypeFont*>(defaultFont);
+        auto ftDefaultFont = dynamic_cast<const FreeTypeFont*>(elements.back()->getFont());
         if (!ftDefaultFont)
             return false;
 
@@ -181,19 +148,13 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
     {
         fontRanges.reserve(16);
         size_t fontLen = 0;
-        size_t currFontSourceIdx = std::numeric_limits<size_t>().max(); // NB: intentionally invalid, elementIndices are uint16_t
         const FreeTypeFont* currFont = nullptr;
         for (size_t i = start; i < end; ++i)
         {
             // Get a font for the current character
-            const Font* charFont = getFontAtIndex(i, elementIndices, elements, currFontSourceIdx, currFont);
+            const Font* charFont = elements[elementIndices[std::min(i, elementIndices.size() - 1)]]->getFont();
             if (!charFont)
-            {
-                if (!defaultFont)
-                    return false;
-
-                charFont = defaultFont;
-            }
+                return false;
 
             if (charFont != currFont)
             {
@@ -285,7 +246,7 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
         // A multiplication coefficient to convert 26.6 fixed point values into normal floats
         constexpr float s_26dot6_toFloat = (1.0f / 64.f);
 
-        renderedGlyph.image = fontGlyph ? fontGlyph->getImage(0) : nullptr;
+        renderedGlyph.fontGlyph = fontGlyph;
         renderedGlyph.sourceIndex = static_cast<uint32_t>(rqGlyph.cluster + start);
         renderedGlyph.offset.x = rqGlyph.x_offset * s_26dot6_toFloat;
         renderedGlyph.offset.y = rqGlyph.y_offset * s_26dot6_toFloat + font->getBaseline();
@@ -329,12 +290,18 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
 
     // There are characters without associated text style. Add a default one.
     if (elementIndices.size() < utf32Text.size())
+        d_elements.emplace_back(new RenderedTextStyle());
+
+    // Characters without an explicit font ust use a default font
+    for (auto& element : d_elements)
     {
-        // Characters without explicit styles require a default font
+        if (element->getFont())
+            continue;
+
         if (!defaultFont)
             return false;
 
-        d_elements.emplace_back(new RenderedTextStyle(defaultFont));
+        element->setFont(defaultFont);
     }
 
 #ifdef CEGUI_USE_RAQM
@@ -357,10 +324,10 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
         {
             // Create and setup a sequence of CEGUI glyphs for this paragraph
 #ifdef CEGUI_USE_RAQM
-            if (!layoutParagraphWithRaqm(d_paragraphs.back(), utf32Text, start, end, defaultFont, defaultParagraphDir,
+            if (!layoutParagraphWithRaqm(d_paragraphs.back(), utf32Text, start, end, defaultParagraphDir,
                 elementIndices, d_elements, rq))
 #endif
-                layoutParagraph(d_paragraphs.back(), utf32Text, start, end, defaultFont, defaultParagraphDir,
+                layoutParagraph(d_paragraphs.back(), utf32Text, start, end, defaultParagraphDir,
                     elementIndices, d_elements);
 
             d_paragraphs.back().setupGlyphs(utf32Text, originalIndices, elementIndices, d_elements);
@@ -388,19 +355,27 @@ bool RenderedText::format(float areaWidth, const Window* hostWindow)
         return false;
 
     const bool areaWidthChanged = (d_areaWidth != areaWidth);
-
     d_areaWidth = areaWidth;
 
-    bool fitsIntoAreaWidth = true;
+    //!!!TODO TEXT: now we do this in a poll mode! can react on events instead?! sub per element is not expensive!
+    for (auto& element : d_elements)
+    {
+        //check w/h changes, set dirty flags in using paragraphs/lines
+        // text elements never report any changes
+        // image elements report changes when image size is 'from source' and changes
+        // widget elements report changes when the widget itself or its size changed
+    }
 
+    bool fitsIntoAreaWidth = true;
     for (auto& p : d_paragraphs)
     {
+        p.updateMetrics(d_elements, hostWindow);
+
         if (areaWidthChanged)
             p.onAreaWidthChanged();
 
-        p.updateEmbeddedObjectExtents(d_elements, hostWindow);
         p.updateLines(d_elements, areaWidth);
-        p.updateLineHeights(d_defaultFont->getFontHeight());
+        p.updateLineHeights(d_elements, d_defaultFont->getFontHeight());
         p.updateHorizontalFormatting(areaWidth);
 
         fitsIntoAreaWidth &= p.isFittingIntoAreaWidth();

@@ -27,41 +27,76 @@
 #include "CEGUI/text/RenderedTextStyle.h"
 #include "CEGUI/text/RenderedTextParagraph.h"
 #include "CEGUI/Font.h"
+#include "CEGUI/FontGlyph.h"
 
 namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-void RenderedTextStyle::setupGlyph(RenderedGlyph& glyph, const Window* /*hostWindow*/) const
+float RenderedTextStyle::getGlyphWidth(const RenderedGlyph& glyph) const
 {
-    glyph.height = d_font->getFontHeight() + getTopPadding() + getBottomPadding();
+    const Image* image = glyph.fontGlyph ? glyph.fontGlyph->getImage(0) : nullptr;
+    const float visualWidth = image ? image->getRenderedSize().d_width : 0.f;
+    return std::max(glyph.advance, visualWidth + getLeftPadding() + getRightPadding());
+}
 
-    glyph.isEmbeddedObject = false;
-
-    //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
-    //if (glyph.isRightToLeft) ...
+//----------------------------------------------------------------------------//
+float RenderedTextStyle::getHeight() const
+{
+    return d_font ? d_font->getFontHeight() : 0.f;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const RenderedGlyph& glyph, const glm::vec2& pos, const ColourRect* modColours,
-    const Rectf* clipRect, float heightScale, size_t canCombineFromIdx) const
+    const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,
+    const Rectf* clipRect, float lineHeight, float justifySpaceSize, size_t canCombineFromIdx) const
 {
-    //!!!TODO TEXT: draw main glyph, draw outlines, underline, strikeout!
+    glm::vec2 pos = penPosition;
+    float heightScale = 1.f;
+    applyVerticalFormatting(lineHeight, pos, heightScale);
 
-    // Render the main image of the glyph
-    if (glyph.image) //!!!FIXME TEXT: glyph image may change!? store font glyph ptr instead!
+    //!!!TODO TEXT: ensure that necessary adjustment happens before this, or enable alignToPixels here!
+    ImageRenderSettings settings(Rectf(), clipRect, d_colours);//, 1.f, true);
+    if (modColours)
+        settings.d_multiplyColours *= *modColours;
+
+    const RenderedGlyph* end = begin + count;
+    for (auto glyph = begin; glyph != end; ++glyph)
     {
-        //???!!!TODO TEXT: can do some operations once per element, not per glyph?!
-        //valign, color calculation etc?! maybe pass glyph ranges here?!
-        ColourRect finalColours = d_colours;
-        if (modColours)
-            finalColours *= *modColours;
+        // Render the main image of the glyph
+        if (glyph->fontGlyph)
+        {
+            if (auto image = glyph->fontGlyph->getImage(0))
+            {
+                Sizef size = image->getRenderedSize();
+                size.d_height *= heightScale;
+                settings.d_destArea.set(pos + glyph->offset, size);
+                image->createRenderGeometry(out, settings, canCombineFromIdx);
+            }
 
-        //!!!TODO TEXT: ensure that necessary adjustment happens before this, or enable alignToPixels here
-        ImageRenderSettings settings(Rectf(pos + glyph.offset, glyph.image->getRenderedSize()), clipRect, finalColours);//, 1.f, true);
-        glyph.image->createRenderGeometry(out, settings, canCombineFromIdx);
+            if (d_outlineSize > 0.f)
+            {
+                // TODO TEXT: draw outline, or do this before main graphics?
+                //???draw all outlines, then all main glyphs, to simplify buffer combining?
+            }
+        }
+
+        pos.x += glyph->advance;
+        if (glyph->isJustifyable)
+            pos.x += justifySpaceSize;
     }
+
+    if (d_underline)
+    {
+        // TODO TEXT: draw underline
+    }
+
+    if (d_strikeout)
+    {
+        // TODO TEXT: draw strikeout
+    }
+
+    penPosition.x = pos.x;
 }
 
 //----------------------------------------------------------------------------//

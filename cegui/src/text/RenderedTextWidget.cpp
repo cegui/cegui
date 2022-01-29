@@ -32,39 +32,22 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-void RenderedTextWidget::setupGlyph(RenderedGlyph& glyph, const Window* hostWindow) const
+float RenderedTextWidget::getGlyphWidth(const RenderedGlyph& glyph) const
 {
-    if (const Window* window = hostWindow ? hostWindow->findChild(d_widgetName) : nullptr)
-    {
-        glyph.advance = window->getPixelSize().d_width + getLeftPadding() + getRightPadding();
-        glyph.height = window->getPixelSize().d_height + getTopPadding() + getBottomPadding();
-        //glyph.userData = nullptr; 
-    }
-    else
-    {
-        glyph.advance = 0.f;
-        glyph.height = 0.f;
-        //glyph.userData = nullptr; 
-    }
-
-    glyph.isEmbeddedObject = true;
-    glyph.isJustifyable = false;
-    glyph.isWhitespace = false;
-
-    //!!!TODO TEXT: how must be padding applied to RTL objects? Should L/R padding be inverted or not?
-    //if (glyph.isRightToLeft) ...
+    //???TODO TEXT: or return actual current width?!
+    return glyph.advance;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedTextWidget::createRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const RenderedGlyph& glyph, const glm::vec2& pos, const ColourRect* modColours,
-    const Rectf* clipRect, float heightScale, size_t canCombineFromIdx) const
+    const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,
+    const Rectf* clipRect, float lineHeight, float justifySpaceSize, size_t canCombineFromIdx) const
 {
     Window* window = nullptr; //!!!DBG TMP! must get from glyph.userData;
     if (!window)
         return;
 
-    glm::vec2 finalPos = pos;
+    glm::vec2 finalPos = penPosition;
 
     // Re-adjust for inner-rect of parent
     if (const Window* parent = window->getParent())
@@ -73,6 +56,8 @@ void RenderedTextWidget::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     // We do not actually draw the widget, we just move it into position
     const glm::vec2 wposAbs = finalPos + d_padding.d_min;
     window->setPosition(UVector2(UDim(0, wposAbs.x), UDim(0, wposAbs.y)));
+
+    penPosition.x += begin->advance;
 }
 
 //----------------------------------------------------------------------------//

@@ -50,11 +50,14 @@ public:
 
     virtual ~RenderedTextElement() = default;
 
-    virtual void setupGlyph(RenderedGlyph& glyph, const Window* hostWindow = nullptr) const = 0;
+    virtual float getGlyphWidth(const RenderedGlyph& glyph) const = 0;
+    virtual float getHeight() const = 0;
+
+    virtual Sizef updateMetrics(RenderedGlyph* begin, size_t count) = 0;
 
     virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const RenderedGlyph& glyph, const glm::vec2& pos, const ColourRect* modColours,
-        const Rectf* clipRect, float heightScale, size_t canCombineFromIdx) const = 0;
+        const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,
+        const Rectf* clipRect, float lineHeight, float justifySpaceSize, size_t canCombineFromIdx) const = 0;
 
     virtual RenderedTextElementPtr clone() const = 0;
 
@@ -74,8 +77,12 @@ public:
 
     void applyVerticalFormatting(float lineHeight, glm::vec2& pos, float& heightScale) const;
 
+    void setFont(const Font* font) { d_font = font; }
+    const Font* getFont() const { return d_font; }
+
 protected:
 
+    const Font*             d_font = nullptr;
     Rectf                   d_padding = Rectf(0.f, 0.f, 0.f, 0.f);
     VerticalImageFormatting d_verticalFormatting = VerticalImageFormatting::BottomAligned;
 };
