@@ -148,7 +148,10 @@ void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf
     initColoursRect(srcWindow, modColours, finalColours);
 
     // add geometry for text to the target window.
-    d_formatter->createRenderGeometry(srcWindow.getGeometryBuffers(), &srcWindow, destRect.getPosition(), &finalColours, clipper);
+    //d_formatter->createRenderGeometry(srcWindow.getGeometryBuffers(), &srcWindow, destRect.getPosition(), &finalColours, clipper);
+
+    //!!!DBG TMP!
+    d_renderedText.createRenderGeometry(srcWindow.getGeometryBuffers(), destRect.getPosition(), &finalColours, clipper);
 }
 
 //----------------------------------------------------------------------------//
@@ -343,7 +346,6 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
     d_renderedText.renderText(getEffectiveText(srcWindow), nullptr, font, d_paragraphDir.get(srcWindow));
     d_renderedText.updateDynamicObjectExtents(&srcWindow);
     d_renderedText.updateFormatting(size.d_width);
-    d_renderedText.createRenderGeometry(const_cast<Window&>(srcWindow).getGeometryBuffers(), glm::vec2{ 0.f, 0.f }, nullptr, nullptr);
 }
 
 }
