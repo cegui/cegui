@@ -262,12 +262,11 @@ void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::findFittingSpotInGlyphTextureLines(int glyphWidth, int glyphHeight,
-    bool &fittingLineWasFound, size_t &fittingLineIndex) const 
+size_t FreeTypeFont::findTextureLineWithFittingSpot(int glyphWidth, int glyphHeight) const 
 {
     // Go through the lines and find one that fits
     const size_t lineCount =  d_textureGlyphLines.size();
-    for (size_t i = 0; i < lineCount && !fittingLineWasFound; ++i)
+    for (size_t i = 0; i < lineCount; ++i)
     {
         const auto& currentGlyphLine = d_textureGlyphLines[i];
 
@@ -284,19 +283,17 @@ void FreeTypeFont::findFittingSpotInGlyphTextureLines(int glyphWidth, int glyphH
                 if (curGlyphYEnd > currentGlyphLine.d_maximumExtentY)
                     currentGlyphLine.d_maximumExtentY = curGlyphYEnd;
 
-                fittingLineIndex = i;
-                fittingLineWasFound = true;
+                return i;
             }
             else
             {
                 if (curGlyphYEnd < currentGlyphLine.d_maximumExtentY)
-                {
-                    fittingLineIndex = i;
-                    fittingLineWasFound = true;
-                }
+                    return i;
             }
         }
     }
+
+    return lineCount;
 }
 
 //----------------------------------------------------------------------------//
@@ -306,15 +303,12 @@ void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap, int
     if (d_glyphTextures.empty())
         createGlyphAtlasTexture();
 
-    bool fittingLineWasFound = false;
-    size_t fittingLineIndex = -1;
+    size_t fittingLineIndex = findTextureLineWithFittingSpot(glyphWidth, glyphHeight);
 
-    findFittingSpotInGlyphTextureLines(glyphWidth, glyphHeight, fittingLineWasFound, fittingLineIndex);
+    if (fittingLineIndex >= d_textureGlyphLines.size())
+        fittingLineIndex = addNewLineIfFitting(glyphHeight, glyphWidth);
 
-    if (!fittingLineWasFound)
-        fittingLineWasFound = addNewLineIfFitting(glyphHeight, glyphWidth, fittingLineIndex);
-
-    if (!fittingLineWasFound)
+    if (fittingLineIndex >= d_textureGlyphLines.size())
     {
         createTextureSpaceForGlyphRasterisation(d_glyphTextures.back(), glyphWidth, glyphHeight);
         rasterise(glyph, ft_bitmap, glyphLeft, glyphTop, glyphWidth, glyphHeight, layer);
@@ -331,7 +325,7 @@ void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap, int
 }
 
 //----------------------------------------------------------------------------//
-bool FreeTypeFont::addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWidth, size_t& fittingLineIndex) const
+size_t FreeTypeFont::addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWidth) const
 {
     const auto& lastLine = d_textureGlyphLines.back();
 
@@ -345,11 +339,10 @@ bool FreeTypeFont::addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWidth
     {
         // Add the glyph in a new line
         d_textureGlyphLines.push_back(TextureGlyphLine(0, newLinePosY, newMaxYExtent));
-        fittingLineIndex = d_textureGlyphLines.size() - 1;
-        return true;
+        return d_textureGlyphLines.size() - 1;
     }
 
-    return false;
+    return d_textureGlyphLines.size();
 }
 
 //----------------------------------------------------------------------------//

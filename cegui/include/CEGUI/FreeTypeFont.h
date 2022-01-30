@@ -298,12 +298,8 @@ protected:
         int glyphWidth, int glyphHeight, uint32_t layer,
         const TextureGlyphLine& glyphTexLine) const;
 
-    void findFittingSpotInGlyphTextureLines(int glyphWidth, int glyphHeight,
-        bool &fittingLineWasFound, size_t &fittingLineIndex) const;
-
-    //! Adds a new glyph atlas line if the glyph would fit into there.
-    bool addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWidth,
-        size_t & fittingLineIndex) const;
+    size_t findTextureLineWithFittingSpot(int glyphWidth, int glyphHeight) const;
+    size_t addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWidth) const;
 
     void createGlyphAtlasTexture() const;
     static std::vector<argb_t> createGlyphTextureData(FT_Bitmap& glyph_bitmap);
