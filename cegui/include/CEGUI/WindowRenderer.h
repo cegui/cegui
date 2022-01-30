@@ -39,10 +39,9 @@
 
 namespace CEGUI
 {
-/*!
-\brief
-    Base-class for the assignable WindowRenderer object
-*/
+class TextParser;
+
+//! \brief Base class for the assignable WindowRenderer object
 class CEGUIEXPORT WindowRenderer
 {
 public:
@@ -151,8 +150,12 @@ public:
     */
     virtual bool handleFontRenderSizeChange(const Font* const font);
 
+    //!!!TODO TEXT: remove deprecated!
     //! Override this to provide an ability to assign custom rendered string parser to the window
     virtual RenderedStringParser* getCustomRenderedStringParser() const { return nullptr; }
+
+    //! Override this to provide an ability to assign custom rendered string parser to the window
+    virtual TextParser* getTextParser() const { return nullptr; }
 
     //! Override this to provide an ability to control visual text parsing
     virtual bool isTextParsingEnabled() const { return true; }

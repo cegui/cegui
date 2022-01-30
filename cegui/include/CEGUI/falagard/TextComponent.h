@@ -299,9 +299,9 @@ protected:
     //! helper to get the font object to use
     const Font* getFontObject(const Window& window) const;
     //! helper to get a rendered string parser for the current window
-    RenderedStringParser* getRenderedStringParser(const Window& window) const;
+    TextParser* getTextParser(const Window& window) const;
     //! Update rendered string from a logical text.
-    void updateRenderedString(const Window& srcWindow, const String& text, const Font* font) const;
+    void updateRenderedText(const Window& srcWindow, const String& text, const Font* font) const;
 
     /*!
     \brief
@@ -318,7 +318,7 @@ private:
 
     // Cache for avoiding redundant calulations
     mutable const Font* d_lastFont = nullptr;
-    mutable const RenderedStringParser* d_lastParser = nullptr;
+    mutable const TextParser* d_lastParser = nullptr;
     mutable String d_lastText;
 
     String d_text; //!< text rendered by this component, either string or property name.

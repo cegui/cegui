@@ -31,6 +31,7 @@
 
 #include "CEGUI/views/ItemView.h"
 #include "CEGUI/falagard/Enums.h"
+#include "CEGUI/text/RenderedText.h"
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -63,8 +64,7 @@ struct CEGUIEXPORT ListViewItemRenderingState final
     bool operator <(const ListViewItemRenderingState& other) const;
     bool operator >(const ListViewItemRenderingState& other) const;
 
-    std::unique_ptr<FormattedRenderedString> d_formatter;
-    std::unique_ptr<RenderedString> d_renderedString; // Need pointer for move constructor to work, otherwise formatter breaks
+    RenderedText d_renderedText;
     String d_icon; //!< The name of the image that represents the icon
     Sizef d_size;
     ModelIndex d_index;

@@ -30,14 +30,7 @@
 #include "CEGUI/XMLSerializer.h"
 #include "CEGUI/System.h"
 #include "CEGUI/FontManager.h"
-#include "CEGUI/LeftAlignedRenderedString.h"
-#include "CEGUI/RightAlignedRenderedString.h"
-#include "CEGUI/CentredRenderedString.h"
-#include "CEGUI/JustifiedRenderedString.h"
-#include "CEGUI/RenderedStringWordWrapper.h"
-#include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/CoordConverter.h"
-//#include "CEGUI/text/BidiVisualMapping.h"
 #include "CEGUI/text/RenderedText.h"
 
 namespace CEGUI
@@ -202,40 +195,34 @@ bool TextComponent::handleFontRenderSizeChange(Window& window, const Font* font)
 }
 
 //----------------------------------------------------------------------------//
-RenderedStringParser* TextComponent::getRenderedStringParser(const Window& window) const
+TextParser* TextComponent::getTextParser(const Window& window) const
 {
     if (auto renderer = window.getWindowRenderer())
     {
-        // if parsing is disabled, we use a DefaultRenderedStringParser that creates
-        // a rendered string to render the input text verbatim (i.e. no parsing).
+        // Don't parse text if it is explicitly disabled
         if (!renderer->isTextParsingEnabled())
-            return &CEGUI::System::getSingleton().getDefaultRenderedStringParser();
+            return nullptr;
 
-        // Next prefer a custom RenderedStringParser assigned to this Window.
-        if (auto parser = renderer->getCustomRenderedStringParser())
+        // Prefer a custom parser assigned to this Window
+        if (auto parser = renderer->getTextParser())
             return parser;
     }
 
-    // Next prefer any globally set RenderedStringParser.
-    if (auto parser = CEGUI::System::getSingleton().getDefaultCustomRenderedStringParser())
-        return parser;
-
-    // if parsing is enabled and no custom RenderedStringParser is set anywhere,
-    // use the system's BasicRenderedStringParser to do the parsing.
-    return &CEGUI::System::getSingleton().getBasicRenderedStringParser();
+    // Otherwise use a global default parser
+    return CEGUI::System::getSingleton().getDefaultTextParser();
 }
 
 //------------------------------------------------------------------------//
-void TextComponent::updateRenderedString(const Window& srcWindow, const String& text, const Font* font) const
+void TextComponent::updateRenderedText(const Window& srcWindow, const String& text, const Font* font) const
 {
-    RenderedStringParser* parser = getRenderedStringParser(srcWindow);
+    TextParser* parser = getTextParser(srcWindow);
 
     auto bidiDir = d_paragraphDir.get(srcWindow);
 
     if (d_lastFont == font && d_lastParser == parser && d_lastBidiDir == bidiDir && d_lastText == text)
         return;
 
-    d_renderedText.renderText(text, nullptr /*parser*/, font, bidiDir);
+    d_renderedText.renderText(text, parser, font, bidiDir);
 
     d_lastFont = font;
     d_lastParser = parser;
@@ -255,9 +242,9 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
     // NB: made so to pass text by reference where possible
     //!!!FIXME TEXT: retrieve a reference to String from String-typed property!
     if (d_textFromProperty)
-        updateRenderedString(srcWindow, srcWindow.getProperty(d_text), font);
+        updateRenderedText(srcWindow, srcWindow.getProperty(d_text), font);
     else
-        updateRenderedString(srcWindow, d_text.empty() ? srcWindow.getText() : d_text, font);
+        updateRenderedText(srcWindow, d_text.empty() ? srcWindow.getText() : d_text, font);
 
     //!!!FIXME TEXT: get rid of deprecated word wrapping baked into hfmt!
     bool wordWrap = false;

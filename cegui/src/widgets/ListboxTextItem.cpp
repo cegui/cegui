@@ -32,8 +32,7 @@
 #include "CEGUI/Font.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/RenderedStringParser.h"
-#include "CEGUI/text/BidiVisualMapping.h"
+#include "CEGUI/text/TextParser.h"
 
 namespace CEGUI
 {
@@ -42,8 +41,7 @@ const Colour ListboxTextItem::DefaultTextColour = 0xFFFFFFFF;
 //----------------------------------------------------------------------------//
 ListboxTextItem::ListboxTextItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete) :
     ListboxItem(text, item_id, item_data, disabled, auto_delete),
-    d_textCols(DefaultTextColour, DefaultTextColour, DefaultTextColour, DefaultTextColour),
-    d_renderedStringParser(&CEGUI::System::getSingleton().getDefaultRenderedStringParser())
+    d_textCols(DefaultTextColour, DefaultTextColour, DefaultTextColour, DefaultTextColour)
 {
 }
 
@@ -63,7 +61,7 @@ void ListboxTextItem::setFont(const String& font_name)
 void ListboxTextItem::setFont(Font* font)
 {
     d_font = font;
-    d_renderedStringValid = false;
+    d_renderedTextValid = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -72,10 +70,10 @@ Sizef ListboxTextItem::getPixelSize() const
     if (d_textLogical.empty() || !getFont())
         return Sizef(0, 0);
 
-    if (!d_renderedStringValid)
+    if (!d_renderedTextValid)
         parseTextString();
 
-    return d_renderedString.getExtent(d_owner);
+    return d_renderedText.getExtents();
 }
 
 //----------------------------------------------------------------------------//
@@ -92,43 +90,30 @@ void ListboxTextItem::createRenderGeometry(std::vector<GeometryBuffer*> out,
     // Draw text
     if (const Font* font = getFont())
     {
-        if (!d_renderedStringValid)
+        if (!d_renderedTextValid)
             parseTextString();
 
-        glm::vec2 draw_pos(targetRect.getPosition());
-        draw_pos.y += CoordConverter::alignToPixels((font->getLineSpacing() - font->getFontHeight()) * 0.5f);
-        for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
-        {
-            d_renderedString.createRenderGeometry(out, d_owner, i, draw_pos, nullptr, clipper, 0.0f);
-            draw_pos.y += d_renderedString.getLineExtent(d_owner, i).d_height;
-        }
+        d_renderedText.createRenderGeometry(out, targetRect.getPosition(), &d_textCols, clipper);
     }
 }
 
 //----------------------------------------------------------------------------//
 void ListboxTextItem::parseTextString() const
 {
-    DefaultParagraphDirection bidiDir = DefaultParagraphDirection::LeftToRight;
+    d_renderedText.renderText(d_textLogical, d_textParser, getFont(), DefaultParagraphDirection::LeftToRight);
+    d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::LeftAligned);
+    d_renderedText.setWordWrappingEnabled(false);
+    d_renderedText.updateDynamicObjectExtents(d_owner);
+    d_renderedText.updateFormatting(d_owner->getPixelSize().d_width);
 
-#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-    std::vector<int> l2v;
-    std::vector<int> v2l;
-    std::u32string textVisual;
-    BidiVisualMapping::applyBidi(d_textLogical, textVisual, l2v, v2l, bidiDir);
-#else
-    const String& textVisual = d_textLogical;
-#endif
-
-    d_renderedString = d_renderedStringParser->parse(textVisual, getFont(), &d_textCols, bidiDir);
-
-    d_renderedStringValid = true;
+    d_renderedTextValid = true;
 }
 
 //----------------------------------------------------------------------------//
 void ListboxTextItem::setText(const String& text)
 {
     ListboxItem::setText(text);
-    d_renderedStringValid = false;
+    d_renderedTextValid = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -141,32 +126,30 @@ void ListboxTextItem::setTextColours(Colour top_left_colour,
     d_textCols.d_top_right = top_right_colour;
     d_textCols.d_bottom_left = bottom_left_colour;
     d_textCols.d_bottom_right = bottom_right_colour;
-    d_renderedStringValid = false;
+    d_renderedTextValid = false;
 }
 
 //----------------------------------------------------------------------------//
 // FIXME: now this silently resets a custom parser!
 void ListboxTextItem::setTextParsingEnabled(bool enable)
 {
-    const auto prevParser = d_renderedStringParser;
-    d_renderedStringParser = enable ?
-        &CEGUI::System::getSingleton().getBasicRenderedStringParser() :
-        &CEGUI::System::getSingleton().getDefaultRenderedStringParser();
-    d_renderedStringValid &= (prevParser != d_renderedStringParser);
+    setCustomTextParser(enable ? CEGUI::System::getSingleton().getDefaultTextParser() : nullptr);
 }
 
 //----------------------------------------------------------------------------//
 bool ListboxTextItem::isTextParsingEnabled() const
 {
-    return d_renderedStringParser != &CEGUI::System::getSingleton().getDefaultRenderedStringParser();
+    return !!d_textParser;
 }
 
 //----------------------------------------------------------------------------//
-void ListboxTextItem::setCustomRenderedStringParser(CEGUI::RenderedStringParser* parser)
+void ListboxTextItem::setCustomTextParser(CEGUI::TextParser* parser)
 {
-    const auto prevParser = d_renderedStringParser;
-    d_renderedStringParser = parser ? parser : &CEGUI::System::getSingleton().getDefaultRenderedStringParser();
-    d_renderedStringValid &= (prevParser != d_renderedStringParser);
+    if (d_textParser == parser)
+        return;
+
+    d_textParser = parser;
+    d_renderedTextValid = false;
 }
 
 //----------------------------------------------------------------------------//

@@ -29,7 +29,7 @@
 #ifndef _CEGUIListboxTextItem_h_
 #define _CEGUIListboxTextItem_h_
 #include "./ListboxItem.h"
-#include "../RenderedString.h"
+#include "CEGUI/text/RenderedText.h"
 
 #if defined(_MSC_VER)
 #  pragma warning(push)
@@ -141,15 +141,15 @@ public:
           BasicRenderedStringParser.
         - false if the ListboxTextItem text will be used verbatim.
 
-    \note For enable parsing with custom parser use setCustomRenderedStringParser.
+    \note For enable parsing with custom parser use setCustomTextParser.
     */
     void setTextParsingEnabled(bool enable);
 
     //! return whether text parsing is enabled for this ListboxTextItem.
     bool isTextParsingEnabled() const;
 
-    //! Set a custom RenderedStringParser (and enable text parsing), or 0 to disable text parsing
-    void setCustomRenderedStringParser(CEGUI::RenderedStringParser* parser);
+    //! Set a custom TextParser (and enable text parsing), or 0 to disable text parsing
+    void setCustomTextParser(CEGUI::TextParser* parser);
 
     // base class overrides
     void setText(const String& text) override;
@@ -161,11 +161,11 @@ protected:
 
     void parseTextString() const;
 
-    Font*                         d_font = nullptr;                //!< Font used for rendering text.
-    CEGUI::RenderedStringParser* d_renderedStringParser;        //!< pointer to currently used render string parser.
-    ColourRect                     d_textCols;                    //!< Colours used for rendering the text.
-    mutable RenderedString       d_renderedString;              //!< RenderedString drawn by this item.
-    mutable bool                 d_renderedStringValid = false; //!< boolean used to track when item state changes (and needs re-parse)
+    Font*                d_font = nullptr;            //!< Font used for rendering text.
+    CEGUI::TextParser*   d_textParser = nullptr;      //!< pointer to currently used render string parser.
+    ColourRect           d_textCols;                  //!< Colours used for rendering the text.
+    mutable RenderedText d_renderedText;              //!< RenderedString drawn by this item.
+    mutable bool         d_renderedTextValid = false; //!< boolean used to track when item state changes (and needs re-parse)
 };
 
 }
