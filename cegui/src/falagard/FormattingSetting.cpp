@@ -42,34 +42,12 @@ void FormattingSetting<VerticalImageFormatting>::writeXMLTagToStream(XMLSerializ
 
 //----------------------------------------------------------------------------//
 template<>
-void FormattingSetting<VerticalImageFormatting>::writeXMLAttributesToStream(XMLSerializer& xml_stream) const
-{
-    if (d_propertySource.empty())
-        xml_stream.attribute(Falagard_xmlHandler::TypeAttribute,
-            FalagardXMLHelper<VerticalImageFormatting>::toString(d_value));
-    else
-        xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_propertySource);
-}
-
-//----------------------------------------------------------------------------//
-template<>
 void FormattingSetting<HorizontalFormatting>::writeXMLTagToStream(XMLSerializer& xml_stream) const
 {
     if (d_propertySource.empty())
         xml_stream.openTag(Falagard_xmlHandler::HorzFormatElement);
     else
         xml_stream.openTag(Falagard_xmlHandler::HorzFormatPropertyElement);
-}
-
-//----------------------------------------------------------------------------//
-template<>
-void FormattingSetting<HorizontalFormatting>::writeXMLAttributesToStream(XMLSerializer& xml_stream) const
-{
-    if (d_propertySource.empty())
-        xml_stream.attribute(Falagard_xmlHandler::TypeAttribute,
-            FalagardXMLHelper<HorizontalFormatting>::toString(d_value));
-    else
-        xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_propertySource);
 }
 
 //----------------------------------------------------------------------------//
@@ -84,17 +62,6 @@ void FormattingSetting<VerticalTextFormatting>::writeXMLTagToStream(XMLSerialize
 
 //----------------------------------------------------------------------------//
 template<>
-void FormattingSetting<VerticalTextFormatting>::writeXMLAttributesToStream(XMLSerializer& xml_stream) const
-{
-    if (d_propertySource.empty())
-        xml_stream.attribute(Falagard_xmlHandler::TypeAttribute,
-            FalagardXMLHelper<VerticalTextFormatting>::toString(d_value));
-    else
-        xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_propertySource);
-}
-
-//----------------------------------------------------------------------------//
-template<>
 void FormattingSetting<HorizontalTextFormatting>::writeXMLTagToStream(XMLSerializer& xml_stream) const
 {
     if (d_propertySource.empty())
@@ -105,34 +72,12 @@ void FormattingSetting<HorizontalTextFormatting>::writeXMLTagToStream(XMLSeriali
 
 //----------------------------------------------------------------------------//
 template<>
-void FormattingSetting<HorizontalTextFormatting>::writeXMLAttributesToStream(XMLSerializer& xml_stream) const
-{
-    if (d_propertySource.empty())
-        xml_stream.attribute(Falagard_xmlHandler::TypeAttribute,
-            FalagardXMLHelper<HorizontalTextFormatting>::toString(d_value));
-    else
-        xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_propertySource);
-}
-
-//----------------------------------------------------------------------------//
-template<>
 void FormattingSetting<DefaultParagraphDirection>::writeXMLTagToStream(XMLSerializer& xml_stream) const
 {
     if (d_propertySource.empty())
         xml_stream.openTag(Falagard_xmlHandler::ParagraphDirElement);
     else
         xml_stream.openTag(Falagard_xmlHandler::ParagraphDirPropertyElement);
-}
-
-//----------------------------------------------------------------------------//
-template<>
-void FormattingSetting<DefaultParagraphDirection>::writeXMLAttributesToStream(XMLSerializer& xml_stream) const
-{
-    if (d_propertySource.empty())
-        xml_stream.attribute(Falagard_xmlHandler::TypeAttribute,
-            FalagardXMLHelper<DefaultParagraphDirection>::toString(d_value));
-    else
-        xml_stream.attribute(Falagard_xmlHandler::NameAttribute, d_propertySource);
 }
 
 }
