@@ -272,7 +272,6 @@ bool RenderedString::split(const Window* refWnd, const size_t line,
 //----------------------------------------------------------------------------//
 RenderedString RenderedString::clone() const
 {
-    //!!!TODO TEXT: rewrite for the new logic!
     RenderedString copy;
     for (const auto& component : d_components)
         copy.d_components.push_back(component->clone());
