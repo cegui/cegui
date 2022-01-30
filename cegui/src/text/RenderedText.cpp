@@ -398,7 +398,7 @@ bool RenderedText::updateFormatting(float areaWidth)
         p.updateLineHeights(d_elements, d_defaultFont->getFontHeight());
         p.updateHorizontalFormatting(areaWidth);
 
-        p.extend(d_extents);
+        p.accumulateExtents(d_extents);
 
         fitsIntoAreaWidth &= p.isFittingIntoAreaWidth();
     }

@@ -335,7 +335,7 @@ void RenderedTextParagraph::updateHorizontalFormatting(float areaWidth)
 }
 
 //----------------------------------------------------------------------------//
-void RenderedTextParagraph::extend(Sizef& extents) const
+void RenderedTextParagraph::accumulateExtents(Sizef& extents) const
 {
     if (d_linesDirty)
         return;
