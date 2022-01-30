@@ -399,16 +399,46 @@ void RenderedTextParagraph::onAreaWidthChanged()
 //----------------------------------------------------------------------------//
 void RenderedTextParagraph::setHorizontalFormatting(HorizontalTextFormatting fmt, bool breakDefault)
 {
+    if (breakDefault)
+        d_defaultHorzFormatting = false;
+
+    if (fmt == d_horzFormatting)
+        return;
+
+    d_horzFormatting = fmt;
+
+    if (!d_linesDirty)
+        for (auto& line : d_lines)
+            line.horzFmtDirty = true;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedTextParagraph::setLastJustifiedLineHorizontalFormatting(HorizontalTextFormatting fmt, bool breakDefault)
 {
+    if (breakDefault)
+        d_defaultLastJustifiedLineHorzFormatting = false;
+
+    if (fmt == d_lastJustifiedLineHorzFormatting)
+        return;
+
+    d_lastJustifiedLineHorzFormatting = fmt;
+
+    if (!d_linesDirty && d_horzFormatting == HorizontalTextFormatting::Justified)
+        for (auto& line : d_lines)
+            line.horzFmtDirty = true;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedTextParagraph::setWordWrappingEnabled(bool wrap, bool breakDefault)
 {
+    if (breakDefault)
+        d_defaultWordWrap = false;
+
+    if (wrap == d_wordWrap)
+        return;
+
+    d_wordWrap = wrap;
+    d_linesDirty = true;
 }
 
 //----------------------------------------------------------------------------//

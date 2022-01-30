@@ -333,6 +333,8 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
                 layoutParagraph(p, utf32Text, start, end, defaultParagraphDir,
                     elementIndices, d_elements);
 
+            //!!!TODO TEXT: set non-default formatting of this paragraph if specified explicitly!
+
             p.setupGlyphs(utf32Text, originalIndices, elementIndices, d_elements);
         }
 
@@ -342,6 +344,12 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
             start = end + 1;
     }
     while (true);
+
+    // Push default formatting to paragraphs
+    // NB: there should not be early exit when unchanged, paragraphs will handle this
+    setHorizontalFormatting(d_horzFormatting);
+    setLastJustifiedLineHorizontalFormatting(d_lastJustifiedLineHorzFormatting);
+    setWordWrappingEnabled(d_wordWrap);
 
 #if defined(CEGUI_USE_RAQM)
     if (rq)
@@ -422,22 +430,29 @@ void RenderedText::setHorizontalFormatting(HorizontalTextFormatting fmt)
 {
     d_horzFormatting = fmt;
 
-    //!!!TODO TEXT: also set when paragraphs are created!
-    //for (const auto& p : d_paragraphs)
-    //    if (p.isHorzFormattingDefault())
-    //        p.seth
+    for (auto& p : d_paragraphs)
+        if (p.isHorzFormattingDefault())
+            p.setHorizontalFormatting(fmt, false);
 }
 
 //----------------------------------------------------------------------------//
 void RenderedText::setLastJustifiedLineHorizontalFormatting(HorizontalTextFormatting fmt)
 {
     d_lastJustifiedLineHorzFormatting = fmt;
+
+    for (auto& p : d_paragraphs)
+        if (p.isLastJustifiedLineHorzFormattingDefault())
+            p.setLastJustifiedLineHorizontalFormatting(fmt, false);
 }
 
 //----------------------------------------------------------------------------//
 void RenderedText::setWordWrappingEnabled(bool wrap)
 {
     d_wordWrap = wrap;
+
+    for (auto& p : d_paragraphs)
+        if (p.isWordWrappingDefault())
+            p.setWordWrappingEnabled(wrap, false);
 }
 
 }
