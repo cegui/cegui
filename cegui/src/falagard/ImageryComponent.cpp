@@ -222,6 +222,8 @@ namespace CEGUI
         renderSettingDestArea.top(ypos);
         renderSettingDestArea.bottom(ypos + imgSz.d_height);
 
+        const auto canCombineFromIdx = srcWindow.getGeometryBuffers().size();
+
         for (unsigned int row = 0; row < vertTiles; ++row)
         {
             renderSettingDestArea.left(xpos);
@@ -252,7 +254,7 @@ namespace CEGUI
                 }
 
                 // add geometry for image to the target window.
-                img->createRenderGeometry(srcWindow.getGeometryBuffers(), imgRenderSettings);
+                img->createRenderGeometry(srcWindow.getGeometryBuffers(), imgRenderSettings, canCombineFromIdx);
 
                 renderSettingDestArea.d_min.x += imgSz.d_width;
                 renderSettingDestArea.d_max.x += imgSz.d_width;
