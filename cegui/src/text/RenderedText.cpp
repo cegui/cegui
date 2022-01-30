@@ -326,6 +326,7 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
         if (end > start)
         {
             // Create and setup a sequence of CEGUI glyphs for this paragraph
+            //!!!TODO TEXT: move into paragraph? Seems right but how to reuse raqm_t?!
 #ifdef CEGUI_USE_RAQM
             if (!layoutParagraphWithRaqm(p, utf32Text, start, end, defaultParagraphDir,
                 elementIndices, d_elements, rq))
@@ -360,7 +361,7 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
 }
 
 //----------------------------------------------------------------------------//
-void RenderedText::updateEmbeddedObjects(const Window* hostWindow)
+void RenderedText::updateDynamicObjectExtents(const Window* hostWindow)
 {
     // Update metrics of dynamic objects and notify the text about their resizing
     for (size_t i = 0; i < d_elements.size(); ++i)
