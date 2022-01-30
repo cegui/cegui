@@ -335,6 +335,20 @@ void RenderedTextParagraph::updateHorizontalFormatting(float areaWidth)
 }
 
 //----------------------------------------------------------------------------//
+void RenderedTextParagraph::extend(Sizef& extents) const
+{
+    if (d_linesDirty)
+        return;
+
+    for (const auto& line : d_lines)
+    {
+        extents.d_height += line.extents.d_height;
+        if (extents.d_width < line.extents.d_width + line.horzOffset)
+            extents.d_width = line.extents.d_width + line.horzOffset;
+    }
+}
+
+//----------------------------------------------------------------------------//
 void RenderedTextParagraph::onElementWidthChanged(size_t elementIndex, float diff)
 {
     if (d_linesDirty)

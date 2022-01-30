@@ -37,7 +37,7 @@
 #include "CEGUI/RenderedStringWordWrapper.h"
 #include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/text/BidiVisualMapping.h"
+//#include "CEGUI/text/BidiVisualMapping.h"
 #include "CEGUI/text/RenderedText.h"
 
 namespace CEGUI
@@ -128,7 +128,9 @@ void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf
     updateFormatting(srcWindow, destRect.getSize());
 
     // Get total formatted height.
-    const float textHeight = d_formatter->getExtent().d_height;
+    //!!!FIXME TEXT: remove old!
+    //const float textHeight = d_formatter->getExtent().d_height;
+    const float textHeight = d_renderedText.getExtents().d_height;
 
     // Handle dest area adjustments for vertical formatting.
     // Default is VerticalTextFormatting::TopAligned, for which we take no action.
@@ -148,9 +150,8 @@ void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf
     initColoursRect(srcWindow, modColours, finalColours);
 
     // add geometry for text to the target window.
+    //!!!FIXME TEXT: remove old!
     //d_formatter->createRenderGeometry(srcWindow.getGeometryBuffers(), &srcWindow, destRect.getPosition(), &finalColours, clipper);
-
-    //!!!DBG TMP!
     d_renderedText.createRenderGeometry(srcWindow.getGeometryBuffers(), destRect.getPosition(), &finalColours, clipper);
 }
 
@@ -272,6 +273,8 @@ void TextComponent::updateRenderedString(const Window& srcWindow, const String& 
     if (d_lastFont == font && d_lastParser == parser && d_lastBidiDir == bidiDir && d_lastText == text)
         return;
 
+    //!!!FIXME TEXT: remove old!
+/*
 #if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
     std::vector<int> l2v;
     std::vector<int> v2l;
@@ -282,6 +285,9 @@ void TextComponent::updateRenderedString(const Window& srcWindow, const String& 
 #endif
 
     d_renderedString = parser->parse(textVisual, font, nullptr, bidiDir);
+*/
+
+    d_renderedText.renderText(text, nullptr /*parser*/, font, bidiDir);
 
     d_lastFont = font;
     d_lastParser = parser;
@@ -343,7 +349,6 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
             d_renderedText.setWordWrappingEnabled(true);
             break;
     }
-    d_renderedText.renderText(getEffectiveText(srcWindow), nullptr, font, d_paragraphDir.get(srcWindow));
     d_renderedText.updateDynamicObjectExtents(&srcWindow);
     d_renderedText.updateFormatting(size.d_width);
 }

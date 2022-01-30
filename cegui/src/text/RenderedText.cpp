@@ -385,6 +385,9 @@ bool RenderedText::updateFormatting(float areaWidth)
     const bool areaWidthChanged = (d_areaWidth != areaWidth);
     d_areaWidth = areaWidth;
 
+    d_extents.d_width = 0.f;
+    d_extents.d_height = 0.f;
+
     bool fitsIntoAreaWidth = true;
     for (auto& p : d_paragraphs)
     {
@@ -394,6 +397,8 @@ bool RenderedText::updateFormatting(float areaWidth)
         p.updateLines(d_elements, areaWidth);
         p.updateLineHeights(d_elements, d_defaultFont->getFontHeight());
         p.updateHorizontalFormatting(areaWidth);
+
+        p.extend(d_extents);
 
         fitsIntoAreaWidth &= p.isFittingIntoAreaWidth();
     }
