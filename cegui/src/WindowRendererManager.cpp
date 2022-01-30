@@ -28,6 +28,7 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/SharedStringStream.h"
+#include <algorithm>
 
 namespace CEGUI
 {

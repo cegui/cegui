@@ -33,6 +33,8 @@
 #include "CEGUI/Sizef.h"
 #include "CEGUI/EventSet.h"
 
+#include <vector>
+
 #if defined(_MSC_VER)
 #	pragma warning(push)
 #	pragma warning(disable : 4251)

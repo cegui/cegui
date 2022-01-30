@@ -30,6 +30,8 @@ purpose:	This codec provide FreeImage based image loading
 #include "CEGUI/ImageCodecModules/FreeImage/ImageCodec.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Sizef.h"
+#include "CEGUI/DataContainer.h"
+#include "CEGUI/Texture.h"
 
 #include <FreeImage.h>
 

@@ -38,6 +38,7 @@
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/SharedStringStream.h"
 #include <fstream>
+#include <algorithm>
 
 // Start of CEGUI namespace section
 namespace CEGUI

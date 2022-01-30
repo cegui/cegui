@@ -28,6 +28,7 @@
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/XMLSerializer.h"
+#include <algorithm>
 
 namespace CEGUI
 {
