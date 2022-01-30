@@ -24,9 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIRenderedTextParagraph_h_
-#define _CEGUIRenderedTextParagraph_h_
-
+#pragma once
 #include "CEGUI/Sizef.h"
 #include "CEGUI/DefaultParagraphDirection.h"
 #include "CEGUI/falagard/Enums.h"
@@ -34,25 +32,14 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-#if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4251)
-#endif
+// NB: these are internal classes, please use RenderedText in the client code
 
 namespace CEGUI
 {
+struct SelectionInfo;
 using RenderedTextElementPtr = std::unique_ptr<class RenderedTextElement>;
 
-struct CEGUIEXPORT SelectionInfo
-{
-    const Image* bgBrush = nullptr;
-    ColourRect   bgColours = 0xFF002FFF;
-    ColourRect   textColours = 0;         //!< Zero means keeping existing text colour
-    size_t       start = 0;
-    size_t       end = 0;
-};
-
-struct CEGUIEXPORT RenderedGlyph
+struct RenderedGlyph
 {
     const FontGlyph* fontGlyph; //!< Actual font glyph, may be nullptr for missing glyphs and for embedded objects
 
@@ -68,7 +55,7 @@ struct CEGUIEXPORT RenderedGlyph
     bool isRightToLeft : 1;    //!< Is this glyph directed from right to left? This affects caret etc.
 };
 
-class CEGUIEXPORT RenderedTextParagraph
+class RenderedTextParagraph
 {
 public:
 
@@ -149,9 +136,3 @@ protected:
 };
 
 }
-
-#if defined(_MSC_VER)
-#	pragma warning(pop)
-#endif
-
-#endif
