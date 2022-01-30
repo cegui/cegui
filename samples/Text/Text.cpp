@@ -186,11 +186,12 @@ bool TextSample::formatChangedHandler(const CEGUI::EventArgs&)
         const bool wrap = isCheckboxSelected("Root/TextSample/StaticGroup/Wrap");
 
         if (isRadioSelected("Root/TextSample/StaticGroup/HorzLeft"))
-            st->setProperty("HorzFormatting", wrap ? "WordWrapLeftAligned" : "LeftAligned");
+            st->setProperty("HorzFormatting", "LeftAligned");
         else if (isRadioSelected("Root/TextSample/StaticGroup/HorzRight"))
-            st->setProperty("HorzFormatting", wrap ? "WordWrapRightAligned" : "RightAligned");
+            st->setProperty("HorzFormatting", "RightAligned");
         else if (isRadioSelected("Root/TextSample/StaticGroup/HorzCentered"))
-            st->setProperty("HorzFormatting", wrap ? "WordWrapCentreAligned" : "CentreAligned");
+            st->setProperty("HorzFormatting", "CentreAligned");
+        st->setProperty("WordWrap", wrap ? "true" : "false");
     }
 
     // event was handled

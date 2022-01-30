@@ -28,7 +28,6 @@
 #define _CEGUIFalTextComponent_h_
 
 #include "./ComponentBase.h"
-#include "CEGUI/RenderedString.h"
 #include "CEGUI/text/RenderedText.h"
 #include "CEGUI/falagard/FormattingSetting.h"
 
@@ -294,8 +293,6 @@ protected:
     void addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf& destRect,
         const CEGUI::ColourRect* modColours, const Rectf* clipper) const override;
 
-    //! helper to set up an appropriate FormattedRenderedString
-    void setupStringFormatter(HorizontalTextFormatting horzFormatting) const;
     //! helper to get the font object to use
     const Font* getFontObject(const Window& window) const;
     //! helper to get a rendered string parser for the current window
@@ -314,11 +311,6 @@ protected:
 
 private:
 
-    //! FormattedRenderedString object that applies formatting to the string
-    mutable std::unique_ptr<FormattedRenderedString> d_formatter;
-    //! RenderedString used when not using the one from the target Window.
-    mutable RenderedString d_renderedString;
-
     mutable RenderedText d_renderedText;
 
     // Cache for avoiding redundant calulations
@@ -332,6 +324,8 @@ private:
     FormattingSetting<VerticalTextFormatting> d_vertFormatting = VerticalTextFormatting::TopAligned;
     FormattingSetting<HorizontalTextFormatting> d_horzFormatting = HorizontalTextFormatting::LeftAligned;
     FormattingSetting<DefaultParagraphDirection> d_paragraphDir = DefaultParagraphDirection::LeftToRight;
+    //FormattingSetting<bool> d_wordWrap = false;
+    bool d_wordWrap = false;
 
     // Cache for avoiding redundant calulations
     mutable DefaultParagraphDirection d_lastBidiDir = DefaultParagraphDirection::Automatic;

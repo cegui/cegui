@@ -66,7 +66,8 @@ bool EditboxValidationSample::initialise(CEGUI::GUIContext* guiContext)
     wnd->setText("Editbox Validation Sample");
 
     Window* label = wnd->createChild("AlfiskoSkin/Label");
-    label->setProperty("HorzFormatting", "WordWrapCentreAligned");
+    label->setProperty("HorzFormatting", "CentreAligned");
+    label->setProperty("WordWrap", "true");
     label->setSize(USize(cegui_reldim(1.0f), cegui_reldim(0.2f)));
     label->setText("Enter 4 digits into the Editbox. A valid entry will be "
         "[colour='FF00FF00']green, [colour='FFFFFFFF']an invalid entry will be "

@@ -10,6 +10,7 @@
         <PropertyDefinition name="DisabledTextColour" initialValue="FFDDDDDD" redrawOnWrite="true" type="Colour" />
         <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="VerticalTextFormatting" />
         <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="HorizontalTextFormatting" />
+        <PropertyDefinition name="WordWrap" initialValue="false" redrawOnWrite="true" type="bool" />
         <PropertyDefinition name="DefaultParagraphDirection" initialValue="LeftToRight" redrawOnWrite="true" type="DefaultParagraphDirection" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="Label">
@@ -22,6 +23,7 @@
                 </Area>
                 <VertFormatProperty name="VertFormatting" />
                 <HorzFormatProperty name="HorzFormatting" />
+                <WordWrapProperty name="WordWrap" />
                 <ParagraphDirProperty name="DefaultParagraphDirection" />
             </TextComponent>
         </ImagerySection>
@@ -53,6 +55,7 @@
         <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" type="VerticalTextFormatting"/>
         <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" type="HorizontalTextFormatting"/>
+        <PropertyDefinition name="LabelWordWrap" initialValue="false" type="bool"/>
         <PropertyDefinition name="DefaultParagraphDirection" initialValue="LeftToRight" redrawOnWrite="true" type="DefaultParagraphDirection" />
         <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true"  type="Image"/>
         <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image"/>
@@ -65,6 +68,7 @@
             <TextComponent>
                 <VertFormatProperty name="VertLabelFormatting" />
                 <HorzFormatProperty name="HorzLabelFormatting" />
+                <WordWrapProperty name="LabelWordWrap" />
                 <ParagraphDirProperty name="DefaultParagraphDirection" />
             </TextComponent>
         </ImagerySection>

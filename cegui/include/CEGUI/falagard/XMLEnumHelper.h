@@ -382,18 +382,6 @@ public:
         case HorizontalTextFormatting::Justified:
             return Justified;
 
-        case HorizontalTextFormatting::WordWrapLeftAligned:
-            return WordWrapLeftAligned;
-
-        case HorizontalTextFormatting::WordWrapRightAligned:
-            return WordWrapRightAligned;
-
-        case HorizontalTextFormatting::WordWrapCentreAligned:
-            return WordWrapCentreAligned;
-
-        case HorizontalTextFormatting::WordWrapJustified:
-            return WordWrapJustified;
-
         default:
             return LeftAligned;
         }
@@ -410,17 +398,16 @@ public:
         else if (str == Justified)
             return HorizontalTextFormatting::Justified;
 
+        // TODO: deprecated, remove later when users migrate their data
         else if (str == WordWrapLeftAligned)
             return HorizontalTextFormatting::WordWrapLeftAligned;
-
         else if (str == WordWrapCentreAligned)
             return HorizontalTextFormatting::WordWrapCentreAligned;
-
         else if (str == WordWrapRightAligned)
             return HorizontalTextFormatting::WordWrapRightAligned;
-
         else if (str == WordWrapJustified)
             return HorizontalTextFormatting::WordWrapJustified;
+        ////////////////////////////////////////////////////////////////
 
         else
             return HorizontalTextFormatting::LeftAligned;
@@ -799,8 +786,7 @@ public:
 
     static const String& getDataTypeName()
     {
-        static String type("HorizontalTextFormatting");
-
+        static const String type("HorizontalTextFormatting");
         return type;
     }
 

@@ -5,6 +5,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFDDDDDD" type="Colour" name="DisabledTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzFormatting"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="false" type="bool" name="WordWrap"/>
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="Label">
             <TextComponent>
@@ -24,6 +25,7 @@
                 </Area>
                 <VertFormatProperty name="VertFormatting"/>
                 <HorzFormatProperty name="HorzFormatting"/>
+                <WordWrapProperty name="WordWrap"/>
             </TextComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -44,6 +46,7 @@
     <WidgetLook name="AlfiskoSkin/Button">
         <PropertyDefinition initialValue="CentreAligned" type="VerticalTextFormatting" name="VertLabelFormatting"/>
         <PropertyDefinition initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzLabelFormatting"/>
+        <PropertyDefinition initialValue="false" type="bool" name="WordWrap"/>
         <Property name="Size" value="{{0, 96}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
@@ -58,10 +61,7 @@
                 <Colours topLeft="FF000000" bottomLeft="FF000000" topRight="FF000000" bottomRight="FF000000"/>
                 <VertFormatProperty name="VertLabelFormatting"/>
                 <HorzFormatProperty name="HorzLabelFormatting"/>
-            </TextComponent>
-            <TextComponent>
-                <VertFormatProperty name="VertLabelFormatting"/>
-                <HorzFormatProperty name="HorzLabelFormatting"/>
+                <WordWrapProperty name="WordWrap"/>
             </TextComponent>
         </ImagerySection>
         <ImagerySection name="normal">

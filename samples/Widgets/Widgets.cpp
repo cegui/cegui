@@ -422,7 +422,8 @@ void WidgetsSample::initialiseWidgetsEventsLog()
 
     d_widgetsEventsLog->setProperty("VertScrollbar", "true");
 
-    d_widgetsEventsLog->setProperty("HorzFormatting", "WordWrapLeftAligned");
+    d_widgetsEventsLog->setProperty("HorzFormatting", "LeftAligned");
+    d_widgetsEventsLog->setProperty("WordWrap", "true");
 
     d_widgetsEventsLog->setProperty("VertFormatting", "TopAligned");
 }
@@ -636,7 +637,10 @@ CEGUI::Window* WidgetsSample::initialiseSpecialWidgets(CEGUI::Window* widgetWind
             widgetWindow->setProperty("VertScrollbar", "true");
 
         if (widgetWindow->isPropertyPresent("HorzFormatting"))
-            widgetWindow->setProperty("HorzFormatting", "WordWrapLeftAligned");
+            widgetWindow->setProperty("HorzFormatting", "LeftAligned");
+
+        if (widgetWindow->isPropertyPresent("WordWrap"))
+            widgetWindow->setProperty("WordWrap", "true");
     }
 
     if (widgetType.compare("StaticImage") == 0)

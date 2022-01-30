@@ -455,8 +455,9 @@ protected:
 	/*************************************************************************
 		Implementation data
 	*************************************************************************/
-	static String   d_lineBreakChars;	//!< Holds what we consider to be line break characters.
-    bool            d_wordWrap;		//!< true when formatting uses word-wrapping.
+    const Image* d_selectionBrush;	//!< Image to use as the selection brush (should be set by derived class).
+
+    static String   d_lineBreakChars;	//!< Holds what we consider to be line break characters.
 	LineList        d_lines;			//!< Holds the lines for the current formatting.
 	float           d_lastRenderWidth;  //!< Holds last render area width
 	float           d_widestExtent;	//!< Holds the extent of the widest line as calculated in the last formatting pass.
@@ -464,9 +465,7 @@ protected:
 	// component widget settings
 	bool d_forceVertScroll;		//!< true if vertical scrollbar should always be displayed
 	bool d_forceHorzScroll;		//!< true if horizontal scrollbar should always be displayed
-
-	// images
-	const Image* d_selectionBrush;	//!< Image to use as the selection brush (should be set by derived class).
+    bool d_wordWrap;		//!< true when formatting uses word-wrapping.
 
 
 private:

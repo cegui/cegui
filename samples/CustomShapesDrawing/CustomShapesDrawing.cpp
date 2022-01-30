@@ -492,7 +492,9 @@ void CustomShapesDrawingSample::createDescriptionLabel()
         CEGUI::UVector2(cegui_reldim(0.0f), cegui_absdim(400.0f)),
         CEGUI::USize(cegui_reldim(0.8f), cegui_reldim(0.25f)));
     descriptionLabel->setHorizontalAlignment(HorizontalAlignment::Centre);
-    descriptionLabel->setProperty("HorzFormatting", "WordWrapCentreAligned");
+    descriptionLabel->setProperty("HorzFormatting", "CentreAligned");
+    if (descriptionLabel->isPropertyPresent("WordWrap"))
+        descriptionLabel->setProperty("WordWrap", "true");
     d_root->addChild(descriptionLabel);
     descriptionLabel->setText("The left graph is rendered directly into a GeometryBuffer and rendered as overlay."
         "The right graph is created using an SVGImage with modified SVGData and is then used in the same way as a regular CEGUI image"

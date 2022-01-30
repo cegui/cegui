@@ -93,15 +93,48 @@ namespace CEGUI
     */
     enum class HorizontalTextFormatting : uint8_t
     {
-        LeftAligned,                //!< Left of text should be aligned with the left of the destination area (single line of text only).
-        RightAligned,               //!< Right of text should be aligned with the right of the destination area  (single line of text only).
-        CentreAligned,              //!< text should be horizontally centred within the destination area  (single line of text only).
-        Justified,                  //!< text should be spaced so that it takes the full width of the destination area (single line of text only).
-        WordWrapLeftAligned,        //!< Left of text should be aligned with the left of the destination area (word wrapped to multiple lines as needed).
-        WordWrapRightAligned,       //!< Right of text should be aligned with the right of the destination area  (word wrapped to multiple lines as needed).
-        WordWrapCentreAligned,      //!< text should be horizontally centred within the destination area  (word wrapped to multiple lines as needed).
-        WordWrapJustified           //!< text should be spaced so that it takes the full width of the destination area (word wrapped to multiple lines as needed).
+        LeftAligned,        //!< Left of text should be aligned with the left of the destination area.
+        RightAligned,       //!< Right of text should be aligned with the right of the destination area.
+        CentreAligned,      //!< text should be horizontally centred within the destination area.
+        Justified,          //!< text should be spaced so that it takes the full width of the destination area.
+
+        // TODO: deprecated, remove later when users migrate their data
+        WordWrapLeftAligned,
+        WordWrapRightAligned,
+        WordWrapCentreAligned,
+        WordWrapJustified
     };
+
+    // TODO: deprecated, remove later when users migrate their data
+    inline HorizontalTextFormatting decomposeHorizontalFormatting(HorizontalTextFormatting fmt, bool& wordWrap)
+    {
+        switch (fmt)
+        {
+            case HorizontalTextFormatting::WordWrapLeftAligned:
+            {
+                wordWrap = true;
+                return HorizontalTextFormatting::LeftAligned;
+            }
+            case HorizontalTextFormatting::WordWrapRightAligned:
+            {
+                wordWrap = true;
+                return HorizontalTextFormatting::RightAligned;
+            }
+            case HorizontalTextFormatting::WordWrapCentreAligned:
+            {
+                wordWrap = true;
+                return HorizontalTextFormatting::CentreAligned;
+            }
+            case HorizontalTextFormatting::WordWrapJustified:
+            {
+                wordWrap = true;
+                return HorizontalTextFormatting::Justified;
+            }
+        }
+
+        wordWrap = false;
+        return fmt;
+    }
 
     /*!
     \brief

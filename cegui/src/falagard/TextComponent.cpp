@@ -76,60 +76,12 @@ void TextComponent::setFontPropertySource(const String& property)
 }
 
 //----------------------------------------------------------------------------//
-void TextComponent::setupStringFormatter(HorizontalTextFormatting horzFormatting) const
-{
-    if (d_formatter && d_formatter->getCorrespondingFormatting() == horzFormatting)
-        return;
-
-    switch (horzFormatting)
-    {
-        case HorizontalTextFormatting::LeftAligned:
-            d_formatter.reset(new LeftAlignedRenderedString());
-            break;
-
-        case HorizontalTextFormatting::CentreAligned:
-            d_formatter.reset(new CentredRenderedString());
-            break;
-
-        case HorizontalTextFormatting::RightAligned:
-            d_formatter.reset(new RightAlignedRenderedString());
-            break;
-
-        case HorizontalTextFormatting::Justified:
-            d_formatter.reset(new JustifiedRenderedString());
-            break;
-
-        case HorizontalTextFormatting::WordWrapLeftAligned:
-            d_formatter.reset(new RenderedStringWordWrapper<LeftAlignedRenderedString>());
-            break;
-
-        case HorizontalTextFormatting::WordWrapCentreAligned:
-            d_formatter.reset(new RenderedStringWordWrapper<CentredRenderedString>());
-            break;
-
-        case HorizontalTextFormatting::WordWrapRightAligned:
-            d_formatter.reset(new RenderedStringWordWrapper<RightAlignedRenderedString>());
-            break;
-
-        case HorizontalTextFormatting::WordWrapJustified:
-            d_formatter.reset(new RenderedStringWordWrapper<JustifiedRenderedString>());
-            break;
-
-        default:
-            d_formatter.reset();
-            break;
-    }
-}
-
-//----------------------------------------------------------------------------//
 void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf& destRect,
     const ColourRect* modColours, const Rectf* clipper) const
 {
     updateFormatting(srcWindow, destRect.getSize());
 
     // Get total formatted height.
-    //!!!FIXME TEXT: remove old!
-    //const float textHeight = d_formatter->getExtent().d_height;
     const float textHeight = d_renderedText.getExtents().d_height;
 
     // Handle dest area adjustments for vertical formatting.
@@ -150,8 +102,6 @@ void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf
     initColoursRect(srcWindow, modColours, finalColours);
 
     // add geometry for text to the target window.
-    //!!!FIXME TEXT: remove old!
-    //d_formatter->createRenderGeometry(srcWindow.getGeometryBuffers(), &srcWindow, destRect.getPosition(), &finalColours, clipper);
     d_renderedText.createRenderGeometry(srcWindow.getGeometryBuffers(), destRect.getPosition(), &finalColours, clipper);
 }
 
@@ -222,7 +172,7 @@ void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const
 const Sizef& TextComponent::getTextExtent(const Window& window) const
 {
     updateFormatting(window, d_area.getPixelRect(window).getSize());
-    return d_formatter->getExtent();
+    return d_renderedText.getExtents();
 }
 
 //----------------------------------------------------------------------------//
@@ -273,20 +223,6 @@ void TextComponent::updateRenderedString(const Window& srcWindow, const String& 
     if (d_lastFont == font && d_lastParser == parser && d_lastBidiDir == bidiDir && d_lastText == text)
         return;
 
-    //!!!FIXME TEXT: remove old!
-/*
-#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-    std::vector<int> l2v;
-    std::vector<int> v2l;
-    std::u32string textVisual;
-    BidiVisualMapping::applyBidi(text, textVisual, l2v, v2l, bidiDir);
-#else
-    const String& textVisual = text;
-#endif
-
-    d_renderedString = parser->parse(textVisual, font, nullptr, bidiDir);
-*/
-
     d_renderedText.renderText(text, nullptr /*parser*/, font, bidiDir);
 
     d_lastFont = font;
@@ -311,44 +247,14 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
     else
         updateRenderedString(srcWindow, d_text.empty() ? srcWindow.getText() : d_text, font);
 
-    setupStringFormatter(d_horzFormatting.get(srcWindow));
+    //!!!FIXME TEXT: get rid of deprecated word wrapping in hfmt!
+    bool wordWrap = false;
+    auto hfmt = decomposeHorizontalFormatting(d_horzFormatting.get(srcWindow), wordWrap);
+    if (!wordWrap)
+        wordWrap = d_wordWrap; //d_wordWrap.get(srcWindow);
 
-    if (d_formatter)
-        d_formatter->format(d_renderedString, &srcWindow, size);
-
-    //!!!DBG TMP!
-    auto horzFmt = d_horzFormatting.get(srcWindow);
-    switch (horzFmt)
-    {
-        //!!!FIXME TEXT: turn into 2 properties, support old enum values read-only and parse into 2 values
-        case HorizontalTextFormatting::LeftAligned:
-        case HorizontalTextFormatting::CentreAligned:
-        case HorizontalTextFormatting::RightAligned:
-        case HorizontalTextFormatting::Justified:
-            d_renderedText.setHorizontalFormatting(horzFmt);
-            d_renderedText.setWordWrappingEnabled(false);
-            break;
-
-        case HorizontalTextFormatting::WordWrapLeftAligned:
-            d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::LeftAligned);
-            d_renderedText.setWordWrappingEnabled(true);
-            break;
-
-        case HorizontalTextFormatting::WordWrapCentreAligned:
-            d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::CentreAligned);
-            d_renderedText.setWordWrappingEnabled(true);
-            break;
-
-        case HorizontalTextFormatting::WordWrapRightAligned:
-            d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::RightAligned);
-            d_renderedText.setWordWrappingEnabled(true);
-            break;
-
-        case HorizontalTextFormatting::WordWrapJustified:
-            d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::Justified);
-            d_renderedText.setWordWrappingEnabled(true);
-            break;
-    }
+    d_renderedText.setHorizontalFormatting(hfmt);
+    d_renderedText.setWordWrappingEnabled(wordWrap);
     d_renderedText.updateDynamicObjectExtents(&srcWindow);
     d_renderedText.updateFormatting(size.d_width);
 }

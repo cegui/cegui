@@ -31,6 +31,7 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/FormattedRenderedString.h"
+#include "CEGUI/RenderedString.h"
 
 namespace CEGUI
 {

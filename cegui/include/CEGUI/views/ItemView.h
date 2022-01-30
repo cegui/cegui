@@ -169,7 +169,7 @@ class CEGUIEXPORT ItemView : public Window
 public:
     ItemView(const String& type, const String& name);
 
-    virtual ~ItemView();
+    virtual ~ItemView() override;
 
     static const Colour DefaultTextColour;
     static const Colour DefaultSelectionColour;
