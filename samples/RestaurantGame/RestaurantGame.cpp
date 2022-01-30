@@ -395,23 +395,26 @@ void RestaurantGameSample::createScorePopup(const glm::vec2& cursor_pos, std::in
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
     CEGUI::Window* popupWindow = winMgr.createWindow("RestaurantGameSample/PopupLabel");
-    d_rootIngame->addChild(popupWindow);
-    popupWindow->setPosition(CEGUI::UVector2(cegui_absdim(cursor_pos.x), cegui_absdim(cursor_pos.y)));
-    popupWindow->setText(CEGUI::PropertyHelper<std::int32_t>::toString(points));
     popupWindow->setRiseOnCursorActivationEnabled(false);
-    popupWindow->subscribeEvent(AnimationInstance::EventAnimationEnded, Event::Subscriber(&RestaurantGameSample::handleScorePopupAnimationEnded, this));
     popupWindow->setPixelAligned(false);
     popupWindow->setFont("DejaVuSans-14");
+    popupWindow->setPosition(UVector2(UDim(0.03f, cursor_pos.x), UDim(-0.02f, cursor_pos.y)));
 
-    popupWindow->setPosition(popupWindow->getPosition() + CEGUI::UVector2(cegui_reldim(0.03f), cegui_reldim(-0.02f)));
-
-    if(points < 0)
+    if (points < 0)
+    {
+        popupWindow->setText(std::to_string(points));
         popupWindow->setProperty("NormalTextColour", "FF880000");
+    }
     else
     {
-        popupWindow->setText( "+" + popupWindow->getText());
+        popupWindow->setText("+" + std::to_string(points));
         popupWindow->setProperty("NormalTextColour", "FF006600");
     }
+
+    d_rootIngame->addChild(popupWindow);
+
+    popupWindow->subscribeEvent(AnimationInstance::EventAnimationEnded,
+        Event::Subscriber(&RestaurantGameSample::handleScorePopupAnimationEnded, this));
 
     CEGUI::EventArgs args;
     popupWindow->fireEvent("StartAnimation", args);
