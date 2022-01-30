@@ -33,6 +33,7 @@
 #include "CEGUI/IteratorBase.h"
 #include "CEGUI/TplWindowFactory.h"
 #include <unordered_map>
+#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

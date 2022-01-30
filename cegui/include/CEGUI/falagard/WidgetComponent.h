@@ -30,6 +30,7 @@
 #include "CEGUI/falagard/Dimensions.h"
 #include "CEGUI/falagard/PropertyInitialiser.h"
 #include "CEGUI/falagard/EventAction.h"
+#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

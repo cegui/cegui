@@ -31,6 +31,9 @@
 #include "CEGUI/ChainedXMLHandler.h"
 #include "CEGUI/String.h"
 #include "CEGUI/IteratorBase.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/ImageFactory.h"
 #include <unordered_map>
 
 #if defined(_MSC_VER)

@@ -30,6 +30,7 @@
 #include "../ChainedXMLHandler.h"
 #include "./Dimensions.h"
 #include <unordered_map>
+#include <vector>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
