@@ -36,6 +36,15 @@ namespace CEGUI
 {
 class TextParser;
 
+struct CEGUIEXPORT SelectionInfo
+{
+    const Image* bgBrush = nullptr;
+    ColourRect   bgColours = 0xFF002FFF;
+    ColourRect   textColours = 0;         //!< Zero means keeping existing text colour
+    size_t       start = 0;
+    size_t       end = 0;
+};
+
 //! \brief A text prepared to be rendered as graphics. Supports styles and embedded objects.
 class CEGUIEXPORT RenderedText final
 {

@@ -25,6 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/text/RenderedTextParagraph.h"
+#include "CEGUI/text/RenderedText.h" // for SelectionInfo
 #include "CEGUI/text/RenderedTextElement.h"
 #include "CEGUI/text/RenderedTextStyle.h"
 #include "CEGUI/RenderedStringImageComponent.h"
@@ -118,9 +119,8 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
             const auto start = i;
             do ++i; while (i < line.glyphEndIdx && d_glyphs[i].elementIndex == startElementIdx);
 
-            if (auto element = elements[startElementIdx].get())
-                element->createRenderGeometry(out, &d_glyphs[start], i - start, penPosition,
-                    modColours, clipRect, line.extents.d_height, line.justifySpaceSize, canCombineFromIdx);
+            elements[startElementIdx]->createRenderGeometry(out, &d_glyphs[start], i - start, penPosition,
+                modColours, clipRect, line.extents.d_height, line.justifySpaceSize, canCombineFromIdx);
         }
 
         // Move the pen to the new line
