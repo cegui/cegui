@@ -32,7 +32,7 @@
 #include "CEGUI/views/ItemView.h"
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/InputEvent.h"
-#include "CEGUI/RenderedString.h"
+#include "CEGUI/text/RenderedText.h"
 #include <vector>
 
 #if defined (_MSC_VER)
@@ -107,7 +107,7 @@ public:
     String d_text;
     //! The name of the image that represents the icon
     String d_icon;
-    RenderedString d_string;
+    RenderedText d_renderedText;
     Sizef d_size;
     bool d_isSelected;
     ModelIndex d_parentIndex;

@@ -120,8 +120,8 @@ void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_ar
         }
 
         Rectf item_clipper(item_rect.getIntersection(items_area));
-        createRenderGeometryAndAddToItemView(tree_view, item->d_string, item_rect,
-            tree_view->getActualFont(), &item_clipper, item->d_isSelected);
+        createRenderGeometryAndAddToItemView(tree_view, item->d_renderedText, item_rect,
+            tree_view->getActualFont(), &tree_view->getTextColourRect(), &item_clipper, item->d_isSelected);
 
         item_pos.y += std::max(size.d_height, d_subtreeExpanderImagerySize.d_height);
 

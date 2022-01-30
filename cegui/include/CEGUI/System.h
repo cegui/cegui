@@ -46,6 +46,9 @@
 
 namespace CEGUI
 {
+class TextParser;
+class LegacyTextParser;
+
 /*!
 \brief
     The System class is the CEGUI class that provides access to all other elements in this system.
@@ -71,7 +74,7 @@ public:
      * system.
      */
     static const String EventDisplaySizeChanged;
-    /** Event fired when global custom RenderedStringParser is set.
+    /** Event fired when global custom TextParser is set.
      * Handlers are passed a const reference to a generic EventArgs struct.
      */
     static const String EventRenderedStringParserChanged;
@@ -481,36 +484,29 @@ public:
     /*!
     \brief
         Return pointer to the currently set global default custom
-        RenderedStringParser object.
+        TextParser object.
 
-        The returned RenderedStringParser is used for all windows that have
-        parsing enabled and no custom RenderedStringParser set on the window
+        The returned TextParser is used for all windows that have
+        parsing enabled and no custom TextParser set on the window
         itself.
 
-        If this global custom RenderedStringParser is set to 0, then all windows
-        with parsing enabled and no custom RenderedStringParser set on the
+        If this global custom TextParser is set to 0, then all windows
+        with parsing enabled and no custom TextParser set on the
         window itself will use the systems BasicRenderedStringParser.
     */
-    RenderedStringParser* getDefaultCustomRenderedStringParser() const;
+    TextParser* getDefaultTextParser() const;
 
     /*!
     \brief
-        Set the global default custom RenderedStringParser object.  This change
+        Set the global default custom TextParser object.  This change
         is reflected the next time an affected window reparses it's text.  This
-        may be set to 0 for no system wide custom parser (which is the default).
+        may be set to nullptr to use default CEGUI text parser.
 
-        The set RenderedStringParser is used for all windows that have
-        parsing enabled and no custom RenderedStringParser set on the window
+        The set TextParser is used for all windows that have
+        parsing enabled and no custom TextParser set on the window
         itself.
-
-        If this global custom RenderedStringParser is set to 0, then all windows
-        with parsing enabled and no custom RenderedStringParser set on the
-        window itself will use the systems BasicRenderedStringParser.
     */
-    void setDefaultCustomRenderedStringParser(RenderedStringParser* parser);
-
-    RenderedStringParser& getBasicRenderedStringParser() const;
-    RenderedStringParser& getDefaultRenderedStringParser() const;
+    void setDefaultTextParser(TextParser* parser);
 
     /*!
     \brief
@@ -565,11 +561,6 @@ public:
     static void performVersionTest(const int expected, const int received,
                                    const String& func);
 
-private:
-    // unimplemented constructors / assignment
-    System(const System& obj);
-    System& operator=(const System& obj);
-
 protected:
     /*************************************************************************
         Implementation Functions
@@ -608,11 +599,14 @@ protected:
            ScriptModule* scriptModule, const String& configFile,
            const String& logFile);
 
+    System(const System& obj) = delete;
+    System& operator =(const System& obj) = delete;
+
     /*!
     \brief
         Destructor for System objects.
     */
-    ~System(void);
+    ~System();
 
     //! output the standard log header
     void outputLogHeader();
@@ -671,12 +665,10 @@ protected:
     //! true when we created the CEGUI::Logger based object.
     bool d_ourLogger;
 
-    //! Shared instance of a parser to be used in most instances.
-    std::unique_ptr<BasicRenderedStringParser> d_basicStringParser;
-    //! Shared instance of a parser to be used when rendering text verbatim.
-    std::unique_ptr<DefaultRenderedStringParser> d_defaultStringParser;
-    //! currently set global RenderedStringParser.
-    RenderedStringParser* d_customRenderedStringParser;
+    //! Shared instance of a parser to be used in CEGUI by default.
+    std::unique_ptr<LegacyTextParser> d_fallbackTextParser;
+    //! Currently set global text parser.
+    TextParser* d_defaultTextParser = nullptr;
 
     String d_defaultFontName;
     String d_defaultCursorName;

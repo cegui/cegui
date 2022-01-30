@@ -273,9 +273,14 @@ void TreeView::fillRenderingState(TreeViewItemRenderingState& item,
     const ModelIndex& index, float& rendered_max_width, float& rendered_total_height)
 {
     item.d_text = d_itemModel->getData(index);
-    item.d_string = getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect, DefaultParagraphDirection::LeftToRight);
     item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);
-    item.d_size = item.d_string.getExtent(this);
+
+    item.d_renderedText.renderText(item.d_text, getTextParser(), getActualFont(), DefaultParagraphDirection::LeftToRight);
+    item.d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::LeftAligned);
+    item.d_renderedText.setWordWrappingEnabled(false);
+    item.d_renderedText.updateDynamicObjectExtents(this);
+    item.d_renderedText.updateFormatting(getPixelSize().d_width);
+    item.d_size = item.d_renderedText.getExtents();
 
     const float indent = getViewRenderer()->getSubtreeExpanderXIndent(item.d_nestedLevel) +
         getViewRenderer()->getSubtreeExpanderSize().d_width;

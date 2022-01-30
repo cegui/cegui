@@ -154,27 +154,21 @@ ItemView::~ItemView()
 }
 
 //----------------------------------------------------------------------------//
-RenderedStringParser& ItemView::getRenderedStringParser() const
+TextParser* ItemView::getTextParser() const
 {
     if (auto renderer = getWindowRenderer())
     {
-        // if parsing is disabled, we use a DefaultRenderedStringParser that creates
-        // a rendered string to render the input text verbatim (i.e. no parsing).
+        // Don't parse text if it is explicitly disabled
         if (!renderer->isTextParsingEnabled())
-            return CEGUI::System::getSingleton().getDefaultRenderedStringParser();
+            return nullptr;
 
-        // Next prefer a custom RenderedStringParser assigned to this Window.
-        if (auto parser = renderer->getCustomRenderedStringParser())
-            return *parser;
+        // Prefer a custom parser assigned to this Window
+        if (auto parser = renderer->getTextParser())
+            return parser;
     }
 
-    // Next prefer any globally set RenderedStringParser.
-    if (auto parser = CEGUI::System::getSingleton().getDefaultCustomRenderedStringParser())
-        return *parser;
-
-    // if parsing is enabled and no custom RenderedStringParser is set anywhere,
-    // use the system's BasicRenderedStringParser to do the parsing.
-    return CEGUI::System::getSingleton().getBasicRenderedStringParser();
+    // Otherwise use a global default parser
+    return CEGUI::System::getSingleton().getDefaultTextParser();
 }
 
 //----------------------------------------------------------------------------//

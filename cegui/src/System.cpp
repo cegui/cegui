@@ -44,8 +44,7 @@
 #include "CEGUI/WindowRendererManager.h"
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/XMLParser.h"
-#include "CEGUI/BasicRenderedStringParser.h"
-#include "CEGUI/DefaultRenderedStringParser.h"
+#include "CEGUI/text/LegacyTextParser.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageCodec.h"
@@ -128,10 +127,10 @@ System::System(Renderer& renderer,
     d_ourImageCodec(false),
     d_imageCodecModule(nullptr),
     d_ourLogger(Logger::getSingletonPtr() == nullptr),
-    d_basicStringParser(std::make_unique<BasicRenderedStringParser>()),
-    d_defaultStringParser(std::make_unique<DefaultRenderedStringParser>()),
-    d_customRenderedStringParser(nullptr)
+    d_fallbackTextParser(std::make_unique<LegacyTextParser>())
 {
+    d_defaultTextParser = d_fallbackTextParser.get();
+
     // Start out by fixing the numeric locale to C (we depend on this behaviour)
     // consider a UVector2 as a property {{0.5,0},{0.5,0}} could become {{0,5,0},{0,5,0}}
     setlocale(LC_NUMERIC, "C");
@@ -934,34 +933,21 @@ void System::destroy()
 }
 
 //----------------------------------------------------------------------------//
-RenderedStringParser* System::getDefaultCustomRenderedStringParser() const
+TextParser* System::getDefaultTextParser() const
 {
-    return d_customRenderedStringParser;
+    return d_defaultTextParser;
 }
 
 //----------------------------------------------------------------------------//
-RenderedStringParser& System::getBasicRenderedStringParser() const
+void System::setDefaultTextParser(TextParser* parser)
 {
-    return *d_basicStringParser.get();
-}
+    if (parser == d_defaultTextParser)
+        return;
 
-//----------------------------------------------------------------------------//
-RenderedStringParser& System::getDefaultRenderedStringParser() const
-{
-    return *d_defaultStringParser.get();
-}
+    d_defaultTextParser = parser ? parser : d_fallbackTextParser.get();
 
-//----------------------------------------------------------------------------//
-void System::setDefaultCustomRenderedStringParser(RenderedStringParser* parser)
-{
-    if (parser != d_customRenderedStringParser)
-    {
-        d_customRenderedStringParser = parser;
-
-        // fire event
-        EventArgs args;
-        fireEvent(EventRenderedStringParserChanged, args, EventNamespace);
-    }
+    EventArgs args;
+    fireEvent(EventRenderedStringParserChanged, args, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//

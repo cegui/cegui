@@ -407,7 +407,7 @@ void RenderedTextParagraph::onAreaWidthChanged()
 {
     if (d_wordWrap)
         d_linesDirty = true;
-    else if (!d_linesDirty)
+    else if (!d_linesDirty && d_horzFormatting != HorizontalTextFormatting::LeftAligned)
         for (auto& line : d_lines)
             line.horzFmtDirty = true;
 }

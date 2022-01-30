@@ -64,7 +64,6 @@ const String ListView::WidgetTypeName("CEGUI/ListView");
 //----------------------------------------------------------------------------//
 ListViewItemRenderingState::ListViewItemRenderingState(ListView* list_view)
     : d_attachedListView(list_view)
-    , d_renderedString(new RenderedString())
 {
 }
 
@@ -238,40 +237,24 @@ void ListView::resortView()
 void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index, float& max_width, float& total_height)
 {
     item.d_text = d_itemModel->getData(index);
-    *item.d_renderedString = std::move(getRenderedStringParser().parse(item.d_text, getActualFont(), &d_textColourRect, DefaultParagraphDirection::LeftToRight));
 
-    if (!item.d_formatter || item.d_formatter->getCorrespondingFormatting() != d_horzFormatting)
-    {
-        switch (d_horzFormatting)
-        {
-            case HorizontalTextFormatting::LeftAligned:
-                item.d_formatter.reset(new LeftAlignedRenderedString());
-                break;
-
-            case HorizontalTextFormatting::RightAligned:
-                item.d_formatter.reset(new RightAlignedRenderedString());
-                break;
-
-            case HorizontalTextFormatting::CentreAligned:
-                item.d_formatter.reset(new CentredRenderedString());
-                break;
-
-            case HorizontalTextFormatting::Justified:
-                item.d_formatter.reset(new JustifiedRenderedString());
-                break;
-        }
-    }
+    TextParser* parser = getTextParser();
+    item.d_renderedText.renderText(item.d_text, getTextParser(), getActualFont(), DefaultParagraphDirection::LeftToRight);
 
     Sizef itemsAreaSize = getPixelSize();
     const Scrollbar* const vertScrollbar = getVertScrollbar();
     if (vertScrollbar->isVisible())
         itemsAreaSize.d_width = itemsAreaSize.d_width - vertScrollbar->getPixelSize().d_width;
     itemsAreaSize.d_width -= 2;
-    item.d_formatter->format(*item.d_renderedString, this, itemsAreaSize);
+
+    item.d_renderedText.setHorizontalFormatting(d_horzFormatting);
+    item.d_renderedText.setWordWrappingEnabled(d_wordWrap);
+    item.d_renderedText.updateDynamicObjectExtents(this);
+    item.d_renderedText.updateFormatting(itemsAreaSize.d_width);
 
     item.d_index = index;
     item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);
-    item.d_size = item.d_formatter->getExtent();
+    item.d_size = item.d_renderedText.getExtents();
 
     max_width = std::max(item.d_size.d_width, max_width);
 

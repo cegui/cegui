@@ -379,7 +379,7 @@ protected:
 
     //!!!FIXME: remove duplication with TextComponent! And maybe move into renderer?!
     //! helper to get a rendered string parser for the current window
-    RenderedStringParser& getRenderedStringParser() const;
+    TextParser* getTextParser() const;
 
     void addItemViewProperties();
     virtual void updateScrollbars();
