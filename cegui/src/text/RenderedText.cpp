@@ -352,14 +352,8 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
 }
 
 //----------------------------------------------------------------------------//
-bool RenderedText::format(float areaWidth, const Window* hostWindow)
+void RenderedText::updateEmbeddedObjects(const Window* hostWindow)
 {
-    if (areaWidth < 0.f)
-        return false;
-
-    const bool areaWidthChanged = (d_areaWidth != areaWidth);
-    d_areaWidth = areaWidth;
-
     // Update metrics of dynamic objects and notify the text about their resizing
     for (size_t i = 0; i < d_elements.size(); ++i)
     {
@@ -371,6 +365,16 @@ bool RenderedText::format(float areaWidth, const Window* hostWindow)
             for (auto& p : d_paragraphs)
                 p.onElementHeightChanged(i, diff.d_height);
     }
+}
+
+//----------------------------------------------------------------------------//
+bool RenderedText::updateFormatting(float areaWidth)
+{
+    if (areaWidth < 0.f)
+        return false;
+
+    const bool areaWidthChanged = (d_areaWidth != areaWidth);
+    d_areaWidth = areaWidth;
 
     bool fitsIntoAreaWidth = true;
     for (auto& p : d_paragraphs)
@@ -401,8 +405,16 @@ void RenderedText::createRenderGeometry(std::vector<GeometryBuffer*>& out,
 //----------------------------------------------------------------------------//
 RenderedText RenderedText::clone() const
 {
-    //!!!FIXME TEXT: implement!
-    return {};
+    RenderedText copy;
+    for (const auto& component : d_elements)
+        copy.d_elements.push_back(component->clone());
+    copy.d_paragraphs = d_paragraphs;
+    copy.d_defaultFont = d_defaultFont;
+    copy.d_areaWidth = d_areaWidth;
+    copy.d_horzFormatting = d_horzFormatting;
+    copy.d_lastJustifiedLineHorzFormatting = d_lastJustifiedLineHorzFormatting;
+    copy.d_wordWrap = d_wordWrap;
+    return copy;
 }
 
 //----------------------------------------------------------------------------//
@@ -425,7 +437,7 @@ void RenderedText::setLastJustifiedLineHorizontalFormatting(HorizontalTextFormat
 //----------------------------------------------------------------------------//
 void RenderedText::setWordWrappingEnabled(bool wrap)
 {
-    d_wordWrap = erap;
+    d_wordWrap = wrap;
 }
 
 }
