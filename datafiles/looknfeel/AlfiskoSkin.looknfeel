@@ -25,7 +25,7 @@
                 </Area>
                 <VertFormatProperty name="VertFormatting"/>
                 <HorzFormatProperty name="HorzFormatting"/>
-                <WordWrapProperty name="WordWrap"/>
+                <WordWrap property="WordWrap"/>
             </TextComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -61,7 +61,7 @@
                 <Colours topLeft="FF000000" bottomLeft="FF000000" topRight="FF000000" bottomRight="FF000000"/>
                 <VertFormatProperty name="VertLabelFormatting"/>
                 <HorzFormatProperty name="HorzLabelFormatting"/>
-                <WordWrapProperty name="WordWrap"/>
+                <WordWrap property="WordWrap"/>
             </TextComponent>
         </ImagerySection>
         <ImagerySection name="normal">

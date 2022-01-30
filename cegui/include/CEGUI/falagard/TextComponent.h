@@ -273,6 +273,9 @@ public:
     */
     const String& getFontPropertySource() const { return d_fontFromProperty ? d_font : String::GetEmpty(); }
 
+    void setWordWrapEnabled(bool wrap) { d_wordWrapProperty.clear(); d_wordWrap = wrap; }
+    void setWordWrapProperty(const String& name) { d_wordWrapProperty = name; }
+
     /*!
     \brief
         Set the name of the property that will be used to determine the font to use for rendering
@@ -321,13 +324,15 @@ private:
     String d_text; //!< text rendered by this component, either string or property name.
     String d_font; //!< font to use, either font name or property name.
 
+    //!!!FIXME TEXT: improve falagard prop/value, extend it beyound falagard enums!
+    String d_wordWrapProperty;
+
     // Cache for avoiding redundant calulations
     mutable DefaultParagraphDirection d_lastBidiDir = DefaultParagraphDirection::Automatic;
 
     FormattingSetting<VerticalTextFormatting> d_vertFormatting = VerticalTextFormatting::TopAligned;
     FormattingSetting<HorizontalTextFormatting> d_horzFormatting = HorizontalTextFormatting::LeftAligned;
     FormattingSetting<DefaultParagraphDirection> d_paragraphDir = DefaultParagraphDirection::LeftToRight;
-    //FormattingSetting<bool> d_wordWrap = false;
 
     bool d_wordWrap = false;
     bool d_fontFromProperty = false; //!< d_font is a property name in a source window

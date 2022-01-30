@@ -162,6 +162,18 @@ void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const
 
     d_vertFormatting.writeXMLToStream(xml_stream);
     d_horzFormatting.writeXMLToStream(xml_stream);
+
+    // Write WordWrap in a new format
+    // TODO: refactor all falagard prop/values to the same format!
+    {
+        xml_stream.openTag(Falagard_xmlHandler::WordWrapElement);
+        if (d_wordWrapProperty.empty())
+            xml_stream.attribute(Falagard_xmlHandler::ValueAttribute, PropertyHelper<bool>::toString(d_wordWrap));
+        else
+            xml_stream.attribute(Falagard_xmlHandler::PropertyAttribute, d_wordWrapProperty);
+        xml_stream.closeTag();
+    }
+
     d_paragraphDir.writeXMLToStream(xml_stream);
 
     // closing tag
@@ -247,11 +259,16 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
     else
         updateRenderedString(srcWindow, d_text.empty() ? srcWindow.getText() : d_text, font);
 
-    //!!!FIXME TEXT: get rid of deprecated word wrapping in hfmt!
+    //!!!FIXME TEXT: get rid of deprecated word wrapping baked into hfmt!
     bool wordWrap = false;
     auto hfmt = decomposeHorizontalFormatting(d_horzFormatting.get(srcWindow), wordWrap);
     if (!wordWrap)
-        wordWrap = d_wordWrap; //d_wordWrap.get(srcWindow);
+    {
+        if (d_wordWrapProperty.empty())
+            wordWrap = d_wordWrap;
+        else
+            wordWrap = srcWindow.getProperty<bool>(d_wordWrapProperty);
+    }
 
     d_renderedText.setHorizontalFormatting(hfmt);
     d_renderedText.setWordWrappingEnabled(wordWrap);

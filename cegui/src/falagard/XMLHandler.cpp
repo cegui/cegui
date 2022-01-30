@@ -64,6 +64,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::ColoursElement("Colours");
     const String Falagard_xmlHandler::VertFormatElement("VertFormat");
     const String Falagard_xmlHandler::HorzFormatElement("HorzFormat");
+    const String Falagard_xmlHandler::WordWrapElement("WordWrap");
     const String Falagard_xmlHandler::ParagraphDirElement("ParagraphDir");
     const String Falagard_xmlHandler::VertAlignmentElement("VertAlignment");
     const String Falagard_xmlHandler::HorzAlignmentElement("HorzAlignment");
@@ -257,6 +258,7 @@ namespace CEGUI
         registerElementStartHandler(ColoursElement, &Falagard_xmlHandler::elementColoursStart);
         registerElementStartHandler(VertFormatElement, &Falagard_xmlHandler::elementVertFormatStart);
         registerElementStartHandler(HorzFormatElement, &Falagard_xmlHandler::elementHorzFormatStart);
+        registerElementStartHandler(WordWrapElement, &Falagard_xmlHandler::elementWordWrapStart);
         registerElementStartHandler(ParagraphDirElement, &Falagard_xmlHandler::elementParagraphDirStart);
         registerElementStartHandler(VertAlignmentElement, &Falagard_xmlHandler::elementVertAlignmentStart);
         registerElementStartHandler(HorzAlignmentElement, &Falagard_xmlHandler::elementHorzAlignmentStart);
@@ -777,12 +779,26 @@ namespace CEGUI
     }
 
     /*************************************************************************
+        Method that handles the opening WordWrap XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementWordWrapStart(const XMLAttributes& attributes)
+    {
+        if (!d_textcomponent)
+            throwExceptionNotChildOfNode(d_widgetlook, WordWrapElement, TextComponentElement);
+
+        if (attributes.exists(PropertyAttribute))
+            d_textcomponent->setWordWrapProperty(attributes.getValueAsString(PropertyAttribute));
+        else
+            d_textcomponent->setWordWrapEnabled(PropertyHelper<bool>::fromString(attributes.getValueAsString(ValueAttribute)));
+    }
+
+    /*************************************************************************
         Method that handles the opening ParagraphDir XML element.
     *************************************************************************/
     void Falagard_xmlHandler::elementParagraphDirStart(const XMLAttributes& attributes)
     {
         if (!d_textcomponent)
-            throwExceptionNotChildOfNode(d_widgetlook, FontPropertyElement, attributes.getValueAsString(NameAttribute), ParagraphDirElement);
+            throwExceptionNotChildOfNode(d_widgetlook, ParagraphDirElement, TextComponentElement);
 
         d_textcomponent->setParagraphDir(
             FalagardXMLHelper<DefaultParagraphDirection>::fromString(

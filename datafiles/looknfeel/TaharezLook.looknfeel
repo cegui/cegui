@@ -23,7 +23,7 @@
                 </Area>
                 <VertFormatProperty name="VertFormatting" />
                 <HorzFormatProperty name="HorzFormatting" />
-                <WordWrapProperty name="WordWrap" />
+                <WordWrap property="WordWrap" />
                 <ParagraphDirProperty name="DefaultParagraphDirection" />
             </TextComponent>
         </ImagerySection>
@@ -68,7 +68,7 @@
             <TextComponent>
                 <VertFormatProperty name="VertLabelFormatting" />
                 <HorzFormatProperty name="HorzLabelFormatting" />
-                <WordWrapProperty name="LabelWordWrap" />
+                <WordWrap property="LabelWordWrap" />
                 <ParagraphDirProperty name="DefaultParagraphDirection" />
             </TextComponent>
         </ImagerySection>

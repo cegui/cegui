@@ -36,7 +36,7 @@
                 </Area>
                 <VertFormatProperty name="VertFormatting"/>
                 <HorzFormatProperty name="HorzFormatting"/>
-                <WordWrapProperty name="WordWrap"/>
+                <WordWrap property="WordWrap"/>
             </TextComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
