@@ -36,10 +36,7 @@ namespace CEGUI
 {
 class TextParser;
 
-/*!
-\brief
-    A text prepared to be rendered as graphics. Supports styles and embedded objects.
-*/
+//! \brief A text prepared to be rendered as graphics. Supports styles and embedded objects.
 class CEGUIEXPORT RenderedText final
 {
 public:

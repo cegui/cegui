@@ -26,6 +26,7 @@
   ***************************************************************************/
 #pragma once
 #include "CEGUI/text/RenderedTextElement.h"
+#include "CEGUI/Event.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -55,8 +56,9 @@ public:
 
 protected:
 
-    Window* widget = nullptr;
+    Window* d_widget = nullptr;
     Sizef d_effectiveSize;
+    Event::ScopedConnection d_widgetDestroyConnection;
     String d_widgetName; //!!!TODO: replace with a StringAtom!
 };
 
