@@ -75,11 +75,14 @@ public:
     void setLastJustifiedLineHorizontalFormatting(HorizontalTextFormatting fmt);
     void setWordWrappingEnabled(bool wrap);
 
+    const Sizef& getExtents() const { return d_extents; }
+
 protected:
 
     std::vector<RenderedTextParagraph> d_paragraphs;
     std::vector<RenderedTextElementPtr> d_elements;
     const Font* d_defaultFont = nullptr;
+    Sizef d_extents;
     float d_areaWidth = -1.f;
 
     HorizontalTextFormatting d_horzFormatting = HorizontalTextFormatting::LeftAligned;
