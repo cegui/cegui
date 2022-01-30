@@ -115,6 +115,9 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     std::vector<size_t>& outOriginalIndices, std::vector<uint16_t>& outElementIndices,
     std::vector<RenderedTextElementPtr>& outElements)
 {
+    return false;
+
+
     //!!!TODO TEXT: IMPLEMENT!
     // each param is a stack
     // style is assembled from stacks when the first real style user is being processed
