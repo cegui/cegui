@@ -336,8 +336,6 @@ protected:
     void updateScaledSize(const Sizef& renderer_display_size);
     //! Updates only the scaled offset values according to the new display size of the renderer 
     void updateScaledOffset(const Sizef& renderer_display_size);
-    //! Returns an area where an image must be rendered
-    Rectf calculateRenderArea(const ImageRenderSettings& renderSettings) const;
 
     //! Name used for the Image as defined during creation.
     String d_name;

@@ -178,6 +178,14 @@ public:
 
     bool empty() const { return d_max.x <= d_min.x || d_max.y <= d_min.y; }
 
+    void round()
+    {
+        d_min.x = std::round(d_min.x);
+        d_min.y = std::round(d_min.y);
+        d_max.x = std::round(d_max.x);
+        d_max.y = std::round(d_max.y);
+    }
+
     /*!
     \    
         return a Rectf that is the intersection of 'this' Rectf with the Rectf 'rect'
@@ -207,6 +215,39 @@ public:
         {
             return Rectf(0.0f, 0.0f, 0.0f, 0.0f);
         }
+    }
+
+    /*!
+    \brief
+        Intersects this rect with other rect in place
+
+    \return
+        Whether the rect was changed by an intersection
+    */
+    bool intersect(const Rectf& other)
+    {
+        bool changed = false;
+        if (d_min.x < other.d_min.x)
+        {
+            d_min.x = other.d_min.x;
+            changed = true;
+        }
+        if (d_min.y < other.d_min.y)
+        {
+            d_min.y = other.d_min.y;
+            changed = true;
+        }
+        if (d_max.x > other.d_max.x)
+        {
+            d_max.x = other.d_max.x;
+            changed = true;
+        }
+        if (d_max.y > other.d_max.y)
+        {
+            d_max.y = other.d_max.y;
+            changed = true;
+        }
+        return changed;
     }
 
     /*!
@@ -351,15 +392,22 @@ public:
         return Rectf(d_min * scalar, d_max * scalar);
     }
 
-    inline Rectf operator*(glm::vec2 vector) const
+    inline Rectf operator*(const glm::vec2& vector) const
     {
         return Rectf(d_min * vector, d_max * vector);
     }
 
-    const Rectf& operator*=(float scalar)
+    Rectf& operator*=(float scalar)
     {
         d_min *= scalar;
         d_max *= scalar;
+        return *this;
+    }
+
+    Rectf& operator*=(const glm::vec2& vector)
+    {
+        d_min *= vector;
+        d_max *= vector;
         return *this;
     }
 
@@ -371,6 +419,13 @@ public:
     Rectf operator-(const Rectf& r) const
     {
         return Rectf(d_min - r.d_min, d_max - r.d_max);
+    }
+
+    Rectf& operator+=(const Rectf& r)
+    {
+        d_min += r.d_min;
+        d_max += r.d_max;
+        return *this;
     }
 
     /*!

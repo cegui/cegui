@@ -71,8 +71,7 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     float heightScale = 1.f;
     applyVerticalFormatting(lineHeight, pos, heightScale);
 
-    //!!!TODO TEXT: ensure that necessary adjustment happens before this, or enable alignToPixels here!
-    ImageRenderSettings settings(Rectf(), clipRect, d_colours);//, 1.f, true);
+    ImageRenderSettings settings(Rectf(), clipRect, d_colours, 1.f, true);
     if (modColours)
         settings.d_multiplyColours *= *modColours;
 

@@ -106,18 +106,26 @@ SVGData* SVGImage::getSVGData()
 void SVGImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     const ImageRenderSettings& renderSettings, size_t /*canCombineFromIdx*/) const
 {
-    const Rectf finalRect = calculateRenderArea(renderSettings);
-    if (finalRect.empty())
-        return;
+    //!!!FIXME: not used for anything but early exit! Is it intended?!
+    {
+        Rectf dest = renderSettings.d_destArea;
+        dest.offset(d_scaledOffset);
 
-    // Calculate the scale factor for our Image which is the scaling of the Image
-    // area to the destination area of our render call
-    const Rectf& dest = renderSettings.d_destArea;
-    const glm::vec2 scale_factor(dest.getWidth() / d_imageArea.getWidth(), dest.getHeight() / d_imageArea.getHeight());
+        if (renderSettings.d_clipArea)
+            dest = dest.getIntersection(*renderSettings.d_clipArea);
 
-    SVGImageRenderSettings svgSettings(renderSettings, scale_factor, d_useGeometryAntialiasing);
+        if (renderSettings.d_alignToPixels)
+            dest.round();
 
-    // TODO: can use single buffer?
+        if (dest.empty())
+            return;
+    }
+
+    const glm::vec2 scaleImgToDest(renderSettings.d_destArea.getWidth() / d_imageArea.getWidth(),
+        renderSettings.d_destArea.getHeight() / d_imageArea.getHeight());
+    const SVGImageRenderSettings svgSettings(renderSettings, scaleImgToDest, d_useGeometryAntialiasing);
+
+    // TODO: can use single buffer or at least combine something?
     for (const SVGBasicShape* currentShape : d_svgData->getShapes())
         currentShape->createRenderGeometry(out, svgSettings);
 }

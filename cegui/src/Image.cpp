@@ -218,24 +218,4 @@ void Image::updateScaledOffset(const Sizef& renderer_display_size)
     d_scaledOffset = d_pixelOffset * scaleFactors;
 }
 
-//----------------------------------------------------------------------------//
-Rectf Image::calculateRenderArea(const ImageRenderSettings& renderSettings) const
-{
-    Rectf dest = renderSettings.d_destArea;
-    dest.offset(d_scaledOffset);
-
-    if (const Rectf* clip_area = renderSettings.d_clipArea)
-        dest = std::move(dest.getIntersection(*clip_area));
-
-    if (renderSettings.d_alignToPixels)
-    {
-        dest.d_min.x = std::round(dest.d_min.x);
-        dest.d_min.y = std::round(dest.d_min.y);
-        dest.d_max.x = std::round(dest.d_max.x);
-        dest.d_max.y = std::round(dest.d_max.y);
-    }
-
-    return dest;
-}
-
 }
