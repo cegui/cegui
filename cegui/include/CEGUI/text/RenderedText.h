@@ -61,7 +61,7 @@ public:
     bool renderText(const String& text, TextParser* parser = nullptr, const Font* defaultFont = nullptr,
         DefaultParagraphDirection defaultParagraphDir = DefaultParagraphDirection::LeftToRight);
 
-    void updateEmbeddedObjects(const Window* hostWindow = nullptr);
+    void updateDynamicObjectExtents(const Window* hostWindow = nullptr);
     bool updateFormatting(float areaWidth);
 
     void createRenderGeometry(std::vector<GeometryBuffer*>& out, const glm::vec2& position,

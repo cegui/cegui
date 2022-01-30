@@ -153,8 +153,9 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
 
     // Word wrapping breakpoint tracking
     size_t lastBreakPointIdx = std::numeric_limits<size_t>().max();
-    Line lastBreakPointState;
+    float lastBreakPointWidth = 0.f;
     float lastBreakPointWidthAdjustment = 0.f;
+    uint16_t lastBreakPointJustifyableCount = 0;
 
     float prevGlyphWidth = 0.f;
     uint32_t lineStartGlyphIdx = 0;
@@ -173,26 +174,27 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
                 // If there is a good break point for word wrapping in the current line, use it
                 if (lastBreakPointIdx < glyphCount)
                 {
-                    // Transfer everything past the last breakpoint to the new line
-                    d_lines.emplace_back();
-                    auto newLine = &d_lines.back();
-                    newLine->extents = currLine->extents - lastBreakPointState.extents;
-                    newLine->justifyableCount = currLine->justifyableCount - lastBreakPointState.justifyableCount;
+                    // Remember some metrics of the wrapped part while currLine pointer is valid
+                    const float wrappedWidth = currLine->extents.d_width - lastBreakPointWidth;
+                    const uint16_t wrappedJustifyables = currLine->justifyableCount - lastBreakPointJustifyableCount;
 
                     // Restore the current line to the saved state and compensate possible difference
                     // between the last glyph's advance and full width (e.g. due to kerning at the breakpoint)
-                    *currLine = lastBreakPointState;
-                    currLine->extents.d_width += lastBreakPointWidthAdjustment;
+                    currLine->extents.d_width = lastBreakPointWidth + lastBreakPointWidthAdjustment;
                     currLine->glyphEndIdx = static_cast<uint32_t>(lastBreakPointIdx);
                     lineStartGlyphIdx = currLine->glyphEndIdx;
 
-                    currLine = newLine;
+                    // Transfer everything past the last breakpoint to the new line
+                    d_lines.emplace_back();
+                    currLine = &d_lines.back();
+                    currLine->extents.d_width = wrappedWidth;
+                    currLine->justifyableCount = wrappedJustifyables;
 
                     // NB: in the new line this glyph is no more a valid breakpoint (infinite loop breaking)
                     lastBreakPointIdx = std::numeric_limits<size_t>().max();
 
                     // The current glyph may still be wider than our reference area
-                    excessWidth = currLine->extents.d_width + glyphWidth - areaWidth;
+                    excessWidth = wrappedWidth + glyphWidth - areaWidth;
                 }
 
                 // Either no break point was found or the glyph itself is too wide
@@ -218,9 +220,9 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
             {
                 // Remember this glyph as the most recent word wrapping point
                 lastBreakPointIdx = i;
-                lastBreakPointState = *currLine;
-                lastBreakPointWidthAdjustment =
-                    (i > lineStartGlyphIdx) ? (prevGlyphWidth - d_glyphs[i - 1].advance) : 0.f;
+                lastBreakPointWidth = currLine->extents.d_width;
+                lastBreakPointWidthAdjustment = (i > lineStartGlyphIdx) ? (prevGlyphWidth - d_glyphs[i - 1].advance) : 0.f;
+                lastBreakPointJustifyableCount = currLine->justifyableCount;
             }
 
             prevGlyphWidth = glyphWidth;

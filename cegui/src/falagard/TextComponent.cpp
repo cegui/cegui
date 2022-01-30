@@ -341,7 +341,7 @@ void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size)
             break;
     }
     d_renderedText.renderText(getEffectiveText(srcWindow), nullptr, font, d_paragraphDir.get(srcWindow));
-    d_renderedText.updateEmbeddedObjects(&srcWindow);
+    d_renderedText.updateDynamicObjectExtents(&srcWindow);
     d_renderedText.updateFormatting(size.d_width);
     d_renderedText.createRenderGeometry(const_cast<Window&>(srcWindow).getGeometryBuffers(), glm::vec2{ 0.f, 0.f }, nullptr, nullptr);
 }
