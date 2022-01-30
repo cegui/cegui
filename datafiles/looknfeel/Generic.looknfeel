@@ -13,6 +13,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF444444" type="Colour" name="DisabledTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzFormatting"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="false" type="bool" name="WordWrap"/>
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="Label">
             <TextComponent>
@@ -32,6 +33,7 @@
                 </Area>
                 <VertFormatProperty name="VertFormatting"/>
                 <HorzFormatProperty name="HorzFormatting"/>
+                <WordWrapProperty name="WordWrap"/>
             </TextComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -57,6 +59,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="Colour" name="DisabledOutlineColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzFormatting"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="false" type="bool" name="WordWrap"/>
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="Outline">
             <TextComponent> <!-- -1, -1 -->
@@ -76,6 +79,7 @@
                 </Area>
                 <VertFormatProperty name="VertFormatting"/>
                 <HorzFormatProperty name="HorzFormatting"/>
+                <WordWrapProperty name="WordWrap"/>
             </TextComponent>
             <TextComponent> <!-- +1, -1 -->
                 <Area>

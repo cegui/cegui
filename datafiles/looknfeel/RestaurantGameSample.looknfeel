@@ -14,6 +14,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFF0000" type="Colour" name="DisabledTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="LeftAligned" type="HorizontalTextFormatting" name="HorzFormatting"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="false" type="bool" name="WordWrap"/>
         <Property name="Size" value="{{0.1, 0}, {0.08, 0}}" />
         <Property name="CursorPassThroughEnabled" value="true" />
         <ImagerySection name="Label">
@@ -34,6 +35,7 @@
                 </Area>
                 <VertFormatProperty name="VertFormatting"/>
                 <HorzFormatProperty name="HorzFormatting"/>
+                <WordWrapProperty name="WordWrap"/>
             </TextComponent>
         </ImagerySection>
         <StateImagery name="Enabled">

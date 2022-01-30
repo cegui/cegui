@@ -15,6 +15,7 @@
         <PropertyDefinition name="DisabledTextColour" initialValue="FF444444" redrawOnWrite="true" type="Colour" />
         <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="VerticalTextFormatting" />
         <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="HorizontalTextFormatting" />
+        <PropertyDefinition name="WordWrap" initialValue="false" redrawOnWrite="true" type="bool" />
         <ImagerySection name="Label">
             <TextComponent>
                 <Area>
@@ -25,6 +26,7 @@
                 </Area>
                 <VertFormatProperty name="VertFormatting" />
                 <HorzFormatProperty name="HorzFormatting" />
+                <WordWrapProperty name="WordWrap" />
             </TextComponent>
         </ImagerySection>
         <StateImagery name="Enabled">

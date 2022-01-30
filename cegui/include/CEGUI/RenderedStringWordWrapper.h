@@ -71,30 +71,29 @@ protected:
 template <> CEGUIEXPORT
 inline HorizontalTextFormatting RenderedStringWordWrapper<LeftAlignedRenderedString>::getCorrespondingFormatting() const
 {
-    return HorizontalTextFormatting::WordWrapLeftAligned;
+    return HorizontalTextFormatting::LeftAligned;
 }
 template <> CEGUIEXPORT
 inline HorizontalTextFormatting RenderedStringWordWrapper<RightAlignedRenderedString>::getCorrespondingFormatting() const
 {
-    return HorizontalTextFormatting::WordWrapRightAligned;
+    return HorizontalTextFormatting::RightAligned;
 }
 template <> CEGUIEXPORT
 inline HorizontalTextFormatting RenderedStringWordWrapper<CentredRenderedString>::getCorrespondingFormatting() const
 {
-    return HorizontalTextFormatting::WordWrapCentreAligned;
+    return HorizontalTextFormatting::CentreAligned;
 }
 template <> CEGUIEXPORT
 inline HorizontalTextFormatting RenderedStringWordWrapper<JustifiedRenderedString>::getCorrespondingFormatting() const
 {
-    return HorizontalTextFormatting::WordWrapJustified;
+    return HorizontalTextFormatting::Justified;
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
 HorizontalTextFormatting RenderedStringWordWrapper<T>::getCorrespondingFormatting() const
 {
-    //static_assert(false, "Unknown string formatter type");
-    return HorizontalTextFormatting::WordWrapLeftAligned;
+    static_assert(false, "Unknown string formatter type");
 }
 
 //----------------------------------------------------------------------------//

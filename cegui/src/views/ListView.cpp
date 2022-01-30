@@ -87,8 +87,7 @@ bool ListViewItemRenderingState::operator >(const ListViewItemRenderingState& ot
 
 //----------------------------------------------------------------------------//
 ListView::ListView(const String& type, const String& name) :
-    ItemView(type, name),
-    d_horzFormatting(HorizontalTextFormatting::LeftAligned)
+    ItemView(type, name)
 {
     const String& propertyOrigin = "ListView";
 
@@ -97,19 +96,37 @@ ListView::ListView(const String& type, const String& name) :
         "  Value is one of the HorzFormatting strings.",
         &ListView::setHorizontalFormatting, &ListView::getHorizontalFormatting,
         HorizontalTextFormatting::LeftAligned);
+
+    CEGUI_DEFINE_PROPERTY(ListView, bool,
+        "WordWrap", "Property to enable/disable text word wrapping. Value is bool.",
+        &ListView::setWordWrapEnabled, &ListView::isWordWrapEnabled,
+        false);
 }
 
 //----------------------------------------------------------------------------//
-ListView::~ListView()
-{
-}
+ListView::~ListView() = default;
 
 //----------------------------------------------------------------------------//
 void ListView::setHorizontalFormatting(HorizontalTextFormatting h_fmt)
 {
     if (h_fmt == d_horzFormatting)
         return;
-    d_horzFormatting = h_fmt;
+
+    bool wordWrap = false;
+    d_horzFormatting = decomposeHorizontalFormatting(h_fmt, wordWrap);
+    if (wordWrap)
+        setWordWrapEnabled(true);
+
+    d_needsFullRender = true;
+}
+
+//----------------------------------------------------------------------------//
+void ListView::setWordWrapEnabled(bool wrap)
+{
+    if (wrap == d_wordWrap)
+        return;
+
+    d_wordWrap = wrap;
     d_needsFullRender = true;
 }
 
@@ -241,22 +258,6 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index, fl
 
             case HorizontalTextFormatting::Justified:
                 item.d_formatter.reset(new JustifiedRenderedString());
-                break;
-
-            case HorizontalTextFormatting::WordWrapLeftAligned:
-                item.d_formatter.reset(new RenderedStringWordWrapper<LeftAlignedRenderedString>());
-                break;
-
-            case HorizontalTextFormatting::WordWrapRightAligned:
-                item.d_formatter.reset(new RenderedStringWordWrapper<RightAlignedRenderedString>());
-                break;
-
-            case HorizontalTextFormatting::WordWrapCentreAligned:
-                item.d_formatter.reset(new RenderedStringWordWrapper<CentredRenderedString>());
-                break;
-
-            case HorizontalTextFormatting::WordWrapJustified:
-                item.d_formatter.reset(new RenderedStringWordWrapper<JustifiedRenderedString>());
                 break;
         }
     }

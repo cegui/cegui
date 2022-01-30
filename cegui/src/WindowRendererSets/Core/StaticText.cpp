@@ -34,6 +34,7 @@
 #include "CEGUI/CentredRenderedString.h"
 #include "CEGUI/JustifiedRenderedString.h"
 #include "CEGUI/RenderedStringWordWrapper.h"
+#include "CEGUI/RenderedString.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 #include "CEGUI/CoordConverter.h"
 
@@ -59,6 +60,11 @@ FalagardStaticText::FalagardStaticText(const String& type)
         "  Value is one of the HorzFormatting strings.",
         &FalagardStaticText::setHorizontalFormatting, &FalagardStaticText::getHorizontalFormatting,
         HorizontalTextFormatting::LeftAligned);
+
+    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, bool,
+        "WordWrap", "Property to enable/disable text word wrapping. Value is bool.",
+        &FalagardStaticText::setWordWrapEnabled, &FalagardStaticText::isWordWrapEnabled,
+        false);
 
     CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, VerticalTextFormatting,
         "VertFormatting", "Property to get/set the vertical formatting mode."
@@ -121,20 +127,16 @@ void FalagardStaticText::createRenderGeometry()
         switch (d_actualHorzFormatting)
         {
             case HorizontalTextFormatting::LeftAligned:
-            case HorizontalTextFormatting::WordWrapLeftAligned:
             case HorizontalTextFormatting::Justified:
-            case HorizontalTextFormatting::WordWrapJustified:
                 destRect.offset(glm::vec2(-horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HorizontalTextFormatting::CentreAligned:
-            case HorizontalTextFormatting::WordWrapCentreAligned:
                 destRect.setWidth(horzScrollbar->getDocumentSize());
                 destRect.offset(glm::vec2(range / 2 - horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HorizontalTextFormatting::RightAligned:
-            case HorizontalTextFormatting::WordWrapRightAligned:
                 destRect.offset(glm::vec2(range - horzScrollbar->getScrollPosition(), 0));
                 break;
             default:
@@ -175,26 +177,6 @@ void FalagardStaticText::onIsFrameEnabledChanged()
     FalagardStatic::onIsFrameEnabledChanged();
     invalidateFormatting();
     d_window->adjustSizeToContent();
-}
-
-//----------------------------------------------------------------------------//
-bool FalagardStaticText::isWordWrapOn() const
-{
-    switch (d_horzFormatting)
-    {
-        case HorizontalTextFormatting::LeftAligned:
-        case HorizontalTextFormatting::RightAligned:
-        case HorizontalTextFormatting::CentreAligned:
-        case HorizontalTextFormatting::Justified:
-            return false;
-        case HorizontalTextFormatting::WordWrapLeftAligned:
-        case HorizontalTextFormatting::WordWrapRightAligned:
-        case HorizontalTextFormatting::WordWrapCentreAligned:
-        case HorizontalTextFormatting::WordWrapJustified:
-            return true;
-        default:
-            throw InvalidRequestException("Invalid horizontal formatting.");
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -241,7 +223,7 @@ void FalagardStaticText::adjustSizeToContent()
     const float epsilon = d_window->adjustSizeToContent_getEpsilon();
     getHorzScrollbarWithoutUpdate()->hide();
     getVertScrollbarWithoutUpdate()->hide();
-    if (isWordWrapOn())
+    if (d_wordWrap)
     {
         const Sizef contentMaxSize = d_formatter->getRenderedString()->getExtent(d_window);
         USize sizeFunc(
@@ -265,7 +247,7 @@ void FalagardStaticText::adjustSizeToContent()
 //----------------------------------------------------------------------------//
 bool FalagardStaticText::isSizeAdjustedToContentKeepingAspectRatio() const
 {
-    if (!(d_window->isSizeAdjustedToContent() && isWordWrapOn()))
+    if (!(d_window->isSizeAdjustedToContent() && d_wordWrap))
         return false;
     if (d_numOfTextLinesToShow.isAuto())
         return (d_window->isWidthAdjustedToContent() &&
@@ -345,7 +327,22 @@ void FalagardStaticText::setHorizontalFormatting(HorizontalTextFormatting h_fmt)
     if (h_fmt == d_horzFormatting)
         return;
 
-    d_horzFormatting = h_fmt;
+    bool wordWrap = false;
+    d_horzFormatting = decomposeHorizontalFormatting(h_fmt, wordWrap);
+    if (wordWrap)
+        setWordWrapEnabled(true);
+
+    invalidateFormatting();
+    d_window->adjustSizeToContent();
+}
+
+//------------------------------------------------------------------------//
+void FalagardStaticText::setWordWrapEnabled(bool wrap)
+{
+    if (d_wordWrap == wrap)
+        return;
+
+    d_wordWrap = wrap;
     invalidateFormatting();
     d_window->adjustSizeToContent();
 }
@@ -652,7 +649,7 @@ void FalagardStaticText::updateFormatting() const
 
         if (d_window->isWidthAdjustedToContent() && lineCount == 1)
         {
-            d_actualHorzFormatting = isWordWrapOn() ? HorizontalTextFormatting::WordWrapCentreAligned : HorizontalTextFormatting::CentreAligned;
+            d_actualHorzFormatting = HorizontalTextFormatting::CentreAligned;
             setupStringFormatter();
             d_formatter->format(renderedString, d_window, getTextRenderAreaWithoutUpdate().getSize());
         }
@@ -686,22 +683,6 @@ void FalagardStaticText::setupStringFormatter() const
 
         case HorizontalTextFormatting::Justified:
             d_formatter.reset(new JustifiedRenderedString());
-            break;
-
-        case HorizontalTextFormatting::WordWrapLeftAligned:
-            d_formatter.reset(new RenderedStringWordWrapper<LeftAlignedRenderedString>());
-            break;
-
-        case HorizontalTextFormatting::WordWrapRightAligned:
-            d_formatter.reset(new RenderedStringWordWrapper<RightAlignedRenderedString>());
-            break;
-
-        case HorizontalTextFormatting::WordWrapCentreAligned:
-            d_formatter.reset(new RenderedStringWordWrapper<CentredRenderedString>());
-            break;
-
-        case HorizontalTextFormatting::WordWrapJustified:
-            d_formatter.reset(new RenderedStringWordWrapper<JustifiedRenderedString>());
             break;
 
         default:
@@ -888,7 +869,7 @@ void FalagardStaticText::adjustSizeToContent_direct()
        the height might make the vertical scrollbar visible, in which case the
        word wrapping must be recomputed and then the height adjusted again. */
     if ((getVertScrollbar()->isVisible() || getHorzScrollbar()->isVisible())  &&
-        (isWordWrapOn() ||
+        (d_wordWrap ||
           (d_window->isWidthAdjustedToContent() && d_window->isHeightAdjustedToContent())))
     {
         updateFormatting();

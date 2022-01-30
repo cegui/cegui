@@ -120,6 +120,17 @@ public:
 
     /*!
     \brief
+        Return whether word-wrapping is turned on, which means words are
+        wrapped to multiple lines as needed.
+
+        To toggle word wrap, use "setHorizontalFormatting".
+
+    \see setHorizontalFormatting
+    */
+    bool isWordWrapEnabled() const { return d_wordWrap; }
+
+    /*!
+    \brief
         Get the actual horizontal text formatting used, which may be
         different from the horizontal text formatting set with
         "setHorizontalFormatting".
@@ -232,11 +243,10 @@ public:
     */
     void setTextColours(const ColourRect& colours);
 
-    /*!
-    \brief
-        Set the horizontal formatting required for the text.
-    */
+    //! Set the horizontal formatting required for the text.
     void setHorizontalFormatting(HorizontalTextFormatting h_fmt);
+    //! Enable or disable word wrapping.
+    void setWordWrapEnabled(bool wrap);
 
     /*!
     \brief
@@ -389,17 +399,6 @@ public:
 
     void onIsFrameEnabledChanged() override;
 
-    /*!
-    \brief
-        Return whether word-wrapping is turned on, which means words are
-        wrapped to multiple lines as needed.
-
-        To toggle word wrap, use "setHorizontalFormatting".
-
-    \see setHorizontalFormatting
-    */
-    bool isWordWrapOn() const;
-
     Sizef getContentSize() const override;
     UDim getWidthOfAreaReservedForContentLowerBoundAsFuncOfWindowWidth() const override;
     UDim getHeightOfAreaReservedForContentLowerBoundAsFuncOfWindowHeight() const override;
@@ -415,7 +414,7 @@ public:
         "getWindow()->isWidthAdjustedToContent()",
         "getWindow()->isHeightAdjustedToContent()",
         "getWindow()->getAspectMode()", "getNumOfTextLinesToShow()" and
-        "isWordWrapOn", one of 3 methods is used:
+        "isWordWrapEnabled", one of 3 methods is used:
 
         1) Call "adjustSizeToContent_direct", which adjusts the width and
             the height independently of each other, and then, if necessary,
@@ -567,6 +566,7 @@ protected:
 
     bool d_enableVertScrollbar = false; //!< true if vertical scroll bar is enabled.
     bool d_enableHorzScrollbar = false; //!< true if horizontal scroll bar is enabled.
+    bool d_wordWrap = false;
 
     //! True when string formatting, scrollbars visibility and actual text formatting are up to date.
     mutable bool d_formatValid = false;
