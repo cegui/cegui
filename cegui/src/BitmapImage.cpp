@@ -121,53 +121,79 @@ void BitmapImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
 //----------------------------------------------------------------------------//
 bool BitmapImage::createVertices(TexturedColouredVertex* out, const ImageRenderSettings& renderSettings) const
 {
-    const Rectf finalRect = calculateRenderArea(renderSettings);
-    if (finalRect.empty())
-        return false;
+    Rectf destRect = renderSettings.d_destArea;
+    destRect.offset(d_scaledOffset);
 
-    const Rectf& dest = renderSettings.d_destArea;
-    const glm::vec2 tex_per_pix(d_imageArea.getWidth() / dest.getWidth(), d_imageArea.getHeight() / dest.getHeight());
-    const Rectf destWithOffset(dest.d_min + d_scaledOffset, dest.d_max + d_scaledOffset);
-    const Rectf texRect((d_imageArea + ((finalRect - destWithOffset) * tex_per_pix)) * d_texture->getTexelScaling());
+    if (renderSettings.d_alignToPixels)
+    {
+        destRect.round();
+
+        // Rounding might shrink a very small rect into an empty one
+        if (destRect.empty())
+            return false;
+    }
+
+    // When not clipped, we draw the whole image
+    Rectf texRect = d_imageArea;
+
+    // Apply clipping if needed
+    if (renderSettings.d_clipArea)
+    {
+        const Rectf unclippedDestRect = destRect;
+        if (destRect.intersect(*renderSettings.d_clipArea))
+        {
+            if (destRect.empty())
+                return false;
+
+            const glm::vec2 scaleDestToImg(
+                d_imageArea.getWidth() / unclippedDestRect.getWidth(),
+                d_imageArea.getHeight() / unclippedDestRect.getHeight());
+
+            texRect += (destRect - unclippedDestRect) * scaleDestToImg;
+        }
+    }
+
+    // Turn pixels into normalized texture coords
+    texRect *= d_texture->getTexelScaling();
 
     // vertex 0
     out[0].setColour(renderSettings.d_multiplyColours.d_top_left);
-    out[0].d_position = glm::vec3(finalRect.left(), finalRect.top(), 0.0f);
+    out[0].d_position = glm::vec3(destRect.left(), destRect.top(), 0.0f);
     out[0].d_texCoords = glm::vec2(texRect.left(), texRect.top());
 
     // vertex 1
     out[1].setColour(renderSettings.d_multiplyColours.d_bottom_left);
-    out[1].d_position = glm::vec3(finalRect.left(), finalRect.bottom(), 0.0f);
+    out[1].d_position = glm::vec3(destRect.left(), destRect.bottom(), 0.0f);
     out[1].d_texCoords = glm::vec2(texRect.left(), texRect.bottom());
 
     // vertex 2
     out[2].setColour(renderSettings.d_multiplyColours.d_bottom_right);
-    out[2].d_position.x = finalRect.right();
+    out[2].d_position.x = destRect.right();
     out[2].d_position.z = 0.0f;
     out[2].d_texCoords.x = texRect.right();
 
     // Quad splitting done from top-left to bottom-right diagonal
-    out[2].d_position.y = finalRect.bottom();
+    out[2].d_position.y = destRect.bottom();
     out[2].d_texCoords.y = texRect.bottom();
 
     // vertex 3
     out[3].setColour(renderSettings.d_multiplyColours.d_top_right);
-    out[3].d_position = glm::vec3(finalRect.right(), finalRect.top(), 0.0f);
+    out[3].d_position = glm::vec3(destRect.right(), destRect.top(), 0.0f);
     out[3].d_texCoords = glm::vec2(texRect.right(), texRect.top());
 
     // vertex 4
     out[4].setColour(renderSettings.d_multiplyColours.d_top_left);
-    out[4].d_position.x = finalRect.left();
+    out[4].d_position.x = destRect.left();
     out[4].d_position.z = 0.0f;
     out[4].d_texCoords.x = texRect.left();
 
     // Quad splitting done from top-left to bottom-right diagonal
-    out[4].d_position.y = finalRect.top();
+    out[4].d_position.y = destRect.top();
     out[4].d_texCoords.y = texRect.top();
 
     // vertex 5
     out[5].setColour(renderSettings.d_multiplyColours.d_bottom_right);
-    out[5].d_position = glm::vec3(finalRect.right(), finalRect.bottom(), 0.0f);
+    out[5].d_position = glm::vec3(destRect.right(), destRect.bottom(), 0.0f);
     out[5].d_texCoords = glm::vec2(texRect.right(), texRect.bottom());
 
     return true;
