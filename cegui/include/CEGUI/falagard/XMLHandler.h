@@ -110,6 +110,7 @@ namespace CEGUI
         static const String ColoursElement;             //!< Tag name for Colours elements.
         static const String VertFormatElement;          //!< Tag name for VertFormat elements.
         static const String HorzFormatElement;          //!< Tag name for HorzFormat elements.
+        static const String WordWrapElement;            //!< Tag name for WordWrap elements.
         static const String ParagraphDirElement;        //!< Tag name for ParagraphDir elements.
         static const String VertAlignmentElement;       //!< Tag name for VertAlignment elements.
         static const String HorzAlignmentElement;       //!< Tag name for HorzAlignment elements.
@@ -313,6 +314,12 @@ namespace CEGUI
             Method that handles the opening HorzFormat XML element.
         */
         void elementHorzFormatStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening WordWrap XML element.
+        */
+        void elementWordWrapStart(const XMLAttributes& attributes);
 
         /*!
         \brief
