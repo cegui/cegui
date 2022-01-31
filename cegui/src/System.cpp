@@ -96,7 +96,7 @@ const IconvStringTranscoder System::d_stringTranscoder;
 
 // event names
 const String System::EventDisplaySizeChanged( "DisplaySizeChanged" );
-const String System::EventRenderedStringParserChanged("RenderedStringParserChanged");
+const String System::EventTextParserChanged("TextParserChanged");
 
 // Holds name of default XMLParser
 String System::d_defaultXMLParserName(STRINGIZE(CEGUI_DEFAULT_XMLPARSER));
@@ -947,7 +947,7 @@ void System::setDefaultTextParser(TextParser* parser)
     d_defaultTextParser = parser ? parser : d_fallbackTextParser.get();
 
     EventArgs args;
-    fireEvent(EventRenderedStringParserChanged, args, EventNamespace);
+    fireEvent(EventTextParserChanged, args, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//

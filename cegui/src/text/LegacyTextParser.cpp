@@ -25,9 +25,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/text/LegacyTextParser.h"
-#include "CEGUI/RenderedStringTextComponent.h"
-#include "CEGUI/RenderedStringImageComponent.h"
-#include "CEGUI/RenderedStringWidgetComponent.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/FontManager.h"
@@ -136,10 +133,10 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     {
         const bool found_tag = parseSection(itIn, inText.end(), '[', curr_section);
 
-        RenderedStringTextComponent rtc(curr_section, d_font);
-        rtc.setPadding(d_padding);
-        rtc.setColours(d_colours);
-        rtc.setVerticalFormatting(d_vertFormatting);
+        //RenderedStringTextComponent rtc(curr_section, d_font);
+        //rtc.setPadding(d_padding);
+        //rtc.setColours(d_colours);
+        //rtc.setVerticalFormatting(d_vertFormatting);
         //rs.appendComponent(rtc);
 
         if (!found_tag)
@@ -212,20 +209,20 @@ void LegacyTextParser::handleFont(const String& value)
 //----------------------------------------------------------------------------//
 void LegacyTextParser::handleImage(const String& value)
 {
-    RenderedStringImageComponent ric(PropertyHelper<Image*>::fromString(value));
-    ric.setPadding(d_padding);
-    ric.setColours(d_colours);
-    ric.setVerticalFormatting(d_vertFormatting);
-    ric.setSize(d_imageSize);
+    //RenderedStringImageComponent ric(PropertyHelper<Image*>::fromString(value));
+    //ric.setPadding(d_padding);
+    //ric.setColours(d_colours);
+    //ric.setVerticalFormatting(d_vertFormatting);
+    //ric.setSize(d_imageSize);
     //rs.appendComponent(ric);
 }
 
 //----------------------------------------------------------------------------//
 void LegacyTextParser::handleWindow(const String& value)
 {
-    RenderedStringWidgetComponent rwc(value);
-    rwc.setPadding(d_padding);
-    rwc.setVerticalFormatting(d_vertFormatting);
+    //RenderedStringWidgetComponent rwc(value);
+    //rwc.setPadding(d_padding);
+    //rwc.setVerticalFormatting(d_vertFormatting);
     //rs.appendComponent(rwc);
 }
 

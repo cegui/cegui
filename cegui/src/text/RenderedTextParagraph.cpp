@@ -28,7 +28,6 @@
 #include "CEGUI/text/RenderedText.h" // for SelectionInfo
 #include "CEGUI/text/RenderedTextElement.h"
 #include "CEGUI/text/RenderedTextStyle.h"
-#include "CEGUI/RenderedStringImageComponent.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/FontGlyph.h"
