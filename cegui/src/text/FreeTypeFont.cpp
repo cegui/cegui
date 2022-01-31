@@ -182,16 +182,17 @@ void FreeTypeFont::addFreeTypeFontProperties()
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::resizeAndUpdateTexture(Texture* texture, int newSize) const
+void FreeTypeFont::resizeAndUpdateTexture(Texture* texture, uint32_t newSize) const
 {
     if (d_lastTextureSize >= newSize)
         throw InvalidRequestException("Must supply a larger than previous size when "
             "resizing the glyph atlas");
 
-    int oldTextureSize = d_lastTextureSize;
-    std::vector<argb_t> oldTextureData(d_lastTextureBuffer);
+    const uint32_t oldTextureSize = d_lastTextureSize;
+    std::vector<argb_t> oldTextureData;
+    std::swap(oldTextureData, d_lastTextureBuffer);
 
-    Sizef newTextureSize(static_cast<float>(newSize), static_cast<float>(newSize));
+    const Sizef newTextureSize(static_cast<float>(newSize), static_cast<float>(newSize));
     d_lastTextureSize = newSize;
 
     d_lastTextureBuffer.resize(newSize * newSize);
@@ -201,7 +202,7 @@ void FreeTypeFont::resizeAndUpdateTexture(Texture* texture, int newSize) const
     updateTextureBufferSubImage(d_lastTextureBuffer.data(),
         oldTextureSize, oldTextureSize, oldTextureData);
 
-    //TODO: why always RGBA if we, and Freetype, only support greyscale?
+    //TODO: use single channel 8-bit format! Blit/clear with GPU instead of loading from memory?
     texture->loadFromMemory(d_lastTextureBuffer.data(), newTextureSize, Texture::PixelFormat::Rgba);
 
     System::getSingleton().getRenderer()->updateGeometryBufferTexCoords(texture,
@@ -209,16 +210,16 @@ void FreeTypeFont::resizeAndUpdateTexture(Texture* texture, int newSize) const
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, int glyphWidth, int glyphHeight) const
+void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, uint32_t glyphWidth, uint32_t glyphHeight) const
 {
-    int maxTextureSize = System::getSingleton().getRenderer()->getMaxTextureSize();
-    const int scaleFactor = 2;
+    const auto maxTextureSize = static_cast<uint32_t>(System::getSingleton().getRenderer()->getMaxTextureSize());
+    const uint32_t scaleFactor = 2;
 
     if (glyphWidth > maxTextureSize || glyphHeight > maxTextureSize)
         throw InvalidRequestException("Can not rasterise a glyph that is larger "
             "than the maximum supported texture size.");
         
-    int newSize = d_lastTextureSize * scaleFactor;
+    uint32_t newSize = d_lastTextureSize * scaleFactor;
     if (newSize > maxTextureSize)
         createGlyphAtlasTexture();
     else
@@ -227,8 +228,8 @@ void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, int
 
 //----------------------------------------------------------------------------//
 void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
-    FreeTypeFontGlyph* glyph, Texture* texture, FT_Bitmap& glyphBitmap, int glyphLeft, int glyphTop,
-    int glyphWidth, int glyphHeight, uint32_t layer, const TextureGlyphLine& glyphTexLine) const
+    FreeTypeFontGlyph* glyph, Texture* texture, FT_Bitmap& glyphBitmap, uint32_t glyphLeft, uint32_t glyphTop,
+    uint32_t glyphWidth, uint32_t glyphHeight, uint32_t layer, const TextureGlyphLine& glyphTexLine) const
 {
     // Create the data containing the pixels of the glyph
     std::vector<argb_t> subTextureData = createGlyphTextureData(glyphBitmap);
@@ -251,9 +252,9 @@ void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
         static_cast<float>(glyphTexLine.d_lastYPos + glyphHeight));
 
     // This is the right bearing for bitmap glyphs, not d_fontFace->glyph->metrics.horiBearingX
-    const glm::vec2 offset(glyphLeft, -glyphTop);
+    const glm::vec2 offset(glyphLeft, -1.f * glyphTop);
 
-    const String name(PropertyHelper<std::uint32_t>::toString(glyph->getCodePoint()));
+    const String name(std::to_string(glyph->getCodePoint()));
 
     BitmapImage* img = new BitmapImage(name, texture, area, offset, AutoScaledMode::Disabled, d_nativeResolution);
     d_glyphImages.push_back(img);
@@ -262,7 +263,7 @@ void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
 }
 
 //----------------------------------------------------------------------------//
-size_t FreeTypeFont::findTextureLineWithFittingSpot(int glyphWidth, int glyphHeight) const 
+size_t FreeTypeFont::findTextureLineWithFittingSpot(uint32_t glyphWidth, uint32_t glyphHeight) const
 {
     // Go through the lines and find one that fits
     const size_t lineCount =  d_textureGlyphLines.size();
@@ -273,8 +274,8 @@ size_t FreeTypeFont::findTextureLineWithFittingSpot(int glyphWidth, int glyphHei
         const bool isLastLine = (i == (lineCount - 1));
 
         // Check if glyph right margin exceeds texture size
-        int curGlyphXEnd = currentGlyphLine.d_lastXPos + glyphWidth;
-        int curGlyphYEnd = currentGlyphLine.d_lastYPos + glyphHeight;
+        uint32_t curGlyphXEnd = currentGlyphLine.d_lastXPos + glyphWidth;
+        uint32_t curGlyphYEnd = currentGlyphLine.d_lastYPos + glyphHeight;
         if (curGlyphXEnd < d_lastTextureSize && curGlyphYEnd < d_lastTextureSize)
         {
             //Only the last line can be extended into the y-dimension
@@ -297,8 +298,8 @@ size_t FreeTypeFont::findTextureLineWithFittingSpot(int glyphWidth, int glyphHei
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap, int glyphLeft, int glyphTop,
-    int glyphWidth, int glyphHeight, uint32_t layer) const
+void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap, uint32_t glyphLeft,
+    uint32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight, uint32_t layer) const
 {
     if (d_glyphTextures.empty())
         createGlyphAtlasTexture();
@@ -330,12 +331,10 @@ size_t FreeTypeFont::addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWid
     const auto& lastLine = d_textureGlyphLines.back();
 
     uint32_t newLinePosY = lastLine.d_maximumExtentY + s_glyphPadding;
-    int newMaxYExtent = newLinePosY + glyphHeight;
+    uint32_t newMaxYExtent = newLinePosY + glyphHeight;
     
-    // Also skip if the texture isn't wide enough
-    const int curGlyphXEnd = glyphWidth;
-    
-    if (newMaxYExtent <= d_lastTextureSize && curGlyphXEnd < d_lastTextureSize)
+    // Also skip if the texture isn't wide enough    
+    if (newMaxYExtent <= d_lastTextureSize && glyphWidth < d_lastTextureSize)
     {
         // Add the glyph in a new line
         d_textureGlyphLines.push_back(TextureGlyphLine(0, newLinePosY, newMaxYExtent));
@@ -360,6 +359,11 @@ void FreeTypeFont::createGlyphAtlasTexture() const
     d_glyphTextures.push_back(&texture);
 
     d_lastTextureBuffer = std::vector<argb_t>(d_lastTextureSize * d_lastTextureSize, 0);
+
+    // Clear texture
+    // TODO: use single channel 8-bit format, clear with GPU clear op instead of loading from memory!
+    texture.blitFromMemory(d_lastTextureBuffer.data(), Rectf(glm::vec2(0.f, 0.f), newTextureSize));
+
     d_textureGlyphLines.clear();
     d_textureGlyphLines.push_back(TextureGlyphLine());
 }
