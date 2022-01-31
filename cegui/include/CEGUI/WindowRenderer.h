@@ -150,10 +150,6 @@ public:
     */
     virtual bool handleFontRenderSizeChange(const Font* const font);
 
-    //!!!TODO TEXT: remove deprecated!
-    //! Override this to provide an ability to assign custom rendered string parser to the window
-    virtual RenderedStringParser* getCustomRenderedStringParser() const { return nullptr; }
-
     //! Override this to provide an ability to assign custom rendered string parser to the window
     virtual TextParser* getTextParser() const { return nullptr; }
 

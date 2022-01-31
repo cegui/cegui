@@ -32,6 +32,11 @@
 
 namespace CEGUI
 {
+class LeftAlignedRenderedString;
+class RightAlignedRenderedString;
+class CentredRenderedString;
+class JustifiedRenderedString;
+
 /*!
 \brief
     Class that handles wrapping of a rendered string into sub-strings. Each

@@ -76,6 +76,9 @@ public:
     void setWordWrappingEnabled(bool wrap);
 
     const Sizef& getExtents() const { return d_extents; }
+    size_t getParagraphCount() const { return d_paragraphs.size(); }
+    size_t getLineCount() const;
+    bool isFittingIntoAreaWidth() const;
 
 protected:
 
