@@ -146,9 +146,9 @@ RGB_Colour ColourPickerConversions::toRGB(float L, float a, float b)
     float vz = vy - b / 200.0f;
 
     {
-        const float vx3 = std::pow(vx, 3);
-        const float vy3 = std::pow(vy, 3);
-        const float vz3 = std::pow(vz, 3);
+        const float vx3 = std::pow(vx, 3.f);
+        const float vy3 = std::pow(vy, 3.f);
+        const float vz3 = std::pow(vz, 3.f);
 
         if (vy3 > LAB_COMPARE_VALUE_CONST)
             vy = vy3;
