@@ -227,7 +227,7 @@ protected:
         {
         }
 
-        TextureGlyphLine(int lastPosX, int lastPosY, int maximumExtentY)
+        TextureGlyphLine(uint32_t lastPosX, uint32_t lastPosY, uint32_t maximumExtentY)
             : d_lastXPos(lastPosX)
             , d_lastYPos(lastPosY)
             , d_maximumExtentY(maximumExtentY)
@@ -235,12 +235,12 @@ protected:
         }
 
         //! The x position where we last ended drawing (including padding)
-        mutable int d_lastXPos = 0;
+        mutable uint32_t d_lastXPos = 0;
         //! The y position where we last ended drawing (including padding)
-        mutable int d_lastYPos = 0;
+        mutable uint32_t d_lastYPos = 0;
         //! The maximum extent that a glyph of this line can take in the y-dimension
         //! If the line is the last line, this value may increase while rendering to the line
-        mutable int d_maximumExtentY = 0;
+        mutable uint32_t d_maximumExtentY = 0;
     };
 
     /*!
@@ -265,8 +265,8 @@ protected:
         Changes the size of the texture and updates the data in it based on the old
         texture's data. The size must be larger than the original one.
      */
-    void resizeAndUpdateTexture(Texture* texture, int newSize) const;
-    void createTextureSpaceForGlyphRasterisation(Texture* texture, int glyphWidth, int glyphHeight) const;
+    void resizeAndUpdateTexture(Texture* texture, uint32_t newSize) const;
+    void createTextureSpaceForGlyphRasterisation(Texture* texture, uint32_t glyphWidth, uint32_t glyphHeight) const;
    //! Register all properties of this class.
     void addFreeTypeFontProperties();
     //! Free all allocated font data.
@@ -288,17 +288,17 @@ protected:
 
     //! Rasterises the glyph and adds it into a glyph atlas texture
     void rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap,
-        int glyphLeft, int glyphTop, int glyphWidth, int glyphHeight,
+        uint32_t glyphLeft, uint32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight,
         uint32_t layer) const;
     
     //! Helper functions for rasterisation
     void addRasterisedGlyphToTextureAndSetupGlyphImage(
         FreeTypeFontGlyph* glyph, Texture* texture,
-        FT_Bitmap& glyphBitmap, int glyphLeft, int glyphTop,
-        int glyphWidth, int glyphHeight, uint32_t layer,
+        FT_Bitmap& glyphBitmap, uint32_t glyphLeft, uint32_t glyphTop,
+        uint32_t glyphWidth, uint32_t glyphHeight, uint32_t layer,
         const TextureGlyphLine& glyphTexLine) const;
 
-    size_t findTextureLineWithFittingSpot(int glyphWidth, int glyphHeight) const;
+    size_t findTextureLineWithFittingSpot(uint32_t glyphWidth, uint32_t glyphHeight) const;
     size_t addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWidth) const;
 
     void createGlyphAtlasTexture() const;
@@ -355,9 +355,9 @@ protected:
     mutable std::unordered_map<FT_UInt, FreeTypeFontGlyph*> d_indexToGlyphMap;
 
     //! The size with which new texture atlases for glyphs are going to be initialised
-    int d_initialGlyphAtlasSize = 32;
+    uint32_t d_initialGlyphAtlasSize = 32;
     //! The size of the last texture that has been created
-    mutable int d_lastTextureSize = 0;
+    mutable uint32_t d_lastTextureSize = 0;
     //! Memory buffer for rendering the glyphs, this contains the data of the latest texture
     mutable std::vector<argb_t> d_lastTextureBuffer;
     //! Contains information about the extents of each line of glyphs of the latest texture
