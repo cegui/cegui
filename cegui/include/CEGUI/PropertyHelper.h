@@ -32,11 +32,11 @@
 #include "CEGUI/String.h"
 #include "CEGUI/UVector.h"
 #include "CEGUI/URect.h"
-#include "CEGUI/FontSizeUnit.h"
+#include "CEGUI/text/FontSizeUnit.h"
 #include "CEGUI/AspectMode.h"
 #include "CEGUI/HorizontalAlignment.h"
 #include "CEGUI/VerticalAlignment.h"
-#include "CEGUI/DefaultParagraphDirection.h"
+#include "CEGUI/text/DefaultParagraphDirection.h"
 #include <glm/gtc/quaternion.hpp>
 
 namespace CEGUI

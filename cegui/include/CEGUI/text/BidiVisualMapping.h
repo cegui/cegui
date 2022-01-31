@@ -27,7 +27,7 @@
 #ifndef _CEGUIBidiVisualMapping_h_
 #define _CEGUIBidiVisualMapping_h_
 
-#include "CEGUI/DefaultParagraphDirection.h"
+#include "CEGUI/text/DefaultParagraphDirection.h"
 #include "CEGUI/String.h"
 #include <vector>
 

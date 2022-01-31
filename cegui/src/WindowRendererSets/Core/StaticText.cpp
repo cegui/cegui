@@ -28,7 +28,7 @@
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/widgets/Scrollbar.h"
-#include "CEGUI/Font.h"
+#include "CEGUI/text/Font.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 #include "CEGUI/CoordConverter.h"
 

@@ -28,7 +28,7 @@ author:     Lukas Meindl
 #ifndef _LanguageStrings_h_
 #define _LanguageStrings_h_
 
-#include "CEGUI/DefaultParagraphDirection.h"
+#include "CEGUI/text/DefaultParagraphDirection.h"
 
 namespace LanguageStrings
 {

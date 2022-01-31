@@ -33,6 +33,7 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/XMLSerializer.h"
+#include "CEGUI/text/TextUtils.h"
 #include <algorithm>
 
 namespace CEGUI

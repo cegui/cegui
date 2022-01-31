@@ -29,7 +29,7 @@
 
 #include "../VerticalAlignment.h"
 #include "../HorizontalAlignment.h"
-#include "../DefaultParagraphDirection.h"
+#include "../text/DefaultParagraphDirection.h"
 #include "../Exceptions.h"
 #include "CEGUI/falagard/Enums.h"
 

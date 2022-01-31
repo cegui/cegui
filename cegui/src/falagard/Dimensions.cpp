@@ -32,7 +32,7 @@
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/FontManager.h"
-#include "CEGUI/Font.h"
+#include "CEGUI/text/Font.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/Logger.h"
 

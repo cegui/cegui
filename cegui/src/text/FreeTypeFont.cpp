@@ -26,7 +26,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/FreeTypeFont.h"
+#include "CEGUI/text/FreeTypeFont.h"
+#include "CEGUI/text/Font_xmlHandler.h"
 #include "CEGUI/Texture.h"
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/System.h"
@@ -34,7 +35,6 @@
 #include "CEGUI/ResourceProvider.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/BitmapImage.h"
-#include "CEGUI/Font_xmlHandler.h"
 #include "CEGUI/XMLSerializer.h"
 #include "CEGUI/SharedStringStream.h"
 

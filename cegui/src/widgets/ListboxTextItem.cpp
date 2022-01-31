@@ -29,7 +29,7 @@
 #include "CEGUI/widgets/ListboxTextItem.h"
 #include "CEGUI/System.h"
 #include "CEGUI/FontManager.h"
-#include "CEGUI/Font.h"
+#include "CEGUI/text/Font.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/text/TextParser.h"

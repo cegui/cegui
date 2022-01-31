@@ -27,7 +27,7 @@
 #ifndef _CEGUIFreeTypeFontGlyph_h_
 #define _CEGUIFreeTypeFontGlyph_h_
 
-#include "CEGUI/FontGlyph.h"
+#include "CEGUI/text/FontGlyph.h"
 
 namespace CEGUI
 {

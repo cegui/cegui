@@ -32,12 +32,12 @@
 #include "CEGUI/text/BidiVisualMapping.h"
 #endif
 #ifdef CEGUI_USE_RAQM
-#include "CEGUI/FreeTypeFont.h"
+#include "CEGUI/text/FreeTypeFont.h"
 #include <raqm.h>
 #include <algorithm>
 #else
-#include "CEGUI/Font.h"
-#include "CEGUI/FontGlyph.h"
+#include "CEGUI/text/Font.h"
+#include "CEGUI/text/FontGlyph.h"
 #endif
 
 namespace CEGUI

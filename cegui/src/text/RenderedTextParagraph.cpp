@@ -29,8 +29,8 @@
 #include "CEGUI/text/RenderedTextElement.h"
 #include "CEGUI/text/RenderedTextStyle.h"
 #include "CEGUI/Image.h"
-#include "CEGUI/Font.h"
-#include "CEGUI/FontGlyph.h"
+#include "CEGUI/text/Font.h"
+#include "CEGUI/text/FontGlyph.h"
 #ifdef CEGUI_BIDI_SUPPORT
 #include "CEGUI/text/BidiVisualMapping.h"
 #endif

@@ -32,7 +32,6 @@
 #include "../Base.h"
 #include "../String.h"
 #include "../ColourRect.h"
-#include "../TextUtils.h"
 #include "../Sizef.h"
 #include "../Rectf.h"
 #include <vector>

@@ -27,7 +27,7 @@
 #ifndef _CEGUIPixmapFont_h_
 #define _CEGUIPixmapFont_h_
 
-#include "CEGUI/Font.h"
+#include "CEGUI/text/Font.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

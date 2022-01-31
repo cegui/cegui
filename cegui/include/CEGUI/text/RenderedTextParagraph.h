@@ -26,7 +26,7 @@
  ***************************************************************************/
 #pragma once
 #include "CEGUI/Sizef.h"
-#include "CEGUI/DefaultParagraphDirection.h"
+#include "CEGUI/text/DefaultParagraphDirection.h"
 #include "CEGUI/falagard/Enums.h"
 #include "CEGUI/ColourRect.h"
 #include <glm/glm.hpp>
