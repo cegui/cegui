@@ -29,12 +29,6 @@
 #include "CEGUI/views/ListView.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/LeftAlignedRenderedString.h"
-#include "CEGUI/RightAlignedRenderedString.h"
-#include "CEGUI/CentredRenderedString.h"
-#include "CEGUI/JustifiedRenderedString.h"
-#include "CEGUI/RenderedStringWordWrapper.h"
-#include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/widgets/Scrollbar.h"
 #include <algorithm> // sort
 

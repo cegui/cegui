@@ -29,6 +29,7 @@
 
 #include "CEGUI/WindowRendererSets/Core/Static.h"
 #include "CEGUI/falagard/Enums.h"
+#include "CEGUI/text/RenderedText.h"
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/Sizef.h"
 #include "CEGUI/Event.h"
@@ -490,8 +491,6 @@ protected:
     */
     void updateFormatting() const;
 
-    void setupStringFormatter() const;
-
     // overridden from FalagardStatic base class
     void onLookNFeelAssigned() override;
     void onLookNFeelUnassigned() override;
@@ -515,7 +514,7 @@ protected:
     bool handleScrollbarChange(const EventArgs& e);
 
 
-    mutable std::unique_ptr<FormattedRenderedString> d_formatter;
+    mutable RenderedText d_renderedText;
     std::vector<Event::ScopedConnection> d_connections;
     ColourRect d_textCols = 0xFFFFFFFF;       //!< Colours used when rendering the text.
 

@@ -461,4 +461,22 @@ void RenderedText::setWordWrappingEnabled(bool wrap)
             p.setWordWrappingEnabled(wrap, false);
 }
 
+//----------------------------------------------------------------------------//
+size_t RenderedText::getLineCount() const
+{
+    size_t count = 0;
+    for (const auto& p : d_paragraphs)
+        count += p.getLineCount();
+    return count;
+}
+
+//----------------------------------------------------------------------------//
+bool RenderedText::isFittingIntoAreaWidth() const
+{
+    for (const auto& p : d_paragraphs)
+        if (!p.isFittingIntoAreaWidth())
+            return false;
+    return true;
+}
+
 }

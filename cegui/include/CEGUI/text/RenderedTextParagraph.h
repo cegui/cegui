@@ -104,6 +104,8 @@ public:
     std::vector<RenderedGlyph>& glyphs() { return d_glyphs; }
     const std::vector<RenderedGlyph>& glyphs() const { return d_glyphs; }
 
+    size_t getLineCount() const { return d_linesDirty ? 1 : d_lines.size(); }
+
 protected:
 
     struct Line

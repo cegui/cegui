@@ -29,12 +29,6 @@
 #include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/widgets/Scrollbar.h"
 #include "CEGUI/Font.h"
-#include "CEGUI/LeftAlignedRenderedString.h"
-#include "CEGUI/RightAlignedRenderedString.h"
-#include "CEGUI/CentredRenderedString.h"
-#include "CEGUI/JustifiedRenderedString.h"
-#include "CEGUI/RenderedStringWordWrapper.h"
-#include "CEGUI/RenderedString.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 #include "CEGUI/CoordConverter.h"
 
@@ -145,7 +139,7 @@ void FalagardStaticText::createRenderGeometry()
     }
 
     // adjust y positioning according to formatting option
-    const float textHeight = d_formatter->getExtent().d_height;
+    const float textHeight = d_renderedText.getExtents().d_height;
     const Scrollbar* const vertScrollbar = getVertScrollbar();
     const float vertScrollPosition = vertScrollbar->getScrollPosition();
     if (vertScrollbar->isEffectiveVisible())
@@ -168,7 +162,7 @@ void FalagardStaticText::createRenderGeometry()
     }
 
     // cache the text for rendering.
-    d_formatter->createRenderGeometry(d_window->getGeometryBuffers(), d_window, destRect.getPosition(), &d_textCols, &clipper);
+    d_renderedText.createRenderGeometry(d_window->getGeometryBuffers(), destRect.getPosition(), &d_textCols, &clipper);
 }
 
 //----------------------------------------------------------------------------//
@@ -182,24 +176,23 @@ void FalagardStaticText::onIsFrameEnabledChanged()
 //----------------------------------------------------------------------------//
 std::size_t FalagardStaticText::getNumOfOriginalTextLines() const
 {
-    return d_formatter->getRenderedString()->getLineCount();
+    return d_renderedText.getParagraphCount();
 }
 
 //----------------------------------------------------------------------------//
 std::size_t FalagardStaticText::getNumOfFormattedTextLines() const
 {
-    return d_formatter->getFormattedLineCount();
+    return d_renderedText.getLineCount();
 }
 
 //----------------------------------------------------------------------------//
 Sizef FalagardStaticText::getContentSize() const
 {
-    const Sizef extent = d_formatter->getExtent();
     return Sizef(
-        extent.d_width,
+        d_renderedText.getExtents().d_width,
 
         d_numOfTextLinesToShow.isAuto() ?
-            extent.d_height + 1.f :
+            d_renderedText.getExtents().d_height + 1.f :
             (d_numOfTextLinesToShow <= 1.f) ?
                 getLineHeight() * d_numOfTextLinesToShow :
                 getLineHeight() + (d_numOfTextLinesToShow - 1.f) * getVerticalAdvance());
@@ -225,7 +218,7 @@ void FalagardStaticText::adjustSizeToContent()
     getVertScrollbarWithoutUpdate()->hide();
     if (d_wordWrap)
     {
-        const Sizef contentMaxSize = d_formatter->getRenderedString()->getExtent(d_window);
+        const Sizef& contentMaxSize = d_renderedText.getExtents();
         USize sizeFunc(
             d_window->getElementWidthLowerBoundAsFuncOfWidthOfAreaReservedForContent(),
             d_window->getElementHeightLowerBoundAsFuncOfHeightOfAreaReservedForContent());
@@ -274,7 +267,7 @@ bool FalagardStaticText::contentFits() const
         return false;
 
     const Rectf area(getTextRenderArea());
-    return !d_formatter->wasWordSplit() &&
+    return !d_renderedText.isFittingIntoAreaWidth() &&
       contentSize.d_width <= area.getWidth() &&
       contentSize.d_height <= area.getHeight();
 }
@@ -398,9 +391,8 @@ void FalagardStaticText::setHorizontalScrollbarEnabled(bool setting)
 // reformatting of the string, as well as cause the 2nd scrollbar to also be required.
 void FalagardStaticText::configureScrollbars() const
 {
-    //!!!DBG TMP!
-    RenderedString renderedString;
-    //const RenderedString& renderedString = d_window->getRenderedString();
+    //!!!FIXME TEXT: parser!
+    d_renderedText.renderText(d_window->getText(), nullptr, d_window->getActualFont());
 
     Scrollbar* vertScrollbar = getVertScrollbarWithoutUpdate();
     Scrollbar* horzScrollbar = getHorzScrollbarWithoutUpdate();
@@ -409,7 +401,12 @@ void FalagardStaticText::configureScrollbars() const
 
     Rectf renderArea(getTextRenderAreaWithoutUpdate());
     Sizef renderAreaSize(renderArea.getSize());
-    d_formatter->format(renderedString, d_window, renderAreaSize);
+
+    d_renderedText.setHorizontalFormatting(d_horzFormatting);
+    d_renderedText.setWordWrappingEnabled(d_wordWrap);
+    d_renderedText.updateDynamicObjectExtents(d_window);
+    d_renderedText.updateFormatting(renderAreaSize.d_width);
+
     Sizef documentSize(getTextExtentWithoutUpdate());
 
     bool showVert = d_enableVertScrollbar && (documentSize.d_height > renderAreaSize.d_height);
@@ -422,7 +419,7 @@ void FalagardStaticText::configureScrollbars() const
     {
         renderArea = updatedRenderArea;
         renderAreaSize = renderArea.getSize();
-        d_formatter->format(renderedString, d_window, renderAreaSize);
+        d_renderedText.updateFormatting(renderAreaSize.d_width);
         documentSize = getTextExtentWithoutUpdate();
 
         showVert = d_enableVertScrollbar && (documentSize.d_height > renderAreaSize.d_height);
@@ -435,7 +432,7 @@ void FalagardStaticText::configureScrollbars() const
         {
             renderArea = updatedRenderArea;
             renderAreaSize = renderArea.getSize();
-            d_formatter->format(renderedString, d_window, renderAreaSize);
+            d_renderedText.updateFormatting(renderAreaSize.d_width);
             documentSize = getTextExtentWithoutUpdate();
         }
     }
@@ -628,19 +625,10 @@ void FalagardStaticText::updateFormatting() const
     if (d_formatValid)
         return;
 
-    if (!d_formatter || d_actualHorzFormatting != d_horzFormatting)
-    {
-        d_actualHorzFormatting = d_horzFormatting;
-        setupStringFormatter();
-    }
-
-    // "Touch" the window's rendered string to ensure it's re-parsed if needed.
-    //!!!DBG TMP!
-    RenderedString renderedString;
-    //const RenderedString& renderedString = d_window->getRenderedString();
-
     d_actualVertFormatting = d_vertFormatting;
 
+    // NB: text is parsed inside
+    //!!!TODO TEXT: refactor!
     configureScrollbars();
 
     if (d_window->isSizeAdjustedToContent() && !isSizeAdjustedToContentKeepingAspectRatio())
@@ -650,8 +638,8 @@ void FalagardStaticText::updateFormatting() const
         if (d_window->isWidthAdjustedToContent() && lineCount == 1)
         {
             d_actualHorzFormatting = HorizontalTextFormatting::CentreAligned;
-            setupStringFormatter();
-            d_formatter->format(renderedString, d_window, getTextRenderAreaWithoutUpdate().getSize());
+            d_renderedText.setHorizontalFormatting(d_actualHorzFormatting);
+            d_renderedText.updateFormatting(getTextRenderAreaWithoutUpdate().getSize().d_width);
         }
 
         if (d_window->isHeightAdjustedToContent() && (d_numOfTextLinesToShow.isAuto() || d_numOfTextLinesToShow <= lineCount))
@@ -659,36 +647,6 @@ void FalagardStaticText::updateFormatting() const
     }
 
     d_formatValid = true;
-}
-
-//----------------------------------------------------------------------------//
-void FalagardStaticText::setupStringFormatter() const
-{
-    if (d_formatter && d_formatter->getCorrespondingFormatting() == d_actualHorzFormatting)
-        return;
-
-    switch (d_actualHorzFormatting)
-    {
-        case HorizontalTextFormatting::LeftAligned:
-            d_formatter.reset(new LeftAlignedRenderedString());
-            break;
-
-        case HorizontalTextFormatting::RightAligned:
-            d_formatter.reset(new RightAlignedRenderedString());
-            break;
-
-        case HorizontalTextFormatting::CentreAligned:
-            d_formatter.reset(new CentredRenderedString());
-            break;
-
-        case HorizontalTextFormatting::Justified:
-            d_formatter.reset(new JustifiedRenderedString());
-            break;
-
-        default:
-            d_formatter.reset();
-            break;
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -757,7 +715,7 @@ const ComponentArea& FalagardStaticText::getTextComponentAreaWithoutUpdate() con
 //----------------------------------------------------------------------------//
 const Sizef& FalagardStaticText::getTextExtentWithoutUpdate() const
 {
-    return d_formatter->getExtent();
+    return d_renderedText.getExtents();
 }
 
 /*----------------------------------------------------------------------------//
@@ -789,7 +747,7 @@ void FalagardStaticText::adjustSizeToContent_wordWrap_keepingAspectRatio(
     UDim height_sequence(sizeFunc.d_height.d_scale*getVerticalAdvance() + sizeFunc.d_height.d_offset,
                          sizeFunc.d_height.d_scale*(getLineHeight()+epsilon) + sizeFunc.d_height.d_offset);
     float max_num_of_lines(std::max(
-      static_cast<float>(d_formatter->getRenderedString()->getLineCount() - 1),
+      static_cast<float>(d_renderedText.getParagraphCount() - 1),
       (windowMaxWidth / d_window->getAspectRatio() - height_sequence_precise.d_offset)
         / height_sequence_precise.d_scale));
     window_size = d_window->getSizeAdjustedToContent_bisection(
