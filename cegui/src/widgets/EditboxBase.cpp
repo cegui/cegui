@@ -28,9 +28,9 @@
  ***************************************************************************/
 #include "CEGUI/widgets/EditboxBase.h"
 #include "CEGUI/falagard/XMLEnumHelper.h" // for DefaultParagraphDirection property helper
-#include "CEGUI/TextUtils.h"
+#include "CEGUI/text/TextUtils.h"
 #include "CEGUI/Exceptions.h"
-#include "CEGUI/Font.h"
+#include "CEGUI/text/Font.h"
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/UndoHandler.h"
 #include "CEGUI/text/BidiVisualMapping.h"

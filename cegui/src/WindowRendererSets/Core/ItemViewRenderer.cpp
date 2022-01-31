@@ -29,7 +29,7 @@
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/widgets/Scrollbar.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/Font.h"
+#include "CEGUI/text/Font.h"
 
 namespace CEGUI
 {

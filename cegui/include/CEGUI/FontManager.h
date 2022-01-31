@@ -30,9 +30,9 @@
 #include "CEGUI/Singleton.h"
 #include "CEGUI/ResourceEventSet.h"
 #include "CEGUI/XmlResourceExistsAction.h"
-#include "CEGUI/FontSizeUnit.h"
+#include "CEGUI/text/FontSizeUnit.h"
+#include "CEGUI/text/FreeTypeFontLayer.h"
 #include "CEGUI/Image.h" // for AutoScaledMode
-#include "CEGUI/FreeTypeFontLayer.h"
 #include <unordered_map>
 
 #if defined(_MSC_VER)

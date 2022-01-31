@@ -28,15 +28,15 @@
 #   include "config.h"
 #endif
 
-#include "CEGUI/Font_xmlHandler.h"
+#include "CEGUI/text/Font_xmlHandler.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/XMLAttributes.h"
-#include "CEGUI/PixmapFont.h"
+#include "CEGUI/text/PixmapFont.h"
 #include "CEGUI/SharedStringStream.h"
 #include "CEGUI/FontManager.h"
 
 #ifdef CEGUI_HAS_FREETYPE
-#   include "CEGUI/FreeTypeFont.h"
+#   include "CEGUI/text/FreeTypeFont.h"
 #endif
 
 //#include <sstream>

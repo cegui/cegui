@@ -28,7 +28,7 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/FontManager.h"
-#include "CEGUI/Font.h"
+#include "CEGUI/text/Font.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
 

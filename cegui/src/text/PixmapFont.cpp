@@ -24,12 +24,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/PixmapFont.h"
+#include "CEGUI/text/PixmapFont.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/BitmapImage.h"
-#include "CEGUI/Font_xmlHandler.h"
+#include "CEGUI/text/Font_xmlHandler.h"
 #include "CEGUI/XMLSerializer.h"
-#include "CEGUI/FontGlyph.h"
+#include "CEGUI/text/FontGlyph.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/SharedStringStream.h"

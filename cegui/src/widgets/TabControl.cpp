@@ -29,7 +29,7 @@
 #include "CEGUI/widgets/TabControl.h"
 #include "CEGUI/widgets/TabButton.h"
 #include "CEGUI/widgets/PushButton.h"
-#include "CEGUI/Font.h"
+#include "CEGUI/text/Font.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/Logger.h"

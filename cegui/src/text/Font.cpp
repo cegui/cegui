@@ -24,12 +24,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/Font.h"
-#include "CEGUI/Font_xmlHandler.h"
+#include "CEGUI/text/Font.h"
+#include "CEGUI/text/Font_xmlHandler.h"
+#include "CEGUI/text/FontGlyph.h"
 #include "CEGUI/XMLSerializer.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Renderer.h"
-#include "CEGUI/FontGlyph.h"
 #include "CEGUI/InputEvent.h"
 
 namespace CEGUI

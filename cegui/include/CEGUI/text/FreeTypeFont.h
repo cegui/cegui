@@ -29,10 +29,10 @@
 #ifndef _CEGUIFreeTypeFont_h_
 #define _CEGUIFreeTypeFont_h_
 
-#include "CEGUI/Font.h"
+#include "CEGUI/text/Font.h"
 #include "CEGUI/DataContainer.h"
-#include "CEGUI/FreeTypeFontGlyph.h"
-#include "CEGUI/FreeTypeFontLayer.h"
+#include "CEGUI/text/FreeTypeFontGlyph.h"
+#include "CEGUI/text/FreeTypeFontLayer.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H

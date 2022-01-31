@@ -30,7 +30,7 @@
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/FontManager.h"
-#include "CEGUI/Font.h"
+#include "CEGUI/text/Font.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/StreamHelper.h"
 #include "CEGUI/SharedStringStream.h"

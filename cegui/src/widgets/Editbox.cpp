@@ -28,8 +28,8 @@
  ***************************************************************************/
 #include "CEGUI/widgets/Editbox.h"
 #include "CEGUI/System.h"
-#include "CEGUI/TextUtils.h"
-#include "CEGUI/Font.h"
+#include "CEGUI/text/TextUtils.h"
+#include "CEGUI/text/Font.h"
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/UndoHandler.h"
 

@@ -36,7 +36,7 @@
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
-#include "CEGUI/Font.h"
+#include "CEGUI/text/Font.h"
 #include "CEGUI/Scheme.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/falagard/WidgetLookManager.h"

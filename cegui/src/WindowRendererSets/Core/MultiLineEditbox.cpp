@@ -31,7 +31,7 @@
 #include "CEGUI/widgets/Scrollbar.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Image.h"
-#include "CEGUI/Font.h"
+#include "CEGUI/text/Font.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 
  //!!!FIXME TEXT: UTF-8 selection / caret positioning is broken, sometimes it breaks a multibyte codepoint in the middle

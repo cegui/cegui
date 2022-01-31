@@ -29,17 +29,17 @@
 #endif
 
 #include "CEGUI/FontManager.h"
-#include "CEGUI/Font_xmlHandler.h"
+#include "CEGUI/text/Font_xmlHandler.h"
+#include "CEGUI/text/PixmapFont.h"
 #include "CEGUI/XMLSerializer.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/System.h"
 #include "CEGUI/ResourceProvider.h"
 #include "CEGUI/InputEvent.h"
-#include "CEGUI/PixmapFont.h"
 #include "CEGUI/SharedStringStream.h"
 
 #ifdef CEGUI_HAS_FREETYPE
-#   include "CEGUI/FreeTypeFont.h"
+#   include "CEGUI/text/FreeTypeFont.h"
 #endif
 
 namespace CEGUI

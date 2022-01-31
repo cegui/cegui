@@ -26,8 +26,8 @@
  ***************************************************************************/
 #include "CEGUI/text/RenderedTextStyle.h"
 #include "CEGUI/text/RenderedTextParagraph.h"
-#include "CEGUI/Font.h"
-#include "CEGUI/FontGlyph.h"
+#include "CEGUI/text/Font.h"
+#include "CEGUI/text/FontGlyph.h"
 
 namespace CEGUI
 {

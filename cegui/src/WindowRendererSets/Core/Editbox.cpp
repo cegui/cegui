@@ -30,7 +30,7 @@
 #include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/Font.h"
+#include "CEGUI/text/Font.h"
 #include "CEGUI/text/BidiVisualMapping.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 #include <stdio.h>

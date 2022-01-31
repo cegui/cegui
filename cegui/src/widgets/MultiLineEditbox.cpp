@@ -28,8 +28,8 @@
  ***************************************************************************/
 #include "CEGUI/widgets/MultiLineEditbox.h"
 #include "CEGUI/widgets/Scrollbar.h"
-#include "CEGUI/TextUtils.h"
-#include "CEGUI/Font.h"
+#include "CEGUI/text/TextUtils.h"
+#include "CEGUI/text/Font.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/UndoHandler.h"

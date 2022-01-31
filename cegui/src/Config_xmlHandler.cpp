@@ -30,12 +30,12 @@
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/FontManager.h"
+#include "CEGUI/text/Font.h"
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/ScriptModule.h"
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/Scheme.h"
-#include "CEGUI/Font.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 
