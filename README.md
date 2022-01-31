@@ -1,8 +1,9 @@
 # Crazy Eddie's GUI System Mk-2
-[![CEGUI logo](https://bitbucket.org/cegui/cegui-promo/raw/default/logo/ceguilogo.png)](http://www.cegui.org.uk)
+[![CEGUI logo](https://github.com/cegui/cegui/blob/master/promo/logo.svg)](http://www.cegui.org.uk)
+
 http://www.cegui.org.uk
 
-Copyright ©2004 - 2020 Paul D Turner, The CEGUI Development Team and Contributing Authors
+Copyright ©2004 - 2022 Paul D Turner, The CEGUI Development Team and Contributing Authors
 
 The majority of the auxiliary files for CEGUI, that used to be plain text, are now kept in a "doxygenised" format within the doc/doxygen directory - please see those files, or generate the documentation for a more friendly format. Alternatively, visit http://static.cegui.org.uk/docs for all your documentation needs!
 
