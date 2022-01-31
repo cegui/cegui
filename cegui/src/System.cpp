@@ -37,6 +37,7 @@
 #include "CEGUI/RenderEffectManager.h"
 #include "CEGUI/AnimationManager.h"
 #include "CEGUI/GUIContext.h"
+#include "CEGUI/Clipboard.h"
 #include "CEGUI/ScriptModule.h"
 #include "CEGUI/Config_xmlHandler.h"
 #include "CEGUI/GlobalEventSet.h"

@@ -36,6 +36,8 @@
 #include "CEGUI/Renderer.h" // FIXME: only for root container size - display size
 #include "CEGUI/Logger.h"
 
+#include <algorithm>
+
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4355) // 'this' is used to init unclipped rects

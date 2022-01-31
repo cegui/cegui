@@ -34,6 +34,7 @@
 #include "CEGUI/XMLSerializer.h"
 #include "CEGUI/Animation_xmlHandler.h"
 #include "CEGUI/PropertyHelper.h"
+#include <algorithm>
 
 // Start of CEGUI namespace section
 namespace CEGUI

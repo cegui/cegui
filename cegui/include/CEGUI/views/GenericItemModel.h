@@ -30,6 +30,7 @@
 #include "CEGUI/views/ItemModel.h"
 #include "CEGUI/Exceptions.h"
 #include <vector>
+#include <algorithm>
 
 #if defined (_MSC_VER)
 #   pragma warning(push)

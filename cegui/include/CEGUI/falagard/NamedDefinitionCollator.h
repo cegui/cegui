@@ -29,6 +29,7 @@
 
 #include "CEGUI/Base.h"
 #include <vector>
+#include <algorithm>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

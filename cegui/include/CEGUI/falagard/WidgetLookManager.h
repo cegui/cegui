@@ -29,6 +29,7 @@
 
 #include "../Singleton.h"
 #include "../String.h"
+#include "WidgetLookFeel.h"
 #include <unordered_map>
 #include <unordered_set>
 

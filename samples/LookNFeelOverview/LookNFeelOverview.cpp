@@ -58,7 +58,7 @@ static void fillList(Element* listBase)
         list->addItem("Item 1");
         list->addItem("Item 2");
         list->addItem("Item 3");
-        list->setIndexSelectionState(0u, true);
+        list->setIndexSelectionState((size_t)0u, true);
     }
 }
 

@@ -40,6 +40,8 @@
 #include "CEGUI/svg/SVGData.h"
 #include "CEGUI/svg/SVGDataManager.h"
 
+#include <algorithm>
+
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//

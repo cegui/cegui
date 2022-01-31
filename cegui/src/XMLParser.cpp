@@ -29,6 +29,7 @@
 #include "CEGUI/System.h"
 #include "CEGUI/ResourceProvider.h"
 #include "CEGUI/Logger.h"
+#include <cstring>
 
 namespace CEGUI
 {
