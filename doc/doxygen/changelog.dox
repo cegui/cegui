@@ -3,10 +3,44 @@ namespace CEGUI{
 @page change_log Change Log
 The following is a high-level view of changes made to Crazy Eddie's GUI System
 for each release.
-@note Starting with the 0.8.5 release, a list of resolved issues from our bitbucket bug-tracker
+@note In releases 0.8.5 to 0.8.7 inclusive, a list of resolved issues from our bitbucket bug-tracker
 will be used as change log. The list might be incomplete, as some (especially smaller) changes often are
 not mentioned in the issue tracker. Therefore, if you want more in-depth information about all changes and
 a definitely complete list, please read the commit logs of the v0-8 branch up to the point of this release!
+
+<b>master</b>
+TODO: how to maintain the changelog now? See GitHub release descriptions? Where to write WIP?
+Breaking changes:
+- Default GUI context is removed, please create a context explicitly
+- Default render target is deprecated
+- NamedElement class removed, use Window class
+- SequentialLayoutContainer class removed, use LayoutContainer class
+- LayoutContainer hierarchy and especially GridLayoutContainer reworked
+- ScrollablePane and ScrolledContainer reworked
+- DragContainer in a sticky mode uses bool result from EventDragDropItemDropped to accept or reject dropping. Rejection continues dragging.
+- Text rendering completely reworked. Use RenderedText with embedded formatting instead of (Formatted)RenderedString.
+- Text related headers and sources moved to "text" subfolder
+- BasicRenderedStringParser renamed to LegacyTextParser. Padding is applied to each individual character in the text.
+- Event renamed: EventRenderedStringParserChanged -> EventTextParserChanged
+- Method moved and renamed: LayoutContainer::getIdxOfChild -> Window::getChildIndex
+- "Idx" is replaced with "Index" in many method names
+Added:
+- Slider discrete mode
+- Spinner scrolling by wheel
+- Draw mode mask controls which windows are rendered at the current pass (WIP)
+- TinyXML2 XML parser
+- StdRegexMatcher for using C++11 std regular expressions instead of PCRE
+- Optional usage of raqm library for text layouting
+- LayoutContainer::getActualChildCount for ignoring invisible cell dummies in a grid layout container
+- SWIG scripting module
+Optimized:
+- Window area recalculation
+- Text rendering
+- Image geometry combining into the single buffer
+- Window class memory footprint
+
+<b>Release 0.8.7 (taken from bitbucket issue-tracker based on the respective milestone. To read the full issue go to [https://bitbucket.org/cegui/cegui/issue/](https://bitbucket.org/cegui/cegui/issue/ "Issue tracker") and append the ID - e.g. https://bitbucket.org/cegui/cegui/issue/998 </b>
+- #1123: Library soname was changed from 2 to 1 in 0.8.6
 
 <b>Release 0.8.7 (taken from bitbucket issue-tracker based on the respective milestone. To read the full issue go to [https://bitbucket.org/cegui/cegui/issue/](https://bitbucket.org/cegui/cegui/issue/ "Issue tracker") and append the ID - e.g. https://bitbucket.org/cegui/cegui/issue/998 </b>
 - #1123: Library soname was changed from 2 to 1 in 0.8.6
@@ -24,10 +58,10 @@ a definitely complete list, please read the commit logs of the v0-8 branch up to
 - #1063: OpenGLRenderer on Linux renders CEGUI samples upside-down
 - #1065: The 0.7->0.8 porting tips should either be added to the API Docu or referenced from there
 - #1072: Docu: Replace CEGUIFalagardWRBase with CEGUICoreWindowRendererSet in Docu
-- #1076: TabControl XML printing prints children twice 
+- #1076: TabControl XML printing prints children twice
 - #1077: ComboDropList output to XML shows RestoreOldCapture for Scrollbar's autowindow children
 - #1078: Properties that are forwarded via PropertyLinkDefinitions are printed to XML
-- #1079: Tooltips behave glitchy, take away focus from underlying windows, affect move-events 
+- #1079: Tooltips behave glitchy, take away focus from underlying windows, affect move-events
 - #1080: Tooltips are wrongly printed to XML, inheritance affects the printing and uses wrong values
 - #1081: Numerous windows XML-print some redundant (because forwarded) AutoWindow properties
 - #1082: Scrollable panes print their children inside their autowindow instead of directly inside them
@@ -384,7 +418,7 @@ a definitely complete list, please read the commit logs of the v0-8 branch up to
 - Added: isAnimationPresent
 - Added: Eol extension + it's settings so Windows developers don't pollute the repo with CR LF
 - Added: RadioButton to Vanilla, via patches from Ident.
-- Added: Checkbox to Vanilla skin, via patches from Ident. 
+- Added: Checkbox to Vanilla skin, via patches from Ident.
 - Added: Window::getZIndex, Window::isInFront and Window::isBehind functions to enable client code to discover z-ordering of windows.
 
 - Documentation: Update docs to reference the mercurial repositories rather than subversion.
@@ -439,7 +473,7 @@ This version was issued as an 'emergency release' to fix the following:
 - Bug Fix: Resolved infinite recursion bug in String::iterator::operator+.  Thanks to Kulik.
 - Bug Fix: Removed unnecessary Win32 DLL import/export control macro from CEGUI::RefCounted template class.  Thanks to Kulik.
 - Bug Fix: ConstBaseIterator::operator!= was completely incorrect.  Thanks to Kulik.
-- Bug Fix: Resolve issue where tooltip window area was not always correctly pixel aligned. 
+- Bug Fix: Resolve issue where tooltip window area was not always correctly pixel aligned.
 - Bug Fix: Resolve issue where slider thumb offset from the thumb track area would be incorrectly applied twice.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?f=3&t=5009
 - Bug Fix: Address the issue relating to 'incorrect' firing of EventMouseEnters and EventMouseLeaves by adding EventMouseEntersArea and EventMouseLeavesArea events that exhibit the more expected behaviour.  See: http://www.cegui.org.uk/mantis/view.php?id=231
 - Bug Fix: event propagation in Window would terminate when the parent was modal, not when 'this' was modal.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?f=10&t=5066
@@ -526,7 +560,7 @@ This version was issued as an 'emergency release' to fix the following:
 - Modified: Always output exception messages to stderr.
 - Modified: Update embedded GLEW lib to the latest version (1.5.4), including modification to work around GL typedef differences in the OS X 10.4 SDK.
 - Modified: Cleanup Irrlicht event pusher + don't force initially centred mouse position.
-- Modified: Replace DriveIcons with a version we can be sure about the copyright status of.  Prior version appears to use non free imagery for some icons. 
+- Modified: Replace DriveIcons with a version we can be sure about the copyright status of.  Prior version appears to use non free imagery for some icons.
 - Modified: Replace try / catch / throw with macros CEGUI_TRY / CEGUI_CATCH / CEGUI_THROW.  This was done to attempt to fill this request: http://www.cegui.org.uk/mantis/view.php?id=242.  Note that there is no added setting for this, and no 'built in' mechanism that calls a user function.  The use of the macros does however allow users to pre-define the macros to do something different.  This said, tests show that the likelyhood of anybody actually being able to easily pull of a modification that allows exceptions not to be used - for example, by using the mechanism suggested in the first post of the topic linked in the mantis ticket - is pretty much non-existant.  At least having this provision allows them to prove it to themselves, because, as with the OP in that topic, they don't seem to believe you when you tell them ;)
 - Modified: Update some window / looknfeel config to enable mouse event propagation for some compound widgets to restore common behaviours.  For: http://www.cegui.org.uk/mantis/view.php?id=318
 - Modified: When frame window roll-up state is toggled, invalidate recursively so that child content visuals are forced to redraw.
@@ -540,7 +574,7 @@ This version was issued as an 'emergency release' to fix the following:
 - Modified: Update Demo7 to use a mapped window type that automatically gets the wobbly effect set for each instance.
 - Modified: Update Demo7 to use the RenderEffectManager instead of creating the effects directly (though that is still supported, if someome wants to do that).
 - Modified: In the samples, don't grab the mouse and keyboard in debug builds when using Ogre under X.
-- Modified: Make Listbox::getItemAtPoint function public.  IMPORTANT: The Point object passed has changed from being a window local position to being a screen position!!  See: http://www.cegui.org.uk/mantis/view.php?id=319 
+- Modified: Make Listbox::getItemAtPoint function public.  IMPORTANT: The Point object passed has changed from being a window local position to being a screen position!!  See: http://www.cegui.org.uk/mantis/view.php?id=319
 
 - Added: saveWindowLayout functions to WindowManager to enable saving directly to a named file.
 - Added: explicit copy constructors for some of the basic data types; to aid in binding other languages :)  Thanks to Kulik.
@@ -992,7 +1026,7 @@ This version was issued as an 'emergency release' to fix the following:
 - Bug Fix: Demo8 restored to working state.
 - Bug Fix: Fixed bug in CreateWindow which would never allow empty name while having a prefix.
 - Bug Fix: Fixed/revamped TabControlDemo, because it didn't work anymore because of underlying code changes.
-- Bug Fix: Added re-sorting to a listbox after user 
+- Bug Fix: Added re-sorting to a listbox after user
 - Bug Fix: There was an incorrect compiler flag when bringing in the DevIL libs (autotools build).
 - Bug Fix: 'make dist' should now include everything required (on linux at least)
 - Bug Fix: Updated irrlicht support to 1.4 (and beyond?)
@@ -1000,7 +1034,7 @@ This version was issued as an 'emergency release' to fix the following:
 - Bug Fix: Change TabPane into TabContentPane. Thanks to Liberator for pointing this inconsistency out.
 - Bug Fix: Autotools build was missing the CEGUIGroupBox files.
 - Bug Fix: Resorting of lists and trees happened High to Low. This should be the reverse i think.
-- Bug Fix: Resolved ticket 160: Missing #pragma warning(pop) in elements/CEGUISpinner.h 
+- Bug Fix: Resolved ticket 160: Missing #pragma warning(pop) in elements/CEGUISpinner.h
 - Bug Fix: Resolved ticket 158: MultiColumnList Font NOT in ListHeaderSegment!
 - Bug Fix: Applied Liberator's tree fix patch.
 - Bug Fix: Applied ldb's OIS patch.
@@ -1109,7 +1143,7 @@ This version was issued as an 'emergency release' to fix the following:
 - Added: Danish language in the FontDemo sample.
 - Added: Output of summary of configure results (for configure based builds)
 - Added: Texture extra size information to CEGUI::Texture in order to be able to handle scaled/stretched textures within Imageset.
-- Added: Texture Scaling support in IrrlichRenderer 
+- Added: Texture Scaling support in IrrlichRenderer
 
 - Removed: Empty source file CEGUIVector.cpp
 - Removed: TabPane files.
@@ -1119,7 +1153,7 @@ This version was issued as an 'emergency release' to fix the following:
 - Modified: Replaced all setWindow<something> with set<something>
 - Modified: EventSet::EventIterator now known as EventSet::Iterator
 - Modified: PropertySet::PropertyIterator now known as PropertySet::Iterator
-- Modified: ImageCodec modules are now DynamicModule 
+- Modified: ImageCodec modules are now DynamicModule
 - Modified: Falagard PropertyDim now supports a type attribute for UDim properties.  Mantis #82.
 - Modified: Improved TabControl imagery.  Mantis #82.
 - Modified: autotools makefiles now symlink the sample binaries (to avoid having to do 'make install').  Mantis #82.
@@ -1129,17 +1163,17 @@ This version was issued as an 'emergency release' to fix the following:
 - Modified: Externalised our use of the Lua library
 - Modified: premake updates
 - Modified: Updated AUTHORS file.
-- Modified: Remove exec file attribute on Falagard.xsd 
+- Modified: Remove exec file attribute on Falagard.xsd
 - Modified: XMLRefSchema/Font.xsd for font rewrite
 - Modified: LuaScriptModule public headers no longer need include lua.h included.
 - Modified: Made a bunch of warnings go away in MSVC in the new font code.
 - Modified: Deleted the remaining old msvc project files.
 
-- Bug Fix: Clean the XMLSerialization code: remove empty autowindow 
+- Bug Fix: Clean the XMLSerialization code: remove empty autowindow
 - Bug Fix: Added missing glDisable(GL_FOG); in gl renderer
 - Bug Fix: Irrlicht and D3D8.1 renderer modules would keep live pointers to Texture objects that failed to fully initialise (file or size errors for example)  Mantis #43.
 - Bug Fix: Disable texture stages we do not use in Direct3D renderers. (Mantis #95)
-- Bug Fix: Mouse cursor z value.  Mantis #49 
+- Bug Fix: Mouse cursor z value.  Mantis #49
 - Bug Fix: Imagset XML attribute for image file name is 'Imagefile' and not 'Filename'.
 - Bug Fix: normal attributes use 'true', only properties sometimes use 'True'.
 - Bug Fix: Global default resource group was not being used by DefaultResourceProvider.
@@ -1148,9 +1182,9 @@ This version was issued as an 'emergency release' to fix the following:
 - Bug Fix: IrrlichtRenderer - Mouse event error.  Mantis #98.
 - Bug Fix: IrrlichtRenderer - size error in addQuad.  Mantis #99.
 - Bug Fix: IrrlichtRenderer - Sample driver had linker lib name wrong for renderer module.  Mantis #100.
-- Bug Fix: TinyXMLParser bug.  Mantis Tracker #57 
-- Bug Fix: a bug in the openglrenderer cleanup related to image codec. 
-- Bug Fix: Install renderer module includes at the same place as in Win32 (linux / mac autotools) 
+- Bug Fix: TinyXMLParser bug.  Mantis Tracker #57
+- Bug Fix: a bug in the openglrenderer cleanup related to image codec.
+- Bug Fix: Install renderer module includes at the same place as in Win32 (linux / mac autotools)
 - Bug Fix: OpenGL sample driver did not inject middle mouse up (injected it as down).  Mantis #82.
 - Bug Fix: Corrected some mistakes in the Falagard Lua bindings
 - Bug Fix: Apparently in some cases OpenGLRenderer needs NOMINMAX in Win32 (Mantis #63)
@@ -1158,7 +1192,7 @@ This version was issued as an 'emergency release' to fix the following:
 - Bug Fix: FairChar font texture was not power of 2 (Mantis #64)
 - Bug Fix: SliderThumb incorrectly mapped in some schemes (mantis #88)
 - Bug Fix: Updated Irrlicht renderer to work with 0.5.0 codebase.
-- Bug Fix: some missing data 
+- Bug Fix: some missing data
 - Bug Fix: DirectX 8.1 sample driver
 - Bug Fix: some missing files in the make dist command (Mantis #89)
 - Bug Fix: Change the name of an enumeration value in schema Font.xsd.
@@ -1370,7 +1404,7 @@ This version was issued as an 'emergency release' to fix the following:
 - Added: Modal window feature.
 - Added: Missing Lua bindings for some System based Tooltip stuff.
 - Added: Missing Lua bindings for Menusystem widgets.
-- Added: Lua module 'toKeyEventArgs' helper 
+- Added: Lua module 'toKeyEventArgs' helper
 - Added: An attempt at protecting the code from min/max preprocessor macros; as defined in MS Windows headers.
 - Added: Logging of CEGUI version number.
 - Added: The 'look' modules now have the ability to register all available widget types; saves listing them all in a scheme!
