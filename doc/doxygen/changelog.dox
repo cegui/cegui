@@ -10,6 +10,7 @@ a definitely complete list, please read the commit logs of the v0-8 branch up to
 
 <b>master</b>
 TODO: how to maintain the changelog now? See GitHub release descriptions? Where to write WIP?
+
 Breaking changes:
 - Default GUI context is removed, please create a context explicitly
 - Default render target is deprecated
@@ -17,30 +18,75 @@ Breaking changes:
 - SequentialLayoutContainer class removed, use LayoutContainer class
 - LayoutContainer hierarchy and especially GridLayoutContainer reworked
 - ScrollablePane and ScrolledContainer reworked
+- Spinner and Slider API made similar
 - DragContainer in a sticky mode uses bool result from EventDragDropItemDropped to accept or reject dropping. Rejection continues dragging.
 - Text rendering completely reworked. Use RenderedText with embedded formatting instead of (Formatted)RenderedString.
 - Text related headers and sources moved to "text" subfolder
-- BasicRenderedStringParser renamed to LegacyTextParser. Padding is applied to each individual character in the text.
+- BasicRenderedStringParser renamed to LegacyTextParser
+- Padding tags are applied to each individual character in the parsed text.
 - Event renamed: EventRenderedStringParserChanged -> EventTextParserChanged
 - Method moved and renamed: LayoutContainer::getIdxOfChild -> Window::getChildIndex
 - "Idx" is replaced with "Index" in many method names
+- EventParentSized event is removed, subscribe to parent's EventSized
+- setArea is not virtual anymore, setArea_impl is removed. Override handleAreaChanges to react on area changes.
+- onSized_impl is removed, override onSized instead.
+- notifyScreenAreaChanged is not virtual anymore, onParentSized is removed, its logic is now in the core of Window. It uses overridable handleAreaChanges, performChildLayout (former performChildWindowLayout), onMoved, onSized, but we strongly recommend to stick with existing logic when possible.
+- getClientChildContentArea and getNonClientChildContentArea are removed. Use and override getChildContentArea instead.
+- setParent is removed, override addChild_impl instead.
+- ImageDim::getSourceImage renamed to getSourceImageName, the same for setSourceImage.
+- Some Window area related functions have lost default arg definitions, please pass arguments explicitly if you encounter this problem.
+- Deprecated class GroupBox is removed. See the \deprecated doc section in its old source file to convert your group boxes into WidgetLook-based ones.
+- RefCounted became an alias for std::shared_ptr
+- Modality API moved from Window to GUIContext
+- Input capture API moved from Window to GUIContext
+- Tooltip logic moved from Window to GUIContext
+- Input auto-repeating logic moved from Window to GUI context
+- Window methods removed: getActiveSibling, getActiveChild, focus, unfocus
+- WindowNavigator merged with NavigationStrategy, inherit from WindowNavigator to implement any desired navigation logic
+
 Added:
+- Window::getFactoryType to get the initial window type without an applied look-n-feel
+- Window::setTooltipEnabled & Window::isTooltipEnabled to control the tooltip without changing its text
+- Optional show & hide animation for the Window through properties "ShowAnimation" and "HideAnimation"
+- 'force' arg to skip animation in show(), hide() and setVisible()
+- Any Window can be used as a tooltip
 - Slider discrete mode
+- Slider minimum value setting
 - Spinner scrolling by wheel
+- Spinner precision setting (number of decimal places)
 - Draw mode mask controls which windows are rendered at the current pass (WIP)
 - TinyXML2 XML parser
 - StdRegexMatcher for using C++11 std regular expressions instead of PCRE
 - Optional usage of raqm library for text layouting
 - LayoutContainer::getActualChildCount for ignoring invisible cell dummies in a grid layout container
 - SWIG scripting module
+- Falagard OperatorDim Min and Max
+- DragContainer::cancelDrag
+- #1232 Window::findChild API to search for children without an exception
+- Ability to unsubscribe from an event inside its handler
+
+Fixed:
+- Spinner buttons now start auto-repeating on the first mouse press
+- Font XML serialization now writes type, version and size unit
+- Some OpenGL3 FBO issues solved
+- D3D11 resource leaks fixed
+- Issues #999, #1070, #1009, #1001, #876, #938
+- Lots of other fixes
+
 Optimized:
 - Window area recalculation
 - Text rendering
 - Image geometry combining into the single buffer
-- Window class memory footprint
+- Skip rendering completely clipped geometry buffers in OpenGL and Direct3D11
+- Window class memory footprint reduced from 928 to 712 bytes on x86
 
-<b>Release 0.8.7 (taken from bitbucket issue-tracker based on the respective milestone. To read the full issue go to [https://bitbucket.org/cegui/cegui/issue/](https://bitbucket.org/cegui/cegui/issue/ "Issue tracker") and append the ID - e.g. https://bitbucket.org/cegui/cegui/issue/998 </b>
-- #1123: Library soname was changed from 2 to 1 in 0.8.6
+Dependencies:
+- stb_image updated to v2.27
+- glfw updated to 2.7.9
+- freetype updated to 2.11.1
+- fribidi updated to 1.0.11
+- raqm 0.9.0 added (optional)
+- harfbuzz 3.2.0 added (for raqm)
 
 <b>Release 0.8.7 (taken from bitbucket issue-tracker based on the respective milestone. To read the full issue go to [https://bitbucket.org/cegui/cegui/issue/](https://bitbucket.org/cegui/cegui/issue/ "Issue tracker") and append the ID - e.g. https://bitbucket.org/cegui/cegui/issue/998 </b>
 - #1123: Library soname was changed from 2 to 1 in 0.8.6
