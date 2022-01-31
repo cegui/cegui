@@ -46,7 +46,6 @@
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/SharedStringStream.h"
-#include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/Logger.h"
 
 #include <deque>

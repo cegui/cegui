@@ -133,12 +133,10 @@ public:
 
     /*!
     \brief
-        Set whether the the ListboxTextItem will have it's text parsed via the
-        BasicRenderedStringParser or not.
+        Set whether the the ListboxTextItem will have it's text parsed or not.
 
     \param enable
-        - true if the ListboxTextItem text will be parsed with default
-          BasicRenderedStringParser.
+        - true if the ListboxTextItem text will be parsed with default parser.
         - false if the ListboxTextItem text will be used verbatim.
 
     \note For enable parsing with custom parser use setCustomTextParser.
@@ -164,7 +162,7 @@ protected:
     Font*                d_font = nullptr;            //!< Font used for rendering text.
     CEGUI::TextParser*   d_textParser = nullptr;      //!< pointer to currently used render string parser.
     ColourRect           d_textCols;                  //!< Colours used for rendering the text.
-    mutable RenderedText d_renderedText;              //!< RenderedString drawn by this item.
+    mutable RenderedText d_renderedText;              //!< Text visuals drawn by this item.
     mutable bool         d_renderedTextValid = false; //!< boolean used to track when item state changes (and needs re-parse)
 };
 

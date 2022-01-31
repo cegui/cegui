@@ -28,7 +28,6 @@
 ***************************************************************************/
 #include "CEGUI/views/TreeView.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/RenderedStringParser.h"
 #include "CEGUI/widgets/Scrollbar.h"
 #include <algorithm> // sort
 

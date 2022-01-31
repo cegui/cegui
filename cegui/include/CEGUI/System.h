@@ -77,7 +77,7 @@ public:
     /** Event fired when global custom TextParser is set.
      * Handlers are passed a const reference to a generic EventArgs struct.
      */
-    static const String EventRenderedStringParserChanged;
+    static const String EventTextParserChanged;
 
     /*************************************************************************
         Construction and Destruction
@@ -483,7 +483,7 @@ public:
 
     /*!
     \brief
-        Return pointer to the currently set global default custom
+        Return pointer to the currently set global default
         TextParser object.
 
         The returned TextParser is used for all windows that have
@@ -492,7 +492,7 @@ public:
 
         If this global custom TextParser is set to 0, then all windows
         with parsing enabled and no custom TextParser set on the
-        window itself will use the systems BasicRenderedStringParser.
+        window itself will use the system's default LegacyTextParser.
     */
     TextParser* getDefaultTextParser() const;
 
