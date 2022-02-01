@@ -23,7 +23,8 @@ Breaking changes:
 - Text rendering completely reworked. Use RenderedText with embedded formatting instead of (Formatted)RenderedString.
 - Text related headers and sources moved to "text" subfolder
 - BasicRenderedStringParser renamed to LegacyTextParser
-- Padding tags are applied to each individual character in the parsed text.
+    - Padding tags are applied to each individual character in the parsed text.
+    - Any vertical formatting now affects images, text and widgets, no difference between "vert-image-formatting" and "vert-text-formatting"
 - Event renamed: EventRenderedStringParserChanged -> EventTextParserChanged
 - Method moved and renamed: LayoutContainer::getIdxOfChild -> Window::getChildIndex
 - "Idx" is replaced with "Index" in many method names
@@ -40,9 +41,11 @@ Breaking changes:
 - Modality API moved from Window to GUIContext
 - Input capture API moved from Window to GUIContext
 - Tooltip logic moved from Window to GUIContext
+- Tooltip no longer relies on events to play show / hide animations, use "ShowAnimation" and "HideAnimation" properties
 - Input auto-repeating logic moved from Window to GUI context
 - Window methods removed: getActiveSibling, getActiveChild, focus, unfocus
 - WindowNavigator merged with NavigationStrategy, inherit from WindowNavigator to implement any desired navigation logic
+- WordWrap* variants of HorizontalTextFormatting are deprecated, a separate WordWrap boolean is added instead
 
 Added:
 - Window::getFactoryType to get the initial window type without an applied look-n-feel
@@ -64,6 +67,7 @@ Added:
 - DragContainer::cancelDrag
 - #1232 Window::findChild API to search for children without an exception
 - Ability to unsubscribe from an event inside its handler
+- WordWrap, ParagraphDir and ParagraphDirProperty tags added to falagard text component
 
 Fixed:
 - Spinner buttons now start auto-repeating on the first mouse press
