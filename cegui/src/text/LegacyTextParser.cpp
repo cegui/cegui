@@ -25,6 +25,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/text/LegacyTextParser.h"
+#include "CEGUI/text/RenderedTextStyle.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/FontManager.h"
@@ -89,10 +90,12 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     d_vertFormatting = VerticalImageFormatting::BottomAligned;
 
     outText.reserve(inText.size());
+    outElementIndices.reserve(inText.size());
 
     std::u32string tagString;
     tagString.reserve(64);
 
+    uint16_t elementIndex = std::numeric_limits<uint16_t>().max();
     bool escaped = false;
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
     for (auto itIn = inText.begin(); itIn != inText.end(); /**/)
@@ -101,6 +104,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     String::codepoint_iterator itIn(inText.begin(), inText.begin(), inText.end());
     while (itIn)
     {
+        //!!!TODO TEXT: fill outOriginalIndices!
 #endif
         const char32_t codePoint = *itIn;
 
@@ -112,13 +116,23 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
                 escaped = true;
             else
             {
-                // ensure that the style is prepared, use its index (or skip default style creation and use special element index for it?)
-                // before creating a new style, try to find the same one
-                //RenderedStringTextComponent rtc(curr_section, d_font);
-                //rtc.setPadding(d_padding);
-                //rtc.setColours(d_colours);
-                //rtc.setVerticalFormatting(d_vertFormatting);
-                //rs.appendComponent(rtc);
+                if (elementChanged)
+                {
+                    auto style = std::make_unique<RenderedTextStyle>(d_font);
+                    style->setTextColour(d_colours);
+                    style->setPadding(d_padding);
+                    style->setVerticalFormatting(d_vertFormatting);
+
+                    if (outElements.size() >= static_cast<size_t>(std::numeric_limits<uint16_t>().max() - 1))
+                    {
+                        Logger::getSingleton().logEvent(
+                            "LegacyTextParser::parse: too many elements and styles, parsing failed");
+                        return false;
+                    }
+
+                    elementIndex = static_cast<uint16_t>(outElements.size());
+                    outElements.push_back(std::move(style));
+                }
 
                 if (escaped)
                 {
@@ -130,14 +144,23 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
                         //case 'r':  outText.push_back('\r'); break;
                         //case 't':  outText.push_back('\t'); break;
                         case '\\': outText.push_back('\\'); break;
-                        default:   outText.push_back('\\'); outText.push_back(codePoint); break;
+                        default:
+                        {
+                            outText.push_back('\\');
+                            outElementIndices.push_back(elementIndex);
+                            outText.push_back(codePoint);
+                            break;
+                        }
                     };
+
+                    outElementIndices.push_back(elementIndex);
 
                     escaped = false;
                 }
                 else
                 {
                     outText.push_back(codePoint);
+                    outElementIndices.push_back(elementIndex);
                 }
             }
         }
@@ -155,6 +178,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
         ++itIn;
     }
 
+    // NB: don't shrink outElementIndices, it will be thrown away soon
     outText.shrink_to_fit();
 
     if (!tagString.empty())

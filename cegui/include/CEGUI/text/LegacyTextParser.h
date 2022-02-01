@@ -85,6 +85,8 @@ public:
 
 protected:
 
+    typedef void (LegacyTextParser::* TagHandler)(const String&);
+
     //! Process the control string \a ctrl_str.
     void processControlString(const std::u32string& ctrlStr);
 
@@ -103,6 +105,9 @@ protected:
     void handleImageWidth(const String& value);
     void handleImageHeight(const String& value);
 
+    //! Collection to map tag names to their handler functions.
+    std::unordered_map<String, TagHandler> d_tagHandlers;
+
     //! active padding values.
     Rectf d_padding;
     //! active colour values.
@@ -113,11 +118,7 @@ protected:
     VerticalImageFormatting d_vertFormatting = VerticalImageFormatting::BottomAligned;
     //! active image size
     Sizef d_imageSize;
-
-    //! definition of type used for handler functions
-    typedef void (LegacyTextParser::*TagHandler)(const String&);
-    //! Collection to map tag names to their handler functions.
-    std::unordered_map<String, TagHandler> d_tagHandlers;
+    bool elementChanged = false;
 };
 
 }

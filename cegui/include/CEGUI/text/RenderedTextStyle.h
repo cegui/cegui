@@ -54,6 +54,10 @@ public:
 
     virtual RenderedTextElementPtr clone() const override;
 
+    void setTextColour(const ColourRect& colours) { d_colours = colours; }
+    void setBackgroundColour(const ColourRect& colours) { d_backgroundColours = colours; }
+    void setOutlineColour(const ColourRect& colours) { d_outlineColours = colours; }
+
 protected:
 
     ColourRect d_colours = 0xFFFFFFFF;
