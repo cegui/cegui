@@ -86,7 +86,7 @@ public:
 protected:
 
     //! Process the control string \a ctrl_str.
-    virtual void processControlString(const String& ctrl_str);
+    void processControlString(const std::u32string& ctrlStr);
 
     //! handlers for the various tags supported
     void handleColour(const String& value);

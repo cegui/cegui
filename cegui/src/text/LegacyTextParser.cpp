@@ -177,7 +177,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     if (!tagString.empty())
     {
         Logger::getSingleton().logEvent(
-            "LegacyTextParser::parse: Ignoring unterminated tag : " + String(tagString));
+            "LegacyTextParser::parse: ignoring unterminated tag : " + String(tagString));
         return false;
     }
 
@@ -185,41 +185,38 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::processControlString(const String& ctrlStr)
+void LegacyTextParser::processControlString(const std::u32string& ctrlStr)
 {
-    // All our default strings are of the form <var> = '<val>'
+    // All our default strings are of the form <var>='<val>'
     // so let's get the variables using '=' as delimiter:
     const size_t findPos = ctrlStr.find_first_of('=');
     if (findPos == String::npos)
     {
         Logger::getSingleton().logEvent(
             "LegacyTextParser::processControlString: invalid control string declared"
-            " (format must be <var> = '<val>'): '" + ctrlStr + "'.  Ignoring!");
+            " (format must be <var> = '<val>'): '" + String(ctrlStr) + "'.  Ignoring!");
         return;
     }
 
     // Skip leading '['
-    auto i = d_tagHandlers.find(ctrlStr.substr(1, findPos));
+    auto i = d_tagHandlers.find(ctrlStr.substr(1, findPos - 1));
     if (i == d_tagHandlers.end())
     {
         Logger::getSingleton().logEvent(
-            "LegacyTextParser::processControlString:  unknown "
-            "control variable in string: '" + ctrlStr + "'.  Ignoring!");
+            "LegacyTextParser::processControlString: unknown "
+            "control variable in string: '" + String(ctrlStr) + "'.  Ignoring!");
         return;
     }
 
-    // We were able to split the variable and value, let's see if we get a valid value:
-    String value = ctrlStr.substr(findPos + 1);
-    const bool correctValueFormat = (value.front() == '\'') && (value.back() == '\'') && (value.length() > 2);
-    if (correctValueFormat)
-    {
-        value.pop_back();
-        value.erase(0, 1);
-    }
-
-    // Since the handler was found, we are sure that if the second variable
-    // couldn't be read, it is empty. We will supply an empty string.
-    (this->*(*i).second)(correctValueFormat ? value : String::GetEmpty());
+    // We were able to split the variable and value, let's see if we get a valid value.
+    // Since the handler was found, we are sure that if the second variable couldn't be read,
+    // it is empty. We will supply an empty string.
+    const auto valueStart = findPos + 2;
+    const auto valueEnd = ctrlStr.size() - 1;
+    if (valueStart < valueEnd && ctrlStr[findPos + 1] == '\'' && ctrlStr[valueEnd] == '\'')
+        (this->*(*i).second)(ctrlStr.substr(valueStart, valueEnd - valueStart));
+    else
+        (this->*(*i).second)(String::GetEmpty());
 }
 
 //----------------------------------------------------------------------------//
