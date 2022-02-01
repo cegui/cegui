@@ -141,12 +141,10 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
         {
             if (!escaped && codePoint == '[')
                 tagString.push_back(codePoint);
-            else if (codePoint == '\\')
+            else if (!escaped && codePoint == '\\')
                 escaped = true;
             else
             {
-                escaped = false;
-
                 // ensure that the style is prepared, use its index (or skip default style creation and use special element index for it?)
                 // before creating a new style, try to find the same one
                 //RenderedStringTextComponent rtc(curr_section, d_font);
@@ -155,7 +153,25 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
                 //rtc.setVerticalFormatting(d_vertFormatting);
                 //rs.appendComponent(rtc);
 
-                outText.push_back(codePoint);
+                if (escaped)
+                {
+                    switch (codePoint)
+                    {
+                        case '\n':
+                        case 'n':  outText.push_back('\n'); break;
+                        case '\r':
+                        case 'r':  outText.push_back('\r'); break;
+                        case 't':  outText.push_back('\t'); break;
+                        case '\\': outText.push_back('\\'); break;
+                        default:   outText.push_back('\\'); outText.push_back(codePoint); break;
+                    };
+
+                    escaped = false;
+                }
+                else
+                {
+                    outText.push_back(codePoint);
+                }
             }
         }
         else
