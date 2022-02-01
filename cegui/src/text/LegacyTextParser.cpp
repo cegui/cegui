@@ -112,86 +112,114 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     std::vector<size_t>& outOriginalIndices, std::vector<uint16_t>& outElementIndices,
     std::vector<RenderedTextElementPtr>& outElements)
 {
-    return false;
+    //???TODO: use stack struct for tag params to make the parser itself stateless?
 
-
-    //!!!TODO TEXT: IMPLEMENT!
-    // each param is a stack
-    // style is assembled from stacks when the first real style user is being processed
-    // can try to find already created style instead of creating extra one
-    // need to somehow export paragraph-level params from here! horz align, BIDI dir
-
-    //d_colours = initial_colours ? *initial_colours : 0xFFFFFFFF;
-    //d_font = initial_font;
-    d_padding = Rectf(0, 0, 0, 0);
-    d_imageSize.d_width = d_imageSize.d_height = 0.0f;
+    // Initialize formatting parameters with default values
+    d_colours = Colour(0xFFFFFFFF);
+    d_font = nullptr;
+    d_padding = Rectf(0.f, 0.f, 0.f, 0.f);
+    d_imageSize = Sizef(0.f, 0.f);
     d_vertFormatting = VerticalImageFormatting::BottomAligned;
 
-    String curr_section, tag_string;
+    outText.reserve(inText.size());
 
-    for (auto itIn = inText.begin(); itIn != inText.end(); /* no-op*/)
+    std::u32string tagString;
+    tagString.reserve(64);
+
+    bool escaped = false;
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32)
+    for (auto itIn = inText.begin(); itIn != inText.end(); /**/)
     {
-        const bool found_tag = parseSection(itIn, inText.end(), '[', curr_section);
+#else
+    String::codepoint_iterator itIn(inText.begin(), inText.begin(), inText.end());
+    while (itIn)
+    {
+#endif
+        const char32_t codePoint = *itIn;
 
-        //RenderedStringTextComponent rtc(curr_section, d_font);
-        //rtc.setPadding(d_padding);
-        //rtc.setColours(d_colours);
-        //rtc.setVerticalFormatting(d_vertFormatting);
-        //rs.appendComponent(rtc);
-
-        if (!found_tag)
-            return true;
-
-        if (!parseSection(itIn, inText.end(), ']', tag_string))
+        if (tagString.empty())
         {
-            Logger::getSingleton().logEvent(
-                "LegacyTextParser::parse: Ignoring unterminated tag : [" + tag_string);
-            return false;
+            if (!escaped && codePoint == '[')
+                tagString.push_back(codePoint);
+            else if (codePoint == '\\')
+                escaped = true;
+            else
+            {
+                escaped = false;
+
+                // ensure that the style is prepared, use its index (or skip default style creation and use special element index for it?)
+                // before creating a new style, try to find the same one
+                //RenderedStringTextComponent rtc(curr_section, d_font);
+                //rtc.setPadding(d_padding);
+                //rtc.setColours(d_colours);
+                //rtc.setVerticalFormatting(d_vertFormatting);
+                //rs.appendComponent(rtc);
+
+                outText.push_back(codePoint);
+            }
+        }
+        else
+        {
+            if (codePoint == ']')
+            {
+                processControlString(tagString);
+                tagString.clear();
+            }
+            else
+                tagString.push_back(codePoint);
         }
 
-        processControlString(tag_string);
+        ++itIn;
+    }
+
+    outText.shrink_to_fit();
+
+    if (!tagString.empty())
+    {
+        Logger::getSingleton().logEvent(
+            "LegacyTextParser::parse: Ignoring unterminated tag : " + String(tagString));
+        return false;
     }
 
     return true;
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::processControlString(const String& ctrl_str)
+void LegacyTextParser::processControlString(const String& ctrlStr)
 {
     // All our default strings are of the form <var> = '<val>'
     // so let's get the variables using '=' as delimiter:
-    const size_t findPos = ctrl_str.find_first_of('=');
+    const size_t findPos = ctrlStr.find_first_of('=');
     if (findPos == String::npos)
     {
         Logger::getSingleton().logEvent(
-            "LegacyTextParser::processControlString: invalid "
-            "control string declared (format must be <var> = '<val>'): "
-            "'" + ctrl_str + "'.  Ignoring!");
+            "LegacyTextParser::processControlString: invalid control string declared"
+            " (format must be <var> = '<val>'): '" + ctrlStr + "'.  Ignoring!");
         return;
     }
 
-    const String variable = ctrl_str.substr(0, findPos);
-    String value = ctrl_str.substr(findPos + 1); 
-
-    auto i = d_tagHandlers.find(variable);
-    if (i != d_tagHandlers.end())
+    // Skip leading '['
+    auto i = d_tagHandlers.find(ctrlStr.substr(1, findPos));
+    if (i == d_tagHandlers.end())
     {
-        // We were able to split the variable and value, let's see if we get a valid value:
-        const bool correctValueFormat = (value.front() == '\'') && (value.back() == '\'') && (value.length() > 2);
-        if (correctValueFormat)
-        {
-            value.pop_back();
-            value.erase(0, 1);
-        }
-
-        // Since the handler was found, we are sure that if the second variable
-        // couldn't be read, it is empty. We will supply an empty string.
-        (this->*(*i).second)(correctValueFormat ? value : String::GetEmpty());
-    }
-    else
         Logger::getSingleton().logEvent(
             "LegacyTextParser::processControlString:  unknown "
-            "control variable in string: '" + value + "'.  Ignoring!");
+            "control variable in string: '" + ctrlStr + "'.  Ignoring!");
+        return;
+    }
+
+    // We were able to split the variable and value, let's see if we get a valid value:
+    String value = ctrlStr.substr(findPos + 1);
+    const bool correctValueFormat = (value.front() == '\'') && (value.back() == '\'') && (value.length() > 2);
+    if (correctValueFormat)
+    {
+        value.pop_back();
+        value.erase(0, 1);
+    }
+
+    // Since the handler was found, we are sure that if the second variable
+    // couldn't be read, it is empty. We will supply an empty string.
+    (this->*(*i).second)(correctValueFormat ? value : String::GetEmpty());
 }
 
 //----------------------------------------------------------------------------//
@@ -209,6 +237,8 @@ void LegacyTextParser::handleFont(const String& value)
 //----------------------------------------------------------------------------//
 void LegacyTextParser::handleImage(const String& value)
 {
+    //!!!need to insert placeholder to outText!
+
     //RenderedStringImageComponent ric(PropertyHelper<Image*>::fromString(value));
     //ric.setPadding(d_padding);
     //ric.setColours(d_colours);
@@ -220,6 +250,8 @@ void LegacyTextParser::handleImage(const String& value)
 //----------------------------------------------------------------------------//
 void LegacyTextParser::handleWindow(const String& value)
 {
+    //!!!need to insert placeholder to outText!
+
     //RenderedStringWidgetComponent rwc(value);
     //rwc.setPadding(d_padding);
     //rwc.setVerticalFormatting(d_vertFormatting);
