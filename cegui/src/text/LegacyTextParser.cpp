@@ -204,7 +204,7 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
     {
         Logger::getSingleton().logEvent(
             "LegacyTextParser::processControlString: invalid control string declared"
-            " (format must be <var> = '<val>'): '" + String(ctrlStr) + "'.  Ignoring!");
+            " (format must be <var>='<val>'): '" + String(ctrlStr) + "'.  Ignoring!");
         return;
     }
 
