@@ -75,39 +75,6 @@ LegacyTextParser::LegacyTextParser()
 }
 
 //----------------------------------------------------------------------------//
-// Internal helper to parse part of a string, using backslash as an escape char
-static bool parseSection(String::const_iterator pos, const String::const_iterator end,
-    String::value_type delim, String& out)
-{
-    const String::value_type escape('\\');
-
-    out.resize(0);
-
-    auto start_iter(pos);
-    for (; pos != end; ++pos)
-    {
-        if (*pos == delim)
-        {
-            out.append(start_iter, pos++);
-            return true;
-        }
-
-        if (*pos == escape)
-        {
-            out.append(start_iter, pos++);
-
-            if (pos == end)
-                return false;
-
-            start_iter = pos;
-        }
-    }
-
-    out.append(start_iter, pos);
-    return false;
-}
-
-//----------------------------------------------------------------------------//
 bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     std::vector<size_t>& outOriginalIndices, std::vector<uint16_t>& outElementIndices,
     std::vector<RenderedTextElementPtr>& outElements)
@@ -157,11 +124,11 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
                 {
                     switch (codePoint)
                     {
-                        case '\n':
-                        case 'n':  outText.push_back('\n'); break;
-                        case '\r':
-                        case 'r':  outText.push_back('\r'); break;
-                        case 't':  outText.push_back('\t'); break;
+                        //case '\n':
+                        //case 'n':  outText.push_back('\n'); break;
+                        //case '\r':
+                        //case 'r':  outText.push_back('\r'); break;
+                        //case 't':  outText.push_back('\t'); break;
                         case '\\': outText.push_back('\\'); break;
                         default:   outText.push_back('\\'); outText.push_back(codePoint); break;
                     };
