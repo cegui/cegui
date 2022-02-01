@@ -240,6 +240,7 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
             PropertyHelper<Image*>::fromString(ctrlStr.substr(valueStart, valueEnd - valueStart)));
         element->setColour(d_colours);
         element->setSize(d_imageSize);
+        element->setFont(d_font);
         element->setPadding(d_padding);
         element->setVerticalFormatting(d_vertFormatting);
         const auto elementIndex = static_cast<uint16_t>(outElements.size());
@@ -257,6 +258,7 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
         //fail if found, can't use the same widget twice!
 
         auto element = std::make_unique<RenderedTextWidget>(ctrlStr.substr(valueStart, valueEnd - valueStart));
+        element->setFont(d_font);
         element->setPadding(d_padding);
         element->setVerticalFormatting(d_vertFormatting);
         const auto elementIndex = static_cast<uint16_t>(outElements.size());

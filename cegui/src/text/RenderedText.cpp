@@ -88,8 +88,12 @@ static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& te
         const auto codePoint = textVisual[visualIndex];
         auto& renderedGlyph = out.glyphs()[i - start];
 
+        const auto elementIndex = (logicalIndex < elementIndices.size()) ?
+            elementIndices[logicalIndex] :
+            elements.size() - 1;
+
         // Get a font for the current character
-        const Font* font = elements[elementIndices[std::min(logicalIndex, elementIndices.size() - 1)]]->getFont();
+        const Font* font = elements[elementIndex]->getFont();
         if (!font)
             return false;
 
@@ -151,8 +155,12 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
         const FreeTypeFont* currFont = nullptr;
         for (size_t i = start; i < end; ++i)
         {
+            const auto elementIndex = (i < elementIndices.size()) ?
+                elementIndices[i] :
+                elements.size() - 1;
+
             // Get a font for the current character
-            const Font* charFont = elements[elementIndices[std::min(i, elementIndices.size() - 1)]]->getFont();
+            const Font* charFont = elements[elementIndex]->getFont();
             if (!charFont)
                 return false;
 
