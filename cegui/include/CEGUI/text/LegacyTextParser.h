@@ -87,14 +87,12 @@ protected:
 
     typedef void (LegacyTextParser::* TagHandler)(const String&);
 
-    //! Process the control string \a ctrl_str.
-    void processControlString(const std::u32string& ctrlStr);
+    void processControlString(const std::u32string& ctrlStr, std::u32string& outText,
+        std::vector<uint16_t>& outElementIndices, std::vector<RenderedTextElementPtr>& outElements);
 
     //! handlers for the various tags supported
     void handleColour(const String& value);
     void handleFont(const String& value);
-    void handleImage(const String& value);
-    void handleWindow(const String& value);
     void handleVertFormatting(const String& value);
     void handlePadding(const String& value);
     void handleTopPadding(const String& value);
@@ -118,7 +116,7 @@ protected:
     VerticalImageFormatting d_vertFormatting = VerticalImageFormatting::BottomAligned;
     //! active image size
     Sizef d_imageSize;
-    bool elementChanged = false;
+    bool d_styleChanged = false;
 };
 
 }

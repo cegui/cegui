@@ -54,6 +54,9 @@ public:
 
     virtual RenderedTextElementPtr clone() const override;
 
+    void setColour(const ColourRect& colours) { d_colours = colours; }
+    void setSize(const Sizef& size) { d_size = size; }
+
 protected:
 
     const Image* d_image = nullptr;

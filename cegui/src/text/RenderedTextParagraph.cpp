@@ -350,25 +350,38 @@ void RenderedTextParagraph::accumulateExtents(Sizef& extents) const
 //----------------------------------------------------------------------------//
 void RenderedTextParagraph::onElementWidthChanged(size_t elementIndex, float diff)
 {
-    if (d_linesDirty)
+    const size_t glyphCount = d_glyphs.size();
+    size_t firstElementIndex = glyphCount;
+
+    // Glyph advances must be updated in any case
+    for (size_t i = 0; i < glyphCount; ++i)
+    {
+        if (elementIndex == d_glyphs[i].elementIndex)
+        {
+            d_glyphs[i].advance += diff;
+            if (firstElementIndex > i)
+                firstElementIndex = i;
+        }
+    }
+
+    if (d_linesDirty || firstElementIndex == glyphCount)
         return;
 
-    uint32_t i = 0;
+    // Any width change in a word wrapped paragraph may lead to changes in wrapping
+    if (d_wordWrap)
+    {
+        d_linesDirty = true;
+        return;
+    }
+
+    // Otherwise only line level recalculations are needed
+    size_t i = firstElementIndex;
     for (auto& line : d_lines)
     {
         for (; i < line.glyphEndIdx; ++i)
         {
             if (elementIndex == d_glyphs[i].elementIndex)
             {
-                // Any width change in a word wrapped paragraph may lead to changes in wrapping
-                if (d_wordWrap)
-                {
-                    d_linesDirty = true;
-                    return;
-                }
-
-                // Otherwise only line level recalculations are needed
-                d_glyphs[i].advance += diff;
                 line.extents.d_width += diff;
                 line.horzFmtDirty = true;
             }
