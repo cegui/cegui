@@ -27,15 +27,15 @@ list (APPEND CORE_HEADER_FILES
 set (ALL_HEADER_FILES ${CORE_HEADER_FILES} ${TEXT_HEADER_FILES} ${VIEW_HEADER_FILES} ${WIDGET_HEADER_FILES} ${FALAGARD_HEADER_FILES} ${SVG_HEADER_FILES})
 
 # never compile this directly, it's included in another file
-list (REMOVE_ITEM CORE_SOURCE_FILES minibidi.cpp)
+list (REMOVE_ITEM CORE_SOURCE_FILES text/minibidi.cpp)
 
 if (NOT CEGUI_HAS_DEFAULT_LOGGER)
     list (REMOVE_ITEM CORE_SOURCE_FILES DefaultLogger.cpp)
 endif()
 
 if (NOT CEGUI_HAS_FREETYPE)
-    list (REMOVE_ITEM CORE_SOURCE_FILES FreeTypeFont.cpp)
-    list (REMOVE_ITEM CORE_SOURCE_FILES FreeTypeFontGlyph.cpp)
+    list (REMOVE_ITEM CORE_SOURCE_FILES text/FreeTypeFont.cpp)
+    list (REMOVE_ITEM CORE_SOURCE_FILES text/FreeTypeFontGlyph.cpp)
 endif()
 
 if (NOT CEGUI_HAS_PCRE_REGEX)
