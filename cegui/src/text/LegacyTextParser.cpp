@@ -26,6 +26,8 @@
  ***************************************************************************/
 #include "CEGUI/text/LegacyTextParser.h"
 #include "CEGUI/text/RenderedTextStyle.h"
+#include "CEGUI/text/RenderedTextImage.h"
+#include "CEGUI/text/RenderedTextWidget.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/FontManager.h"
@@ -57,8 +59,6 @@ LegacyTextParser::LegacyTextParser()
 {
     d_tagHandlers[ColourTagName] = &LegacyTextParser::handleColour;
     d_tagHandlers[FontTagName] = &LegacyTextParser::handleFont;
-    d_tagHandlers[ImageTagName] = &LegacyTextParser::handleImage;
-    d_tagHandlers[WindowTagName] = &LegacyTextParser::handleWindow;
 
     // FIXME: legacy separation on Image and Text, left for compatibility but may behave unexpectedly!
     d_tagHandlers[VertFormattingTagName] = &LegacyTextParser::handleVertFormatting;
@@ -80,6 +80,13 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     std::vector<size_t>& outOriginalIndices, std::vector<uint16_t>& outElementIndices,
     std::vector<RenderedTextElementPtr>& outElements)
 {
+    outText.clear();
+    outOriginalIndices.clear();
+    outElementIndices.clear();
+
+    if (inText.empty())
+        return true;
+
     //???TODO: use stack struct for tag params to make the parser itself stateless?
 
     // Initialize formatting parameters with default values
@@ -88,8 +95,10 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     d_padding = Rectf(0.f, 0.f, 0.f, 0.f);
     d_imageSize = Sizef(0.f, 0.f);
     d_vertFormatting = VerticalImageFormatting::BottomAligned;
+    d_styleChanged = true;
 
     outText.reserve(inText.size());
+    outOriginalIndices.reserve(inText.size());
     outElementIndices.reserve(inText.size());
 
     std::u32string tagString;
@@ -104,7 +113,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     String::codepoint_iterator itIn(inText.begin(), inText.begin(), inText.end());
     while (itIn)
     {
-        //!!!TODO TEXT: fill outOriginalIndices!
+        outOriginalIndices.push_back(itIn.getCodeUnitIndexFromStart());
 #endif
         const char32_t codePoint = *itIn;
 
@@ -116,63 +125,47 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
                 escaped = true;
             else
             {
-                if (elementChanged)
+                if (d_styleChanged)
                 {
+                    //!!!TODO TEXT: try to find the same style first!
+
                     auto style = std::make_unique<RenderedTextStyle>(d_font);
                     style->setTextColour(d_colours);
                     style->setPadding(d_padding);
                     style->setVerticalFormatting(d_vertFormatting);
-
-                    if (outElements.size() >= static_cast<size_t>(std::numeric_limits<uint16_t>().max() - 1))
-                    {
-                        Logger::getSingleton().logEvent(
-                            "LegacyTextParser::parse: too many elements and styles, parsing failed");
-                        return false;
-                    }
-
                     elementIndex = static_cast<uint16_t>(outElements.size());
                     outElements.push_back(std::move(style));
+                    d_styleChanged = false;
                 }
 
                 if (escaped)
                 {
-                    switch (codePoint)
+                    // If it is not actually escaped, print the slash itself too.
+                    // Only slash and opening square bracket support escaping now.
+                    if (codePoint != '\\')
                     {
-                        //case '\n':
-                        //case 'n':  outText.push_back('\n'); break;
-                        //case '\r':
-                        //case 'r':  outText.push_back('\r'); break;
-                        //case 't':  outText.push_back('\t'); break;
-                        case '\\': outText.push_back('\\'); break;
-                        default:
-                        {
-                            outText.push_back('\\');
-                            outElementIndices.push_back(elementIndex);
-                            outText.push_back(codePoint);
-                            break;
-                        }
-                    };
-
-                    outElementIndices.push_back(elementIndex);
+                        outText.push_back('\\');
+                        outElementIndices.push_back(elementIndex);
+                    }
 
                     escaped = false;
                 }
-                else
-                {
-                    outText.push_back(codePoint);
-                    outElementIndices.push_back(elementIndex);
-                }
+
+                outText.push_back(codePoint);
+                outElementIndices.push_back(elementIndex);
             }
         }
         else
         {
             if (codePoint == ']')
             {
-                processControlString(tagString);
+                processControlString(tagString, outText, outElementIndices, outElements);
                 tagString.clear();
             }
             else
+            {
                 tagString.push_back(codePoint);
+            }
         }
 
         ++itIn;
@@ -181,10 +174,19 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     // NB: don't shrink outElementIndices, it will be thrown away soon
     outText.shrink_to_fit();
 
+    // Skip remapping if mapping is 1 to 1
+    if (outOriginalIndices.back() == outOriginalIndices.size() - 1)
+        outOriginalIndices.clear();
+
+    if (outElements.size() >= static_cast<size_t>(std::numeric_limits<uint16_t>().max()))
+    {
+        Logger::getSingleton().logEvent("LegacyTextParser::parse: too many elements and styles, parsing failed");
+        return false;
+    }
+
     if (!tagString.empty())
     {
-        Logger::getSingleton().logEvent(
-            "LegacyTextParser::parse: ignoring unterminated tag : " + String(tagString));
+        Logger::getSingleton().logEvent("LegacyTextParser::parse: unterminated tag : " + String(tagString));
         return false;
     }
 
@@ -192,7 +194,8 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::processControlString(const std::u32string& ctrlStr)
+void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::u32string& outText,
+    std::vector<uint16_t>& outElementIndices, std::vector<RenderedTextElementPtr>& outElements)
 {
     // All our default strings are of the form <var>='<val>'
     // so let's get the variables using '=' as delimiter:
@@ -206,24 +209,67 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr)
     }
 
     // Skip leading '['
-    auto i = d_tagHandlers.find(ctrlStr.substr(1, findPos - 1));
-    if (i == d_tagHandlers.end())
+    const String key = ctrlStr.substr(1, findPos - 1);
+
+    const auto valueStart = findPos + 2;
+    const auto valueEnd = ctrlStr.size() - 1;
+    const bool valueValid = (valueStart < valueEnd&& ctrlStr[findPos + 1] == '\'' && ctrlStr[valueEnd] == '\'');
+
+    // First try registered handlers
+    auto it = d_tagHandlers.find(key);
+    if (it != d_tagHandlers.end())
     {
-        Logger::getSingleton().logEvent(
-            "LegacyTextParser::processControlString: unknown "
-            "control variable in string: '" + String(ctrlStr) + "'.  Ignoring!");
+        // We were able to split the variable and value, let's see if we get a valid value.
+        // Since the handler was found, we are sure that if the second variable couldn't be read,
+        // it is empty. We will supply an empty string.
+        if (valueValid)
+            (this->*(*it).second)(ctrlStr.substr(valueStart, valueEnd - valueStart));
+        else
+            (this->*(*it).second)(String::GetEmpty());
+
+        // For simplicity, consider all other changes as style changes
+        d_styleChanged = true;
         return;
     }
 
-    // We were able to split the variable and value, let's see if we get a valid value.
-    // Since the handler was found, we are sure that if the second variable couldn't be read,
-    // it is empty. We will supply an empty string.
-    const auto valueStart = findPos + 2;
-    const auto valueEnd = ctrlStr.size() - 1;
-    if (valueStart < valueEnd && ctrlStr[findPos + 1] == '\'' && ctrlStr[valueEnd] == '\'')
-        (this->*(*i).second)(ctrlStr.substr(valueStart, valueEnd - valueStart));
-    else
-        (this->*(*i).second)(String::GetEmpty());
+    if (valueValid && key == ImageTagName)
+    {
+        //!!!TODO TEXT: try to find the same image first!
+
+        auto element = std::make_unique<RenderedTextImage>(
+            PropertyHelper<Image*>::fromString(ctrlStr.substr(valueStart, valueEnd - valueStart)));
+        element->setColour(d_colours);
+        element->setSize(d_imageSize);
+        element->setPadding(d_padding);
+        element->setVerticalFormatting(d_vertFormatting);
+        const auto elementIndex = static_cast<uint16_t>(outElements.size());
+        outElements.push_back(std::move(element));
+
+        // Zero width space as a placeholder
+        outText.push_back(0x200B);
+        outElementIndices.push_back(elementIndex);
+        return;
+    }
+
+    if (valueValid && key == WindowTagName)
+    {
+        //!!!TODO TEXT: try to find the same widget first!
+        //fail if found, can't use the same widget twice!
+
+        auto element = std::make_unique<RenderedTextWidget>(ctrlStr.substr(valueStart, valueEnd - valueStart));
+        element->setPadding(d_padding);
+        element->setVerticalFormatting(d_vertFormatting);
+        const auto elementIndex = static_cast<uint16_t>(outElements.size());
+        outElements.push_back(std::move(element));
+
+        // Zero width space as a placeholder
+        outText.push_back(0x200B);
+        outElementIndices.push_back(elementIndex);
+        return;
+    }
+
+    Logger::getSingleton().logEvent("LegacyTextParser::processControlString: unknown "
+        "control variable in string: '" + String(ctrlStr) + "'.  Ignoring!");
 }
 
 //----------------------------------------------------------------------------//
@@ -236,30 +282,6 @@ void LegacyTextParser::handleColour(const String& value)
 void LegacyTextParser::handleFont(const String& value)
 {
     d_font = value.empty() ? nullptr : &FontManager::getSingleton().get(value);
-}
-
-//----------------------------------------------------------------------------//
-void LegacyTextParser::handleImage(const String& value)
-{
-    //!!!need to insert placeholder to outText!
-
-    //RenderedStringImageComponent ric(PropertyHelper<Image*>::fromString(value));
-    //ric.setPadding(d_padding);
-    //ric.setColours(d_colours);
-    //ric.setVerticalFormatting(d_vertFormatting);
-    //ric.setSize(d_imageSize);
-    //rs.appendComponent(ric);
-}
-
-//----------------------------------------------------------------------------//
-void LegacyTextParser::handleWindow(const String& value)
-{
-    //!!!need to insert placeholder to outText!
-
-    //RenderedStringWidgetComponent rwc(value);
-    //rwc.setPadding(d_padding);
-    //rwc.setVerticalFormatting(d_vertFormatting);
-    //rs.appendComponent(rwc);
 }
 
 //----------------------------------------------------------------------------//
