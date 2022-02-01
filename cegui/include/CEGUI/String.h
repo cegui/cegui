@@ -4584,7 +4584,9 @@ public:
             return *this;
         }
 
-        bool isAtEnd()
+        operator bool() const { return m_iter != m_rangeEnd; }
+
+        bool isAtEnd() const
         {
             return m_iter == m_rangeEnd;
         }

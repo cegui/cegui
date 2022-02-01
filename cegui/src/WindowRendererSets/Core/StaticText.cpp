@@ -29,6 +29,7 @@
 #include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/widgets/Scrollbar.h"
 #include "CEGUI/text/Font.h"
+#include "CEGUI/System.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 #include "CEGUI/CoordConverter.h"
 
@@ -391,8 +392,16 @@ void FalagardStaticText::setHorizontalScrollbarEnabled(bool setting)
 // reformatting of the string, as well as cause the 2nd scrollbar to also be required.
 void FalagardStaticText::configureScrollbars() const
 {
-    //!!!FIXME TEXT: parser!
-    d_renderedText.renderText(d_window->getText(), nullptr, d_window->getActualFont());
+    //!!!TODO TEXT: make an universal method getEffectiveTextParser()!
+    TextParser* parser = nullptr;
+    if (isTextParsingEnabled())
+    {
+        parser = getTextParser();
+        if (!parser)
+            parser = CEGUI::System::getSingleton().getDefaultTextParser();
+    }
+
+    d_renderedText.renderText(d_window->getText(), parser, d_window->getActualFont());
 
     Scrollbar* vertScrollbar = getVertScrollbarWithoutUpdate();
     Scrollbar* horzScrollbar = getHorzScrollbarWithoutUpdate();
