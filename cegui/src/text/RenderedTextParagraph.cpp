@@ -334,16 +334,21 @@ void RenderedTextParagraph::updateHorizontalFormatting(float areaWidth)
 }
 
 //----------------------------------------------------------------------------//
-void RenderedTextParagraph::accumulateExtents(Sizef& extents) const
+void RenderedTextParagraph::accumulateExtents(Rectf& extents) const
 {
     if (d_linesDirty)
         return;
 
     for (const auto& line : d_lines)
     {
-        extents.d_height += line.extents.d_height;
-        if (extents.d_width < line.extents.d_width + line.horzOffset)
-            extents.d_width = line.extents.d_width + line.horzOffset;
+        extents.d_max.y += line.extents.d_height;
+
+        const float left = line.horzOffset;
+        const float right = left + line.extents.d_width;
+        if (extents.d_min.x > left)
+            extents.d_min.x = left;
+        if (extents.d_max.x < right)
+            extents.d_max.x = right;
     }
 }
 

@@ -82,7 +82,7 @@ public:
     //! Update horizontal alignment of lines
     void updateHorizontalFormatting(float areaWidth);
 
-    void accumulateExtents(Sizef& extents) const;
+    void accumulateExtents(Rectf& extents) const;
 
     void onElementWidthChanged(size_t elementIndex, float diff);
     void onElementHeightChanged(size_t elementIndex, float diff);
