@@ -175,7 +175,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     outText.shrink_to_fit();
 
     // Skip remapping if mapping is 1 to 1
-    if (outOriginalIndices.back() == outOriginalIndices.size() - 1)
+    if (!outOriginalIndices.empty() && outOriginalIndices.back() == outOriginalIndices.size() - 1)
         outOriginalIndices.clear();
 
     if (outElements.size() >= static_cast<size_t>(std::numeric_limits<uint16_t>().max()))
