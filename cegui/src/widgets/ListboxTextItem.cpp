@@ -77,7 +77,7 @@ Sizef ListboxTextItem::getPixelSize() const
 }
 
 //----------------------------------------------------------------------------//
-void ListboxTextItem::createRenderGeometry(std::vector<GeometryBuffer*> out,
+void ListboxTextItem::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     const Rectf& targetRect, float alpha, const Rectf* clipper) const
 {
     // Draw selection brush
