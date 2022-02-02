@@ -76,10 +76,8 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
     if (d_linesDirty)
         return;
 
-    //!!!TODO TEXT: need default style here! not only colors but also underline flag etc!
+    //!!!TODO TEXT: need to pass default style here! not only colors but also underline flag etc!
     //???how to know where to apply a default style? now this style element is the same as explicit ones! Last is not always default!
-
-    //!!!TODO TEXT: need default halign changing and per-paragraph too!
 
     //???TODO TEXT: to what buffers really can merge?! need to see rendering order first!
     //???!!!merge between paragraphs?! pass canCombineFromIdx as arg!!!
@@ -92,11 +90,9 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
     {
         penPosition.x += line.horzOffset;
 
-        //!!!FIXME TEXT: if do this, need to do the same when counting line width etc!
-        //// Skip leading whitespaces in word wrapped lines
-        //if (i > 0)
-        //    while (i < line.glyphEndIdx && d_glyphs[i].isWhitespace)
-        //        ++i;
+        // Skip leading whitespaces in word wrapped lines
+        if (d_wordWrap)
+            i = skipWhitespace(i, line.glyphEndIdx);
 
         // Render selection background
         if (selection && selection->bgBrush && selection->end > selection->start)
@@ -150,95 +146,96 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
         return;
     }
 
+    // Remember the difference between the full width and advance of the current glyph.
+    // It is important for calculating the line width if it ends with this glyph.
+    // This difference may be e.g. due to kerning at the line break point.
+    float widthAdvanceDiff = 0.f;
+
     // Word wrapping breakpoint tracking
     size_t lastBreakPointIdx = std::numeric_limits<size_t>().max();
-    float lastBreakPointWidth = 0.f;
-    float lastBreakPointWidthAdjustment = 0.f;
     uint16_t lastBreakPointJustifyableCount = 0;
+    float lastBreakPointWidth = 0.f;
 
-    float prevGlyphWidth = 0.f;
     uint32_t lineStartGlyphIdx = 0;
     for (size_t i = 0; i < glyphCount; ++i)
     {
-        auto& glyph = d_glyphs[i];
-
         // Break too long lines if word wrapping is enabled
         if (d_wordWrap)
         {
-            const float glyphWidth = elements[glyph.elementIndex]->getGlyphWidth(glyph);
-
-            float excessWidth = currLine->extents.d_width + glyphWidth - areaWidth;
-            if (excessWidth > 0.f)
+            float glyphWidth = elements[d_glyphs[i].elementIndex]->getGlyphWidth(d_glyphs[i]);
+            if (currLine->extents.d_width + glyphWidth > areaWidth)
             {
                 // If there is a good break point for word wrapping in the current line, use it
                 if (lastBreakPointIdx < glyphCount)
                 {
-                    // Remember some metrics of the wrapped part while currLine pointer is valid
-                    const float wrappedWidth = currLine->extents.d_width - lastBreakPointWidth;
-                    const uint16_t wrappedJustifyables = currLine->justifyableCount - lastBreakPointJustifyableCount;
-
-                    // Restore the current line to the saved state and compensate possible difference
-                    // between the last glyph's advance and full width (e.g. due to kerning at the breakpoint)
-                    currLine->extents.d_width = lastBreakPointWidth + lastBreakPointWidthAdjustment;
+                    // Restore the current line to the saved state
+                    currLine->justifyableCount = lastBreakPointJustifyableCount;
+                    currLine->extents.d_width = lastBreakPointWidth;
                     currLine->glyphEndIdx = static_cast<uint32_t>(lastBreakPointIdx);
-                    lineStartGlyphIdx = currLine->glyphEndIdx;
+                    lineStartGlyphIdx = skipWhitespace(currLine->glyphEndIdx, glyphCount);
 
-                    // Transfer everything past the last breakpoint to the new line
-                    d_lines.emplace_back();
-                    currLine = &d_lines.back();
-                    currLine->extents.d_width = wrappedWidth;
-                    currLine->justifyableCount = wrappedJustifyables;
+                    // Restart from the first wrapped glyph, 'i' will be incremented by the loop
+                    i = lineStartGlyphIdx - 1;
 
-                    // NB: in the new line this glyph is no more a valid breakpoint (infinite loop breaking)
+                    // Break only once at the same breakable glyph to prevent infinite looping
                     lastBreakPointIdx = std::numeric_limits<size_t>().max();
 
-                    // The current glyph may still be wider than our reference area
-                    excessWidth = wrappedWidth + glyphWidth - areaWidth;
+                    d_lines.emplace_back();
+                    currLine = &d_lines.back();
+
+                    // Clear widthAdvanceDiff because the first glyph is not added to the line yet
+                    widthAdvanceDiff = 0.f;
+
+                    continue;
                 }
 
-                // Either no break point was found or the glyph itself is too wide
-                if (excessWidth > 0.f)
+                // No break point was found, maybe the glyph itself is too wide.
+                // Track the word broken in the middle.
+                d_fitsIntoAreaWidth = false;
+
+                // If this glyph is not the first in its line, transfer it to its own new line
+                if (i > lineStartGlyphIdx)
                 {
-                    // Track the word broken in the middle
-                    d_fitsIntoAreaWidth = false;
-
-                    // If this glyph is not the first in its line, transfer it to its own new line
-                    if (i > lineStartGlyphIdx)
+                    currLine->extents.d_width += widthAdvanceDiff;
+                    currLine->glyphEndIdx = static_cast<uint32_t>(i);
+                    lineStartGlyphIdx = skipWhitespace(currLine->glyphEndIdx, glyphCount);
+                    if (i != lineStartGlyphIdx)
                     {
-                        // Compensate possible difference (e.g. due to kerning at the breakpoint)
-                        currLine->extents.d_width += (prevGlyphWidth - d_glyphs[i - 1].advance);
-                        currLine->glyphEndIdx = static_cast<uint32_t>(i);
-                        lineStartGlyphIdx = currLine->glyphEndIdx;
-
-                        d_lines.emplace_back();
-                        currLine = &d_lines.back();
+                        // 'i' changed, cached glyphWidth is no longer valid
+                        glyphWidth = elements[d_glyphs[i].elementIndex]->getGlyphWidth(d_glyphs[i]);
+                        i = lineStartGlyphIdx;
                     }
+
+                    d_lines.emplace_back();
+                    currLine = &d_lines.back();
                 }
             }
-            else if (glyph.isBreakable)
+            else if (d_glyphs[i].isBreakable)
             {
                 // Remember this glyph as the most recent word wrapping point
                 lastBreakPointIdx = i;
-                lastBreakPointWidth = currLine->extents.d_width;
-                lastBreakPointWidthAdjustment = (i > lineStartGlyphIdx) ? (prevGlyphWidth - d_glyphs[i - 1].advance) : 0.f;
                 lastBreakPointJustifyableCount = currLine->justifyableCount;
+                lastBreakPointWidth = currLine->extents.d_width + widthAdvanceDiff;
             }
 
-            prevGlyphWidth = glyphWidth;
+            widthAdvanceDiff = glyphWidth - d_glyphs[i].advance;
         }
 
         // Count the current glyph in the current line
-        currLine->extents.d_width += glyph.advance;
-        if (glyph.isJustifyable)
+        // NB: 'i' might change in the word wrapping code
+        currLine->extents.d_width += d_glyphs[i].advance;
+        if (d_glyphs[i].isJustifyable)
             ++currLine->justifyableCount;
     }
 
-    // Calculate the full width of the last glyph if not done during word wrapping
+    // Calculate widthAdvanceDiff of the last glyph if not done during word wrapping
     if (!d_wordWrap)
-        prevGlyphWidth = elements[d_glyphs.back().elementIndex]->getGlyphWidth(d_glyphs.back());
+    {
+        const auto& glyph = d_glyphs.back();
+        widthAdvanceDiff = elements[glyph.elementIndex]->getGlyphWidth(glyph) - glyph.advance;
+    }
 
-    // Count full width for the last glyph in a line
-    currLine->extents.d_width += (prevGlyphWidth - d_glyphs.back().advance);
+    currLine->extents.d_width += widthAdvanceDiff;
     currLine->glyphEndIdx = glyphCount;
 
     // Track the paragraph exceeding an area width
@@ -484,6 +481,21 @@ RenderedTextParagraph::Line* RenderedTextParagraph::getGlyphLine(size_t glyphInd
         [](uint32_t value, const Line& elm) { return value < elm.glyphEndIdx; });
 
     return (it == d_lines.cend()) ? nullptr : &(*it);
+}
+
+//----------------------------------------------------------------------------//
+uint32_t RenderedTextParagraph::skipWhitespace(uint32_t start, uint32_t end) const
+{
+    // Never skip leading whitespaces in a paragraph
+    if (!start || !d_skipWrappedWhitespace)
+        return start;
+
+    for (uint32_t i = start; i < end; ++i)
+        if (!d_glyphs[i].isWhitespace)
+            return i;
+
+    // Don't skip anything if there are only whitespace glyphs in the line
+    return start;
 }
 
 }

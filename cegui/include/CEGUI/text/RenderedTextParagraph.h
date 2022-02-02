@@ -61,6 +61,7 @@ public:
 
     RenderedTextParagraph()
         : d_wordWrap(false)
+        , d_skipWrappedWhitespace(true)
         , d_defaultWordWrap(true)
         , d_defaultHorzFormatting(true)
         , d_defaultLastJustifiedLineHorzFormatting(true)
@@ -122,6 +123,7 @@ protected:
     };
 
     Line* getGlyphLine(size_t glyphIndex);
+    uint32_t skipWhitespace(uint32_t start, uint32_t end) const;
 
     std::vector<RenderedGlyph> d_glyphs;
     std::vector<Line> d_lines;
@@ -130,6 +132,7 @@ protected:
     HorizontalTextFormatting d_horzFormatting = HorizontalTextFormatting::LeftAligned;
     HorizontalTextFormatting d_lastJustifiedLineHorzFormatting = HorizontalTextFormatting::LeftAligned;
     bool d_wordWrap : 1;
+    bool d_skipWrappedWhitespace : 1;
 
     bool d_defaultWordWrap : 1;
     bool d_defaultHorzFormatting : 1;
