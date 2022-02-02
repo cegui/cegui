@@ -72,7 +72,7 @@ void TextComponent::setFontPropertySource(const String& property)
 void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf& destRect,
     const ColourRect* modColours, const Rectf* clipper) const
 {
-    updateFormatting(srcWindow, destRect.getSize());
+    updateRenderedText(srcWindow, destRect.getSize());
 
     // Get total formatted height.
     const float textHeight = d_renderedText.getExtents().d_height;
@@ -176,7 +176,7 @@ void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const
 //----------------------------------------------------------------------------//
 const Sizef& TextComponent::getTextExtent(const Window& window) const
 {
-    updateFormatting(window, d_area.getPixelRect(window).getSize());
+    updateRenderedText(window, d_area.getPixelRect(window).getSize());
     return d_renderedText.getExtents();
 }
 
@@ -213,38 +213,26 @@ TextParser* TextComponent::getTextParser(const Window& window) const
 }
 
 //------------------------------------------------------------------------//
-void TextComponent::updateRenderedText(const Window& srcWindow, const String& text, const Font* font) const
-{
-    TextParser* parser = getTextParser(srcWindow);
-
-    auto bidiDir = d_paragraphDir.get(srcWindow);
-
-    if (d_lastFont == font && d_lastParser == parser && d_lastBidiDir == bidiDir && d_lastText == text)
-        return;
-
-    d_renderedText.renderText(text, parser, font, bidiDir);
-
-    d_lastFont = font;
-    d_lastParser = parser;
-    d_lastBidiDir = bidiDir;
-    d_lastText = text;
-}
-
-//------------------------------------------------------------------------//
-void TextComponent::updateFormatting(const Window& srcWindow, const Sizef& size) const
+void TextComponent::updateRenderedText(const Window& srcWindow, const Sizef& size) const
 {
     const Font* font = getFontObject(srcWindow);
     if (!font)
         throw InvalidRequestException("TextComponent > Window doesn't have a font.");
 
-    //!!!FIXME TEXT: re-format only if something changed (either string of formatting)!
+    // TODO: get const String& for string properties!
+    //???TODO TEXT: detect text change in the window?! Can avoid copying and comparison here!
+    String text = getEffectiveText(srcWindow);
+    TextParser* parser = getTextParser(srcWindow);
+    auto bidiDir = d_paragraphDir.get(srcWindow);
+    if (d_lastFont != font || d_lastParser != parser || d_lastBidiDir != bidiDir || d_lastText != text)
+    {
+        d_renderedText.renderText(text, parser, font, bidiDir);
 
-    // NB: made so to pass text by reference where possible
-    //!!!FIXME TEXT: retrieve a reference to String from String-typed property!
-    if (d_textFromProperty)
-        updateRenderedText(srcWindow, srcWindow.getProperty(d_text), font);
-    else
-        updateRenderedText(srcWindow, d_text.empty() ? srcWindow.getText() : d_text, font);
+        d_lastFont = font;
+        d_lastParser = parser;
+        d_lastBidiDir = bidiDir;
+        d_lastText = std::move(text);
+    }
 
     //!!!FIXME TEXT: get rid of deprecated word wrapping baked into hfmt!
     bool wordWrap = false;

@@ -321,8 +321,9 @@
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="TooltipText" value="This tooltip will be inherited to children windows" />
             <Property name="TooltipType" value="TaharezLook/Tooltip" />
-            <Property name="HorzFormatting" value="WordWrapCentreAligned" />
+            <Property name="HorzFormatting" value="CentreAligned" />
             <Property name="VertFormatting" value="TopAligned" />
+            <Property name="WordWrap" value="true" />
             <Property name="NormalTextColour" value="FFFFFFFF" />
             <Property name="DisabledTextColour" value="FFFFFFFF" />
             <Window type="TaharezLook/Button" name="Button" >
@@ -340,8 +341,9 @@
             <Property name="Area" value="{{0.519531,0},{0.0819444,0},{0.648438,0},{0.169444,0}}" />
             <Property name="Text" value="Testing StaticText without scrollbars" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
-            <Property name="HorzFormatting" value="WordWrapLeftAligned" />
+            <Property name="HorzFormatting" value="LeftAligned" />
             <Property name="VertFormatting" value="TopAligned" />
+            <Property name="WordWrap" value="true" />
             <Property name="HorzScrollPageSize" value="155" />
             <Property name="VertScrollPageSize" value="53" />
             <Property name="HorzScrollDocumentSize" value="124" />
@@ -353,7 +355,8 @@
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="HorzScrollbar" value="true" />
             <Property name="VertScrollbar" value="true" />
-            <Property name="HorzFormatting" value="WordWrapLeftAligned" />
+            <Property name="HorzFormatting" value="LeftAligned" />
+            <Property name="WordWrap" value="true" />
             <Property name="HorzScrollPageSize" value="143" />
             <Property name="VertScrollPageSize" value="59" />
             <Property name="HorzScrollDocumentSize" value="141" />
@@ -363,8 +366,9 @@
             <Property name="Area" value="{{0.436719,0},{0.119445,0},{0.514844,0},{0.1625,0}}" />
             <Property name="Text" value="StaticImage with an Image:" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
-            <Property name="HorzFormatting" value="WordWrapCentreAligned" />
+            <Property name="HorzFormatting" value="CentreAligned" />
             <Property name="VertFormatting" value="TopAligned" />
+            <Property name="WordWrap" value="true" />
             <Property name="NormalTextColour" value="FFFFFFFF" />
             <Property name="DisabledTextColour" value="FFFFFFFF" />
         </Window>
