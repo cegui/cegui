@@ -248,7 +248,7 @@ public:
         The number of Vertex objects from the array \a vertex_array that are to be
         added to the GeometryBuffer.
     */
-    virtual void appendGeometry(const ColouredVertex* vertex_array, std::size_t vertex_count);
+    virtual void appendGeometry(const ColouredVertex* vertexArray, std::size_t vertexCount);
 
     /*!
     \brief

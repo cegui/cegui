@@ -193,6 +193,8 @@ bool CEGuiD3D11BaseApplication::initialiseDirect3D(unsigned int width,
     scd.SampleDesc.Count = 1;
     scd.SampleDesc.Quality = 0;
     scd.Windowed = windowed;
+    scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD; // TODO: choose DXGI_SWAP_EFFECT_FLIP_DISCARD when possible
+    scd.Flags = 0;
 
     UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 

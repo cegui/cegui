@@ -49,12 +49,12 @@ public:
     Direct3D11GeometryBuffer(Direct3D11Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
 
     //! Destructor
-    ~Direct3D11GeometryBuffer();
+    ~Direct3D11GeometryBuffer() override;
 
 
     // Implement GeometryBuffer interface.
-    virtual void draw(std::uint32_t drawModeMask = DrawModeMaskAll) const;
-    virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
+    virtual void draw(std::uint32_t drawModeMask = DrawModeMaskAll) const override;
+    virtual void appendGeometry(const float* vertex_data, std::size_t array_size) override;
 
     /*
     \brief
@@ -78,20 +78,15 @@ protected:
     void drawDependingOnFillRule() const;
     // Direct3D11Renderer object that created and owns this GeometryBuffer.
     Direct3D11Renderer& d_owner;
-    //! The D3D Device
-    ID3D11Device* d_device;
-    //! The D3D DeviceContext
-    ID3D11DeviceContext* d_deviceContext;
     //! hardware buffer where vertices will be drawn from.
-    mutable ID3D11Buffer* d_vertexBuffer;
+    mutable ID3D11Buffer* d_vertexBuffer = nullptr;
     //! Size of the currently allocated vertex buffer.
-    mutable UINT d_bufferSize;
+    mutable UINT d_bufferSize = 0;
     //! Cache of the model view projection matrix
     mutable glm::mat4 d_matrix;
     //! D3D11 input layout describing the vertex format we use.
-    ID3D11InputLayout* d_inputLayout;
+    ID3D11InputLayout* d_inputLayout = nullptr;
 };
-
 
 }
 
