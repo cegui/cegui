@@ -4,9 +4,9 @@
     SampleBrowserSkin.looknfeel by Lukas E. Meindl
 
     This looknfeel is created for the SampleFramework to provide a minimal
-	set of widgets that are specifically designed for it. This also shows
-	how the looknfeel system and imagesets can be customized specifically
-	for a project.
+    set of widgets that are specifically designed for it. This also shows
+    how the looknfeel system and imagesets can be customized specifically
+    for a project.
 -->
 
 <Falagard version="7">
@@ -111,7 +111,7 @@
 
 
     <WidgetLook name="SampleBrowserSkin/Button">
-        <PropertyDefinition name="NormalTextColour"	initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect" />
         <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true"  type="ColourRect"/>
         <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" type="ColourRect"/>
@@ -614,7 +614,7 @@
         <Property name="BackgroundEnabled" value="true"/>
         <Property name="FrameEnabled" value="true"/>
         <Property name="TextColours" value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000"/>
-        <Property name="HorzFormatting" value="WordWrapLeftAligned"/>
+        <Property name="HorzFormatting" value="WordWrapJustified"/>
         <NamedArea name="WithFrameTextRenderArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -674,8 +674,11 @@
                     <OperatorDim op="Subtract">
                         <UnifiedDim scale="1.0" type="RightEdge"/>
                         <OperatorDim op="Add">
-                            <ImageDim name="SampleBrowserSkin/TextBoxR" dimension="Width"/>
-                            <ImageDim name="SampleBrowserSkin/Handle" dimension="Width"/>
+                            <OperatorDim op="Add">
+                                <ImageDim name="SampleBrowserSkin/TextBoxR" dimension="Width"/>
+                                <ImageDim name="SampleBrowserSkin/Handle" dimension="Width"/>
+                            </OperatorDim>
+                            <AbsoluteDim value="5"/>
                         </OperatorDim>
                     </OperatorDim>
                 </Dim>
