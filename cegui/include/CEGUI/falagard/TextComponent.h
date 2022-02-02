@@ -296,21 +296,9 @@ protected:
     void addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf& destRect,
         const CEGUI::ColourRect* modColours, const Rectf* clipper) const override;
 
-    //! helper to get the font object to use
     const Font* getFontObject(const Window& window) const;
-    //! helper to get a rendered string parser for the current window
     TextParser* getTextParser(const Window& window) const;
-    //! Update rendered string from a logical text.
-    void updateRenderedText(const Window& srcWindow, const String& text, const Font* font) const;
-
-    /*!
-    \brief
-        Update string formatting.
-
-    \param size
-        The pixel size of the component.
-    */
-    void updateFormatting(const Window& srcWindow, const Sizef& size) const;
+    void updateRenderedText(const Window& srcWindow, const Sizef& size) const;
 
 private:
 

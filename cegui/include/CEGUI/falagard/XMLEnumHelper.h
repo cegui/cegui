@@ -382,6 +382,17 @@ public:
         case HorizontalTextFormatting::Justified:
             return Justified;
 
+        // TODO: deprecated, remove later when users migrate their data
+        case HorizontalTextFormatting::WordWrapLeftAligned:
+            return WordWrapLeftAligned;
+        case HorizontalTextFormatting::WordWrapCentreAligned:
+            return WordWrapCentreAligned;
+        case HorizontalTextFormatting::WordWrapRightAligned:
+            return WordWrapRightAligned;
+        case HorizontalTextFormatting::WordWrapJustified:
+            return WordWrapJustified;
+        ////////////////////////////////////////////////////////////////
+
         default:
             return LeftAligned;
         }

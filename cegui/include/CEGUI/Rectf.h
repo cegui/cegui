@@ -457,8 +457,8 @@ public:
     /*************************************************************************
         Data Fields
     *************************************************************************/
-    glm::vec2 d_min; // x is former d_left, y is former d_top
-    glm::vec2 d_max; // x is former d_right, y is former d_bottom
+    glm::vec2 d_min = glm::vec2(0.f, 0.f);
+    glm::vec2 d_max = glm::vec2(0.f, 0.f);
 };
 
 }
