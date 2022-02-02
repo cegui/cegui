@@ -75,10 +75,8 @@ BlendMode GeometryBuffer::getBlendMode() const
 //---------------------------------------------------------------------------//
 void GeometryBuffer::appendGeometry(const std::vector<ColouredVertex>& coloured_vertices)
 {
-    if(coloured_vertices.empty())
-        return;
-
-    appendGeometry(&coloured_vertices[0], coloured_vertices.size());
+    if (!coloured_vertices.empty())
+        appendGeometry(coloured_vertices.data(), coloured_vertices.size());
 }
 
 //---------------------------------------------------------------------------//
@@ -86,15 +84,8 @@ void GeometryBuffer::appendGeometry(const ColouredVertex* vertexArray,
                                     std::size_t vertexCount)
 {
     constexpr size_t VERTEX_FLOAT_COUNT = 7;
-
-    const size_t prevFloatCount = d_vertexData.size();
     const size_t addedFloatCount = VERTEX_FLOAT_COUNT * vertexCount;
-    d_vertexData.resize(prevFloatCount + addedFloatCount);
-
-    float* dest = d_vertexData.data() + prevFloatCount;
-    std::memcpy(dest, vertexArray, addedFloatCount * sizeof(float));
-
-    d_vertexCount += vertexCount;
+    appendGeometry(reinterpret_cast<const float*>(vertexArray), addedFloatCount);
 }
 
 //---------------------------------------------------------------------------//
@@ -109,15 +100,8 @@ void GeometryBuffer::appendGeometry(const TexturedColouredVertex* vertexArray,
                                     std::size_t vertexCount)
 {
     constexpr size_t VERTEX_FLOAT_COUNT = 9;
-
-    const size_t prevFloatCount = d_vertexData.size();
     const size_t addedFloatCount = VERTEX_FLOAT_COUNT * vertexCount;
-    d_vertexData.resize(prevFloatCount + addedFloatCount);
-
-    float* dest = d_vertexData.data() + prevFloatCount;
-    std::memcpy(dest, vertexArray, addedFloatCount * sizeof(float));
-
-    d_vertexCount += vertexCount;
+    appendGeometry(reinterpret_cast<const float*>(vertexArray), addedFloatCount);
 }
 
 //---------------------------------------------------------------------------//

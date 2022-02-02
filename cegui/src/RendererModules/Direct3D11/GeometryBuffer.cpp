@@ -37,18 +37,13 @@
 #include "glm/gtc/quaternion.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+
 //----------------------------------------------------------------------------//
 Direct3D11GeometryBuffer::Direct3D11GeometryBuffer(Direct3D11Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial)
     : GeometryBuffer(renderMaterial)
     , d_owner(owner)
-    , d_device(d_owner.getDirect3DDevice())
-    , d_deviceContext(d_owner.getDirect3DDeviceContext())
-    , d_vertexBuffer(0)
-    , d_bufferSize(0)
-    , d_inputLayout(0)
 {
 }
 
@@ -69,6 +64,8 @@ void Direct3D11GeometryBuffer::draw(std::uint32_t drawModeMask) const
     if (d_vertexData.empty())
         return;
 
+    auto d3dCtx = d_owner.getDirect3DDeviceContext();
+
     // setup clip region
     if (d_clippingActive)
     {
@@ -83,24 +80,22 @@ void Direct3D11GeometryBuffer::draw(std::uint32_t drawModeMask) const
         clip.top = static_cast<LONG>(d_preparedClippingRegion.top());
         clip.right = static_cast<LONG>(d_preparedClippingRegion.right());
         clip.bottom = static_cast<LONG>(d_preparedClippingRegion.bottom());
-        d_deviceContext->RSSetScissorRects(1, &clip);
+        d3dCtx->RSSetScissorRects(1, &clip);
     }
 
     // Update the model view projection matrix
     updateMatrix();
  
-    CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
-
     // Set the uniform variables for this GeometryBuffer in the Shader
+    auto shaderParameterBindings = d_renderMaterial->getShaderParamBindings();
     shaderParameterBindings->setParameter("modelViewProjMatrix", d_matrix);
     shaderParameterBindings->setParameter("alphaPercentage", d_alpha);
 
     // set our buffer as the vertex source.
     const UINT stride = getVertexAttributeElementCount() * sizeof(float);
     const UINT offset = 0;
-    d_deviceContext->IASetVertexBuffers(0, 1, &d_vertexBuffer, &stride, &offset);
-    //Update the input layout
-    d_deviceContext->IASetInputLayout(d_inputLayout);
+    d3dCtx->IASetVertexBuffers(0, 1, &d_vertexBuffer, &stride, &offset);
+    d3dCtx->IASetInputLayout(d_inputLayout);
 
     d_owner.bindBlendMode(d_blendMode);
     d_owner.bindRasterizerState(d_clippingActive);
@@ -137,11 +132,9 @@ void Direct3D11GeometryBuffer::appendGeometry(const float* vertex_data, std::siz
 //----------------------------------------------------------------------------//
 void Direct3D11GeometryBuffer::updateMatrix() const
 {
-    if ( !d_matrixValid || !isRenderTargetDataValid(d_owner.getActiveRenderTarget()) )
+    if (!d_matrixValid || !isRenderTargetDataValid(d_owner.getActiveRenderTarget()))
     {
-        // Apply the view projection matrix to the model matrix and save the result as cached matrix
         d_matrix = d_owner.getViewProjectionMatrix() * getModelMatrix();
-
         d_matrixValid = true;
     }
 }
@@ -180,7 +173,7 @@ void Direct3D11GeometryBuffer::updateVertexBuffer() const
     box.front = 0;
     box.back  = 1;
 
-    d_deviceContext->UpdateSubresource( d_vertexBuffer, 0, &box, vertexData, 0, 0 );
+    d_owner.getDirect3DDeviceContext()->UpdateSubresource( d_vertexBuffer, 0, &box, vertexData, 0, 0 );
 }
 
 //----------------------------------------------------------------------------//
@@ -193,7 +186,7 @@ void Direct3D11GeometryBuffer::allocateVertexBuffer(const UINT dataSize) const
     buffer_desc.CPUAccessFlags = 0;
     buffer_desc.MiscFlags      = 0;
 
-    if (FAILED(d_device->CreateBuffer(&buffer_desc, 0, &d_vertexBuffer)))
+    if (FAILED(d_owner.getDirect3DDevice()->CreateBuffer(&buffer_desc, 0, &d_vertexBuffer)))
         throw RendererException("failed to allocate vertex buffer.");
 }
 
@@ -216,7 +209,7 @@ void Direct3D11GeometryBuffer::drawDependingOnFillRule() const
     {
     */
 
-        d_deviceContext->Draw(d_vertexCount, 0);
+    d_owner.getDirect3DDeviceContext()->Draw(d_vertexCount, 0);
             /* 
     }
     else if(d_polygonFillRule == PolygonFillRule::EvenOdd)
@@ -266,17 +259,16 @@ void Direct3D11GeometryBuffer::finaliseVertexAttributes()
         }
     }
 
-    if(vertexLayoutVector.size() == 0)
-                throw RendererException(
-            "The empty vertex layout is invalid because it is empty.");
-
+    if (vertexLayoutVector.empty())
+        throw RendererException("The empty vertex layout is invalid because it is empty.");
 
     const CEGUI::Direct3D11ShaderWrapper* shaderWrapper = static_cast<const CEGUI::Direct3D11ShaderWrapper*>(d_renderMaterial->getShaderWrapper());
 
     if (d_inputLayout)
         d_inputLayout->Release();
 
-    if (FAILED(d_device->CreateInputLayout(&vertexLayoutVector[0], vertexLayoutVector.size(),
+    if (FAILED(d_owner.getDirect3DDevice()->CreateInputLayout(&vertexLayoutVector[0],
+                                            vertexLayoutVector.size(),
                                             shaderWrapper->getVertShaderBufferPointer(),
                                             shaderWrapper->getVertShaderBufferSize(),
                                             &d_inputLayout)))
