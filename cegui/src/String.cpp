@@ -143,30 +143,6 @@ std::string String::convertUtf32ToUtf8(const char32_t* utf32String, const size_t
     return utf8EncodedString;
 }
 
-size_t String::getCodePointSize(const char initialCodeUnit)
-{
-    if( (initialCodeUnit & 0x80) == 0x00)
-    {
-        return 1;
-    }
-    else if ( (initialCodeUnit & 0xE0) == 0xC0)
-    {
-        return 2;
-    }
-    else if ( (initialCodeUnit & 0xF0) == 0xE0)
-    {
-        return 3;
-    }
-    else if ( (initialCodeUnit & 0xF8) == 0xF0)
-    {
-        return 4;
-    }
-    else
-    {
-        return 0;
-    }
-}
-
 char32_t String::convertCodePoint(const char firstCodeUnit, const char secondCodeUnit)
 {
     char32_t utf32CodePoint     =  ((firstCodeUnit & 0x1F) << 6);

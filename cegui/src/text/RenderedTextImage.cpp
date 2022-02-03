@@ -34,6 +34,7 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 void RenderedTextImage::setupGlyph(RenderedGlyph& glyph, uint32_t /*codePoint*/) const
 {
+    glyph.fontGlyph = nullptr;
     glyph.offset = getPadding().getPosition();
     glyph.advance = d_effectiveSize.d_width;
 
