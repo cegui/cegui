@@ -326,6 +326,7 @@ void RenderedTextParagraph::updateHorizontalFormatting(float areaWidth)
 }
 
 //----------------------------------------------------------------------------//
+//???TODO TEXT: cache extents rect?!
 void RenderedTextParagraph::accumulateExtents(Rectf& extents) const
 {
     if (d_linesDirty)
@@ -342,6 +343,19 @@ void RenderedTextParagraph::accumulateExtents(Rectf& extents) const
         if (extents.d_max.x < right)
             extents.d_max.x = right;
     }
+}
+
+//----------------------------------------------------------------------------//
+//???TODO TEXT: cache extents rect?!
+float RenderedTextParagraph::getHeight() const
+{
+    if (d_linesDirty)
+        return 0.f;
+
+    float h = 0.f;
+    for (const auto& line : d_lines)
+        h += line.extents.d_height;
+    return h;
 }
 
 //----------------------------------------------------------------------------//
@@ -519,20 +533,18 @@ size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt) const
 }
 
 //----------------------------------------------------------------------------//
-Rectf RenderedTextParagraph::getGlyphBounds(size_t glyphIndex,
+bool RenderedTextParagraph::getGlyphBounds(Rectf& out, size_t glyphIndex,
     const std::vector<RenderedTextElementPtr>& elements) const
 {
-    Rectf rect;
-
     if (d_linesDirty || glyphIndex >= d_glyphs.size())
-        return rect;
+        return false;
 
     float lineY = 0.f;
     uint32_t glyphStartIdx = 0;
     for (const auto& line : d_lines)
     {
         if (line.heightDirty)
-            return rect;
+            return false;
 
         if (glyphIndex >= line.glyphEndIdx)
         {
@@ -544,23 +556,23 @@ Rectf RenderedTextParagraph::getGlyphBounds(size_t glyphIndex,
         const auto& glyph = d_glyphs[glyphIndex];
         const auto element = elements[glyph.elementIndex].get();
 
-        rect.d_min.x = line.horzOffset;
+        out.d_min.x = line.horzOffset;
         for (uint32_t i = glyphStartIdx; i < glyphIndex; ++i)
-            rect.d_min.x += d_glyphs[i].advance;
+            out.d_min.x += d_glyphs[i].advance;
 
         if (glyphIndex >= skipWrappedWhitespace(glyphStartIdx, line.glyphEndIdx))
-            rect.setWidth(std::max(glyph.advance, element->getGlyphWidth(glyph)));
+            out.setWidth(std::max(glyph.advance, element->getGlyphWidth(glyph)));
 
-        rect.d_min.y = lineY;
+        out.d_min.y = lineY;
         float scale = 1.f;
-        element->applyVerticalFormatting(line.extents.d_height, rect.d_min.y, scale);
+        element->applyVerticalFormatting(line.extents.d_height, out.d_min.y, scale);
 
-        rect.setHeight(element->getHeight());
+        out.setHeight(element->getHeight());
 
-        return rect;
+        return true;
     }
 
-    return rect;
+    return false;
 }
 
 //----------------------------------------------------------------------------//
