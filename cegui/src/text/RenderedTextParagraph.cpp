@@ -520,6 +520,8 @@ size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt) const
                     return i - 1;
 
                 glyphLeft += d_glyphs[i].advance;
+                if (d_glyphs[i].isJustifyable)
+                    glyphLeft += line.justifySpaceSize;
             }
 
             return line.glyphEndIdx - 1;
@@ -558,10 +560,19 @@ bool RenderedTextParagraph::getGlyphBounds(Rectf& out, size_t glyphIndex,
 
         out.d_min.x = line.horzOffset;
         for (uint32_t i = glyphStartIdx; i < glyphIndex; ++i)
+        {
             out.d_min.x += d_glyphs[i].advance;
+            if (d_glyphs[i].isJustifyable)
+                out.d_min.x += line.justifySpaceSize;
+        }
 
         if (glyphIndex >= skipWrappedWhitespace(glyphStartIdx, line.glyphEndIdx))
-            out.setWidth(std::max(glyph.advance, element->getGlyphWidth(glyph)));
+        {
+            float glyphWidth = std::max(glyph.advance, element->getGlyphWidth(glyph));
+            if (glyph.isJustifyable)
+                glyphWidth += line.justifySpaceSize;
+            out.setWidth(glyphWidth);
+        }
 
         out.d_min.y = lineY;
         float scale = 1.f;
