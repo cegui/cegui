@@ -108,9 +108,9 @@ public:
 
     size_t getLineCount() const { return d_linesDirty ? 1 : d_lines.size(); }
     size_t getTextIndexAtPoint(const glm::vec2& pt) const { return getTextIndex(getGlyphIndexAtPoint(pt)); }
-    Rectf getCodepointBounds(size_t textIndex) const { return getGlyphBounds(getGlyphIndex(textIndex)); }
+    Rectf getCodepointBounds(size_t textIndex, const std::vector<RenderedTextElementPtr>& elements) const { return getGlyphBounds(getGlyphIndex(textIndex), elements); }
     size_t getGlyphIndexAtPoint(const glm::vec2& pt) const;
-    Rectf getGlyphBounds(size_t glyphIndex) const;
+    Rectf getGlyphBounds(size_t glyphIndex, const std::vector<RenderedTextElementPtr>& elements) const;
     size_t getTextIndex(size_t glyphIndex) const;
     size_t getGlyphIndex(size_t textIndex) const;
 

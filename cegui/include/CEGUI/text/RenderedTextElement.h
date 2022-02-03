@@ -75,7 +75,7 @@ public:
     void setVerticalFormatting(VerticalImageFormatting fmt) { d_verticalFormatting = fmt; }
     VerticalImageFormatting getVerticalFormatting() const { return d_verticalFormatting; }
 
-    void applyVerticalFormatting(float lineHeight, glm::vec2& pos, float& heightScale) const;
+    void applyVerticalFormatting(float lineHeight, float& posY, float& heightScale) const;
 
     void setFont(const Font* font) { d_font = font; }
     const Font* getFont() const { return d_font; }

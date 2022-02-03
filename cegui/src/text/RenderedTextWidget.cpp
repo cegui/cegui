@@ -92,7 +92,7 @@ void RenderedTextWidget::createRenderGeometry(std::vector<GeometryBuffer*>& out,
 
     glm::vec2 pos = penPosition;
     float heightScale = 1.f;
-    applyVerticalFormatting(lineHeight, pos, heightScale);
+    applyVerticalFormatting(lineHeight, pos.y, heightScale);
 
     pos += begin->offset;
 
