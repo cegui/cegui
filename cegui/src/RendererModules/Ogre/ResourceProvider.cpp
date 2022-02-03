@@ -40,8 +40,7 @@ namespace CEGUI
 OgreResourceProvider::OgreResourceProvider()
 {
     // set deafult resource group for Ogre
-    d_defaultResourceGroup =
-        Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME.c_str();
+    d_defaultResourceGroup = Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME.c_str();
 }
 
 //----------------------------------------------------------------------------//

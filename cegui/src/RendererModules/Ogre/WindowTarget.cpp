@@ -25,18 +25,15 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RendererModules/Ogre/WindowTarget.h"
-
-#include <OgreRenderTarget.h>
+#ifdef CEGUI_OGRE_NEXT
+#include <OgreTextureGpu.h>
 #include <OgreViewport.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OgreWindowTarget::OgreWindowTarget(OgreRenderer& owner,
-                                   Ogre::RenderSystem& rs,
-                                   Ogre::RenderTarget& target) :
-    OgreRenderTarget(owner, rs)
+OgreWindowTarget::OgreWindowTarget(OgreRenderer& owner, Ogre::RenderSystem& rs, Ogre::Window* target) : OgreRenderTarget(owner, rs, false)
 {
     initRenderTarget(target);
 }
@@ -47,13 +44,8 @@ OgreWindowTarget::~OgreWindowTarget()
 }
 
 //----------------------------------------------------------------------------//
-void OgreWindowTarget::setOgreRenderTarget(Ogre::RenderTarget& target)
+void OgreWindowTarget::setOgreRenderTarget(Ogre::Window* target)
 {
-    // cleanup viewport since it's RT dependent.
-    OGRE_DELETE d_viewport;
-    d_viewport = 0;
-    d_viewportValid = false;
-
     initRenderTarget(target);
 }
 
@@ -64,13 +56,13 @@ bool OgreWindowTarget::isImageryCache() const
 }
 
 //----------------------------------------------------------------------------//
-void OgreWindowTarget::initRenderTarget(Ogre::RenderTarget& target)
+void OgreWindowTarget::initRenderTarget(Ogre::Window* target)
 {
-    d_renderTarget = &target;
+    d_textureGpuTarget = target->getTexture();
 
     Rectf init_area(glm::vec2(0.0f, 0.0f),
-                    Sizef(static_cast<float>(d_renderTarget->getWidth()), 
-                          static_cast<float>(d_renderTarget->getHeight())) );
+                    Sizef(static_cast<float>(d_textureGpuTarget->getWidth()),
+                          static_cast<float>(d_textureGpuTarget->getHeight())) );
 
     setArea(init_area);
 }
@@ -78,5 +70,60 @@ void OgreWindowTarget::initRenderTarget(Ogre::RenderTarget& target)
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+#else	//CEGUI_OGRE_NEXT
+#include "CEGUI/RendererModules/Ogre/WindowTarget.h"
 
+#include <OgreRenderTarget.h>
+#include <OgreViewport.h>
+
+ // Start of CEGUI namespace section
+namespace CEGUI
+{
+	//----------------------------------------------------------------------------//
+	OgreWindowTarget::OgreWindowTarget(OgreRenderer& owner,
+		Ogre::RenderSystem& rs,
+		Ogre::RenderTarget& target) :
+		OgreRenderTarget(owner, rs)
+	{
+		initRenderTarget(target);
+	}
+
+	//----------------------------------------------------------------------------//
+	OgreWindowTarget::~OgreWindowTarget()
+	{
+	}
+
+	//----------------------------------------------------------------------------//
+	void OgreWindowTarget::setOgreRenderTarget(Ogre::RenderTarget& target)
+	{
+		// cleanup viewport since it's RT dependent.
+		OGRE_DELETE d_viewport;
+		d_viewport = 0;
+		d_viewportValid = false;
+
+		initRenderTarget(target);
+	}
+
+	//----------------------------------------------------------------------------//
+	bool OgreWindowTarget::isImageryCache() const
+	{
+		return false;
+	}
+
+	//----------------------------------------------------------------------------//
+	void OgreWindowTarget::initRenderTarget(Ogre::RenderTarget& target)
+	{
+		d_renderTarget = &target;
+
+		Rectf init_area(glm::vec2(0.0f, 0.0f),
+			Sizef(static_cast<float>(d_renderTarget->getWidth()),
+				static_cast<float>(d_renderTarget->getHeight())));
+
+		setArea(init_area);
+	}
+
+	//----------------------------------------------------------------------------//
+
+} // End of  CEGUI namespace section
+#endif	//CEGUI_OGRE_NEXT
 

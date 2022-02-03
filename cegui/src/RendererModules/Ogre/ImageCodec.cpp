@@ -25,9 +25,14 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
+
+#ifdef CEGUI_OGRE_NEXT
 #include "CEGUI/RendererModules/Ogre/Texture.h"
 #include "CEGUI/Exceptions.h"
 #include <Ogre.h>
+#include <OgreImage2.h>
+#include <OgreTextureBox.h>
+#include <OgreTextureGpuManager.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -53,32 +58,32 @@ const String& OgreImageCodec::getImageFileDataType() const
 //----------------------------------------------------------------------------//
 Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
 {
-    using namespace Ogre;
-
-    // wrap the buffer of the RawDataContainer with an Ogre::MemoryDataStream.
-    DataStreamPtr stream(
-        OGRE_NEW MemoryDataStream(
+	// wrap the buffer of the RawDataContainer with an Ogre::MemoryDataStream.
+    Ogre::DataStreamPtr stream(
+        OGRE_NEW Ogre::MemoryDataStream(
             const_cast<void*>(static_cast<const void*>(data.getDataPtr())),
             data.getSize(), false));
 
     // load the image
-    Ogre::Image image;
+    Ogre::Image2 image;
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32) 
     image.load(stream, d_dataTypeID.c_str());
 #else
     image.load(stream, String::convertUtf32ToUtf8(d_dataTypeID.getString()).c_str());
 #endif
 
-    const PixelFormat ogre_pf = image.getFormat();
-    const Texture::PixelFormat cegui_pf =
-        OgreTexture::fromOgrePixelFormat(ogre_pf);
 
+    const Ogre::PixelFormatGpu ogre_pf = image.getPixelFormat();
+    const Texture::PixelFormat cegui_pf = OgreTexture::fromOgrePixelFormat(ogre_pf);
+
+#if 0	//no pixelformats which are needed to be corrected, therefore this section is disabled for now
     // discover the pixel format and number of pixel components
     int components;
-    bool rbswap;
+	bool rbswap = false;
+	bool rbswapForRGBA = false;
     switch (ogre_pf)
     {
-        case PF_R8G8B8:
+        /*case PF_R8G8B8:
             rbswap = true;
             components = 3;
             break;
@@ -86,17 +91,28 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
         case PF_A8R8G8B8:
             rbswap = true;
             components = 4;
-            break;
+            break;*/
 
+#if 0 //does seam to be no more needed
+		case PFG_RGBA8_UNORM:
+			rbswapForRGBA = true;
+			components = 4;
+			break;
+
+		case PFG_RGBA8_UNORM_SRGB:
+			rbswapForRGBA = true;
+			components = 4;
+			break;
+#endif
         default:
             rbswap = false;
             break;
     }
 
-    // do the old switcharoo on R and B if needed
+	// do the old switcharoo on R and B if needed
     if (rbswap)
     {
-        std::uint8_t* dat = image.getData();
+        std::uint8_t* dat = reinterpret_cast<Ogre::uint8*>(image.getData(0u).data);
         for (unsigned int j = 0; j < image.getHeight(); ++j)
         {
             for (unsigned int i = 0; i < image.getWidth(); ++i)
@@ -105,20 +121,120 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
                 dat[i * components + 0] = dat[i * components + 2];
                 dat[i * components + 2] = tmp;
             }
-
-            dat += image.getRowSpan();
+			dat += image.getBytesPerRow(0u);
         }
     }
+#endif
+	// load the resulting image into the texture
+	Ogre::TextureBox textureBox = image.getData(0u);
+	const void* imageData = image.getData(0u).data;
 
-    // load the resulting image into the texture
-    result->loadFromMemory(image.getData(),
-                           Sizef(static_cast<float>(image.getWidth()),
-                                 static_cast<float>(image.getHeight()) ),
-                           cegui_pf);
+	result->loadFromMemory(imageData, Sizef(static_cast<float>(image.getWidth()), static_cast<float>(image.getHeight())), cegui_pf);
+	return result;
 
-    return result;
 }
 
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+#else	//CEGUI_OGRE_NEXT
+#include "CEGUI/RendererModules/Ogre/ImageCodec.h"
+#include "CEGUI/RendererModules/Ogre/Texture.h"
+#include "CEGUI/Exceptions.h"
+#include <Ogre.h>
+
+// Start of CEGUI namespace section
+namespace CEGUI
+{
+	//----------------------------------------------------------------------------//
+	OgreImageCodec::OgreImageCodec() :
+		ImageCodec("OgreImageCodec - Integrated ImageCodec using the Ogre engine.")
+	{
+	}
+
+	//----------------------------------------------------------------------------//
+	void OgreImageCodec::setImageFileDataType(const String& type)
+	{
+		d_dataTypeID = type;
+	}
+
+	//----------------------------------------------------------------------------//
+	const String& OgreImageCodec::getImageFileDataType() const
+	{
+		return d_dataTypeID;
+	}
+
+	//----------------------------------------------------------------------------//
+	Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
+	{
+		using namespace Ogre;
+
+		// wrap the buffer of the RawDataContainer with an Ogre::MemoryDataStream.
+		DataStreamPtr stream(
+			OGRE_NEW MemoryDataStream(
+				const_cast<void*>(static_cast<const void*>(data.getDataPtr())),
+				data.getSize(), false));
+
+		// load the image
+		Ogre::Image image;
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32) 
+		image.load(stream, d_dataTypeID.c_str());
+#else
+		image.load(stream, String::convertUtf32ToUtf8(d_dataTypeID.getString()).c_str());
+#endif
+
+		const PixelFormat ogre_pf = image.getFormat();
+		const Texture::PixelFormat cegui_pf =
+			OgreTexture::fromOgrePixelFormat(ogre_pf);
+
+		// discover the pixel format and number of pixel components
+		int components;
+		bool rbswap;
+		switch(ogre_pf)
+		{
+		case PF_R8G8B8:
+			rbswap = true;
+			components = 3;
+			break;
+
+		case PF_A8R8G8B8:
+			rbswap = true;
+			components = 4;
+			break;
+
+		default:
+			rbswap = false;
+			break;
+		}
+
+		// do the old switcharoo on R and B if needed
+		if(rbswap)
+		{
+			std::uint8_t* dat = image.getData();
+			for(unsigned int j = 0; j < image.getHeight(); ++j)
+			{
+				for(unsigned int i = 0; i < image.getWidth(); ++i)
+				{
+					std::uint8_t tmp = dat[i * components + 0];
+					dat[i * components + 0] = dat[i * components + 2];
+					dat[i * components + 2] = tmp;
+				}
+
+				dat += image.getRowSpan();
+			}
+		}
+
+		// load the resulting image into the texture
+		result->loadFromMemory(image.getData(),
+			Sizef(static_cast<float>(image.getWidth()),
+				static_cast<float>(image.getHeight())),
+			cegui_pf);
+
+		return result;
+	}
+
+	//----------------------------------------------------------------------------//
+
+} // End of  CEGUI namespace section
+#endif	//CEGUI_OGRE_NEXT

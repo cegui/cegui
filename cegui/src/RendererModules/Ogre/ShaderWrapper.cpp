@@ -26,6 +26,7 @@
  ***************************************************************************/
 
 #include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
+#ifdef CEGUI_OGRE_NEXT
 #include "CEGUI/RendererModules/Ogre/Texture.h"
 #include "CEGUI/RendererModules/Ogre/OgreMacros.h"
 #include "CEGUI/ShaderParameterBindings.h"
@@ -100,15 +101,7 @@ Ogre::GpuProgramParametersSharedPtr OgreShaderWrapper::getVertexParameters() con
 void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings* 
     shaderParameterBindings)
 {
-#ifdef CEGUI_USE_OGRE_HLMS
     d_owner.setGPUPrograms(d_vertexShader, d_pixelShader);
-#else
-    Ogre::GpuProgram* vs = d_vertexShader->_getBindingDelegate();
-    d_renderSystem.bindGpuProgram(vs);
-
-    Ogre::GpuProgram* ps = d_pixelShader->_getBindingDelegate();
-    d_renderSystem.bindGpuProgram(ps);
-#endif //CEGUI_USE_OGRE_HLMS
 
     const ShaderParameterBindings::ShaderParameterBindingsMap&
         shader_parameter_bindings = shaderParameterBindings->
@@ -146,21 +139,15 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
             const CEGUI::OgreTexture* texture = static_cast<const
                 CEGUI::OgreTexture*>(parameterTexture->d_parameterValue);
 
-            Ogre::TexturePtr actual_texture = texture->getOgreTexture();
+            Ogre::TextureGpu* actual_texture = texture->getOgreTexture();
 
-            if (OGRE_ISNULL(actual_texture))
+            if (!actual_texture)
             {
                 throw RendererException("Ogre texture ptr is empty");
             }
 
-        #ifdef CEGUI_USE_OGRE_HLMS
-            d_renderSystem._setTexture(0, true, actual_texture.get());
-        #else
-            d_renderSystem._setTexture(0, true, actual_texture);
-        #endif //CEGUI_USE_OGRE_HLMS
-
+            d_renderSystem._setTexture(0, actual_texture, true);
             d_owner.initialiseTextureStates();
-
             break;
         }
         case ShaderParamType::Matrix4X4:
@@ -198,32 +185,227 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
             throw RendererException("Invalid parameter type");
         }
     }
-#ifdef CEGUI_USE_OGRE_HLMS
 
-    // The PSO needs to be bound before we can bind shader parameters
+	// The PSO needs to be bound before we can bind shader parameters
     d_owner.bindPSO( d_renderOp );
-
-#endif //CEGUI_USE_OGRE_HLMS
-
-    
+	    
     // Pass the finalized parameters to Ogre
     d_renderSystem.bindGpuProgramParameters(Ogre::GPT_VERTEX_PROGRAM, 
         d_vertexParameters, Ogre::GPV_ALL);
     d_renderSystem.bindGpuProgramParameters(Ogre::GPT_FRAGMENT_PROGRAM, 
         d_pixelParameters, Ogre::GPV_ALL);
-
-
-
 }
 
 //----------------------------------------------------------------------------//
-#ifdef CEGUI_USE_OGRE_HLMS
 void OgreShaderWrapper::setRenderOperation(const Ogre::v1::RenderOperation &operation)
 {
     d_renderOp = operation;
 }
-#endif
 
 //----------------------------------------------------------------------------//
 }
+#else	//CEGUI_OGRE_NEXT
+#include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
+#include "CEGUI/RendererModules/Ogre/Texture.h"
+#include "CEGUI/RendererModules/Ogre/OgreMacros.h"
+#include "CEGUI/ShaderParameterBindings.h"
+#include "CEGUI/Exceptions.h"
 
+#include <glm/gtc/type_ptr.hpp>
+#include "OgreRenderSystem.h"
+#include "CEGUI/Logger.h"
+
+// Start of CEGUI namespace section
+namespace CEGUI
+{
+
+	//----------------------------------------------------------------------------//
+	OgreShaderWrapper::OgreShaderWrapper(OgreRenderer& owner,
+		Ogre::RenderSystem& rs, Ogre::HighLevelGpuProgramPtr vs,
+		Ogre::HighLevelGpuProgramPtr ps)
+		: d_owner(owner),
+		d_renderSystem(rs),
+		d_vertexShader(vs),
+		d_pixelShader(ps),
+		d_lastMatrix(),
+		d_previousAlpha(-1.f)
+	{
+		d_vertexParameters = d_vertexShader->createParameters();
+		d_pixelParameters = d_pixelShader->createParameters();
+
+		const Ogre::GpuConstantDefinitionMap& vertex_map =
+			d_vertexShader->getConstantDefinitions().map;
+
+		Ogre::GpuConstantDefinitionMap::const_iterator target =
+			vertex_map.find("modelViewProjMatrix");
+
+		const Ogre::GpuConstantDefinitionMap& pixel_map =
+			d_pixelShader->getConstantDefinitions().map;
+
+		Ogre::GpuConstantDefinitionMap::const_iterator target2 =
+			pixel_map.find("alphaPercentage");
+
+		// We will throw an error if shaders/parameter names are invalid
+		if(target == vertex_map.end() || target2 == pixel_map.end())
+		{
+			throw RendererException("Ogre renderer couldn't find an index for"
+				" the shader data.");
+
+			return;
+		}
+
+		d_paramTypeToIndex[static_cast<int>(ShaderParamType::Matrix4X4)] =
+			target->second.physicalIndex;
+		d_paramTypeToIndex[static_cast<int>(ShaderParamType::Float)] =
+			target2->second.physicalIndex;
+		d_paramTypeToIndex[static_cast<int>(ShaderParamType::Texture)] = 0;
+	}
+
+	//----------------------------------------------------------------------------//
+	OgreShaderWrapper::~OgreShaderWrapper()
+	{
+		OGRE_RESET(d_pixelParameters);
+		OGRE_RESET(d_vertexParameters);
+		OGRE_RESET(d_vertexShader);
+		OGRE_RESET(d_pixelShader);
+	}
+
+	//----------------------------------------------------------------------------//
+	Ogre::GpuProgramParametersSharedPtr OgreShaderWrapper::getVertexParameters() const
+	{
+		return d_vertexParameters;
+	}
+
+	//----------------------------------------------------------------------------//
+	void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
+		shaderParameterBindings)
+	{
+#ifdef CEGUI_USE_OGRE_HLMS
+		d_owner.setGPUPrograms(d_vertexShader, d_pixelShader);
+#else
+		Ogre::GpuProgram* vs = d_vertexShader->_getBindingDelegate();
+		d_renderSystem.bindGpuProgram(vs);
+
+		Ogre::GpuProgram* ps = d_pixelShader->_getBindingDelegate();
+		d_renderSystem.bindGpuProgram(ps);
+#endif //CEGUI_USE_OGRE_HLMS
+
+		const ShaderParameterBindings::ShaderParameterBindingsMap&
+			shader_parameter_bindings = shaderParameterBindings->
+			getShaderParameterBindings();
+
+		ShaderParameterBindings::ShaderParameterBindingsMap::const_iterator iter =
+			shader_parameter_bindings.begin();
+		ShaderParameterBindings::ShaderParameterBindingsMap::const_iterator end =
+			shader_parameter_bindings.end();
+
+		for(; iter != end; ++iter)
+		{
+			const CEGUI::ShaderParameter* parameter = iter->second;
+			const ShaderParamType parameterType = parameter->getType();
+
+			std::map<int, size_t>::const_iterator find_iter = d_paramTypeToIndex.
+				find(static_cast<int>(parameterType));
+
+			if(find_iter == d_paramTypeToIndex.end())
+			{
+				std::string errorMessage = std::string("Unknown variable name: \"") +
+					iter->first + "\"";
+				throw RendererException(errorMessage);
+			}
+
+			size_t target_index = find_iter->second;
+
+			switch(parameterType)
+			{
+			case ShaderParamType::Texture:
+			{
+				const CEGUI::ShaderParameterTexture* parameterTexture =
+					static_cast<const CEGUI::ShaderParameterTexture*>(parameter);
+
+				const CEGUI::OgreTexture* texture = static_cast<const
+					CEGUI::OgreTexture*>(parameterTexture->d_parameterValue);
+
+				Ogre::TexturePtr actual_texture = texture->getOgreTexture();
+
+				if(OGRE_ISNULL(actual_texture))
+				{
+					throw RendererException("Ogre texture ptr is empty");
+				}
+
+#ifdef CEGUI_USE_OGRE_HLMS
+				d_renderSystem._setTexture(0, true, actual_texture.get());
+#else
+				d_renderSystem._setTexture(0, true, actual_texture);
+#endif //CEGUI_USE_OGRE_HLMS
+
+				d_owner.initialiseTextureStates();
+
+				break;
+			}
+			case ShaderParamType::Matrix4X4:
+			{
+				// This is the "modelViewProjMatrix"
+				const CEGUI::ShaderParameterMatrix* mat = static_cast<const
+					CEGUI::ShaderParameterMatrix*>(parameter);
+
+				if(d_lastMatrix != mat->d_parameterValue)
+				{
+					d_vertexParameters->_writeRawConstants(target_index,
+						glm::value_ptr(mat->d_parameterValue),
+						16);
+					d_lastMatrix = mat->d_parameterValue;
+				}
+				break;
+			}
+			case ShaderParamType::Float:
+			{
+				// This is the alpha value
+				const CEGUI::ShaderParameterFloat* new_alpha = static_cast<const
+					CEGUI::ShaderParameterFloat*>(parameter);
+
+				if(d_previousAlpha != new_alpha->d_parameterValue)
+				{
+					d_previousAlpha = new_alpha->d_parameterValue;
+
+					d_pixelParameters->_writeRawConstants(target_index,
+						&d_previousAlpha, 1);
+				}
+
+				break;
+			}
+			default:
+				throw RendererException("Invalid parameter type");
+			}
+		}
+#ifdef CEGUI_USE_OGRE_HLMS
+
+		// The PSO needs to be bound before we can bind shader parameters
+		d_owner.bindPSO(d_renderOp);
+
+#endif //CEGUI_USE_OGRE_HLMS
+
+
+		// Pass the finalized parameters to Ogre
+		d_renderSystem.bindGpuProgramParameters(Ogre::GPT_VERTEX_PROGRAM,
+			d_vertexParameters, Ogre::GPV_ALL);
+		d_renderSystem.bindGpuProgramParameters(Ogre::GPT_FRAGMENT_PROGRAM,
+			d_pixelParameters, Ogre::GPV_ALL);
+
+
+
+	}
+
+	//----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_HLMS
+	void OgreShaderWrapper::setRenderOperation(const Ogre::v1::RenderOperation &operation)
+	{
+		d_renderOp = operation;
+	}
+#endif
+
+	//----------------------------------------------------------------------------//
+}
+
+
+#endif	//CEGUI_OGRE_NEXT
