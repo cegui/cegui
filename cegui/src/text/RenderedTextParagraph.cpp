@@ -27,13 +27,8 @@
 #include "CEGUI/text/RenderedTextParagraph.h"
 #include "CEGUI/text/RenderedText.h" // for SelectionInfo
 #include "CEGUI/text/RenderedTextElement.h"
-#include "CEGUI/text/RenderedTextStyle.h"
-#include "CEGUI/Image.h"
 #include "CEGUI/text/Font.h"
 #include "CEGUI/text/FontGlyph.h"
-#ifdef CEGUI_BIDI_SUPPORT
-#include "CEGUI/text/BidiVisualMapping.h"
-#endif
 #include <algorithm>
 
 namespace CEGUI
@@ -92,7 +87,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
 
         // Skip leading whitespaces in word wrapped lines
         if (d_wordWrap)
-            i = skipWhitespace(i, line.glyphEndIdx);
+            i = skipWrappedWhitespace(i, line.glyphEndIdx);
 
         // Render selection background
         if (selection && selection->bgBrush && selection->end > selection->start)
@@ -172,7 +167,7 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
                     currLine->justifyableCount = lastBreakPointJustifyableCount;
                     currLine->extents.d_width = lastBreakPointWidth;
                     currLine->glyphEndIdx = static_cast<uint32_t>(lastBreakPointIdx);
-                    lineStartGlyphIdx = skipWhitespace(currLine->glyphEndIdx, glyphCount);
+                    lineStartGlyphIdx = skipWrappedWhitespace(currLine->glyphEndIdx, glyphCount);
 
                     // Restart from the first wrapped glyph, 'i' will be incremented by the loop
                     i = lineStartGlyphIdx - 1;
@@ -198,7 +193,7 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
                 {
                     currLine->extents.d_width += widthAdvanceDiff;
                     currLine->glyphEndIdx = static_cast<uint32_t>(i);
-                    lineStartGlyphIdx = skipWhitespace(currLine->glyphEndIdx, glyphCount);
+                    lineStartGlyphIdx = skipWrappedWhitespace(currLine->glyphEndIdx, glyphCount);
                     if (i != lineStartGlyphIdx)
                     {
                         // 'i' changed, cached glyphWidth is no longer valid
@@ -484,7 +479,85 @@ RenderedTextParagraph::Line* RenderedTextParagraph::getGlyphLine(size_t glyphInd
 }
 
 //----------------------------------------------------------------------------//
-uint32_t RenderedTextParagraph::skipWhitespace(uint32_t start, uint32_t end) const
+size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt) const
+{
+    if (d_linesDirty || pt.y < 0.f)
+        return npos;
+
+    uint32_t i = 0;
+    float lineLocalY = pt.y;
+    for (const auto& line : d_lines)
+    {
+        if (line.heightDirty)
+            return npos;
+
+        if (lineLocalY <= line.extents.d_height)
+        {
+            const float left = line.horzOffset;
+            if (pt.x < left)
+                return i;
+
+            i = skipWrappedWhitespace(i, line.glyphEndIdx);
+
+            float glyphLeft = left;
+            while (i < line.glyphEndIdx)
+            {
+                if (glyphLeft > pt.x)
+                    return i - 1;
+
+                glyphLeft += d_glyphs[i].advance;
+            }
+
+            return line.glyphEndIdx - 1;
+        }
+
+        lineLocalY -= line.extents.d_height;
+        i = line.glyphEndIdx;
+    }
+
+    return npos;
+}
+
+//----------------------------------------------------------------------------//
+Rectf RenderedTextParagraph::getGlyphBounds(size_t glyphIndex) const
+{
+    //!!!can't use getGlyphLine because need to calc line y coord! cache it?!
+    //if (auto line = getGlyphLine(glyphIndex))
+    //{
+    //}
+
+    //!!!TODO TEXT IMPLEMENT!
+    return {};
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedTextParagraph::getTextIndex(size_t glyphIndex) const
+{
+    return (glyphIndex < d_glyphs.size()) ? d_glyphs[glyphIndex].sourceIndex : npos;
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedTextParagraph::getGlyphIndex(size_t textIndex) const
+{
+    for (size_t i = 0; i < d_glyphs.size(); ++i)
+    {
+        const auto srcIndex = d_glyphs[i].sourceIndex;
+        if (srcIndex == textIndex)
+            return i;
+
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+        // Check if textIndex is in the middle of the multi-byte UTF-8 codepoint
+        if (auto fontGlyph = d_glyphs[i].fontGlyph)
+            if (srcIndex < textIndex && textIndex < srcIndex + String::getCodePointSize(fontGlyph->getCodePoint()))
+                return i;
+#endif
+    }
+
+    return npos;
+}
+
+//----------------------------------------------------------------------------//
+uint32_t RenderedTextParagraph::skipWrappedWhitespace(uint32_t start, uint32_t end) const
 {
     // Never skip leading whitespaces in a paragraph
     if (!start || !d_skipWrappedWhitespace)

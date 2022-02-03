@@ -40,7 +40,7 @@ struct CEGUIEXPORT SelectionInfo
 {
     const Image* bgBrush = nullptr;
     ColourRect   bgColours = 0xFF002FFF;
-    ColourRect   textColours = 0;         //!< Zero means keeping existing text colour
+    ColourRect   textColours = 0;         //!< Zero means keeping an existing text colour
     size_t       start = 0;
     size_t       end = 0;
 };
@@ -49,6 +49,8 @@ struct CEGUIEXPORT SelectionInfo
 class CEGUIEXPORT RenderedText final
 {
 public:
+
+    static constexpr size_t npos = std::numeric_limits<size_t>().max();
 
     RenderedText();
     RenderedText(const RenderedText& other) = delete;
@@ -79,6 +81,8 @@ public:
     size_t getParagraphCount() const { return d_paragraphs.size(); }
     size_t getLineCount() const;
     bool isFittingIntoAreaWidth() const;
+    size_t getTextIndexAtPoint(const glm::vec2& pt) const;
+    Rectf getCodepointBounds(size_t textIndex) const;
 
 protected:
 

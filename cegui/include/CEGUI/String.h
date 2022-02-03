@@ -352,10 +352,22 @@ public:
         The initial code unit to be used for determining the
         UTF-32 code point.
     \return
-        Returns the prospective size of the code point, or -1
+        Returns the prospective size of the code point, or 0
         if the supplied initial byte is of an invalid code point.
     */
-    static size_t getCodePointSize(const char initialCodeUnit);
+    static size_t getCodePointSize(const char initialCodeUnit)
+    {
+        if ((initialCodeUnit & 0x80) == 0x00)
+            return 1;
+        else if ((initialCodeUnit & 0xE0) == 0xC0)
+            return 2;
+        else if ((initialCodeUnit & 0xF0) == 0xE0)
+            return 3;
+        else if ((initialCodeUnit & 0xF8) == 0xF0)
+            return 4;
+        else
+            return 0;
+    }
 
     static char32_t convertCodePoint(const char firstCodeUnit,
                                      const char secondCodeUnit);

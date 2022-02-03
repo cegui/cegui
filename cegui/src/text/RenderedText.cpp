@@ -401,7 +401,7 @@ bool RenderedText::updateFormatting(float areaWidth)
             p.onAreaWidthChanged();
 
         p.updateLines(d_elements, areaWidth);
-        p.updateLineHeights(d_elements, d_defaultFont->getFontHeight());
+        p.updateLineHeights(d_elements, d_defaultFont ? d_defaultFont->getFontHeight() : 0.f);
         p.updateHorizontalFormatting(areaWidth);
 
         p.accumulateExtents(extents);
@@ -485,6 +485,22 @@ bool RenderedText::isFittingIntoAreaWidth() const
         if (!p.isFittingIntoAreaWidth())
             return false;
     return true;
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt) const
+{
+    // iterate paragraphs
+    // offset point into paragraph coords
+    //!!!TODO TEXT IMPLEMENT!
+    return npos;
+}
+
+//----------------------------------------------------------------------------//
+Rectf RenderedText::getCodepointBounds(size_t textIndex) const
+{
+    //!!!TODO TEXT IMPLEMENT!
+    return {};
 }
 
 }

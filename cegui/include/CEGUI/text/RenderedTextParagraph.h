@@ -25,11 +25,10 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #pragma once
-#include "CEGUI/Sizef.h"
 #include "CEGUI/text/DefaultParagraphDirection.h"
 #include "CEGUI/falagard/Enums.h"
 #include "CEGUI/ColourRect.h"
-#include <glm/glm.hpp>
+#include "CEGUI/Rectf.h"
 #include <vector>
 
 // NB: these are internal classes, please use RenderedText in the client code
@@ -58,6 +57,8 @@ struct RenderedGlyph
 class RenderedTextParagraph
 {
 public:
+
+    static constexpr size_t npos = std::numeric_limits<size_t>().max();
 
     RenderedTextParagraph()
         : d_wordWrap(false)
@@ -106,6 +107,12 @@ public:
     const std::vector<RenderedGlyph>& glyphs() const { return d_glyphs; }
 
     size_t getLineCount() const { return d_linesDirty ? 1 : d_lines.size(); }
+    size_t getTextIndexAtPoint(const glm::vec2& pt) const { return getTextIndex(getGlyphIndexAtPoint(pt)); }
+    Rectf getCodepointBounds(size_t textIndex) const { return getGlyphBounds(getGlyphIndex(textIndex)); }
+    size_t getGlyphIndexAtPoint(const glm::vec2& pt) const;
+    Rectf getGlyphBounds(size_t glyphIndex) const;
+    size_t getTextIndex(size_t glyphIndex) const;
+    size_t getGlyphIndex(size_t textIndex) const;
 
 protected:
 
@@ -123,7 +130,7 @@ protected:
     };
 
     Line* getGlyphLine(size_t glyphIndex);
-    uint32_t skipWhitespace(uint32_t start, uint32_t end) const;
+    uint32_t skipWrappedWhitespace(uint32_t start, uint32_t end) const;
 
     std::vector<RenderedGlyph> d_glyphs;
     std::vector<Line> d_lines;
