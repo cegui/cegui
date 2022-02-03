@@ -26,11 +26,10 @@
  ***************************************************************************/
 #ifndef _CEGUIOgreTexture_h_
 #define _CEGUIOgreTexture_h_
-
-#include "../../Texture.h"
 #include "CEGUI/RendererModules/Ogre/Renderer.h"
-#include <OgreTexture.h>
-#include <OgreSharedPtr.h>
+#ifdef CEGUI_OGRE_NEXT
+#include "../../Texture.h"
+#include <OgreTextureGpu.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -40,9 +39,9 @@ class OGRE_GUIRENDERER_API OgreTexture : public Texture
 {
 public:
     //! Set the underlying Ogre texture.
-    void setOgreTexture(Ogre::TexturePtr texture, bool take_ownership = false);
+    void setOgreTexture(Ogre::TextureGpu* texture, bool take_ownership = false);
     //! Return Ogre::TexturePtr for the underlying Ogre texture.
-    Ogre::TexturePtr getOgreTexture() const;
+    Ogre::TextureGpu* getOgreTexture() const;
 
     //! return a Ogre::string containing a unique name.
     static Ogre::String getUniqueName();
@@ -60,9 +59,9 @@ public:
     bool isPixelFormatSupported(const PixelFormat fmt) const;
 
     //! convert Ogre::PixelFormat to equivalent CEGUI::Texture::PixelFormat
-    static Texture::PixelFormat fromOgrePixelFormat(const Ogre::PixelFormat fmt);
+    static Texture::PixelFormat fromOgrePixelFormat(const Ogre::PixelFormatGpu fmt);
     //! convert CEGUI::Texture::PixelFormat to equivalent Ogre::PixelFormat
-    static Ogre::PixelFormat toOgrePixelFormat(const Texture::PixelFormat fmt);
+    static Ogre::PixelFormatGpu toOgrePixelFormat(const Texture::PixelFormat fmt);
 
 protected:
     // we all need a little help from out friends ;)
@@ -70,7 +69,7 @@ protected:
     friend Texture& OgreRenderer::createTexture(const String&, const String&,
                                                 const String&);
     friend Texture& OgreRenderer::createTexture(const String&, const Sizef&);
-    friend Texture& OgreRenderer::createTexture(const String&, Ogre::TexturePtr&,
+    friend Texture& OgreRenderer::createTexture(const String&, Ogre::TextureGpu*,
                                                 bool);
     friend void OgreRenderer::destroyTexture(Texture&);
     friend void OgreRenderer::destroyTexture(const String&);
@@ -83,22 +82,24 @@ protected:
     //! construct texture with a specified initial size.
     OgreTexture(const String& name, const Sizef& sz);
     //! construct texture from existing Ogre texture.
-    OgreTexture(const String& name, Ogre::TexturePtr& tex, bool take_ownership);
+    OgreTexture(const String& name, Ogre::TextureGpu* tex, bool take_ownership);
 
-
-    //! destructor.
+	//! destructor.
     virtual ~OgreTexture();
-    //! construct an empty texture
+	//! construct an texture
+	void createOgreTexture(PixelFormat pixel_format, Ogre::uint32 width, Ogre::uint32 height);
+	//! construct an empty texture
     void createEmptyOgreTexture(PixelFormat pixel_format);
     //! release the underlying Ogre texture.
     void freeOgreTexture();
     //! updates cached scale value used to map pixels to texture co-ords.
     void updateCachedScaleValues();
-
+	//! blits data from on Ogre::TextureBox to another Ogre::TextureBox
+	static void blitFromMemory(Ogre::TextureBox& src, Ogre::TextureBox& target, Ogre::Box& targetArea, Ogre::PixelFormatGpu pixelFormat);
     //! Counter used to provide unique texture names.
     static std::uint32_t d_textureNumber;
     //!< The underlying Ogre texture.
-    Ogre::TexturePtr d_texture;
+    Ogre::TextureGpu* d_textureGpu;
     //! specifies whether d_texture was created externally (not owned by us).
     bool d_isLinked;
     //! Size of the texture.
@@ -109,8 +110,104 @@ protected:
     glm::vec2 d_texelScaling;
     //! Name this texture was created with.
     const String d_name;
+	const String d_nameFile;
+	//! Ram Copy of Texture Data
+	Ogre::uint8* d_TextureDataRamCopy;
+	//! specfies if a RamCopy of the texture is keept. This is false at the beginning and true once the texture is accesed using blitFromMemory
+	bool d_shallStoreTextureDataRamCopy;
+	//! Allocates memory for Ram Copy of Texture Data
+	void createEmptyTextureDataRamCopy(size_t dataSize);
+	//! Free up memory for Ram Copy of Texture Data
+	void destroyTextureDataRamCopy();
 };
 
 } // End of  CEGUI namespace section
 
+#else	//CEGUI_OGRE_NEXT
+#include "../../Texture.h"
+#include "CEGUI/RendererModules/Ogre/Renderer.h"
+#include <OgreTexture.h>
+#include <OgreSharedPtr.h>
+
+// Start of CEGUI namespace section
+namespace CEGUI
+{
+	//! Implementation of the CEGUI::Texture class for the Ogre engine.
+	class OGRE_GUIRENDERER_API OgreTexture : public Texture
+	{
+	public:
+		//! Set the underlying Ogre texture.
+		void setOgreTexture(Ogre::TexturePtr texture, bool take_ownership = false);
+		//! Return Ogre::TexturePtr for the underlying Ogre texture.
+		Ogre::TexturePtr getOgreTexture() const;
+
+		//! return a Ogre::string containing a unique name.
+		static Ogre::String getUniqueName();
+
+		// implement CEGUI::Texture interface
+		const String& getName() const;
+		const Sizef& getSize() const;
+		const Sizef& getOriginalDataSize() const;
+		const glm::vec2& getTexelScaling() const;
+		void loadFromFile(const String& filename, const String& resourceGroup);
+		void loadFromMemory(const void* buffer, const Sizef& buffer_size,
+			PixelFormat pixel_format);
+		void blitFromMemory(const void* sourceData, const Rectf& area);
+		void blitToMemory(void* targetData);
+		bool isPixelFormatSupported(const PixelFormat fmt) const;
+
+		//! convert Ogre::PixelFormat to equivalent CEGUI::Texture::PixelFormat
+		static Texture::PixelFormat fromOgrePixelFormat(const Ogre::PixelFormat fmt);
+		//! convert CEGUI::Texture::PixelFormat to equivalent Ogre::PixelFormat
+		static Ogre::PixelFormat toOgrePixelFormat(const Texture::PixelFormat fmt);
+
+	protected:
+		// we all need a little help from out friends ;)
+		friend Texture& OgreRenderer::createTexture(const String&);
+		friend Texture& OgreRenderer::createTexture(const String&, const String&,
+			const String&);
+		friend Texture& OgreRenderer::createTexture(const String&, const Sizef&);
+		friend Texture& OgreRenderer::createTexture(const String&, Ogre::TexturePtr&,
+			bool);
+		friend void OgreRenderer::destroyTexture(Texture&);
+		friend void OgreRenderer::destroyTexture(const String&);
+
+		//! standard constructor
+		OgreTexture(const String& name);
+		//! construct texture via an image file.
+		OgreTexture(const String& name, const String& filename,
+			const String& resourceGroup);
+		//! construct texture with a specified initial size.
+		OgreTexture(const String& name, const Sizef& sz);
+		//! construct texture from existing Ogre texture.
+		OgreTexture(const String& name, Ogre::TexturePtr& tex, bool take_ownership);
+
+
+		//! destructor.
+		virtual ~OgreTexture();
+		//! construct an empty texture
+		void createEmptyOgreTexture(PixelFormat pixel_format);
+		//! release the underlying Ogre texture.
+		void freeOgreTexture();
+		//! updates cached scale value used to map pixels to texture co-ords.
+		void updateCachedScaleValues();
+
+		//! Counter used to provide unique texture names.
+		static std::uint32_t d_textureNumber;
+		//!< The underlying Ogre texture.
+		Ogre::TexturePtr d_texture;
+		//! specifies whether d_texture was created externally (not owned by us).
+		bool d_isLinked;
+		//! Size of the texture.
+		Sizef d_size;
+		//! original pixel of size data loaded into texture
+		Sizef d_dataSize;
+		//! cached pixel to texel mapping scale values.
+		glm::vec2 d_texelScaling;
+		//! Name this texture was created with.
+		const String d_name;
+	};
+
+} // End of  CEGUI namespace section
+#endif	//CEGUI_OGRE_NEXT
 #endif  // end of guard _CEGUIOgreTexture_h_

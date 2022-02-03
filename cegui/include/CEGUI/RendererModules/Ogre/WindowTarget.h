@@ -28,6 +28,8 @@
 #define _CEGUIOgreWindowTarget_h_
 
 #include "CEGUI/RendererModules/Ogre/RenderTarget.h"
+#ifdef CEGUI_OGRE_NEXT
+#include <OgreTextureGpu.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -37,8 +39,7 @@ class OGRE_GUIRENDERER_API OgreWindowTarget : public OgreRenderTarget
 {
 public:
     //! Constructor
-    OgreWindowTarget(OgreRenderer& owner, Ogre::RenderSystem& rs,
-                     Ogre::RenderTarget& target);
+    OgreWindowTarget(OgreRenderer& owner, Ogre::RenderSystem& rs, Ogre::Window* target);
 
     //! Destructor
     virtual ~OgreWindowTarget();
@@ -52,16 +53,54 @@ public:
         Reference to an Ogre::RenderTarget object that will receive the rendered
         output.
     */
-    void setOgreRenderTarget(Ogre::RenderTarget& target);
+    void setOgreRenderTarget(Ogre::Window* target);
 
     // implement parts of CEGUI::RenderTarget interface
     bool isImageryCache() const;
 
 protected:
     //! helper function to initialise the render target details
-    void initRenderTarget(Ogre::RenderTarget& target);
+    void initRenderTarget(Ogre::Window* target);
 };
 
 } // End of  CEGUI namespace section
+#else	//CEGUI_OGRE_NEXT
+#include "CEGUI/RendererModules/Ogre/RenderTarget.h"
 
+ // Start of CEGUI namespace section
+namespace CEGUI
+{
+	//! CEGUI::RenderTarget that targets an existing gre::RenderTarget
+	class OGRE_GUIRENDERER_API OgreWindowTarget : public OgreRenderTarget
+	{
+	public:
+		//! Constructor
+		OgreWindowTarget(OgreRenderer& owner, Ogre::RenderSystem& rs,
+			Ogre::RenderTarget& target);
+
+		//! Destructor
+		virtual ~OgreWindowTarget();
+
+		/*!
+		\brief
+			Set the Ogre::RenderTarget that the output from the OgreWindowTarget
+			should be rendered to.
+
+		\param target
+			Reference to an Ogre::RenderTarget object that will receive the rendered
+			output.
+		*/
+		void setOgreRenderTarget(Ogre::RenderTarget& target);
+
+		// implement parts of CEGUI::RenderTarget interface
+		bool isImageryCache() const;
+
+	protected:
+		//! helper function to initialise the render target details
+		void initRenderTarget(Ogre::RenderTarget& target);
+	};
+
+} // End of  CEGUI namespace section
+
+#endif	//CEGUI_OGRE_NEXT
 #endif  // end of guard _CEGUIOgreWindowTarget_h_

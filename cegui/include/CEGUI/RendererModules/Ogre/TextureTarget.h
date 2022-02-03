@@ -27,13 +27,14 @@
 #ifndef _CEGUIOgreTextureTarget_h_
 #define _CEGUIOgreTextureTarget_h_
 
-#include "../../TextureTarget.h"
-#include "CEGUI/RendererModules/Ogre/RenderTarget.h"
-
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4250)
 #endif
+
+#include "CEGUI/RendererModules/Ogre/RenderTarget.h"
+#ifdef CEGUI_OGRE_NEXT
+#include "../../TextureTarget.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -66,9 +67,52 @@ protected:
 };
 
 } // End of  CEGUI namespace section
+#else	//CEGUI_OGRE_NEXT
+#include "../../TextureTarget.h"
+#include "CEGUI/RendererModules/Ogre/RenderTarget.h"
+
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4250)
+#endif
+
+ // Start of CEGUI namespace section
+namespace CEGUI
+{
+	//! CEGUI::TextureTarget implementation for the Ogre engine.
+	class OGRE_GUIRENDERER_API OgreTextureTarget : public OgreRenderTarget, public TextureTarget
+	{
+	public:
+		//! Constructor.
+		OgreTextureTarget(OgreRenderer& owner, Ogre::RenderSystem& rs, bool addStencilBuffer);
+		//! Destructor.
+		virtual ~OgreTextureTarget();
+
+		// implementation of RenderTarget interface
+		bool isImageryCache() const;
+		// implement CEGUI::TextureTarget interface.
+		void clear();
+		Texture& getTexture() const;
+		void declareRenderSize(const Sizef& sz);
+
+	protected:
+		//! default / initial size for the underlying texture.
+		static const float DEFAULT_SIZE;
+		//! static data used for creating texture names
+		static std::uint32_t s_textureNumber;
+		//! helper to generate unique texture names
+		static String generateTextureName();
+		//! This wraps d_texture so it can be used by the core CEGUI lib.
+		OgreTexture* d_CEGUITexture;
+	};
+
+} // End of  CEGUI namespace section
+#endif	//CEGUI_OGRE_NEXT
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
 
 #endif  // end of guard _CEGUIOgreTextureTarget_h_
+
+

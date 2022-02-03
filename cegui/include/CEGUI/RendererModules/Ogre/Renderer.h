@@ -48,49 +48,48 @@
 #   pragma warning(disable : 4251)
 #endif
 
-#if (CEGUI_OGRE_VERSION >= (2 << 16))
+#if (CEGUI_OGRE_VERSION >= ((2 << 16) | (2 << 8) | 0))
+	#define CEGUI_OGRE_NEXT
+#endif
+
+#ifdef CEGUI_OGRE_NEXT
+
 // The new Ogre Compositor2 system has to be used since ViewPorts
 // no longer have the required functionality
-#define CEGUI_USE_OGRE_COMPOSITOR2
-#endif
+#define CEGUI_USE_OGRE_COMPOSITOR2 //define is left enabled as the samples probalby use it
 
 // These HLMS Ogre 2.1 fixes are based on Jeremy Richert's patch to CEGUI
 // 0.8
-#if (CEGUI_OGRE_VERSION >= ((2 << 16) | (1 << 8) | 0))
 // The HLMS has to be used since fixed pipeline is disabled
-#define CEGUI_USE_OGRE_HLMS
+#define CEGUI_USE_OGRE_HLMS //define is left enabled as the samples probalby use it
+
+
 #include <OgreRenderOperation.h>
 #include <OgreHlmsSamplerblock.h>
-#endif
+#include <OgreRenderPassDescriptor.h>
+#include <OgreWindow.h>
+#include <OgreTextureGpu.h>
+
 
 namespace Ogre
 {
-class Root;
-class RenderSystem;
-class RenderTarget;
-class SceneManager;
-#if (CEGUI_OGRE_VERSION < ((1 << 16) | (9 << 8) | 0))
-class TexturePtr;
-#else
-template<typename T> class SharedPtr;
-class Texture;
-typedef SharedPtr<Texture> TexturePtr;
-#ifdef CEGUI_USE_OGRE_HLMS
-class HighLevelGpuProgram;
-typedef SharedPtr<HighLevelGpuProgram> HighLevelGpuProgramPtr;
-namespace v1
-{
-class HardwareVertexBufferSharedPtr;
-}
-#else
-class HardwareVertexBuffer;
-typedef SharedPtr<HardwareVertexBuffer> HardwareVertexBufferSharedPtr;
-#endif //CEGUI_USE_OGRE_HLMS
-#endif
-class Matrix4;
-}
+	class Root;
+	class RenderSystem;
+	class RenderTarget;
+	class SceneManager;
+	template<typename T> class SharedPtr;
+	class Texture;
+	typedef SharedPtr<Texture> TexturePtr;
 
+	class HighLevelGpuProgram;
+	typedef SharedPtr<HighLevelGpuProgram> HighLevelGpuProgramPtr;
+	namespace v1
+	{
+		class HardwareVertexBufferSharedPtr;
+	}
 
+	class Matrix4;
+}
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -106,6 +105,17 @@ struct OgreRenderer_impl;
 class OGRE_GUIRENDERER_API OgreRenderer : public Renderer
 {
 public:
+	enum RenderingModes
+	{
+		RenderingMode_Disabled,	//All rendering disabled
+		RenderingMode_RenderAllCeguiGUIContexts,	//Will automatically render all CEGUI::GUIContext every frame. 
+		RenderingMode_ConfigureManual	//User can configure which CEGUI::GUIContext will be rendered every frame and also trigger an update of a CEGUI::GUIContext manually
+	};
+		
+	//!	Convenience function that configures a CEGUI::Window to display an Ogre RenderToTexture (RTT) 
+	void configureCeguiWindowForRTT(CEGUI::Window* window, const std::string& ogreTextureName, float textureWidth, float textureHeight, bool isTextureTargetVerticallyFlipped = false);
+	
+	
     /*!
     \brief
         Convenience function that creates all the Ogre specific objects and
@@ -157,7 +167,7 @@ public:
     \return
         Reference to the CEGUI::OgreRenderer object that was created.
     */
-    static OgreRenderer& bootstrapSystem(Ogre::RenderTarget& target,
+    static OgreRenderer& bootstrapSystem(Ogre::Window* target,
                                          const int abi = CEGUI_VERSION_ABI);
 
     /*!
@@ -195,15 +205,14 @@ public:
         Create an OgreRenderer object that uses the specified Ogre::RenderTarget
         as the default output surface.
     */
-    static OgreRenderer& create(Ogre::RenderTarget& target,
+    static OgreRenderer& create(Ogre::Window* target,
                                 const int abi = CEGUI_VERSION_ABI);
 
     /*!
       \brief
       Creates a new renderer that can be used to create a context on a new Ogre window
     */
-    static OgreRenderer& registerWindow(OgreRenderer& main_window,
-        Ogre::RenderTarget &new_window);
+    //static OgreRenderer& registerWindow(OgreRenderer& main_window, Ogre::RenderTarget &new_window);
 
     //! destroy an OgreRenderer object.
     static void destroy(OgreRenderer& renderer);
@@ -226,20 +235,33 @@ public:
     //! Conversion function from glm to Ogre
     static Ogre::Matrix4 glmToOgreMatrix(const glm::mat4& matrix);
 
-#ifdef CEGUI_USE_OGRE_COMPOSITOR2
     //! Function to initialize required Ogre::Compositor2 workspaces
     static void createOgreCompositorResources();
 
     //! Function to update the workspace render target
-    void updateWorkspaceRenderTarget(Ogre::RenderTarget& target);
+    void updateWorkspaceRenderTarget(Ogre::TextureGpu* target);
 
-#endif // CEGUI_USE_OGRE_COMPOSITOR2
-
-    //! set whether CEGUI rendering will occur
+    //! OgreRenderer::setRenderingEnabled is depreciated. Use OgreRenderer::setRenderingMode instead
     void setRenderingEnabled(const bool enabled);
-
+		
     //! return whether CEGUI rendering is enabled.
     bool isRenderingEnabled() const;
+
+	/*!
+	  \brief
+	  sets the RenderingMode to use
+	  default is RenderingMode_RenderAllCeguiGUIContexts
+
+	  \note
+		Following modes are availiable:
+		RenderingMode_Disabled: All rendering disabled
+		RenderingMode_RenderAllCeguiGUIContexts: Will automatically render all CEGUI::GUIContext every frame.
+		RenderingMode_ConfigureManual:	User can configure which CEGUI::GUIContext will be rendered every frame and also trigger an update of a CEGUI::GUIContext manually
+	*/
+	void setRenderingMode(RenderingModes renderingMode);
+
+	//! return current RenderingMode
+	RenderingModes getRenderingMode() const;
 
     /*!
     \brief
@@ -258,14 +280,13 @@ public:
         - false if ownership of \a tex remains with the client app, and so
         no attempt will be made to destroy \a tex when the Texture is destroyed.
     */
-    Texture& createTexture(const String& name, Ogre::TexturePtr& tex,
+    Texture& createTexture(const String& name, Ogre::TextureGpu* tex,
                            bool take_ownership = false);
 
     //! set the render states for the specified BlendMode.
     void setupRenderingBlendMode(const BlendMode mode,
                                  bool force = false);
 
-#ifdef CEGUI_USE_OGRE_HLMS
     /*!
     \brief
          Binds all render options to the pipeline
@@ -290,7 +311,6 @@ public:
     void setGPUPrograms(const Ogre::HighLevelGpuProgramPtr &vs,
         const Ogre::HighLevelGpuProgramPtr &ps);
 
-#endif //CEGUI_USE_OGRE_HLMS
 
     /*!
     \brief
@@ -330,8 +350,6 @@ public:
     */
     bool isFrameControlExecutionEnabled() const;
 
-
-#ifdef CEGUI_USE_OGRE_HLMS
     /*!
     \brief
         Sets all the required render states needed for CEGUI rendering.
@@ -342,18 +360,7 @@ public:
 
     \param target Sets the target for rendering required by PSO Cache
     */
-    void initialiseRenderStateSettings(Ogre::RenderTarget* target);
-#else
-    /*!
-        \brief
-        Sets all the required render states needed for CEGUI rendering.
-
-        This is a low-level function intended for certain advanced concepts; in
-        general it will not be required to call this function directly, since it
-        is called automatically by the system when rendering is done.
-    */
-    void initialiseRenderStateSettings();
-#endif
+    void initialiseRenderStateSettings(Ogre::TextureGpu* target, Ogre::RenderPassDescriptor* ogreRenderPassDescriptor);
 
     /*!
     \brief
@@ -364,7 +371,7 @@ public:
         Reference to the Ogre::RenderTarget object that is to be used as the
         target for output from the default GUIContext.
     */
-    void setDefaultRootRenderTarget(Ogre::RenderTarget& target);
+    void setDefaultRootRenderTarget(Ogre::Window* target);
 
     //! \brief Sets the correct BlendMode for rendering a GeometryBuffer
     void bindBlendMode(BlendMode blend);
@@ -376,7 +383,6 @@ public:
     */
     void initialiseTextureStates();
 
-#ifdef CEGUI_USE_OGRE_HLMS
     /*!
     \brief
     Returns a vertex buffer larger than size if any exist
@@ -388,19 +394,7 @@ public:
 
     //! \brief Puts a vertex buffer back in to the pool
     void returnVertexBuffer(Ogre::v1::HardwareVertexBufferSharedPtr buffer);
-#else
-    /*!
-    \brief
-        Returns a vertex buffer larger than size if any exist
 
-        This function also cleans the pool and discards large buffers that
-        aren't used
-    */
-    Ogre::HardwareVertexBufferSharedPtr getVertexBuffer(size_t min_size);
-
-    //! \brief Puts a vertex buffer back in to the pool
-    void returnVertexBuffer(Ogre::HardwareVertexBufferSharedPtr buffer);
-#endif //CEGUI_USE_OGRE_HLMS
 
     //! \brief Clears vertex buffer pool
     void clearVertexBufferPool();
@@ -421,10 +415,10 @@ public:
     virtual Texture& createTexture(const String& name, const String& filename,
         const String& resourceGroup);
     virtual Texture& createTexture(const String& name, const Sizef& size);
-#ifdef CEGUI_USE_OGRE_COMPOSITOR2
-    Ogre::SceneManager& getDummyScene() const;
-#endif
-    virtual void destroyTexture(Texture& texture);
+
+	Ogre::SceneManager& getDummyScene() const;
+
+	virtual void destroyTexture(Texture& texture);
     virtual void destroyTexture(const String& name);
     virtual void destroyAllTextures();
 
@@ -457,11 +451,29 @@ public:
     */
     bool usesDirect3D();
 
+	//! Updates the given GUIContext and draws it now. This can be used to update a GUIContext that targets a specific Ogre::TextureGpu (only used for RenderingMode_ConfigureManual)
+	void drawManualGuiContext(CEGUI::GUIContext* guiContext);
+	//! Sets a GUIContext to be rendered ever frame. Used i.e. for the man GUI Windows drawn on top of everthing else (only used for RenderingMode_ConfigureManual)
+	void addGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext);
+	//! only used for RenderingMode_ConfigureManual
+	void removeGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext);
+	//! only used for RenderingMode_ConfigureManual
+	bool hasGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext) const;
+	//! Simmilar to drawManualGuiContext, but it is not rendererd right now, but next time when Ogre renderes one frame (only used for RenderingMode_ConfigureManual)
+	void addGuiContextToRenderQueuedOnce(CEGUI::GUIContext* guiContext);
+	//! internally used by the FrameListener once a frame was drawn (only used for RenderingMode_ConfigureManual)
+	void clearGuiContextsToRenderQueuedOnce();
+
+	//! only used for RenderingMode_ConfigureManual
+	const std::vector<CEGUI::GUIContext*>& getGuiContextsToRenderEveryFrame() const;
+	//! only used for RenderingMode_ConfigureManual
+	const std::vector<CEGUI::GUIContext*>& getGuiContextsToRenderQueuedOnce() const;
+
 protected:
     //! default constructor.
     OgreRenderer();
     //! constructor takin the Ogre::RenderTarget to use as the default root.
-    OgreRenderer(Ogre::RenderTarget& target);
+    OgreRenderer(Ogre::Window* target);
     //! destructor.
     virtual ~OgreRenderer();
 
@@ -475,9 +487,7 @@ protected:
     static void logTextureDestruction(const String& name);
 
     //! common parts of constructor
-    void constructor_impl(Ogre::RenderTarget& target);
-    //! Helper that switches off shader-usage
-    void switchShaderUsageOff();
+    void constructor_impl(Ogre::Window* target);
     //! helper that creates and sets up shaders
     void initialiseShaders();
     //! helper to clean up shaders
@@ -487,12 +497,460 @@ protected:
     void cleanLargestVertexBufferPool(size_t count);
     //! Pointer to the hidden implementation data
     OgreRenderer_impl* d_pimpl;
+
+	std::vector<CEGUI::GUIContext*> d_RenderingModeManual_GuiContextToRenderEveryFrame;
+	std::vector<CEGUI::GUIContext*> d_RenderingModeManual_GuiContextToRenderQueuedOnce;
 };
 
 } // End of  CEGUI namespace section
+#else	//CEGUI_OGRE_NEXT
+#if (CEGUI_OGRE_VERSION >= (2 << 16))
+// The new Ogre Compositor2 system has to be used since ViewPorts
+// no longer have the required functionality
+#define CEGUI_USE_OGRE_COMPOSITOR2
+#endif
 
+// These HLMS Ogre 2.1 fixes are based on Jeremy Richert's patch to CEGUI
+// 0.8
+#if (CEGUI_OGRE_VERSION >= ((2 << 16) | (1 << 8) | 0))
+// The HLMS has to be used since fixed pipeline is disabled
+#define CEGUI_USE_OGRE_HLMS
+#include <OgreRenderOperation.h>
+#include <OgreHlmsSamplerblock.h>
+#endif
+
+namespace Ogre
+{
+	class Root;
+	class RenderSystem;
+	class RenderTarget;
+	class SceneManager;
+#if (CEGUI_OGRE_VERSION < ((1 << 16) | (9 << 8) | 0))
+	class TexturePtr;
+#else
+	template<typename T> class SharedPtr;
+	class Texture;
+	typedef SharedPtr<Texture> TexturePtr;
+#ifdef CEGUI_USE_OGRE_HLMS
+	class HighLevelGpuProgram;
+	typedef SharedPtr<HighLevelGpuProgram> HighLevelGpuProgramPtr;
+	namespace v1
+	{
+		class HardwareVertexBufferSharedPtr;
+	}
+#else
+	class HardwareVertexBuffer;
+	typedef SharedPtr<HardwareVertexBuffer> HardwareVertexBufferSharedPtr;
+#endif //CEGUI_USE_OGRE_HLMS
+#endif
+	class Matrix4;
+}
+
+
+
+// Start of CEGUI namespace section
+namespace CEGUI
+{
+	class OgreGeometryBuffer;
+	class OgreTexture;
+	class OgreResourceProvider;
+	class OgreImageCodec;
+	class OgreWindowTarget;
+	struct OgreRenderer_impl;
+
+	//! CEGUI::Renderer implementation for the Ogre engine.
+	class OGRE_GUIRENDERER_API OgreRenderer : public Renderer
+	{
+	public:
+		/*!
+		\brief
+			Convenience function that creates all the Ogre specific objects and
+			then initialises the CEGUI system with them.
+
+			The created Renderer will use the default Ogre rendering window as the
+			default output surface.
+
+			This will create and initialise the following objects for you:
+			- CEGUI::OgreRenderer
+			- CEGUI::OgreResourceProvider
+			- CEGUI::OgreImageCodec
+			- CEGUI::System
+
+		\param abi
+			This must be set to CEGUI_VERSION_ABI
+
+		\return
+			Reference to the CEGUI::OgreRenderer object that was created.
+
+		\note
+			For this to succeed you must have initialised Ogre to auto create the
+			rendering window.  If you have not done this, then you'll be wanting to
+			use the overload that takes an Ogre::RenderTarget as input.
+		*/
+		static OgreRenderer& bootstrapSystem(const int abi = CEGUI_VERSION_ABI);
+
+		/*!
+		\brief
+			Convenience function that creates all the Ogre specific objects and
+			then initialises the CEGUI system with them.
+
+			The create Renderer will use the specified Ogre::RenderTarget as the
+			default output surface.
+
+			This will create and initialise the following objects for you:
+			- CEGUI::OgreRenderer
+			- CEGUI::OgreResourceProvider
+			- CEGUI::OgreImageCodec
+			- CEGUI::System
+
+		\param target
+			Reference to the Ogre::RenderTarget object that the created OgreRenderer
+			will use as the default rendering root.
+
+		\param abi
+			This must be set to CEGUI_VERSION_ABI
+
+		\return
+			Reference to the CEGUI::OgreRenderer object that was created.
+		*/
+		static OgreRenderer& bootstrapSystem(Ogre::RenderTarget& target,
+			const int abi = CEGUI_VERSION_ABI);
+
+		/*!
+		\brief
+			Convenience function to cleanup the CEGUI system and related objects
+			that were created by calling the bootstrapSystem function.
+
+			This function will destroy the following objects for you:
+			- CEGUI::System
+			- CEGUI::OgreImageCodec
+			- CEGUI::OgreResourceProvider
+			- CEGUI::OgreRenderer
+
+		\note
+			If you did not initialise CEGUI by calling the bootstrapSystem function,
+			you should \e not call this, but rather delete any objects you created
+			manually.
+		*/
+		static void destroySystem();
+
+		/*!
+		\brief
+			Create an OgreRenderer object that uses the default Ogre rendering
+			window as the default output surface.
+
+		\note
+			For this to succeed you must have initialised Ogre to auto create the
+			rendering window.  If you have not done this, then you'll be wanting to
+			use the overload that takes an Ogre::RenderTarget as input.
+		*/
+		static OgreRenderer& create(const int abi = CEGUI_VERSION_ABI);
+
+		/*!
+		\brief
+			Create an OgreRenderer object that uses the specified Ogre::RenderTarget
+			as the default output surface.
+		*/
+		static OgreRenderer& create(Ogre::RenderTarget& target,
+			const int abi = CEGUI_VERSION_ABI);
+
+		/*!
+		  \brief
+		  Creates a new renderer that can be used to create a context on a new Ogre window
+		*/
+		static OgreRenderer& registerWindow(OgreRenderer& main_window,
+			Ogre::RenderTarget &new_window);
+
+		//! destroy an OgreRenderer object.
+		static void destroy(OgreRenderer& renderer);
+
+		//! function to create a CEGUI::OgreResourceProvider object
+		static OgreResourceProvider& createOgreResourceProvider();
+
+		//! function to destroy a CEGUI::OgreResourceProvider object
+		static void destroyOgreResourceProvider(OgreResourceProvider& rp);
+
+		//! function to create a CEGUI::OgreImageCodec object.
+		static OgreImageCodec& createOgreImageCodec();
+
+		//! function to destroy a CEGUI::OgreImageCodec object.
+		static void destroyOgreImageCodec(OgreImageCodec& ic);
+
+		//! Conversion function from Ogre to glm
+		static glm::mat4 ogreToGlmMatrix(const Ogre::Matrix4& matrix);
+
+		//! Conversion function from glm to Ogre
+		static Ogre::Matrix4 glmToOgreMatrix(const glm::mat4& matrix);
+
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+		//! Function to initialize required Ogre::Compositor2 workspaces
+		static void createOgreCompositorResources();
+
+		//! Function to update the workspace render target
+		void updateWorkspaceRenderTarget(Ogre::RenderTarget& target);
+
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
+
+		//! set whether CEGUI rendering will occur
+		void setRenderingEnabled(const bool enabled);
+
+		//! return whether CEGUI rendering is enabled.
+		bool isRenderingEnabled() const;
+
+		/*!
+		\brief
+			Create a CEGUI::Texture that wraps an existing Ogre texture.
+
+		\param name
+			The name for the new texture being created.
+
+		\param tex
+			Ogre::TexturePtr for the texture that will be used by the created
+			CEGUI::Texture.
+
+		\param take_ownership
+			- true if the created Texture will assume ownership of \a tex and
+			thus destroy \a tex when the Texture is destroyed.
+			- false if ownership of \a tex remains with the client app, and so
+			no attempt will be made to destroy \a tex when the Texture is destroyed.
+		*/
+		Texture& createTexture(const String& name, Ogre::TexturePtr& tex,
+			bool take_ownership = false);
+
+		//! set the render states for the specified BlendMode.
+		void setupRenderingBlendMode(const BlendMode mode,
+			bool force = false);
+
+#ifdef CEGUI_USE_OGRE_HLMS
+		/*!
+		\brief
+			 Binds all render options to the pipeline
+
+		This must be called before each geometry buffer is rendered
+
+		setupRenderingBlendMode must have been called before calling this
+
+		VAO fixes by Kohedlo on the Ogre forums
+		 http://www.ogre3d.org/forums/viewtopic.php?f=25&t=82911&sid=d2694a87677c7d3b56794aa555b438ee&start=25#p536494
+
+		changed to use PsoCacheHelper
+
+		\param render_operation
+			The render operation to be executed
+		*/
+		void bindPSO(const Ogre::v1::RenderOperation render_operation);
+
+		/*!
+		Called from shader wrapper. Sets the current GPU programs
+		*/
+		void setGPUPrograms(const Ogre::HighLevelGpuProgramPtr &vs,
+			const Ogre::HighLevelGpuProgramPtr &ps);
+
+#endif //CEGUI_USE_OGRE_HLMS
+
+		/*!
+		\brief
+			Controls whether rendering done by CEGUI will be wrapped with calls to
+			Ogre::RenderSystem::_beginFrame and Ogre::RenderSystem::_endFrame.
+
+			This defaults to enabled and is required when using the default hook
+			that automatically calls CEGUI::System::renderGUI via a frame listener.
+			If you disable this setting, the automated rendering will also be
+			disabled, which is useful when you wish to perform your own calls to the
+			CEGUI::System::renderGUI function (and is the sole purpose for this
+			setting).
+
+		\param enabled
+			- true if _beginFrame and _endFrame should be called.
+			- false if _beginFrame and _endFrame should not be called (also disables
+			  default renderGUI call).
+		*/
+		void setFrameControlExecutionEnabled(const bool enabled);
+
+		/*!
+		\brief
+			Returns whether rendering done by CEGUI will be wrapped with calls to
+			Ogre::RenderSystem::_beginFrame and Ogre::RenderSystem::_endFrame.
+
+			This defaults to enabled and is required when using the default hook
+			that automatically calls CEGUI::System::renderGUI via a frame listener.
+			If you disable this setting, the automated rendering will also be
+			disabled, which is useful when you wish to perform your own calls to the
+			CEGUI::System::renderGUI function (and is the sole purpose for this
+			setting).
+
+		\return
+			- true if _beginFrame and _endFrame will be called.
+			- false if _beginFrame and _endFrame will not be called (also means
+			  default renderGUI call will not be made).
+		*/
+		bool isFrameControlExecutionEnabled() const;
+
+
+#ifdef CEGUI_USE_OGRE_HLMS
+		/*!
+		\brief
+			Sets all the required render states needed for CEGUI rendering.
+
+			This is a low-level function intended for certain advanced concepts; in
+			general it will not be required to call this function directly, since it
+			is called automatically by the system when rendering is done.
+
+		\param target Sets the target for rendering required by PSO Cache
+		*/
+		void initialiseRenderStateSettings(Ogre::RenderTarget* target);
+#else
+		/*!
+			\brief
+			Sets all the required render states needed for CEGUI rendering.
+
+			This is a low-level function intended for certain advanced concepts; in
+			general it will not be required to call this function directly, since it
+			is called automatically by the system when rendering is done.
+		*/
+		void initialiseRenderStateSettings();
+#endif
+
+		/*!
+		\brief
+			Sets the Ogre::RenderTarget that should be targetted by the default
+			GUIContext.
+
+		\param target
+			Reference to the Ogre::RenderTarget object that is to be used as the
+			target for output from the default GUIContext.
+		*/
+		void setDefaultRootRenderTarget(Ogre::RenderTarget& target);
+
+		//! \brief Sets the correct BlendMode for rendering a GeometryBuffer
+		void bindBlendMode(BlendMode blend);
+
+
+		/*!
+		\brief
+			Initialises the states for rendering textured geometry
+		*/
+		void initialiseTextureStates();
+
+#ifdef CEGUI_USE_OGRE_HLMS
+		/*!
+		\brief
+		Returns a vertex buffer larger than size if any exist
+
+		This function also cleans the pool and discards large buffers that
+		aren't used
+		*/
+		Ogre::v1::HardwareVertexBufferSharedPtr getVertexBuffer(size_t min_size);
+
+		//! \brief Puts a vertex buffer back in to the pool
+		void returnVertexBuffer(Ogre::v1::HardwareVertexBufferSharedPtr buffer);
+#else
+		/*!
+		\brief
+			Returns a vertex buffer larger than size if any exist
+
+			This function also cleans the pool and discards large buffers that
+			aren't used
+		*/
+		Ogre::HardwareVertexBufferSharedPtr getVertexBuffer(size_t min_size);
+
+		//! \brief Puts a vertex buffer back in to the pool
+		void returnVertexBuffer(Ogre::HardwareVertexBufferSharedPtr buffer);
+#endif //CEGUI_USE_OGRE_HLMS
+
+		//! \brief Clears vertex buffer pool
+		void clearVertexBufferPool();
+
+		// implement CEGUI::Renderer interface
+		virtual void setViewProjectionMatrix(const glm::mat4& viewProjMatrix);
+		virtual RenderTarget& getDefaultRenderTarget();
+		virtual RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
+		virtual GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
+		virtual GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
+
+		virtual TextureTarget* createTextureTarget(bool addStencilBuffer);
+		virtual void destroyTextureTarget(TextureTarget* target);
+		virtual void destroyAllTextureTargets();
+		virtual bool isTexCoordSystemFlipped() const;
+
+		virtual Texture& createTexture(const String& name);
+		virtual Texture& createTexture(const String& name, const String& filename,
+			const String& resourceGroup);
+		virtual Texture& createTexture(const String& name, const Sizef& size);
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+		Ogre::SceneManager& getDummyScene() const;
+#endif
+		virtual void destroyTexture(Texture& texture);
+		virtual void destroyTexture(const String& name);
+		virtual void destroyAllTextures();
+
+		virtual Texture& getTexture(const String& name) const;
+		virtual bool isTextureDefined(const String& name) const;
+
+		virtual void beginRendering();
+		virtual void endRendering();
+
+		void setDisplaySize(const Sizef& sz);
+		const Sizef& getDisplaySize() const;
+		unsigned int getMaxTextureSize() const;
+		const String& getIdentifierString() const;
+
+		/*!
+		\brief
+			Returns if this OgreRenderer uses an OpenGL based RenderSystem.
+
+		\return
+			True if this OgreRenderer uses an OpenGL based RenderSystem.
+		*/
+		bool usesOpenGL();
+
+		/*!
+		\brief
+			Returns if this OgreRenderer uses a Direct3D based RenderSystem.
+
+		\return
+			True if this OgreRenderer uses a Direct3D based RenderSystem.
+		*/
+		bool usesDirect3D();
+
+	protected:
+		//! default constructor.
+		OgreRenderer();
+		//! constructor takin the Ogre::RenderTarget to use as the default root.
+		OgreRenderer(Ogre::RenderTarget& target);
+		//! destructor.
+		virtual ~OgreRenderer();
+
+		//! checks Ogre initialisation.  throws exceptions if an issue is detected.
+		void checkOgreInitialised();
+		//! helper to throw exception if name is already used.
+		void throwIfNameExists(const String& name) const;
+		//! helper to safely log the creation of a named texture
+		static void logTextureCreation(const String& name);
+		//! helper to safely log the destruction of a named texture
+		static void logTextureDestruction(const String& name);
+
+		//! common parts of constructor
+		void constructor_impl(Ogre::RenderTarget& target);
+		//! Helper that switches off shader-usage
+		void switchShaderUsageOff();
+		//! helper that creates and sets up shaders
+		void initialiseShaders();
+		//! helper to clean up shaders
+		void cleanupShaders();
+
+		//! Deletes count number of largest vertex buffers
+		void cleanLargestVertexBufferPool(size_t count);
+		//! Pointer to the hidden implementation data
+		OgreRenderer_impl* d_pimpl;
+	};
+
+} // End of  CEGUI namespace section
+#endif	//CEGUI_OGRE_NEXT
+
+
+//---------------------------------------------------------------------------
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
-
 #endif  // end of guard _CEGUIOgreRenderer_h_

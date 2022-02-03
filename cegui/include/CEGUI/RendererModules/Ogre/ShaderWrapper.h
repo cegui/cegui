@@ -27,8 +27,10 @@
 #ifndef _CEGUIOgreShaderWrapper_h_
 #define _CEGUIOgreShaderWrapper_h_
 
-#include <string>
 #include "Renderer.h"
+#ifdef CEGUI_OGRE_NEXT
+#include <string>
+
 #include "CEGUI/ShaderWrapper.h"
 #include "OgreHighLevelGpuProgram.h"
 
@@ -56,11 +58,8 @@ public:
 
     //Implementation of ShaderWrapper interface
     void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings);
-
-    #ifdef CEGUI_USE_OGRE_HLMS
-    void setRenderOperation(const Ogre::v1::RenderOperation &operation);
-	#endif
-
+	void setRenderOperation(const Ogre::v1::RenderOperation &operation);
+	
     Ogre::GpuProgramParametersSharedPtr getVertexParameters() const;
 
 protected:
@@ -82,10 +81,8 @@ protected:
     //! Parameters for pixel shader
     Ogre::GpuProgramParametersSharedPtr d_pixelParameters;
 
-    #ifdef CEGUI_USE_OGRE_HLMS
     Ogre::v1::RenderOperation d_renderOp;
-	#endif
-
+	
     //! The currently active matrix
     glm::mat4 d_lastMatrix;
 
@@ -101,6 +98,80 @@ protected:
 };
 
 }
+#else	//CEGUI_OGRE_NEXT
+#include <string>
+#include "Renderer.h"
+#include "CEGUI/ShaderWrapper.h"
+#include "OgreHighLevelGpuProgram.h"
 
+#include "glm/glm.hpp"
+
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
+ // Start of CEGUI namespace section
+namespace CEGUI
+{
+	class ShaderParameterBindings;
+	class ShaderParameter;
+
+	//----------------------------------------------------------------------------//
+	class OGRE_GUIRENDERER_API OgreShaderWrapper : public ShaderWrapper
+	{
+	public:
+		OgreShaderWrapper(OgreRenderer& owner, Ogre::RenderSystem& rs,
+			Ogre::HighLevelGpuProgramPtr vs, Ogre::HighLevelGpuProgramPtr ps);
+
+		~OgreShaderWrapper();
+
+		//Implementation of ShaderWrapper interface
+		void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings);
+
+#ifdef CEGUI_USE_OGRE_HLMS
+		void setRenderOperation(const Ogre::v1::RenderOperation &operation);
+#endif
+
+		Ogre::GpuProgramParametersSharedPtr getVertexParameters() const;
+
+	protected:
+
+		//! Renderer object that owns this GeometryBuffer
+		OgreRenderer& d_owner;
+		//! Ogre render system we're to use.
+		Ogre::RenderSystem& d_renderSystem;
+
+		//! The GPU program that is our vertex shader
+		Ogre::HighLevelGpuProgramPtr d_vertexShader;
+
+		//! Parameters for vertex shader
+		Ogre::GpuProgramParametersSharedPtr d_vertexParameters;
+
+		//! The GPU program that is our pixel shader
+		Ogre::HighLevelGpuProgramPtr d_pixelShader;
+
+		//! Parameters for pixel shader
+		Ogre::GpuProgramParametersSharedPtr d_pixelParameters;
+
+#ifdef CEGUI_USE_OGRE_HLMS
+		Ogre::v1::RenderOperation d_renderOp;
+#endif
+
+		//! The currently active matrix
+		glm::mat4 d_lastMatrix;
+
+		//! The current alpha value
+		float d_previousAlpha;
+
+		//! The physical index to which the matrix will be written
+		size_t d_physicalIndex;
+
+		//! Stores the index where a given type of parameter is bound
+		//! \note Could be using ShaderParamType but the include is avoided by using an int instead
+		std::map<int, size_t> d_paramTypeToIndex;
+	};
+}
+#endif	//CEGUI_OGRE_NEXT
 #endif
 
