@@ -39,7 +39,7 @@ class TextParser;
 struct CEGUIEXPORT SelectionInfo
 {
     const Image* bgBrush = nullptr;
-    ColourRect   bgColours = 0xFF002FFF;
+    ColourRect   bgColours = 0x800080FF;
     ColourRect   textColours = 0;         //!< Zero means keeping an existing text colour
     size_t       start = 0;
     size_t       end = 0;

@@ -31,6 +31,9 @@
 #include "CEGUI/text/FontGlyph.h"
 #include <algorithm>
 
+//!!!DBG TMP!
+#include "CEGUI/ImageManager.h"
+
 namespace CEGUI
 {
 
@@ -89,6 +92,13 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
         if (d_wordWrap)
             i = skipWrappedWhitespace(i, line.glyphEndIdx);
 
+        //!!!DBG TMP!
+        SelectionInfo si;
+        if (ImageManager::getSingleton().isDefined("TaharezLook/GenericBrush"))
+            si.bgBrush = &ImageManager::getSingleton().get("TaharezLook/GenericBrush");
+        si.end = 1;
+        selection = &si;
+
         // Render selection background
         if (selection && selection->bgBrush && selection->end > selection->start)
         {
@@ -98,8 +108,9 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
             //    const float selStartExtent = (d_selectionStart > 0) ? font->getTextExtent(d_text.substr(0, d_selectionStart)) : 0;
             //    const float selEndExtent = font->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
             //    const Rectf selRect(pos.x + selStartExtent, pos.y, pos.x + selEndExtent, pos.y + line.extents.d_height);
-            //    ImageRenderSettings imgRenderSettings(selRect, clipRect, ColourRect(0xFF002FFF));
-            //    d_selectionImage->createRenderGeometry(out, imgRenderSettings);
+            ImageRenderSettings settings(Rectf(penPosition, line.extents), clipRect, selection->bgColours);
+            settings.d_destArea.d_max.x += line.justifyableCount * line.justifySpaceSize;
+            selection->bgBrush->createRenderGeometry(out, settings, canCombineFromIdx);
         }
 
         // Render glyph chunks using their associated elements
