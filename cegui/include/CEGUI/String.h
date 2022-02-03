@@ -369,6 +369,17 @@ public:
             return 0;
     }
 
+    static size_t getCodePointUtf8Size(char32_t currentCodeUnit)
+    {
+        if (currentCodeUnit < 0x80)
+            return 1;
+        if (currentCodeUnit < 0x800)
+            return 2;
+        if (currentCodeUnit < 0x10000)
+            return 3;
+        return 4;
+    }
+
     static char32_t convertCodePoint(const char firstCodeUnit,
                                      const char secondCodeUnit);
 

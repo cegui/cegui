@@ -593,7 +593,7 @@ size_t RenderedTextParagraph::getGlyphIndex(size_t textIndex) const
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         // Check if textIndex is in the middle of the multi-byte UTF-8 codepoint
         if (auto fontGlyph = d_glyphs[i].fontGlyph)
-            if (srcIndex < textIndex && textIndex < srcIndex + String::getCodePointSize(fontGlyph->getCodePoint()))
+            if (srcIndex < textIndex && textIndex < srcIndex + String::getCodePointUtf8Size(fontGlyph->getCodePoint()))
                 return i;
 #endif
     }
