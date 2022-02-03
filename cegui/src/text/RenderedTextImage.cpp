@@ -83,7 +83,7 @@ void RenderedTextImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
 
     glm::vec2 pos = penPosition;
     float heightScale = 1.f;
-    applyVerticalFormatting(lineHeight, pos, heightScale);
+    applyVerticalFormatting(lineHeight, pos.y, heightScale);
 
     const float imgWidth = (d_size.d_width > 0.f) ? d_size.d_width : d_image->getRenderedSize().d_width;
     const float imgHeight = (d_size.d_height > 0.f) ? d_size.d_height : d_image->getRenderedSize().d_height;

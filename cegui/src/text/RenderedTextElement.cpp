@@ -30,21 +30,21 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-void RenderedTextElement::applyVerticalFormatting(float lineHeight, glm::vec2& pos, float& heightScale) const
+void RenderedTextElement::applyVerticalFormatting(float lineHeight, float& posY, float& heightScale) const
 {
     switch (d_verticalFormatting)
     {
         case VerticalImageFormatting::BottomAligned:
         {
             const float heightPadded = getHeight();
-            pos.y += lineHeight - heightPadded;
+            posY += lineHeight - heightPadded;
             heightScale = 1.f;
             break;
         }
         case VerticalImageFormatting::CentreAligned:
         {
             const float heightPadded = getHeight();
-            pos.y += (lineHeight - heightPadded) * 0.5f;
+            posY += (lineHeight - heightPadded) * 0.5f;
             heightScale = 1.f;
             break;
         }

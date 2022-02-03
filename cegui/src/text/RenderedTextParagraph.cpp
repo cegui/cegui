@@ -519,15 +519,48 @@ size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt) const
 }
 
 //----------------------------------------------------------------------------//
-Rectf RenderedTextParagraph::getGlyphBounds(size_t glyphIndex) const
+Rectf RenderedTextParagraph::getGlyphBounds(size_t glyphIndex,
+    const std::vector<RenderedTextElementPtr>& elements) const
 {
-    //!!!can't use getGlyphLine because need to calc line y coord! cache it?!
-    //if (auto line = getGlyphLine(glyphIndex))
-    //{
-    //}
+    Rectf rect;
 
-    //!!!TODO TEXT IMPLEMENT!
-    return {};
+    if (d_linesDirty || glyphIndex >= d_glyphs.size())
+        return rect;
+
+    float lineY = 0.f;
+    uint32_t glyphStartIdx = 0;
+    for (const auto& line : d_lines)
+    {
+        if (line.heightDirty)
+            return rect;
+
+        if (glyphIndex >= line.glyphEndIdx)
+        {
+            lineY += line.extents.d_height;
+            glyphStartIdx = line.glyphEndIdx;
+            continue;
+        }
+
+        const auto& glyph = d_glyphs[glyphIndex];
+        const auto element = elements[glyph.elementIndex].get();
+
+        rect.d_min.x = line.horzOffset;
+        for (uint32_t i = glyphStartIdx; i < glyphIndex; ++i)
+            rect.d_min.x += d_glyphs[i].advance;
+
+        if (glyphIndex >= skipWrappedWhitespace(glyphStartIdx, line.glyphEndIdx))
+            rect.setWidth(std::max(glyph.advance, element->getGlyphWidth(glyph)));
+
+        rect.d_min.y = lineY;
+        float scale = 1.f;
+        element->applyVerticalFormatting(line.extents.d_height, rect.d_min.y, scale);
+
+        rect.setHeight(element->getHeight());
+
+        return rect;
+    }
+
+    return rect;
 }
 
 //----------------------------------------------------------------------------//

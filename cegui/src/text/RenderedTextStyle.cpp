@@ -69,7 +69,7 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out,
 {
     glm::vec2 pos = penPosition;
     float heightScale = 1.f;
-    applyVerticalFormatting(lineHeight, pos, heightScale);
+    applyVerticalFormatting(lineHeight, pos.y, heightScale);
 
     ImageRenderSettings settings(Rectf(), clipRect, d_colours, 1.f, true);
     if (modColours)
