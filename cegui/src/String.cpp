@@ -112,7 +112,7 @@ std::string String::convertUtf32ToUtf8(const char32_t* utf32String, const size_t
     // Go through every UTF-32 code unit
     for (size_t currentCharIndex = 0; currentCharIndex < stringLength; ++currentCharIndex)
     {
-        const char32_t& currentCodeUnit = utf32String[currentCharIndex];
+        const char32_t currentCodeUnit = utf32String[currentCharIndex];
 
         // Check if the UTF-32 code unit can be represented by a single UTF-8 code-unit
         if (currentCodeUnit < 0x80) 
