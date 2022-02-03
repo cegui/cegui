@@ -85,6 +85,7 @@ public:
     void updateHorizontalFormatting(float areaWidth);
 
     void accumulateExtents(Rectf& extents) const;
+    float getHeight() const;
 
     void onElementWidthChanged(size_t elementIndex, float diff);
     void onElementHeightChanged(size_t elementIndex, float diff);
@@ -108,9 +109,9 @@ public:
 
     size_t getLineCount() const { return d_linesDirty ? 1 : d_lines.size(); }
     size_t getTextIndexAtPoint(const glm::vec2& pt) const { return getTextIndex(getGlyphIndexAtPoint(pt)); }
-    Rectf getCodepointBounds(size_t textIndex, const std::vector<RenderedTextElementPtr>& elements) const { return getGlyphBounds(getGlyphIndex(textIndex), elements); }
+    bool getCodepointBounds(Rectf& out, size_t textIndex, const std::vector<RenderedTextElementPtr>& elements) const { return getGlyphBounds(out, getGlyphIndex(textIndex), elements); }
     size_t getGlyphIndexAtPoint(const glm::vec2& pt) const;
-    Rectf getGlyphBounds(size_t glyphIndex, const std::vector<RenderedTextElementPtr>& elements) const;
+    bool getGlyphBounds(Rectf& out, size_t glyphIndex, const std::vector<RenderedTextElementPtr>& elements) const;
     size_t getTextIndex(size_t glyphIndex) const;
     size_t getGlyphIndex(size_t textIndex) const;
 

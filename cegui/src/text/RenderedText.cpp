@@ -490,17 +490,30 @@ bool RenderedText::isFittingIntoAreaWidth() const
 //----------------------------------------------------------------------------//
 size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt) const
 {
-    // iterate paragraphs
-    // offset point into paragraph coords
-    //!!!TODO TEXT IMPLEMENT!
+    if (pt.y < 0.f || pt.y > d_extents.d_height)
+        return npos;
+
+    glm::vec2 localPt = pt;
+    for (const auto& p : d_paragraphs)
+    {
+        const float paragraphHeight = p.getHeight();
+        if (localPt.y <= paragraphHeight)
+            return p.getTextIndexAtPoint(localPt);
+
+        localPt.y -= paragraphHeight;
+    }
+
     return npos;
 }
 
 //----------------------------------------------------------------------------//
 Rectf RenderedText::getCodepointBounds(size_t textIndex) const
 {
-    //!!!TODO TEXT IMPLEMENT!
-    return {};
+    Rectf rect;
+    for (const auto& p : d_paragraphs)
+        if (p.getCodepointBounds(rect, textIndex, d_elements))
+            break;
+    return rect;
 }
 
 }
