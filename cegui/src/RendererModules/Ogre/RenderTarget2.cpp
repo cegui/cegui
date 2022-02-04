@@ -182,7 +182,10 @@ void OgreRenderTextureTarget::setArea(const Rectf& area)
 void OgreRenderTextureTarget::activate()
 {
     if (d_needClear)
+    {
         d_renderPassDescriptor->mColour[0].loadAction = Ogre::LoadAction::Clear;
+        d_renderPassDescriptor->entriesModified( 1 );
+    }
 
     d_owner.initialiseRenderStateSettings(this);
 
@@ -196,6 +199,7 @@ void OgreRenderTextureTarget::deactivate()
     if (d_needClear)
     {
         d_renderPassDescriptor->mColour[0].loadAction = Ogre::LoadAction::Load;
+        d_renderPassDescriptor->entriesModified( 1 );
         d_needClear = false;
     }
 
