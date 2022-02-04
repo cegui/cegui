@@ -27,7 +27,12 @@
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
 #include "CEGUI/RendererModules/Ogre/Texture.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/DataContainer.h"
 #include <Ogre.h>
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+#include <OgreImage2.h>
+#include <OgreTextureBox.h>
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -62,13 +67,24 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
             data.getSize(), false));
 
     // load the image
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    Ogre::Image2 image;
+#else
     Ogre::Image image;
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32) 
     image.load(stream, d_dataTypeID.c_str());
 #else
     image.load(stream, String::convertUtf32ToUtf8(d_dataTypeID.getString()).c_str());
 #endif
 
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    // load the resulting image into the texture
+    result->loadFromMemory(image.getData(0).data,
+                           Sizef(static_cast<float>(image.getWidth()),
+                                 static_cast<float>(image.getHeight()) ),
+                           OgreTexture::fromOgrePixelFormat( image.getPixelFormat() ));
+#else
     const PixelFormat ogre_pf = image.getFormat();
     const Texture::PixelFormat cegui_pf =
         OgreTexture::fromOgrePixelFormat(ogre_pf);
@@ -76,6 +92,7 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
     // discover the pixel format and number of pixel components
     int components;
     bool rbswap;
+
     switch (ogre_pf)
     {
         case PF_R8G8B8:
@@ -115,6 +132,7 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
                            Sizef(static_cast<float>(image.getWidth()),
                                  static_cast<float>(image.getHeight()) ),
                            cegui_pf);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     return result;
 }

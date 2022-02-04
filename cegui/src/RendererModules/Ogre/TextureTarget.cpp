@@ -24,6 +24,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+
+#include "CEGUI/RendererModules/Ogre/Renderer.h"
+#ifndef CEGUI_USE_OGRE_TEXTURE_GPU
+
 #include "CEGUI/RendererModules/Ogre/TextureTarget.h"
 #include "CEGUI/RendererModules/Ogre/Texture.h"
 #include "CEGUI/PropertyHelper.h"
@@ -156,3 +160,4 @@ template class CEGUI::OgreRenderTarget<CEGUI::TextureTarget>;
 
 #endif
 
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU

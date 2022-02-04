@@ -24,6 +24,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+
+#include "CEGUI/RendererModules/Ogre/Renderer.h"
+#ifndef CEGUI_USE_OGRE_TEXTURE_GPU
+
 #include "CEGUI/RendererModules/Ogre/RenderTarget.h"
 #include "CEGUI/RendererModules/Ogre/GeometryBuffer.h"
 #include "CEGUI/Exceptions.h"
@@ -232,3 +236,5 @@ void OgreRenderTarget::setArea(const Rectf& area)
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU

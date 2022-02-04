@@ -30,6 +30,7 @@
 #include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/RenderEffect.h"
+#include "CEGUI/RenderMaterial.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ShaderParameterBindings.h"
 
@@ -42,7 +43,6 @@
 
 #ifdef CEGUI_USE_OGRE_HLMS
 #include <OgreHlmsSamplerblock.h>
-#include <OgreRenderTarget.h>
 #include <OgreViewport.h>
 #endif
 
@@ -96,7 +96,11 @@ void OgreGeometryBuffer::draw(std::uint32_t drawModeMask) const
     
     // If this viewport approach fails we'll probably need to mess with the
     // set hlms macro block in the Renderer
+    #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    Ogre::Viewport* currentViewport = &d_renderSystem._getCurrentRenderViewport();
+    #else
     Ogre::Viewport* currentViewport = d_renderSystem._getViewport();
+    #endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     Rectf previousClipRect;
     previousClipRect.left(currentViewport->getScissorLeft());
@@ -110,10 +114,11 @@ void OgreGeometryBuffer::draw(std::uint32_t drawModeMask) const
     {
     #ifdef CEGUI_USE_OGRE_HLMS
         setScissorRects(currentViewport);
-		
+        #ifndef CEGUI_USE_OGRE_TEXTURE_GPU
 		// clear and re-set viewport to have ogre apply the actual scissor settings
 		d_renderSystem._setViewport(NULL);
 		d_renderSystem._setViewport(currentViewport);
+        #endif // CEGUI_USE_OGRE_TEXTURE_GPU
     #else
         setScissorRects();
     #endif //CEGUI_USE_OGRE_HLMS
@@ -178,9 +183,11 @@ void OgreGeometryBuffer::draw(std::uint32_t drawModeMask) const
             previousClipRect.right(), previousClipRect.bottom());
         // Restore viewport? d_renderSystem._setViewport(previousViewport);
 		
+        #ifndef CEGUI_USE_OGRE_TEXTURE_GPU
 		// clear and re-set viewport to have ogre apply the previous scissor settings
 		d_renderSystem._setViewport(NULL);
 		d_renderSystem._setViewport(currentViewport);
+        #endif // CEGUI_USE_OGRE_TEXTURE_GPU
     #else
         d_renderSystem.setScissorTest(false);
     #endif //CEGUI_USE_OGRE_HLMS
@@ -273,7 +280,7 @@ void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
     
 #ifdef CEGUI_USE_OGRE_HLMS
     // basic initialisation of render op
-    d_renderOp.vertexData = OGRE_NEW Ogre::v1::VertexData();
+    d_renderOp.vertexData = OGRE_NEW Ogre::v1::VertexData(0);
     d_renderOp.operationType = Ogre::OT_TRIANGLE_LIST;
     d_renderOp.useIndexes = false;
 

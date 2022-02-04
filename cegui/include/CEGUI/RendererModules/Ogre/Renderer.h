@@ -63,6 +63,10 @@
 #include <OgreHlmsSamplerblock.h>
 #endif
 
+#if (CEGUI_OGRE_VERSION >= ((2 << 16) | (1 << 9) | 0))
+#define CEGUI_USE_OGRE_TEXTURE_GPU
+#endif
+
 namespace Ogre
 {
 class Root;
@@ -100,6 +104,7 @@ class OgreTexture;
 class OgreResourceProvider;
 class OgreImageCodec;
 class OgreWindowTarget;
+class OgreRenderTextureTarget;
 struct OgreRenderer_impl;
 
 //! CEGUI::Renderer implementation for the Ogre engine.
@@ -157,8 +162,13 @@ public:
     \return
         Reference to the CEGUI::OgreRenderer object that was created.
     */
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    static OgreRenderer& bootstrapSystem(Ogre::Window* target,
+                                         const int abi = CEGUI_VERSION_ABI);
+#else
     static OgreRenderer& bootstrapSystem(Ogre::RenderTarget& target,
                                          const int abi = CEGUI_VERSION_ABI);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     /*!
     \brief
@@ -195,15 +205,25 @@ public:
         Create an OgreRenderer object that uses the specified Ogre::RenderTarget
         as the default output surface.
     */
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    static OgreRenderer& create(Ogre::Window* target,
+                                const int abi = CEGUI_VERSION_ABI);
+#else
     static OgreRenderer& create(Ogre::RenderTarget& target,
                                 const int abi = CEGUI_VERSION_ABI);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     /*!
       \brief
       Creates a new renderer that can be used to create a context on a new Ogre window
     */
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    static OgreRenderer& registerWindow(OgreRenderer& main_window,
+        Ogre::Window* new_window);
+#else
     static OgreRenderer& registerWindow(OgreRenderer& main_window,
         Ogre::RenderTarget &new_window);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     //! destroy an OgreRenderer object.
     static void destroy(OgreRenderer& renderer);
@@ -230,8 +250,11 @@ public:
     //! Function to initialize required Ogre::Compositor2 workspaces
     static void createOgreCompositorResources();
 
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+#else
     //! Function to update the workspace render target
     void updateWorkspaceRenderTarget(Ogre::RenderTarget& target);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
@@ -258,8 +281,13 @@ public:
         - false if ownership of \a tex remains with the client app, and so
         no attempt will be made to destroy \a tex when the Texture is destroyed.
     */
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    Texture& createTexture(const String& name, Ogre::TextureGpu* tex,
+                           bool take_ownership = false);
+#else
     Texture& createTexture(const String& name, Ogre::TexturePtr& tex,
                            bool take_ownership = false);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     //! set the render states for the specified BlendMode.
     void setupRenderingBlendMode(const BlendMode mode,
@@ -342,7 +370,11 @@ public:
 
     \param target Sets the target for rendering required by PSO Cache
     */
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    void initialiseRenderStateSettings(OgreRenderTextureTarget* target);
+#else
     void initialiseRenderStateSettings(Ogre::RenderTarget* target);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 #else
     /*!
         \brief
@@ -364,7 +396,11 @@ public:
         Reference to the Ogre::RenderTarget object that is to be used as the
         target for output from the default GUIContext.
     */
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    void setDefaultRootRenderTarget(Ogre::Window* target);
+#else
     void setDefaultRootRenderTarget(Ogre::RenderTarget& target);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     //! \brief Sets the correct BlendMode for rendering a GeometryBuffer
     void bindBlendMode(BlendMode blend);
@@ -418,6 +454,7 @@ public:
     virtual bool isTexCoordSystemFlipped() const;
 
     virtual Texture& createTexture(const String& name);
+    virtual Texture& createTexture(const String& name, bool notNullTexture);
     virtual Texture& createTexture(const String& name, const String& filename,
         const String& resourceGroup);
     virtual Texture& createTexture(const String& name, const Sizef& size);
@@ -461,7 +498,11 @@ protected:
     //! default constructor.
     OgreRenderer();
     //! constructor takin the Ogre::RenderTarget to use as the default root.
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    OgreRenderer(Ogre::Window* target);
+#else
     OgreRenderer(Ogre::RenderTarget& target);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
     //! destructor.
     virtual ~OgreRenderer();
 
@@ -475,7 +516,11 @@ protected:
     static void logTextureDestruction(const String& name);
 
     //! common parts of constructor
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    void constructor_impl(Ogre::Window* target);
+#else
     void constructor_impl(Ogre::RenderTarget& target);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
     //! Helper that switches off shader-usage
     void switchShaderUsageOff();
     //! helper that creates and sets up shaders
