@@ -228,7 +228,7 @@ void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, uin
 
 //----------------------------------------------------------------------------//
 void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
-    FreeTypeFontGlyph* glyph, Texture* texture, FT_Bitmap& glyphBitmap, uint32_t glyphLeft, uint32_t glyphTop,
+    FreeTypeFontGlyph* glyph, Texture* texture, FT_Bitmap& glyphBitmap, int32_t glyphLeft, int32_t glyphTop,
     uint32_t glyphWidth, uint32_t glyphHeight, uint32_t layer, const TextureGlyphLine& glyphTexLine) const
 {
     // Create the data containing the pixels of the glyph
@@ -298,8 +298,8 @@ size_t FreeTypeFont::findTextureLineWithFittingSpot(uint32_t glyphWidth, uint32_
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap, uint32_t glyphLeft,
-    uint32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight, uint32_t layer) const
+void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap, int32_t glyphLeft,
+    int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight, uint32_t layer) const
 {
     if (d_glyphTextures.empty())
         createGlyphAtlasTexture();
