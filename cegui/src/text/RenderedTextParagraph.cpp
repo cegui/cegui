@@ -88,9 +88,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
     {
         penPosition.x += line.horzOffset;
 
-        // Skip leading whitespaces in word wrapped lines
-        if (d_wordWrap)
-            i = skipWrappedWhitespace(i, line.glyphEndIdx);
+        i = skipWrappedWhitespace(i, line.glyphEndIdx);
 
         //!!!DBG TMP!
         SelectionInfo si;
@@ -627,7 +625,7 @@ size_t RenderedTextParagraph::getGlyphIndex(size_t textIndex) const
 uint32_t RenderedTextParagraph::skipWrappedWhitespace(uint32_t start, uint32_t end) const
 {
     // Never skip leading whitespaces in a paragraph
-    if (!start || !d_skipWrappedWhitespace)
+    if (!start || !d_wordWrap || !d_skipWrappedWhitespace)
         return start;
 
     for (uint32_t i = start; i < end; ++i)
