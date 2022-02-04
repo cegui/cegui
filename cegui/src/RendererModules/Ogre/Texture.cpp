@@ -87,6 +87,7 @@ std::uint32_t OgreTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 OgreTexture::OgreTexture(const String& name, bool notNullTexture) :
+    d_texture(0),
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
@@ -100,6 +101,7 @@ OgreTexture::OgreTexture(const String& name, bool notNullTexture) :
 //----------------------------------------------------------------------------//
 OgreTexture::OgreTexture(const String& name, const String& filename,
                          const String& resourceGroup) :
+    d_texture(0),
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
@@ -111,6 +113,7 @@ OgreTexture::OgreTexture(const String& name, const String& filename,
 
 //----------------------------------------------------------------------------//
 OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
+    d_texture(0),
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
@@ -175,6 +178,7 @@ OgreTexture::OgreTexture(const String& name, Ogre::TextureGpu* tex,
 OgreTexture::OgreTexture(const String& name, Ogre::TexturePtr& tex,
                          bool take_ownership) :
 #endif // CEGUI_USE_OGRE_TEXTURE_GPU
+    d_texture(0),
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
