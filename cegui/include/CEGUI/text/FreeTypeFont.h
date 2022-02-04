@@ -288,13 +288,13 @@ protected:
 
     //! Rasterises the glyph and adds it into a glyph atlas texture
     void rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap,
-        uint32_t glyphLeft, uint32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight,
+        int32_t glyphLeft, int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight,
         uint32_t layer) const;
     
     //! Helper functions for rasterisation
     void addRasterisedGlyphToTextureAndSetupGlyphImage(
         FreeTypeFontGlyph* glyph, Texture* texture,
-        FT_Bitmap& glyphBitmap, uint32_t glyphLeft, uint32_t glyphTop,
+        FT_Bitmap& glyphBitmap, int32_t glyphLeft, int32_t glyphTop,
         uint32_t glyphWidth, uint32_t glyphHeight, uint32_t layer,
         const TextureGlyphLine& glyphTexLine) const;
 
