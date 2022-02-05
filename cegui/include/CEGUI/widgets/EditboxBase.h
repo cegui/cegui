@@ -36,7 +36,6 @@
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 class UndoHandler;
@@ -45,9 +44,8 @@ class UndoHandler;
 class CEGUIEXPORT EditboxBase : public Window
 {
 public:
-    //! Namespace for global events
+
     static const String EventNamespace;
-    //! Window factory name
     static const String WidgetTypeName;
            
     /** Event fired when the read-only mode for the edit box is changed.
@@ -127,11 +125,8 @@ public:
      */
     static const String ReadOnlyCursorImagePropertyName;
 
-    //! Constructor for Editbox class.
     EditboxBase(const String& type, const String& name);
-
-    //! Destructor for Editbox class.
-    virtual ~EditboxBase();
+    virtual ~EditboxBase() override;
 
     /*!
     \brief
@@ -166,7 +161,6 @@ public:
     */
     bool isTextMaskingEnabled() const { return d_textMaskingEnabled; }
 
-
     /*!
     \brief
         return the current position of the caret.
@@ -185,7 +179,7 @@ public:
         If no selection is defined this function returns the position of the
         caret.
     */
-    size_t getSelectionStart() const;
+    size_t getSelectionStart() const { return (d_selectionStart != d_selectionEnd) ? d_selectionStart : d_caretPos; }
 
     /*!
     \brief
@@ -195,7 +189,7 @@ public:
         Index of the selection end point relative to the start of the text.  If
         no selection is defined this function returns the position of the caret.
     */
-    size_t getSelectionEnd() const;
+    size_t getSelectionEnd() const { return (d_selectionStart != d_selectionEnd) ? d_selectionEnd : d_caretPos; }
 
     /*!
     \brief
@@ -206,7 +200,7 @@ public:
         Number of code points (or characters) contained within the currently
         defined selection.
     */
-    size_t getSelectionLength() const;
+    size_t getSelectionLength() const { return d_selectionEnd - d_selectionStart; }
 
     /*!
     \brief
@@ -272,7 +266,7 @@ public:
     \return
         Nothing.
     */
-    virtual void setCaretIndex(size_t caret_pos) = 0;
+    virtual void setCaretIndex(size_t caretPos);
 
     /*!
     \brief
@@ -349,24 +343,11 @@ public:
     */
     virtual void setMaxTextLength(size_t max_len) = 0;
 
-    /*!
-    \brief
-        Return text string with \e visual ordering of glyphs. This
-        only returns meaningful data if using only bidi. Will return
-        the regular text String if using raqm or no bidi.
-    */
-    const String& getTextVisual() const;
-
     //! Gets the default paragraph direction for the displayed text.
     DefaultParagraphDirection getDefaultParagraphDirection() const { return d_defaultParagraphDirection; }
 
     //! Sets the default paragraph direction for the displayed text.
     void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);
-
-#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-    const std::vector<int>& getL2vMapping() const { return d_l2vMapping; }
-    const std::vector<int>& getV2lMapping() const { return d_v2lMapping; }
-#endif
 
     //! \copydoc Window::performCopy
     bool performCopy(Clipboard& clipboard) override;
@@ -568,14 +549,7 @@ protected:
     void onCaptureLost(WindowEventArgs& e) override;
 
     void onCharacter(TextEventArgs& e) override = 0;
-    void onTextChanged(WindowEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override = 0;
-
-#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-    mutable std::vector<int> d_l2vMapping;
-    mutable std::vector<int> d_v2lMapping;
-    mutable String d_textVisual;
-#endif
 
     //! The read only mouse cursor image.
     const Image* d_readOnlyCursorImage = nullptr;
@@ -594,7 +568,7 @@ protected:
     //! Selection index for drag selection anchor point.
     size_t d_dragAnchorIdx;
     //! Undo handler
-    UndoHandler *d_undoHandler;
+    std::unique_ptr<UndoHandler> d_undoHandler;
     //! Default direction of the paragraph, relevant for bidirectional text.
     mutable DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
     //! True if the editbox is in read-only mode
@@ -603,10 +577,6 @@ protected:
     bool d_textMaskingEnabled = false;
     //! true when a selection is being dragged.
     bool d_dragging = false;
-#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-    //! whether bidi visual mapping has been updated since last text change.
-    mutable bool d_bidiDataValid = false;
-#endif
 
 private:
 

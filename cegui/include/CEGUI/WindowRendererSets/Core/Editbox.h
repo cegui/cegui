@@ -146,8 +146,6 @@ protected:
 
     //! helper to draw the base imagery (container and what have you)
     void renderBaseImagery(const WidgetLookFeel& wlf) const;
-    //! helper to set 'visual' to the string we will render (part of)
-    void setupVisualString(String& visual) const;
 
     /*!
     \brief
@@ -157,10 +155,6 @@ protected:
     float getTextOffsetVisual(const Rectf& textArea, float textExtent) const;
 
     void createRenderGeometryForText(const WidgetLookFeel& wlf, const String& text, const Rectf& textArea, float textOffset);
-
-    void renderCaret(const ImagerySection& imagery, const Rectf& textArea, float textOffset, float extentToCaret) const;
-
-    bool isUnsupportedFormat(HorizontalTextFormatting format) const;
 
     RenderedText d_renderedText;
 

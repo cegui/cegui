@@ -29,11 +29,9 @@
 #include "CEGUI/widgets/EditboxBase.h"
 #include "CEGUI/falagard/XMLEnumHelper.h" // for DefaultParagraphDirection property helper
 #include "CEGUI/text/TextUtils.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/text/Font.h"
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/UndoHandler.h"
-#include "CEGUI/text/BidiVisualMapping.h"
 #include <string.h>
 
 namespace CEGUI
@@ -53,59 +51,36 @@ const String EditboxBase::EventEditboxFull("EditboxFull");
 const String EditboxBase::EventTextAccepted("TextAccepted");
 const String EditboxBase::ReadOnlyCursorImagePropertyName("ReadOnlyCursorImage");
 
-
-EditboxBase::EditboxBase(const String& type, const String& name) :
-    Window(type, name),
-    d_maxTextLen(String().max_size())
+//----------------------------------------------------------------------------//
+EditboxBase::EditboxBase(const String& type, const String& name)
+    : Window(type, name)
+    , d_maxTextLen(String().max_size())
+    , d_undoHandler(new UndoHandler(this))
 {
     addEditboxBaseProperties();
-
-    d_undoHandler = new UndoHandler(this);
 }
 
+//----------------------------------------------------------------------------//
+EditboxBase::~EditboxBase() = default;
 
-EditboxBase::~EditboxBase(void)
-{
-    delete d_undoHandler;
-}
-
-
-size_t EditboxBase::getSelectionStart(void) const
-{
-    return (d_selectionStart != d_selectionEnd) ? d_selectionStart : d_caretPos;
-}
-
-
-size_t EditboxBase::getSelectionEnd(void) const
-{
-    return (d_selectionStart != d_selectionEnd) ? d_selectionEnd : d_caretPos;
-}
-
-
-size_t EditboxBase::getSelectionLength(void) const
-{
-    return d_selectionEnd - d_selectionStart;
-}
-
-
+//----------------------------------------------------------------------------//
 void EditboxBase::setReadOnly(bool setting)
 {
-    // if setting is changed
-    if (d_readOnly != setting)
-    {
-        d_readOnly = setting;
-        WindowEventArgs args(this);
-        onReadOnlyChanged(args);
+    if (d_readOnly == setting)
+        return;
+
+    d_readOnly = setting;
+    WindowEventArgs args(this);
+    onReadOnlyChanged(args);
         
-        // Update the cursor according to the read only state.
-        if (setting)
-            setCursor(d_readOnlyCursorImage);
-        else
-            setCursor(getProperty<Image*>(Window::CursorImagePropertyName));
-    }
+    // Update the cursor according to the read only state.
+    if (setting)
+        setCursor(d_readOnlyCursorImage);
+    else
+        setCursor(getProperty<Image*>(Window::CursorImagePropertyName));
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::setEnabled(bool enabled)
 {
     Window::setEnabled(enabled);
@@ -117,46 +92,26 @@ void EditboxBase::setEnabled(bool enabled)
         setCursor(d_readOnlyCursorImage);
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::setTextMaskingEnabled(bool setting)
 {
-    // if setting is changed
-    if (d_textMaskingEnabled != setting)
-    {
-        d_textMaskingEnabled = setting;
-        WindowEventArgs args(this);
-        onTextMaskingEnabledChanged(args);
-    }
+    if (d_textMaskingEnabled == setting)
+        return;
 
-}
-
-void EditboxBase::setTextMaskingCodepoint(std::uint32_t code_point)
-{
-    if (code_point != d_textMaskingCodepoint)
-    {
-        d_textMaskingCodepoint = code_point;
-
-        // Trigger "mask code point changed" event
-        WindowEventArgs args(this);
-        onTextMaskingCodepointChanged(args);
-    }
-
+    d_textMaskingEnabled = setting;
+    WindowEventArgs args(this);
+    onTextMaskingEnabledChanged(args);
 }
 
 //----------------------------------------------------------------------------//
-const String& EditboxBase::getTextVisual() const
+void EditboxBase::setTextMaskingCodepoint(std::uint32_t code_point)
 {
-#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-    if (!d_bidiDataValid)
-    {
-        BidiVisualMapping::applyBidi(getText(), d_textVisual, d_l2vMapping, d_v2lMapping, d_defaultParagraphDirection);
-        d_bidiDataValid = true;
-    }
+    if (code_point == d_textMaskingCodepoint)
+        return;
 
-    return d_textVisual;
-#else
-    return getText();
-#endif
+    d_textMaskingCodepoint = code_point;
+    WindowEventArgs args(this);
+    onTextMaskingCodepointChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -173,123 +128,103 @@ void EditboxBase::setDefaultParagraphDirection(DefaultParagraphDirection default
     fireEvent(EventDefaultParagraphDirectionChanged, eventArgs, EventNamespace);
 }
 
-
-void EditboxBase::setCaretIndex(size_t caret_pos)
+//----------------------------------------------------------------------------//
+void EditboxBase::setCaretIndex(size_t caretPos)
 {
-    // make sure new position is valid
-    if (caret_pos > getText().length())
-        caret_pos = getText().length();
+    // Make sure new position is valid
+    if (caretPos > getText().length())
+        caretPos = getText().length();
 
-    // if new position is different
-    if (d_caretPos != caret_pos)
-    {
-        d_caretPos = caret_pos;
+    if (d_caretPos == caretPos)
+        return;
 
-        // Trigger "caret moved" event
-        WindowEventArgs args(this);
-        onCaretMoved(args);
-    }
+    d_caretPos = caretPos;
 
+    WindowEventArgs args(this);
+    onCaretMoved(args);
 }
 
+//----------------------------------------------------------------------------//
 void EditboxBase::setSelection(size_t start_pos, size_t end_pos)
 {
     // ensure selection start point is within the valid range
     if (start_pos > getText().length())
-    {
         start_pos = getText().length();
-    }
 
     // ensure selection end point is within the valid range
     if (end_pos > getText().length())
-    {
-        end_pos = getText().length() ;
-    }
+        end_pos = getText().length();
 
     // ensure start is before end
     if (start_pos > end_pos)
-    {
-        size_t tmp = end_pos;
-        end_pos = start_pos;
-        start_pos = tmp;
-    }
+        std::swap(start_pos, end_pos);
 
-    // only change state if values are different.
-    if ((start_pos != d_selectionStart) || (end_pos != d_selectionEnd))
+    if (start_pos != d_selectionStart || end_pos != d_selectionEnd)
     {
-        // setup selection
         d_selectionStart = start_pos;
         d_selectionEnd = end_pos;
 
-        // Trigger "selection changed" event
         WindowEventArgs args(this);
         onTextSelectionChanged(args);
     }
 }
 
+//----------------------------------------------------------------------------//
 void EditboxBase::setSelectionStart(size_t start_pos)
 {
 	setSelection(start_pos, start_pos + getSelectionLength());
 }
 
+//----------------------------------------------------------------------------//
 void EditboxBase::setSelectionLength(size_t length)
 {
-	setSelection(getSelectionStart(), getSelectionStart() + length);
+    const auto start = getSelectionStart();
+	setSelection(start, start + length);
 }
 
+//----------------------------------------------------------------------------//
 void EditboxBase::clearSelection(void)
 {
-    // perform action only if required.
-    if (getSelectionLength() != 0)
-    {
+    if (getSelectionLength())
         setSelection(0, 0);
-    }
-
 }
 
+//----------------------------------------------------------------------------//
 void EditboxBase::eraseSelectedText(bool modify_text)
 {
-    if (getSelectionLength() != 0)
+    if (!getSelectionLength())
+        return;
+
+    // setup new caret position and remove selection highlight.
+    setCaretIndex(d_selectionStart);
+    clearSelection();
+
+    // erase the selected characters (if required)
+    if (modify_text)
     {
-        // setup new caret position and remove selection highlight.
-        setCaretIndex(d_selectionStart);
-        clearSelection();
+        String newText = getText();
+        UndoHandler::UndoAction undo;
+        undo.d_type = UndoHandler::UndoActionType::Delete;
+        undo.d_startIdx = getSelectionStart();
+        undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
+        d_undoHandler->addUndoHistory(undo);
 
-        // erase the selected characters (if required)
-        if (modify_text)
-        {
-            String newText = getText();
-            UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::Delete;
-            undo.d_startIdx = getSelectionStart();
-            undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
-            d_undoHandler->addUndoHistory(undo);
-
-            newText.erase(getSelectionStart(), getSelectionLength());
-            setText(newText);
-
-            // trigger notification that text has changed.
-            WindowEventArgs args(this);
-            onTextChanged(args);
-        }
-
+        newText.erase(getSelectionStart(), getSelectionLength());
+        setText(newText);
     }
-
 }
 
+//----------------------------------------------------------------------------//
 bool EditboxBase::performCopy(Clipboard& clipboard)
 {
-    if (getSelectionLength() == 0)
+    if (!getSelectionLength())
         return false;
 
-    const String selectedText = getText().substr(
-        getSelectionStart(), getSelectionLength());
-
-    clipboard.setText(selectedText);
+    clipboard.setText(getText().substr(getSelectionStart(), getSelectionLength()));
     return true;
 }
 
-
+//----------------------------------------------------------------------------//
 bool EditboxBase::performCut(Clipboard& clipboard)
 {
     if (isReadOnly())
@@ -302,25 +237,22 @@ bool EditboxBase::performCut(Clipboard& clipboard)
     return true;
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::onCursorPressHold(CursorInputEventArgs& e)
 {
-    // base class handling
     Window::onCursorPressHold(e);
 
     if (e.source == CursorInputSource::Left)
     {
-        // grab inputs
         if (captureInput())
         {
-            // handle cursor press
             clearSelection();
             d_dragging = true;
             d_dragAnchorIdx = getTextIndexFromPosition(e.position);
 #if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-            if (getV2lMapping().size() > d_dragAnchorIdx)
-                d_dragAnchorIdx =
-                    getV2lMapping()[d_dragAnchorIdx];
+            //if (getV2lMapping().size() > d_dragAnchorIdx)
+            //    d_dragAnchorIdx =
+            //        getV2lMapping()[d_dragAnchorIdx];
 #endif
             setCaretIndex(d_dragAnchorIdx);
         }
@@ -329,7 +261,7 @@ void EditboxBase::onCursorPressHold(CursorInputEventArgs& e)
     }
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::onCursorActivate(CursorInputEventArgs& e)
 {
     Window::onCursorActivate(e);
@@ -341,47 +273,34 @@ void EditboxBase::onCursorActivate(CursorInputEventArgs& e)
     }
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::onCursorMove(CursorInputEventArgs& e)
 {
-    // base class processing
     Window::onCursorMove(e);
 
     if (d_dragging)
     {
         size_t anchorIdx = getTextIndexFromPosition(e.position);
 #if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-        if (getV2lMapping().size() > anchorIdx)
-            anchorIdx = getV2lMapping()[anchorIdx];
+        //if (getV2lMapping().size() > anchorIdx)
+        //    anchorIdx = getV2lMapping()[anchorIdx];
 #endif
         setCaretIndex(anchorIdx);
-
         setSelection(d_caretPos, d_dragAnchorIdx);
     }
 
     ++e.handled;
 }
 
-void EditboxBase::onTextChanged(WindowEventArgs& e)
-{
-#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-    d_bidiDataValid = false;
-#endif
-
-    Window::onTextChanged(e);
-}
-
+//----------------------------------------------------------------------------//
 void EditboxBase::onCaptureLost(WindowEventArgs& e)
 {
     d_dragging = false;
-
-    // base class processing
     Window::onCaptureLost(e);
-
     ++e.handled;
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::handleCharLeft(bool select)
 {
     if (d_caretPos > 0)
@@ -400,34 +319,24 @@ void EditboxBase::handleCharLeft(bool select)
     }
 
     if (select)
-    {
         setSelection(d_caretPos, d_dragAnchorIdx);
-    }
     else
-    {
         clearSelection();
-    }
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::handleWordLeft(bool select)
 {
     if (d_caretPos > 0)
-    {
         setCaretIndex(TextUtils::getWordStartIndex(getText(), getCaretIndex()));
-    }
 
     if (select)
-    {
         setSelection(d_caretPos, d_dragAnchorIdx);
-    }
     else
-    {
         clearSelection();
-    }
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::handleCharRight(bool select)
 {
     if (d_caretPos < getText().length())
@@ -438,21 +347,16 @@ void EditboxBase::handleCharRight(bool select)
         const CEGUI::String& currentText = getText();
         size_t codePointSize = String::getCodePointSize(currentText[d_caretPos]);
 #endif
-
         setCaretIndex(d_caretPos + codePointSize);
     }
 
     if (select)
-    {
         setSelection(d_caretPos, d_dragAnchorIdx);
-    }
     else
-    {
         clearSelection();
-    }
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::handleWordRight(bool select)
 {
     if (d_caretPos < getText().length())
@@ -464,208 +368,125 @@ void EditboxBase::handleWordRight(bool select)
         clearSelection();
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::handleHome(bool select)
 {
     if (d_caretPos > 0)
-    {
         setCaretIndex(0);
-    }
 
     if (select)
-    {
         setSelection(d_caretPos, d_dragAnchorIdx);
-    }
     else
-    {
         clearSelection();
-    }
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::handleEnd(bool select)
 {
     if (d_caretPos < getText().length())
-    {
         setCaretIndex(getText().length());
-    }
 
     if (select)
-    {
         setSelection(d_caretPos, d_dragAnchorIdx);
-    }
     else
-    {
         clearSelection();
-    }
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::handleSelectAll()
 {
     setSelection(0, getText().length());
     setCaretIndex(getText().length());
 }
 
+//----------------------------------------------------------------------------//
 void EditboxBase::onReadOnlyChanged(WindowEventArgs& e)
 {
     invalidate();
     fireEvent(EventReadOnlyModeChanged, e, EventNamespace);
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::onTextMaskingEnabledChanged(WindowEventArgs& e)
 {
     invalidate();
     fireEvent(EventTextMaskingEnabledChanged , e, EventNamespace);
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::onTextMaskingCodepointChanged(WindowEventArgs& e)
 {
-    // if we are in masked mode, trigger a GUI redraw.
     if (isTextMaskingEnabled())
         invalidate();
 
     fireEvent(EventTextMaskingCodepointChanged , e, EventNamespace);
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::onMaximumTextLengthChanged(WindowEventArgs& e)
 {
     fireEvent(EventMaximumTextLengthChanged , e, EventNamespace);
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::onCaretMoved(WindowEventArgs& e)
 {
     invalidate();
-    fireEvent(EventCaretMoved , e, EventNamespace);
+    fireEvent(EventCaretMoved, e, EventNamespace);
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::onTextSelectionChanged(WindowEventArgs& e)
 {
     invalidate();
     fireEvent(EventTextSelectionChanged , e, EventNamespace);
 }
 
-
+//----------------------------------------------------------------------------//
 void EditboxBase::onEditboxFullEvent(WindowEventArgs& e)
 {
     fireEvent(EventEditboxFull, e, EventNamespace);
 }
 
-
-void EditboxBase::addEditboxBaseProperties(void)
-{
-    const String& propertyOrigin = WidgetTypeName;
-
-    CEGUI_DEFINE_PROPERTY(EditboxBase, bool,
-        "ReadOnly", "Property to get/set the read-only setting for the Editbox.  Value is either \"true\" or \"false\".",
-        &EditboxBase::setReadOnly, &EditboxBase::isReadOnly, false
-    );
-
-    CEGUI_DEFINE_PROPERTY(EditboxBase, bool,
-        "TextMaskingEnabled","Property to get/set the mask text setting for the Editbox.  Value is either \"true\" or \"false\".",
-        &EditboxBase::setTextMaskingEnabled, &EditboxBase::isTextMaskingEnabled, false
-    );
-
-    CEGUI_DEFINE_PROPERTY(EditboxBase, std::uint32_t,
-        "TextMaskingCodepoint","Property to get/set the UTF-32 codepoint value used for masking text. "
-        "Value is 32 bit unsigned integer representing an UTF-32 codepoint.",
-        &EditboxBase::setTextMaskingCodepoint, &EditboxBase::getTextMaskingCodepoint, 
-        42
-    );
-
-    CEGUI_DEFINE_PROPERTY(EditboxBase, size_t,
-        "CaretIndex", "Property to get/set the current caret index.  Value is \"[uint]\".",
-        &EditboxBase::setCaretIndex, &EditboxBase::getCaretIndex, 0
-    );
-
-    CEGUI_DEFINE_PROPERTY(EditboxBase, size_t,
-        "SelectionStart", "Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".",
-        &EditboxBase::setSelectionStart, &EditboxBase::getSelectionStart, 0
-    );
-
-    CEGUI_DEFINE_PROPERTY(EditboxBase, size_t,
-        "SelectionLength", "Property to get/set the length of the selection (as a count of the number of code points selected).  Value is \"[uint]\".",
-        &EditboxBase::setSelectionLength, &EditboxBase::getSelectionLength, 0
-    );
-
-    CEGUI_DEFINE_PROPERTY(EditboxBase, size_t,
-        "MaxTextLength", "Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".",
-        &EditboxBase::setMaxTextLength, &EditboxBase::getMaxTextLength, String().max_size()
-    );
-    CEGUI_DEFINE_PROPERTY(EditboxBase, Image*,
-        "ReadOnlyCursorImage", "Property to get/set the mouse cursor image "
-        "for the EditBox when in Read-only mode.  Value should be \"imageset/image_name\". "
-        "Value is the image to use.",
-        &EditboxBase::setReadOnlyCursorImage, &EditboxBase::getReadOnlyCursorImage, nullptr
-    );
-
-    CEGUI_DEFINE_PROPERTY(EditboxBase, DefaultParagraphDirection,
-        "DefaultParagraphDirection", "Property to get/set the default paragraph direction. "
-        "This is only in effect if raqm is linked and activated. It sets the default order of the "
-        "words in a paragraph, which is relevant when having sentences in a RightToLeft language that "
-        "may start with a word (or to be specific: first character of a word) from a LeftToRight language. "
-        "Example: If the mode is set to Automatic and the first word of a paragraph in Hebrew is a German "
-        "company name, written in German alphabet, the German word will end up left, whereas the rest of "
-        "the Hebrew sentences starts from the righ, continuing towards the left. With the setting RightToLeft "
-        "the sentence will start on the very right with the German word, as would be expected in a mainly "
-        "RightToLeft written paragraph. If the language of the UI user is known, then either LeftToRight "
-        "or RightToLeft should be chosen for the paragraphs. Default is LeftToRight."
-        "Value is one of \"LeftToRight\", \"RightToLeft\" or \"Automatic\".",
-        &EditboxBase::setDefaultParagraphDirection, &EditboxBase::getDefaultParagraphDirection,
-        DefaultParagraphDirection::LeftToRight
-    );
-}
-
-
+//----------------------------------------------------------------------------//
 size_t EditboxBase::getCaretIndex(void) const
 {
 #if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-    size_t caretPos = d_caretPos;
-    if (getL2vMapping().size() > caretPos)
-        caretPos = getL2vMapping()[caretPos];
+    //size_t caretPos = d_caretPos;
+    //if (getL2vMapping().size() > caretPos)
+    //    caretPos = getL2vMapping()[caretPos];
 #endif
 
     return d_caretPos;
 }
 
-
+//----------------------------------------------------------------------------//
 bool EditboxBase::performUndo()
 {
     bool result = false;
     if (!isReadOnly())
     {
         clearSelection();
-
         result = d_undoHandler->undo(d_caretPos);
-        WindowEventArgs args(this);
-        onTextChanged(args);
     }
 
     return result;
 }
 
-
+//----------------------------------------------------------------------------//
 bool EditboxBase::performRedo()
 {
     bool result = false;
     if (!isReadOnly())
     {
         clearSelection();
-
         result = d_undoHandler->redo(d_caretPos);
-        WindowEventArgs args(this);
-        onTextChanged(args);
     }
 
     return result;
 }
 
-
+//----------------------------------------------------------------------------//
 bool EditboxBase::handleBasicSemanticValue(SemanticEventArgs& e)
 {
     switch (e.d_semanticValue)
@@ -737,6 +558,72 @@ bool EditboxBase::handleBasicSemanticValue(SemanticEventArgs& e)
     return true;
 }
 
+//----------------------------------------------------------------------------//
+void EditboxBase::addEditboxBaseProperties(void)
+{
+    const String& propertyOrigin = WidgetTypeName;
+
+    CEGUI_DEFINE_PROPERTY(EditboxBase, bool,
+        "ReadOnly", "Property to get/set the read-only setting for the Editbox.  Value is either \"true\" or \"false\".",
+        &EditboxBase::setReadOnly, &EditboxBase::isReadOnly, false
+    );
+
+    CEGUI_DEFINE_PROPERTY(EditboxBase, bool,
+        "TextMaskingEnabled", "Property to get/set the mask text setting for the Editbox.  Value is either \"true\" or \"false\".",
+        &EditboxBase::setTextMaskingEnabled, &EditboxBase::isTextMaskingEnabled, false
+    );
+
+    CEGUI_DEFINE_PROPERTY(EditboxBase, std::uint32_t,
+        "TextMaskingCodepoint", "Property to get/set the UTF-32 codepoint value used for masking text. "
+        "Value is 32 bit unsigned integer representing an UTF-32 codepoint.",
+        &EditboxBase::setTextMaskingCodepoint, &EditboxBase::getTextMaskingCodepoint,
+        42
+    );
+
+    CEGUI_DEFINE_PROPERTY(EditboxBase, size_t,
+        "CaretIndex", "Property to get/set the current caret index.  Value is \"[uint]\".",
+        &EditboxBase::setCaretIndex, &EditboxBase::getCaretIndex, 0
+    );
+
+    CEGUI_DEFINE_PROPERTY(EditboxBase, size_t,
+        "SelectionStart", "Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".",
+        &EditboxBase::setSelectionStart, &EditboxBase::getSelectionStart, 0
+    );
+
+    CEGUI_DEFINE_PROPERTY(EditboxBase, size_t,
+        "SelectionLength", "Property to get/set the length of the selection (as a count of the number of code points selected).  Value is \"[uint]\".",
+        &EditboxBase::setSelectionLength, &EditboxBase::getSelectionLength, 0
+    );
+
+    CEGUI_DEFINE_PROPERTY(EditboxBase, size_t,
+        "MaxTextLength", "Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".",
+        &EditboxBase::setMaxTextLength, &EditboxBase::getMaxTextLength, String().max_size()
+    );
+    CEGUI_DEFINE_PROPERTY(EditboxBase, Image*,
+        "ReadOnlyCursorImage", "Property to get/set the mouse cursor image "
+        "for the EditBox when in Read-only mode.  Value should be \"imageset/image_name\". "
+        "Value is the image to use.",
+        &EditboxBase::setReadOnlyCursorImage, &EditboxBase::getReadOnlyCursorImage, nullptr
+    );
+
+    CEGUI_DEFINE_PROPERTY(EditboxBase, DefaultParagraphDirection,
+        "DefaultParagraphDirection", "Property to get/set the default paragraph direction. "
+        "This is only in effect if raqm is linked and activated. It sets the default order of the "
+        "words in a paragraph, which is relevant when having sentences in a RightToLeft language that "
+        "may start with a word (or to be specific: first character of a word) from a LeftToRight language. "
+        "Example: If the mode is set to Automatic and the first word of a paragraph in Hebrew is a German "
+        "company name, written in German alphabet, the German word will end up left, whereas the rest of "
+        "the Hebrew sentences starts from the righ, continuing towards the left. With the setting RightToLeft "
+        "the sentence will start on the very right with the German word, as would be expected in a mainly "
+        "RightToLeft written paragraph. If the language of the UI user is known, then either LeftToRight "
+        "or RightToLeft should be chosen for the paragraphs. Default is LeftToRight."
+        "Value is one of \"LeftToRight\", \"RightToLeft\" or \"Automatic\".",
+        &EditboxBase::setDefaultParagraphDirection, &EditboxBase::getDefaultParagraphDirection,
+        DefaultParagraphDirection::LeftToRight
+    );
+}
+
+//----------------------------------------------------------------------------//
 bool isSelectionSemanticValue(SemanticValue value)
 {
     return (value >= SemanticValue::SelectRange && value <= SemanticValue::SelectToEndOfLine) ||
