@@ -30,6 +30,7 @@
 #include "CEGUI/WindowRendererSets/Core/Module.h"
 #include "CEGUI/falagard/Enums.h"
 #include "CEGUI/widgets/Editbox.h"
+#include "CEGUI/text/RenderedText.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -154,8 +155,7 @@ protected:
         "Logical" here means that if the text is e.g. right aligned, then it's measured from the right end of the text,
         whereas "visual" is always measured from the left end of the text.
     */
-    float getExtentToCaretLogical(float extentToCaretVisual, float textExtent,
-                                float caretWidth) const;
+    float getExtentToCaretLogical(float extentToCaretVisual, float textExtent, float caretWidth) const;
 
     /*!
     \brief
@@ -169,6 +169,8 @@ protected:
     void renderCaret(const ImagerySection& imagery, const Rectf& textArea, float textOffset, float extentToCaret) const;
 
     bool isUnsupportedFormat(HorizontalTextFormatting format) const;
+
+    RenderedText d_renderedText;
 
     //! x rendering offset used last time we drew the widget.
     float d_textOffset = 0.f;
