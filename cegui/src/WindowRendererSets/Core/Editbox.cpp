@@ -35,6 +35,9 @@
 #include "CEGUI/TplWindowRendererProperty.h"
 #include <stdio.h>
 
+ //!!!DBG TMP!
+#include "CEGUI/ImageManager.h"
+
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
@@ -243,6 +246,12 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
     if (!font)
         return;
 
+    d_renderedText.renderText(text, nullptr, font, w->getDefaultParagraphDirection());
+
+    d_renderedText.setHorizontalFormatting(d_textFormatting);
+    d_renderedText.setWordWrappingEnabled(false);
+    //d_renderedText.updateDynamicObjectExtents(w); // no parsing implies no dynamic objects
+
     // setup initial rect for text formatting
     Rectf textPartRect = textArea;
     // allow for scroll position
@@ -254,90 +263,25 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
 
     const size_t selStart = w->getSelectionStart();
     const size_t selEnd = w->getSelectionEnd();
-
-    if (selStart >= selEnd)
+    SelectionInfo* selection = nullptr;
+    SelectionInfo selectionInfo;
+    if (selStart < selEnd)
     {
-        // No highlighted text - we can draw the whole thing
-        font->createTextRenderGeometry(w->getGeometryBuffers(), text, textPartRect.d_min,
-            &textArea, normalTextCol, w->getDefaultParagraphDirection());
+        //const auto& selectBrushImagery = wlf.getStateImagery(w->hasInputFocus() ? "ActiveSelection" : "InactiveSelection");
+        //!!!DBG TMP!
+        if (ImageManager::getSingleton().isDefined("TaharezLook/GenericBrush"))
+            selectionInfo.bgBrush = &ImageManager::getSingleton().get("TaharezLook/GenericBrush");
+
+        selectionInfo.bgColours = getOptionalColour(
+            w->hasInputFocus() ? ActiveSelectionColourPropertyName : InactiveSelectionColourPropertyName);
+        selectionInfo.textColours = getOptionalColour(SelectedTextColourPropertyName);
+        selectionInfo.start = selStart;
+        selectionInfo.end = selEnd;
+        selection = &selectionInfo;
     }
-    else
-    {
-        Rectf brushArea(textArea);
-        const size_t lineLength = text.size();
-        const auto& selectBrushImagery = wlf.getStateImagery(w->hasInputFocus() ? "ActiveSelection" : "InactiveSelection");
-        const ColourRect selectTextCol = getOptionalColour(SelectedTextColourPropertyName);
 
-#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-
-        // There is highlighted text - because of the Bidi support - the
-        // highlighted area can be in some cases nonconsecutive.
-        // So - we need to draw it char by char (I guess we can optimize it more
-        // but this is not that big performance hit because it only happens if
-        // we have highlighted text - not that common...)
-        for (size_t i = 0 ; i < lineLength; ++i)
-        {
-            // Get the visual pos of the char
-            size_t realPos = i;
-            if (w->getV2lMapping().size() > i)
-                realPos = w->getV2lMapping()[i];
-
-            const String charStr(&text[i], 1);
-
-            // Render the selection imagery
-            const bool selected = (realPos >= selStart && realPos < selEnd);
-            if (selected)
-            {
-                brushArea.d_min.x = textPartRect.d_min.x;
-                brushArea.d_max.x = textPartRect.d_min.x + font->getTextAdvance(charStr);
-                selectBrushImagery.render(*w, brushArea, nullptr, &textArea);
-            }
-
-            font->createTextRenderGeometry(w->getGeometryBuffers(), charStr, textPartRect.d_min,
-                &textArea, selected ? selectTextCol : normalTextCol, w->getDefaultParagraphDirection());
-        }
-
-#else // no CEGUI_BIDI_SUPPORT
-
-        float selStartOffset = 0.f;
-        float selEndOffset = 0.f;
-
-        if (selStart > 0)
-        {
-            const String sect = text.substr(0, selStart);
-
-            selStartOffset = font->getTextAdvance(sect);
-
-            // Create render geometry for pre-selected text
-            font->createTextRenderGeometry(w->getGeometryBuffers(), sect, textPartRect.d_min,
-                &textArea, normalTextCol, w->getDefaultParagraphDirection());
-        }
-
-        const bool hasPost = (selEnd < lineLength);
-        if (hasPost)
-            selEndOffset = font->getTextAdvance(text.substr(0, selEnd));
-        else
-            selEndOffset = font->getTextAdvance(text); // NB: if-else prevents temporary copy creation
-
-        // Render the selection imagery
-        brushArea.d_min.x += textOffset + selStartOffset;
-        brushArea.d_max.x = brushArea.d_min.x + (selEndOffset - selStartOffset);
-        selectBrushImagery.render(*w, brushArea, nullptr, &textArea);
-
-        // Create render geometry for selected text
-        font->createTextRenderGeometry(w->getGeometryBuffers(),
-            text.substr(selStart, selEnd - selStart), textPartRect.d_min,
-            &textArea, selectTextCol, w->getDefaultParagraphDirection());
-
-        // Create render geometry for post-selected text
-        if (hasPost)
-        {
-            font->createTextRenderGeometry(w->getGeometryBuffers(), text.substr(selEnd), textPartRect.d_min,
-                &textArea, normalTextCol, w->getDefaultParagraphDirection());
-        }
-
-#endif
-    }
+    d_renderedText.updateFormatting(textPartRect.getWidth());
+    d_renderedText.createRenderGeometry(w->getGeometryBuffers(), textPartRect.getPosition(), &normalTextCol, &textArea, selection);
 }
 
 //----------------------------------------------------------------------------//

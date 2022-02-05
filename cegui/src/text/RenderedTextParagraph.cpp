@@ -31,9 +31,6 @@
 #include "CEGUI/text/FontGlyph.h"
 #include <algorithm>
 
-//!!!DBG TMP!
-#include "CEGUI/ImageManager.h"
-
 namespace CEGUI
 {
 
@@ -90,15 +87,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
 
         i = skipWrappedWhitespace(i, line.glyphEndIdx);
 
-        //!!!DBG TMP!
-        SelectionInfo si;
-        if (ImageManager::getSingleton().isDefined("TaharezLook/GenericBrush"))
-            si.bgBrush = &ImageManager::getSingleton().get("TaharezLook/GenericBrush");
-        si.start = 4;
-        si.end = 29;
-        selection = &si;
-
-        //!!!TODO TEXT: render background color before selection and under it too, as selection can be transparent!
+        //!!!TODO TEXT: render background color before selection (under it too, because selection can be transparent)!
         //Need default bg color, selection color, selected text color etc + optional override from element.
 
         // Render selection background
