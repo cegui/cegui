@@ -201,46 +201,6 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel) 
 }
 
 //----------------------------------------------------------------------------//
-// The old way of rendering glyphs, without kerning and extended layouting
-void Font::layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const String& text, float spaceExtra, ImageRenderSettings& imgRenderSettings,
-    DefaultParagraphDirection /*defaultParagraphDir*/, glm::vec2& penPosition) const
-{
-    if (text.empty())
-        return;
-
-    penPosition.y += getBaseline();
-    const auto canCombineFromIdx = out.size();
-
-#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
-    for (size_t c = 0; c < text.length(); ++c)
-    {
-        const char32_t currentCodePoint = text[c];
-#else
-    String::codepoint_iterator currentCodePointIter(text.begin(), text.begin(), text.end());
-    while (!currentCodePointIter.isAtEnd())
-    {
-        char32_t currentCodePoint = *currentCodePointIter;
-#endif
-        if (auto glyph = getGlyphForCodepoint(currentCodePoint, true))
-        {  
-            if (auto image = glyph->getImage())
-            {
-                imgRenderSettings.d_destArea = Rectf(penPosition, image->getRenderedSize());
-                image->createRenderGeometry(out, imgRenderSettings, canCombineFromIdx);
-            }
-
-            penPosition.x += glyph->getAdvance();
-            if (currentCodePoint == ' ')
-                penPosition.x += spaceExtra;
-        }
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
-         ++currentCodePointIter;
-#endif
-    }
-}
-
-//----------------------------------------------------------------------------//
 void Font::setNativeResolution(const Sizef& size)
 {
     d_nativeResolution = size;

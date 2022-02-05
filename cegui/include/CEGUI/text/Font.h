@@ -139,57 +139,6 @@ public:
         false if it does not contain a mapping for \a cp.
     */
     virtual bool isCodepointAvailable(char32_t codePoint) const = 0;
-
-    /*!
-    \brief
-        Create render geometry for the text that should be rendered into a
-        specified area of the display.
-
-    \param out
-        A collection to which new geometry buffers are added.
-
-    \param text
-        String object containing the text to be drawn.
-
-    \param penPosition
-        [in, out] Location at which the text is to be drawn. At the end of
-        the call it stores a position where the next glyph would be drawn.
-
-    \param clipRect
-        Rect object describing the clipping area for the drawing.
-        No drawing will occur outside this Rect.
-
-    \param colours
-        ColourRect object describing the colours to be applied when drawing the
-        text.  NB: The colours specified in here are applied to each glyph,
-        rather than the text as a whole.
-
-    \param defaultParagraphDir
-        A BIDI hint for layouting with raqm, otherwise unused.
-
-    \param spaceExtra
-        Number of additional pixels of spacing to be added to space characters.
-    */
-    inline void createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const String& text, glm::vec2& penPosition, const Rectf* clipRect,
-        const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
-        float spaceExtra = 0.f) const
-    {
-        // TODO TEXT: ensure that necessary adjustment happens before this, or enable alignToPixels here
-        ImageRenderSettings settings(Rectf(), clipRect, colours, 1.f);// , true);
-        layoutAndCreateGlyphRenderGeometry(out, text, spaceExtra, settings, defaultParagraphDir, penPosition);
-    }
-
-    // \overload
-    inline void createTextRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const String& text, const glm::vec2& position, const Rectf* clipRect,
-        const ColourRect& colours, const DefaultParagraphDirection defaultParagraphDir,
-        float spaceExtra = 0.f) const
-    {
-        glm::vec2 penPosition = position;
-        createTextRenderGeometry(out, text, penPosition, clipRect,
-            colours, defaultParagraphDir, spaceExtra);
-    }
   
     /*!
       \brief
@@ -437,11 +386,6 @@ protected:
 
     //! event trigger function for when the font rendering size changes.
     virtual void onRenderSizeChanged(FontEventArgs& args);
-
-    //! Manages the glyph layout and and creates the RenderGeometry for the text.
-    virtual void layoutAndCreateGlyphRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const String& text, float spaceExtra, ImageRenderSettings& imgRenderSettings,
-        DefaultParagraphDirection defaultParagraphDir, glm::vec2& penPosition) const;
 
     //! Name of this font.
     String d_name;
