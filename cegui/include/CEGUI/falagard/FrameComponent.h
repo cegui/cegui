@@ -391,7 +391,7 @@ protected:
         VerticalImageFormatting vertFmt,
         HorizontalFormatting horzFmt,
         Rectf& destRect, const ColourRect& colours,
-        const Rectf* clipper) const;
+        const Rectf* clipper, size_t canCombineFromIdx) const;
 
     FormattingSetting<VerticalImageFormatting>   d_leftEdgeFormatting;
     FormattingSetting<VerticalImageFormatting>   d_rightEdgeFormatting;
