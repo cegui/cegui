@@ -171,18 +171,11 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
     if (!font)
         return;
 
-    const float vertScrollPos = w->getVertScrollbar()->getScrollPosition();
-
-    // Calculate final colours to use
-    const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);
-    const ColourRect selectTextCol = getOptionalColour(SelectedTextColourPropertyName);
-    const ColourRect selectBrushCol = getOptionalColour(
-        w->hasInputFocus() ? ActiveSelectionColourPropertyName : InactiveSelectionColourPropertyName);
-
     const auto& lines = w->getFormattedLines();
     const size_t numLines = lines.size();
 
     // Calculate the range of visible lines
+    const float vertScrollPos = w->getVertScrollbar()->getScrollPosition();
     const size_t sidx = static_cast<size_t>(vertScrollPos / font->getLineSpacing());
     const size_t eidx = std::min(numLines, 1 + sidx + static_cast<size_t>(destArea.getHeight() / font->getLineSpacing()));
 
@@ -190,8 +183,43 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
     drawArea.offset(-glm::vec2(w->getHorzScrollbar()->getScrollPosition(), vertScrollPos));
     drawArea.d_min.y += font->getLineSpacing() * static_cast<float>(sidx);
 
+    // Calculate final colours to use
+    const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);
+    const ColourRect selectTextCol = getOptionalColour(SelectedTextColourPropertyName);
+    const ColourRect selectBrushCol = getOptionalColour(
+        w->hasInputFocus() ? ActiveSelectionColourPropertyName : InactiveSelectionColourPropertyName);
+
+    d_renderedText.renderText(w->getText(), nullptr, font, w->getDefaultParagraphDirection());
+
+    //!!!FIXME TEXT: get rid of deprecated word wrapping baked into hfmt!
+    //!!!DBG TMP!
+    HorizontalTextFormatting hfmt = HorizontalTextFormatting::WordWrapLeftAligned;
+    bool wordWrap = false;
+    hfmt = decomposeHorizontalFormatting(hfmt, wordWrap);
+    if (!wordWrap)
+        wordWrap = w->isWordWrapped();
+
+    d_renderedText.setHorizontalFormatting(hfmt);
+    d_renderedText.setWordWrappingEnabled(wordWrap);
+    //d_renderedText.updateDynamicObjectExtents(w); // no parsing implies no dynamic objects
+
     const size_t selStart = w->getSelectionStart();
     const size_t selEnd = w->getSelectionEnd();
+    SelectionInfo* selection = nullptr;
+    SelectionInfo selectionInfo;
+    if (selStart < selEnd)
+    {
+        selectionInfo.bgBrush = w->getSelectionBrushImage();
+        selectionInfo.bgColours = selectBrushCol;
+        selectionInfo.textColours = selectTextCol;
+        selectionInfo.start = selStart;
+        selectionInfo.end = selEnd;
+        selection = &selectionInfo;
+    }
+
+    d_renderedText.updateFormatting(drawArea.getWidth());
+    d_renderedText.createRenderGeometry(w->getGeometryBuffers(), drawArea.getPosition(), &normalTextCol, &destArea, selection);
+    return;
 
     // Text is already formatted, we just grab the lines and
     // create the render geometry for them with the required alignment.

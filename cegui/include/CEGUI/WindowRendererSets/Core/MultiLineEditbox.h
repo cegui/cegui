@@ -29,6 +29,7 @@
 
 #include "CEGUI/WindowRendererSets/Core/Module.h"
 #include "CEGUI/widgets/MultiLineEditbox.h"
+#include "CEGUI/text/RenderedText.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -132,6 +133,8 @@ protected:
         Reference to a ColourRect that will be set.
     */
     ColourRect getOptionalColour(const String& propertyName) const;
+
+    RenderedText d_renderedText;
 
     //! time-out in seconds used for blinking the caret.
     float d_caretBlinkTimeout = DefaultCaretBlinkTimeout;
