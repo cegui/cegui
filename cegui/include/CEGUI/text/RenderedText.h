@@ -78,6 +78,7 @@ public:
     void setWordWrappingEnabled(bool wrap);
 
     const Sizef& getExtents() const { return d_extents; }
+    bool empty() const { return d_paragraphs.empty(); }
     size_t getParagraphCount() const { return d_paragraphs.size(); }
     size_t getLineCount() const;
     bool isFittingIntoAreaWidth() const;

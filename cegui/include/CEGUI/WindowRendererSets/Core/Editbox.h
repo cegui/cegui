@@ -148,14 +148,6 @@ protected:
     void renderBaseImagery(const WidgetLookFeel& wlf) const;
     //! helper to set 'visual' to the string we will render (part of)
     void setupVisualString(String& visual) const;
-    size_t getCaretIndex(const String& visual_text) const;
-
-    /*!
-    \brief
-        "Logical" here means that if the text is e.g. right aligned, then it's measured from the right end of the text,
-        whereas "visual" is always measured from the left end of the text.
-    */
-    float getExtentToCaretLogical(float extentToCaretVisual, float textExtent, float caretWidth) const;
 
     /*!
     \brief
