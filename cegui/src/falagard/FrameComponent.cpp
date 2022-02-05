@@ -301,6 +301,8 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
     ColourRect& renderSettingMultiplyColours = renderSettings.d_multiplyColours;
 
     calcColoursPerImage = !renderSettingFinalColours.isMonochromatic();
+
+    const auto canCombineFromIdx = srcWindow.getGeometryBuffers().size();
     
     // top-left image
     if (const Image* const componentImage = getImage(FrameImageComponent::TopLeftCorner, srcWindow))
@@ -330,7 +332,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         }
 
         // create render geometry for this element and append it to the Window's geometry
-        componentImage->createRenderGeometry(srcWindow.getGeometryBuffers(), renderSettings);
+        componentImage->createRenderGeometry(srcWindow.getGeometryBuffers(), renderSettings, canCombineFromIdx);
     }
 
     // top-right image
@@ -361,7 +363,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         }
 
         // create render geometry for this element and append it to the Window's geometry
-        componentImage->createRenderGeometry(srcWindow.getGeometryBuffers(), renderSettings);
+        componentImage->createRenderGeometry(srcWindow.getGeometryBuffers(), renderSettings, canCombineFromIdx);
     }
 
     // bottom-left image
@@ -392,7 +394,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         }
 
         // create render geometry for this element and append it to the Window's geometry
-        componentImage->createRenderGeometry(srcWindow.getGeometryBuffers(), renderSettings);
+        componentImage->createRenderGeometry(srcWindow.getGeometryBuffers(), renderSettings, canCombineFromIdx);
     }
 
     // bottom-right image
@@ -422,7 +424,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         }
 
         // create render geometry for this element and append it to the Window's geometry
-        componentImage->createRenderGeometry(srcWindow.getGeometryBuffers(), renderSettings);
+        componentImage->createRenderGeometry(srcWindow.getGeometryBuffers(), renderSettings, canCombineFromIdx);
     }
 
     // top image
@@ -453,7 +455,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         createRenderGeometryForImage(srcWindow.getGeometryBuffers(), componentImage,
             VerticalImageFormatting::TopAligned, d_topEdgeFormatting.get(srcWindow),
-                renderSettingDestArea, renderSettingMultiplyColours, clipper);
+                renderSettingDestArea, renderSettingMultiplyColours, clipper, canCombineFromIdx);
     }
 
     // bottom image
@@ -484,7 +486,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         createRenderGeometryForImage(srcWindow.getGeometryBuffers(), componentImage,
             VerticalImageFormatting::BottomAligned, d_bottomEdgeFormatting.get(srcWindow),
-                renderSettingDestArea, renderSettingMultiplyColours, clipper);
+                renderSettingDestArea, renderSettingMultiplyColours, clipper, canCombineFromIdx);
     }
 
     // left image
@@ -515,7 +517,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         createRenderGeometryForImage(srcWindow.getGeometryBuffers(), componentImage,
             d_leftEdgeFormatting.get(srcWindow), HorizontalFormatting::LeftAligned,
-                renderSettingDestArea, renderSettingMultiplyColours, clipper);
+                renderSettingDestArea, renderSettingMultiplyColours, clipper, canCombineFromIdx);
     }
 
     // right image
@@ -546,7 +548,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         createRenderGeometryForImage(srcWindow.getGeometryBuffers(), componentImage,
             d_rightEdgeFormatting.get(srcWindow), HorizontalFormatting::RightAligned,
-                renderSettingDestArea, renderSettingMultiplyColours, clipper);
+                renderSettingDestArea, renderSettingMultiplyColours, clipper, canCombineFromIdx);
     }
 
     if (const Image* const componentImage = getImage(FrameImageComponent::Background, srcWindow))
@@ -571,7 +573,7 @@ void FrameComponent::addImageRenderGeometryToWindow_impl(
         // create render geometry for this image and append it to the Window's geometry
         createRenderGeometryForImage(srcWindow.getGeometryBuffers(), componentImage,
                 vertFormatting, horzFormatting,
-                backgroundRect, renderSettingMultiplyColours, clipper);
+                backgroundRect, renderSettingMultiplyColours, clipper, canCombineFromIdx);
     }
 }
 
@@ -582,7 +584,7 @@ void FrameComponent::createRenderGeometryForImage(
     VerticalImageFormatting vertFmt,
     HorizontalFormatting horzFmt,
     Rectf& destRect, const ColourRect& colours,
-    const Rectf* clipper) const
+    const Rectf* clipper, size_t canCombineFromIdx) const
 {
     unsigned int horzTiles, vertTiles;
     float xpos, ypos;
@@ -694,7 +696,7 @@ void FrameComponent::createRenderGeometryForImage(
                 renderSettings.d_clipArea = clipper;
             }
 
-            image->createRenderGeometry(out, renderSettings);
+            image->createRenderGeometry(out, renderSettings, canCombineFromIdx);
 
             renderSettingDestArea.d_min.x += imgSz.d_width;
             renderSettingDestArea.d_max.x += imgSz.d_width;
