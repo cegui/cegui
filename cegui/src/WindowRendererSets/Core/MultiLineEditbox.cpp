@@ -193,6 +193,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
     d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::LeftAligned);
     d_renderedText.setWordWrappingEnabled(w->isWordWrapped());
     //d_renderedText.updateDynamicObjectExtents(w); // no parsing implies no dynamic objects
+    d_renderedText.updateFormatting(drawArea.getWidth());
 
     const size_t selStart = w->getSelectionStart();
     const size_t selEnd = w->getSelectionEnd();
@@ -208,7 +209,6 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
         selection = &selectionInfo;
     }
 
-    d_renderedText.updateFormatting(drawArea.getWidth());
     d_renderedText.createRenderGeometry(w->getGeometryBuffers(), drawArea.getPosition(), &normalTextCol, &destArea, selection);
 }
 

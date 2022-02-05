@@ -76,34 +76,51 @@ void FalagardEditbox::createRenderGeometry()
 
     renderBaseImagery(wlf);
 
-    const Font* font = d_window->getActualFont();
-    if (!font)
-        return;
-
     String visualText;
     setupVisualString(visualText);
 
-    // NB: this mess really should be calculated before drawing both text and caret
+    Editbox* const w = static_cast<Editbox*>(d_window);
+    d_renderedText.renderText(visualText, nullptr, w->getActualFont(), w->getDefaultParagraphDirection());
+
     const Rectf textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*d_window));
-    const float textExtent = font->getTextExtent(visualText);
-    const size_t caret_index = getCaretIndex(visualText);
+
+    d_renderedText.setHorizontalFormatting(d_textFormatting);
+    d_renderedText.setWordWrappingEnabled(false);
+    //d_renderedText.updateDynamicObjectExtents(w); // no parsing implies no dynamic objects
+    d_renderedText.updateFormatting(textArea.getWidth());
+
+    const float textExtent = d_renderedText.getExtents().d_height;
     const ImagerySection& caretImagery = wlf.getImagerySection("Caret");
-    const float caret_width = caretImagery.getBoundingRect(*d_window, textArea).getWidth();
-    const float extentToCaretVisual = font->getTextAdvance(visualText.substr(0, caret_index));
-    const float extentToCaretLogical = getExtentToCaretLogical(extentToCaretVisual, textExtent, caret_width);
+    const float caretWidth = caretImagery.getBoundingRect(*d_window, textArea).getWidth();
+    const float extentToCaretVisual = d_renderedText.getCodepointBounds(w->getCaretIndex()).left();
+
+    //!!!TODO TEXT:
+    // - BIDI caret side choosing
+    // - draw caret after the text if request caretIndex > text length / glyph count
+    // - if getGlyphIndex can't find one, return nearest?
+
+    float extentToCaretLogical = extentToCaretVisual;
+    switch (d_textFormatting)
+    {
+        case HorizontalTextFormatting::CentreAligned:
+            extentToCaretLogical = (textExtent - caretWidth) / 2.f;
+            break;
+        case HorizontalTextFormatting::RightAligned:
+            extentToCaretLogical = extentToCaretVisual - caretWidth;
+            break;
+    }
 
     // Update text offset if caret is to the left or to the right of the box
     if ((d_textOffset + extentToCaretLogical) < 0)
         d_textOffset = -extentToCaretLogical;
-    else if ((d_textOffset + extentToCaretLogical) >= (textArea.getWidth() - caret_width))
-        d_textOffset = textArea.getWidth() - extentToCaretLogical - caret_width;
+    else if ((d_textOffset + extentToCaretLogical) >= (textArea.getWidth() - caretWidth))
+        d_textOffset = textArea.getWidth() - extentToCaretLogical - caretWidth;
 
     const float textOffsetVisual = getTextOffsetVisual(textArea, textExtent);
 
     createRenderGeometryForText(wlf, visualText, textArea, textOffsetVisual);
 
     // Create the render geometry for the caret
-    auto w = static_cast<const Editbox*>(d_window);
     if (w->hasInputFocus() && !w->isReadOnly() && (!d_blinkCaret || d_showCaret))
         renderCaret(caretImagery, textArea, textOffsetVisual, extentToCaretVisual);
 }
@@ -151,73 +168,6 @@ void FalagardEditbox::setupVisualString(String& visual) const
 }
 
 //----------------------------------------------------------------------------//
-size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
-{
-    Editbox* w = static_cast<Editbox*>(d_window);
-
-    size_t caretIndex = w->getCaretIndex();
-
-#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-    // the char before the caret bidi type
-    bool currCharIsRtl = false;
-    if (!visual_text.empty() && caretIndex > 0)
-    {
-        size_t curCaretIndex = w->getCaretIndex();
-        auto charBeforeCaretType = BidiVisualMapping::getBidiCharType(visual_text[curCaretIndex - 1]);
-        // for neutral chars you decide by the char after
-        for (; BidiCharType::NEUTRAL == charBeforeCaretType && (visual_text.size() > curCaretIndex); curCaretIndex++)
-            charBeforeCaretType = BidiVisualMapping::getBidiCharType(visual_text[curCaretIndex - 1]);
-
-        currCharIsRtl = (BidiCharType::RIGHT_TO_LEFT == charBeforeCaretType);
-    }
-
-    const bool isFirstChar = (caretIndex == 0);
-
-    // the pos is by the char before
-    if (!isFirstChar)
-        --caretIndex;
-
-    // we need to find the caret pos by the logical to visual map
-    if (w->getV2lMapping().size() > caretIndex)
-        caretIndex = w->getL2vMapping()[caretIndex];
-
-    // for non RTL char - the caret pos is after the char
-    if (!currCharIsRtl)
-        ++caretIndex;
-
-    // if first char is not rtl - we need to stand at the start of the line
-    if (isFirstChar)
-    {
-        const bool firstCharRtl = !visual_text.empty() &&
-            (BidiCharType::RIGHT_TO_LEFT == BidiVisualMapping::getBidiCharType(visual_text[0]));
-        if (!firstCharRtl)
-            --caretIndex;
-    }
-#else
-    CEGUI_UNUSED(visual_text);
-#endif
-
-    return caretIndex;
-}
-
-//----------------------------------------------------------------------------//
-float FalagardEditbox::getExtentToCaretLogical(float extentToCaretVisual,
-    float textExtent, float caretWidth) const
-{
-    switch (d_textFormatting)
-    {
-        case HorizontalTextFormatting::LeftAligned:
-            return extentToCaretVisual;
-        case HorizontalTextFormatting::CentreAligned:
-            return (textExtent - caretWidth) / 2.f;
-        case HorizontalTextFormatting::RightAligned:
-            return textExtent - extentToCaretVisual - caretWidth;
-        default:
-            throw InvalidRequestException("Invalid horizontal text formatting.");
-    }
-}
-
-//----------------------------------------------------------------------------//
 float FalagardEditbox::getTextOffsetVisual(const Rectf& textArea, float textExtent) const
 {
     switch (d_textFormatting)
@@ -237,30 +187,16 @@ float FalagardEditbox::getTextOffsetVisual(const Rectf& textArea, float textExte
 void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
     const String& text, const Rectf& textArea, float textOffset)
 {
-    if (text.empty())
+    if (d_renderedText.empty())
         return;
 
-    Editbox* const w = static_cast<Editbox*>(d_window);
-
-    const Font* const font = w->getActualFont();
-    if (!font)
-        return;
-
-    d_renderedText.renderText(text, nullptr, font, w->getDefaultParagraphDirection());
-
-    d_renderedText.setHorizontalFormatting(d_textFormatting);
-    d_renderedText.setWordWrappingEnabled(false);
-    //d_renderedText.updateDynamicObjectExtents(w); // no parsing implies no dynamic objects
-
-    // setup initial rect for text formatting
+    // Scroll text to the visible part and center it vertically inside the area
     Rectf textPartRect = textArea;
-    // allow for scroll position
-    textPartRect.d_min.x += textOffset;
-    // centre text vertically within the defined text area
-    textPartRect.d_min.y += (textArea.getHeight() - font->getFontHeight()) * 0.5f;
+    textPartRect.offset(glm::vec2(textOffset, (textArea.getHeight() - d_renderedText.getExtents().d_height) * 0.5f));
 
     const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);
 
+    Editbox* const w = static_cast<Editbox*>(d_window);
     const size_t selStart = w->getSelectionStart();
     const size_t selEnd = w->getSelectionEnd();
     SelectionInfo* selection = nullptr;
@@ -280,7 +216,6 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
         selection = &selectionInfo;
     }
 
-    d_renderedText.updateFormatting(textPartRect.getWidth());
     d_renderedText.createRenderGeometry(w->getGeometryBuffers(), textPartRect.getPosition(), &normalTextCol, &textArea, selection);
 }
 
