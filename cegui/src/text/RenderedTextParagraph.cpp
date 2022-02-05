@@ -78,26 +78,46 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
     //???!!!merge between paragraphs?! pass canCombineFromIdx as arg!!!
     //???what about outline glyphs? may be in another texture, or generally the same?
     const auto canCombineFromIdx = out.size();
-    const float startX = penPosition.x;
+    const auto penStartPos = penPosition;
 
+    //!!!TODO TEXT: render background color before selection (under it too, because selection can be transparent)!
+    //Need default bg color, selection color, selected text color etc + optional override from element.
+
+    //!!!TODO TEXT: can use one loop through lines but ensure that bg buffers are always sorted before main ones?
+    // Render selection background
     uint32_t i = 0;
-    for (const auto& line : d_lines)
+    if (selection && selection->bgBrush && selection->end > selection->start)
     {
-        penPosition.x += line.horzOffset;
+        ImageRenderSettings settings(Rectf(), clipRect, selection->bgColours);
 
-        i = skipWrappedWhitespace(i, line.glyphEndIdx);
-
-        //!!!TODO TEXT: render background color before selection (under it too, because selection can be transparent)!
-        //Need default bg color, selection color, selected text color etc + optional override from element.
-
-        // Render selection background
-        if (selection && selection->bgBrush && selection->end > selection->start)
+        for (const auto& line : d_lines)
         {
-            ImageRenderSettings settings(Rectf(penPosition, line.extents), clipRect, selection->bgColours);
-            settings.d_destArea.d_max.x = settings.d_destArea.d_min.x;
-            for (uint32_t j = i; j < line.glyphEndIdx; ++j)
+            const float lineBottom = penPosition.y + line.extents.d_height;
+
+            // Cull invisible lines
+            if (clipRect)
             {
-                const auto& glyph = d_glyphs[j];
+                if (penPosition.y >= clipRect->bottom())
+                    break;
+
+                if (lineBottom <= clipRect->top())
+                {
+                    i = line.glyphEndIdx;
+                    penPosition.y = lineBottom;
+                    continue;
+                }
+            }
+
+            penPosition.x = penStartPos.x + line.horzOffset;
+
+            i = skipWrappedWhitespace(i, line.glyphEndIdx);
+
+            settings.d_destArea.d_min = penPosition;
+            settings.d_destArea.d_max.x = penPosition.x;
+            settings.d_destArea.d_max.y = lineBottom;
+            for (; i < line.glyphEndIdx; ++i)
+            {
+                const auto& glyph = d_glyphs[i];
                 const bool hasSelection = !settings.d_destArea.empty();
 
                 float glyphWidth = glyph.advance;
@@ -128,7 +148,38 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
                 settings.d_destArea.d_max.x = penPosition.x + line.extents.d_width + line.justifyableCount * line.justifySpaceSize;
                 selection->bgBrush->createRenderGeometry(out, settings, canCombineFromIdx);
             }
+
+            penPosition.y = lineBottom;
         }
+    }
+
+    // Render main geometry
+    penPosition = penStartPos;
+    i = 0;
+    for (const auto& line : d_lines)
+    {
+        const float lineBottom = penPosition.y + line.extents.d_height;
+
+        // Cull invisible lines
+        if (clipRect)
+        {
+            if (penPosition.y >= clipRect->bottom())
+                break;
+
+            if (lineBottom <= clipRect->top())
+            {
+                i = line.glyphEndIdx;
+                penPosition.y = lineBottom;
+                continue;
+            }
+        }
+
+        penPosition.x = penStartPos.x + line.horzOffset;
+
+        i = skipWrappedWhitespace(i, line.glyphEndIdx);
+
+        //!!!TODO TEXT: render background color before selection (under it too, because selection can be transparent)!
+        //Need default bg color, selection color, selected text color etc + optional override from element.
 
         // Render glyph chunks using their associated elements
         while (i < line.glyphEndIdx)
@@ -141,9 +192,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
                 modColours, clipRect, line.extents.d_height, line.justifySpaceSize, canCombineFromIdx);
         }
 
-        // Move the pen to the new line
-        penPosition.x = startX;
-        penPosition.y += line.extents.d_height;
+        penPosition.y = lineBottom;
     }
 }
 

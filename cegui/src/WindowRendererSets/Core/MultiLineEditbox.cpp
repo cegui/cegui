@@ -176,12 +176,9 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
 
     // Calculate the range of visible lines
     const float vertScrollPos = w->getVertScrollbar()->getScrollPosition();
-    const size_t sidx = static_cast<size_t>(vertScrollPos / font->getLineSpacing());
-    const size_t eidx = std::min(numLines, 1 + sidx + static_cast<size_t>(destArea.getHeight() / font->getLineSpacing()));
-
+    const float horzScrollPos = w->getHorzScrollbar()->getScrollPosition();
     Rectf drawArea(destArea);
-    drawArea.offset(-glm::vec2(w->getHorzScrollbar()->getScrollPosition(), vertScrollPos));
-    drawArea.d_min.y += font->getLineSpacing() * static_cast<float>(sidx);
+    drawArea.offset(-glm::vec2(horzScrollPos, vertScrollPos));
 
     // Calculate final colours to use
     const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);
@@ -191,16 +188,10 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
 
     d_renderedText.renderText(w->getText(), nullptr, font, w->getDefaultParagraphDirection());
 
-    //!!!FIXME TEXT: get rid of deprecated word wrapping baked into hfmt!
     //!!!DBG TMP!
-    HorizontalTextFormatting hfmt = HorizontalTextFormatting::WordWrapLeftAligned;
-    bool wordWrap = false;
-    hfmt = decomposeHorizontalFormatting(hfmt, wordWrap);
-    if (!wordWrap)
-        wordWrap = w->isWordWrapped();
-
-    d_renderedText.setHorizontalFormatting(hfmt);
-    d_renderedText.setWordWrappingEnabled(wordWrap);
+    //!!!FIXME TEXT: add horz fmt to multiline editbox!
+    d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::LeftAligned);
+    d_renderedText.setWordWrappingEnabled(w->isWordWrapped());
     //d_renderedText.updateDynamicObjectExtents(w); // no parsing implies no dynamic objects
 
     const size_t selStart = w->getSelectionStart();
@@ -219,114 +210,6 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
 
     d_renderedText.updateFormatting(drawArea.getWidth());
     d_renderedText.createRenderGeometry(w->getGeometryBuffers(), drawArea.getPosition(), &normalTextCol, &destArea, selection);
-    return;
-
-    // Text is already formatted, we just grab the lines and
-    // create the render geometry for them with the required alignment.
-    for (size_t i = sidx; i < eidx; ++i)
-    {
-        const auto& currLine = lines[i];
-        const size_t lineStart = currLine.d_startIdx;
-        const size_t lineLength = currLine.d_length;
-        const String lineText(w->getTextVisual().substr(lineStart, lineLength));
-
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
-        if (!lineText.isUtf8StringValid())
-        {
-            // This line is invalid, skip to the next one
-            drawArea.d_min.y += font->getLineSpacing();
-            continue;
-        }
-#endif
-
-        // Offset the font little down so that it's centered within its own spacing
-        Rectf lineRect = drawArea;
-        const float oldTop = lineRect.top();
-        lineRect.d_min.y += (font->getLineSpacing() - font->getFontHeight()) * 0.5f;
-
-        // If it is a simple 'no selection area' case
-        if (!w->getSelectionBrushImage() ||
-            selStart >= selEnd ||
-            lineStart >= selEnd ||
-            lineStart + lineLength <= selStart)
-        {
-            // Create geometry buffers for the text and add to the Window
-            font->createTextRenderGeometry(w->getGeometryBuffers(), lineText,
-                lineRect.getPosition(), &destArea, normalTextCol, w->getDefaultParagraphDirection());
-        }
-        else
-        {
-            // Render text with selection area
-            size_t sectIdx = 0;
-            float selStartOffset = 0.f;
-
-            // Create the render geometry for any text prior to selected region of line
-            if (lineStart < selStart)
-            {
-                const size_t sectLen = selStart - lineStart;
-                String sect = lineText.substr(0, sectLen);
-                sectIdx = sectLen;
-
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
-                if (!sect.isUtf8StringValid())
-                {
-                    // The section string is invalid, use the entire line instead
-                    sect = lineText;
-                    sectIdx = lineText.size();
-                    w->setCaretIndex(0);
-                    w->setSelectionLength(0);
-                }
-#endif          
-                // Get the pixel offset to the beginning of the selection area highlight.
-                selStartOffset = font->getTextAdvance(sect);
-
-                font->createTextRenderGeometry(w->getGeometryBuffers(), sect,
-                    lineRect.getPosition(), &destArea, normalTextCol,
-                    w->getDefaultParagraphDirection());
-
-                // Set position ready for next portion of text
-                lineRect.d_min.x += selStartOffset;
-            }
-
-            // Get selected text section
-            const size_t sectLen = std::min(selEnd - lineStart, lineLength) - sectIdx;
-            const String sect = lineText.substr(sectIdx, sectLen);
-            sectIdx += sectLen;
-
-            // Get the extent to use as the width of the selection area highlight
-            const float selAreaWidth = font->getTextAdvance(sect);
-
-            const float textTop = lineRect.top();
-            lineRect.top(oldTop);
-
-            // Calculate area for the selection brush on this line
-            lineRect.left(drawArea.left() + selStartOffset);
-            lineRect.setWidth(selAreaWidth);
-            lineRect.setHeight(font->getLineSpacing());
-
-            // Create the render geometry for the selection area brush for this line
-            ImageRenderSettings renderSettings(lineRect, &destArea, selectBrushCol);
-            w->getSelectionBrushImage()->createRenderGeometry(w->getGeometryBuffers(), renderSettings);
-
-            lineRect.top(textTop);
-
-            // Create the render geometry for the selected text
-            font->createTextRenderGeometry(w->getGeometryBuffers(), sect,
-                lineRect.getPosition(), &destArea, selectTextCol, w->getDefaultParagraphDirection());
-
-            // Create the render geometry for any text beyond selected region of line
-            if (sectIdx < lineLength)
-            {
-                lineRect.d_min.x += selAreaWidth;
-                const String sect = lineText.substr(sectIdx, lineLength - sectIdx);
-                font->createTextRenderGeometry(w->getGeometryBuffers(), sect,
-                    lineRect.getPosition(), &destArea, normalTextCol, w->getDefaultParagraphDirection());
-            }
-        }
-
-        // Update master position for next line in paragraph
-        drawArea.d_min.y += font->getLineSpacing();
-    }
 }
 
 //----------------------------------------------------------------------------//
