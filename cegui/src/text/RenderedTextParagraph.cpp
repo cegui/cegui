@@ -194,6 +194,8 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
 
         penPosition.y = lineBottom;
     }
+
+    penPosition.x = penStartPos.x;
 }
 
 //----------------------------------------------------------------------------//
