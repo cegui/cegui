@@ -41,11 +41,13 @@ const String Editbox::EventValidationStringChanged("ValidationStringChanged");
 const String Editbox::EventTextValidityChanged("TextValidityChanged");
 const String Editbox::ReadOnlyMouseCursorImagePropertyName("ReadOnlyMouseCursorImage");
 
+//----------------------------------------------------------------------------//
 EditboxWindowRenderer::EditboxWindowRenderer(const String& name) :
     WindowRenderer(name, Editbox::EventNamespace)
 {
 }
 
+//----------------------------------------------------------------------------//
 Editbox::Editbox(const String& type, const String& name) :
     EditboxBase(type, name),
     d_readOnlyMouseCursorImage(nullptr),
@@ -64,20 +66,14 @@ Editbox::Editbox(const String& type, const String& name) :
         d_validationString = ".*";
 }
 
-
-Editbox::~Editbox(void)
+//----------------------------------------------------------------------------//
+Editbox::~Editbox()
 {
     if (d_weOwnValidator && d_validator)
         System::getSingleton().destroyRegexMatcher(d_validator);
 }
 
-
-RegexMatchState Editbox::getTextMatchState() const
-{
-    return d_validatorMatchState;
-}
-
-
+//----------------------------------------------------------------------------//
 void Editbox::setValidationString(const String& validation_string)
 {
     if (validation_string == d_validationString)
@@ -98,83 +94,59 @@ void Editbox::setValidationString(const String& validation_string)
     handleValidityChangeForString(getText());
 }
 
-
-void Editbox::setCaretIndex(size_t caret_pos)
-{
-    // make sure new position is valid
-    if (caret_pos > getText().length())
-        caret_pos = getText().length();
-
-    // if new position is different
-    if (d_caretPos != caret_pos)
-    {
-        d_caretPos = caret_pos;
-
-        // Trigger "caret moved" event
-        WindowEventArgs args(this);
-        onCaretMoved(args);
-    }
-
-}
-
+//----------------------------------------------------------------------------//
 void Editbox::setMaxTextLength(size_t max_len)
 {
-    if (d_maxTextLen != max_len)
+    if (d_maxTextLen == max_len)
+        return;
+
+    d_maxTextLen = max_len;
+
+    // Trigger max length changed event
+    WindowEventArgs args(this);
+    onMaximumTextLengthChanged(args);
+
+    // trim string
+    if (getText().length() > d_maxTextLen)
     {
-        d_maxTextLen = max_len;
+        String newText = getText();
+        newText.resize(d_maxTextLen);
+        setText(newText);
+        d_undoHandler->clearUndoHistory();
 
-        // Trigger max length changed event
-        WindowEventArgs args(this);
-        onMaximumTextLengthChanged(args);
-
-        // trim string
-        if (getText().length() > d_maxTextLen)
+        const RegexMatchState state = getStringMatchState(getText());
+        if (d_validatorMatchState != state)
         {
-            String newText = getText();
-            newText.resize(d_maxTextLen);
-            setText(newText);
-            onTextChanged(args);
-            d_undoHandler->clearUndoHistory();
-
-            const RegexMatchState state = getStringMatchState(getText());
-            if (d_validatorMatchState != state)
-            {
-                RegexMatchStateEventArgs rms_args(this, state);
-                onTextValidityChanged(rms_args);
-                d_validatorMatchState = state;
-            }
+            RegexMatchStateEventArgs rms_args(this, state);
+            onTextValidityChanged(rms_args);
+            d_validatorMatchState = state;
         }
     }
 }
 
+//----------------------------------------------------------------------------//
 void Editbox::eraseSelectedText(bool modify_text)
 {
-    if (getSelectionLength() != 0)
+    if (!getSelectionLength())
+        return;
+
+    // setup new caret position and remove selection highlight.
+    setCaretIndex(d_selectionStart);
+    clearSelection();
+
+    // erase the selected characters (if required)
+    if (modify_text)
     {
-        // setup new caret position and remove selection highlight.
-        setCaretIndex(d_selectionStart);
-        clearSelection();
+        String newText = getText();
+        UndoHandler::UndoAction undo;
+        undo.d_type = UndoHandler::UndoActionType::Delete;
+        undo.d_startIdx = getSelectionStart();
+        undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
+        d_undoHandler->addUndoHistory(undo);
 
-        // erase the selected characters (if required)
-        if (modify_text)
-        {
-            String newText = getText();
-            UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::Delete;
-            undo.d_startIdx = getSelectionStart();
-            undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
-            d_undoHandler->addUndoHistory(undo);
-
-            newText.erase(getSelectionStart(), getSelectionLength());
-            setText(newText);
-
-            // trigger notification that text has changed.
-            WindowEventArgs args(this);
-            onTextChanged(args);
-        }
-
+        newText.erase(getSelectionStart(), getSelectionLength());
+        setText(newText);
     }
-
 }
 
 
@@ -350,7 +322,7 @@ void Editbox::onCharacter(TextEventArgs& e)
 }
 
 
-void Editbox::handleBackspace(void)
+void Editbox::handleBackspace()
 {
     if (!isReadOnly())
     {
@@ -413,7 +385,7 @@ void Editbox::handleBackspace(void)
 }
 
 
-void Editbox::handleDelete(void)
+void Editbox::handleDelete()
 {
     if (!isReadOnly())
     {

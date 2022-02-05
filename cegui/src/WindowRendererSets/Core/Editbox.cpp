@@ -76,10 +76,14 @@ void FalagardEditbox::createRenderGeometry()
 
     renderBaseImagery(wlf);
 
-    String visualText;
-    setupVisualString(visualText);
-
     Editbox* const w = static_cast<Editbox*>(d_window);
+
+    String visualText;
+    if (w->isTextMaskingEnabled())
+        visualText.assign(w->getText().length(), static_cast<char32_t>(w->getTextMaskingCodepoint()));
+    else
+        visualText.assign(w->getText());
+
     d_renderedText.renderText(visualText, nullptr, w->getActualFont(), w->getDefaultParagraphDirection());
 
     const Rectf textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*d_window));
@@ -122,7 +126,11 @@ void FalagardEditbox::createRenderGeometry()
 
     // Create the render geometry for the caret
     if (w->hasInputFocus() && !w->isReadOnly() && (!d_blinkCaret || d_showCaret))
-        renderCaret(caretImagery, textArea, textOffsetVisual, extentToCaretVisual);
+    {
+        Rectf caretRect(textArea);
+        caretRect.d_min.x += extentToCaretVisual + textOffsetVisual;
+        caretImagery.render(*d_window, caretRect, nullptr, &textArea);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -146,25 +154,6 @@ void FalagardEditbox::renderBaseImagery(const WidgetLookFeel& wlf) const
     }
 
     wlf.getStateImagery(state).render(*w);
-}
-
-//----------------------------------------------------------------------------//
-void FalagardEditbox::setupVisualString(String& visual) const
-{
-    Editbox* w = static_cast<Editbox*>(d_window);
-
-    if (w->isTextMaskingEnabled())
-    {
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_32) || (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_ASCII) 
-        visual.assign(w->getText().length(), static_cast<String::value_type>(w->getTextMaskingCodepoint()));
-#elif (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8) 
-        visual.assign(w->getText().length(), static_cast<char32_t>(w->getTextMaskingCodepoint()));
-#endif
-    }
-    else
-    {
-        visual.assign(w->getTextVisual());
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -220,17 +209,6 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
 }
 
 //----------------------------------------------------------------------------//
-void FalagardEditbox::renderCaret(const ImagerySection& imagery,
-                                  const Rectf& textArea,
-                                  float textOffset,
-                                  float extent_to_caret) const
-{
-    Rectf caretRect(textArea);
-    caretRect.d_min.x += extent_to_caret + textOffset;
-    imagery.render(*d_window, caretRect, nullptr, &textArea);
-}
-
-//----------------------------------------------------------------------------//
 size_t FalagardEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
     Editbox* w = static_cast<Editbox*>(d_window);
@@ -239,7 +217,10 @@ size_t FalagardEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
         return w->getText().length();
 
     String visualText;
-    setupVisualString(visualText);
+    if (w->isTextMaskingEnabled())
+        visualText.assign(w->getText().length(), static_cast<char32_t>(w->getTextMaskingCodepoint()));
+    else
+        visualText.assign(w->getText());
 
     const Rectf textArea(getLookNFeel().getNamedArea("TextArea").getArea().getPixelRect(*d_window));
     const float textExtent = font->getTextExtent(visualText);
@@ -280,22 +261,21 @@ void FalagardEditbox::update(float elapsed)
 //----------------------------------------------------------------------------//
 void FalagardEditbox::setTextFormatting(const HorizontalTextFormatting format)
 {
-    if (isUnsupportedFormat(format))
+    if (d_textFormatting == format)
+        return;
+
+    if (format != HorizontalTextFormatting::LeftAligned &&
+        format != HorizontalTextFormatting::RightAligned &&
+        format != HorizontalTextFormatting::CentreAligned)
+    {
         throw InvalidRequestException(
             "currently only HorizontalTextFormatting::LeftAligned, "
             "HorizontalTextFormatting::RightAligned and "
             "HorizontalTextFormatting::CentreAligned are accepted for Editbox formatting");
+    }
 
     d_textFormatting = format;
     d_window->invalidate();
-}
-
-//----------------------------------------------------------------------------//
-bool FalagardEditbox::isUnsupportedFormat(const HorizontalTextFormatting format) const
-{
-    return !(format == HorizontalTextFormatting::LeftAligned ||
-             format == HorizontalTextFormatting::RightAligned ||
-             format == HorizontalTextFormatting::CentreAligned);
 }
 
 //----------------------------------------------------------------------------//

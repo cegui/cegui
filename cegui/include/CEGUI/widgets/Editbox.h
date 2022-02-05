@@ -38,7 +38,6 @@
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
@@ -46,7 +45,7 @@ namespace CEGUI
 class CEGUIEXPORT EditboxWindowRenderer : public WindowRenderer
 {
 public:
-    //! Constructor
+
     EditboxWindowRenderer(const String& name);
 
     /*!
@@ -74,10 +73,9 @@ class CEGUIEXPORT Editbox : public EditboxBase
 {
 public:
 
-    //! Namespace for global events
     static const String EventNamespace;
-    //! Window factory name
     static const String WidgetTypeName;
+
     /** Event fired when the read-only mode for the edit box is changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Editbox whose read only setting
@@ -100,15 +98,10 @@ public:
      */
     static const String ReadOnlyMouseCursorImagePropertyName;
 
-    //! Constructor for Editbox class.
     Editbox(const String& type, const String& name);
+    virtual ~Editbox() override;
 
-    //! Destructor for Editbox class.
-    virtual ~Editbox();
-
-    // Inherited methods
     bool performPaste(Clipboard& clipboard) override;
-    void setCaretIndex(size_t caret_pos) override;
     void setMaxTextLength(size_t max_len) override;
 
     /*!
@@ -130,7 +123,7 @@ public:
     \return
         One of the RegexMatchState enumerated values indicating the current match state.
     */
-    RegexMatchState getTextMatchState() const;
+    RegexMatchState getTextMatchState() const { return d_validatorMatchState; }
 
     /*!
     \brief
@@ -175,7 +168,6 @@ public:
     */
     void setValidationString(const String& validation_string);
 
-
     /*!
     \brief
         Set the RegexMatcher based validator for this Editbox.
@@ -195,10 +187,8 @@ public:
     */
     void setValidator(RegexMatcher* matcher);
 
-
-
 protected:
-    // Overriding methods inherited from EditboxBase
+
     size_t getTextIndexFromPosition(const glm::vec2& pt) const override;
     void eraseSelectedText(bool modify_text = true) override;
     void handleBackspace() override;
@@ -246,16 +236,13 @@ protected:
      */
     bool handleValidityChangeForString(const String& str);
 
-
-
     /*!
     \brief
         return the the read-only mouse cursor image.
     \return
         The read-only mouse cursor image.
     */
-    const Image* getReadOnlyMouseCursorImage(void) const
-        { return d_readOnlyMouseCursorImage; }
+    const Image* getReadOnlyMouseCursorImage() const { return d_readOnlyMouseCursorImage; }
 
     /*!
     \brief
@@ -263,24 +250,23 @@ protected:
     \param image
         The Image* to be used.
     */
-    void setReadOnlyMouseCursorImage(const Image* image)
-        { d_readOnlyMouseCursorImage = image; }
-
+    void setReadOnlyMouseCursorImage(const Image* image) { d_readOnlyMouseCursorImage = image; }
 
     //! The read only mouse cursor image.
-    const Image* d_readOnlyMouseCursorImage;
+    const Image* d_readOnlyMouseCursorImage = nullptr;
     //! Copy of validation reg-ex string.
     String d_validationString;
     //! Pointer to class used for validation of text.
-    RegexMatcher* d_validator;
+    RegexMatcher* d_validator = nullptr;
     //! specifies whether validator was created by us, or supplied by user.
-    bool d_weOwnValidator;
+    bool d_weOwnValidator = true;
     //! Current match state of EditboxText
-    RegexMatchState d_validatorMatchState;
+    RegexMatchState d_validatorMatchState = RegexMatchState::Valid;
     //! Previous match state change response
-    bool d_previousValidityChangeResponse;
+    bool d_previousValidityChangeResponse = true;
 
 private:
+
     void addEditboxProperties();
 };
 
