@@ -33,6 +33,7 @@
 #include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/RenderEffect.h"
+#include "CEGUI/RenderMaterial.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ShaderParameterBindings.h"
 
@@ -66,7 +67,6 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     d_expectedData(MT_INVALID),
     d_dataAppended(false),
     d_previousAlphaValue(-1.f),
-	d_currentRenderTarget(0),
 	d_isFirstDrawOfFrame(true)
 {
 }
@@ -165,11 +165,6 @@ void OgreGeometryBuffer::draw(std::uint32_t drawModeMask) const
 	//OgreProfileEnd("CEGUI OgreGeometryBuffer draw updateRenderTargetData");
 }
 
-void OgreGeometryBuffer::setCurrentRenderTarget(OgreRenderTarget* renderTarget)
-{
-	d_currentRenderTarget = renderTarget;
-}
-
 //----------------------------------------------------------------------------//
 void OgreGeometryBuffer::appendGeometry(const float* vertex_data, std::size_t array_size)
 {
@@ -226,13 +221,7 @@ void OgreGeometryBuffer::syncVertexData() const
 
 OgreRenderTarget* OgreGeometryBuffer::getCurrentOgreRenderTarget() const
 {
-#if 0
-	CEGUI::RenderTarget* target = d_owner.getActiveRenderTarget();
-	OgreRenderTarget* ogreTarget = static_cast<OgreRenderTarget*>(target);
-	return ogreTarget;
-#else
-	return d_currentRenderTarget;
-#endif
+    return dynamic_cast<CEGUI::OgreRenderTarget*>(d_owner.getActiveRenderTarget());
 }
 
 //----------------------------------------------------------------------------//

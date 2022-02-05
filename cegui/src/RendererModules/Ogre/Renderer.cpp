@@ -36,6 +36,7 @@
 #include "CEGUI/System.h"
 #include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
+#include "CEGUI/RenderMaterial.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/BitmapImage.h"
 #include "CEGUI/ImageManager.h"
@@ -458,7 +459,7 @@ Ogre::Matrix4 OgreRenderer::glmToOgreMatrix(const glm::mat4& matrix)
 //----------------------------------------------------------------------------//
 void OgreRenderer::setRenderingEnabled(const bool enabled)
 {
-	throw std::runtime_error("Error: function OgreRenderer::setRenderingEnabled is depreciated. Use OgreRenderer::setRenderMode instead");
+	throw std::runtime_error("Error: function OgreRenderer::setRenderingEnabled is depreciated. Use OgreRenderer::setRenderingMode instead");
 }
 
 //----------------------------------------------------------------------------//

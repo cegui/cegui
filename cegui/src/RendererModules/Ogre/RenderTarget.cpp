@@ -145,14 +145,9 @@ void OgreRenderTarget::draw(const GeometryBuffer& buffer, std::uint32_t drawMode
 {
 	GeometryBuffer& bufferNoConst = const_cast<GeometryBuffer&>(buffer);
 	OgreGeometryBuffer& ogreBuffer = static_cast<OgreGeometryBuffer&>(bufferNoConst);
-	ogreBuffer.setCurrentRenderTarget(this);
 	
 	ogreBuffer.setFirstDrawOfFrame(false);
 	buffer.draw(drawModeMask);
-
-#if 0
-	ogreBuffer.setCurrentRenderTarget(0);
-#endif
 }
 
 void OgreRenderTarget::draw(const RenderQueue& queue, std::uint32_t drawModeMask)
@@ -164,20 +159,11 @@ void OgreRenderTarget::draw(const RenderQueue& queue, std::uint32_t drawModeMask
 	for(RenderQueue::BufferList::iterator iter = buffers.begin(); iter != buffers.end(); ++iter)
 	{
 		OgreGeometryBuffer* ogreBuffer = static_cast<OgreGeometryBuffer*>(*iter);
-		ogreBuffer->setCurrentRenderTarget(this);
 		ogreBuffer->setFirstDrawOfFrame(isFirst);
 		isFirst = false;
 	}
 
 	queue.draw(drawModeMask);
-
-#if 0
-	for(RenderQueue::BufferList::iterator iter = buffers.begin(); iter != buffers.end(); ++iter)
-	{
-		OgreGeometryBuffer* ogreBuffer = static_cast<OgreGeometryBuffer*>(*iter);
-		ogreBuffer->setCurrentRenderTarget(0);
-	}
-#endif
 }
 
 void OgreRenderTarget::unprojectPoint(const GeometryBuffer& buff,

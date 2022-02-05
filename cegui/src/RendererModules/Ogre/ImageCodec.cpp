@@ -29,6 +29,7 @@
 #ifdef CEGUI_OGRE_NEXT
 #include "CEGUI/RendererModules/Ogre/Texture.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/DataContainer.h"
 #include <Ogre.h>
 #include <OgreImage2.h>
 #include <OgreTextureBox.h>

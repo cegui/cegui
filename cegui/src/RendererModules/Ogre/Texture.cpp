@@ -30,6 +30,9 @@
 #include "CEGUI/System.h"
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
 #include "CEGUI/RendererModules/Ogre/OgreMacros.h"
+#include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
+#include "CEGUI/DataContainer.h"
+#include "CEGUI/Rectf.h"
 
 #include <OgreTextureGpuManager.h>
 #include <OgreTextureGpu.h>
@@ -42,6 +45,13 @@
 
 
 //#define CEGUI_OGRERENDERER_BLITFROMMEMORY_USESOURCEDATACOPY //define only for debug
+//#define BLITFROMMEMORY_PARTIALUPLOAD  //Todo: does not work, cause endless loop in Ogre::TextureGpuManager::waitForStreamingCompletion, as the Ogre::TextureGpu* is not uploaded as expected by Ogre and therefore cannot be destroyed correctly
+
+#ifdef BLITFROMMEMORY_PARTIALUPLOAD
+    #define TEXTURE_RAMCOPY 0
+#else
+    #define TEXTURE_RAMCOPY 1
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -417,6 +427,117 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
+
+#ifdef BLITFROMMEMORY_PARTIALUPLOAD
+void OgreTexture::blitFromMemory(const void* sourceData, const Rectf& area)
+{
+    if(d_isLinked) //do not write to linked textures
+        return;
+
+    //this is used for text textures
+
+    /*Copies a region from normal memory to a region of this TextureGpu.
+        The source image can be in any size.
+        @param sourceData MemoryData of source pixels  Format must be like the TextureGpu
+        @param area  Box describing the destination region in this TextureGpu
+        @remarks The source and destination regions dimensions don't have to match, in which
+        case scaling is done.This scaling is generally done using a bilinear filter in hardware.*/
+
+    if(!d_textureGpu) // TODO: exception?
+        return;
+
+    // Ogre doesn't like null data, so skip if the sourceData is null and
+    // area is zero size
+    if(sourceData == nullptr)
+    {
+        if(static_cast<int>(area.getWidth()) == 0 &&
+            static_cast<int>(area.getHeight()) == 0)
+        {
+            return;
+        }
+
+        // Here we are trying to write to a non-zero size area with null
+        // ptr for data
+        throw RendererException("blitFromMemory source is null");
+    }
+
+    //Uploading data to a TextureGpu
+    Ogre::TextureGpu* texture = d_textureGpu;
+    Ogre::TextureGpuManager* textureManager = Ogre::Root::getSingleton().getRenderSystem()->getTextureGpuManager();
+
+
+    Ogre::uint32 width = static_cast<Ogre::uint32>(area.getWidth());
+    Ogre::uint32 height = static_cast<Ogre::uint32>(area.getHeight());
+    size_t bytesPerPixel = Ogre::PixelFormatGpuUtils::getBytesPerPixel(texture->getPixelFormat());
+    size_t bytesPerRow = bytesPerPixel * width;
+               
+
+    Ogre::uint8* imageData = 0; //imageData is not needed, but left here to match the Ogre Examples
+    //-----------------------start upload to TextureGpu----------------------------------------
+    //Tell the texture we're going resident. The imageData pointer is only needed
+    //if the texture pageout strategy is GpuPageOutStrategy::AlwaysKeepSystemRamCopy
+    //which is in this example is not, so a nullptr would also work just fine.
+    //bool autoDeleteSysRamCopy = (texture->getGpuPageOutStrategy() != Ogre::GpuPageOutStrategy::AlwaysKeepSystemRamCopy);*/
+   /* bool autoDeleteSysRamCopy = false;
+    texture->_transitionTo(Ogre::GpuResidency::Resident, imageData, autoDeleteSysRamCopy);
+    texture->_setNextResidencyStatus(Ogre::GpuResidency::Resident);*/
+
+
+    //We have to upload the data via a StagingTexture, which acts as an intermediate stash
+    //memory that is both visible to CPU and GPU.
+    Ogre::StagingTexture *stagingTexture = textureManager->getStagingTexture(
+        width,
+        height,
+        texture->getDepth(),
+        texture->getNumSlices(),
+        texture->getPixelFormat());
+
+    //Call this function to indicate you're going to start calling mapRegion. startMapRegion
+    //must be called from main thread.
+    stagingTexture->startMapRegion();
+    //Map region of the staging texture. This function can be called from any thread after
+    //startMapRegion has already been called.
+    Ogre::TextureBox texBox = stagingTexture->mapRegion(width, height,
+        texture->getDepth(), texture->getNumSlices(),
+        texture->getPixelFormat());
+    //Fill data start------------------------------------------------------------------------
+    
+    texBox.copyFrom(const_cast<void*>(sourceData), width, height, bytesPerRow);
+
+    // upload the data to the gpu
+    // We specify a destination area based on the area rect provided as we may
+    // only want to upload a portion to the GPU texture area and not the entire thing.
+    Ogre::TextureBox dst;
+    dst.x = static_cast<Ogre::uint32>(area.left());
+    dst.y = static_cast<Ogre::uint32>(area.top());
+    dst.width = width;
+    dst.height = height;
+
+    //Fill data end------------------------------------------------------------------------	
+    //stopMapRegion indicates you're done calling mapRegion. Call this from the main thread.
+    //It is your responsability to ensure you're done using all pointers returned from
+    //previous mapRegion calls, and that you won't call it again.
+    //You cannot upload until you've called this function.
+    //Do NOT call startMapRegion again until you're done with upload() calls.
+    stagingTexture->stopMapRegion();
+    //Upload an area of the staging texture into the texture. Must be done from main thread.
+    //The last bool parameter, 'skipSysRamCopy', is only relevant for AlwaysKeepSystemRamCopy
+    //textures, and we set it to true because we know it's already up to date. Otherwise
+    //it needs to be false.
+    stagingTexture->upload(texBox, texture, 0, 0, &dst, false);
+    //Tell the TextureGpuManager we're done with this StagingTexture. Otherwise it will leak.
+    textureManager->removeStagingTexture(stagingTexture);
+    stagingTexture = 0;
+
+    //Do not free the pointer if texture's paging strategy is GpuPageOutStrategy::AlwaysKeepSystemRamCopy
+    //OGRE_FREE_SIMD(imageData, Ogre::MEMCATEGORY_RESOURCE);
+    //imageData = 0;
+
+#if OGRE_VERSION >= 0x020200 && OGRE_VERSION < 0x020300
+    texture->notifyDataIsReady(); // Must NOT call in Ogre 2.3 or later
+#endif
+}
+#else
 void OgreTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 {
 	if(d_isLinked) //do not write to linked textures
@@ -434,11 +555,13 @@ void OgreTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 	if (!d_textureGpu) // TODO: exception?
         return;
 
+#if TEXTURE_RAMCOPY
 	/* Ogre::TextureGpu does not support blitFromMemory directly and does not allow to update only a spefic region of the texture. 
 		We therefore store a copy of the texture content in variable d_TextureDataRamCopy and blit to it (and upload it afterwards)
 		The textureDataRamCopy is activated on first blitFromMemory, as it is only needed for text-textures.
 		*/
 	d_shallStoreTextureDataRamCopy = true;
+#endif
 
 	// Ogre doesn't like null data, so skip if the sourceData is null and
     // area is zero size
@@ -579,6 +702,7 @@ void OgreTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 	texture->notifyDataIsReady(); // Must NOT call in Ogre 2.3 or later
 #endif
 }
+#endif
 
 void OgreTexture::blitFromMemory(Ogre::TextureBox& src, Ogre::TextureBox& target, Ogre::Box& targetArea, Ogre::PixelFormatGpu pixelFormat)
 {
@@ -766,15 +890,15 @@ Ogre::PixelFormatGpu OgreTexture::toOgrePixelFormat(const Texture::PixelFormat f
 {
     switch (fmt)
     {
-        case Texture::PixelFormat::Rgba:       return Ogre::PFG_RGBA8_UNORM;
-        //case Texture::PixelFormat::Rgb:        return Ogre::PFG_RGBA8_UNORM;
-        /*case Texture::PixelFormat::Rgb565:    return Ogre::PF_R5G6B5;
-        case Texture::PixelFormat::Rgba4444:  return Ogre::PF_A4R4G4B4;
-        case Texture::PixelFormat::Pvrtc2:     return Ogre::PF_PVRTC_RGBA2;
-        case Texture::PixelFormat::Pvrtc4:     return Ogre::PF_PVRTC_RGBA4;*/
-        case Texture::PixelFormat::RgbaDxt1:  return Ogre::PFG_BC1_UNORM;
-        case Texture::PixelFormat::RgbaDxt3:  return Ogre::PFG_BC2_UNORM;
-        case Texture::PixelFormat::RgbaDxt5:  return Ogre::PFG_BC3_UNORM;
+        case Texture::PixelFormat::Rgba:        return Ogre::PFG_RGBA8_UNORM;
+        /*case Texture::PixelFormat::Rgb:       return Ogre::PFG_RGB8_UNORM;
+        case Texture::PixelFormat::Rgb565:      return Ogre::PFG_B5G6R5_UNORM;
+        case Texture::PixelFormat::Rgba4444:    return Ogre::PFG_B4G4R4A4_UNORM;
+        case Texture::PixelFormat::Pvrtc2:      return Ogre::PFG_PVRTC_RGBA2;
+        case Texture::PixelFormat::Pvrtc4:      return Ogre::PFG_PVRTC_RGBA4;*/
+        case Texture::PixelFormat::RgbaDxt1:    return Ogre::PFG_BC1_UNORM;
+        case Texture::PixelFormat::RgbaDxt3:    return Ogre::PFG_BC2_UNORM;
+        case Texture::PixelFormat::RgbaDxt5:    return Ogre::PFG_BC3_UNORM;
 
         default:
             throw InvalidRequestException(
@@ -787,18 +911,15 @@ Texture::PixelFormat OgreTexture::fromOgrePixelFormat(const Ogre::PixelFormatGpu
 {
     switch (fmt)
     {
-		case Ogre::PFG_RGBA8_UNORM:				return Texture::PixelFormat::Rgba;
-		//case Ogre::PFG_RGBA8_UNORM_SRGB:		return Texture::PixelFormat::Rgba;
-        //case Ogre::PF_A8B8G8R8:     return Texture::PixelFormat::Rgba;
-        /*case Ogre::PF_R8G8B8:       return Texture::PixelFormat::Rgb;
-        case Ogre::PF_B8G8R8:       return Texture::PixelFormat::Rgb;
-        case Ogre::PF_R5G6B5:       return Texture::PixelFormat::Rgb565;
-        case Ogre::PF_A4R4G4B4:     return Texture::PixelFormat::Rgba4444;
-        case Ogre::PF_PVRTC_RGBA2:  return Texture::PixelFormat::Pvrtc2;
-        case Ogre::PF_PVRTC_RGBA4:  return Texture::PixelFormat::Pvrtc4;*/
-        case Ogre::PFG_BC1_UNORM_SRGB:         return Texture::PixelFormat::RgbaDxt1;
-        case Ogre::PFG_BC2_UNORM_SRGB:         return Texture::PixelFormat::RgbaDxt3;
-        case Ogre::PFG_BC3_UNORM_SRGB:         return Texture::PixelFormat::RgbaDxt5;
+		case Ogre::PFG_RGBA8_UNORM:		  return Texture::PixelFormat::Rgba;
+        /*case Ogre::PFG_BGRA8_UNORM:     return Texture::PixelFormat::Rgba;
+        case Ogre::PFG_B5G6R5_UNORM:      return Texture::PixelFormat::Rgb565;
+        case Ogre::PFG_B4G4R4A4_UNORM:    return Texture::PixelFormat::Rgba4444;
+        case Ogre::PFG_PVRTC_RGBA2:       return Texture::PixelFormat::Pvrtc2;
+        case Ogre::PFG_PVRTC_RGBA4:       return Texture::PixelFormat::Pvrtc4;*/
+        case Ogre::PFG_BC1_UNORM:         return Texture::PixelFormat::RgbaDxt1;
+        case Ogre::PFG_BC2_UNORM:         return Texture::PixelFormat::RgbaDxt3;
+        case Ogre::PFG_BC3_UNORM:         return Texture::PixelFormat::RgbaDxt5;
 
         default:
             throw InvalidRequestException(
@@ -839,6 +960,37 @@ void OgreTexture::createOgreTexture(PixelFormat pixel_format, Ogre::uint32 width
 	d_textureGpu->setTextureType(Ogre::TextureTypes::Type2D);
 	d_textureGpu->setNumMipmaps(1u);
 	d_textureGpu->setResolution(width, height);
+
+
+
+#ifdef BLITFROMMEMORY_PARTIALUPLOAD
+    // lets go ahead and allocate the memory buffer for this texture and make
+    // it resident on the GPU.  We do this so that later GPU blit operations
+    // can make some assumptions that the texture is resident & available for
+    // being mapped.  We can look at optimizing this later if need be.
+    size_t bytesPerRow = Ogre::PixelFormatGpuUtils::getBytesPerPixel(d_textureGpu->getPixelFormat()) * width;
+    void* data = OGRE_MALLOC_SIMD(bytesPerRow * height, Ogre::MEMCATEGORY_RENDERSYS);
+    memset(data, 0, bytesPerRow * height);
+
+    d_textureGpu->_transitionTo(Ogre::GpuResidency::Resident, static_cast<Ogre::uint8*>(data));
+    d_textureGpu->_setNextResidencyStatus(Ogre::GpuResidency::Resident);
+
+    Ogre::TextureGpuManager *textureMgr = Ogre::Root::getSingletonPtr()->getRenderSystem()->getTextureGpuManager();
+
+    Ogre::StagingTexture *stagingTexture = textureMgr->getStagingTexture(
+        width, height, 1u, 1u, d_textureGpu->getPixelFormat());
+
+    stagingTexture->startMapRegion();
+    Ogre::TextureBox box = stagingTexture->mapRegion(width, height, 1u, 1u, d_textureGpu->getPixelFormat());
+    box.copyFrom(data, width, height, bytesPerRow);
+    stagingTexture->stopMapRegion();
+
+    stagingTexture->upload(box, d_textureGpu, 0, nullptr, nullptr, true);
+
+    textureMgr->removeStagingTexture(stagingTexture);
+    OGRE_FREE_SIMD(data, Ogre::MEMCATEGORY_RENDERSYS);
+    d_textureGpu->notifyDataIsReady();
+#endif
 }
 
 

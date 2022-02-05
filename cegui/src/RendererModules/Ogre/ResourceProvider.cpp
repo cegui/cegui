@@ -29,6 +29,7 @@
 #include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/RendererModules/Ogre/OgreMacros.h"
+#include "CEGUI/DataContainer.h"
 
 #include <OgreArchiveManager.h>
 #include <OgreResourceGroupManager.h>
