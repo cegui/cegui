@@ -80,7 +80,6 @@ public:
     virtual int getVertexAttributeElementCount() const override;
 
     void finaliseVertexAttributes(MANUALOBJECT_TYPE type);
-	void setCurrentRenderTarget(OgreRenderTarget* renderTarget);
 	void setFirstDrawOfFrame(bool value) { d_isFirstDrawOfFrame = value; }
 
 protected:
@@ -96,7 +95,6 @@ protected:
 
     void cleanUpVertexAttributes();
 		
-	OgreRenderTarget* d_currentRenderTarget;
 	OgreRenderTarget* getCurrentOgreRenderTarget() const;
 	
 	//! means if this is the first Geometrybuffer in the queue for draw
