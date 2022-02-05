@@ -29,6 +29,7 @@
 
 #include <vector>
 #include "CEGUI/String.h"
+#include "CEGUI/text/RenderedText.h"
 
 // If this looks wanky, it's becase it is!  Behold that this is not as fullblown
 // as it could be though.
@@ -219,6 +220,8 @@ protected:
     int d_FPSValue;
     //! whether to spin the logo
     bool d_spinLogo;
+
+    CEGUI::RenderedText d_fpsRenderedText;
 
 private:
     CEGUI::String d_dataPathPrefix;
