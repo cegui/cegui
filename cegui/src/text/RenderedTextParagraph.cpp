@@ -94,21 +94,51 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
         SelectionInfo si;
         if (ImageManager::getSingleton().isDefined("TaharezLook/GenericBrush"))
             si.bgBrush = &ImageManager::getSingleton().get("TaharezLook/GenericBrush");
-        si.end = 1;
+        si.start = 4;
+        si.end = 29;
         selection = &si;
+
+        //!!!TODO TEXT: render background color before selection and under it too, as selection can be transparent!
+        //Need default bg color, selection color, selected text color etc + optional override from element.
 
         // Render selection background
         if (selection && selection->bgBrush && selection->end > selection->start)
         {
-            //!!!TODO TEXT: render selection / background. Check if a glyph logical index is inside selection range passed.
-            // Loop glyphs, collect sequences with the same bg color and image, draw batches! BG params may be defaulted?
-            // Selection has a priority over BG. Can quickly skip selection rendering if range is empty. Can't do so with BG!
-            //    const float selStartExtent = (d_selectionStart > 0) ? font->getTextExtent(d_text.substr(0, d_selectionStart)) : 0;
-            //    const float selEndExtent = font->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
-            //    const Rectf selRect(pos.x + selStartExtent, pos.y, pos.x + selEndExtent, pos.y + line.extents.d_height);
             ImageRenderSettings settings(Rectf(penPosition, line.extents), clipRect, selection->bgColours);
-            settings.d_destArea.d_max.x += line.justifyableCount * line.justifySpaceSize;
-            selection->bgBrush->createRenderGeometry(out, settings, canCombineFromIdx);
+            settings.d_destArea.d_max.x = settings.d_destArea.d_min.x;
+            for (uint32_t j = i; j < line.glyphEndIdx; ++j)
+            {
+                const auto& glyph = d_glyphs[j];
+                const bool hasSelection = !settings.d_destArea.empty();
+
+                float glyphWidth = glyph.advance;
+                if (glyph.isJustifyable)
+                    glyphWidth += line.justifySpaceSize;
+
+                if (glyph.sourceIndex >= selection->start && glyph.sourceIndex < selection->end)
+                {
+                    if (!hasSelection)
+                        settings.d_destArea.d_max.x = settings.d_destArea.d_min.x;
+                    settings.d_destArea.d_max.x += glyphWidth;
+                }
+                else
+                {
+                    // Draw currently collected selection and reset range
+                    if (hasSelection)
+                    {
+                        selection->bgBrush->createRenderGeometry(out, settings, canCombineFromIdx);
+                        settings.d_destArea.d_min.x = settings.d_destArea.d_max.x;
+                    }
+                    settings.d_destArea.d_min.x += glyphWidth;
+                }
+            }
+
+            // Draw selection to the end of the line
+            if (!settings.d_destArea.empty())
+            {
+                settings.d_destArea.d_max.x = penPosition.x + line.extents.d_width + line.justifyableCount * line.justifySpaceSize;
+                selection->bgBrush->createRenderGeometry(out, settings, canCombineFromIdx);
+            }
         }
 
         // Render glyph chunks using their associated elements
