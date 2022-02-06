@@ -58,12 +58,8 @@ Editbox::Editbox(const String& type, const String& name) :
 {
     addEditboxProperties();
 
-    // default to accepting all characters
-    if (d_validator)
-        setValidationString(".*");
-    // set copy of validation string to ".*" so getter returns something valid.
-    else
-        d_validationString = ".*";
+    // Default to accepting all characters
+    setValidationString(".*");
 }
 
 //----------------------------------------------------------------------------//
@@ -74,20 +70,16 @@ Editbox::~Editbox()
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::setValidationString(const String& validation_string)
+void Editbox::setValidationString(const String& validationString)
 {
-    if (validation_string == d_validationString)
+    if (validationString == d_validationString)
         return;
 
-    if (!d_validator)
-        throw InvalidRequestException(
-            "Unable to set validation string on Editbox '" + getNamePath() +
-            "' because it does not currently have a RegexMatcher validator.");
+    if (d_validator)
+        d_validator->setRegexString(validationString);
 
-    d_validator->setRegexString(validation_string);
-    d_validationString = validation_string;
+    d_validationString = validationString;
 
-    // notification
     WindowEventArgs args(this);
     onValidationStringChanged(args);
 
@@ -114,13 +106,7 @@ void Editbox::setMaxTextLength(size_t max_len)
         setText(newText);
         d_undoHandler->clearUndoHistory();
 
-        const RegexMatchState state = getStringMatchState(getText());
-        if (d_validatorMatchState != state)
-        {
-            RegexMatchStateEventArgs rms_args(this, state);
-            onTextValidityChanged(rms_args);
-            d_validatorMatchState = state;
-        }
+        handleValidityChangeForString(getText());
     }
 }
 
@@ -149,13 +135,13 @@ void Editbox::eraseSelectedText(bool modify_text)
     }
 }
 
-
+//----------------------------------------------------------------------------//
 RegexMatchState Editbox::getStringMatchState(const String& str) const
 {
     return d_validator ? d_validator->getMatchStateOfString(str) : RegexMatchState::Valid;
 }
 
-
+//----------------------------------------------------------------------------//
 void Editbox::setValidator(RegexMatcher* validator)
 {
     if (d_weOwnValidator && d_validator)
@@ -172,36 +158,30 @@ void Editbox::setValidator(RegexMatcher* validator)
     }
 }
 
-
-
+//----------------------------------------------------------------------------//
 bool Editbox::handleValidityChangeForString(const String& str)
 {
-    const RegexMatchState new_state = getStringMatchState(str);
+    const RegexMatchState newState = getStringMatchState(str);
 
-    if (new_state == d_validatorMatchState)
+    if (newState == d_validatorMatchState)
         return d_previousValidityChangeResponse;
 
-    RegexMatchStateEventArgs args(this, new_state);
+    RegexMatchStateEventArgs args(this, newState);
     onTextValidityChanged(args);
 
-    const bool response = (args.handled != 0);
-    if (response)
-    {
-        d_validatorMatchState = new_state;
-        d_previousValidityChangeResponse = response;
-    }
+    d_previousValidityChangeResponse = !!args.handled;
+    d_validatorMatchState = newState;
 
-    return response;
+    return d_previousValidityChangeResponse;
 }
 
-
+//----------------------------------------------------------------------------//
 bool Editbox::performPaste(Clipboard& clipboard)
 {
     if (isReadOnly())
         return false;
 
-    String clipboardText = clipboard.getText();
-
+    const String clipboardText = clipboard.getText();
     if (clipboardText.empty())
         return false;
 
@@ -231,8 +211,7 @@ bool Editbox::performPaste(Clipboard& clipboard)
             // (we just want to update state)
             eraseSelectedText(false);
 
-            // advance caret (done first so we can "do stuff" in event
-            // handlers!)
+            // advance caret (done first so we can "do stuff" in event handlers!)
             d_caretPos += clipboardText.length();
 
             // set text to the newly modified string
@@ -248,7 +227,7 @@ bool Editbox::performPaste(Clipboard& clipboard)
     return false;
 }
 
-
+//----------------------------------------------------------------------------//
 void Editbox::onCharacter(TextEventArgs& e)
 {
     // NB: We are not calling the base class handler here because it propagates
@@ -256,11 +235,10 @@ void Editbox::onCharacter(TextEventArgs& e)
     // events, we want such propagation to cease with us regardless of whether
     // we actually handle the event.
 
-    // fire event.
     fireEvent(EventCharacterKey, e, Window::EventNamespace);
 
     // only need to take notice if we have focus
-    if (e.handled == 0 && hasInputFocus() && !isReadOnly() &&
+    if (!e.handled && hasInputFocus() && !isReadOnly() &&
         getActualFont()->isCodepointAvailable(e.d_character))
     {
         // backup current text
@@ -321,143 +299,138 @@ void Editbox::onCharacter(TextEventArgs& e)
     // event was (possibly) not handled
 }
 
-
+//----------------------------------------------------------------------------//
 void Editbox::handleBackspace()
 {
-    if (!isReadOnly())
+    if (isReadOnly())
+        return;
+
+    String tmp(getText());
+
+    if (getSelectionLength() != 0)
     {
-        String tmp(getText());
+        UndoHandler::UndoAction undoSelection;
+        undoSelection.d_type = UndoHandler::UndoActionType::Delete;
+        undoSelection.d_startIdx = getSelectionStart();
+        undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
 
-        if (getSelectionLength() != 0)
+        tmp.erase(getSelectionStart(), getSelectionLength());
+
+        if (handleValidityChangeForString(tmp))
         {
-            UndoHandler::UndoAction undoSelection;
-            undoSelection.d_type = UndoHandler::UndoActionType::Delete;
-            undoSelection.d_startIdx = getSelectionStart();
-            undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
+            // erase selection using mode that does not modify getText()
+            // (we just want to update state)
+            eraseSelectedText(false);
 
-            tmp.erase(getSelectionStart(), getSelectionLength());
-
-            if (handleValidityChangeForString(tmp))
-            {
-                // erase selection using mode that does not modify getText()
-                // (we just want to update state)
-                eraseSelectedText(false);
-
-                // set text to the newly modified string
-                setText(tmp);
-                d_undoHandler->addUndoHistory(undoSelection);
-            }
+            // set text to the newly modified string
+            setText(tmp);
+            d_undoHandler->addUndoHistory(undoSelection);
         }
-        else if (getCaretIndex() > 0)
-        {
-            UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::Delete;
+    }
+    else if (getCaretIndex() > 0)
+    {
+        UndoHandler::UndoAction undo;
+        undo.d_type = UndoHandler::UndoActionType::Delete;
 
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
-            size_t deleteStartPos = d_caretPos - 1;
-            size_t deleteLength = 1;
+        size_t deleteStartPos = d_caretPos - 1;
+        size_t deleteLength = 1;
 #else
-            String::codepoint_iterator caretIter(tmp.begin() + d_caretPos,
-                                                 tmp.begin(), tmp.end());
-            --caretIter;
+        String::codepoint_iterator caretIter(tmp.begin() + d_caretPos,
+                                                tmp.begin(), tmp.end());
+        --caretIter;
 
-            size_t deleteStartPos = caretIter.getCodeUnitIndexFromStart();
-            size_t deleteLength = d_caretPos - deleteStartPos;
+        size_t deleteStartPos = caretIter.getCodeUnitIndexFromStart();
+        size_t deleteLength = d_caretPos - deleteStartPos;
 #endif
 
-            undo.d_startIdx = deleteStartPos;
-            undo.d_text = tmp.substr(deleteStartPos, deleteLength);
+        undo.d_startIdx = deleteStartPos;
+        undo.d_text = tmp.substr(deleteStartPos, deleteLength);
 
-            tmp.erase(deleteStartPos, deleteLength);
+        tmp.erase(deleteStartPos, deleteLength);
 
-            if (handleValidityChangeForString(tmp))
-            {
-                setCaretIndex(deleteStartPos);
+        if (handleValidityChangeForString(tmp))
+        {
+            setCaretIndex(deleteStartPos);
 
-                // set text to the newly modified string
-                setText(tmp);
-                d_undoHandler->addUndoHistory(undo);
-            }
+            // set text to the newly modified string
+            setText(tmp);
+            d_undoHandler->addUndoHistory(undo);
         }
-
     }
-
 }
 
-
+//----------------------------------------------------------------------------//
 void Editbox::handleDelete()
 {
-    if (!isReadOnly())
+    if (isReadOnly())
+        return;
+
+    String tmp(getText());
+
+    if (getSelectionLength() != 0)
     {
-        String tmp(getText());
+        UndoHandler::UndoAction undoSelection;
+        undoSelection.d_type = UndoHandler::UndoActionType::Delete;
+        undoSelection.d_startIdx = getSelectionStart();
+        undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
 
-        if (getSelectionLength() != 0)
+        tmp.erase(getSelectionStart(), getSelectionLength());
+
+        if (handleValidityChangeForString(tmp))
         {
-            UndoHandler::UndoAction undoSelection;
-            undoSelection.d_type = UndoHandler::UndoActionType::Delete;
-            undoSelection.d_startIdx = getSelectionStart();
-            undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
+            // erase selection using mode that does not modify getText()
+            // (we just want to update state)
+            eraseSelectedText(false);
 
-            tmp.erase(getSelectionStart(), getSelectionLength());
-
-            if (handleValidityChangeForString(tmp))
-            {
-                // erase selection using mode that does not modify getText()
-                // (we just want to update state)
-                eraseSelectedText(false);
-
-                // set text to the newly modified string
-                setText(tmp);
-                d_undoHandler->addUndoHistory(undoSelection);
-            }
+            // set text to the newly modified string
+            setText(tmp);
+            d_undoHandler->addUndoHistory(undoSelection);
         }
-        else if (getCaretIndex() < tmp.length())
-        {
-            UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::Delete;
-            undo.d_startIdx = d_caretPos;
+    }
+    else if (getCaretIndex() < tmp.length())
+    {
+        UndoHandler::UndoAction undo;
+        undo.d_type = UndoHandler::UndoActionType::Delete;
+        undo.d_startIdx = d_caretPos;
 
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
-            size_t eraseLength = 1;
+        size_t eraseLength = 1;
 #else
-            size_t eraseLength = String::getCodePointSize(tmp[d_caretPos]);
+        size_t eraseLength = String::getCodePointSize(tmp[d_caretPos]);
 #endif
 
-            undo.d_text = tmp.substr(d_caretPos, eraseLength);
+        undo.d_text = tmp.substr(d_caretPos, eraseLength);
 
-            tmp.erase(d_caretPos, eraseLength);
+        tmp.erase(d_caretPos, eraseLength);
 
-            if (handleValidityChangeForString(tmp))
-            {
-                // set text to the newly modified string
-                setText(tmp);
-                d_undoHandler->addUndoHistory(undo);
-            }
+        if (handleValidityChangeForString(tmp))
+        {
+            setText(tmp);
+            d_undoHandler->addUndoHistory(undo);
         }
-
     }
-
 }
 
-
+//----------------------------------------------------------------------------//
 void Editbox::onValidationStringChanged(WindowEventArgs& e)
 {
     fireEvent(EventValidationStringChanged , e, EventNamespace);
 }
 
-
+//----------------------------------------------------------------------------//
 void Editbox::onTextValidityChanged(RegexMatchStateEventArgs& e)
 {
     fireEvent(EventTextValidityChanged, e, EventNamespace);
 }
 
-
+//----------------------------------------------------------------------------//
 void Editbox::onTextAcceptedEvent(WindowEventArgs& e)
 {
     fireEvent(EventTextAccepted, e, EventNamespace);
 }
 
-
+//----------------------------------------------------------------------------//
 void Editbox::onTextChanged(WindowEventArgs& e)
 {
     // base class processing
@@ -473,32 +446,16 @@ void Editbox::onTextChanged(WindowEventArgs& e)
     ++e.handled;
 }
 
-
-void Editbox::addEditboxProperties()
-{
-    const String& propertyOrigin = WidgetTypeName;
-
-    CEGUI_DEFINE_PROPERTY(Editbox, String,
-          "ValidationString","Property to get/set the validation string Editbox.  Value is a text string.",
-          &Editbox::setValidationString, &Editbox::getValidationString, ".*"
-    );
-}
-
-
+//----------------------------------------------------------------------------//
 size_t Editbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
-    if (d_windowRenderer != nullptr)
-    {
-        EditboxWindowRenderer* wr = static_cast<EditboxWindowRenderer*>(d_windowRenderer);
-        return wr->getTextIndexFromPosition(pt);
-    }
-    else
-    {
-        throw InvalidRequestException(
-            "This function must be implemented by the window renderer");
-    }
+    if (!d_windowRenderer)
+        throw InvalidRequestException("This function must be implemented by the window renderer");
+
+    return static_cast<EditboxWindowRenderer*>(d_windowRenderer)->getTextIndexFromPosition(pt);
 }
 
+//----------------------------------------------------------------------------//
 void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
 {
     if (isDisabled())
@@ -523,8 +480,7 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
         else
         {
             d_dragAnchorIdx = TextUtils::getWordStartIndex(getText(),
-                (d_caretPos == getText().length()) ? d_caretPos :
-                d_caretPos + 1);
+                (d_caretPos == getText().length()) ? d_caretPos : d_caretPos + 1);
             d_caretPos = TextUtils::getNextWordStartIndex(getText(), d_caretPos);
         }
 
@@ -534,7 +490,7 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
         ++e.handled;
     }
 
-    if (e.handled == 0 && hasInputFocus())
+    if (!e.handled && hasInputFocus())
     {
         if (isReadOnly())
         {
@@ -542,7 +498,7 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
             return;
         }
 
-        if (getSelectionLength() == 0 && isSelectionSemanticValue(e.d_semanticValue))
+        if (!getSelectionLength() && isSelectionSemanticValue(e.d_semanticValue))
             d_dragAnchorIdx = d_caretPos;
 
         // Check if the semantic value to be handled is of a general type and can thus be
@@ -557,33 +513,32 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
 
             switch (e.d_semanticValue)
             {
-            case SemanticValue::Confirm:
-            {
-                WindowEventArgs args(this);
-                // Fire 'input accepted' event
-                onTextAcceptedEvent(args);
-                break;
-            }
+                case SemanticValue::Confirm:
+                {
+                    WindowEventArgs args(this);
+                    onTextAcceptedEvent(args);
+                    break;
+                }
 
-            case SemanticValue::GoToStartOfLine:
-                handleHome(false);
-                break;
+                case SemanticValue::GoToStartOfLine:
+                    handleHome(false);
+                    break;
 
-            case SemanticValue::GoToEndOfLine:
-                handleEnd(false);
-                break;
+                case SemanticValue::GoToEndOfLine:
+                    handleEnd(false);
+                    break;
 
-            case SemanticValue::SelectToStartOfLine:
-                handleHome(true);
-                break;
+                case SemanticValue::SelectToStartOfLine:
+                    handleHome(true);
+                    break;
 
-            case SemanticValue::SelectToEndOfLine:
-                handleEnd(true);
-                break;
+                case SemanticValue::SelectToEndOfLine:
+                    handleEnd(true);
+                    break;
 
-            default:
-                Window::onSemanticInputEvent(e);
-                isSemanticValueHandled = false;
+                default:
+                    Window::onSemanticInputEvent(e);
+                    isSemanticValueHandled = false;
             }
         }
 
@@ -592,9 +547,21 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
     }
 }
 
+//----------------------------------------------------------------------------//
 bool Editbox::validateWindowRenderer(const WindowRenderer* renderer) const
 {
     return dynamic_cast<const EditboxWindowRenderer*>(renderer) != nullptr;
+}
+
+//----------------------------------------------------------------------------//
+void Editbox::addEditboxProperties()
+{
+    const String& propertyOrigin = WidgetTypeName;
+
+    CEGUI_DEFINE_PROPERTY(Editbox, String,
+        "ValidationString", "Property to get/set the validation string Editbox.  Value is a text string.",
+        &Editbox::setValidationString, &Editbox::getValidationString, ".*"
+    );
 }
 
 }
