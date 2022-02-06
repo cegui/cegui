@@ -123,10 +123,6 @@ public:
     \brief
         Return whether word-wrapping is turned on, which means words are
         wrapped to multiple lines as needed.
-
-        To toggle word wrap, use "setHorizontalFormatting".
-
-    \see setHorizontalFormatting
     */
     bool isWordWrapEnabled() const { return d_wordWrap; }
 

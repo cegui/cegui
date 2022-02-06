@@ -60,6 +60,19 @@ FalagardMultiLineEditbox::FalagardMultiLineEditbox(const String& type) :
         "Value is a float value indicating the timeout in seconds.",
         &FalagardMultiLineEditbox::setCaretBlinkTimeout,&FalagardMultiLineEditbox::getCaretBlinkTimeout,
         0.66f);
+    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardMultiLineEditbox, HorizontalTextFormatting,
+        "TextFormatting", "Property to get/set the horizontal formatting mode. "
+        "Value is one of: LeftAligned, RightAligned or HorzCentred",
+        &FalagardMultiLineEditbox::setTextFormatting, &FalagardMultiLineEditbox::getTextFormatting,
+        HorizontalTextFormatting::LeftAligned);
+    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardMultiLineEditbox, bool,
+        "WordWrap", "Property to get/set the word-wrap setting of the edit box.  Value is either \"true\" or \"false\".",
+        &FalagardMultiLineEditbox::setWordWrapEnabled, &FalagardMultiLineEditbox::isWordWrapEnabled, true
+    );
+    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardMultiLineEditbox, Image*,
+        "SelectionBrushImage", "Property to get/set the selection brush image for the editbox.  Value should be \"[imageset_name]/[image_name]\".",
+        &FalagardMultiLineEditbox::setSelectionBrushImage, &FalagardMultiLineEditbox::getSelectionBrushImage, nullptr
+    );
 }
 
 //----------------------------------------------------------------------------//
@@ -198,7 +211,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
     SelectionInfo selectionInfo;
     if (selStart < selEnd)
     {
-        selectionInfo.bgBrush = w->getSelectionBrushImage();
+        selectionInfo.bgBrush = d_selectionBrush;
         selectionInfo.bgColours = selectBrushCol;
         selectionInfo.textColours = selectTextCol;
         selectionInfo.start = selStart;
@@ -252,6 +265,40 @@ bool FalagardMultiLineEditbox::handleFontRenderSizeChange(const Font* const font
     }
 
     return res;
+}
+
+//----------------------------------------------------------------------------//
+void FalagardMultiLineEditbox::setTextFormatting(HorizontalTextFormatting format)
+{
+    if (d_textFormatting == format)
+        return;
+
+    bool wordWrap = false;
+    d_textFormatting = decomposeHorizontalFormatting(format, wordWrap);
+    if (wordWrap)
+        setWordWrapEnabled(true);
+
+    d_window->invalidate();
+}
+
+//------------------------------------------------------------------------//
+void FalagardMultiLineEditbox::setWordWrapEnabled(bool wrap)
+{
+    if (d_wordWrap == wrap)
+        return;
+
+    d_wordWrap = wrap;
+    d_window->invalidate();
+}
+
+//----------------------------------------------------------------------------//
+void FalagardMultiLineEditbox::setSelectionBrushImage(const Image* image)
+{
+    if (d_selectionBrush == image)
+        return;
+
+    d_selectionBrush = image;
+    d_window->invalidate();
 }
 
 }

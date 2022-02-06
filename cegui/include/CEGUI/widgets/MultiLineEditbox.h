@@ -157,7 +157,7 @@ public:
 		- true if the scroll bar will always be shown even if it is not required.
 		- false if the scroll bar will only be shown when it is required.
 	*/
-	bool isVertScrollbarAlwaysShown() const;
+    bool isVertScrollbarAlwaysShown() const { return d_forceVertScroll; }
 
     /*!
     \brief
@@ -218,24 +218,6 @@ public:
 		scroll bar should only be shown when it is required.
 	*/
 	void setShowVertScrollbar(bool setting);
-
-    /*!
-	\brief
-		Sets a selection brush Image
-
-	\param image
-		The brush image to be used for selections
-	*/
-    void setSelectionBrushImage(const Image* image);
-
-    /*!
-	\brief
-		Returns the selection brush Image
-
-	\return
-		The brush image currently used for selections
-	*/
-    const Image* getSelectionBrushImage() const { return d_selectionBrush; }
 
     /*!
     \brief
@@ -362,8 +344,6 @@ protected:
 		Handler called when 'always show' setting for the horizontal scroll bar changes.
 	*/
 	void onHorzScrollbarModeChanged(WindowEventArgs& e);
-
-    const Image* d_selectionBrush = nullptr;	//!< Image to use as the selection brush (should be set by derived class).
 
     std::vector<LineInfo> d_lines;			//!< Holds the lines for the current formatting.
 	float           d_lastRenderWidth = 0.f;  //!< Holds last render area width

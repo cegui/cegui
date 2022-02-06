@@ -125,7 +125,7 @@ public:
             - HorizontalTextFormatting::RightAligned
             - HorizontalTextFormatting::CentreAligned
     */
-    void setTextFormatting(const HorizontalTextFormatting format);
+    void setTextFormatting(HorizontalTextFormatting format);
     HorizontalTextFormatting getTextFormatting() const { return d_textFormatting; }
 
     /*!
