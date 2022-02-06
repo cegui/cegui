@@ -51,7 +51,11 @@
 #include "CEGUI/Texture.h"
 #include "CEGUI/PropertyHelper.h"
 
-#include "CEGUI/RegexMatcher.h"
+#if defined(CEGUI_HAS_PCRE_REGEX)
+#   include "CEGUI/PCRERegexMatcher.h"
+#elif defined(CEGUI_HAS_STD11_REGEX)
+#   include "CEGUI/StdRegexMatcher.h"
+#endif
 
 #include <sstream>
 #include <algorithm>
@@ -123,6 +127,18 @@ const String ColourPickerControls::AlphaEditBoxName("__auto_alphaeditbox__");
 const String ColourPickerControls::ColourPickerCursorName("__colourpickercursor__");
 
 //----------------------------------------------------------------------------//
+static RegexMatcher* createRegexMatcher()
+{
+#if defined(CEGUI_HAS_PCRE_REGEX)
+    return new PCRERegexMatcher();
+#elif defined(CEGUI_HAS_STD11_REGEX)
+    return new StdRegexMatcher();
+#else
+    return nullptr;
+#endif
+}
+
+//----------------------------------------------------------------------------//
 ColourPickerControls::ColourPickerControls(const String& type, const String& name) :
     Window(type, name),
     d_callingColourPicker(nullptr),
@@ -142,7 +158,7 @@ ColourPickerControls::ColourPickerControls(const String& type, const String& nam
     d_colourPickingTexture(new RGB_Colour[d_colourPickerControlsTextureSize *
                                           d_colourPickerControlsTextureSize]),
     d_ignoreEvents(false),
-    d_regexMatcher(*System::getSingleton().createRegexMatcher())
+    d_regexMatcher(*createRegexMatcher())
 {
 }
 
@@ -596,7 +612,7 @@ void ColourPickerControls::initialiseComponents()
     Window::initialiseComponents();
 }
 
-void ColourPickerControls::destroy( void )
+void ColourPickerControls::destroy()
 {
     deinitColourPickerControlsTexture();
 
@@ -609,7 +625,7 @@ void ColourPickerControls::destroy( void )
     delete[] d_colourPickingTexture;
     d_colourPickingTexture = nullptr;
 
-    System::getSingleton().destroyRegexMatcher(&d_regexMatcher);
+    delete &d_regexMatcher;
 
     Window::destroy();
 }
