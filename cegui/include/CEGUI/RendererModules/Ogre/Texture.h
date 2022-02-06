@@ -87,19 +87,17 @@ protected:
 	//! destructor.
     virtual ~OgreTexture();
 	//! construct an texture
-	void createOgreTexture(PixelFormat pixel_format, Ogre::uint32 width, Ogre::uint32 height);
+	void createOgreTexture(Ogre::PixelFormatGpu pixel_format, Ogre::uint32 width, Ogre::uint32 height);
 	//! construct an empty texture
-    void createEmptyOgreTexture(PixelFormat pixel_format);
+    void createEmptyOgreTexture(Ogre::PixelFormatGpu pixel_format);
     //! release the underlying Ogre texture.
     void freeOgreTexture();
     //! updates cached scale value used to map pixels to texture co-ords.
     void updateCachedScaleValues();
-	//! blits data from on Ogre::TextureBox to another Ogre::TextureBox
-	static void blitFromMemory(Ogre::TextureBox& src, Ogre::TextureBox& target, Ogre::Box& targetArea, Ogre::PixelFormatGpu pixelFormat);
-    //! Counter used to provide unique texture names.
+	//! Counter used to provide unique texture names.
     static std::uint32_t d_textureNumber;
     //!< The underlying Ogre texture.
-    Ogre::TextureGpu* d_textureGpu;
+    Ogre::TextureGpu* d_texture;
     //! specifies whether d_texture was created externally (not owned by us).
     bool d_isLinked;
     //! Size of the texture.
@@ -111,14 +109,6 @@ protected:
     //! Name this texture was created with.
     const String d_name;
 	const String d_nameFile;
-	//! Ram Copy of Texture Data
-	Ogre::uint8* d_TextureDataRamCopy;
-	//! specfies if a RamCopy of the texture is keept. This is false at the beginning and true once the texture is accesed using blitFromMemory
-	bool d_shallStoreTextureDataRamCopy;
-	//! Allocates memory for Ram Copy of Texture Data
-	void createEmptyTextureDataRamCopy(size_t dataSize);
-	//! Free up memory for Ram Copy of Texture Data
-	void destroyTextureDataRamCopy();
 };
 
 } // End of  CEGUI namespace section

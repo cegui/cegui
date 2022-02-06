@@ -101,8 +101,8 @@ void OgreRenderTarget::updateRenderPassDescriptor()
 	{
 		d_renderPassDescForAddionalDraw = d_renderSystem.createRenderPassDescriptor();
 		d_renderPassDescForAddionalDraw->mColour[0].texture = textureTarget;
-		d_renderPassDescForAddionalDraw->mColour[0].loadAction = Ogre::LoadAction::DontCare;
-		d_renderPassDescForAddionalDraw->mColour[0].clearColour = Ogre::ColourValue(0.5f, 1.0f, 0.0f); //does not matter
+		d_renderPassDescForAddionalDraw->mColour[0].loadAction = Ogre::LoadAction::Load;
+		d_renderPassDescForAddionalDraw->mColour[0].clearColour = Ogre::ColourValue(0.0f, 0.0f, 0.0f); //clear to transpera
 		d_renderPassDescForAddionalDraw->mColour[0].storeAction = Ogre::StoreAction::StoreOrResolve;
 		//Note that resolveTexture should be nullptr if texture isn't msaa.
 		//Also if texture->hasMsaaExplicitResolves() == false, then resolveTexture = texture

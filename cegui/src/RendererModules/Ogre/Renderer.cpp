@@ -100,10 +100,7 @@ public:
     OgreGUIRenderQueueListener(OgreRenderer* owner);
 
     virtual ~OgreGUIRenderQueueListener(){}
-
-    void setCEGUIRenderEnabled(bool enabled);
-    bool isCEGUIRenderEnabled() const;
-
+        
     virtual void passPreExecute(Ogre::CompositorPass *pass);
 
 	CEGUI::GUIContext* mGUIContextToRender; //If set, only this GUIContext is rendered
@@ -1091,14 +1088,6 @@ void OgreRenderer::bindPSO(const Ogre::v1::RenderOperation render_operation)
 
     // This should have all the rendering settings
 	Ogre::HlmsPso* pso = d_pimpl->d_hlmsCache->getPso();
-	/*pso = 0;
-	
-	{
-		const Ogre::uint32 renderableHash = d_pimpl->d_hlmsCache->getRenderableHash();
-		pso = d_pimpl->d_hlmsCache->getPso(renderableHash, true);
-	}*/
-
-	//Ogre::HlmsPso* pso = d_pimpl->d_hlmsCache->getPso((Ogre::uint32)0, true); //always request same Pso, otherwise Ogre2.1 will get out of control and create new Pso's over and other first causing slowdown and ultimatively application crash
 
     // Bind it
     d_pimpl->d_renderSystem->_setPipelineStateObject(pso);
@@ -1196,15 +1185,14 @@ void OgreRenderer::setViewProjectionMatrix(const glm::mat4& viewProjMatrix)
 
     d_viewProjectionMatrix = viewProjMatrix;
 
-#ifdef OGRE_ENABLE_INCOMPATIBLE
-    if (d_pimpl->d_renderSystem->_getViewport()->getTarget()->requiresTextureFlipping())
+    OgreRenderTarget* ogreRenderTarget = dynamic_cast<CEGUI::OgreRenderTarget*>(getActiveRenderTarget());
+    if(ogreRenderTarget && ogreRenderTarget->getTextureGpuTarget()->requiresTextureFlipping())
     {
         d_viewProjectionMatrix[0][1] = -d_viewProjectionMatrix[0][1];
         d_viewProjectionMatrix[1][1] = -d_viewProjectionMatrix[1][1];
         d_viewProjectionMatrix[2][1] = -d_viewProjectionMatrix[2][1];
         d_viewProjectionMatrix[3][1] = -d_viewProjectionMatrix[3][1];
     }
-#endif
 }
 
 //----------------------------------------------------------------------------//
@@ -1493,21 +1481,9 @@ const std::vector<CEGUI::GUIContext*>& OgreRenderer::getGuiContextsToRenderQueue
 OgreGUIRenderQueueListener::OgreGUIRenderQueueListener(OgreRenderer* owner) :
     d_enabled(true), d_owner(owner), mGUIContextToRender(0)
 {
-
 }
 
 //----------------------------------------------------------------------------//
-void OgreGUIRenderQueueListener::setCEGUIRenderEnabled(bool enabled)
-{
-    d_enabled = enabled;
-}
-
-//----------------------------------------------------------------------------//
-bool OgreGUIRenderQueueListener::isCEGUIRenderEnabled() const
-{
-    return d_enabled;
-}
-
 void OgreGUIRenderQueueListener::passPreExecute(Ogre::CompositorPass *pass)
 {
 	if(pass->getType() == Ogre::PASS_SCENE)
