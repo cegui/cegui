@@ -82,7 +82,6 @@ public:
     virtual ~MultiLineEditbox() override;
 
     void setCaretIndex(size_t caret_pos) override;
-    bool performPaste(Clipboard& clipboard) override;
 
     /*!
     \brief
@@ -174,9 +173,6 @@ public:
 protected:
 
     size_t getTextIndexFromPosition(const glm::vec2& pt) const override;
-    void eraseSelectedText(bool modify_text = true) override;
-    void handleBackspace() override;
-    void handleDelete() override;
     void onCharacter(TextEventArgs& e) override;
 
     void onScroll(CursorInputEventArgs& e) override;

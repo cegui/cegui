@@ -520,24 +520,6 @@ public:
     */
     void invalidateAllCachedRendering();
 
-    /*!
-    \brief
-        Create a RegexMatcher instance if support is available.
-
-    \return
-        Pointer to an object that implements the RegexMatcher interface, or 0
-        if the system has no built in support for RegexMatcher creation.
-
-    \note
-        The created RegexMatcher is not tracked in any way, and it is the
-        resposibility of the caller to destroy the RegexMatcher when it is no
-        longer needed by calling System::destroyRegexMatcher.
-    */
-    RegexMatcher* createRegexMatcher() const;
-
-    //! destroy a RegexMatcher instance returned by System::createRegexMatcher.
-    void destroyRegexMatcher(RegexMatcher* rm) const;
-
     //! call this to ensure system-level time based updates occur.
     bool injectTimePulse(float timeElapsed);
 

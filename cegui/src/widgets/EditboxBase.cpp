@@ -32,6 +32,11 @@
 #include "CEGUI/text/Font.h"
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/UndoHandler.h"
+#if defined(CEGUI_HAS_PCRE_REGEX)
+#   include "CEGUI/PCRERegexMatcher.h"
+#elif defined(CEGUI_HAS_STD11_REGEX)
+#   include "CEGUI/StdRegexMatcher.h"
+#endif
 #include <string.h>
 
 namespace CEGUI
@@ -46,6 +51,20 @@ const String EditboxBase::EventDefaultParagraphDirectionChanged("DefaultParagrap
 const String EditboxBase::EventCaretMoved("CaretMoved");
 const String EditboxBase::EventTextSelectionChanged("TextSelectionChanged");
 const String EditboxBase::EventEditboxFull("EditboxFull");
+const String EditboxBase::EventValidationStringChanged("ValidationStringChanged");
+const String EditboxBase::EventTextValidityChanged("TextValidityChanged");
+
+//----------------------------------------------------------------------------//
+static RegexMatcher* createRegexMatcher()
+{
+#if defined(CEGUI_HAS_PCRE_REGEX)
+    return new PCRERegexMatcher();
+#elif defined(CEGUI_HAS_STD11_REGEX)
+    return new StdRegexMatcher();
+#else
+    return nullptr;
+#endif
+}
 
 //----------------------------------------------------------------------------//
 EditboxBase::EditboxBase(const String& type, const String& name)
@@ -58,7 +77,11 @@ EditboxBase::EditboxBase(const String& type, const String& name)
 }
 
 //----------------------------------------------------------------------------//
-EditboxBase::~EditboxBase() = default;
+EditboxBase::~EditboxBase()
+{
+    if (d_weOwnValidator && d_validator)
+        delete d_validator;
+}
 
 //----------------------------------------------------------------------------//
 void EditboxBase::setReadOnly(bool setting)
@@ -123,14 +146,13 @@ void EditboxBase::setMaxTextLength(size_t maxLen)
     WindowEventArgs args(this);
     onMaximumTextLengthChanged(args);
 
-    // trim string
+    // Trim string
     const auto& text = getText();
     if (text.size() > d_maxTextLen)
     {
-        String newText = text;
-        newText.resize(d_maxTextLen);
-        setText(newText);
+        setText(text.substr(0, d_maxTextLen));
         d_undoHandler->clearUndoHistory();
+        handleValidityChangeForString(getText());
     }
 }
 
@@ -159,6 +181,54 @@ void EditboxBase::setDefaultParagraphDirection(DefaultParagraphDirection default
 
     WindowEventArgs eventArgs(this);
     fireEvent(EventDefaultParagraphDirectionChanged, eventArgs, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+RegexMatchState EditboxBase::getStringMatchState(const String& str) const
+{
+    return d_validator ? d_validator->getMatchStateOfString(str) : RegexMatchState::Valid;
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::setValidator(RegexMatcher* validator)
+{
+    if (d_validator == validator)
+        return;
+
+    if (d_weOwnValidator && d_validator)
+        delete d_validator;
+
+    d_validator = validator;
+
+    if (d_validator)
+        d_weOwnValidator = false;
+    else
+    {
+        d_validator = createRegexMatcher();
+        if (d_validator && !d_validationString.empty())
+            d_validator->setRegexString(d_validationString);
+        d_weOwnValidator = true;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::setValidationString(const String& validationString)
+{
+    if (validationString == d_validationString)
+        return;
+
+    if (!d_validator)
+        d_validator = createRegexMatcher();
+
+    if (d_validator)
+        d_validator->setRegexString(validationString);
+
+    d_validationString = validationString;
+
+    WindowEventArgs args(this);
+    onValidationStringChanged(args);
+
+    handleValidityChangeForString(getText());
 }
 
 //----------------------------------------------------------------------------//
@@ -226,31 +296,6 @@ void EditboxBase::clearSelection()
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::eraseSelectedText(bool modify_text)
-{
-    if (!getSelectionLength())
-        return;
-
-    // setup new caret position and remove selection highlight.
-    setCaretIndex(d_selectionStart);
-    clearSelection();
-
-    // erase the selected characters (if required)
-    if (modify_text)
-    {
-        String newText = getText();
-        UndoHandler::UndoAction undo;
-        undo.d_type = UndoHandler::UndoActionType::Delete;
-        undo.d_startIdx = getSelectionStart();
-        undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
-        d_undoHandler->addUndoHistory(undo);
-
-        newText.erase(getSelectionStart(), getSelectionLength());
-        setText(newText);
-    }
-}
-
-//----------------------------------------------------------------------------//
 RenderedText& EditboxBase::getRenderedText() const
 {
     if (d_renderedTextDirty)
@@ -291,6 +336,61 @@ bool EditboxBase::performCut(Clipboard& clipboard)
         return false;
 
     handleDelete();
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool EditboxBase::performPaste(Clipboard& clipboard)
+{
+    if (isReadOnly())
+        return false;
+
+    const String clipboardText = clipboard.getText();
+    if (clipboardText.empty())
+        return false;
+
+    String tmp = getText();
+    if (tmp.size() + clipboardText.size() - getSelectionLength() > d_maxTextLen)
+    {
+        WindowEventArgs args(this);
+        onEditboxFullEvent(args);
+        return false;
+    }
+
+    UndoHandler::UndoAction undoDeleteSelection;
+    const bool hasSelection = !!getSelectionLength();
+    if (hasSelection)
+    {
+        undoDeleteSelection.d_type = UndoHandler::UndoActionType::Delete;
+        undoDeleteSelection.d_startIdx = getSelectionStart();
+        undoDeleteSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
+
+        tmp.erase(getSelectionStart(), getSelectionLength());
+    }
+
+    tmp.insert(getSelectionStart(), clipboardText);
+
+    if (!handleValidityChangeForString(tmp))
+        return false;
+
+    UndoHandler::UndoAction undoPaste;
+    undoPaste.d_type = UndoHandler::UndoActionType::Insert;
+    undoPaste.d_startIdx = getCaretIndex();
+    undoPaste.d_text = clipboardText;
+
+    setCaretIndex(d_selectionStart);
+    clearSelection();
+
+    // advance caret (done first so we can "do stuff" in event handlers!)
+    d_caretPos += clipboardText.size();
+
+    // set text to the newly modified string
+    setText(tmp);
+
+    d_undoHandler->addUndoHistory(undoPaste);
+    if (hasSelection)
+        d_undoHandler->addUndoHistory(undoDeleteSelection);
+
     return true;
 }
 
@@ -494,6 +594,116 @@ void EditboxBase::handleSelectAll()
 }
 
 //----------------------------------------------------------------------------//
+void EditboxBase::handleBackspace()
+{
+    if (isReadOnly())
+        return;
+
+    String tmp(getText());
+
+    //!!!FIXME TEXT: lots of duplication between delete & backspace!
+    if (getSelectionLength())
+    {
+        UndoHandler::UndoAction undoDeleteSelection;
+        undoDeleteSelection.d_type = UndoHandler::UndoActionType::Delete;
+        undoDeleteSelection.d_startIdx = getSelectionStart();
+        undoDeleteSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
+
+        tmp.erase(getSelectionStart(), getSelectionLength());
+
+        if (handleValidityChangeForString(tmp))
+        {
+            setCaretIndex(d_selectionStart);
+            clearSelection();
+
+            setText(tmp);
+            d_undoHandler->addUndoHistory(undoDeleteSelection);
+        }
+    }
+    else if (getCaretIndex() > 0)
+    {
+        UndoHandler::UndoAction undo;
+        undo.d_type = UndoHandler::UndoActionType::Delete;
+
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
+        size_t deleteStartPos = d_caretPos - 1;
+        size_t deleteLength = 1;
+#else
+        String::codepoint_iterator caretIter(tmp.begin() + d_caretPos,
+            tmp.begin(), tmp.end());
+        --caretIter;
+
+        size_t deleteStartPos = caretIter.getCodeUnitIndexFromStart();
+        size_t deleteLength = d_caretPos - deleteStartPos;
+#endif
+
+        undo.d_startIdx = deleteStartPos;
+        undo.d_text = tmp.substr(deleteStartPos, deleteLength);
+
+        tmp.erase(deleteStartPos, deleteLength);
+
+        if (handleValidityChangeForString(tmp))
+        {
+            setCaretIndex(deleteStartPos);
+
+            // set text to the newly modified string
+            setText(tmp);
+            d_undoHandler->addUndoHistory(undo);
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::handleDelete()
+{
+    if (isReadOnly())
+        return;
+
+    String tmp(getText());
+
+    if (getSelectionLength())
+    {
+        UndoHandler::UndoAction undoSelection;
+        undoSelection.d_type = UndoHandler::UndoActionType::Delete;
+        undoSelection.d_startIdx = getSelectionStart();
+        undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
+
+        tmp.erase(getSelectionStart(), getSelectionLength());
+
+        if (handleValidityChangeForString(tmp))
+        {
+            setCaretIndex(d_selectionStart);
+            clearSelection();
+
+            setText(tmp);
+            d_undoHandler->addUndoHistory(undoSelection);
+        }
+    }
+    else if (getCaretIndex() < tmp.length())
+    {
+        UndoHandler::UndoAction undo;
+        undo.d_type = UndoHandler::UndoActionType::Delete;
+        undo.d_startIdx = d_caretPos;
+
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
+        size_t eraseLength = 1;
+#else
+        size_t eraseLength = String::getCodePointSize(tmp[d_caretPos]);
+#endif
+
+        undo.d_text = tmp.substr(d_caretPos, eraseLength);
+
+        tmp.erase(d_caretPos, eraseLength);
+
+        if (handleValidityChangeForString(tmp))
+        {
+            setText(tmp);
+            d_undoHandler->addUndoHistory(undo);
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
 void EditboxBase::onReadOnlyChanged(WindowEventArgs& e)
 {
     invalidate();
@@ -540,6 +750,18 @@ void EditboxBase::onTextSelectionChanged(WindowEventArgs& e)
 void EditboxBase::onEditboxFullEvent(WindowEventArgs& e)
 {
     fireEvent(EventEditboxFull, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::onValidationStringChanged(WindowEventArgs& e)
+{
+    fireEvent(EventValidationStringChanged, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::onTextValidityChanged(RegexMatchStateEventArgs& e)
+{
+    fireEvent(EventTextValidityChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -665,6 +887,23 @@ bool EditboxBase::handleFontRenderSizeChange(const Font& font)
     }
 
     return res;
+}
+
+//----------------------------------------------------------------------------//
+bool EditboxBase::handleValidityChangeForString(const String& str)
+{
+    const RegexMatchState newState = getStringMatchState(str);
+
+    if (newState == d_validatorMatchState)
+        return d_previousValidityChangeResponse;
+
+    RegexMatchStateEventArgs args(this, newState);
+    onTextValidityChanged(args);
+
+    d_previousValidityChangeResponse = !!args.handled;
+    d_validatorMatchState = newState;
+
+    return d_previousValidityChangeResponse;
 }
 
 //----------------------------------------------------------------------------//
