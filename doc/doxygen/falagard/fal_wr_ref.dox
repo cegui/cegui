@@ -72,8 +72,6 @@ Assigned WidgetLook should provide the following:
         <li>Enabled - Imagery used when widget is enabled.
         <li>Disabled - Imagery used when widget is disabled.
         <li>ReadOnly - Imagery used when widget is in 'Read Only' state.
-        <li>ActiveSelection - Additional imagery used when a text selection is defined and the widget is active. The imagery for this state will be rendered within the selection area.
-        <li>InactiveSelection - Additional imagery used when a text selection is defined and the widget is not active. The imagery for this state will be rendered within the selection area.
     </ul>
 
     <li>NamedArea definitions:

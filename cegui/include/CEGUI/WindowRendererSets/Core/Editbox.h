@@ -57,12 +57,6 @@ namespace CEGUI
         - ReadOnlyFocused: Rendering for when the editbox is focused and is in
                     read-only mode.
         - Disabled: Rendering for when the editbox is disabled.
-        - ActiveSelection: additional state rendered for text selection
-                           (the imagery in this section is rendered within the
-                           selection area.)
-        - InactiveSelection: additional state rendered for text selection
-                             (the imagery in this section is rendered within the
-                             selection area.)
 
     NamedAreas:
         - TextArea: area where text, selection, and caret imagery will appear.
@@ -134,6 +128,24 @@ public:
     void setTextFormatting(const HorizontalTextFormatting format);
     HorizontalTextFormatting getTextFormatting() const { return d_textFormatting; }
 
+    /*!
+    \brief
+        Sets a selection brush Image
+
+    \param image
+        The brush image to be used for selections
+    */
+    void setSelectionBrushImage(const Image* image);
+
+    /*!
+    \brief
+        Returns the selection brush Image
+
+    \return
+        The brush image currently used for selections
+    */
+    const Image* getSelectionBrushImage() const { return d_selectionBrush; }
+
     void createRenderGeometry() override;
 
     // overridden from EditboxWindowRenderer base class.
@@ -158,6 +170,7 @@ protected:
 
     RenderedText d_renderedText;
 
+    const Image* d_selectionBrush = nullptr;  //!< Image to use as the selection brush (should be set by derived class).
     //! x rendering offset used last time we drew the widget.
     float d_textOffset = 0.f;
     //! time-out in seconds used for blinking the caret.

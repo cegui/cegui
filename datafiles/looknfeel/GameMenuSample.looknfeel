@@ -15,6 +15,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFB6D142" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
         <Property name="CursorImage" value="GameMenuSampleImages/MouseTextBar"/>
+        <Property name="SelectionBrushImage" value="GameMenuSampleImages/GenericBrush" />
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
@@ -50,13 +51,6 @@
                 <Image component="BottomEdge" name="GameMenuSampleImages/EditboxBot"/>
                 <Image component="Background" name="GameMenuSampleImages/EditboxMid"/>
             </FrameComponent>
-        </ImagerySection>
-        <ImagerySection name="selection">
-            <ImageryComponent>
-                <Image name="GameMenuSampleImages/GenericBrush"/>
-                <VertFormat type="Stretched"/>
-                <HorzFormat type="Stretched"/>
-            </ImageryComponent>
         </ImagerySection>
         <ImagerySection name="Caret">
             <ImageryComponent>
@@ -94,20 +88,6 @@
             <Layer>
                 <Section section="container_normal">
                     <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
-                </Section>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="ActiveSelection">
-            <Layer>
-                <Section section="selection">
-                    <ColourProperty name="ActiveSelectionColour"/>
-                </Section>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="InactiveSelection">
-            <Layer>
-                <Section section="selection">
-                    <ColourProperty name="InactiveSelectionColour"/>
                 </Section>
             </Layer>
         </StateImagery>

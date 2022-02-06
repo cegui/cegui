@@ -235,7 +235,7 @@ public:
 	\return
 		The brush image currently used for selections
 	*/
-    const Image* getSelectionBrushImage() const;
+    const Image* getSelectionBrushImage() const { return d_selectionBrush; }
 
     /*!
     \brief
@@ -365,7 +365,6 @@ protected:
 
     const Image* d_selectionBrush = nullptr;	//!< Image to use as the selection brush (should be set by derived class).
 
-    static String   d_lineBreakChars;	//!< Holds what we consider to be line break characters.
     std::vector<LineInfo> d_lines;			//!< Holds the lines for the current formatting.
 	float           d_lastRenderWidth = 0.f;  //!< Holds last render area width
 	float           d_widestExtent = 0.f;	//!< Holds the extent of the widest line as calculated in the last formatting pass.
