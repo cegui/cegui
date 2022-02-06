@@ -93,6 +93,7 @@ public:
     Rectf getTextRenderArea() const override;
     void createRenderGeometry() override;
     void update(float elapsed) override;
+    bool handleFontRenderSizeChange(const Font* const font) override;
 
     //! return whether the blinking caret is enabled.
     bool isCaretBlinkEnabled() const { return d_blinkCaret; }
@@ -103,8 +104,36 @@ public:
     //! set the caret blink timeout period (only used if blink is enabled).
     void setCaretBlinkTimeout(float seconds) { d_caretBlinkTimeout = seconds; }
 
-    // overridden from base class
-    bool handleFontRenderSizeChange(const Font* const font) override;
+    void setTextFormatting(HorizontalTextFormatting format);
+    HorizontalTextFormatting getTextFormatting() const { return d_textFormatting; }
+
+    //! Enable or disable word wrapping.
+    void setWordWrapEnabled(bool wrap);
+
+    /*!
+    \brief
+        Return whether word-wrapping is turned on, which means words are
+        wrapped to multiple lines as needed.
+    */
+    bool isWordWrapEnabled() const { return d_wordWrap; }
+
+    /*!
+    \brief
+        Sets a selection brush Image
+
+    \param image
+        The brush image to be used for selections
+    */
+    void setSelectionBrushImage(const Image* image);
+
+    /*!
+    \brief
+        Returns the selection brush Image
+
+    \return
+        The brush image currently used for selections
+    */
+    const Image* getSelectionBrushImage() const { return d_selectionBrush; }
 
 protected:
 
@@ -136,14 +165,20 @@ protected:
 
     RenderedText d_renderedText;
 
+    const Image* d_selectionBrush = nullptr;  //!< Image to use as the selection brush (should be set by derived class).
+
     //! time-out in seconds used for blinking the caret.
     float d_caretBlinkTimeout = DefaultCaretBlinkTimeout;
     //! current time elapsed since last caret blink state change.
     float d_caretBlinkElapsed = 0.f;
+
+    HorizontalTextFormatting d_textFormatting = HorizontalTextFormatting::LeftAligned;
+
     //! true if caret should be shown.
     bool d_showCaret = true;
     //! true if the caret imagery should blink.
     bool d_blinkCaret = false;
+    bool d_wordWrap = false;
 };
 
 }

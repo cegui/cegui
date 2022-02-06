@@ -891,7 +891,6 @@ void MultiLineEditbox::onTargetSurfaceChanged(RenderingSurface* newSurface)
         formatText(true);
         performChildLayout(false, false);
         setCaretIndex(getCaretIndex());
-        //ensureCaretIsVisible();
     }
 }
 
@@ -915,16 +914,6 @@ void MultiLineEditbox::addMultiLineEditboxProperties()
     const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
-        "WordWrap", "Property to get/set the word-wrap setting of the edit box.  Value is either \"true\" or \"false\".",
-        &MultiLineEditbox::setWordWrapEnabled, &MultiLineEditbox::isWordWrapEnabled, true
-    );
-
-    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, Image*,
-        "SelectionBrushImage", "Property to get/set the selection brush image for the editbox.  Value should be \"[imageset_name]/[image_name]\".",
-        &MultiLineEditbox::setSelectionBrushImage, &MultiLineEditbox::getSelectionBrushImage, nullptr
-    );
-
-    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
         "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box."
         "Value is either \"true\" or \"false\".",
         &MultiLineEditbox::setShowVertScrollbar, &MultiLineEditbox::isVertScrollbarAlwaysShown, false
@@ -946,12 +935,6 @@ Scrollbar* MultiLineEditbox::getVertScrollbar() const
 }
 
 
-bool MultiLineEditbox::isVertScrollbarAlwaysShown() const
-{
-	return d_forceVertScroll;
-}
-
-
 Scrollbar* MultiLineEditbox::getHorzScrollbar() const
 {
     return static_cast<Scrollbar*>(getChild(HorzScrollbarName));
@@ -960,25 +943,12 @@ Scrollbar* MultiLineEditbox::getHorzScrollbar() const
 
 Rectf MultiLineEditbox::getTextRenderArea() const
 {
-    if (d_windowRenderer != nullptr)
-    {
-        MultiLineEditboxWindowRenderer* wr = static_cast<MultiLineEditboxWindowRenderer*>(d_windowRenderer);
-        return wr->getTextRenderArea();
-    }
-    else
-    {
-        //return getTextRenderArea_impl();
-        throw InvalidRequestException(
-            "This function must be implemented by the window renderer module");
-    }
+    if (!d_windowRenderer)
+        throw InvalidRequestException("This function must be implemented by the window renderer module");
+
+    return static_cast<MultiLineEditboxWindowRenderer*>(d_windowRenderer)->getTextRenderArea();
 }
 
-
-void MultiLineEditbox::setSelectionBrushImage(const Image* image)
-{
-    d_selectionBrush = image;
-    invalidate();
-}
 
 
 void MultiLineEditbox::setShowVertScrollbar(bool setting)

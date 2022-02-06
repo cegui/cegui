@@ -254,7 +254,7 @@ void FalagardEditbox::update(float elapsed)
 }
 
 //----------------------------------------------------------------------------//
-void FalagardEditbox::setTextFormatting(const HorizontalTextFormatting format)
+void FalagardEditbox::setTextFormatting(HorizontalTextFormatting format)
 {
     if (d_textFormatting == format)
         return;
