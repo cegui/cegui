@@ -31,12 +31,8 @@
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/text/Font.h"
-#include "CEGUI/text/BidiVisualMapping.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 #include <stdio.h>
-
- //!!!DBG TMP!
-#include "CEGUI/ImageManager.h"
 
 namespace CEGUI
 {
@@ -67,6 +63,9 @@ FalagardEditbox::FalagardEditbox(const String& type) :
         "Value is one of: LeftAligned, RightAligned or HorzCentred",
         &FalagardEditbox::setTextFormatting, &FalagardEditbox::getTextFormatting,
         HorizontalTextFormatting::LeftAligned);
+    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardEditbox, Image*,
+        "SelectionBrushImage", "Property to get/set the selection brush image for the editbox.  Value should be \"[imageset_name]/[image_name]\".",
+        &FalagardEditbox::setSelectionBrushImage, &FalagardEditbox::getSelectionBrushImage, nullptr);
 }
 
 //----------------------------------------------------------------------------//
@@ -192,11 +191,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
     SelectionInfo selectionInfo;
     if (selStart < selEnd)
     {
-        //const auto& selectBrushImagery = wlf.getStateImagery(w->hasInputFocus() ? "ActiveSelection" : "InactiveSelection");
-        //!!!DBG TMP!
-        if (ImageManager::getSingleton().isDefined("TaharezLook/GenericBrush"))
-            selectionInfo.bgBrush = &ImageManager::getSingleton().get("TaharezLook/GenericBrush");
-
+        selectionInfo.bgBrush = d_selectionBrush;
         selectionInfo.bgColours = getOptionalColour(
             w->hasInputFocus() ? ActiveSelectionColourPropertyName : InactiveSelectionColourPropertyName);
         selectionInfo.textColours = getOptionalColour(SelectedTextColourPropertyName);
@@ -275,6 +270,16 @@ void FalagardEditbox::setTextFormatting(const HorizontalTextFormatting format)
     }
 
     d_textFormatting = format;
+    d_window->invalidate();
+}
+
+//----------------------------------------------------------------------------//
+void FalagardEditbox::setSelectionBrushImage(const Image* image)
+{
+    if (d_selectionBrush == image)
+        return;
+
+    d_selectionBrush = image;
     d_window->invalidate();
 }
 

@@ -48,7 +48,6 @@ const String MultiLineEditbox::EventVertScrollbarModeChanged("VertScrollbarModeC
 const String MultiLineEditbox::EventHorzScrollbarModeChanged("HorzScrollbarModeChanged");
 const String MultiLineEditbox::VertScrollbarName("__auto_vscrollbar__");
 const String MultiLineEditbox::HorzScrollbarName("__auto_hscrollbar__");
-String MultiLineEditbox::d_lineBreakChars("\n");
 
 //----------------------------------------------------------------------------//
 MultiLineEditboxWindowRenderer::MultiLineEditboxWindowRenderer(const String& name) :
@@ -174,7 +173,7 @@ void MultiLineEditbox::configureScrollbars()
     //
     // show or hide vertical scroll bar as required (or as specified by option)
     if (d_forceVertScroll ||
-        (static_cast<float>(d_lines.size()) * lspc > getTextRenderArea().getHeight()))
+        (d_lines.size() * lspc > getTextRenderArea().getHeight()))
     {
         vertScrollbar->show();
 
@@ -203,7 +202,7 @@ void MultiLineEditbox::configureScrollbars()
 	//
 	Rectf renderArea(getTextRenderArea());
 
-	vertScrollbar->setDocumentSize(static_cast<float>(d_lines.size()) * lspc);
+	vertScrollbar->setDocumentSize(d_lines.size() * lspc);
 	vertScrollbar->setPageSize(renderArea.getHeight());
 	vertScrollbar->setStepSize(std::max(1.0f, renderArea.getHeight() / 10.0f));
 	vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
@@ -234,7 +233,7 @@ void MultiLineEditbox::formatText(const bool update_scrollbars)
 
         while (currPos < getText().length())
 		{
-           if ((paraLen = getText().find_first_of(d_lineBreakChars, currPos)) == String::npos)
+           if ((paraLen = getText().find('\n', currPos)) == String::npos)
 			{
                paraLen = getText().length() - currPos;
 			}
@@ -921,9 +920,9 @@ void MultiLineEditbox::addMultiLineEditboxProperties()
     );
 
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, Image*,
-        "SelectionBrushImage", "Property to get/set the selection brush image for the editbox.  Value should be \"set:[imageset name] image:[image name]\".",
+        "SelectionBrushImage", "Property to get/set the selection brush image for the editbox.  Value should be \"[imageset_name]/[image_name]\".",
         &MultiLineEditbox::setSelectionBrushImage, &MultiLineEditbox::getSelectionBrushImage, nullptr
-        );
+    );
 
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
         "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box."
@@ -972,12 +971,6 @@ Rectf MultiLineEditbox::getTextRenderArea() const
         throw InvalidRequestException(
             "This function must be implemented by the window renderer module");
     }
-}
-
-
-const Image* MultiLineEditbox::getSelectionBrushImage() const
-{
-    return d_selectionBrush;
 }
 
 
@@ -1122,13 +1115,13 @@ void MultiLineEditbox::handleSelectAllText(SemanticEventArgs& e)
     size_t lineStart = d_lines[caretLine].d_startIdx;
 
     // find end of last paragraph
-    String::size_type paraStart = getText().find_last_of(d_lineBreakChars, lineStart);
+    String::size_type paraStart = getText().find_last_of("\n", lineStart);
 
     // if no previous paragraph, selection will start at the beginning.
     if (paraStart == String::npos)
         paraStart = 0;
     // find end of this paragraph
-    String::size_type paraEnd = getText().find_first_of(d_lineBreakChars, lineStart);
+    String::size_type paraEnd = getText().find_first_of("\n", lineStart);
 
     // if paragraph has no end, which actually should never happen, fix the
     // erroneous situation and select up to end at end of text.

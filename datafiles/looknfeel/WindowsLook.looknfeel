@@ -793,6 +793,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF607FFF" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
         <Property name="CursorImage" value="WindowsLook/MouseTextBar"/>
+        <Property name="SelectionBrushImage" value="WindowsLook/Background" />
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
@@ -837,27 +838,6 @@
                 <Image component="Background" name="WindowsLook/Background"/>
             </FrameComponent>
         </ImagerySection>
-        <ImagerySection name="selection">
-            <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge">
-                        <AbsoluteDim value="0"/>
-                    </Dim>
-                    <Dim type="TopEdge">
-                        <AbsoluteDim value="0"/>
-                    </Dim>
-                    <Dim type="RightEdge">
-                        <UnifiedDim scale="1.0" type="RightEdge"/>
-                    </Dim>
-                    <Dim type="BottomEdge">
-                        <UnifiedDim scale="1.0" type="BottomEdge"/>
-                    </Dim>
-                </Area>
-                <Image name="WindowsLook/Background"/>
-                <VertFormat type="Stretched"/>
-                <HorzFormat type="Stretched"/>
-            </ImageryComponent>
-        </ImagerySection>
         <ImagerySection name="Caret">
             <ImageryComponent>
                 <Area>
@@ -891,24 +871,22 @@
                 </Section>
             </Layer>
         </StateImagery>
-        <StateImagery name="Disabled">
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="container_normal"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnlyFocused">
             <Layer>
                 <Section section="container_normal">
                     <ColourProperty name="ReadOnlyBGColour"/>
                 </Section>
             </Layer>
         </StateImagery>
-        <StateImagery name="ActiveSelection">
+        <StateImagery name="Disabled">
             <Layer>
-                <Section section="selection">
-                    <ColourProperty name="ActiveSelectionColour"/>
-                </Section>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="InactiveSelection">
-            <Layer>
-                <Section section="selection">
-                    <ColourProperty name="InactiveSelectionColour"/>
+                <Section section="container_normal">
+                    <ColourProperty name="ReadOnlyBGColour"/>
                 </Section>
             </Layer>
         </StateImagery>
@@ -2360,6 +2338,18 @@
             </Layer>
         </StateImagery>
         <StateImagery name="ReadOnly">
+            <Layer>
+                <Section section="main">
+                    <ColourProperty name="ReadOnlyBGColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnlyFocused">
             <Layer>
                 <Section section="main">
                     <ColourProperty name="ReadOnlyBGColour"/>

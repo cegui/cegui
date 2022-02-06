@@ -1702,6 +1702,9 @@
     <WidgetLook name="OgreTray/Editbox">
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="NormalTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="SelectedTextColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="ActiveSelectionColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="InactiveSelectionColour"/>
+        <Property name="SelectionBrushImage" value="OgreTrayImages/MiniTextBoxOverM" />
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
@@ -1764,33 +1767,6 @@
                 <Image component="Background" name="OgreTrayImages/MiniTextBoxM"/>
             </FrameComponent>
         </ImagerySection>
-        <ImagerySection name="selection">
-            <FrameComponent>
-                <Area>
-                    <Dim type="LeftEdge">
-                        <AbsoluteDim value="0"/>
-                    </Dim>
-                    <Dim type="TopEdge">
-                        <AbsoluteDim value="0"/>
-                    </Dim>
-                    <Dim type="Width">
-                        <UnifiedDim scale="1" type="Width"/>
-                    </Dim>
-                    <Dim type="Height">
-                        <UnifiedDim scale="1" type="Height"/>
-                    </Dim>
-                </Area>
-                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL"/>
-                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR"/>
-                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL"/>
-                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR"/>
-                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL"/>
-                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxOverT"/>
-                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxOverR"/>
-                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB"/>
-                <Image component="Background" name="OgreTrayImages/MiniTextBoxOverM"/>
-            </FrameComponent>
-        </ImagerySection>
         <ImagerySection name="Caret">
             <ImageryComponent>
                 <Area>
@@ -1823,19 +1799,19 @@
                 <Section section="frame"/>
             </Layer>
         </StateImagery>
-        <StateImagery name="Disabled">
+        <StateImagery name="EnabledFocused">
             <Layer>
                 <Section section="frame"/>
             </Layer>
         </StateImagery>
-        <StateImagery name="ActiveSelection">
+        <StateImagery name="ReadOnlyFocused">
             <Layer>
-                <Section section="selection"/>
+                <Section section="frame"/>
             </Layer>
         </StateImagery>
-        <StateImagery name="InactiveSelection">
+        <StateImagery name="Disabled">
             <Layer>
-                <Section section="selection"/>
+                <Section section="frame"/>
             </Layer>
         </StateImagery>
     </WidgetLook>
@@ -2056,6 +2032,16 @@
             </Layer>
         </StateImagery>
         <StateImagery name="ReadOnly">
+            <Layer>
+                <Section section="main"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnlyFocused">
             <Layer>
                 <Section section="main"/>
             </Layer>
