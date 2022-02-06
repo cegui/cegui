@@ -27,7 +27,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/Editbox.h"
-#include "CEGUI/System.h"
 #include "CEGUI/text/TextUtils.h"
 #include "CEGUI/text/Font.h"
 #include "CEGUI/Clipboard.h"
@@ -50,11 +49,6 @@ Editbox::Editbox(const String& type, const String& name)
     : EditboxBase(type, name)
 {
     d_renderedText.setWordWrappingEnabled(false);
-
-    addEditboxProperties();
-
-    // Default to accepting all characters
-    setValidationString(".*");
 }
 
 //----------------------------------------------------------------------------//
@@ -77,6 +71,7 @@ void Editbox::setTextFormatting(HorizontalTextFormatting format)
 void Editbox::ensureCaretIsVisible()
 {
     //!!!TODO TEXT: IMPLEMENT! Delegate to the renderer because it knows the size of the caret itself?
+    FIXME;
 }
 
 //----------------------------------------------------------------------------//
@@ -97,7 +92,7 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
     if (e.d_semanticValue == SemanticValue::SelectAll && e.d_payload.source == CursorInputSource::Left)
     {
         d_dragAnchorIdx = 0;
-        setCaretIndex(getText().length());
+        setCaretIndex(getText().size());
         setSelection(d_dragAnchorIdx, d_caretPos);
         ++e.handled;
     }
@@ -107,13 +102,13 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
         if (isTextMaskingEnabled())
         {
             d_dragAnchorIdx = 0;
-            setCaretIndex(getText().length());
+            setCaretIndex(getText().size());
         }
         // not masked, so select the word that was double-clicked.
         else
         {
             d_dragAnchorIdx = TextUtils::getWordStartIndex(getText(),
-                (d_caretPos == getText().length()) ? d_caretPos : d_caretPos + 1);
+                (d_caretPos == getText().size()) ? d_caretPos : d_caretPos + 1);
             d_caretPos = TextUtils::getNextWordStartIndex(getText(), d_caretPos);
         }
 
@@ -181,77 +176,6 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onCharacter(TextEventArgs& e)
-{
-    // NB: We are not calling the base class handler here because it propagates
-    // inputs back up the window hierarchy, whereas, as a consumer of input
-    // events, we want such propagation to cease with us regardless of whether
-    // we actually handle the event.
-
-    fireEvent(EventCharacterKey, e, Window::EventNamespace);
-
-    // only need to take notice if we have focus
-    if (!e.handled && hasInputFocus() && !isReadOnly() &&
-        getActualFont()->isCodepointAvailable(e.d_character))
-    {
-        // backup current text
-        String tmp(getText());
-
-        UndoHandler::UndoAction undoSelection;
-        undoSelection.d_type = UndoHandler::UndoActionType::Delete;
-        undoSelection.d_startIdx = getSelectionStart();
-        undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
-
-        tmp.erase(getSelectionStart(), getSelectionLength());
-
-        // if there is room
-        if (tmp.length() < d_maxTextLen)
-        {
-            UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::Insert;
-            undo.d_startIdx = getSelectionStart();
-            undo.d_text = e.d_character;
-
-            const auto oldSize = tmp.size();
-            
-            tmp.insert(getSelectionStart(), 1, e.d_character);
-
-            const auto insertedCount = tmp.size() - oldSize;
-
-            if (handleValidityChangeForString(tmp))
-            {
-                setCaretIndex(d_selectionStart);
-                clearSelection();
-
-                // advance caret (done first so we can "do stuff" in event
-                // handlers!)
-                // In case multiple code point elements are included we need
-                // to jump past all of them
-                d_caretPos += insertedCount;
-
-                // set text to the newly modified string
-                setText(tmp);
-
-                // char was accepted into the Editbox - mark event as handled.
-                ++e.handled;
-                d_undoHandler->addUndoHistory(undo);
-                if (getSelectionLength() > 0)
-                    d_undoHandler->addUndoHistory(undoSelection);
-            }
-        }
-        else
-        {
-            // Trigger text box full event
-            WindowEventArgs args(this);
-            onEditboxFullEvent(args);
-        }
-
-    }
-
-    // event was (possibly) not handled
-}
-
-//----------------------------------------------------------------------------//
 void Editbox::onTextAcceptedEvent(WindowEventArgs& e)
 {
     fireEvent(EventTextAccepted, e, EventNamespace);
@@ -261,17 +185,6 @@ void Editbox::onTextAcceptedEvent(WindowEventArgs& e)
 bool Editbox::validateWindowRenderer(const WindowRenderer* renderer) const
 {
     return dynamic_cast<const EditboxWindowRenderer*>(renderer) != nullptr;
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::addEditboxProperties()
-{
-    const String& propertyOrigin = WidgetTypeName;
-
-    CEGUI_DEFINE_PROPERTY(Editbox, String,
-        "ValidationString", "Property to get/set the validation string Editbox.  Value is a text string.",
-        &Editbox::setValidationString, &Editbox::getValidationString, ".*"
-    );
 }
 
 }

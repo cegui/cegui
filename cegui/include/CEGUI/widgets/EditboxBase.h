@@ -657,7 +657,7 @@ protected:
     void onFontChanged(WindowEventArgs& e) override;
     void onTextChanged(WindowEventArgs& e) override;
 
-    void onCharacter(TextEventArgs& e) override = 0;
+    void onCharacter(TextEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override = 0;
 
     mutable RenderedText d_renderedText;
