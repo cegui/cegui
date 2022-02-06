@@ -173,7 +173,6 @@ public:
 protected:
 
     size_t getTextIndexFromPosition(const glm::vec2& pt) const override;
-    void onCharacter(TextEventArgs& e) override;
 
     void onScroll(CursorInputEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;

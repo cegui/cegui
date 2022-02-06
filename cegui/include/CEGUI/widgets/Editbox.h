@@ -114,10 +114,6 @@ protected:
         Return, Enter, or Tab.
     */
     virtual void onTextAcceptedEvent(WindowEventArgs& e);
-
-private:
-
-    void addEditboxProperties();
 };
 
 }

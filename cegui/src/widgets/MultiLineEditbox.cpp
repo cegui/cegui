@@ -406,60 +406,6 @@ void MultiLineEditbox::handlePageDown(bool select)
 }
 
 
-void MultiLineEditbox::onCharacter(TextEventArgs& e)
-{
-    // NB: We are not calling the base class handler here because it propagates
-    // inputs back up the window hierarchy, whereas, as a consumer of input
-    // events, we want such propagation to cease with us regardless of whether
-    // we actually handle the event.
-
-    // fire event.
-    fireEvent(EventCharacterKey, e, Window::EventNamespace);
-
-    // only need to take notice if we have focus
-    if (e.handled == 0 && hasInputFocus() && !isReadOnly() &&
-        getActualFont()->isCodepointAvailable(e.d_character))
-    {
-        // erase selected text
-        String newText(getText());
-        newText.erase(getSelectionStart(), getSelectionLength());
-        setCaretIndex(d_selectionStart);
-        clearSelection();
-
-        // if there is room
-        if (newText.length() - 1 < d_maxTextLen)
-        {
-            UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::Insert;
-            undo.d_startIdx = getCaretIndex();
-            undo.d_text = e.d_character;
-            d_undoHandler->addUndoHistory(undo);
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
-            size_t strLen = newText.length();
-#endif
-            newText.insert(getCaretIndex(), 1, e.d_character);
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
-            d_caretPos += newText.length() - strLen;
-#else
-            d_caretPos++;
-#endif
-            setText(newText);
-            ++e.handled;
-        }
-        else
-        {
-            setText(newText);
-        }
-    }
-    else
-    {
-        // Trigger text box full event
-        WindowEventArgs args(this);
-        onEditboxFullEvent(args);
-    }
-}
-
-
 
 void MultiLineEditbox::onScroll(CursorInputEventArgs& e)
 {

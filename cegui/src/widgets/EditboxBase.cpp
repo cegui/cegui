@@ -205,9 +205,15 @@ void EditboxBase::setValidator(RegexMatcher* validator)
     else
     {
         d_validator = createRegexMatcher();
-        if (d_validator && !d_validationString.empty())
-            d_validator->setRegexString(d_validationString);
         d_weOwnValidator = true;
+    }
+
+    if (d_validator)
+    {
+        if (d_validationString.empty())
+            setValidationString(".*"); // Default to accepting all characters
+        else
+            d_validator->setRegexString(d_validationString);
     }
 }
 
@@ -235,7 +241,7 @@ void EditboxBase::setValidationString(const String& validationString)
 void EditboxBase::setCaretIndex(size_t caretPos)
 {
     // Make sure new position is valid
-    const auto textLen = getText().length();
+    const auto textLen = getText().size();
     if (caretPos > textLen)
         caretPos = textLen;
 
@@ -251,7 +257,7 @@ void EditboxBase::setCaretIndex(size_t caretPos)
 //----------------------------------------------------------------------------//
 void EditboxBase::setSelection(size_t start_pos, size_t end_pos)
 {
-    const auto textLen = getText().length();
+    const auto textLen = getText().size();
 
     // ensure selection start point is within the valid range
     if (start_pos > textLen)
@@ -493,6 +499,74 @@ void EditboxBase::onTextChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+void EditboxBase::onCharacter(TextEventArgs& e)
+{
+    // NB: We are not calling the base class handler here because it propagates
+    // inputs back up the window hierarchy, whereas, as a consumer of input
+    // events, we want such propagation to cease with us regardless of whether
+    // we actually handle the event.
+
+    fireEvent(EventCharacterKey, e, Window::EventNamespace);
+
+    // only need to take notice if we have focus
+    if (e.handled || isReadOnly() || !hasInputFocus() ||
+        !getActualFont()->isCodepointAvailable(e.d_character))
+    {
+        return;
+    }
+
+    String charStr(1, e.d_character);
+
+    String tmp(getText());
+    if (tmp.size() + charStr.size() - getSelectionLength() > d_maxTextLen)
+    {
+        WindowEventArgs args(this);
+        onEditboxFullEvent(args);
+        return;
+    }
+
+    UndoHandler::UndoAction undoSelection;
+    const bool hasSelection = !!getSelectionLength();
+    if (hasSelection)
+    {
+        undoSelection.d_type = UndoHandler::UndoActionType::Delete;
+        undoSelection.d_startIdx = getSelectionStart();
+        undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
+
+        tmp.erase(getSelectionStart(), getSelectionLength());
+    }
+
+    UndoHandler::UndoAction undo;
+    undo.d_type = UndoHandler::UndoActionType::Insert;
+    undo.d_startIdx = getSelectionStart();
+    undo.d_text = charStr;
+
+    tmp.insert(getSelectionStart(), charStr);
+
+    if (handleValidityChangeForString(tmp))
+    {
+        setCaretIndex(d_selectionStart);
+        clearSelection();
+
+        // advance caret (done first so we can "do stuff" in event handlers!)
+        // In case multiple code point elements are included we need
+        // to jump past all of them
+        d_caretPos += charStr.size();
+
+        // set text to the newly modified string
+        setText(tmp);
+
+        // char was accepted into the Editbox - mark event as handled.
+        ++e.handled;
+        d_undoHandler->addUndoHistory(undo);
+        if (hasSelection)
+            d_undoHandler->addUndoHistory(undoSelection);
+    }
+
+    // event was (possibly) not handled
+}
+
+//----------------------------------------------------------------------------//
 void EditboxBase::handleCharLeft(bool select)
 {
     if (d_caretPos > 0)
@@ -531,7 +605,7 @@ void EditboxBase::handleWordLeft(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleCharRight(bool select)
 {
-    if (d_caretPos < getText().length())
+    if (d_caretPos < getText().size())
     {
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
         size_t codePointSize = 1;
@@ -551,7 +625,7 @@ void EditboxBase::handleCharRight(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleWordRight(bool select)
 {
-    if (d_caretPos < getText().length())
+    if (d_caretPos < getText().size())
         setCaretIndex(TextUtils::getNextWordStartIndex(getText(), d_caretPos));
 
     if (select)
@@ -575,7 +649,7 @@ void EditboxBase::handleHome(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleEnd(bool select)
 {
-    const auto textLen = getText().length();
+    const auto textLen = getText().size();
     if (d_caretPos < textLen)
         setCaretIndex(textLen);
 
@@ -588,7 +662,7 @@ void EditboxBase::handleEnd(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleSelectAll()
 {
-    const auto textLen = getText().length();
+    const auto textLen = getText().size();
     setSelection(0, textLen);
     setCaretIndex(textLen);
 }
@@ -601,7 +675,7 @@ void EditboxBase::handleBackspace()
 
     String tmp(getText());
 
-    //!!!FIXME TEXT: lots of duplication between delete & backspace!
+    //!!!FIXME TEXT: lots of duplication between delete, backspace, paste and onCharacter!
     if (getSelectionLength())
     {
         UndoHandler::UndoAction undoDeleteSelection;
@@ -679,7 +753,7 @@ void EditboxBase::handleDelete()
             d_undoHandler->addUndoHistory(undoSelection);
         }
     }
-    else if (getCaretIndex() < tmp.length())
+    else if (getCaretIndex() < tmp.size())
     {
         UndoHandler::UndoAction undo;
         undo.d_type = UndoHandler::UndoActionType::Delete;
@@ -966,6 +1040,10 @@ void EditboxBase::addEditboxBaseProperties()
         "Value is one of \"LeftToRight\", \"RightToLeft\" or \"Automatic\".",
         &EditboxBase::setDefaultParagraphDirection, &EditboxBase::getDefaultParagraphDirection,
         DefaultParagraphDirection::LeftToRight
+    );
+    CEGUI_DEFINE_PROPERTY(EditboxBase, String,
+        "ValidationString", "Property to get/set the validation string Editbox.  Value is a text string.",
+        &EditboxBase::setValidationString, &EditboxBase::getValidationString, ".*"
     );
 }
 
