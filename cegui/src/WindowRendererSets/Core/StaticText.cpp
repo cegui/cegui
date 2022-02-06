@@ -44,6 +44,9 @@ const String PropertyHelper<FalagardStaticText::NumOfTextLinesToShow>::s_autoStr
 FalagardStaticText::FalagardStaticText(const String& type)
     : FalagardStatic(type)
 {
+    d_renderedText.setHorizontalFormatting(d_horzFormatting);
+    d_renderedText.setWordWrappingEnabled(d_wordWrap);
+
     CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, ColourRect,
         "TextColours", "Property to get/set the text colours for the FalagardStaticText widget."
         "  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".",
@@ -326,6 +329,7 @@ void FalagardStaticText::setHorizontalFormatting(HorizontalTextFormatting h_fmt)
     if (wordWrap)
         setWordWrapEnabled(true);
 
+    d_renderedText.setHorizontalFormatting(d_horzFormatting);
     invalidateFormatting();
     d_window->adjustSizeToContent();
 }
@@ -337,6 +341,7 @@ void FalagardStaticText::setWordWrapEnabled(bool wrap)
         return;
 
     d_wordWrap = wrap;
+    d_renderedText.setWordWrappingEnabled(d_wordWrap);
     invalidateFormatting();
     d_window->adjustSizeToContent();
 }
@@ -392,17 +397,6 @@ void FalagardStaticText::setHorizontalScrollbarEnabled(bool setting)
 // reformatting of the string, as well as cause the 2nd scrollbar to also be required.
 void FalagardStaticText::configureScrollbars() const
 {
-    //!!!TODO TEXT: make an universal method getEffectiveTextParser()!
-    TextParser* parser = nullptr;
-    if (isTextParsingEnabled())
-    {
-        parser = getTextParser();
-        if (!parser)
-            parser = CEGUI::System::getSingleton().getDefaultTextParser();
-    }
-
-    d_renderedText.renderText(d_window->getText(), parser, d_window->getActualFont());
-
     Scrollbar* vertScrollbar = getVertScrollbarWithoutUpdate();
     Scrollbar* horzScrollbar = getHorzScrollbarWithoutUpdate();
     vertScrollbar->hide();
@@ -411,8 +405,6 @@ void FalagardStaticText::configureScrollbars() const
     Rectf renderArea(getTextRenderAreaWithoutUpdate());
     Sizef renderAreaSize(renderArea.getSize());
 
-    d_renderedText.setHorizontalFormatting(d_horzFormatting);
-    d_renderedText.setWordWrappingEnabled(d_wordWrap);
     d_renderedText.updateDynamicObjectExtents(d_window);
     d_renderedText.updateFormatting(renderAreaSize.d_width);
 
@@ -522,31 +514,29 @@ void FalagardStaticText::onLookNFeelAssigned()
     vertScrollbar->hide();
     horzScrollbar->hide();
 
-    // scrollbar events
-    vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged,
-        Event::Subscriber(&FalagardStaticText::handleScrollbarChange, this));
-    horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged,
-        Event::Subscriber(&FalagardStaticText::handleScrollbarChange, this));
-
     d_connections.clear();
+
+    // scrollbar events
+    d_connections.push_back(
+        vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged,
+            Event::Subscriber(&FalagardStaticText::handleScrollbarChange, this)));
+    d_connections.push_back(
+        horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged,
+            Event::Subscriber(&FalagardStaticText::handleScrollbarChange, this)));
 
     // events that scrollbars should react to
     d_connections.push_back(
         d_window->subscribeEvent(Window::EventTextChanged,
             Event::Subscriber(&FalagardStaticText::onTextChanged, this)));
-
     d_connections.push_back(
         d_window->subscribeEvent(Window::EventSized,
             Event::Subscriber(&FalagardStaticText::onSized, this)));
-
     d_connections.push_back(
         d_window->subscribeEvent(Window::EventFontChanged,
             Event::Subscriber(&FalagardStaticText::onFontChanged, this)));
-
     d_connections.push_back(
         d_window->subscribeEvent(Window::EventScroll,
             Event::Subscriber(&FalagardStaticText::onScroll, this)));
-
     d_connections.push_back(
         d_window->subscribeEvent(Window::EventIsSizeAdjustedToContentChanged,
             Event::Subscriber(&FalagardStaticText::onIsSizeAdjustedToContentChanged, this)));
@@ -636,8 +626,17 @@ void FalagardStaticText::updateFormatting() const
 
     d_actualVertFormatting = d_vertFormatting;
 
-    // NB: text is parsed inside
-    //!!!TODO TEXT: refactor!
+    //!!!TODO TEXT: make an universal method getEffectiveTextParser()!
+    TextParser* parser = nullptr;
+    if (isTextParsingEnabled())
+    {
+        parser = getTextParser();
+        if (!parser)
+            parser = CEGUI::System::getSingleton().getDefaultTextParser();
+    }
+
+    d_renderedText.renderText(d_window->getText(), parser, d_window->getActualFont());
+
     configureScrollbars();
 
     if (d_window->isSizeAdjustedToContent() && !isSizeAdjustedToContentKeepingAspectRatio())

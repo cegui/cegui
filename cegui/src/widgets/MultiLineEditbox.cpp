@@ -38,16 +38,10 @@ namespace CEGUI
 {
 const String MultiLineEditbox::EventNamespace("MultiLineEditbox");
 const String MultiLineEditbox::WidgetTypeName("CEGUI/MultiLineEditbox");
-const String MultiLineEditbox::EventReadOnlyModeChanged("ReadOnlyModeChanged");
-const String MultiLineEditbox::EventWordWrapModeChanged("WordWrapModeChanged");
-const String MultiLineEditbox::EventMaximumTextLengthChanged("MaximumTextLengthChanged");
-const String MultiLineEditbox::EventCaretMoved("CaretMoved");
-const String MultiLineEditbox::EventTextSelectionChanged("TextSelectionChanged");
-const String MultiLineEditbox::EventEditboxFull("EditboxFull");
-const String MultiLineEditbox::EventVertScrollbarModeChanged("VertScrollbarModeChanged");
-const String MultiLineEditbox::EventHorzScrollbarModeChanged("HorzScrollbarModeChanged");
 const String MultiLineEditbox::VertScrollbarName("__auto_vscrollbar__");
 const String MultiLineEditbox::HorzScrollbarName("__auto_hscrollbar__");
+const String MultiLineEditbox::EventVertScrollbarModeChanged("VertScrollbarModeChanged");
+const String MultiLineEditbox::EventHorzScrollbarModeChanged("HorzScrollbarModeChanged");
 
 //----------------------------------------------------------------------------//
 MultiLineEditboxWindowRenderer::MultiLineEditboxWindowRenderer(const String& name) :
@@ -59,7 +53,8 @@ MultiLineEditboxWindowRenderer::MultiLineEditboxWindowRenderer(const String& nam
 MultiLineEditbox::MultiLineEditbox(const String& type, const String& name)
 	: EditboxBase(type, name)
 {
-	addMultiLineEditboxProperties();
+    d_renderedText.setWordWrappingEnabled(d_wordWrap);
+    addMultiLineEditboxProperties();
 }
 
 //----------------------------------------------------------------------------//
@@ -71,16 +66,11 @@ void MultiLineEditbox::initialiseComponents()
 	Scrollbar* vertScrollbar = getVertScrollbar();
 	Scrollbar* horzScrollbar = getHorzScrollbar();
 
-    vertScrollbar->subscribeEvent(Window::EventShown,
-        Event::Subscriber(&MultiLineEditbox::handle_vertScrollbarVisibilityChanged, this));
-    vertScrollbar->subscribeEvent(Window::EventHidden,
-        Event::Subscriber(&MultiLineEditbox::handle_vertScrollbarVisibilityChanged, this));
     vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged,
-        Event::Subscriber(&MultiLineEditbox::handle_scrollChange, this));
+        Event::Subscriber(&MultiLineEditbox::handleScrollChange, this));
     horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged,
-        Event::Subscriber(&MultiLineEditbox::handle_scrollChange, this));
+        Event::Subscriber(&MultiLineEditbox::handleScrollChange, this));
 
-	formatText(true);
     Window::initialiseComponents();
 }
 
@@ -143,192 +133,6 @@ void MultiLineEditbox::ensureCaretIsVisible()
 	else if (xpos > textArea.getWidth())
 		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + (xpos - textArea.getWidth()) + 50);
 }
-
-//----------------------------------------------------------------------------//
-void MultiLineEditbox::setWordWrapEnabled(bool setting)
-{
-    if (setting == d_wordWrap)
-        return;
-
-	d_wordWrap = setting;
-	formatText(true);
-
-	WindowEventArgs args(this);
-	onWordWrapModeChanged(args);
-}
-
-//----------------------------------------------------------------------------//
-void MultiLineEditbox::configureScrollbars()
-{
-    Scrollbar* const vertScrollbar = getVertScrollbar();
-    Scrollbar* const horzScrollbar = getHorzScrollbar();
-    const Font* font = getActualFont();
-    if (!font)
-        return;
-
-    const float lspc = font->getLineSpacing();
-
-    //
-    // First show or hide the scroll bars as needed (or requested)
-    //
-    // show or hide vertical scroll bar as required (or as specified by option)
-    if (d_forceVertScroll ||
-        (d_lines.size() * lspc > getTextRenderArea().getHeight()))
-    {
-        vertScrollbar->show();
-
-        // show or hide horizontal scroll bar as required (or as specified by option)
-        horzScrollbar->setVisible(d_forceHorzScroll ||
-                                  (d_widestExtent > getTextRenderArea().getWidth()));
-    }
-    // show or hide horizontal scroll bar as required (or as specified by option)
-    else if (d_forceHorzScroll ||
-             (d_widestExtent > getTextRenderArea().getWidth()))
-    {
-        horzScrollbar->show();
-
-        // show or hide vertical scroll bar as required (or as specified by option)
-        vertScrollbar->setVisible(d_forceVertScroll ||
-            (static_cast<float>(d_lines.size()) * lspc > getTextRenderArea().getHeight()));
-    }
-    else
-    {
-        vertScrollbar->hide();
-        horzScrollbar->hide();
-    }
-
-	//
-	// Set up scroll bar values
-	//
-	Rectf renderArea(getTextRenderArea());
-
-	vertScrollbar->setDocumentSize(d_lines.size() * lspc);
-	vertScrollbar->setPageSize(renderArea.getHeight());
-	vertScrollbar->setStepSize(std::max(1.0f, renderArea.getHeight() / 10.0f));
-	vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
-
-	horzScrollbar->setDocumentSize(d_widestExtent);
-	horzScrollbar->setPageSize(renderArea.getWidth());
-	horzScrollbar->setStepSize(std::max(1.0f, renderArea.getWidth() / 10.0f));
-	horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition());
-}
-
-
-void MultiLineEditbox::formatText(const bool update_scrollbars)
-{
-	d_widestExtent = 0.0f;
-
-	String paraText;
-
-	const Font* fnt = getActualFont();
-
-	if (fnt)
-	{
-		float areaWidth = getTextRenderArea().getWidth();
-        String::size_type   currPos = 0;
-        String::size_type   paraLen;
-        LineInfo line{};
-
-        d_lines.clear();
-
-        while (currPos < getText().length())
-		{
-           if ((paraLen = getText().find('\n', currPos)) == String::npos)
-			{
-               paraLen = getText().length() - currPos;
-			}
-			else
-			{
-				++paraLen -= currPos;
-			}
-
-            paraText = getText().substr(currPos, paraLen);
-
-			if (!d_wordWrap || (areaWidth <= 0.0f))
-			{
-				// no word wrapping, so we are just one long line.
-				line.d_startIdx = currPos;
-				line.d_length	= paraLen;
-				line.d_extent	= fnt->getTextExtent(paraText);
-				d_lines.push_back(line);
-
-				// update widest, if needed.
-				if (line.d_extent > d_widestExtent)
-				{
-					d_widestExtent = line.d_extent;
-				}
-
-			}
-			// must word-wrap the paragraph text
-			else
-			{
-				String::size_type lineIndex = 0;
-
-				// while there is text in the string
-				while (lineIndex < paraLen)
-				{
-					String::size_type  lineLen = 0;
-					float lineExtent = 0.0f;
-
-					// loop while we have not reached the end of the paragraph string
-					while (lineLen < (paraLen - lineIndex))
-					{
-						// get cp / char count of next token
-						size_t nextTokenSize = getNextTokenLength(paraText, lineIndex + lineLen);
-
-						// get pixel width of the token
-						float tokenExtent  = fnt->getTextExtent(paraText.substr(lineIndex + lineLen, nextTokenSize));
-
-						// would adding this token would overflow the available width
-						if ((lineExtent + tokenExtent) > areaWidth)
-						{
-							// Was this the first token?
-							if (lineLen == 0)
-							{
-								// get point at which to break the token
-								lineLen = fnt->getCharAtPixel(paraText.substr(lineIndex, nextTokenSize), areaWidth);
-							}
-
-							// text wraps, exit loop early with line info up until wrap point
-							break;
-						}
-
-						// add this token to current line
-						lineLen    += nextTokenSize;
-						lineExtent += tokenExtent;
-					}
-
-					// set up line info and add to collection
-					line.d_startIdx = currPos + lineIndex;
-					line.d_length	= lineLen;
-					line.d_extent	= lineExtent;
-					d_lines.push_back(line);
-
-					// update widest, if needed.
-					if (lineExtent > d_widestExtent)
-					{
-						d_widestExtent = lineExtent;
-					}
-
-					// update position in string
-					lineIndex += lineLen;
-				}
-
-			}
-
-			// skip to next 'paragraph' in text
-			currPos += paraLen;
-		}
-
-		d_lastRenderWidth = areaWidth;
-	}
-
-    if (update_scrollbars)
-        configureScrollbars();
-
-    invalidate();
-}
-
 
 size_t MultiLineEditbox::getNextTokenLength(const String& text, size_t start_idx) const
 {
@@ -806,92 +610,27 @@ void MultiLineEditbox::onCharacter(TextEventArgs& e)
 }
 
 
-void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
-{
-    // ensure last character is a new line
-    if ((getText().length() == 0) || (getText()[getText().length() - 1] != '\n'))
-    {
-        String newText = getText();
-        newText.append(1, '\n');
-        setText(newText);
-    }
-
-
-    // base class processing
-    EditboxBase::onTextChanged(e);
-
-    // clear selection
-    clearSelection();
-    // layout new text
-    formatText(true);
-    // layout child windows (scrollbars) since text layout may have changed
-    performChildLayout(false, false);
-    // ensure caret is still within the text
-    setCaretIndex(getCaretIndex());
-    // ensure caret is visible
-    // NB: this will already have been called at least once, but since we
-    // may have changed the formatting of the text, it needs to be called again.
-    ensureCaretIsVisible();
-
-    ++e.handled;
-}
-
-
-void MultiLineEditbox::onSized(ElementEventArgs& e)
-{
-	formatText(true);
-
-	// base class handling
-	Window::onSized(e);
-
-	++e.handled;
-}
-
 
 void MultiLineEditbox::onScroll(CursorInputEventArgs& e)
 {
-	// base class processing.
 	Window::onScroll(e);
 
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
 	if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
-	{
 		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.scroll);
-	}
 	else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
-	{
 		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
-	}
 
 	++e.handled;
 }
 
 
-void MultiLineEditbox::onFontChanged(WindowEventArgs& e)
-{
-    Window::onFontChanged(e);
-    formatText(true);
-}
-
 
 bool MultiLineEditbox::validateWindowRenderer(const WindowRenderer* renderer) const
 {
 	return dynamic_cast<const MultiLineEditboxWindowRenderer*>(renderer) != nullptr;
-}
-
-
-// Context might change, we should update contents if it is valid
-void MultiLineEditbox::onTargetSurfaceChanged(RenderingSurface* newSurface)
-{
-    EditboxBase::onTargetSurfaceChanged(newSurface);
-    if (d_guiContext)
-    {
-        formatText(true);
-        performChildLayout(false, false);
-        setCaretIndex(getCaretIndex());
-    }
 }
 
 
@@ -914,6 +653,10 @@ void MultiLineEditbox::addMultiLineEditboxProperties()
     const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
+        "WordWrap", "Property to get/set the word-wrap setting of the edit box.  Value is either \"true\" or \"false\".",
+        &MultiLineEditbox::setWordWrapEnabled, &MultiLineEditbox::isWordWrapEnabled, true
+    );
+    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
         "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box."
         "Value is either \"true\" or \"false\".",
         &MultiLineEditbox::setShowVertScrollbar, &MultiLineEditbox::isVertScrollbarAlwaysShown, false
@@ -921,7 +664,7 @@ void MultiLineEditbox::addMultiLineEditboxProperties()
 }
 
 
-bool MultiLineEditbox::handle_scrollChange(const EventArgs&)
+bool MultiLineEditbox::handleScrollChange(const EventArgs&)
 {
     // simply trigger a redraw of the MultiLineEditbox
     invalidate();
@@ -963,13 +706,24 @@ void MultiLineEditbox::setShowVertScrollbar(bool setting)
 	}
 }
 
-
-bool MultiLineEditbox::handle_vertScrollbarVisibilityChanged(const EventArgs&)
+//----------------------------------------------------------------------------//
+void MultiLineEditbox::setTextFormatting(HorizontalTextFormatting format)
 {
-    if (d_wordWrap)
-        formatText(false);
+    bool wordWrap = false;
+    EditboxBase::setTextFormatting(decomposeHorizontalFormatting(format, wordWrap));
+    if (wordWrap)
+        setWordWrapEnabled(true);
+}
 
-    return true;
+//------------------------------------------------------------------------//
+void MultiLineEditbox::setWordWrapEnabled(bool wrap)
+{
+    if (d_wordWrap == wrap)
+        return;
+
+    d_wordWrap = wrap;
+    d_renderedText.setWordWrappingEnabled(d_wordWrap);
+    invalidate();
 }
 
 
@@ -1111,34 +865,6 @@ void MultiLineEditbox::handleSelectAllText(SemanticEventArgs& e)
     ++e.handled;
 }
 
-
-void MultiLineEditbox::setMaxTextLength(size_t max_len)
-{
-    if (d_maxTextLen != max_len)
-    {
-        d_maxTextLen = max_len;
-
-        // Trigger max length changed event
-        WindowEventArgs args(this);
-        onMaximumTextLengthChanged(args);
-
-        // trim string
-        if (getText().length() > d_maxTextLen)
-        {
-            String newText = getText();
-            newText.resize(d_maxTextLen);
-            setText(newText);
-            onTextChanged(args);
-            d_undoHandler->clearUndoHistory();
-        }
-    }
-}
-
-
-void MultiLineEditbox::onWordWrapModeChanged(WindowEventArgs& e)
-{
-    fireEvent(EventWordWrapModeChanged, e, EventNamespace);
-}
 
 
 }
