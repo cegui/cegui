@@ -126,16 +126,14 @@ OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
 
     createOgreTexture(Ogre::PFG_RGBA8_UNORM, width, height);
 
-    // lets go ahead and allocate the memory buffer for this texture and make
-    // it resident on the GPU.  We do this so that later GPU blit operations
-    // can make some assumptions that the texture is resident & available for
-    // being mapped.  We can look at optimizing this later if need be.
+    // schedule texture to be transitioned to the gpu
+    d_texture->_transitionTo( Ogre::GpuResidency::Resident, nullptr );
+    d_texture->_setNextResidencyStatus( Ogre::GpuResidency::Resident );
+
+    #if 0
     size_t bytesPerRow = Ogre::PixelFormatGpuUtils::getBytesPerPixel( d_texture->getPixelFormat() ) * width;
     void* data = OGRE_MALLOC_SIMD( bytesPerRow * height, Ogre::MEMCATEGORY_RENDERSYS );
     memset( data, 0, bytesPerRow * height );
-
-    d_texture->_transitionTo( Ogre::GpuResidency::Resident, static_cast<Ogre::uint8*>( data ) );
-    d_texture->_setNextResidencyStatus( Ogre::GpuResidency::Resident );
 
     Ogre::TextureGpuManager *textureMgr = Ogre::Root::getSingletonPtr()->getRenderSystem()->getTextureGpuManager();
 
@@ -151,7 +149,10 @@ OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
 
     textureMgr->removeStagingTexture( stagingTexture );
     OGRE_FREE_SIMD(data, Ogre::MEMCATEGORY_RENDERSYS);
+    #if OGRE_VERSION_MINOR == 2
     d_texture->notifyDataIsReady();
+    #endif
+    #endif
 #else
     d_texture = Ogre::TextureManager::getSingleton().createManual(
         getUniqueName(), "General", Ogre::TEX_TYPE_2D,
