@@ -99,9 +99,10 @@ void Editbox::setMaxTextLength(size_t max_len)
     onMaximumTextLengthChanged(args);
 
     // trim string
-    if (getText().length() > d_maxTextLen)
+    const auto& text = getText();
+    if (text.length() > d_maxTextLen)
     {
-        String newText = getText();
+        String newText = text;
         newText.resize(d_maxTextLen);
         setText(newText);
         d_undoHandler->clearUndoHistory();
@@ -440,8 +441,9 @@ void Editbox::onTextChanged(WindowEventArgs& e)
     clearSelection();
 
     // make sure caret is within the text
-    if (d_caretPos > getText().length())
-        setCaretIndex(getText().length());
+    const auto textLen = getText().length();
+    if (d_caretPos > textLen)
+        setCaretIndex(textLen);
 
     ++e.handled;
 }

@@ -39,10 +39,8 @@
 
 namespace CEGUI
 {
-/*!
-\brief
-    Base class for multi-line edit box window renderer objects.
-*/
+
+//! \brief Base class for multi-line edit box window renderer objects.
 class CEGUIEXPORT MultiLineEditboxWindowRenderer : public WindowRenderer
 {
 public:
@@ -58,26 +56,16 @@ public:
         Rect object describing the area of the Window to be used for rendering text.
     */
     virtual Rectf getTextRenderArea() const = 0;
-
-protected:
-
-    void onLookNFeelAssigned() override;
 };
 
-/*!
-\brief
-	Base class for the multi-line edit box widget.
-*/
+//! \brief Base class for the multi-line edit box widget.
 class CEGUIEXPORT MultiLineEditbox : public EditboxBase
 {
 public:
-	static const String EventNamespace;				//!< Namespace for global events
-    static const String WidgetTypeName;             //!< Window factory name
 
-	/*************************************************************************
-		Constants
-	*************************************************************************/
-	// event names
+	static const String EventNamespace; //!< Namespace for global events
+    static const String WidgetTypeName; //!< Window factory name
+
     /** Event fired when the read-only mode for the edit box has been changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the MultiLineEditbox whose read-only mode
@@ -136,46 +124,17 @@ public:
     //! Widget name for the horizontal scrollbar component.
     static const String HorzScrollbarName;   
 
-    /*!
-    \brief
-        struct used to store information about a formatted line within the
-        paragraph.
-    */
-    struct LineInfo
-    {
-        size_t  d_startIdx;     //!< Starting index for this line.
-        size_t  d_length;       //!< Code point length of this line.
-        float   d_extent;       //!< Rendered extent of this line.
-    };
-    typedef std::vector<LineInfo>   LineList;   //!< Type for collection of LineInfos.
-
-
-	//! Constructor for the MultiLineEditbox base class.
 	MultiLineEditbox(const String& type, const String& name);
+    virtual ~MultiLineEditbox() override;
 
-
-    //! Destructor for the MultiLineEditbox base class.
-    virtual ~MultiLineEditbox();
-
-    // Inherited methods
     void setCaretIndex(size_t caret_pos) override;
     void setMaxTextLength(size_t max_len) override;
     bool performPaste(Clipboard& clipboard) override;
 
-	/*************************************************************************
-		Accessor Functions
-	*************************************************************************/
-
-	/*!
-	\brief
-		Return whether the text in the edit box will be word-wrapped.
-
-	\return
-		- true if the text will be word-wrapped at the edges of the widget frame.
-		- false if text will not be word-wrapped (a scroll bar will be used to access long text lines).
-	*/
-	bool isWordWrapped() const;
-
+	//! Return whether the text in the edit box will be word-wrapped or a scrollbar will be used.
+    bool isWordWrapEnabled() const { return d_wordWrap; }
+    //! Set whether the text in the edit box will be word-wrapped or a scrollbar will be used.
+    void setWordWrapEnabled(bool wrap);
 
     /*!
     \brief
@@ -213,7 +172,6 @@ public:
     */
     Scrollbar* getHorzScrollbar() const;
 
-
     /*!
     \brief
         Return a Rect object describing, in un-clipped pixels, the window relative area
@@ -224,51 +182,32 @@ public:
     */
     Rectf getTextRenderArea() const;
 
-    // get d_lines
-    const LineList& getFormattedLines() const   {return d_lines;}
+    struct LineInfo
+    {
+        size_t  d_startIdx;     //!< Starting index for this line.
+        size_t  d_length;       //!< Code point length of this line.
+        float   d_extent;       //!< Rendered extent of this line.
+    };
+    const std::vector<LineInfo>& getFormattedLines() const   {return d_lines;}
 
     /*!
     \brief
         Return the line number a given index falls on with the current formatting.  Will return last line
         if index is out of range.
     */
-    size_t  getLineNumberFromIndex(size_t index) const;
+    size_t getLineNumberFromIndex(size_t index) const;
 
-	/*************************************************************************
-		Manipulators
-	*************************************************************************/
 	/*!
 	\brief
 		Initialise the Window based object ready for use.
 
 	\note
 		This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
-
-	\return
-		Nothing
 	*/
     void initialiseComponents() override;
 
-
-	/*!
-	\brief
-		Scroll the view so that the current caret position is visible.
-	*/
+	//! Scroll the view so that the current caret position is visible.
 	virtual void ensureCaretIsVisible();
-
-
-	/*!
-	\brief
-		Set whether the text will be word wrapped or not.
-
-	\param setting
-		- true if the text should word-wrap at the edges of the text box.
-		- false if the text should not wrap, but a scroll bar should be used.
-
-	\return
-		Nothing.
-	*/
-	void setWordWrapping(bool setting);
 
     /*!
 	\brief
@@ -277,11 +216,8 @@ public:
 	\param setting
 		true if the vertical scroll bar should be shown even when it is not required.  false if the vertical
 		scroll bar should only be shown when it is required.
-
-	\return
-		Nothing.
 	*/
-	void	setShowVertScrollbar(bool setting);
+	void setShowVertScrollbar(bool setting);
 
     /*!
 	\brief
@@ -301,7 +237,6 @@ public:
 	*/
     const Image* getSelectionBrushImage() const;
 
-
     /*!
     \brief
         Format the text into lines as dictated by the formatting options.
@@ -312,9 +247,8 @@ public:
     */
     void formatText(const bool update_scrollbars);
 
-
 protected:
-    // Overriding methods inherited from EditboxBase
+
     size_t getTextIndexFromPosition(const glm::vec2& pt) const override;
     void eraseSelectedText(bool modify_text = true) override;
     void handleBackspace() override;
@@ -323,7 +257,6 @@ protected:
     void onTextChanged(WindowEventArgs& e) override;
     void onSized(ElementEventArgs& e) override;
 
-    // Overriding methods inherited from Window
     void onScroll(CursorInputEventArgs& e) override;
     void onFontChanged(WindowEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;
@@ -337,7 +270,6 @@ protected:
     */
     void handleLineHome(bool select);
 
-
     /*!
     \brief
         Processing to move caret to the end of the current line
@@ -346,7 +278,6 @@ protected:
         when true, the text until the end of the line will be also selected
     */
     void handleLineEnd(bool select);
-
 
     /*!
     \brief
@@ -357,7 +288,6 @@ protected:
     */
     void handleLineUp(bool select);
 
-
     /*!
     \brief
         Processing to move caret down a line.
@@ -367,13 +297,11 @@ protected:
     */
     void handleLineDown(bool select);
 
-
 	/*!
 	\brief
 		Processing to insert a new line / paragraph.
 	*/
     void handleNewLine();
-
 
     /*!
     \brief
@@ -384,7 +312,6 @@ protected:
     */
     void handlePageUp(bool select);
 
-
     /*!
     \brief
         Processing to move caret one page down
@@ -394,16 +321,8 @@ protected:
     */
     void handlePageDown(bool select);
 
-	/*!
-	\brief
-	   Internal handler that is triggered when the user interacts with the scrollbars.
-    */
     bool handle_scrollChange(const EventArgs& args);
-
-    // handler triggered when vertical scrollbar is shown or hidden
     bool handle_vertScrollbarVisibilityChanged(const EventArgs&);
-
-    // validate window renderer
     bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
     virtual void onTargetSurfaceChanged(RenderingSurface* newSurface) override;
@@ -420,24 +339,17 @@ protected:
 	*/
 	size_t getNextTokenLength(const String& text, size_t start_idx) const;
 
-
     /*!
 	\brief
 		display required integrated scroll bars according to current state of the edit box and update their values.
 	*/
 	void configureScrollbars();
 
-
-
-	/*************************************************************************
-		New event handlers
-	*************************************************************************/
 	/*!
 	\brief
 		Handler called when the word wrap mode for the the edit box changes
 	*/
 	void onWordWrapModeChanged(WindowEventArgs& e);
-
 
 	/*!
 	\brief
@@ -445,42 +357,33 @@ protected:
 	*/
 	void onVertScrollbarModeChanged(WindowEventArgs& e);
 
-
 	/*!
 	\brief
 		Handler called when 'always show' setting for the horizontal scroll bar changes.
 	*/
 	void onHorzScrollbarModeChanged(WindowEventArgs& e);
 
-	/*************************************************************************
-		Implementation data
-	*************************************************************************/
-    const Image* d_selectionBrush;	//!< Image to use as the selection brush (should be set by derived class).
+    const Image* d_selectionBrush = nullptr;	//!< Image to use as the selection brush (should be set by derived class).
 
     static String   d_lineBreakChars;	//!< Holds what we consider to be line break characters.
-	LineList        d_lines;			//!< Holds the lines for the current formatting.
-	float           d_lastRenderWidth;  //!< Holds last render area width
-	float           d_widestExtent;	//!< Holds the extent of the widest line as calculated in the last formatting pass.
+    std::vector<LineInfo> d_lines;			//!< Holds the lines for the current formatting.
+	float           d_lastRenderWidth = 0.f;  //!< Holds last render area width
+	float           d_widestExtent = 0.f;	//!< Holds the extent of the widest line as calculated in the last formatting pass.
 
-	// component widget settings
-	bool d_forceVertScroll;		//!< true if vertical scrollbar should always be displayed
-	bool d_forceHorzScroll;		//!< true if horizontal scrollbar should always be displayed
-    bool d_wordWrap;		//!< true when formatting uses word-wrapping.
-
+	bool d_forceVertScroll = false;		//!< true if vertical scrollbar should always be displayed
+	bool d_forceHorzScroll = false;		//!< true if horizontal scrollbar should always be displayed
+    bool d_wordWrap = true;		//!< true when formatting uses word-wrapping.
 
 private:
-	/*************************************************************************
-		Private methods
-	*************************************************************************/
-	void addMultiLineEditboxProperties();
 
+    void addMultiLineEditboxProperties();
     void handleSelectAllText(SemanticEventArgs& e);
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)
 #endif
 
-#endif	// end of guard _CEGUIMultiLineEditbox_h_
+#endif

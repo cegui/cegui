@@ -132,8 +132,9 @@ void EditboxBase::setDefaultParagraphDirection(DefaultParagraphDirection default
 void EditboxBase::setCaretIndex(size_t caretPos)
 {
     // Make sure new position is valid
-    if (caretPos > getText().length())
-        caretPos = getText().length();
+    const auto textLen = getText().length();
+    if (caretPos > textLen)
+        caretPos = textLen;
 
     if (d_caretPos == caretPos)
         return;
@@ -147,13 +148,15 @@ void EditboxBase::setCaretIndex(size_t caretPos)
 //----------------------------------------------------------------------------//
 void EditboxBase::setSelection(size_t start_pos, size_t end_pos)
 {
+    const auto textLen = getText().length();
+
     // ensure selection start point is within the valid range
-    if (start_pos > getText().length())
-        start_pos = getText().length();
+    if (start_pos > textLen)
+        start_pos = textLen;
 
     // ensure selection end point is within the valid range
-    if (end_pos > getText().length())
-        end_pos = getText().length();
+    if (end_pos > textLen)
+        end_pos = textLen;
 
     // ensure start is before end
     if (start_pos > end_pos)
@@ -183,7 +186,7 @@ void EditboxBase::setSelectionLength(size_t length)
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::clearSelection(void)
+void EditboxBase::clearSelection()
 {
     if (getSelectionLength())
         setSelection(0, 0);
@@ -383,8 +386,9 @@ void EditboxBase::handleHome(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleEnd(bool select)
 {
-    if (d_caretPos < getText().length())
-        setCaretIndex(getText().length());
+    const auto textLen = getText().length();
+    if (d_caretPos < textLen)
+        setCaretIndex(textLen);
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
@@ -395,8 +399,9 @@ void EditboxBase::handleEnd(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleSelectAll()
 {
-    setSelection(0, getText().length());
-    setCaretIndex(getText().length());
+    const auto textLen = getText().length();
+    setSelection(0, textLen);
+    setCaretIndex(textLen);
 }
 
 //----------------------------------------------------------------------------//
@@ -449,7 +454,7 @@ void EditboxBase::onEditboxFullEvent(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-size_t EditboxBase::getCaretIndex(void) const
+size_t EditboxBase::getCaretIndex() const
 {
 #if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
     //size_t caretPos = d_caretPos;
@@ -559,7 +564,7 @@ bool EditboxBase::handleBasicSemanticValue(SemanticEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::addEditboxBaseProperties(void)
+void EditboxBase::addEditboxBaseProperties()
 {
     const String& propertyOrigin = WidgetTypeName;
 
