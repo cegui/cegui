@@ -28,9 +28,7 @@
 #define _FalEditbox_h_
 
 #include "CEGUI/WindowRendererSets/Core/Module.h"
-#include "CEGUI/falagard/Enums.h"
 #include "CEGUI/widgets/Editbox.h"
-#include "CEGUI/text/RenderedText.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -116,20 +114,6 @@ public:
 
     /*!
     \brief
-        Sets the horizontal text formatting to be used from now onwards.
-
-    \param format
-        Specifies the formatting to use.  Currently can only be one of the
-        following HorizontalTextFormatting values:
-            - HorizontalTextFormatting::LeftAligned (default)
-            - HorizontalTextFormatting::RightAligned
-            - HorizontalTextFormatting::CentreAligned
-    */
-    void setTextFormatting(HorizontalTextFormatting format);
-    HorizontalTextFormatting getTextFormatting() const { return d_textFormatting; }
-
-    /*!
-    \brief
         Sets a selection brush Image
 
     \param image
@@ -152,7 +136,6 @@ public:
     size_t getTextIndexFromPosition(const glm::vec2& pt) const override;
     // overridden from WindowRenderer class
     void update(float elapsed) override;
-    bool handleFontRenderSizeChange(const Font* const font) override;
 
 protected:
 
@@ -166,9 +149,7 @@ protected:
     */
     float getTextOffsetVisual(const Rectf& textArea, float textExtent) const;
 
-    void createRenderGeometryForText(const WidgetLookFeel& wlf, const String& text, const Rectf& textArea, float textOffset);
-
-    RenderedText d_renderedText;
+    void createRenderGeometryForText(const WidgetLookFeel& wlf, const Rectf& textArea, float textOffset);
 
     const Image* d_selectionBrush = nullptr;  //!< Image to use as the selection brush (should be set by derived class).
     //! x rendering offset used last time we drew the widget.
@@ -177,8 +158,6 @@ protected:
     float d_caretBlinkTimeout = DefaultCaretBlinkTimeout;
     //! current time elapsed since last caret blink state change.
     float d_caretBlinkElapsed = 0.f;
-    //! horizontal formatting.  Only supports left, right, and centred.
-    HorizontalTextFormatting d_textFormatting = HorizontalTextFormatting::LeftAligned;
     //! true if caret should be shown.
     bool d_showCaret = true;
     //! true if the caret imagery should blink.

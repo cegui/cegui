@@ -30,6 +30,8 @@
 #define _CEGUIEditboxBase_h_
 
 #include "CEGUI/Window.h"
+#include "CEGUI/text/RenderedText.h"
+#include "CEGUI/falagard/Enums.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -67,12 +69,6 @@ public:
      * has been changed.
      */
     static const String EventTextMaskingCodepointChanged;
-    /** Event fired when the validation string is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Editbox whose validation string has
-     * been changed.
-     */
-    static const String EventValidationStringChanged;
     /** Event fired when the maximum allowable string length is changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Editbox whose maximum string length
@@ -81,20 +77,6 @@ public:
     static const String EventMaximumTextLengthChanged;
     //! Fired when the default paragraph direction of this window changes.
     static const String EventDefaultParagraphDirectionChanged;
-    /** Event fired when the validity of the Exitbox text (as determined by a
-     * RegexMatcher object) has changed.
-     * Handlers are passed a const RegexMatchStateEventArgs reference with
-     * WindowEventArgs::window set to the Editbox whose text validity has
-     * changed and RegexMatchStateEventArgs::matchState set to the new match
-     * validity. Handler return is significant, as follows:
-     * - true indicates the new state - and therfore text - is to be accepted.
-     * - false indicates the new state is not acceptable, and the previous text
-     *   should remain in place. NB: This is only possible when the validity
-     *   change is due to a change in the text, if the validity change is due to
-     *   a change in the validation regular expression string, then returning
-     *   false will have no effect.
-     */
-    static const String EventTextValidityChanged;
     /** Event fired when the text caret position / insertion point is changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Editbox whose current insertion point
@@ -113,17 +95,6 @@ public:
      * WindowEventArgs::window set to the Editbox that has become full.
      */
     static const String EventEditboxFull;
-    /** Event fired when the user accepts the current text by pressing Return,
-     * Enter, or Tab.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Editbox in which the user has accepted
-     * the current text.
-     */
-    static const String EventTextAccepted;
-    /** Mouse cursor image property name to use when the edit box is
-     * in read-only mode.
-     */
-    static const String ReadOnlyCursorImagePropertyName;
 
     EditboxBase(const String& type, const String& name);
     virtual ~EditboxBase() override;
@@ -268,6 +239,9 @@ public:
     */
     virtual void setCaretIndex(size_t caretPos);
 
+    //! Scroll the view so that the current caret position is visible.
+    virtual void ensureCaretIsVisible() = 0;
+
     /*!
     \brief
         Define the current selection for the Editbox
@@ -341,13 +315,28 @@ public:
     \return
         Nothing.
     */
-    virtual void setMaxTextLength(size_t max_len) = 0;
+    virtual void setMaxTextLength(size_t maxLen);
 
-    //! Gets the default paragraph direction for the displayed text.
-    DefaultParagraphDirection getDefaultParagraphDirection() const { return d_defaultParagraphDirection; }
+    /*!
+    \brief
+        Sets the horizontal text formatting to be used from now onwards.
+
+    \param format
+        Specifies the formatting to use.  Currently can only be one of the
+        following HorizontalTextFormatting values:
+            - HorizontalTextFormatting::LeftAligned (default)
+            - HorizontalTextFormatting::RightAligned
+            - HorizontalTextFormatting::CentreAligned
+    */
+    virtual void setTextFormatting(HorizontalTextFormatting format);
+    HorizontalTextFormatting getTextFormatting() const { return d_textFormatting; }
 
     //! Sets the default paragraph direction for the displayed text.
     void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);
+    //! Gets the default paragraph direction for the displayed text.
+    DefaultParagraphDirection getDefaultParagraphDirection() const { return d_defaultParagraphDirection; }
+
+    RenderedText& getRenderedText() const;
 
     //! \copydoc Window::performCopy
     bool performCopy(Clipboard& clipboard) override;
@@ -366,8 +355,8 @@ public:
 
 protected:
 
-    // Inherited methods
-    bool validateWindowRenderer(const WindowRenderer* renderer) const override = 0;
+    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const override = 0;
+    virtual bool handleFontRenderSizeChange(const Font& font) override;
 
     /*!
     \brief
@@ -548,13 +537,16 @@ protected:
     void onCursorMove(CursorInputEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;
 
+    void onFontChanged(WindowEventArgs& e) override;
+    void onTextChanged(WindowEventArgs& e) override;
+
     void onCharacter(TextEventArgs& e) override = 0;
     void onSemanticInputEvent(SemanticEventArgs& e) override = 0;
 
+    mutable RenderedText d_renderedText;
+
     //! The read only mouse cursor image.
     const Image* d_readOnlyCursorImage = nullptr;
-    //! Code point to use when rendering masked text.
-    std::uint32_t d_textMaskingCodepoint = '*';
     //! Maximum number of characters for this Editbox.
     size_t d_maxTextLen;
     /*! Position of the caret / insert-point, relative to the beginning
@@ -569,14 +561,22 @@ protected:
     size_t d_dragAnchorIdx;
     //! Undo handler
     std::unique_ptr<UndoHandler> d_undoHandler;
+
+    //! Code point to use when rendering masked text.
+    std::uint32_t d_textMaskingCodepoint = '*';
+
+    HorizontalTextFormatting d_textFormatting = HorizontalTextFormatting::LeftAligned;
+
     //! Default direction of the paragraph, relevant for bidirectional text.
-    mutable DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
+    DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
     //! True if the editbox is in read-only mode
     bool d_readOnly = false;
     //! True if the editbox text should be rendered masked.
     bool d_textMaskingEnabled = false;
     //! true when a selection is being dragged.
     bool d_dragging = false;
+
+    mutable bool d_renderedTextDirty = true;
 
 private:
 

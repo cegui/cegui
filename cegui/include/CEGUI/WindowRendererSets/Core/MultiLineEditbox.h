@@ -29,7 +29,6 @@
 
 #include "CEGUI/WindowRendererSets/Core/Module.h"
 #include "CEGUI/widgets/MultiLineEditbox.h"
-#include "CEGUI/text/RenderedText.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -93,7 +92,6 @@ public:
     Rectf getTextRenderArea() const override;
     void createRenderGeometry() override;
     void update(float elapsed) override;
-    bool handleFontRenderSizeChange(const Font* const font) override;
 
     //! return whether the blinking caret is enabled.
     bool isCaretBlinkEnabled() const { return d_blinkCaret; }
@@ -103,19 +101,6 @@ public:
     void setCaretBlinkEnabled(bool enable) { d_blinkCaret = enable; }
     //! set the caret blink timeout period (only used if blink is enabled).
     void setCaretBlinkTimeout(float seconds) { d_caretBlinkTimeout = seconds; }
-
-    void setTextFormatting(HorizontalTextFormatting format);
-    HorizontalTextFormatting getTextFormatting() const { return d_textFormatting; }
-
-    //! Enable or disable word wrapping.
-    void setWordWrapEnabled(bool wrap);
-
-    /*!
-    \brief
-        Return whether word-wrapping is turned on, which means words are
-        wrapped to multiple lines as needed.
-    */
-    bool isWordWrapEnabled() const { return d_wordWrap; }
 
     /*!
     \brief
@@ -145,9 +130,14 @@ protected:
         rendering imagery behind and in front of the text & selection.
     */
     void cacheEditboxBaseImagery();
-
-    void cacheCaretImagery(const Rectf& textArea);
     void cacheTextLines(const Rectf& destArea);
+    void cacheCaretImagery(const Rectf& textArea);
+
+    /*!
+    \brief
+        display required integrated scroll bars according to current state of the edit box and update their values.
+    */
+    void configureScrollbars();
 
     /*!
     \brief
@@ -163,22 +153,16 @@ protected:
     */
     ColourRect getOptionalColour(const String& propertyName) const;
 
-    RenderedText d_renderedText;
-
     const Image* d_selectionBrush = nullptr;  //!< Image to use as the selection brush (should be set by derived class).
 
     //! time-out in seconds used for blinking the caret.
     float d_caretBlinkTimeout = DefaultCaretBlinkTimeout;
     //! current time elapsed since last caret blink state change.
     float d_caretBlinkElapsed = 0.f;
-
-    HorizontalTextFormatting d_textFormatting = HorizontalTextFormatting::LeftAligned;
-
     //! true if caret should be shown.
     bool d_showCaret = true;
     //! true if the caret imagery should blink.
     bool d_blinkCaret = false;
-    bool d_wordWrap = false;
 };
 
 }

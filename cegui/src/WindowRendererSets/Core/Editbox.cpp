@@ -58,11 +58,6 @@ FalagardEditbox::FalagardEditbox(const String& type) :
         "Value is a float value indicating the timeout in seconds.",
         &FalagardEditbox::setCaretBlinkTimeout, &FalagardEditbox::getCaretBlinkTimeout,
         DefaultCaretBlinkTimeout);
-    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardEditbox, HorizontalTextFormatting,
-        "TextFormatting", "Property to get/set the horizontal formatting mode. "
-        "Value is one of: LeftAligned, RightAligned or HorzCentred",
-        &FalagardEditbox::setTextFormatting, &FalagardEditbox::getTextFormatting,
-        HorizontalTextFormatting::LeftAligned);
     CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardEditbox, Image*,
         "SelectionBrushImage", "Property to get/set the selection brush image for the editbox.  Value should be \"[imageset_name]/[image_name]\".",
         &FalagardEditbox::setSelectionBrushImage, &FalagardEditbox::getSelectionBrushImage, nullptr);
@@ -76,34 +71,18 @@ void FalagardEditbox::createRenderGeometry()
     renderBaseImagery(wlf);
 
     Editbox* const w = static_cast<Editbox*>(d_window);
-
-    String visualText;
-    if (w->isTextMaskingEnabled())
-        visualText.assign(w->getText().length(), static_cast<char32_t>(w->getTextMaskingCodepoint()));
-    else
-        visualText.assign(w->getText());
-
-    d_renderedText.renderText(visualText, nullptr, w->getActualFont(), w->getDefaultParagraphDirection());
+    auto& renderedText = w->getRenderedText();
 
     const Rectf textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*d_window));
+    renderedText.updateFormatting(textArea.getWidth());
 
-    d_renderedText.setHorizontalFormatting(d_textFormatting);
-    d_renderedText.setWordWrappingEnabled(false);
-    //d_renderedText.updateDynamicObjectExtents(w); // no parsing implies no dynamic objects
-    d_renderedText.updateFormatting(textArea.getWidth());
-
-    const float textExtent = d_renderedText.getExtents().d_height;
+    const float textExtent = renderedText.getExtents().d_height;
     const ImagerySection& caretImagery = wlf.getImagerySection("Caret");
     const float caretWidth = caretImagery.getBoundingRect(*d_window, textArea).getWidth();
-    const float extentToCaretVisual = d_renderedText.getCodepointBounds(w->getCaretIndex()).left();
-
-    //!!!TODO TEXT:
-    // - BIDI caret side choosing
-    // - draw caret after the text if request caretIndex > text length / glyph count
-    // - if getGlyphIndex can't find one, return nearest?
+    const float extentToCaretVisual = renderedText.getCodepointBounds(w->getCaretIndex()).left();
 
     float extentToCaretLogical = extentToCaretVisual;
-    switch (d_textFormatting)
+    switch (w->getTextFormatting())
     {
         case HorizontalTextFormatting::CentreAligned:
             extentToCaretLogical = (textExtent - caretWidth) / 2.f;
@@ -121,7 +100,7 @@ void FalagardEditbox::createRenderGeometry()
 
     const float textOffsetVisual = getTextOffsetVisual(textArea, textExtent);
 
-    createRenderGeometryForText(wlf, visualText, textArea, textOffsetVisual);
+    createRenderGeometryForText(wlf, textArea, textOffsetVisual);
 
     // Create the render geometry for the caret
     if (w->hasInputFocus() && !w->isReadOnly() && (!d_blinkCaret || d_showCaret))
@@ -158,7 +137,8 @@ void FalagardEditbox::renderBaseImagery(const WidgetLookFeel& wlf) const
 //----------------------------------------------------------------------------//
 float FalagardEditbox::getTextOffsetVisual(const Rectf& textArea, float textExtent) const
 {
-    switch (d_textFormatting)
+    Editbox* const w = static_cast<Editbox*>(d_window);
+    switch (w->getTextFormatting())
     {
         case HorizontalTextFormatting::LeftAligned:
             return d_textOffset;
@@ -173,18 +153,19 @@ float FalagardEditbox::getTextOffsetVisual(const Rectf& textArea, float textExte
 
 //----------------------------------------------------------------------------//
 void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
-    const String& text, const Rectf& textArea, float textOffset)
+    const Rectf& textArea, float textOffset)
 {
-    if (d_renderedText.empty())
+    Editbox* const w = static_cast<Editbox*>(d_window);
+    const auto& renderedText = w->getRenderedText();
+    if (renderedText.empty())
         return;
 
     // Scroll text to the visible part and center it vertically inside the area
     Rectf textPartRect = textArea;
-    textPartRect.offset(glm::vec2(textOffset, (textArea.getHeight() - d_renderedText.getExtents().d_height) * 0.5f));
+    textPartRect.offset(glm::vec2(textOffset, (textArea.getHeight() - renderedText.getExtents().d_height) * 0.5f));
 
     const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);
 
-    Editbox* const w = static_cast<Editbox*>(d_window);
     const size_t selStart = w->getSelectionStart();
     const size_t selEnd = w->getSelectionEnd();
     SelectionInfo* selection = nullptr;
@@ -200,7 +181,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
         selection = &selectionInfo;
     }
 
-    d_renderedText.createRenderGeometry(w->getGeometryBuffers(), textPartRect.getPosition(), &normalTextCol, &textArea, selection);
+    renderedText.createRenderGeometry(w->getGeometryBuffers(), textPartRect.getPosition(), &normalTextCol, &textArea, selection);
 }
 
 //----------------------------------------------------------------------------//
@@ -254,26 +235,6 @@ void FalagardEditbox::update(float elapsed)
 }
 
 //----------------------------------------------------------------------------//
-void FalagardEditbox::setTextFormatting(HorizontalTextFormatting format)
-{
-    if (d_textFormatting == format)
-        return;
-
-    if (format != HorizontalTextFormatting::LeftAligned &&
-        format != HorizontalTextFormatting::RightAligned &&
-        format != HorizontalTextFormatting::CentreAligned)
-    {
-        throw InvalidRequestException(
-            "currently only HorizontalTextFormatting::LeftAligned, "
-            "HorizontalTextFormatting::RightAligned and "
-            "HorizontalTextFormatting::CentreAligned are accepted for Editbox formatting");
-    }
-
-    d_textFormatting = format;
-    d_window->invalidate();
-}
-
-//----------------------------------------------------------------------------//
 void FalagardEditbox::setSelectionBrushImage(const Image* image)
 {
     if (d_selectionBrush == image)
@@ -281,20 +242,6 @@ void FalagardEditbox::setSelectionBrushImage(const Image* image)
 
     d_selectionBrush = image;
     d_window->invalidate();
-}
-
-//----------------------------------------------------------------------------//
-bool FalagardEditbox::handleFontRenderSizeChange(const Font* const font)
-{
-    const bool res = WindowRenderer::handleFontRenderSizeChange(font);
-
-    if (d_window->getActualFont() == font)
-    {
-        d_window->invalidate();
-        return true;
-    }
-
-    return res;
 }
 
 }

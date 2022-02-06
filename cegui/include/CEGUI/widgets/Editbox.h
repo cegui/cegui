@@ -88,15 +88,13 @@ public:
      * has been changed.
      */
     static const String EventTextValidityChanged;
-    /** Event fired when the text caret position / insertion point is changed.
+    /** Event fired when the user accepts the current text by pressing Return,
+     * Enter, or Tab.
      * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Editbox whose current insertion point
-     * has changed.
+     * WindowEventArgs::window set to the Editbox in which the user has accepted
+     * the current text.
      */
-    /** Mouse cursor image property name to use when the edit box is
-     * in read-only mode.
-     */
-    static const String ReadOnlyMouseCursorImagePropertyName;
+    static const String EventTextAccepted;
 
     Editbox(const String& type, const String& name);
     virtual ~Editbox() override;
@@ -187,6 +185,21 @@ public:
     */
     void setValidator(RegexMatcher* matcher);
 
+    /*!
+    \brief
+        Sets the horizontal text formatting to be used from now onwards.
+
+    \param format
+        Specifies the formatting to use.  Currently can only be one of the
+        following HorizontalTextFormatting values:
+            - HorizontalTextFormatting::LeftAligned (default)
+            - HorizontalTextFormatting::RightAligned
+            - HorizontalTextFormatting::CentreAligned
+    */
+    virtual void setTextFormatting(HorizontalTextFormatting format) override;
+
+    virtual void ensureCaretIsVisible() override;
+
 protected:
 
     size_t getTextIndexFromPosition(const glm::vec2& pt) const override;
@@ -194,7 +207,6 @@ protected:
     void handleBackspace() override;
     void handleDelete() override;
     void onCharacter(TextEventArgs& e) override;
-    void onTextChanged(WindowEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;
 
     bool validateWindowRenderer(const WindowRenderer* renderer) const override;
@@ -236,24 +248,6 @@ protected:
      */
     bool handleValidityChangeForString(const String& str);
 
-    /*!
-    \brief
-        return the the read-only mouse cursor image.
-    \return
-        The read-only mouse cursor image.
-    */
-    const Image* getReadOnlyMouseCursorImage() const { return d_readOnlyMouseCursorImage; }
-
-    /*!
-    \brief
-        Set the read only mouse cursor image.
-    \param image
-        The Image* to be used.
-    */
-    void setReadOnlyMouseCursorImage(const Image* image) { d_readOnlyMouseCursorImage = image; }
-
-    //! The read only mouse cursor image.
-    const Image* d_readOnlyMouseCursorImage = nullptr;
     //! Copy of validation reg-ex string.
     String d_validationString;
     //! Pointer to class used for validation of text.
@@ -270,10 +264,10 @@ private:
     void addEditboxProperties();
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIEditbox_h_
+#endif

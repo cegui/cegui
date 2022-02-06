@@ -34,9 +34,6 @@
 #include "CEGUI/text/Font.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 
- //!!!FIXME TEXT: UTF-8 selection / caret positioning is broken, sometimes it breaks a multibyte codepoint in the middle
-//See how RAQM internal _raqm_u8_to_u32_index(rq, idx) works, but it is O(n). Or just use cached mapping.
-
 namespace CEGUI
 {
 const String FalagardMultiLineEditbox::TypeName("Core/MultiLineEditbox");
@@ -60,15 +57,6 @@ FalagardMultiLineEditbox::FalagardMultiLineEditbox(const String& type) :
         "Value is a float value indicating the timeout in seconds.",
         &FalagardMultiLineEditbox::setCaretBlinkTimeout,&FalagardMultiLineEditbox::getCaretBlinkTimeout,
         0.66f);
-    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardMultiLineEditbox, HorizontalTextFormatting,
-        "TextFormatting", "Property to get/set the horizontal formatting mode. "
-        "Value is one of: LeftAligned, RightAligned or HorzCentred",
-        &FalagardMultiLineEditbox::setTextFormatting, &FalagardMultiLineEditbox::getTextFormatting,
-        HorizontalTextFormatting::LeftAligned);
-    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardMultiLineEditbox, bool,
-        "WordWrap", "Property to get/set the word-wrap setting of the edit box.  Value is either \"true\" or \"false\".",
-        &FalagardMultiLineEditbox::setWordWrapEnabled, &FalagardMultiLineEditbox::isWordWrapEnabled, true
-    );
     CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardMultiLineEditbox, Image*,
         "SelectionBrushImage", "Property to get/set the selection brush image for the editbox.  Value should be \"[imageset_name]/[image_name]\".",
         &FalagardMultiLineEditbox::setSelectionBrushImage, &FalagardMultiLineEditbox::getSelectionBrushImage, nullptr
@@ -126,47 +114,15 @@ void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
 }
 
 //----------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
-{
-    MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
-    const Font* font = w->getActualFont();
-    if (!font)
-        return;
-
-    const size_t caretLine = w->getLineNumberFromIndex(w->getCaretIndex());
-
-    const auto& lines = w->getFormattedLines();
-
-    if (caretLine >= lines.size())
-        return;
-
-    // Calculate pixel offsets to where caret should be drawn
-    const size_t caretLineIdx = w->getCaretIndex() - lines[caretLine].d_startIdx;
-    const float ypos = caretLine * font->getLineSpacing();
-    const float xpos = font->getTextAdvance(w->getText().substr(lines[caretLine].d_startIdx, caretLineIdx));
-
-    const ImagerySection& caretImagery = getLookNFeel().getImagerySection("Caret");
-
-    // Calculate final destination area for caret
-    Rectf caretArea;
-    caretArea.left(textArea.left() + xpos - w->getHorzScrollbar()->getScrollPosition());
-    caretArea.top(textArea.top() + ypos - w->getVertScrollbar()->getScrollPosition());
-    caretArea.setWidth(caretImagery.getBoundingRect(*w).getSize().d_width);
-    caretArea.setHeight(font->getLineSpacing());
-
-    // Create the render geometry for the caret image
-    caretImagery.render(*w, caretArea, nullptr, &textArea);
-}
-
-//----------------------------------------------------------------------------//
 void FalagardMultiLineEditbox::createRenderGeometry()
 {
+    configureScrollbars();
+
     // Create the render geometry for the general frame and stuff before we handle the text itself
     cacheEditboxBaseImagery();
 
-    const Rectf textArea = getTextRenderArea();
-
     // Create the render geometry for the edit box text
+    const Rectf textArea = getTextRenderArea();
     cacheTextLines(textArea);
 
     // Create the render geometry for the caret
@@ -196,15 +152,6 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
     const ColourRect selectBrushCol = getOptionalColour(
         w->hasInputFocus() ? ActiveSelectionColourPropertyName : InactiveSelectionColourPropertyName);
 
-    d_renderedText.renderText(w->getText(), nullptr, font, w->getDefaultParagraphDirection());
-
-    //!!!DBG TMP!
-    //!!!FIXME TEXT: add horz fmt to multiline editbox!
-    d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::LeftAligned);
-    d_renderedText.setWordWrappingEnabled(w->isWordWrapEnabled());
-    //d_renderedText.updateDynamicObjectExtents(w); // no parsing implies no dynamic objects
-    d_renderedText.updateFormatting(drawArea.getWidth());
-
     const size_t selStart = w->getSelectionStart();
     const size_t selEnd = w->getSelectionEnd();
     SelectionInfo* selection = nullptr;
@@ -219,7 +166,103 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
         selection = &selectionInfo;
     }
 
-    d_renderedText.createRenderGeometry(w->getGeometryBuffers(), drawArea.getPosition(), &normalTextCol, &destArea, selection);
+    w->getRenderedText().createRenderGeometry(w->getGeometryBuffers(), drawArea.getPosition(), &normalTextCol, &destArea, selection);
+}
+
+//----------------------------------------------------------------------------//
+void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
+{
+    MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
+    const Font* font = w->getActualFont();
+    if (!font)
+        return;
+
+    /*
+    const size_t caretLine = w->getLineNumberFromIndex(w->getCaretIndex());
+
+    const auto& lines = w->getFormattedLines();
+
+    if (caretLine >= lines.size())
+        return;
+
+    // Calculate pixel offsets to where caret should be drawn
+    const size_t caretLineIdx = w->getCaretIndex() - lines[caretLine].d_startIdx;
+    const float ypos = caretLine * font->getLineSpacing();
+    const float xpos = font->getTextAdvance(w->getText().substr(lines[caretLine].d_startIdx, caretLineIdx));
+
+    const ImagerySection& caretImagery = getLookNFeel().getImagerySection("Caret");
+
+    // Calculate final destination area for caret
+    Rectf caretArea;
+    caretArea.left(textArea.left() + xpos - w->getHorzScrollbar()->getScrollPosition());
+    caretArea.top(textArea.top() + ypos - w->getVertScrollbar()->getScrollPosition());
+    caretArea.setWidth(caretImagery.getBoundingRect(*w).getSize().d_width);
+    caretArea.setHeight(font->getLineSpacing());
+
+    // Create the render geometry for the caret image
+    caretImagery.render(*w, caretArea, nullptr, &textArea);
+    */
+}
+
+//----------------------------------------------------------------------------//
+void FalagardMultiLineEditbox::configureScrollbars()
+{
+    MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
+    auto& renderedText = w->getRenderedText();
+
+    Scrollbar* const vertScrollbar = w->getVertScrollbar();
+    Scrollbar* const horzScrollbar = w->getHorzScrollbar();
+    const bool forceVert = w->isVertScrollbarAlwaysShown();
+    const bool forceHorz = w->isHorzScrollbarAlwaysShown();
+
+    Rectf textArea = getTextRenderArea();
+    renderedText.updateFormatting(textArea.getWidth());
+
+    // Update vertical scrollbar state
+    {
+        const bool show = forceVert || renderedText.getExtents().d_height > textArea.getHeight();
+        if (vertScrollbar->isVisible() != show)
+        {
+            vertScrollbar->setVisible(show);
+            textArea = getTextRenderArea();
+            renderedText.updateFormatting(textArea.getWidth());
+        }
+    }
+
+    // Update horizontal scrollbar state
+    const bool wasVisibleHorz = horzScrollbar->isVisible();
+    {
+        const bool show = forceHorz || renderedText.getExtents().d_width > textArea.getWidth();
+        if (wasVisibleHorz != show)
+        {
+            horzScrollbar->setVisible(show);
+            textArea = getTextRenderArea();
+            renderedText.updateFormatting(textArea.getWidth());
+        }
+    }
+
+    // Change in a horizontal scrollbar state might affect viewable area,
+    // so update vertical scrollbar state again
+    if (wasVisibleHorz != horzScrollbar->isVisible())
+    {
+        const bool show = forceVert || renderedText.getExtents().d_height > textArea.getHeight();
+        if (vertScrollbar->isVisible() != show)
+        {
+            vertScrollbar->setVisible(show);
+            textArea = getTextRenderArea();
+            renderedText.updateFormatting(textArea.getWidth());
+        }
+    }
+
+    vertScrollbar->setDocumentSize(renderedText.getExtents().d_height);
+    vertScrollbar->setPageSize(textArea.getHeight());
+    vertScrollbar->setStepSize(std::max(1.0f, textArea.getHeight() / 10.0f));
+    vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
+
+    horzScrollbar->setDocumentSize(renderedText.getExtents().d_width);
+    horzScrollbar->setPageSize(textArea.getWidth());
+    horzScrollbar->setStepSize(std::max(1.0f, textArea.getWidth() / 10.0f));
+    horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition());
 }
 
 //----------------------------------------------------------------------------//
@@ -250,45 +293,6 @@ void FalagardMultiLineEditbox::update(float elapsed)
             d_window->invalidate();
         }
     }
-}
-
-//----------------------------------------------------------------------------//
-bool FalagardMultiLineEditbox::handleFontRenderSizeChange(const Font* const font)
-{
-    const bool res = WindowRenderer::handleFontRenderSizeChange(font);
-
-    if (d_window->getActualFont() == font)
-    {
-        d_window->invalidate();
-        static_cast<MultiLineEditbox*>(d_window)->formatText(true);
-        return true;
-    }
-
-    return res;
-}
-
-//----------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::setTextFormatting(HorizontalTextFormatting format)
-{
-    if (d_textFormatting == format)
-        return;
-
-    bool wordWrap = false;
-    d_textFormatting = decomposeHorizontalFormatting(format, wordWrap);
-    if (wordWrap)
-        setWordWrapEnabled(true);
-
-    d_window->invalidate();
-}
-
-//------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::setWordWrapEnabled(bool wrap)
-{
-    if (d_wordWrap == wrap)
-        return;
-
-    d_wordWrap = wrap;
-    d_window->invalidate();
 }
 
 //----------------------------------------------------------------------------//

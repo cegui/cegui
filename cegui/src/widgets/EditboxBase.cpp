@@ -41,15 +41,11 @@ const String EditboxBase::WidgetTypeName("CEGUI/EditboxBase");
 const String EditboxBase::EventReadOnlyModeChanged("ReadOnlyModeChanged");
 const String EditboxBase::EventTextMaskingEnabledChanged("TextMaskingEnabledChanged");
 const String EditboxBase::EventTextMaskingCodepointChanged("TextMaskingCodepointChanged");
-const String EditboxBase::EventValidationStringChanged("ValidationStringChanged");
 const String EditboxBase::EventMaximumTextLengthChanged("MaximumTextLengthChanged");
 const String EditboxBase::EventDefaultParagraphDirectionChanged("DefaultParagraphDirectionChanged");
-const String EditboxBase::EventTextValidityChanged("TextValidityChanged");
 const String EditboxBase::EventCaretMoved("CaretMoved");
 const String EditboxBase::EventTextSelectionChanged("TextSelectionChanged");
 const String EditboxBase::EventEditboxFull("EditboxFull");
-const String EditboxBase::EventTextAccepted("TextAccepted");
-const String EditboxBase::ReadOnlyCursorImagePropertyName("ReadOnlyCursorImage");
 
 //----------------------------------------------------------------------------//
 EditboxBase::EditboxBase(const String& type, const String& name)
@@ -57,6 +53,7 @@ EditboxBase::EditboxBase(const String& type, const String& name)
     , d_maxTextLen(String().max_size())
     , d_undoHandler(new UndoHandler(this))
 {
+    d_renderedText.setHorizontalFormatting(d_textFormatting);
     addEditboxBaseProperties();
 }
 
@@ -112,6 +109,42 @@ void EditboxBase::setTextMaskingCodepoint(std::uint32_t code_point)
     d_textMaskingCodepoint = code_point;
     WindowEventArgs args(this);
     onTextMaskingCodepointChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::setMaxTextLength(size_t maxLen)
+{
+    if (d_maxTextLen == maxLen)
+        return;
+
+    d_maxTextLen = maxLen;
+
+    // Trigger max length changed event
+    WindowEventArgs args(this);
+    onMaximumTextLengthChanged(args);
+
+    // trim string
+    const auto& text = getText();
+    if (text.size() > d_maxTextLen)
+    {
+        String newText = text;
+        newText.resize(d_maxTextLen);
+        setText(newText);
+        d_undoHandler->clearUndoHistory();
+    }
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::setTextFormatting(HorizontalTextFormatting format)
+{
+    if (d_textFormatting == format)
+        return;
+
+    bool wordWrap = false;
+    d_textFormatting = decomposeHorizontalFormatting(format, wordWrap);
+
+    d_renderedText.setHorizontalFormatting(d_textFormatting);
+    invalidate();
 }
 
 //----------------------------------------------------------------------------//
@@ -218,6 +251,27 @@ void EditboxBase::eraseSelectedText(bool modify_text)
 }
 
 //----------------------------------------------------------------------------//
+RenderedText& EditboxBase::getRenderedText() const
+{
+    if (d_renderedTextDirty)
+    {
+        if (d_textMaskingEnabled)
+        {
+            const String maskedText(getText().size(), static_cast<char32_t>(d_textMaskingCodepoint));
+            d_renderedText.renderText(maskedText, nullptr, getActualFont(), d_defaultParagraphDirection);
+        }
+        else
+        {
+            d_renderedText.renderText(getText(), nullptr, getActualFont(), d_defaultParagraphDirection);
+        }
+
+        d_renderedTextDirty = false;
+    }
+
+    return d_renderedText;
+}
+
+//----------------------------------------------------------------------------//
 bool EditboxBase::performCopy(Clipboard& clipboard)
 {
     if (!getSelectionLength())
@@ -300,6 +354,41 @@ void EditboxBase::onCaptureLost(WindowEventArgs& e)
 {
     d_dragging = false;
     Window::onCaptureLost(e);
+    ++e.handled;
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::onFontChanged(WindowEventArgs& e)
+{
+    Window::onFontChanged(e);
+
+    if (d_renderedText.getDefaultFont() != getActualFont())
+    {
+        d_renderedTextDirty = true;
+        invalidate();
+    }
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::onTextChanged(WindowEventArgs& e)
+{
+    Window::onTextChanged(e);
+
+    clearSelection();
+
+    d_renderedTextDirty = true;
+    invalidate();
+
+    // Make sure the caret is within the text
+    const auto textLen = getText().size();
+    if (d_caretPos > textLen)
+        setCaretIndex(textLen);
+
+    FIXME; // text is not updated here, but we already want to make caret visible and to update scrollbars!
+    //???renderText right now?
+    performChildLayout(false, false);
+    ensureCaretIsVisible();
+
     ++e.handled;
 }
 
@@ -564,6 +653,21 @@ bool EditboxBase::handleBasicSemanticValue(SemanticEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+bool EditboxBase::handleFontRenderSizeChange(const Font& font)
+{
+    const bool res = Window::handleFontRenderSizeChange(font);
+
+    if (getActualFont() == &font)
+    {
+        d_renderedTextDirty = true;
+        invalidate();
+        return true;
+    }
+
+    return res;
+}
+
+//----------------------------------------------------------------------------//
 void EditboxBase::addEditboxBaseProperties()
 {
     const String& propertyOrigin = WidgetTypeName;
@@ -572,34 +676,28 @@ void EditboxBase::addEditboxBaseProperties()
         "ReadOnly", "Property to get/set the read-only setting for the Editbox.  Value is either \"true\" or \"false\".",
         &EditboxBase::setReadOnly, &EditboxBase::isReadOnly, false
     );
-
     CEGUI_DEFINE_PROPERTY(EditboxBase, bool,
         "TextMaskingEnabled", "Property to get/set the mask text setting for the Editbox.  Value is either \"true\" or \"false\".",
         &EditboxBase::setTextMaskingEnabled, &EditboxBase::isTextMaskingEnabled, false
     );
-
     CEGUI_DEFINE_PROPERTY(EditboxBase, std::uint32_t,
         "TextMaskingCodepoint", "Property to get/set the UTF-32 codepoint value used for masking text. "
         "Value is 32 bit unsigned integer representing an UTF-32 codepoint.",
         &EditboxBase::setTextMaskingCodepoint, &EditboxBase::getTextMaskingCodepoint,
         42
     );
-
     CEGUI_DEFINE_PROPERTY(EditboxBase, size_t,
         "CaretIndex", "Property to get/set the current caret index.  Value is \"[uint]\".",
         &EditboxBase::setCaretIndex, &EditboxBase::getCaretIndex, 0
     );
-
     CEGUI_DEFINE_PROPERTY(EditboxBase, size_t,
         "SelectionStart", "Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".",
         &EditboxBase::setSelectionStart, &EditboxBase::getSelectionStart, 0
     );
-
     CEGUI_DEFINE_PROPERTY(EditboxBase, size_t,
         "SelectionLength", "Property to get/set the length of the selection (as a count of the number of code points selected).  Value is \"[uint]\".",
         &EditboxBase::setSelectionLength, &EditboxBase::getSelectionLength, 0
     );
-
     CEGUI_DEFINE_PROPERTY(EditboxBase, size_t,
         "MaxTextLength", "Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".",
         &EditboxBase::setMaxTextLength, &EditboxBase::getMaxTextLength, String().max_size()
@@ -610,7 +708,11 @@ void EditboxBase::addEditboxBaseProperties()
         "Value is the image to use.",
         &EditboxBase::setReadOnlyCursorImage, &EditboxBase::getReadOnlyCursorImage, nullptr
     );
-
+    CEGUI_DEFINE_PROPERTY(EditboxBase, HorizontalTextFormatting,
+        "TextFormatting", "Property to get/set the horizontal formatting mode. "
+        "Value is one of HorizontalTextFormatting enum",
+        &EditboxBase::setTextFormatting, &EditboxBase::getTextFormatting,
+        HorizontalTextFormatting::LeftAligned);
     CEGUI_DEFINE_PROPERTY(EditboxBase, DefaultParagraphDirection,
         "DefaultParagraphDirection", "Property to get/set the default paragraph direction. "
         "This is only in effect if raqm is linked and activated. It sets the default order of the "

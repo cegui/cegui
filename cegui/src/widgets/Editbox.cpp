@@ -39,7 +39,7 @@ const String Editbox::EventNamespace("Editbox");
 const String Editbox::WidgetTypeName("CEGUI/Editbox");
 const String Editbox::EventValidationStringChanged("ValidationStringChanged");
 const String Editbox::EventTextValidityChanged("TextValidityChanged");
-const String Editbox::ReadOnlyMouseCursorImagePropertyName("ReadOnlyMouseCursorImage");
+const String Editbox::EventTextAccepted("TextAccepted");
 
 //----------------------------------------------------------------------------//
 EditboxWindowRenderer::EditboxWindowRenderer(const String& name) :
@@ -48,14 +48,12 @@ EditboxWindowRenderer::EditboxWindowRenderer(const String& name) :
 }
 
 //----------------------------------------------------------------------------//
-Editbox::Editbox(const String& type, const String& name) :
-    EditboxBase(type, name),
-    d_readOnlyMouseCursorImage(nullptr),
-    d_validator(System::getSingleton().createRegexMatcher()),
-    d_weOwnValidator(true),
-    d_validatorMatchState(RegexMatchState::Valid),
-    d_previousValidityChangeResponse(true)
+Editbox::Editbox(const String& type, const String& name)
+    : EditboxBase(type, name)
+    , d_validator(System::getSingleton().createRegexMatcher())
 {
+    d_renderedText.setWordWrappingEnabled(false);
+
     addEditboxProperties();
 
     // Default to accepting all characters
@@ -70,45 +68,15 @@ Editbox::~Editbox()
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::setValidationString(const String& validationString)
+void Editbox::setMaxTextLength(size_t maxLen)
 {
-    if (validationString == d_validationString)
-        return;
+    const bool trim = (getText().size() > d_maxTextLen);
 
-    if (d_validator)
-        d_validator->setRegexString(validationString);
+    EditboxBase::setMaxTextLength(maxLen);
 
-    d_validationString = validationString;
-
-    WindowEventArgs args(this);
-    onValidationStringChanged(args);
-
-    handleValidityChangeForString(getText());
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::setMaxTextLength(size_t max_len)
-{
-    if (d_maxTextLen == max_len)
-        return;
-
-    d_maxTextLen = max_len;
-
-    // Trigger max length changed event
-    WindowEventArgs args(this);
-    onMaximumTextLengthChanged(args);
-
-    // trim string
-    const auto& text = getText();
-    if (text.length() > d_maxTextLen)
-    {
-        String newText = text;
-        newText.resize(d_maxTextLen);
-        setText(newText);
-        d_undoHandler->clearUndoHistory();
-
+    //???FIXME TEXT: move validation to EditboxBase and for multiline override to return true?
+    if (trim)
         handleValidityChangeForString(getText());
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -157,6 +125,45 @@ void Editbox::setValidator(RegexMatcher* validator)
         d_validator = System::getSingleton().createRegexMatcher();
         d_weOwnValidator = true;
     }
+}
+
+//----------------------------------------------------------------------------//
+void Editbox::setValidationString(const String& validationString)
+{
+    if (validationString == d_validationString)
+        return;
+
+    if (d_validator)
+        d_validator->setRegexString(validationString);
+
+    d_validationString = validationString;
+
+    WindowEventArgs args(this);
+    onValidationStringChanged(args);
+
+    handleValidityChangeForString(getText());
+}
+
+//----------------------------------------------------------------------------//
+void Editbox::setTextFormatting(HorizontalTextFormatting format)
+{
+    if (format != HorizontalTextFormatting::LeftAligned &&
+        format != HorizontalTextFormatting::RightAligned &&
+        format != HorizontalTextFormatting::CentreAligned)
+    {
+        throw InvalidRequestException(
+            "currently only HorizontalTextFormatting::LeftAligned, "
+            "HorizontalTextFormatting::RightAligned and "
+            "HorizontalTextFormatting::CentreAligned are accepted for Editbox formatting");
+    }
+
+    EditboxBase::setTextFormatting(format);
+}
+
+//----------------------------------------------------------------------------//
+void Editbox::ensureCaretIsVisible()
+{
+    //!!!TODO TEXT: IMPLEMENT! Delegate to the renderer because it knows the size of the caret itself?
 }
 
 //----------------------------------------------------------------------------//
@@ -429,23 +436,6 @@ void Editbox::onTextValidityChanged(RegexMatchStateEventArgs& e)
 void Editbox::onTextAcceptedEvent(WindowEventArgs& e)
 {
     fireEvent(EventTextAccepted, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::onTextChanged(WindowEventArgs& e)
-{
-    // base class processing
-    EditboxBase::onTextChanged(e);
-
-    // clear selection
-    clearSelection();
-
-    // make sure caret is within the text
-    const auto textLen = getText().length();
-    if (d_caretPos > textLen)
-        setCaretIndex(textLen);
-
-    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
