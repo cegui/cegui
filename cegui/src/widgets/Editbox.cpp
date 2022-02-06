@@ -91,9 +91,7 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
 
     if (e.d_semanticValue == SemanticValue::SelectAll && e.d_payload.source == CursorInputSource::Left)
     {
-        d_dragAnchorIdx = 0;
-        setCaretIndex(getText().size());
-        setSelection(d_dragAnchorIdx, d_caretPos);
+        handleSelectAll();
         ++e.handled;
     }
     else if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == CursorInputSource::Left)
@@ -118,61 +116,42 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
         ++e.handled;
     }
 
-    if (!e.handled && hasInputFocus())
+    if (e.handled || !hasInputFocus())
+        return;
+
+    if (isReadOnly())
     {
-        if (isReadOnly())
+        Window::onSemanticInputEvent(e);
+        return;
+    }
+
+    if (!getSelectionLength() && isSelectionSemanticValue(e.d_semanticValue))
+        d_dragAnchorIdx = d_caretPos;
+
+    // Check if the semantic value to be handled is of a general type and can thus be
+    // handled via common EditboxBase handlers
+    if (handleBasicSemanticValue(e))
+    {
+        ++e.handled;
+        return;
+    }
+
+    // If the semantic value was not handled, check for specific values
+    switch (e.d_semanticValue)
+    {
+        case SemanticValue::Confirm:
         {
+            WindowEventArgs args(this);
+            onTextAcceptedEvent(args);
+            break;
+        }
+
+        default:
             Window::onSemanticInputEvent(e);
             return;
-        }
-
-        if (!getSelectionLength() && isSelectionSemanticValue(e.d_semanticValue))
-            d_dragAnchorIdx = d_caretPos;
-
-        // Check if the semantic value to be handled is of a general type and can thus be
-        // handled via common EditboxBase handlers
-        bool isSemanticValueHandled = handleBasicSemanticValue(e);
-
-        // If the semantic value was not handled, check for specific values
-        if (!isSemanticValueHandled)
-        {
-            // We assume it will be handled now, if not it will be set to false in default-case
-            isSemanticValueHandled = true;
-
-            switch (e.d_semanticValue)
-            {
-                case SemanticValue::Confirm:
-                {
-                    WindowEventArgs args(this);
-                    onTextAcceptedEvent(args);
-                    break;
-                }
-
-                case SemanticValue::GoToStartOfLine:
-                    handleHome(false);
-                    break;
-
-                case SemanticValue::GoToEndOfLine:
-                    handleEnd(false);
-                    break;
-
-                case SemanticValue::SelectToStartOfLine:
-                    handleHome(true);
-                    break;
-
-                case SemanticValue::SelectToEndOfLine:
-                    handleEnd(true);
-                    break;
-
-                default:
-                    Window::onSemanticInputEvent(e);
-                    isSemanticValueHandled = false;
-            }
-        }
-
-        if (isSemanticValueHandled)
-            ++e.handled;
     }
+
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//

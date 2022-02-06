@@ -179,24 +179,6 @@ protected:
 
     /*!
     \brief
-        Processing to move caret to the start of the current line.
-
-    \param select
-        when true, the text until the start of the line be also selected
-    */
-    void handleLineHome(bool select);
-
-    /*!
-    \brief
-        Processing to move caret to the end of the current line
-
-    \param select
-        when true, the text until the end of the line will be also selected
-    */
-    void handleLineEnd(bool select);
-
-    /*!
-    \brief
         Processing to move caret up a line.
 
     \param select
@@ -212,12 +194,6 @@ protected:
         when true, a line down will be also selected
     */
     void handleLineDown(bool select);
-
-	/*!
-	\brief
-		Processing to insert a new line / paragraph.
-	*/
-    void handleNewLine();
 
     /*!
     \brief
@@ -274,7 +250,6 @@ protected:
 private:
 
     void addMultiLineEditboxProperties();
-    void handleSelectAllText(SemanticEventArgs& e);
 };
 
 }

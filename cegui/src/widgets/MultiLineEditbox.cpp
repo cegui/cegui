@@ -230,56 +230,6 @@ size_t MultiLineEditbox::getLineNumberFromIndex(size_t index) const
 }
 
 
-void MultiLineEditbox::handleLineHome(bool select)
-{
-	size_t line = getLineNumberFromIndex(d_caretPos);
-
-	if (line < d_lines.size())
-	{
-		size_t lineStartIdx = d_lines[line].d_startIdx;
-
-		if (d_caretPos > lineStartIdx)
-		{
-			setCaretIndex(lineStartIdx);
-		}
-
-        if (select)
-		{
-			setSelection(d_caretPos, d_dragAnchorIdx);
-		}
-		else
-		{
-			clearSelection();
-		}
-	}
-}
-
-
-void MultiLineEditbox::handleLineEnd(bool select)
-{
-	size_t line = getLineNumberFromIndex(d_caretPos);
-
-	if (line < d_lines.size())
-	{
-		size_t lineEndIdx = d_lines[line].d_startIdx + d_lines[line].d_length - 1;
-
-		if (d_caretPos < lineEndIdx)
-		{
-			setCaretIndex(lineEndIdx);
-		}
-
-        if (select)
-		{
-			setSelection(d_caretPos, d_dragAnchorIdx);
-		}
-		else
-		{
-			clearSelection();
-		}
-	}
-}
-
-
 void MultiLineEditbox::handleLineUp(bool select)
 {
 	size_t caretLine = getLineNumberFromIndex(d_caretPos);
@@ -329,33 +279,6 @@ void MultiLineEditbox::handleLineDown(bool select)
 	{
 		clearSelection();
 	}
-}
-
-
-void MultiLineEditbox::handleNewLine()
-{
-    if (!isReadOnly())
-    {
-        // erase selected text
-        String newText(getText());
-        newText.erase(getSelectionStart(), getSelectionLength());
-        setCaretIndex(d_selectionStart);
-        clearSelection();
-
-        // if there is room
-        if (newText.length() - 1 < d_maxTextLen)
-        {
-            UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::Insert;
-            undo.d_startIdx = getCaretIndex();
-            undo.d_text = "\x0a";
-            d_undoHandler->addUndoHistory(undo);
-            newText.insert(getCaretIndex(), 1, static_cast<String::value_type>(0x0a));
-            d_caretPos++;
-        }
-
-        setText(newText);
-    }
 }
 
 
@@ -530,15 +453,15 @@ void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
 
     if (e.d_semanticValue == SemanticValue::SelectAll && e.d_payload.source == CursorInputSource::Left)
     {
-        handleSelectAllText(e);
-
+        handleSelectAll();
         ++e.handled;
     }
     else if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == CursorInputSource::Left)
     {
-        d_dragAnchorIdx = TextUtils::getWordStartIndex(getText(),
-            (d_caretPos == getText().length()) ? d_caretPos : d_caretPos + 1);
-        d_caretPos      = TextUtils::getNextWordStartIndex(getText(), d_caretPos);
+        const auto& text = getText();
+        d_dragAnchorIdx = TextUtils::getWordStartIndex(text,
+            (d_caretPos == text.size()) ? d_caretPos : d_caretPos + 1);
+        d_caretPos = TextUtils::getNextWordStartIndex(text, d_caretPos);
 
         // perform actual selection operation.
         setSelection(d_dragAnchorIdx, d_caretPos);
@@ -546,121 +469,63 @@ void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
         ++e.handled;
     }
 
-    if (e.handled == 0 && hasInputFocus())
-    {
-        if (isReadOnly())
-        {
-            Window::onSemanticInputEvent(e);
-            return;
-        }
-
-        if (getSelectionLength() == 0 && isSelectionSemanticValue(e.d_semanticValue))
-            d_dragAnchorIdx = d_caretPos;
-
-        // Check if the semantic value to be handled is of a general type and can thus be
-        // handled via common EditboxBase handlers
-        bool isSemanticValueHandled = handleBasicSemanticValue(e);
-
-        // If the semantic value was not handled, check for specific values
-        if (!isSemanticValueHandled)
-        {
-            // We assume it will be handled now, if not it will be set to false in default-case
-            isSemanticValueHandled = true;
-
-            switch (e.d_semanticValue)
-            {
-
-            case SemanticValue::Confirm:
-                handleNewLine();
-                break;
-
-            case SemanticValue::GoUp:
-                handleLineUp(false);
-                break;
-
-            case SemanticValue::SelectUp:
-                handleLineUp(true);
-                break;
-
-            case SemanticValue::GoDown:
-                handleLineDown(false);
-                break;
-
-            case SemanticValue::SelectDown:
-                handleLineDown(true);
-                break;
-
-            case SemanticValue::GoToStartOfLine:
-                handleLineHome(false);
-                break;
-
-            case SemanticValue::SelectToStartOfLine:
-                handleLineHome(true);
-                break;
-
-            case SemanticValue::GoToEndOfLine:
-                handleLineEnd(false);
-                break;
-
-            case SemanticValue::SelectToEndOfLine:
-                handleLineEnd(true);
-                break;
-
-            case SemanticValue::GoToPreviousPage:
-                handlePageUp(false);
-                break;
-
-            case SemanticValue::GoToNextPage:
-                handlePageDown(false);
-                break;
-
-            default:
-                Window::onSemanticInputEvent(e);
-                isSemanticValueHandled = false;
-            }
-        }
-
-        if (isSemanticValueHandled)
-            ++e.handled;
-    }
-}
-
-
-void MultiLineEditbox::handleSelectAllText(SemanticEventArgs& e)
-{
-    size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    if (d_lines.size() <= caretLine)
+    if (e.handled || !hasInputFocus())
         return;
 
-    size_t lineStart = d_lines[caretLine].d_startIdx;
-
-    // find end of last paragraph
-    String::size_type paraStart = getText().find_last_of("\n", lineStart);
-
-    // if no previous paragraph, selection will start at the beginning.
-    if (paraStart == String::npos)
-        paraStart = 0;
-    // find end of this paragraph
-    String::size_type paraEnd = getText().find_first_of("\n", lineStart);
-
-    // if paragraph has no end, which actually should never happen, fix the
-    // erroneous situation and select up to end at end of text.
-    if (paraEnd == String::npos)
+    if (isReadOnly())
     {
-        String newText = getText();
-        newText.append(1, '\n');
-        setText(newText);
-
-        paraEnd = getText().length() - 1;
+        Window::onSemanticInputEvent(e);
+        return;
     }
 
-    // set up selection using new values.
-    d_dragAnchorIdx = paraStart;
-    setCaretIndex(paraEnd);
-    setSelection(d_dragAnchorIdx, d_caretPos);
+    if (!getSelectionLength() && isSelectionSemanticValue(e.d_semanticValue))
+        d_dragAnchorIdx = d_caretPos;
+
+    // Check if the semantic value to be handled is of a general type and can thus be
+    // handled via common EditboxBase handlers
+    if (handleBasicSemanticValue(e))
+    {
+        ++e.handled;
+        return;
+    }
+
+    // If the semantic value was not handled, check for specific values
+    switch (e.d_semanticValue)
+    {
+        case SemanticValue::Confirm:
+            insertString("\x0a");
+            break;
+
+        case SemanticValue::GoUp:
+            handleLineUp(false);
+            break;
+
+        case SemanticValue::SelectUp:
+            handleLineUp(true);
+            break;
+
+        case SemanticValue::GoDown:
+            handleLineDown(false);
+            break;
+
+        case SemanticValue::SelectDown:
+            handleLineDown(true);
+            break;
+
+        case SemanticValue::GoToPreviousPage:
+            handlePageUp(false);
+            break;
+
+        case SemanticValue::GoToNextPage:
+            handlePageDown(false);
+            break;
+
+        default:
+            Window::onSemanticInputEvent(e);
+            return;
+    }
+
     ++e.handled;
 }
-
-
 
 }

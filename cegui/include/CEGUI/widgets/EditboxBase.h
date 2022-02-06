@@ -328,7 +328,8 @@ public:
     */
     virtual void setMaxTextLength(size_t maxLen);
 
-    RenderedText& getRenderedText() const;
+    RenderedText& getRenderedText();
+    const RenderedText& getRenderedText() const { return d_renderedText; }
 
     /*!
     \brief
@@ -452,6 +453,8 @@ public:
 
 protected:
 
+    void renderText();
+
     virtual bool validateWindowRenderer(const WindowRenderer* renderer) const override = 0;
     virtual bool handleFontRenderSizeChange(const Font& font) override;
 
@@ -469,6 +472,11 @@ protected:
     */
     virtual size_t getTextIndexFromPosition(const glm::vec2& pt) const = 0;
 
+    //! Clear the currently defined selection (just the region, not the text).
+    void clearSelection();
+
+    bool insertString(String&& text);
+
 	/*!
 	\brief
 		Processing for Backspace key
@@ -480,9 +488,6 @@ protected:
 		Processing for Delete key
 	*/
     void handleDelete();
-
-    //! Clear the currently defined selection (just the region, not the text).
-    void clearSelection();
 
     /*!
     \brief
@@ -527,7 +532,7 @@ protected:
     \param select
         When true, the text until the beginning of the entire text will be also selected
     */
-    void handleHome(bool select);
+    void handleHome(bool select, bool lineOnly);
 
     /*!
     \brief
@@ -536,7 +541,7 @@ protected:
     \param select
         When true, the text until the end of the entire text will be also selected
     */
-    void handleEnd(bool select);
+    void handleEnd(bool select, bool lineOnly);
 
     /*!
     \brief
@@ -646,7 +651,7 @@ protected:
     \return
         True if a Semantic Value was of a general type and thus handled, False if not.
     */
-    bool handleBasicSemanticValue(SemanticEventArgs& e);
+    bool handleBasicSemanticValue(const SemanticEventArgs& e);
 
     // Overridden event handlers
     void onCursorPressHold(CursorInputEventArgs& e) override;
@@ -660,7 +665,7 @@ protected:
     void onCharacter(TextEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override = 0;
 
-    mutable RenderedText d_renderedText;
+    RenderedText d_renderedText;
 
     //! The read only mouse cursor image.
     const Image* d_readOnlyCursorImage = nullptr;
@@ -700,7 +705,7 @@ protected:
     //! true when a selection is being dragged.
     bool d_dragging = false;
 
-    mutable bool d_renderedTextDirty = true;
+    bool d_renderedTextDirty = true;
 
     //! specifies whether validator was created by us, or supplied by user.
     bool d_weOwnValidator = true;

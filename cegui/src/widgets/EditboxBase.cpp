@@ -84,6 +84,31 @@ EditboxBase::~EditboxBase()
 }
 
 //----------------------------------------------------------------------------//
+RenderedText& EditboxBase::getRenderedText()
+{
+    if (d_renderedTextDirty)
+        renderText();
+
+    return d_renderedText;
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::renderText()
+{
+    if (d_textMaskingEnabled)
+    {
+        const String maskedText(getText().size(), static_cast<char32_t>(d_textMaskingCodepoint));
+        d_renderedText.renderText(maskedText, nullptr, getActualFont(), d_defaultParagraphDirection);
+    }
+    else
+    {
+        d_renderedText.renderText(getText(), nullptr, getActualFont(), d_defaultParagraphDirection);
+    }
+
+    d_renderedTextDirty = false;
+}
+
+//----------------------------------------------------------------------------//
 void EditboxBase::setReadOnly(bool setting)
 {
     if (d_readOnly == setting)
@@ -302,24 +327,52 @@ void EditboxBase::clearSelection()
 }
 
 //----------------------------------------------------------------------------//
-RenderedText& EditboxBase::getRenderedText() const
+bool EditboxBase::insertString(String&& text)
 {
-    if (d_renderedTextDirty)
-    {
-        if (d_textMaskingEnabled)
-        {
-            const String maskedText(getText().size(), static_cast<char32_t>(d_textMaskingCodepoint));
-            d_renderedText.renderText(maskedText, nullptr, getActualFont(), d_defaultParagraphDirection);
-        }
-        else
-        {
-            d_renderedText.renderText(getText(), nullptr, getActualFont(), d_defaultParagraphDirection);
-        }
+    //!!!TODO TEXT: for the single line editbox need to remove all \n and \r!
 
-        d_renderedTextDirty = false;
+    if (isReadOnly() || text.empty())
+        return false;
+
+    String tmp = getText();
+    if (tmp.size() + text.size() - getSelectionLength() > d_maxTextLen)
+    {
+        WindowEventArgs args(this);
+        onEditboxFullEvent(args);
+        return false;
     }
 
-    return d_renderedText;
+    UndoHandler::UndoAction undoDeleteSelection;
+    const bool hasSelection = !!getSelectionLength();
+    if (hasSelection)
+    {
+        undoDeleteSelection.d_type = UndoHandler::UndoActionType::Delete;
+        undoDeleteSelection.d_startIdx = getSelectionStart();
+        undoDeleteSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
+
+        tmp.erase(getSelectionStart(), getSelectionLength());
+    }
+
+    tmp.insert(getSelectionStart(), text);
+
+    if (!handleValidityChangeForString(tmp))
+        return false;
+
+    UndoHandler::UndoAction undoInsert;
+    undoInsert.d_type = UndoHandler::UndoActionType::Insert;
+    undoInsert.d_startIdx = getCaretIndex();
+    undoInsert.d_text = std::move(text);
+
+    setCaretIndex(d_selectionStart + undoInsert.d_text.size());
+    clearSelection();
+
+    setText(tmp);
+
+    d_undoHandler->addUndoHistory(undoInsert);
+    if (hasSelection)
+        d_undoHandler->addUndoHistory(undoDeleteSelection);
+
+    return true;
 }
 
 //----------------------------------------------------------------------------//
@@ -348,56 +401,7 @@ bool EditboxBase::performCut(Clipboard& clipboard)
 //----------------------------------------------------------------------------//
 bool EditboxBase::performPaste(Clipboard& clipboard)
 {
-    if (isReadOnly())
-        return false;
-
-    const String clipboardText = clipboard.getText();
-    if (clipboardText.empty())
-        return false;
-
-    String tmp = getText();
-    if (tmp.size() + clipboardText.size() - getSelectionLength() > d_maxTextLen)
-    {
-        WindowEventArgs args(this);
-        onEditboxFullEvent(args);
-        return false;
-    }
-
-    UndoHandler::UndoAction undoDeleteSelection;
-    const bool hasSelection = !!getSelectionLength();
-    if (hasSelection)
-    {
-        undoDeleteSelection.d_type = UndoHandler::UndoActionType::Delete;
-        undoDeleteSelection.d_startIdx = getSelectionStart();
-        undoDeleteSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
-
-        tmp.erase(getSelectionStart(), getSelectionLength());
-    }
-
-    tmp.insert(getSelectionStart(), clipboardText);
-
-    if (!handleValidityChangeForString(tmp))
-        return false;
-
-    UndoHandler::UndoAction undoPaste;
-    undoPaste.d_type = UndoHandler::UndoActionType::Insert;
-    undoPaste.d_startIdx = getCaretIndex();
-    undoPaste.d_text = clipboardText;
-
-    setCaretIndex(d_selectionStart);
-    clearSelection();
-
-    // advance caret (done first so we can "do stuff" in event handlers!)
-    d_caretPos += clipboardText.size();
-
-    // set text to the newly modified string
-    setText(tmp);
-
-    d_undoHandler->addUndoHistory(undoPaste);
-    if (hasSelection)
-        d_undoHandler->addUndoHistory(undoDeleteSelection);
-
-    return true;
+    return insertString(clipboard.getText());
 }
 
 //----------------------------------------------------------------------------//
@@ -482,17 +486,19 @@ void EditboxBase::onTextChanged(WindowEventArgs& e)
 
     clearSelection();
 
-    d_renderedTextDirty = true;
-    invalidate();
-
     // Make sure the caret is within the text
     const auto textLen = getText().size();
     if (d_caretPos > textLen)
         setCaretIndex(textLen);
 
-    FIXME; // text is not updated here, but we already want to make caret visible and to update scrollbars!
-    //???renderText right now?
-    performChildLayout(false, false);
+    //!!!FIXME TEXT: ensureCaretIsVisible will call renderText anyway! N need to repeat it here!
+    // Mark it dirty instead!
+
+    // Instead of marking the rendered text dirty we update it immediately.
+    // This is required to setup scrollbars and to ensure that the caret is visible.
+    invalidate();
+    renderText();
+    performChildLayout(false, false); //!!!this is only for scrollbars now, need for single line editbox?
     ensureCaretIsVisible();
 
     ++e.handled;
@@ -508,62 +514,11 @@ void EditboxBase::onCharacter(TextEventArgs& e)
 
     fireEvent(EventCharacterKey, e, Window::EventNamespace);
 
-    // only need to take notice if we have focus
-    if (e.handled || isReadOnly() || !hasInputFocus() ||
-        !getActualFont()->isCodepointAvailable(e.d_character))
-    {
+    if (e.handled || !hasInputFocus() || !getActualFont()->isCodepointAvailable(e.d_character))
         return;
-    }
 
-    String charStr(1, e.d_character);
-
-    String tmp(getText());
-    if (tmp.size() + charStr.size() - getSelectionLength() > d_maxTextLen)
-    {
-        WindowEventArgs args(this);
-        onEditboxFullEvent(args);
-        return;
-    }
-
-    UndoHandler::UndoAction undoSelection;
-    const bool hasSelection = !!getSelectionLength();
-    if (hasSelection)
-    {
-        undoSelection.d_type = UndoHandler::UndoActionType::Delete;
-        undoSelection.d_startIdx = getSelectionStart();
-        undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
-
-        tmp.erase(getSelectionStart(), getSelectionLength());
-    }
-
-    UndoHandler::UndoAction undo;
-    undo.d_type = UndoHandler::UndoActionType::Insert;
-    undo.d_startIdx = getSelectionStart();
-    undo.d_text = charStr;
-
-    tmp.insert(getSelectionStart(), charStr);
-
-    if (handleValidityChangeForString(tmp))
-    {
-        setCaretIndex(d_selectionStart);
-        clearSelection();
-
-        // advance caret (done first so we can "do stuff" in event handlers!)
-        // In case multiple code point elements are included we need
-        // to jump past all of them
-        d_caretPos += charStr.size();
-
-        // set text to the newly modified string
-        setText(tmp);
-
-        // char was accepted into the Editbox - mark event as handled.
+    if (insertString(String(1, e.d_character)))
         ++e.handled;
-        d_undoHandler->addUndoHistory(undo);
-        if (hasSelection)
-            d_undoHandler->addUndoHistory(undoSelection);
-    }
-
-    // event was (possibly) not handled
 }
 
 //----------------------------------------------------------------------------//
@@ -635,7 +590,7 @@ void EditboxBase::handleWordRight(bool select)
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::handleHome(bool select)
+void EditboxBase::handleHome(bool select, bool lineOnly)
 {
     if (d_caretPos > 0)
         setCaretIndex(0);
@@ -644,10 +599,26 @@ void EditboxBase::handleHome(bool select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
+
+    //!!!TODO TEXT!
+    /*
+    size_t line = getLineNumberFromIndex(d_caretPos);
+    if (line < d_lines.size())
+    {
+        size_t lineStartIdx = d_lines[line].d_startIdx;
+        if (d_caretPos > lineStartIdx)
+            setCaretIndex(lineStartIdx);
+
+        if (select)
+            setSelection(d_caretPos, d_dragAnchorIdx);
+        else
+            clearSelection();
+    }
+    */
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::handleEnd(bool select)
+void EditboxBase::handleEnd(bool select, bool lineOnly)
 {
     const auto textLen = getText().size();
     if (d_caretPos < textLen)
@@ -657,14 +628,56 @@ void EditboxBase::handleEnd(bool select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
+
+    /*
+    size_t line = getLineNumberFromIndex(d_caretPos);
+    if (line < d_lines.size())
+    {
+        size_t lineEndIdx = d_lines[line].d_startIdx + d_lines[line].d_length - 1;
+        if (d_caretPos < lineEndIdx)
+            setCaretIndex(lineEndIdx);
+
+        if (select)
+            setSelection(d_caretPos, d_dragAnchorIdx);
+        else
+            clearSelection();
+    }
+    */
 }
 
 //----------------------------------------------------------------------------//
 void EditboxBase::handleSelectAll()
 {
+    d_dragAnchorIdx = 0;
     const auto textLen = getText().size();
     setSelection(0, textLen);
     setCaretIndex(textLen);
+
+    //!!!TODO TEXT:
+    // - detect current paragraph from the caret
+    // - return min-max range of source indices from that paragraph
+    // - select this range
+    // - for the single line editbox this implies selecting the whole text
+
+    /*
+    size_t caretLine = getLineNumberFromIndex(d_caretPos);
+    size_t lineStart = d_lines[caretLine].d_startIdx;
+
+    // find end of last paragraph
+    String::size_type paraStart = getText().find_last_of("\n", lineStart);
+    if (paraStart == String::npos)
+        paraStart = 0;
+
+    // find end of this paragraph
+    String::size_type paraEnd = getText().find_first_of("\n", lineStart);
+    if (paraEnd == String::npos)
+        paraEnd = getText().length();
+
+    // set up selection using new values.
+    d_dragAnchorIdx = paraStart;
+    setCaretIndex(paraEnd);
+    setSelection(d_dragAnchorIdx, d_caretPos);
+    */
 }
 
 //----------------------------------------------------------------------------//
@@ -877,7 +890,7 @@ bool EditboxBase::performRedo()
 }
 
 //----------------------------------------------------------------------------//
-bool EditboxBase::handleBasicSemanticValue(SemanticEventArgs& e)
+bool EditboxBase::handleBasicSemanticValue(const SemanticEventArgs& e)
 {
     switch (e.d_semanticValue)
     {
@@ -922,19 +935,35 @@ bool EditboxBase::handleBasicSemanticValue(SemanticEventArgs& e)
         break;
 
     case SemanticValue::GoToStartOfDocument:
-        handleHome(false);
+        handleHome(false, false);
         break;
 
     case SemanticValue::GoToEndOfDocument:
-        handleEnd(false);
+        handleEnd(false, false);
         break;
 
     case SemanticValue::SelectToStartOfDocument:
-        handleHome(true);
+        handleHome(true, false);
         break;
 
     case SemanticValue::SelectToEndOfDocument:
-        handleEnd(true);
+        handleEnd(true, false);
+        break;
+
+    case SemanticValue::GoToStartOfLine:
+        handleHome(false, true);
+        break;
+
+    case SemanticValue::GoToEndOfLine:
+        handleEnd(false, true);
+        break;
+
+    case SemanticValue::SelectToStartOfLine:
+        handleHome(true, true);
+        break;
+
+    case SemanticValue::SelectToEndOfLine:
+        handleEnd(true, true);
         break;
 
     case SemanticValue::SelectAll:
