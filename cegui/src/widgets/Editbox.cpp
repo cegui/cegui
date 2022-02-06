@@ -37,8 +37,6 @@ namespace CEGUI
 {
 const String Editbox::EventNamespace("Editbox");
 const String Editbox::WidgetTypeName("CEGUI/Editbox");
-const String Editbox::EventValidationStringChanged("ValidationStringChanged");
-const String Editbox::EventTextValidityChanged("TextValidityChanged");
 const String Editbox::EventTextAccepted("TextAccepted");
 
 //----------------------------------------------------------------------------//
@@ -50,7 +48,6 @@ EditboxWindowRenderer::EditboxWindowRenderer(const String& name) :
 //----------------------------------------------------------------------------//
 Editbox::Editbox(const String& type, const String& name)
     : EditboxBase(type, name)
-    , d_validator(System::getSingleton().createRegexMatcher())
 {
     d_renderedText.setWordWrappingEnabled(false);
 
@@ -58,90 +55,6 @@ Editbox::Editbox(const String& type, const String& name)
 
     // Default to accepting all characters
     setValidationString(".*");
-}
-
-//----------------------------------------------------------------------------//
-Editbox::~Editbox()
-{
-    if (d_weOwnValidator && d_validator)
-        System::getSingleton().destroyRegexMatcher(d_validator);
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::setMaxTextLength(size_t maxLen)
-{
-    const bool trim = (getText().size() > d_maxTextLen);
-
-    EditboxBase::setMaxTextLength(maxLen);
-
-    //???FIXME TEXT: move validation to EditboxBase and for multiline override to return true?
-    if (trim)
-        handleValidityChangeForString(getText());
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::eraseSelectedText(bool modify_text)
-{
-    if (!getSelectionLength())
-        return;
-
-    // setup new caret position and remove selection highlight.
-    setCaretIndex(d_selectionStart);
-    clearSelection();
-
-    // erase the selected characters (if required)
-    if (modify_text)
-    {
-        String newText = getText();
-        UndoHandler::UndoAction undo;
-        undo.d_type = UndoHandler::UndoActionType::Delete;
-        undo.d_startIdx = getSelectionStart();
-        undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
-        d_undoHandler->addUndoHistory(undo);
-
-        newText.erase(getSelectionStart(), getSelectionLength());
-        setText(newText);
-    }
-}
-
-//----------------------------------------------------------------------------//
-RegexMatchState Editbox::getStringMatchState(const String& str) const
-{
-    return d_validator ? d_validator->getMatchStateOfString(str) : RegexMatchState::Valid;
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::setValidator(RegexMatcher* validator)
-{
-    if (d_weOwnValidator && d_validator)
-        System::getSingleton().destroyRegexMatcher(d_validator);
-
-    d_validator = validator;
-
-    if (d_validator)
-        d_weOwnValidator = false;
-    else
-    {
-        d_validator = System::getSingleton().createRegexMatcher();
-        d_weOwnValidator = true;
-    }
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::setValidationString(const String& validationString)
-{
-    if (validationString == d_validationString)
-        return;
-
-    if (d_validator)
-        d_validator->setRegexString(validationString);
-
-    d_validationString = validationString;
-
-    WindowEventArgs args(this);
-    onValidationStringChanged(args);
-
-    handleValidityChangeForString(getText());
 }
 
 //----------------------------------------------------------------------------//
@@ -164,278 +77,6 @@ void Editbox::setTextFormatting(HorizontalTextFormatting format)
 void Editbox::ensureCaretIsVisible()
 {
     //!!!TODO TEXT: IMPLEMENT! Delegate to the renderer because it knows the size of the caret itself?
-}
-
-//----------------------------------------------------------------------------//
-bool Editbox::handleValidityChangeForString(const String& str)
-{
-    const RegexMatchState newState = getStringMatchState(str);
-
-    if (newState == d_validatorMatchState)
-        return d_previousValidityChangeResponse;
-
-    RegexMatchStateEventArgs args(this, newState);
-    onTextValidityChanged(args);
-
-    d_previousValidityChangeResponse = !!args.handled;
-    d_validatorMatchState = newState;
-
-    return d_previousValidityChangeResponse;
-}
-
-//----------------------------------------------------------------------------//
-bool Editbox::performPaste(Clipboard& clipboard)
-{
-    if (isReadOnly())
-        return false;
-
-    const String clipboardText = clipboard.getText();
-    if (clipboardText.empty())
-        return false;
-
-    // backup current text
-    String tmp(getText());
-
-    UndoHandler::UndoAction undoSelection;
-    undoSelection.d_type = UndoHandler::UndoActionType::Delete;
-    undoSelection.d_startIdx = getSelectionStart();
-    undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
-
-    tmp.erase(getSelectionStart(), getSelectionLength());
-
-    // if there is room
-    if (tmp.length() < d_maxTextLen)
-    {
-        UndoHandler::UndoAction undo;
-        undo.d_type = UndoHandler::UndoActionType::Insert;
-        undo.d_startIdx = getCaretIndex();
-        undo.d_text = clipboardText;
-
-        tmp.insert(getSelectionStart(), clipboardText);
-
-        if (handleValidityChangeForString(tmp))
-        {
-            // erase selection using mode that does not modify getText()
-            // (we just want to update state)
-            eraseSelectedText(false);
-
-            // advance caret (done first so we can "do stuff" in event handlers!)
-            d_caretPos += clipboardText.length();
-
-            // set text to the newly modified string
-            setText(tmp);
-            d_undoHandler->addUndoHistory(undo);
-            if (getSelectionLength() > 0)
-                d_undoHandler->addUndoHistory(undoSelection);
-
-            return true;
-        }
-    }
-
-    return false;
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::onCharacter(TextEventArgs& e)
-{
-    // NB: We are not calling the base class handler here because it propagates
-    // inputs back up the window hierarchy, whereas, as a consumer of input
-    // events, we want such propagation to cease with us regardless of whether
-    // we actually handle the event.
-
-    fireEvent(EventCharacterKey, e, Window::EventNamespace);
-
-    // only need to take notice if we have focus
-    if (!e.handled && hasInputFocus() && !isReadOnly() &&
-        getActualFont()->isCodepointAvailable(e.d_character))
-    {
-        // backup current text
-        String tmp(getText());
-
-        UndoHandler::UndoAction undoSelection;
-        undoSelection.d_type = UndoHandler::UndoActionType::Delete;
-        undoSelection.d_startIdx = getSelectionStart();
-        undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
-
-        tmp.erase(getSelectionStart(), getSelectionLength());
-
-        // if there is room
-        if (tmp.length() < d_maxTextLen)
-        {
-            UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::Insert;
-            undo.d_startIdx = getSelectionStart();
-            undo.d_text = e.d_character;
-
-            const auto oldSize = tmp.size();
-            
-            tmp.insert(getSelectionStart(), 1, e.d_character);
-
-            const auto insertedCount = tmp.size() - oldSize;
-
-            if (handleValidityChangeForString(tmp))
-            {
-                // erase selection using mode that does not modify getText()
-                // (we just want to update state)
-                eraseSelectedText(false);
-
-                // advance caret (done first so we can "do stuff" in event
-                // handlers!)
-                // In case multiple code point elements are included we need
-                // to jump past all of them
-                d_caretPos += insertedCount;
-
-                // set text to the newly modified string
-                setText(tmp);
-
-                // char was accepted into the Editbox - mark event as handled.
-                ++e.handled;
-                d_undoHandler->addUndoHistory(undo);
-                if (getSelectionLength() > 0)
-                    d_undoHandler->addUndoHistory(undoSelection);
-            }
-        }
-        else
-        {
-            // Trigger text box full event
-            WindowEventArgs args(this);
-            onEditboxFullEvent(args);
-        }
-
-    }
-
-    // event was (possibly) not handled
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::handleBackspace()
-{
-    if (isReadOnly())
-        return;
-
-    String tmp(getText());
-
-    if (getSelectionLength() != 0)
-    {
-        UndoHandler::UndoAction undoSelection;
-        undoSelection.d_type = UndoHandler::UndoActionType::Delete;
-        undoSelection.d_startIdx = getSelectionStart();
-        undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
-
-        tmp.erase(getSelectionStart(), getSelectionLength());
-
-        if (handleValidityChangeForString(tmp))
-        {
-            // erase selection using mode that does not modify getText()
-            // (we just want to update state)
-            eraseSelectedText(false);
-
-            // set text to the newly modified string
-            setText(tmp);
-            d_undoHandler->addUndoHistory(undoSelection);
-        }
-    }
-    else if (getCaretIndex() > 0)
-    {
-        UndoHandler::UndoAction undo;
-        undo.d_type = UndoHandler::UndoActionType::Delete;
-
-#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
-        size_t deleteStartPos = d_caretPos - 1;
-        size_t deleteLength = 1;
-#else
-        String::codepoint_iterator caretIter(tmp.begin() + d_caretPos,
-                                                tmp.begin(), tmp.end());
-        --caretIter;
-
-        size_t deleteStartPos = caretIter.getCodeUnitIndexFromStart();
-        size_t deleteLength = d_caretPos - deleteStartPos;
-#endif
-
-        undo.d_startIdx = deleteStartPos;
-        undo.d_text = tmp.substr(deleteStartPos, deleteLength);
-
-        tmp.erase(deleteStartPos, deleteLength);
-
-        if (handleValidityChangeForString(tmp))
-        {
-            setCaretIndex(deleteStartPos);
-
-            // set text to the newly modified string
-            setText(tmp);
-            d_undoHandler->addUndoHistory(undo);
-        }
-    }
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::handleDelete()
-{
-    if (isReadOnly())
-        return;
-
-    String tmp(getText());
-
-    if (getSelectionLength() != 0)
-    {
-        UndoHandler::UndoAction undoSelection;
-        undoSelection.d_type = UndoHandler::UndoActionType::Delete;
-        undoSelection.d_startIdx = getSelectionStart();
-        undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
-
-        tmp.erase(getSelectionStart(), getSelectionLength());
-
-        if (handleValidityChangeForString(tmp))
-        {
-            // erase selection using mode that does not modify getText()
-            // (we just want to update state)
-            eraseSelectedText(false);
-
-            // set text to the newly modified string
-            setText(tmp);
-            d_undoHandler->addUndoHistory(undoSelection);
-        }
-    }
-    else if (getCaretIndex() < tmp.length())
-    {
-        UndoHandler::UndoAction undo;
-        undo.d_type = UndoHandler::UndoActionType::Delete;
-        undo.d_startIdx = d_caretPos;
-
-#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
-        size_t eraseLength = 1;
-#else
-        size_t eraseLength = String::getCodePointSize(tmp[d_caretPos]);
-#endif
-
-        undo.d_text = tmp.substr(d_caretPos, eraseLength);
-
-        tmp.erase(d_caretPos, eraseLength);
-
-        if (handleValidityChangeForString(tmp))
-        {
-            setText(tmp);
-            d_undoHandler->addUndoHistory(undo);
-        }
-    }
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::onValidationStringChanged(WindowEventArgs& e)
-{
-    fireEvent(EventValidationStringChanged , e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::onTextValidityChanged(RegexMatchStateEventArgs& e)
-{
-    fireEvent(EventTextValidityChanged, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::onTextAcceptedEvent(WindowEventArgs& e)
-{
-    fireEvent(EventTextAccepted, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -537,6 +178,83 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
         if (isSemanticValueHandled)
             ++e.handled;
     }
+}
+
+//----------------------------------------------------------------------------//
+void Editbox::onCharacter(TextEventArgs& e)
+{
+    // NB: We are not calling the base class handler here because it propagates
+    // inputs back up the window hierarchy, whereas, as a consumer of input
+    // events, we want such propagation to cease with us regardless of whether
+    // we actually handle the event.
+
+    fireEvent(EventCharacterKey, e, Window::EventNamespace);
+
+    // only need to take notice if we have focus
+    if (!e.handled && hasInputFocus() && !isReadOnly() &&
+        getActualFont()->isCodepointAvailable(e.d_character))
+    {
+        // backup current text
+        String tmp(getText());
+
+        UndoHandler::UndoAction undoSelection;
+        undoSelection.d_type = UndoHandler::UndoActionType::Delete;
+        undoSelection.d_startIdx = getSelectionStart();
+        undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
+
+        tmp.erase(getSelectionStart(), getSelectionLength());
+
+        // if there is room
+        if (tmp.length() < d_maxTextLen)
+        {
+            UndoHandler::UndoAction undo;
+            undo.d_type = UndoHandler::UndoActionType::Insert;
+            undo.d_startIdx = getSelectionStart();
+            undo.d_text = e.d_character;
+
+            const auto oldSize = tmp.size();
+            
+            tmp.insert(getSelectionStart(), 1, e.d_character);
+
+            const auto insertedCount = tmp.size() - oldSize;
+
+            if (handleValidityChangeForString(tmp))
+            {
+                setCaretIndex(d_selectionStart);
+                clearSelection();
+
+                // advance caret (done first so we can "do stuff" in event
+                // handlers!)
+                // In case multiple code point elements are included we need
+                // to jump past all of them
+                d_caretPos += insertedCount;
+
+                // set text to the newly modified string
+                setText(tmp);
+
+                // char was accepted into the Editbox - mark event as handled.
+                ++e.handled;
+                d_undoHandler->addUndoHistory(undo);
+                if (getSelectionLength() > 0)
+                    d_undoHandler->addUndoHistory(undoSelection);
+            }
+        }
+        else
+        {
+            // Trigger text box full event
+            WindowEventArgs args(this);
+            onEditboxFullEvent(args);
+        }
+
+    }
+
+    // event was (possibly) not handled
+}
+
+//----------------------------------------------------------------------------//
+void Editbox::onTextAcceptedEvent(WindowEventArgs& e)
+{
+    fireEvent(EventTextAccepted, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//

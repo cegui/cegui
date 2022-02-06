@@ -230,158 +230,6 @@ size_t MultiLineEditbox::getLineNumberFromIndex(size_t index) const
 }
 
 
-void MultiLineEditbox::eraseSelectedText(bool modify_text)
-{
-	if (getSelectionLength() != 0)
-	{
-		// setup new caret position and remove selection highlight.
-		setCaretIndex(getSelectionStart());
-
-		// erase the selected characters (if required)
-		if (modify_text)
-		{
-            String newText = getText();
-            UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::Delete;
-            undo.d_startIdx = getSelectionStart();
-            undo.d_text = newText.substr(getSelectionStart(), getSelectionLength());
-            d_undoHandler->addUndoHistory(undo);
-            newText.erase(getSelectionStart(), getSelectionLength());
-            setText(newText);
-
-			// trigger notification that text has changed.
-			WindowEventArgs args(this);
-			onTextChanged(args);
-		}
-
-		clearSelection();
-	}
-
-}
-
-
-bool MultiLineEditbox::performPaste(Clipboard& clipboard)
-{
-    if (isReadOnly())
-        return false;
-
-    String clipboardText = clipboard.getText();
-
-    if (clipboardText.empty())
-        return false;
-
-    // backup and erase selected text
-    String tmp(getText());
-    tmp.erase(getSelectionStart(), getSelectionLength());
-    eraseSelectedText(false);
-
-    // if there is room
-    if (tmp.length() + clipboardText.length() < d_maxTextLen)
-    {
-        String newText = getText();
-        tmp.insert(getCaretIndex(), clipboardText);
-        UndoHandler::UndoAction undo;
-        undo.d_type = UndoHandler::UndoActionType::Insert;
-        undo.d_startIdx = getCaretIndex();
-        undo.d_text = clipboardText;
-        d_undoHandler->addUndoHistory(undo);
-        newText.insert(getCaretIndex(), clipboardText);
-        setText(newText);
-
-        d_caretPos += clipboardText.length();
-
-        return true;
-    }
-    else
-    {
-        // Trigger text box full event
-        WindowEventArgs args(this);
-        onEditboxFullEvent(args);
-
-        return false;
-    }
-}
-
-
-void MultiLineEditbox::handleBackspace()
-{
-    if (!isReadOnly())
-    {
-        String newText(getText());
-
-        if (getSelectionLength() != 0)
-        {
-            newText.erase(getSelectionStart(), getSelectionLength());
-            // erase selection using mode that does not modify getText()
-            // (we just want to update state)
-            eraseSelectedText(false);
-            setText(newText);
-        }
-        else if (d_caretPos > 0)
-        {
-            UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::Delete;
-
-#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
-            size_t deleteStartPos = d_caretPos - 1;
-            size_t deleteLength = 1;
-#else
-            String::codepoint_iterator caretIter(newText.begin() + d_caretPos,
-                                                 newText.begin(), newText.end());
-            --caretIter;
-            
-            size_t deleteStartPos = caretIter.getCodeUnitIndexFromStart();
-            size_t deleteLength = d_caretPos - deleteStartPos;
-#endif
-
-            undo.d_startIdx = deleteStartPos;
-            undo.d_text = newText.substr(deleteStartPos, deleteLength);
-            d_undoHandler->addUndoHistory(undo);
-            newText.erase(deleteStartPos, deleteLength);
-            setCaretIndex(deleteStartPos);
-            setText(newText);
-        }
-    }
-}
-
-
-void MultiLineEditbox::handleDelete()
-{
-    if (!isReadOnly())
-    {
-        String newText(getText());
-
-        if (getSelectionLength() != 0)
-        {
-            newText.erase(getSelectionStart(), getSelectionLength());
-            // erase selection using mode that does not modify getText()
-            // (we just want to update state)
-            eraseSelectedText(false);
-            setText(newText);
-        }
-        else if (getCaretIndex() < getText().length() - 1)
-        {
-            UndoHandler::UndoAction undo;
-            undo.d_type = UndoHandler::UndoActionType::Delete;
-            undo.d_startIdx = d_caretPos;
-
-#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
-            size_t eraseLength = 1;
-#else
-            size_t eraseLength = String::getCodePointSize(newText[d_caretPos]);
-#endif
-
-            undo.d_text = newText.substr(d_caretPos, eraseLength);
-            d_undoHandler->addUndoHistory(undo);
-            newText.erase(d_caretPos, eraseLength);
-            setText(newText);
-
-            ensureCaretIsVisible();
-        }
-    }
-}
-
-
 void MultiLineEditbox::handleLineHome(bool select)
 {
 	size_t line = getLineNumberFromIndex(d_caretPos);
@@ -491,7 +339,8 @@ void MultiLineEditbox::handleNewLine()
         // erase selected text
         String newText(getText());
         newText.erase(getSelectionStart(), getSelectionLength());
-        eraseSelectedText(false);
+        setCaretIndex(d_selectionStart);
+        clearSelection();
 
         // if there is room
         if (newText.length() - 1 < d_maxTextLen)
@@ -574,7 +423,8 @@ void MultiLineEditbox::onCharacter(TextEventArgs& e)
         // erase selected text
         String newText(getText());
         newText.erase(getSelectionStart(), getSelectionLength());
-        eraseSelectedText(false);
+        setCaretIndex(d_selectionStart);
+        clearSelection();
 
         // if there is room
         if (newText.length() - 1 < d_maxTextLen)

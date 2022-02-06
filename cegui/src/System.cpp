@@ -52,11 +52,6 @@
 #include "CEGUI/widgets/All.h"
 #include "CEGUI/SharedStringStream.h"
 #include "CEGUI/svg/SVGDataManager.h"
-#if defined(CEGUI_HAS_PCRE_REGEX)
-#   include "CEGUI/PCRERegexMatcher.h"
-#elif defined(CEGUI_HAS_STD11_REGEX)
-#   include "CEGUI/StdRegexMatcher.h"
-#endif
 #if defined(__WIN32__) || defined(_WIN32)
 #    include "CEGUI/Win32ClipboardProvider.h"
 #endif
@@ -973,24 +968,6 @@ void System::invalidateAllWindows()
         if (rs != nullptr && rs->isRenderingWindow())
             static_cast<RenderingWindow*>(rs)->invalidateGeometry();
     }
-}
-
-//----------------------------------------------------------------------------//
-RegexMatcher* System::createRegexMatcher() const
-{
-#if defined(CEGUI_HAS_PCRE_REGEX)
-    return new PCRERegexMatcher();
-#elif defined(CEGUI_HAS_STD11_REGEX)
-    return new StdRegexMatcher();
-#else
-    return nullptr;
-#endif
-}
-
-//----------------------------------------------------------------------------//
-void System::destroyRegexMatcher(RegexMatcher* rm) const
-{
-    delete rm;
 }
 
 //----------------------------------------------------------------------------//
