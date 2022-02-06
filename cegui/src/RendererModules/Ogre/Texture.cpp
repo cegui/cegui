@@ -126,10 +126,6 @@ OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
 
     createOgreTexture(Ogre::PFG_RGBA8_UNORM, width, height);
 
-    // schedule texture to be transitioned to the gpu
-    d_texture->_transitionTo( Ogre::GpuResidency::Resident, nullptr );
-    d_texture->_setNextResidencyStatus( Ogre::GpuResidency::Resident );
-
     #if 0
     size_t bytesPerRow = Ogre::PixelFormatGpuUtils::getBytesPerPixel( d_texture->getPixelFormat() ) * width;
     void* data = OGRE_MALLOC_SIMD( bytesPerRow * height, Ogre::MEMCATEGORY_RENDERSYS );
@@ -300,10 +296,6 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
 
     createOgreTexture(ogrePixelFormat, width, height);
 
-    // schedule texture to be transitioned to the gpu
-    d_texture->_transitionTo(Ogre::GpuResidency::Resident, nullptr);
-    d_texture->_setNextResidencyStatus(Ogre::GpuResidency::Resident);
-
     // build a staging texture that we'll use to upload into.
     Ogre::TextureGpuManager *textureMgr = Ogre::Root::getSingletonPtr()->getRenderSystem()->getTextureGpuManager();
     StagingTexture* stagingTexture = textureMgr->getStagingTexture(width, height, 1u, 1u, ogrePixelFormat);
@@ -325,6 +317,10 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
 
     // remove the staging texture and notify that the texture is finished
     textureMgr->removeStagingTexture(stagingTexture);
+
+    #if OGRE_VERSION_MINOR == 2
+    d_texture->notifyDataIsReady();
+    #endif
 #else
     const size_t byte_size = calculateDataSize(buffer_size, pixel_format);
 
@@ -682,6 +678,10 @@ void OgreTexture::createOgreTexture(
     d_texture->setPixelFormat(pixel_format);
     d_texture->setNumMipmaps(1u);
     d_texture->setResolution(width, height);
+
+    // schedule texture to be transitioned to the gpu
+    d_texture->_transitionTo( Ogre::GpuResidency::Resident, nullptr );
+    d_texture->_setNextResidencyStatus( Ogre::GpuResidency::Resident );
 }
 #else
 void OgreTexture::createEmptyOgreTexture(PixelFormat pixel_format)

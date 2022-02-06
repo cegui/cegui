@@ -138,9 +138,13 @@ void OgreRenderTextureTarget::declareRenderSize(const Sizef& sz)
     rttTex->setNumMipmaps(1);
     rttTex->setPixelFormat(Ogre::PFG_RGBA8_UNORM);
 
-    rttTex->_transitionTo(Ogre::GpuResidency::Resident, nullptr);
-    rttTex->_setNextResidencyStatus(Ogre::GpuResidency::Resident);
-    rttTex->notifyDataIsReady();
+    if (rttTex->getNextResidencyStatus() != Ogre::GpuResidency::Resident) {
+        rttTex->_transitionTo(Ogre::GpuResidency::Resident, nullptr);
+        rttTex->_setNextResidencyStatus(Ogre::GpuResidency::Resident);
+        #if OGRE_VERSION_MINOR == 2
+        rttTex->notifyDataIsReady();
+        #endif
+    }
 
     // because Texture takes ownership, the act of setting the new ogre texture
     // also ensures any previous ogre texture is released.
