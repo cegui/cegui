@@ -106,6 +106,7 @@ void OgreRenderTextureTarget::createRenderPassDescriptor() {
     d_renderPassDescriptor->mColour[0].texture = d_texture->getOgreTexture();
     d_renderPassDescriptor->mColour[0].loadAction = Ogre::LoadAction::Load;
     d_renderPassDescriptor->mColour[0].storeAction = Ogre::StoreAction::Store;
+    d_renderPassDescriptor->mColour[0].clearColour = Ogre::ColourValue(0.0, 0.0, 0.0, 0.0);
     d_renderPassDescriptor->entriesModified( 1 );
 }
 
