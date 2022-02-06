@@ -171,9 +171,6 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
     if (!font)
         return;
 
-    const auto& lines = w->getFormattedLines();
-    const size_t numLines = lines.size();
-
     // Calculate the range of visible lines
     const float vertScrollPos = w->getVertScrollbar()->getScrollPosition();
     const float horzScrollPos = w->getHorzScrollbar()->getScrollPosition();
@@ -191,7 +188,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
     //!!!DBG TMP!
     //!!!FIXME TEXT: add horz fmt to multiline editbox!
     d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::LeftAligned);
-    d_renderedText.setWordWrappingEnabled(w->isWordWrapped());
+    d_renderedText.setWordWrappingEnabled(w->isWordWrapEnabled());
     //d_renderedText.updateDynamicObjectExtents(w); // no parsing implies no dynamic objects
     d_renderedText.updateFormatting(drawArea.getWidth());
 
