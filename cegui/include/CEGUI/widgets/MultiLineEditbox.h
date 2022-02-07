@@ -1,8 +1,8 @@
 /***********************************************************************
-	created:	30/6/2004
-	author:		Paul D Turner
+    created:    30/6/2004
+    author:        Paul D Turner
 
-	purpose:	Interface to the Multi-lien edit box base class.
+    purpose:    Interface to the Multi-lien edit box base class.
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
@@ -58,7 +58,7 @@ class CEGUIEXPORT MultiLineEditbox : public EditboxBase
 {
 public:
 
-	static const String EventNamespace; //!< Namespace for global events
+    static const String EventNamespace; //!< Namespace for global events
     static const String WidgetTypeName; //!< Window factory name
     static const String VertScrollbarName; //!< Widget name for the vertical scrollbar component.
     static const String HorzScrollbarName; //!< Widget name for the horizontal scrollbar component.
@@ -69,19 +69,30 @@ public:
      * WindowEventArgs::window set to the MultiLineEditbox whose vertical
      * scrollbar mode has been changed.
      */
-	static const String EventVertScrollbarModeChanged;
+    static const String EventVertScrollbarModeChanged;
     /** Event fired when the mode setting that forces the display of the
      * horizontal scroll bar for the edit box is changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the MultiLineEditbox whose horizontal
      * scrollbar mode has been changed.
      */
-	static const String EventHorzScrollbarModeChanged;
+    static const String EventHorzScrollbarModeChanged;
 
-	MultiLineEditbox(const String& type, const String& name);
+    MultiLineEditbox(const String& type, const String& name);
     virtual ~MultiLineEditbox() override;
 
     void setCaretIndex(size_t caret_pos) override;
+
+    /*!
+    \brief
+        Return whether the vertical scroll bar is always shown.
+
+    \return
+        - true if the scroll bar will always be shown even if it is not required.
+        - false if the scroll bar will only be shown when it is required.
+    */
+    bool isVertScrollbarAlwaysShown() const { return d_forceVertScroll; }
+    bool isHorzScrollbarAlwaysShown() const { return d_forceHorzScroll; }
 
     /*!
     \brief
@@ -95,17 +106,6 @@ public:
         Thrown if the vertical Scrollbar component does not exist.
     */
     Scrollbar* getVertScrollbar() const;
-
-    /*!
-	\brief
-		Return whether the vertical scroll bar is always shown.
-
-	\return
-		- true if the scroll bar will always be shown even if it is not required.
-		- false if the scroll bar will only be shown when it is required.
-	*/
-    bool isVertScrollbarAlwaysShown() const { return d_forceVertScroll; }
-    bool isHorzScrollbarAlwaysShown() const { return d_forceHorzScroll; }
 
     /*!
     \brief
@@ -137,26 +137,26 @@ public:
     */
     size_t getLineNumberFromIndex(size_t index) const;
 
-	/*!
-	\brief
-		Initialise the Window based object ready for use.
+    /*!
+    \brief
+        Initialise the Window based object ready for use.
 
-	\note
-		This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
-	*/
+    \note
+        This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
+    */
     void initialiseComponents() override;
 
-	virtual void ensureCaretIsVisible() override;
+    virtual void ensureCaretIsVisible() override;
 
     /*!
-	\brief
-		Set whether the vertical scroll bar should always be shown.
+    \brief
+        Set whether the vertical scroll bar should always be shown.
 
-	\param setting
-		true if the vertical scroll bar should be shown even when it is not required.  false if the vertical
-		scroll bar should only be shown when it is required.
-	*/
-	void setShowVertScrollbar(bool setting);
+    \param setting
+        true if the vertical scroll bar should be shown even when it is not required.  false if the vertical
+        scroll bar should only be shown when it is required.
+    */
+    void setShowVertScrollbar(bool setting);
 
     virtual void setTextFormatting(HorizontalTextFormatting format) override;
 
@@ -173,9 +173,8 @@ public:
 protected:
 
     size_t getTextIndexFromPosition(const glm::vec2& pt) const override;
-
+    bool processSemanticInputEvent(const SemanticEventArgs& e) override;
     void onScroll(CursorInputEventArgs& e) override;
-    void onSemanticInputEvent(SemanticEventArgs& e) override;
 
     /*!
     \brief
@@ -216,35 +215,34 @@ protected:
     bool handleScrollChange(const EventArgs& args);
     bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
-	/*!
-	\brief
-		Return the length of the next token in String \a text starting at index \a start_idx.
+    /*!
+    \brief
+        Return the length of the next token in String \a text starting at index \a start_idx.
 
-	\note
-		Any single whitespace character is one token, any group of other characters is a token.
+    \note
+        Any single whitespace character is one token, any group of other characters is a token.
 
-	\return
-		The code point length of the token.
-	*/
-	size_t getNextTokenLength(const String& text, size_t start_idx) const;
+    \return
+        The code point length of the token.
+    */
+    size_t getNextTokenLength(const String& text, size_t start_idx) const;
 
-	/*!
-	\brief
-		Handler called when the 'always show' setting for the vertical scroll bar changes.
-	*/
-	void onVertScrollbarModeChanged(WindowEventArgs& e);
+    /*!
+    \brief
+        Handler called when the 'always show' setting for the vertical scroll bar changes.
+    */
+    void onVertScrollbarModeChanged(WindowEventArgs& e);
 
-	/*!
-	\brief
-		Handler called when 'always show' setting for the horizontal scroll bar changes.
-	*/
-	void onHorzScrollbarModeChanged(WindowEventArgs& e);
+    /*!
+    \brief
+        Handler called when 'always show' setting for the horizontal scroll bar changes.
+    */
+    void onHorzScrollbarModeChanged(WindowEventArgs& e);
 
-	float           d_lastRenderWidth = 0.f;  //!< Holds last render area width
-	float           d_widestExtent = 0.f;	//!< Holds the extent of the widest line as calculated in the last formatting pass.
-
-	bool d_forceVertScroll = false;		//!< true if vertical scrollbar should always be displayed
-	bool d_forceHorzScroll = false;		//!< true if horizontal scrollbar should always be displayed
+    float d_lastRenderWidth = 0.f;  //!< Holds last render area width
+    float d_widestExtent = 0.f;     //!< Holds the extent of the widest line as calculated in the last formatting pass.
+    bool d_forceVertScroll = false; //!< true if vertical scrollbar should always be displayed
+    bool d_forceHorzScroll = false; //!< true if horizontal scrollbar should always be displayed
     bool d_wordWrap = false;
 
 private:
