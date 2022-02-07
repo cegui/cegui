@@ -1374,12 +1374,46 @@ void OgreRenderer::initialiseRenderStateSettings(OgreRenderTextureTarget* target
 
     d_pimpl->d_hlmsCache->setRenderTarget( target->d_renderPassDescriptor );
 
+    d_activeRenderTarget = target;
+}
+void OgreRenderer::startWithClippingRegion(const Rectf& clippingRegion) {
+    OgreRenderTextureTarget* target = dynamic_cast<OgreRenderTextureTarget*>(d_activeRenderTarget);
+    Ogre::TextureGpu* targetTexture = target->d_texture->getOgreTexture();
+
+    int actualWidth = targetTexture->getWidth();
+    int actualHeight = targetTexture->getHeight();
+
+    Ogre::Vector4 scissors(
+        clippingRegion.left() / actualWidth,
+        clippingRegion.top() / actualHeight,
+        (clippingRegion.right() - clippingRegion.left()) / actualWidth,
+        (clippingRegion.bottom() - clippingRegion.top()) / actualHeight
+    );
+
+    target->manageClear();
+
     d_pimpl->d_renderSystem->beginRenderPassDescriptor(
         target->d_renderPassDescriptor,
-        target->d_texture->getOgreTexture(),
+        targetTexture,
         0,
         &target->d_viewportSize,
-        &target->d_viewportScissors,
+        &scissors,
+        1,
+        false,
+        false
+    );
+}
+void OgreRenderer::startWithoutClippingRegion() {
+    OgreRenderTextureTarget* target = dynamic_cast<OgreRenderTextureTarget*>(d_activeRenderTarget);
+    Ogre::TextureGpu* targetTexture = target->d_texture->getOgreTexture();
+
+    Ogre::Vector4 scissors(0, 0, 1, 1);
+    d_pimpl->d_renderSystem->beginRenderPassDescriptor(
+        target->d_renderPassDescriptor,
+        targetTexture,
+        0,
+        &target->d_viewportSize,
+        &scissors,
         1,
         false,
         false

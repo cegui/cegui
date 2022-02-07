@@ -54,8 +54,7 @@ OgreRenderTextureTarget::OgreRenderTextureTarget(
     d_owner(owner),
     d_renderSystem(renderSystem),
     d_renderPassDescriptor(0),
-    d_isImageryCache(isImageryCache),
-    d_viewportScissors(0, 0, 1, 1)
+    d_isImageryCache(isImageryCache)
 {
     if (texture == NULL) {
         d_texture = static_cast<OgreTexture*>(
@@ -186,12 +185,6 @@ void OgreRenderTextureTarget::setArea(const Rectf& area)
 
 void OgreRenderTextureTarget::activate()
 {
-    if (d_needClear)
-    {
-        d_renderPassDescriptor->mColour[0].loadAction = Ogre::LoadAction::Clear;
-        d_renderPassDescriptor->entriesModified( 1 );
-    }
-
     d_owner.initialiseRenderStateSettings(this);
 
     RenderTarget::activate();
@@ -201,20 +194,27 @@ void OgreRenderTextureTarget::deactivate()
 {
     d_renderSystem->endRenderPassDescriptor();
 
-    if (d_needClear)
-    {
-        d_renderPassDescriptor->mColour[0].loadAction = Ogre::LoadAction::Load;
-        d_renderPassDescriptor->entriesModified( 1 );
-        d_needClear = false;
-    }
-
     RenderTarget::deactivate();
 }
 
 //----------------------------------------------------------------------------//
 
+void OgreRenderTextureTarget::manageClear() {
+    switch(d_needClear) {
+        case 1:
+            d_renderPassDescriptor->mColour[0].loadAction = Ogre::LoadAction::Clear;
+            d_renderPassDescriptor->entriesModified( 1 );
+            d_needClear = -1;
+            break;
+        case -1:
+            d_renderPassDescriptor->mColour[0].loadAction = Ogre::LoadAction::Load;
+            d_renderPassDescriptor->entriesModified( 1 );
+            d_needClear = 0;
+            break;
+    }
+}
 void OgreRenderTextureTarget::clear() {
-    d_needClear = true;
+    d_needClear = 1;
 }
 
 void OgreRenderTextureTarget::draw(const GeometryBuffer& buffer, std::uint32_t drawModeMask)

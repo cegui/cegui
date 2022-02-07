@@ -372,6 +372,8 @@ public:
     */
 #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
     void initialiseRenderStateSettings(OgreRenderTextureTarget* target);
+    void startWithClippingRegion(const Rectf& clippingRegion);
+    void startWithoutClippingRegion();
 #else
     void initialiseRenderStateSettings(Ogre::RenderTarget* target);
 #endif // CEGUI_USE_OGRE_TEXTURE_GPU

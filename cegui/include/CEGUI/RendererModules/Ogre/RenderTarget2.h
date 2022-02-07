@@ -74,10 +74,9 @@ protected:
 
     Ogre::RenderSystem*         d_renderSystem;
     Ogre::RenderPassDescriptor* d_renderPassDescriptor;
-    bool                        d_isImageryCache;
     Ogre::Vector4               d_viewportSize;
-    Ogre::Vector4               d_viewportScissors;
-    bool                        d_needClear;
+    bool                        d_isImageryCache;
+    char                        d_needClear;
 
     friend class OgreRenderer;
 
@@ -91,6 +90,7 @@ protected:
 
     void createRenderPassDescriptor();
     void updateMatrix() const;
+    void manageClear();
     String generateTextureName();
 };
 
