@@ -309,14 +309,14 @@ void EditboxBase::setSelection(size_t start_pos, size_t end_pos)
 //----------------------------------------------------------------------------//
 void EditboxBase::setSelectionStart(size_t start_pos)
 {
-	setSelection(start_pos, start_pos + getSelectionLength());
+    setSelection(start_pos, start_pos + getSelectionLength());
 }
 
 //----------------------------------------------------------------------------//
 void EditboxBase::setSelectionLength(size_t length)
 {
     const auto start = getSelectionStart();
-	setSelection(start, start + length);
+    setSelection(start, start + length);
 }
 
 //----------------------------------------------------------------------------//
@@ -519,6 +519,149 @@ void EditboxBase::onCharacter(TextEventArgs& e)
 
     if (insertString(String(1, e.d_character)))
         ++e.handled;
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    if (isDisabled())
+        return;
+
+    if (e.d_semanticValue == SemanticValue::SelectAll && e.d_payload.source == CursorInputSource::Left)
+    {
+        handleSelectAll();
+        ++e.handled;
+    }
+    else if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == CursorInputSource::Left)
+    {
+        const auto& text = getText();
+        if (d_textMaskingEnabled)
+        {
+            // If masked, set up to select all
+            d_dragAnchorIdx = 0;
+            setCaretIndex(text.size());
+        }
+        else
+        {
+            // Not masked, so select the word that was double-clicked
+            d_dragAnchorIdx = TextUtils::getWordStartIndex(text,
+                (d_caretPos == text.size()) ? d_caretPos : d_caretPos + 1);
+            d_caretPos = TextUtils::getNextWordStartIndex(text, d_caretPos);
+        }
+
+        // perform actual selection operation.
+        setSelection(d_dragAnchorIdx, d_caretPos);
+
+        ++e.handled;
+    }
+
+    if (e.handled || !hasInputFocus())
+        return;
+
+    if (!isReadOnly())
+    {
+        if (!getSelectionLength())
+        {
+            const bool isSelection =
+                (e.d_semanticValue >= SemanticValue::SelectRange && e.d_semanticValue <= SemanticValue::SelectToEndOfLine) ||
+                (e.d_semanticValue >= SemanticValue::SelectToStartOfDocument && e.d_semanticValue <= SemanticValue::SelectToPreviousPage);
+            if (isSelection)
+                d_dragAnchorIdx = d_caretPos;
+        }
+
+        if (processSemanticInputEvent(e))
+        {
+            ++e.handled;
+            return;
+        }
+    }
+
+    Window::onSemanticInputEvent(e);
+}
+
+//----------------------------------------------------------------------------//
+bool EditboxBase::processSemanticInputEvent(const SemanticEventArgs& e)
+{
+    switch (e.d_semanticValue)
+    {
+        case SemanticValue::DeletePreviousCharacter:
+            handleBackspace();
+            return true;
+
+        case SemanticValue::DeleteNextCharacter:
+            handleDelete();
+            return true;
+
+        case SemanticValue::GoToPreviousCharacter:
+            handleCharLeft(false);
+            return true;
+
+        case SemanticValue::GoToNextCharacter:
+            handleCharRight(false);
+            return true;
+
+        case SemanticValue::SelectPreviousCharacter:
+            handleCharLeft(true);
+            return true;
+
+        case SemanticValue::SelectNextCharacter:
+            handleCharRight(true);
+            return true;
+
+        case SemanticValue::GoToPreviousWord:
+            handleWordLeft(false);
+            return true;
+
+        case SemanticValue::GoToNextWord:
+            handleWordRight(false);
+            return true;
+
+        case SemanticValue::SelectPreviousWord:
+            handleWordLeft(true);
+            return true;
+
+        case SemanticValue::SelectNextWord:
+            handleWordRight(true);
+            return true;
+
+        case SemanticValue::GoToStartOfDocument:
+            handleHome(false, false);
+            return true;
+
+        case SemanticValue::GoToEndOfDocument:
+            handleEnd(false, false);
+            return true;
+
+        case SemanticValue::SelectToStartOfDocument:
+            handleHome(true, false);
+            return true;
+
+        case SemanticValue::SelectToEndOfDocument:
+            handleEnd(true, false);
+            return true;
+
+        case SemanticValue::GoToStartOfLine:
+            handleHome(false, true);
+            return true;
+
+        case SemanticValue::GoToEndOfLine:
+            handleEnd(false, true);
+            return true;
+
+        case SemanticValue::SelectToStartOfLine:
+            handleHome(true, true);
+            return true;
+
+        case SemanticValue::SelectToEndOfLine:
+            handleEnd(true, true);
+            return true;
+
+        case SemanticValue::SelectAll:
+            handleSelectAll();
+            return true;
+    }
+
+    return false;
 }
 
 //----------------------------------------------------------------------------//
@@ -890,94 +1033,6 @@ bool EditboxBase::performRedo()
 }
 
 //----------------------------------------------------------------------------//
-bool EditboxBase::handleBasicSemanticValue(const SemanticEventArgs& e)
-{
-    switch (e.d_semanticValue)
-    {
-    case SemanticValue::DeletePreviousCharacter:
-        handleBackspace();
-        break;
-
-    case SemanticValue::DeleteNextCharacter:
-        handleDelete();
-        break;
-
-    case SemanticValue::GoToPreviousCharacter:
-        handleCharLeft(false);
-        break;
-
-    case SemanticValue::GoToNextCharacter:
-        handleCharRight(false);
-        break;
-
-    case SemanticValue::SelectPreviousCharacter:
-        handleCharLeft(true);
-        break;
-
-    case SemanticValue::SelectNextCharacter:
-        handleCharRight(true);
-        break;
-
-    case SemanticValue::GoToPreviousWord:
-        handleWordLeft(false);
-        break;
-
-    case SemanticValue::GoToNextWord:
-        handleWordRight(false);
-        break;
-
-    case SemanticValue::SelectPreviousWord:
-        handleWordLeft(true);
-        break;
-
-    case SemanticValue::SelectNextWord:
-        handleWordRight(true);
-        break;
-
-    case SemanticValue::GoToStartOfDocument:
-        handleHome(false, false);
-        break;
-
-    case SemanticValue::GoToEndOfDocument:
-        handleEnd(false, false);
-        break;
-
-    case SemanticValue::SelectToStartOfDocument:
-        handleHome(true, false);
-        break;
-
-    case SemanticValue::SelectToEndOfDocument:
-        handleEnd(true, false);
-        break;
-
-    case SemanticValue::GoToStartOfLine:
-        handleHome(false, true);
-        break;
-
-    case SemanticValue::GoToEndOfLine:
-        handleEnd(false, true);
-        break;
-
-    case SemanticValue::SelectToStartOfLine:
-        handleHome(true, true);
-        break;
-
-    case SemanticValue::SelectToEndOfLine:
-        handleEnd(true, true);
-        break;
-
-    case SemanticValue::SelectAll:
-        handleSelectAll();
-        break;
-
-    default:
-        return false;
-    }
-
-    return true;
-}
-
-//----------------------------------------------------------------------------//
 bool EditboxBase::handleFontRenderSizeChange(const Font& font)
 {
     const bool res = Window::handleFontRenderSizeChange(font);
@@ -1074,13 +1129,6 @@ void EditboxBase::addEditboxBaseProperties()
         "ValidationString", "Property to get/set the validation string Editbox.  Value is a text string.",
         &EditboxBase::setValidationString, &EditboxBase::getValidationString, ".*"
     );
-}
-
-//----------------------------------------------------------------------------//
-bool isSelectionSemanticValue(SemanticValue value)
-{
-    return (value >= SemanticValue::SelectRange && value <= SemanticValue::SelectToEndOfLine) ||
-        (value >= SemanticValue::SelectToStartOfDocument && value <= SemanticValue::SelectToPreviousPage);
 }
 
 }

@@ -27,10 +27,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/Editbox.h"
-#include "CEGUI/text/TextUtils.h"
-#include "CEGUI/text/Font.h"
-#include "CEGUI/Clipboard.h"
-#include "CEGUI/UndoHandler.h"
 
 namespace CEGUI
 {
@@ -84,74 +80,19 @@ size_t Editbox::getTextIndexFromPosition(const glm::vec2& pt) const
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
+bool Editbox::processSemanticInputEvent(const SemanticEventArgs& e)
 {
-    if (isDisabled())
-        return;
-
-    if (e.d_semanticValue == SemanticValue::SelectAll && e.d_payload.source == CursorInputSource::Left)
-    {
-        handleSelectAll();
-        ++e.handled;
-    }
-    else if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == CursorInputSource::Left)
-    {
-        // if masked, set up to select all
-        if (isTextMaskingEnabled())
-        {
-            d_dragAnchorIdx = 0;
-            setCaretIndex(getText().size());
-        }
-        // not masked, so select the word that was double-clicked.
-        else
-        {
-            d_dragAnchorIdx = TextUtils::getWordStartIndex(getText(),
-                (d_caretPos == getText().size()) ? d_caretPos : d_caretPos + 1);
-            d_caretPos = TextUtils::getNextWordStartIndex(getText(), d_caretPos);
-        }
-
-        // perform actual selection operation.
-        setSelection(d_dragAnchorIdx, d_caretPos);
-
-        ++e.handled;
-    }
-
-    if (e.handled || !hasInputFocus())
-        return;
-
-    if (isReadOnly())
-    {
-        Window::onSemanticInputEvent(e);
-        return;
-    }
-
-    if (!getSelectionLength() && isSelectionSemanticValue(e.d_semanticValue))
-        d_dragAnchorIdx = d_caretPos;
-
-    // Check if the semantic value to be handled is of a general type and can thus be
-    // handled via common EditboxBase handlers
-    if (handleBasicSemanticValue(e))
-    {
-        ++e.handled;
-        return;
-    }
-
-    // If the semantic value was not handled, check for specific values
     switch (e.d_semanticValue)
     {
         case SemanticValue::Confirm:
         {
             WindowEventArgs args(this);
             onTextAcceptedEvent(args);
-            break;
+            return true;
         }
-
-        default:
-            Window::onSemanticInputEvent(e);
-            return;
     }
 
-    ++e.handled;
+    return EditboxBase::processSemanticInputEvent(e);
 }
 
 //----------------------------------------------------------------------------//

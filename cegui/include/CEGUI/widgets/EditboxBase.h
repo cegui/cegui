@@ -477,16 +477,16 @@ protected:
 
     bool insertString(String&& text);
 
-	/*!
-	\brief
-		Processing for Backspace key
-	*/
+    /*!
+    \brief
+        Processing for Backspace key
+    */
     void handleBackspace();
 
-	/*!
-	\brief
-		Processing for Delete key
-	*/
+    /*!
+    \brief
+        Processing for Delete key
+    */
     void handleDelete();
 
     /*!
@@ -642,17 +642,6 @@ protected:
     */
     void setReadOnlyCursorImage(const Image* image) { d_readOnlyCursorImage = image; }
 
-    /*!
-    \brief
-        Processes Semantic Value that can be handled the same way for all Editboxes. If a
-        general Semantic Value was handled this will return true, otherwise it returns false.
-    \param e
-        The SemanticEventArgs with the semantic input event to handle
-    \return
-        True if a Semantic Value was of a general type and thus handled, False if not.
-    */
-    bool handleBasicSemanticValue(const SemanticEventArgs& e);
-
     // Overridden event handlers
     void onCursorPressHold(CursorInputEventArgs& e) override;
     void onCursorActivate(CursorInputEventArgs& e) override;
@@ -661,9 +650,10 @@ protected:
 
     void onFontChanged(WindowEventArgs& e) override;
     void onTextChanged(WindowEventArgs& e) override;
-
     void onCharacter(TextEventArgs& e) override;
-    void onSemanticInputEvent(SemanticEventArgs& e) override = 0;
+    void onSemanticInputEvent(SemanticEventArgs& e) override;
+
+    virtual bool processSemanticInputEvent(const SemanticEventArgs& e);
 
     RenderedText d_renderedText;
 
@@ -717,14 +707,10 @@ private:
     void addEditboxBaseProperties();
 };
 
-#ifndef SWIG
-bool isSelectionSemanticValue(SemanticValue value);
-#endif
-
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIEditbox_h_
+#endif

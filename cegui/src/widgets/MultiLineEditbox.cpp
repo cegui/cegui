@@ -1,8 +1,8 @@
 /***********************************************************************
-	created:	30/6/2004
-	author:		Paul D Turner
+    created:    30/6/2004
+    author:        Paul D Turner
 
-	purpose:	Implementation of the Multi-line edit box base class
+    purpose:    Implementation of the Multi-line edit box base class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2015 Paul D Turner & The CEGUI Development Team
@@ -51,7 +51,7 @@ MultiLineEditboxWindowRenderer::MultiLineEditboxWindowRenderer(const String& nam
 
 //----------------------------------------------------------------------------//
 MultiLineEditbox::MultiLineEditbox(const String& type, const String& name)
-	: EditboxBase(type, name)
+    : EditboxBase(type, name)
 {
     d_renderedText.setWordWrappingEnabled(d_wordWrap);
     addMultiLineEditboxProperties();
@@ -63,8 +63,8 @@ MultiLineEditbox::~MultiLineEditbox() = default;
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::initialiseComponents()
 {
-	Scrollbar* vertScrollbar = getVertScrollbar();
-	Scrollbar* horzScrollbar = getHorzScrollbar();
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
 
     vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged,
         Event::Subscriber(&MultiLineEditbox::handleScrollChange, this));
@@ -85,11 +85,11 @@ void MultiLineEditbox::setCaretIndex(size_t caretPos)
     if (d_caretPos == caretPos)
         return;
 
-	d_caretPos = caretPos;
-	ensureCaretIsVisible();
+    d_caretPos = caretPos;
+    ensureCaretIsVisible();
 
-	WindowEventArgs args(this);
-	onCaretMoved(args);
+    WindowEventArgs args(this);
+    onCaretMoved(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -98,15 +98,15 @@ void MultiLineEditbox::ensureCaretIsVisible()
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
-	// calculate the location of the caret
-	size_t caretLine = getLineNumberFromIndex(d_caretPos);
+    // calculate the location of the caret
+    size_t caretLine = getLineNumberFromIndex(d_caretPos);
 
     if (caretLine >= d_lines.size())
         return;
 
-	Rectf textArea(getTextRenderArea());
+    Rectf textArea(getTextRenderArea());
 
-	size_t caretLineIdx = d_caretPos - d_lines[caretLine].d_startIdx;
+    size_t caretLineIdx = d_caretPos - d_lines[caretLine].d_startIdx;
 
     const Font* fnt = getActualFont();
     String caretLineSubstr = getText().substr(d_lines[caretLine].d_startIdx, caretLineIdx);
@@ -115,274 +115,191 @@ void MultiLineEditbox::ensureCaretIsVisible()
 #else
     float xpos = caretLineSubstr.isUtf8StringValid() ? fnt->getTextAdvance(caretLineSubstr) : 0;
 #endif
-	xpos -= horzScrollbar->getScrollPosition();
+    xpos -= horzScrollbar->getScrollPosition();
 
     float ypos = caretLine * fnt->getLineSpacing() - vertScrollbar->getScrollPosition();
 
-	// if caret is above window, scroll up
-	if (ypos < 0)
-		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + ypos);
-	// if caret is below the window, scroll down
-	else if ((ypos += fnt->getLineSpacing()) > textArea.getHeight())
-		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + (ypos - textArea.getHeight()) + fnt->getLineSpacing());
+    // if caret is above window, scroll up
+    if (ypos < 0)
+        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + ypos);
+    // if caret is below the window, scroll down
+    else if ((ypos += fnt->getLineSpacing()) > textArea.getHeight())
+        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + (ypos - textArea.getHeight()) + fnt->getLineSpacing());
 
-	// if caret is left of the window, scroll left
-	if (xpos < 0)
-		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + xpos - 50);
-	// if caret is right of the window, scroll right
-	else if (xpos > textArea.getWidth())
-		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + (xpos - textArea.getWidth()) + 50);
+    // if caret is left of the window, scroll left
+    if (xpos < 0)
+        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + xpos - 50);
+    // if caret is right of the window, scroll right
+    else if (xpos > textArea.getWidth())
+        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + (xpos - textArea.getWidth()) + 50);
 }
 
+//----------------------------------------------------------------------------//
 size_t MultiLineEditbox::getNextTokenLength(const String& text, size_t start_idx) const
 {
-	String::size_type pos = text.find_first_of(TextUtils::DefaultWrapDelimiters, start_idx);
+    String::size_type pos = text.find_first_of(TextUtils::DefaultWrapDelimiters, start_idx);
 
-	// handle case where no more whitespace exists (so this is last token)
-	if (pos == String::npos)
-	{
-		return (text.length() - start_idx);
-	}
-	// handle 'delimiter' token cases
-	else if ((pos - start_idx) == 0)
-	{
-		return 1;
-	}
-	else
-	{
-		return (pos - start_idx);
-	}
+    // handle case where no more whitespace exists (so this is last token)
+    if (pos == String::npos)
+        return (text.length() - start_idx);
 
+    // handle 'delimiter' token cases
+    if ((pos - start_idx) == 0)
+        return 1;
+
+    return (pos - start_idx);
 }
 
-
+//----------------------------------------------------------------------------//
 size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
-	if (d_lines.empty())
-		return 0;
+    if (d_lines.empty())
+        return 0;
 
-	//
-	// calculate final window position to be checked
-	//
+    // calculate final window position to be checked
     glm::vec2 wndPt = CoordConverter::screenToWindow(*this, pt);
 
-	Rectf textArea(getTextRenderArea());
-
+    const Rectf textArea = getTextRenderArea();
     wndPt -= glm::vec2(textArea.d_min.x, textArea.d_min.y);
 
-	// factor in scroll bar values
+    // factor in scroll bar values
     wndPt.x += getHorzScrollbar()->getScrollPosition();
     wndPt.y += getVertScrollbar()->getScrollPosition();
 
-	size_t lineNumber = static_cast<size_t>(
+    size_t lineNumber = static_cast<size_t>(
         std::max(0.0f, wndPt.y) / getActualFont()->getLineSpacing());
 
-	if (lineNumber >= d_lines.size())
-	{
-		lineNumber = d_lines.size() - 1;
-	}
+    if (lineNumber >= d_lines.size())
+        lineNumber = d_lines.size() - 1;
 
     const String lineText(getText().substr(d_lines[lineNumber].d_startIdx, d_lines[lineNumber].d_length));
 
     size_t lineIdx = getActualFont()->getCharAtPixel(lineText, wndPt.x);
 
-	if (lineIdx >= lineText.length() - 1)
-	{
-		lineIdx = lineText.length() - 1;
-	}
+    if (lineIdx >= lineText.length() - 1)
+        lineIdx = lineText.length() - 1;
 
-	return d_lines[lineNumber].d_startIdx + lineIdx;
+    return d_lines[lineNumber].d_startIdx + lineIdx;
 }
 
-
+//----------------------------------------------------------------------------//
 size_t MultiLineEditbox::getLineNumberFromIndex(size_t index) const
 {
-	size_t lineCount = d_lines.size();
+    size_t lineCount = d_lines.size();
 
-	if (lineCount == 0)
-	{
-		return 0;
-	}
-    else if (index >= getText().length() - 1)
-	{
-		return lineCount - 1;
-	}
-	else
-	{
-		size_t indexCount = 0;
-		size_t caretLine = 0;
+    if (!lineCount)
+        return 0;
 
-		for (; caretLine < lineCount; ++caretLine)
-		{
-			indexCount += d_lines[caretLine].d_length;
+    if (index >= getText().length() - 1)
+        return lineCount - 1;
 
-			if (index < indexCount)
-			{
-				return caretLine;
-			}
+    size_t indexCount = 0;
+    for (size_t caretLine = 0; caretLine < lineCount; ++caretLine)
+    {
+        indexCount += d_lines[caretLine].d_length;
+        if (index < indexCount)
+            return caretLine;
+    }
 
-		}
-
-	}
-
-	throw InvalidRequestException(
+    throw InvalidRequestException(
         "Unable to identify a line from the given, invalid, index.");
 }
 
-
+//----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineUp(bool select)
 {
-	size_t caretLine = getLineNumberFromIndex(d_caretPos);
-
-	if (caretLine > 0)
-	{
+    size_t caretLine = getLineNumberFromIndex(d_caretPos);
+    if (caretLine > 0)
+    {
         float caretPixelOffset = getActualFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
-
-		--caretLine;
-
+        --caretLine;
         size_t newLineIndex = getActualFont()->getCharAtPixel(getText().substr(d_lines[caretLine].d_startIdx, d_lines[caretLine].d_length), caretPixelOffset);
-
-		setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
-	}
+        setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
+    }
 
     if (select)
-	{
-		setSelection(d_caretPos, d_dragAnchorIdx);
-	}
-	else
-	{
-		clearSelection();
-	}
+        setSelection(d_caretPos, d_dragAnchorIdx);
+    else
+        clearSelection();
 }
 
-
+//----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineDown(bool select)
 {
-	size_t caretLine = getLineNumberFromIndex(d_caretPos);
-
-	if ((d_lines.size() > 1) && (caretLine < (d_lines.size() - 1)))
-	{
+    size_t caretLine = getLineNumberFromIndex(d_caretPos);
+    if ((d_lines.size() > 1) && (caretLine < (d_lines.size() - 1)))
+    {
         float caretPixelOffset = getActualFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
-
-		++caretLine;
-
+        ++caretLine;
         size_t newLineIndex = getActualFont()->getCharAtPixel(getText().substr(d_lines[caretLine].d_startIdx, d_lines[caretLine].d_length), caretPixelOffset);
-
-		setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
-	}
+        setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
+    }
 
     if (select)
-	{
-		setSelection(d_caretPos, d_dragAnchorIdx);
-	}
-	else
-	{
-		clearSelection();
-	}
+        setSelection(d_caretPos, d_dragAnchorIdx);
+    else
+        clearSelection();
 }
 
-
+//----------------------------------------------------------------------------//
 void MultiLineEditbox::handlePageUp(bool select)
 {
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
     size_t nbLine = static_cast<size_t>(getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
     size_t newline = 0;
     if (nbLine < caretLine)
-    {
         newline = caretLine - nbLine;
-    }
 
     setCaretIndex(d_lines[newline].d_startIdx);
 
     if (select)
-    {
         setSelection(d_caretPos, d_selectionEnd);
-    }
     else
-    {
         clearSelection();
-    }
 
     ensureCaretIsVisible();
 }
 
-
+//----------------------------------------------------------------------------//
 void MultiLineEditbox::handlePageDown(bool select)
 {
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
     size_t nbLine =  static_cast<size_t>(getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
     size_t newline = caretLine + nbLine;
     if (!d_lines.empty())
-    {
         newline = std::min(newline,d_lines.size() - 1);
-    }
+
     setCaretIndex(d_lines[newline].d_startIdx + d_lines[newline].d_length - 1);
+
     if (select)
-    {
         setSelection(d_selectionStart, d_caretPos);
-    }
     else
-    {
         clearSelection();
-    }
+
     ensureCaretIsVisible();
 }
 
-
-
-void MultiLineEditbox::onScroll(CursorInputEventArgs& e)
-{
-	Window::onScroll(e);
-
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    Scrollbar* horzScrollbar = getHorzScrollbar();
-
-	if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
-		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.scroll);
-	else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
-		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
-
-	++e.handled;
-}
-
-
-
+//----------------------------------------------------------------------------//
 bool MultiLineEditbox::validateWindowRenderer(const WindowRenderer* renderer) const
 {
-	return dynamic_cast<const MultiLineEditboxWindowRenderer*>(renderer) != nullptr;
+    return dynamic_cast<const MultiLineEditboxWindowRenderer*>(renderer) != nullptr;
 }
 
-
+//----------------------------------------------------------------------------//
 void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
-	invalidate();
-	fireEvent(EventVertScrollbarModeChanged, e, EventNamespace);
+    invalidate();
+    fireEvent(EventVertScrollbarModeChanged, e, EventNamespace);
 }
 
-
+//----------------------------------------------------------------------------//
 void MultiLineEditbox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
-	invalidate();
-	fireEvent(EventHorzScrollbarModeChanged, e, EventNamespace);
+    invalidate();
+    fireEvent(EventHorzScrollbarModeChanged, e, EventNamespace);
 }
 
-
-void MultiLineEditbox::addMultiLineEditboxProperties()
-{
-    const String& propertyOrigin = WidgetTypeName;
-
-    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
-        "WordWrap", "Property to get/set the word-wrap setting of the edit box.  Value is either \"true\" or \"false\".",
-        &MultiLineEditbox::setWordWrapEnabled, &MultiLineEditbox::isWordWrapEnabled, true
-    );
-    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
-        "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box."
-        "Value is either \"true\" or \"false\".",
-        &MultiLineEditbox::setShowVertScrollbar, &MultiLineEditbox::isVertScrollbarAlwaysShown, false
-    );
-}
-
-
+//----------------------------------------------------------------------------//
 bool MultiLineEditbox::handleScrollChange(const EventArgs&)
 {
     // simply trigger a redraw of the MultiLineEditbox
@@ -390,19 +307,19 @@ bool MultiLineEditbox::handleScrollChange(const EventArgs&)
     return true;
 }
 
-
+//----------------------------------------------------------------------------//
 Scrollbar* MultiLineEditbox::getVertScrollbar() const
 {
     return static_cast<Scrollbar*>(getChild(VertScrollbarName));
 }
 
-
+//----------------------------------------------------------------------------//
 Scrollbar* MultiLineEditbox::getHorzScrollbar() const
 {
     return static_cast<Scrollbar*>(getChild(HorzScrollbarName));
 }
 
-
+//----------------------------------------------------------------------------//
 Rectf MultiLineEditbox::getTextRenderArea() const
 {
     if (!d_windowRenderer)
@@ -411,18 +328,16 @@ Rectf MultiLineEditbox::getTextRenderArea() const
     return static_cast<MultiLineEditboxWindowRenderer*>(d_windowRenderer)->getTextRenderArea();
 }
 
-
-
+//----------------------------------------------------------------------------//
 void MultiLineEditbox::setShowVertScrollbar(bool setting)
 {
-	if (d_forceVertScroll != setting)
-	{
-		d_forceVertScroll = setting;
+    if (d_forceVertScroll == setting)return;
 
-		configureScrollbars();
-		WindowEventArgs args(this);
-		onVertScrollbarModeChanged(args);
-	}
+    d_forceVertScroll = setting;
+
+    configureScrollbars();
+    WindowEventArgs args(this);
+    onVertScrollbarModeChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -445,87 +360,73 @@ void MultiLineEditbox::setWordWrapEnabled(bool wrap)
     invalidate();
 }
 
-
-void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
+//------------------------------------------------------------------------//
+bool MultiLineEditbox::processSemanticInputEvent(const SemanticEventArgs& e)
 {
-    if (isDisabled())
-        return;
-
-    if (e.d_semanticValue == SemanticValue::SelectAll && e.d_payload.source == CursorInputSource::Left)
-    {
-        handleSelectAll();
-        ++e.handled;
-    }
-    else if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == CursorInputSource::Left)
-    {
-        const auto& text = getText();
-        d_dragAnchorIdx = TextUtils::getWordStartIndex(text,
-            (d_caretPos == text.size()) ? d_caretPos : d_caretPos + 1);
-        d_caretPos = TextUtils::getNextWordStartIndex(text, d_caretPos);
-
-        // perform actual selection operation.
-        setSelection(d_dragAnchorIdx, d_caretPos);
-
-        ++e.handled;
-    }
-
-    if (e.handled || !hasInputFocus())
-        return;
-
-    if (isReadOnly())
-    {
-        Window::onSemanticInputEvent(e);
-        return;
-    }
-
-    if (!getSelectionLength() && isSelectionSemanticValue(e.d_semanticValue))
-        d_dragAnchorIdx = d_caretPos;
-
-    // Check if the semantic value to be handled is of a general type and can thus be
-    // handled via common EditboxBase handlers
-    if (handleBasicSemanticValue(e))
-    {
-        ++e.handled;
-        return;
-    }
-
-    // If the semantic value was not handled, check for specific values
     switch (e.d_semanticValue)
     {
         case SemanticValue::Confirm:
             insertString("\x0a");
-            break;
+            return true;
 
         case SemanticValue::GoUp:
             handleLineUp(false);
-            break;
+            return true;
 
         case SemanticValue::SelectUp:
             handleLineUp(true);
-            break;
+            return true;
 
         case SemanticValue::GoDown:
             handleLineDown(false);
-            break;
+            return true;
 
         case SemanticValue::SelectDown:
             handleLineDown(true);
-            break;
+            return true;
 
         case SemanticValue::GoToPreviousPage:
             handlePageUp(false);
-            break;
+            return true;
 
         case SemanticValue::GoToNextPage:
             handlePageDown(false);
-            break;
-
-        default:
-            Window::onSemanticInputEvent(e);
-            return;
+            return true;
     }
 
+    return EditboxBase::processSemanticInputEvent(e);
+}
+
+//----------------------------------------------------------------------------//
+void MultiLineEditbox::onScroll(CursorInputEventArgs& e)
+{
+    Window::onScroll(e);
+
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
+
+    if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
+        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.scroll);
+    else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
+        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
+
     ++e.handled;
+}
+
+//------------------------------------------------------------------------//
+void MultiLineEditbox::addMultiLineEditboxProperties()
+{
+    const String& propertyOrigin = WidgetTypeName;
+
+    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
+        "WordWrap", "Property to get/set the word-wrap setting of the edit box. Value is either \"true\" or \"false\".",
+        &MultiLineEditbox::setWordWrapEnabled, &MultiLineEditbox::isWordWrapEnabled, true
+    );
+    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
+        "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box."
+        "Value is either \"true\" or \"false\".",
+        &MultiLineEditbox::setShowVertScrollbar, &MultiLineEditbox::isVertScrollbarAlwaysShown, false
+    );
 }
 
 }
