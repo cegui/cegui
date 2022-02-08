@@ -446,7 +446,7 @@ void OgreRenderer::createOgreCompositorResources()
     // Only clear depth and stencil since we are rendering on top
     // of an existing image
     #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
-    clearpass->setBuffersToClear(Ogre::FBT_DEPTH | Ogre::FBT_STENCIL);
+    clearpass->setBuffersToClear(Ogre::RenderPassDescriptor::Depth | Ogre::RenderPassDescriptor::Stencil);
     #else
     clearpass->mClearBufferFlags = Ogre::FBT_DEPTH | Ogre::FBT_STENCIL;
     #endif // CEGUI_USE_OGRE_TEXTURE_GPU
