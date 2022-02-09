@@ -243,7 +243,7 @@ protected:
     float d_widestExtent = 0.f;     //!< Holds the extent of the widest line as calculated in the last formatting pass.
     bool d_forceVertScroll = false; //!< true if vertical scrollbar should always be displayed
     bool d_forceHorzScroll = false; //!< true if horizontal scrollbar should always be displayed
-    bool d_wordWrap = false;
+    bool d_wordWrap = true;
 
 private:
 

@@ -98,40 +98,29 @@ void MultiLineEditbox::ensureCaretIsVisible()
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
-    // calculate the location of the caret
-    size_t caretLine = getLineNumberFromIndex(d_caretPos);
-
-    if (caretLine >= d_lines.size())
-        return;
-
     Rectf textArea(getTextRenderArea());
 
-    size_t caretLineIdx = d_caretPos - d_lines[caretLine].d_startIdx;
-
     const Font* fnt = getActualFont();
-    String caretLineSubstr = getText().substr(d_lines[caretLine].d_startIdx, caretLineIdx);
-#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
-    float xpos = fnt->getTextAdvance(caretLineSubstr);
-#else
-    float xpos = caretLineSubstr.isUtf8StringValid() ? fnt->getTextAdvance(caretLineSubstr) : 0;
-#endif
-    xpos -= horzScrollbar->getScrollPosition();
+    if (!fnt)
+        return;
 
-    float ypos = caretLine * fnt->getLineSpacing() - vertScrollbar->getScrollPosition();
+    String caretLineSubstr; // text from line start to caret pos
+    float xpos = fnt->getTextAdvance(caretLineSubstr) - horzScrollbar->getScrollPosition();
+    float ypos = getLineNumberFromIndex(d_caretPos) * fnt->getLineSpacing() - vertScrollbar->getScrollPosition();
 
     // if caret is above window, scroll up
     if (ypos < 0)
         vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + ypos);
     // if caret is below the window, scroll down
     else if ((ypos += fnt->getLineSpacing()) > textArea.getHeight())
-        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + (ypos - textArea.getHeight()) + fnt->getLineSpacing());
+        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + ypos - textArea.getHeight() + fnt->getLineSpacing());
 
     // if caret is left of the window, scroll left
     if (xpos < 0)
         horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + xpos - 50);
     // if caret is right of the window, scroll right
     else if (xpos > textArea.getWidth())
-        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + (xpos - textArea.getWidth()) + 50);
+        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + xpos - textArea.getWidth() + 50);
 }
 
 //----------------------------------------------------------------------------//
@@ -153,7 +142,8 @@ size_t MultiLineEditbox::getNextTokenLength(const String& text, size_t start_idx
 //----------------------------------------------------------------------------//
 size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
-    if (d_lines.empty())
+    const auto& text = getText();
+    if (text.empty())
         return 0;
 
     // calculate final window position to be checked
@@ -169,23 +159,23 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
     size_t lineNumber = static_cast<size_t>(
         std::max(0.0f, wndPt.y) / getActualFont()->getLineSpacing());
 
-    if (lineNumber >= d_lines.size())
-        lineNumber = d_lines.size() - 1;
+    if (lineNumber >= d_renderedText.getLineCount())
+        lineNumber = d_renderedText.getLineCount() - 1;
 
-    const String lineText(getText().substr(d_lines[lineNumber].d_startIdx, d_lines[lineNumber].d_length));
+    const String lineText;// (text.substr(line.d_startIdx, line.d_length));
 
     size_t lineIdx = getActualFont()->getCharAtPixel(lineText, wndPt.x);
 
     if (lineIdx >= lineText.length() - 1)
         lineIdx = lineText.length() - 1;
 
-    return d_lines[lineNumber].d_startIdx + lineIdx;
+    return /*d_lines[lineNumber].d_startIdx +*/ lineIdx;
 }
 
 //----------------------------------------------------------------------------//
 size_t MultiLineEditbox::getLineNumberFromIndex(size_t index) const
 {
-    size_t lineCount = d_lines.size();
+    size_t lineCount = d_renderedText.getLineCount();
 
     if (!lineCount)
         return 0;
@@ -196,13 +186,12 @@ size_t MultiLineEditbox::getLineNumberFromIndex(size_t index) const
     size_t indexCount = 0;
     for (size_t caretLine = 0; caretLine < lineCount; ++caretLine)
     {
-        indexCount += d_lines[caretLine].d_length;
+        //indexCount += d_lines[caretLine].d_length;
         if (index < indexCount)
             return caretLine;
     }
 
-    throw InvalidRequestException(
-        "Unable to identify a line from the given, invalid, index.");
+    return 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -211,10 +200,10 @@ void MultiLineEditbox::handleLineUp(bool select)
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
     if (caretLine > 0)
     {
-        float caretPixelOffset = getActualFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
-        --caretLine;
-        size_t newLineIndex = getActualFont()->getCharAtPixel(getText().substr(d_lines[caretLine].d_startIdx, d_lines[caretLine].d_length), caretPixelOffset);
-        setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
+        //float caretPixelOffset = getActualFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
+        //--caretLine;
+        //size_t newLineIndex = getActualFont()->getCharAtPixel(getText().substr(d_lines[caretLine].d_startIdx, d_lines[caretLine].d_length), caretPixelOffset);
+        //setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
     }
 
     if (select)
@@ -227,12 +216,12 @@ void MultiLineEditbox::handleLineUp(bool select)
 void MultiLineEditbox::handleLineDown(bool select)
 {
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    if ((d_lines.size() > 1) && (caretLine < (d_lines.size() - 1)))
+    if ((d_renderedText.getLineCount() > 1) && (caretLine < (d_renderedText.getLineCount() - 1)))
     {
-        float caretPixelOffset = getActualFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
-        ++caretLine;
-        size_t newLineIndex = getActualFont()->getCharAtPixel(getText().substr(d_lines[caretLine].d_startIdx, d_lines[caretLine].d_length), caretPixelOffset);
-        setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
+        //float caretPixelOffset = getActualFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
+        //++caretLine;
+        //size_t newLineIndex = getActualFont()->getCharAtPixel(getText().substr(d_lines[caretLine].d_startIdx, d_lines[caretLine].d_length), caretPixelOffset);
+        //setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
     }
 
     if (select)
@@ -250,7 +239,7 @@ void MultiLineEditbox::handlePageUp(bool select)
     if (nbLine < caretLine)
         newline = caretLine - nbLine;
 
-    setCaretIndex(d_lines[newline].d_startIdx);
+    //setCaretIndex(d_lines[newline].d_startIdx);
 
     if (select)
         setSelection(d_caretPos, d_selectionEnd);
@@ -266,10 +255,10 @@ void MultiLineEditbox::handlePageDown(bool select)
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
     size_t nbLine =  static_cast<size_t>(getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
     size_t newline = caretLine + nbLine;
-    if (!d_lines.empty())
-        newline = std::min(newline,d_lines.size() - 1);
+    //if (!d_lines.empty())
+    //    newline = std::min(newline, d_renderedText.getLineCount() - 1);
 
-    setCaretIndex(d_lines[newline].d_startIdx + d_lines[newline].d_length - 1);
+    //setCaretIndex(d_lines[newline].d_startIdx + d_lines[newline].d_length - 1);
 
     if (select)
         setSelection(d_selectionStart, d_caretPos);
@@ -335,7 +324,7 @@ void MultiLineEditbox::setShowVertScrollbar(bool setting)
 
     d_forceVertScroll = setting;
 
-    configureScrollbars();
+    //configureScrollbars();
     WindowEventArgs args(this);
     onVertScrollbarModeChanged(args);
 }

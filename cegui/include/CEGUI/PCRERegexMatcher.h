@@ -43,7 +43,7 @@ namespace CEGUI
     Alternatively, see the perl regex documentation at
     http://perldoc.perl.org/perlre.html
 */
-class PCRERegexMatcher : public RegexMatcher
+class CEGUIEXPORT PCRERegexMatcher : public RegexMatcher
 {
 public:
 
