@@ -40,7 +40,7 @@ namespace CEGUI
 {
 
 //! Implementation of RegexMatcher using std::regex
-class StdRegexMatcher : public RegexMatcher
+class CEGUIEXPORT StdRegexMatcher : public RegexMatcher
 {
 public:
 

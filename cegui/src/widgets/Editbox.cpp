@@ -67,7 +67,7 @@ void Editbox::setTextFormatting(HorizontalTextFormatting format)
 void Editbox::ensureCaretIsVisible()
 {
     //!!!TODO TEXT: IMPLEMENT! Delegate to the renderer because it knows the size of the caret itself?
-    FIXME;
+    //FIXME;
 }
 
 //----------------------------------------------------------------------------//
