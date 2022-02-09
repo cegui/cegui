@@ -47,22 +47,18 @@ public:
 
     EditboxWindowRenderer(const String& name);
 
+    //! Editbox text parsing is forcefully disabled
+    virtual bool isTextParsingEnabled() const override { return false; }
+
     /*!
     \brief
-        Return the text code point index that is rendered closest to screen
-        position \a pt.
-
-    \param pt
-        Point object describing a position on the screen in pixels.
+        Return a Rect object describing, in un-clipped pixels, the window relative area
+        that the text should be rendered in to.
 
     \return
-        Code point index into the text that is rendered closest to screen
-        position \a pt.
+        Rect object describing the area of the Window to be used for rendering text.
     */
-    virtual size_t getTextIndexFromPosition(const glm::vec2& pt) const = 0;
-
-    //! Editbox text parsing is forcefully disabled
-    virtual bool isTextParsingEnabled() const { return false; }
+    virtual Rectf getTextRenderArea() const = 0;
 };
 
 //----------------------------------------------------------------------------//
@@ -100,6 +96,8 @@ public:
 
     virtual void ensureCaretIsVisible() override;
 
+    float getTextOffset() const { return d_textOffset; }
+
 protected:
 
     size_t getTextIndexFromPosition(const glm::vec2& pt) const override;
@@ -112,6 +110,8 @@ protected:
         Return, Enter, or Tab.
     */
     virtual void onTextAcceptedEvent(WindowEventArgs& e);
+
+    float d_textOffset = 0.f; //<! Offset of the text graphics inside a client rect
 };
 
 }
