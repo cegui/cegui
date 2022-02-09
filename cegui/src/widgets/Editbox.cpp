@@ -27,6 +27,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/Editbox.h"
+#include "CEGUI/text/Font.h"
+#include "CEGUI/CoordConverter.h"
 
 namespace CEGUI
 {
@@ -66,17 +68,67 @@ void Editbox::setTextFormatting(HorizontalTextFormatting format)
 //----------------------------------------------------------------------------//
 void Editbox::ensureCaretIsVisible()
 {
+    auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
+    if (!wr)
+        return;
+
+    const Rectf textArea = wr->getTextRenderArea();
+    d_renderedText.updateFormatting(textArea.getWidth());
+
     //!!!TODO TEXT: IMPLEMENT! Delegate to the renderer because it knows the size of the caret itself?
-    //FIXME;
+    //???or get caret width from EditboxBaseRenderer?
+    const float caretWidth = 10.f;
+
+    const float extentToCaretVisual = d_renderedText.getCodepointBounds(getCaretIndex()).left();
+    float extentToCaretLogical = extentToCaretVisual;
+    switch (d_textFormatting)
+    {
+        case HorizontalTextFormatting::CentreAligned:
+            extentToCaretLogical = (d_renderedText.getExtents().d_height - caretWidth) / 2.f;
+            break;
+        case HorizontalTextFormatting::RightAligned:
+            extentToCaretLogical = extentToCaretVisual - caretWidth;
+            break;
+    }
+
+    // Update text offset if caret is to the left or to the right of the box
+    if ((d_textOffset + extentToCaretLogical) < 0)
+        d_textOffset = -extentToCaretLogical;
+    else if ((d_textOffset + extentToCaretLogical) >= (textArea.getWidth() - caretWidth))
+        d_textOffset = textArea.getWidth() - extentToCaretLogical - caretWidth;
 }
 
 //----------------------------------------------------------------------------//
 size_t Editbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
-    if (!d_windowRenderer)
-        throw InvalidRequestException("This function must be implemented by the window renderer");
+    auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
+    if (!wr)
+        return getText().size();
 
-    return static_cast<EditboxWindowRenderer*>(d_windowRenderer)->getTextIndexFromPosition(pt);
+    const Font* font = getActualFont();
+    if (!font)
+        return getText().length();
+
+    String visualText;
+    if (d_textMaskingEnabled)
+        visualText.assign(getText().length(), static_cast<char32_t>(d_textMaskingCodepoint));
+    else
+        visualText.assign(getText());
+
+    float textOffset = d_textOffset;
+    switch (d_textFormatting)
+    {
+        case HorizontalTextFormatting::CentreAligned:
+            textOffset = (wr->getTextRenderArea().getWidth() - d_renderedText.getExtents().d_height) / 2.f;
+            break;
+        case HorizontalTextFormatting::RightAligned:
+            textOffset = wr->getTextRenderArea().getWidth() - d_textOffset - d_renderedText.getExtents().d_height;
+            break;
+    }
+
+    const float wndx = CoordConverter::screenToWindowX(*this, pt.x) - textOffset;
+    return font->getCharAtPixel(visualText, wndx);
+
 }
 
 //----------------------------------------------------------------------------//

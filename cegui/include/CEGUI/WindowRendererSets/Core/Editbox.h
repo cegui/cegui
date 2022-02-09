@@ -131,29 +131,18 @@ public:
     const Image* getSelectionBrushImage() const { return d_selectionBrush; }
 
     void createRenderGeometry() override;
-
-    // overridden from EditboxWindowRenderer base class.
-    size_t getTextIndexFromPosition(const glm::vec2& pt) const override;
-    // overridden from WindowRenderer class
     void update(float elapsed) override;
+
+    Rectf getTextRenderArea() const override;
 
 protected:
 
     //! helper to draw the base imagery (container and what have you)
     void renderBaseImagery(const WidgetLookFeel& wlf) const;
 
-    /*!
-    \brief
-        "Visual" here means that it's always measured from the right end of the text area rect, whereas "logical" means
-        that if the text is e.g. right aligned, then it's measured from the right end of the text area rect.
-    */
-    float getTextOffsetVisual(const Rectf& textArea, float textExtent) const;
-
     void createRenderGeometryForText(const WidgetLookFeel& wlf, const Rectf& textArea, float textOffset);
 
     const Image* d_selectionBrush = nullptr;  //!< Image to use as the selection brush (should be set by derived class).
-    //! x rendering offset used last time we drew the widget.
-    float d_textOffset = 0.f;
     //! time-out in seconds used for blinking the caret.
     float d_caretBlinkTimeout = DefaultCaretBlinkTimeout;
     //! current time elapsed since last caret blink state change.

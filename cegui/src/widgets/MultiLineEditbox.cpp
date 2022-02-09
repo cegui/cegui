@@ -124,22 +124,6 @@ void MultiLineEditbox::ensureCaretIsVisible()
 }
 
 //----------------------------------------------------------------------------//
-size_t MultiLineEditbox::getNextTokenLength(const String& text, size_t start_idx) const
-{
-    String::size_type pos = text.find_first_of(TextUtils::DefaultWrapDelimiters, start_idx);
-
-    // handle case where no more whitespace exists (so this is last token)
-    if (pos == String::npos)
-        return (text.length() - start_idx);
-
-    // handle 'delimiter' token cases
-    if ((pos - start_idx) == 0)
-        return 1;
-
-    return (pos - start_idx);
-}
-
-//----------------------------------------------------------------------------//
 size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
     const auto& text = getText();

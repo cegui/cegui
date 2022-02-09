@@ -73,41 +73,32 @@ void FalagardEditbox::createRenderGeometry()
     Editbox* const w = static_cast<Editbox*>(d_window);
     auto& renderedText = w->getRenderedText();
 
-    const Rectf textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*d_window));
+    const Rectf textArea = getTextRenderArea();
     renderedText.updateFormatting(textArea.getWidth());
 
-    const float textExtent = renderedText.getExtents().d_height;
-    const ImagerySection& caretImagery = wlf.getImagerySection("Caret");
-    const float caretWidth = caretImagery.getBoundingRect(*d_window, textArea).getWidth();
-    const float extentToCaretVisual = renderedText.getCodepointBounds(w->getCaretIndex()).left();
+    //!!!???FIXME TEXT: control in widget, not in renderer!?
+    w->ensureCaretIsVisible();
 
-    float extentToCaretLogical = extentToCaretVisual;
+    //???TODO TEXT: bake formatting into d_textOffset?!
+    float textOffset = w->getTextOffset();
     switch (w->getTextFormatting())
     {
         case HorizontalTextFormatting::CentreAligned:
-            extentToCaretLogical = (textExtent - caretWidth) / 2.f;
+            textOffset = (textArea.getWidth() - renderedText.getExtents().d_height) / 2.f;
             break;
         case HorizontalTextFormatting::RightAligned:
-            extentToCaretLogical = extentToCaretVisual - caretWidth;
+            textOffset = textArea.getWidth() - renderedText.getExtents().d_height - textOffset;
             break;
     }
 
-    // Update text offset if caret is to the left or to the right of the box
-    if ((d_textOffset + extentToCaretLogical) < 0)
-        d_textOffset = -extentToCaretLogical;
-    else if ((d_textOffset + extentToCaretLogical) >= (textArea.getWidth() - caretWidth))
-        d_textOffset = textArea.getWidth() - extentToCaretLogical - caretWidth;
-
-    const float textOffsetVisual = getTextOffsetVisual(textArea, textExtent);
-
-    createRenderGeometryForText(wlf, textArea, textOffsetVisual);
+    createRenderGeometryForText(wlf, textArea, textOffset);
 
     // Create the render geometry for the caret
     if (w->hasInputFocus() && !w->isReadOnly() && (!d_blinkCaret || d_showCaret))
     {
         Rectf caretRect(textArea);
-        caretRect.d_min.x += extentToCaretVisual + textOffsetVisual;
-        caretImagery.render(*d_window, caretRect, nullptr, &textArea);
+        caretRect.d_min.x += renderedText.getCodepointBounds(w->getCaretIndex()).left() + textOffset;
+        wlf.getImagerySection("Caret").render(*d_window, caretRect, nullptr, &textArea);
     }
 }
 
@@ -132,23 +123,6 @@ void FalagardEditbox::renderBaseImagery(const WidgetLookFeel& wlf) const
     }
 
     wlf.getStateImagery(state).render(*w);
-}
-
-//----------------------------------------------------------------------------//
-float FalagardEditbox::getTextOffsetVisual(const Rectf& textArea, float textExtent) const
-{
-    Editbox* const w = static_cast<Editbox*>(d_window);
-    switch (w->getTextFormatting())
-    {
-        case HorizontalTextFormatting::LeftAligned:
-            return d_textOffset;
-        case HorizontalTextFormatting::CentreAligned:
-            return (textArea.getWidth() - textExtent) / 2.f;
-        case HorizontalTextFormatting::RightAligned:
-            return textArea.getWidth() - d_textOffset - textExtent;
-        default:
-            throw InvalidRequestException("Invalid horizontal text formatting.");
-    } 
 }
 
 //----------------------------------------------------------------------------//
@@ -185,23 +159,9 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
 }
 
 //----------------------------------------------------------------------------//
-size_t FalagardEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
+Rectf FalagardEditbox::getTextRenderArea() const
 {
-    Editbox* w = static_cast<Editbox*>(d_window);
-    const Font* font = w->getActualFont();
-    if (!font)
-        return w->getText().length();
-
-    String visualText;
-    if (w->isTextMaskingEnabled())
-        visualText.assign(w->getText().length(), static_cast<char32_t>(w->getTextMaskingCodepoint()));
-    else
-        visualText.assign(w->getText());
-
-    const Rectf textArea(getLookNFeel().getNamedArea("TextArea").getArea().getPixelRect(*d_window));
-    const float textExtent = font->getTextExtent(visualText);
-    const float wndx = CoordConverter::screenToWindowX(*w, pt.x) - getTextOffsetVisual(textArea, textExtent);
-    return w->getActualFont()->getCharAtPixel(visualText, wndx);
+    return getLookNFeel().getNamedArea("TextArea").getArea().getPixelRect(*d_window);
 }
 
 //----------------------------------------------------------------------------//

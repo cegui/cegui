@@ -42,6 +42,9 @@ public:
 
     MultiLineEditboxWindowRenderer(const String& name);
 
+    //! Editbox text parsing is forcefully disabled
+    virtual bool isTextParsingEnabled() const override { return false; }
+
     /*!
     \brief
         Return a Rect object describing, in un-clipped pixels, the window relative area
@@ -214,18 +217,6 @@ protected:
 
     bool handleScrollChange(const EventArgs& args);
     bool validateWindowRenderer(const WindowRenderer* renderer) const override;
-
-    /*!
-    \brief
-        Return the length of the next token in String \a text starting at index \a start_idx.
-
-    \note
-        Any single whitespace character is one token, any group of other characters is a token.
-
-    \return
-        The code point length of the token.
-    */
-    size_t getNextTokenLength(const String& text, size_t start_idx) const;
 
     /*!
     \brief
