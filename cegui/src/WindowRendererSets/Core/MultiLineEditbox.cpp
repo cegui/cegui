@@ -25,13 +25,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/WindowRendererSets/Core/MultiLineEditbox.h"
-#include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
-#include "CEGUI/WindowManager.h"
 #include "CEGUI/widgets/Scrollbar.h"
-#include "CEGUI/PropertyHelper.h"
-#include "CEGUI/Image.h"
-#include "CEGUI/text/Font.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 
 namespace CEGUI
@@ -91,7 +86,7 @@ Rectf FalagardMultiLineEditbox::getTextRenderArea() const
 }
 
 //----------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
+void FalagardMultiLineEditbox::renderBaseImagery() const
 {
     MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
 
@@ -116,14 +111,12 @@ void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
 //----------------------------------------------------------------------------//
 void FalagardMultiLineEditbox::createRenderGeometry()
 {
-    configureScrollbars();
-
     // Create the render geometry for the general frame and stuff before we handle the text itself
-    cacheEditboxBaseImagery();
+    renderBaseImagery();
 
     // Create the render geometry for the edit box text
     const Rectf textArea = getTextRenderArea();
-    cacheTextLines(textArea);
+    createRenderGeometryForText(textArea);
 
     // Create the render geometry for the caret
     auto w = static_cast<const MultiLineEditbox*>(d_window);
@@ -132,7 +125,7 @@ void FalagardMultiLineEditbox::createRenderGeometry()
 }
 
 //----------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
+void FalagardMultiLineEditbox::createRenderGeometryForText(const Rectf& textArea)
 {
     MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
 
@@ -141,10 +134,9 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
         return;
 
     // Calculate the range of visible lines
-    const float vertScrollPos = w->getVertScrollbar()->getScrollPosition();
-    const float horzScrollPos = w->getHorzScrollbar()->getScrollPosition();
-    Rectf drawArea(destArea);
-    drawArea.offset(-glm::vec2(horzScrollPos, vertScrollPos));
+    const glm::vec2 pos(
+        textArea.left() - w->getVertScrollbar()->getScrollPosition(),
+        textArea.top() - w->getHorzScrollbar()->getScrollPosition());
 
     // Calculate final colours to use
     const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);
@@ -166,7 +158,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& destArea)
         selection = &selectionInfo;
     }
 
-    w->getRenderedText().createRenderGeometry(w->getGeometryBuffers(), drawArea.getPosition(), &normalTextCol, &destArea, selection);
+    w->getRenderedText().createRenderGeometry(w->getGeometryBuffers(), pos, &normalTextCol, &textArea, selection);
 }
 
 //----------------------------------------------------------------------------//
@@ -178,13 +170,6 @@ void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
         return;
 
     /*
-    const size_t caretLine = w->getLineNumberFromIndex(w->getCaretIndex());
-
-    const auto& lines = w->getFormattedLines();
-
-    if (caretLine >= lines.size())
-        return;
-
     // Calculate pixel offsets to where caret should be drawn
     const size_t caretLineIdx = w->getCaretIndex() - lines[caretLine].d_startIdx;
     const float ypos = caretLine * font->getLineSpacing();
@@ -194,75 +179,14 @@ void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
 
     // Calculate final destination area for caret
     Rectf caretArea;
-    caretArea.left(textArea.left() + xpos - w->getHorzScrollbar()->getScrollPosition());
-    caretArea.top(textArea.top() + ypos - w->getVertScrollbar()->getScrollPosition());
+    caretArea.left(xpos + textArea.left() - w->getHorzScrollbar()->getScrollPosition());
+    caretArea.top(ypos + textArea.top() - w->getVertScrollbar()->getScrollPosition());
     caretArea.setWidth(caretImagery.getBoundingRect(*w).getSize().d_width);
     caretArea.setHeight(font->getLineSpacing());
 
     // Create the render geometry for the caret image
     caretImagery.render(*w, caretArea, nullptr, &textArea);
     */
-}
-
-//----------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::configureScrollbars()
-{
-    MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
-    auto& renderedText = w->getRenderedText();
-
-    Scrollbar* const vertScrollbar = w->getVertScrollbar();
-    Scrollbar* const horzScrollbar = w->getHorzScrollbar();
-    const bool forceVert = w->isVertScrollbarAlwaysShown();
-    const bool forceHorz = w->isHorzScrollbarAlwaysShown();
-
-    Rectf textArea = getTextRenderArea();
-    renderedText.updateFormatting(textArea.getWidth());
-
-    // Update vertical scrollbar state
-    {
-        const bool show = forceVert || renderedText.getExtents().d_height > textArea.getHeight();
-        if (vertScrollbar->isVisible() != show)
-        {
-            vertScrollbar->setVisible(show);
-            textArea = getTextRenderArea();
-            renderedText.updateFormatting(textArea.getWidth());
-        }
-    }
-
-    // Update horizontal scrollbar state
-    const bool wasVisibleHorz = horzScrollbar->isVisible();
-    {
-        const bool show = forceHorz || renderedText.getExtents().d_width > textArea.getWidth();
-        if (wasVisibleHorz != show)
-        {
-            horzScrollbar->setVisible(show);
-            textArea = getTextRenderArea();
-            renderedText.updateFormatting(textArea.getWidth());
-        }
-    }
-
-    // Change in a horizontal scrollbar state might affect viewable area,
-    // so update vertical scrollbar state again
-    if (wasVisibleHorz != horzScrollbar->isVisible())
-    {
-        const bool show = forceVert || renderedText.getExtents().d_height > textArea.getHeight();
-        if (vertScrollbar->isVisible() != show)
-        {
-            vertScrollbar->setVisible(show);
-            textArea = getTextRenderArea();
-            renderedText.updateFormatting(textArea.getWidth());
-        }
-    }
-
-    vertScrollbar->setDocumentSize(renderedText.getExtents().d_height);
-    vertScrollbar->setPageSize(textArea.getHeight());
-    vertScrollbar->setStepSize(std::max(1.0f, textArea.getHeight() / 10.0f));
-    vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
-
-    horzScrollbar->setDocumentSize(renderedText.getExtents().d_width);
-    horzScrollbar->setPageSize(textArea.getWidth());
-    horzScrollbar->setStepSize(std::max(1.0f, textArea.getWidth() / 10.0f));
-    horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition());
 }
 
 //----------------------------------------------------------------------------//

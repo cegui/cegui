@@ -274,7 +274,6 @@ void EditboxBase::setCaretIndex(size_t caretPos)
         return;
 
     d_caretPos = caretPos;
-    ensureCaretIsVisible();
 
     WindowEventArgs args(this);
     onCaretMoved(args);
@@ -492,14 +491,15 @@ void EditboxBase::onTextChanged(WindowEventArgs& e)
     if (d_caretPos > textLen)
         setCaretIndex(textLen);
 
-    //!!!FIXME TEXT: ensureCaretIsVisible will call renderText anyway! N need to repeat it here!
-    // Mark it dirty instead!
-
     // Instead of marking the rendered text dirty we update it immediately.
     // This is required to setup scrollbars and to ensure that the caret is visible.
     invalidate();
     renderText();
+
     performChildLayout(false, false); //!!!this is only for scrollbars now, need for single line editbox?
+    //!!!need to call configureScrollbars every time after renderText() - make overridable?!
+    //???or unify single- and multiline, making this a bool flag?
+
     ensureCaretIsVisible();
 
     ++e.handled;

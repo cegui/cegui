@@ -152,6 +152,8 @@ protected:
     bool processSemanticInputEvent(const SemanticEventArgs& e) override;
     void onScroll(CursorInputEventArgs& e) override;
 
+    void configureScrollbars();
+
     /*!
     \brief
         Processing to move caret up a line.
