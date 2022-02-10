@@ -66,25 +66,8 @@ public:
     static const String VertScrollbarName; //!< Widget name for the vertical scrollbar component.
     static const String HorzScrollbarName; //!< Widget name for the horizontal scrollbar component.
 
-    /** Event fired when the mode setting that forces the display of the
-     * vertical scroll bar for the edit box is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the MultiLineEditbox whose vertical
-     * scrollbar mode has been changed.
-     */
-    static const String EventVertScrollbarModeChanged;
-    /** Event fired when the mode setting that forces the display of the
-     * horizontal scroll bar for the edit box is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the MultiLineEditbox whose horizontal
-     * scrollbar mode has been changed.
-     */
-    static const String EventHorzScrollbarModeChanged;
-
     MultiLineEditbox(const String& type, const String& name);
     virtual ~MultiLineEditbox() override;
-
-    void setCaretIndex(size_t caret_pos) override;
 
     /*!
     \brief
@@ -122,16 +105,6 @@ public:
         Thrown if the horizontal Scrollbar component does not exist.
     */
     Scrollbar* getHorzScrollbar() const;
-
-    /*!
-    \brief
-        Return a Rect object describing, in un-clipped pixels, the window relative area
-        that the text should be rendered in to.
-
-    \return
-        Rect object describing the area of the Window to be used for rendering text.
-    */
-    Rectf getTextRenderArea() const;
 
     /*!
     \brief
@@ -217,18 +190,6 @@ protected:
 
     bool handleScrollChange(const EventArgs& args);
     bool validateWindowRenderer(const WindowRenderer* renderer) const override;
-
-    /*!
-    \brief
-        Handler called when the 'always show' setting for the vertical scroll bar changes.
-    */
-    void onVertScrollbarModeChanged(WindowEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when 'always show' setting for the horizontal scroll bar changes.
-    */
-    void onHorzScrollbarModeChanged(WindowEventArgs& e);
 
     bool d_forceVertScroll = false; //!< true if vertical scrollbar should always be displayed
     bool d_forceHorzScroll = false; //!< true if horizontal scrollbar should always be displayed
