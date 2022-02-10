@@ -25,14 +25,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/WindowRendererSets/Core/Editbox.h"
-#include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
-#include "CEGUI/falagard/XMLEnumHelper.h"
-#include "CEGUI/PropertyHelper.h"
-#include "CEGUI/CoordConverter.h"
-#include "CEGUI/text/Font.h"
 #include "CEGUI/TplWindowRendererProperty.h"
-#include <stdio.h>
 
 namespace CEGUI
 {
@@ -135,8 +129,9 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
         return;
 
     // Scroll text to the visible part and center it vertically inside the area
-    Rectf textPartRect = textArea;
-    textPartRect.offset(glm::vec2(textOffset, (textArea.getHeight() - renderedText.getExtents().d_height) * 0.5f));
+    const glm::vec2 pos(
+        textArea.left() + textOffset,
+        textArea.top() + (textArea.getHeight() - renderedText.getExtents().d_height) * 0.5f);
 
     const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);
 
@@ -155,7 +150,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
         selection = &selectionInfo;
     }
 
-    renderedText.createRenderGeometry(w->getGeometryBuffers(), textPartRect.getPosition(), &normalTextCol, &textArea, selection);
+    renderedText.createRenderGeometry(w->getGeometryBuffers(), pos, &normalTextCol, &textArea, selection);
 }
 
 //----------------------------------------------------------------------------//

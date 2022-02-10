@@ -67,6 +67,68 @@ void MultiLineEditbox::initialiseComponents()
 }
 
 //----------------------------------------------------------------------------//
+void MultiLineEditbox::configureScrollbars()
+{
+    //!!!TODO TEXT: need to call configureScrollbars() when update rendered text!
+
+    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
+    if (!wr)
+        return;
+
+    Scrollbar* const vertScrollbar = getVertScrollbar();
+    Scrollbar* const horzScrollbar = getHorzScrollbar();
+
+    Rectf textArea = wr->getTextRenderArea();
+    d_renderedText.updateFormatting(textArea.getWidth());
+
+    // Update vertical scrollbar state
+    {
+        const bool show = d_forceVertScroll || d_renderedText.getExtents().d_height > textArea.getHeight();
+        if (vertScrollbar->isVisible() != show)
+        {
+            vertScrollbar->setVisible(show);
+            textArea = wr->getTextRenderArea();
+            d_renderedText.updateFormatting(textArea.getWidth());
+        }
+    }
+
+    // Update horizontal scrollbar state
+    const bool wasVisibleHorz = horzScrollbar->isVisible();
+    {
+        const bool show = d_forceHorzScroll || d_renderedText.getExtents().d_width > textArea.getWidth();
+        if (wasVisibleHorz != show)
+        {
+            horzScrollbar->setVisible(show);
+            textArea = wr->getTextRenderArea();
+            d_renderedText.updateFormatting(textArea.getWidth());
+        }
+    }
+
+    // Change in a horizontal scrollbar state might affect viewable area,
+    // so update vertical scrollbar state again
+    if (wasVisibleHorz != horzScrollbar->isVisible())
+    {
+        const bool show = d_forceVertScroll || d_renderedText.getExtents().d_height > textArea.getHeight();
+        if (vertScrollbar->isVisible() != show)
+        {
+            vertScrollbar->setVisible(show);
+            textArea = wr->getTextRenderArea();
+            d_renderedText.updateFormatting(textArea.getWidth());
+        }
+    }
+
+    vertScrollbar->setDocumentSize(d_renderedText.getExtents().d_height);
+    vertScrollbar->setPageSize(textArea.getHeight());
+    vertScrollbar->setStepSize(std::max(1.0f, textArea.getHeight() / 10.0f));
+    vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
+
+    horzScrollbar->setDocumentSize(d_renderedText.getExtents().d_width);
+    horzScrollbar->setPageSize(textArea.getWidth());
+    horzScrollbar->setStepSize(std::max(1.0f, textArea.getWidth() / 10.0f));
+    horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition());
+}
+
+//----------------------------------------------------------------------------//
 void MultiLineEditbox::ensureCaretIsVisible()
 {
     auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
@@ -275,7 +337,7 @@ void MultiLineEditbox::setShowVertScrollbar(bool setting)
     if (d_forceVertScroll == setting)return;
 
     d_forceVertScroll = setting;
-    //!!!configureScrollbars();
+    configureScrollbars();
     invalidate();
 }
 

@@ -122,22 +122,10 @@ public:
 
 protected:
 
-    /*!
-    \brief
-        Perform rendering of the widget control frame and other 'static' areas.  This
-        method should not render the actual text. Note that the text will be rendered
-        to layer 4 and the selection brush to layer 3, other layers can be used for
-        rendering imagery behind and in front of the text & selection.
-    */
-    void cacheEditboxBaseImagery();
-    void cacheTextLines(const Rectf& destArea);
+    //! helper to draw the base imagery (container and what have you)
+    void renderBaseImagery() const;
+    void createRenderGeometryForText(const Rectf& textArea);
     void cacheCaretImagery(const Rectf& textArea);
-
-    /*!
-    \brief
-        display required integrated scroll bars according to current state of the edit box and update their values.
-    */
-    void configureScrollbars();
 
     /*!
     \brief
