@@ -274,6 +274,7 @@ void EditboxBase::setCaretIndex(size_t caretPos)
         return;
 
     d_caretPos = caretPos;
+    ensureCaretIsVisible();
 
     WindowEventArgs args(this);
     onCaretMoved(args);

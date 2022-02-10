@@ -28,11 +28,8 @@
  ***************************************************************************/
 #include "CEGUI/widgets/MultiLineEditbox.h"
 #include "CEGUI/widgets/Scrollbar.h"
-#include "CEGUI/text/TextUtils.h"
 #include "CEGUI/text/Font.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/Clipboard.h"
-#include "CEGUI/UndoHandler.h"
 
 namespace CEGUI
 {
@@ -40,8 +37,6 @@ const String MultiLineEditbox::EventNamespace("MultiLineEditbox");
 const String MultiLineEditbox::WidgetTypeName("CEGUI/MultiLineEditbox");
 const String MultiLineEditbox::VertScrollbarName("__auto_vscrollbar__");
 const String MultiLineEditbox::HorzScrollbarName("__auto_hscrollbar__");
-const String MultiLineEditbox::EventVertScrollbarModeChanged("VertScrollbarModeChanged");
-const String MultiLineEditbox::EventHorzScrollbarModeChanged("HorzScrollbarModeChanged");
 
 //----------------------------------------------------------------------------//
 MultiLineEditboxWindowRenderer::MultiLineEditboxWindowRenderer(const String& name) :
@@ -63,50 +58,34 @@ MultiLineEditbox::~MultiLineEditbox() = default;
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::initialiseComponents()
 {
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    Scrollbar* horzScrollbar = getHorzScrollbar();
-
-    vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged,
+    getVertScrollbar()->subscribeEvent(Scrollbar::EventScrollPositionChanged,
         Event::Subscriber(&MultiLineEditbox::handleScrollChange, this));
-    horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged,
+    getHorzScrollbar()->subscribeEvent(Scrollbar::EventScrollPositionChanged,
         Event::Subscriber(&MultiLineEditbox::handleScrollChange, this));
 
     Window::initialiseComponents();
 }
 
 //----------------------------------------------------------------------------//
-void MultiLineEditbox::setCaretIndex(size_t caretPos)
-{
-    // Make sure new position is valid
-    const auto textLen = getText().length();
-    if (caretPos > textLen)
-        caretPos = textLen;
-
-    if (d_caretPos == caretPos)
-        return;
-
-    d_caretPos = caretPos;
-    ensureCaretIsVisible();
-
-    WindowEventArgs args(this);
-    onCaretMoved(args);
-}
-
-//----------------------------------------------------------------------------//
 void MultiLineEditbox::ensureCaretIsVisible()
 {
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    Scrollbar* horzScrollbar = getHorzScrollbar();
-
-    Rectf textArea(getTextRenderArea());
+    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
+    if (!wr)
+        return;
 
     const Font* fnt = getActualFont();
     if (!fnt)
         return;
 
-    String caretLineSubstr; // text from line start to caret pos
+
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
+
+    String caretLineSubstr; //!!!text from line start to caret pos!
     float xpos = fnt->getTextAdvance(caretLineSubstr) - horzScrollbar->getScrollPosition();
     float ypos = getLineNumberFromIndex(d_caretPos) * fnt->getLineSpacing() - vertScrollbar->getScrollPosition();
+
+    const Rectf textArea = wr->getTextRenderArea();
 
     // if caret is above window, scroll up
     if (ypos < 0)
@@ -130,10 +109,14 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
     if (text.empty())
         return 0;
 
+    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
+    if (!wr)
+        return 0;
+
     // calculate final window position to be checked
     glm::vec2 wndPt = CoordConverter::screenToWindow(*this, pt);
 
-    const Rectf textArea = getTextRenderArea();
+    const Rectf textArea = wr->getTextRenderArea();
     wndPt -= glm::vec2(textArea.d_min.x, textArea.d_min.y);
 
     // factor in scroll bar values
@@ -217,8 +200,12 @@ void MultiLineEditbox::handleLineDown(bool select)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handlePageUp(bool select)
 {
+    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
+    if (!wr)
+        return;
+
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    size_t nbLine = static_cast<size_t>(getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
+    size_t nbLine = static_cast<size_t>(wr->getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
     size_t newline = 0;
     if (nbLine < caretLine)
         newline = caretLine - nbLine;
@@ -236,8 +223,12 @@ void MultiLineEditbox::handlePageUp(bool select)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handlePageDown(bool select)
 {
+    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
+    if (!wr)
+        return;
+
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    size_t nbLine =  static_cast<size_t>(getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
+    size_t nbLine =  static_cast<size_t>(wr->getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
     size_t newline = caretLine + nbLine;
     //if (!d_lines.empty())
     //    newline = std::min(newline, d_renderedText.getLineCount() - 1);
@@ -256,20 +247,6 @@ void MultiLineEditbox::handlePageDown(bool select)
 bool MultiLineEditbox::validateWindowRenderer(const WindowRenderer* renderer) const
 {
     return dynamic_cast<const MultiLineEditboxWindowRenderer*>(renderer) != nullptr;
-}
-
-//----------------------------------------------------------------------------//
-void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
-{
-    invalidate();
-    fireEvent(EventVertScrollbarModeChanged, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-void MultiLineEditbox::onHorzScrollbarModeChanged(WindowEventArgs& e)
-{
-    invalidate();
-    fireEvent(EventHorzScrollbarModeChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -293,24 +270,13 @@ Scrollbar* MultiLineEditbox::getHorzScrollbar() const
 }
 
 //----------------------------------------------------------------------------//
-Rectf MultiLineEditbox::getTextRenderArea() const
-{
-    if (!d_windowRenderer)
-        throw InvalidRequestException("This function must be implemented by the window renderer module");
-
-    return static_cast<MultiLineEditboxWindowRenderer*>(d_windowRenderer)->getTextRenderArea();
-}
-
-//----------------------------------------------------------------------------//
 void MultiLineEditbox::setShowVertScrollbar(bool setting)
 {
     if (d_forceVertScroll == setting)return;
 
     d_forceVertScroll = setting;
-
-    //configureScrollbars();
-    WindowEventArgs args(this);
-    onVertScrollbarModeChanged(args);
+    //!!!configureScrollbars();
+    invalidate();
 }
 
 //----------------------------------------------------------------------------//

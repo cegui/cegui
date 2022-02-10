@@ -248,7 +248,7 @@ public:
     \return
         Nothing.
     */
-    virtual void setCaretIndex(size_t caretPos);
+    void setCaretIndex(size_t caretPos);
 
     //! Scroll the view so that the current caret position is visible.
     virtual void ensureCaretIsVisible() = 0;
