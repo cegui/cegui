@@ -112,7 +112,7 @@ class OGRE_GUIRENDERER_API OgreRenderer : public Renderer
 {
 public:
     //!	Convenience function that configures a CEGUI::Window to display an Ogre RenderToTexture (RTT) 
-    void OgreRenderer::configureCeguiWindowForRTT(CEGUI::Window* window, const std::string& ogreTextureName, float textureWidth, float textureHeight);
+    void configureCeguiWindowForRTT(CEGUI::Window* window, const std::string& ogreTextureName, float textureWidth, float textureHeight);
 
     /*!
     \brief
@@ -500,11 +500,11 @@ public:
     bool usesDirect3D();
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-    enum RenderingModes
+    enum class RenderingModes
     {
-        RenderingMode_Disabled,	//All rendering disabled
-        RenderingMode_RenderAllCeguiGUIContexts,	//Will automatically render all CEGUI::GUIContext every frame. 
-        RenderingMode_ConfigureManual	//User can configure which CEGUI::GUIContext will be rendered every frame and also trigger an update of a CEGUI::GUIContext manually
+        Disabled,	//All rendering disabled
+        RenderAllCeguiGUIContexts,	//Will automatically render all CEGUI::GUIContext every frame. 
+        ConfigureManual	//User can configure which CEGUI::GUIContext will be rendered every frame and also trigger an update of a CEGUI::GUIContext manually
     };
 
     /*!

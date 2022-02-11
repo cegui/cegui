@@ -170,7 +170,7 @@ struct OgreRenderer_impl
         d_dummyScene(0),
         d_dummyCamera(0),
         d_workspace(0),
-        d_RenderingMode(OgreRenderer::RenderingMode_RenderAllCeguiGUIContexts),
+        d_RenderingMode(OgreRenderer::RenderingModes::RenderAllCeguiGUIContexts),
 #endif
 #ifdef CEGUI_USE_OGRE_HLMS
         //d_renderTarget(nullptr),
@@ -278,8 +278,8 @@ struct OgreRenderer_impl
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
     OgreRenderer::RenderingModes d_RenderingMode;
-    std::vector<CEGUI::GUIContext*> d_RenderingModeManual_GuiContextToRenderEveryFrame;
-    std::vector<CEGUI::GUIContext*> d_RenderingModeManual_GuiContextToRenderQueuedOnce;
+    std::vector<CEGUI::GUIContext*> d_ManualRenderingEveryFrame;
+    std::vector<CEGUI::GUIContext*> d_ManualRenderingOnce;
     CEGUI::GUIContext* mGUIContextToRenderManually; //If set, only this GUIContext is rendered, used by void OgreRenderer::renderGuiContext(CEGUI::GUIContext* guiContext)
 #endif
 };
@@ -581,7 +581,7 @@ Ogre::Matrix4 OgreRenderer::glmToOgreMatrix(const glm::mat4& matrix)
 void OgreRenderer::setRenderingEnabled(const bool enabled)
 {
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-    d_pimpl->d_RenderingMode = enabled ? OgreRenderer::RenderingMode_RenderAllCeguiGUIContexts : OgreRenderer::RenderingMode_Disabled;
+    d_pimpl->d_RenderingMode = enabled ? OgreRenderer::RenderingModes::RenderAllCeguiGUIContexts : OgreRenderer::RenderingModes::Disabled;
     d_pimpl->d_workspace->setEnabled(enabled);
 #else
     S_frameListener.setCEGUIRenderEnabled(enabled);
@@ -592,7 +592,7 @@ void OgreRenderer::setRenderingEnabled(const bool enabled)
 bool OgreRenderer::isRenderingEnabled() const
 {
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-    return (d_pimpl->d_RenderingMode != OgreRenderer::RenderingMode_Disabled);
+    return (d_pimpl->d_RenderingMode != OgreRenderer::RenderingModes::Disabled);
 #else
     return S_frameListener.isCEGUIRenderEnabled();
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
@@ -1804,13 +1804,13 @@ OgreRenderer::RenderingModes OgreRenderer::getRenderingMode() const
 void OgreRenderer::setRenderingMode(OgreRenderer::RenderingModes renderingMode)
 {
     d_pimpl->d_RenderingMode = renderingMode;
-    d_pimpl->d_workspace->setEnabled(renderingMode != OgreRenderer::RenderingMode_Disabled);
+    d_pimpl->d_workspace->setEnabled(renderingMode != OgreRenderer::RenderingModes::Disabled);
 }
 //----------------------------------------------------------------------------//
 void OgreRenderer::renderGuiContext(CEGUI::GUIContext* guiContext)
 {
     //render given guiContext, probalby to render a Cegui-RTT used on an Ogre::Material or Ogre::HLMS
-    if(!guiContext || d_pimpl->d_RenderingMode != RenderingMode_ConfigureManual)
+    if(!guiContext || d_pimpl->d_RenderingMode != RenderingModes::ConfigureManual)
         return;
 
     //configure the RenderQueueListener:
@@ -1837,7 +1837,7 @@ void OgreRenderer::addGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext
     if(!guiContext || hasGuiContextToRenderEveryFrame(guiContext))
         return;	//nothing to do 
 
-    d_pimpl->d_RenderingModeManual_GuiContextToRenderEveryFrame.push_back(guiContext);
+    d_pimpl->d_ManualRenderingEveryFrame.push_back(guiContext);
 }
 //----------------------------------------------------------------------------//
 void OgreRenderer::removeGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext)
@@ -1845,14 +1845,14 @@ void OgreRenderer::removeGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiCont
     if(!guiContext)
         return;
 
-    std::vector<CEGUI::GUIContext*>::iterator iter = std::find(d_pimpl->d_RenderingModeManual_GuiContextToRenderEveryFrame.begin(), d_pimpl->d_RenderingModeManual_GuiContextToRenderEveryFrame.end(), guiContext);
-    if(iter != d_pimpl->d_RenderingModeManual_GuiContextToRenderEveryFrame.end())
-        d_pimpl->d_RenderingModeManual_GuiContextToRenderEveryFrame.erase(iter);
+    std::vector<CEGUI::GUIContext*>::iterator iter = std::find(d_pimpl->d_ManualRenderingEveryFrame.begin(), d_pimpl->d_ManualRenderingEveryFrame.end(), guiContext);
+    if(iter != d_pimpl->d_ManualRenderingEveryFrame.end())
+        d_pimpl->d_ManualRenderingEveryFrame.erase(iter);
 }
 //----------------------------------------------------------------------------//
 bool OgreRenderer::hasGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext) const
 {
-    return (std::find(d_pimpl->d_RenderingModeManual_GuiContextToRenderEveryFrame.begin(), d_pimpl->d_RenderingModeManual_GuiContextToRenderEveryFrame.end(), guiContext) != d_pimpl->d_RenderingModeManual_GuiContextToRenderEveryFrame.end());
+    return (std::find(d_pimpl->d_ManualRenderingEveryFrame.begin(), d_pimpl->d_ManualRenderingEveryFrame.end(), guiContext) != d_pimpl->d_ManualRenderingEveryFrame.end());
 }
 //----------------------------------------------------------------------------//
 void OgreRenderer::addGuiContextToRenderQueuedOnce(CEGUI::GUIContext* guiContext)
@@ -1861,10 +1861,10 @@ void OgreRenderer::addGuiContextToRenderQueuedOnce(CEGUI::GUIContext* guiContext
         return;
 
     //allow no duplicates, as rendering twice per frame does not help anyone
-    if(std::find(d_pimpl->d_RenderingModeManual_GuiContextToRenderEveryFrame.begin(), d_pimpl->d_RenderingModeManual_GuiContextToRenderEveryFrame.end(), guiContext) != d_pimpl->d_RenderingModeManual_GuiContextToRenderEveryFrame.end())
+    if(std::find(d_pimpl->d_ManualRenderingOnce.begin(), d_pimpl->d_ManualRenderingOnce.end(), guiContext) != d_pimpl->d_ManualRenderingOnce.end())
         return;
 
-    d_pimpl->d_RenderingModeManual_GuiContextToRenderQueuedOnce.push_back(guiContext);
+    d_pimpl->d_ManualRenderingOnce.push_back(guiContext);
 }
 #endif
 //----------------------------------------------------------------------------//
@@ -1879,7 +1879,7 @@ void OgreGUIRenderQueueListener::passPreExecute(Ogre::CompositorPass *pass)
 {
     if(pass->getType() == Ogre::PASS_SCENE)
     {
-        if(d_owner_impl->d_RenderingMode == OgreRenderer::RenderingMode_ConfigureManual && d_owner_impl->mGUIContextToRenderManually)
+        if(d_owner_impl->d_RenderingMode == OgreRenderer::RenderingModes::ConfigureManual && d_owner_impl->mGUIContextToRenderManually)
         {
             //render manually only the one GUIContext that is set
             d_owner->beginRendering();
@@ -1888,23 +1888,23 @@ void OgreGUIRenderQueueListener::passPreExecute(Ogre::CompositorPass *pass)
             // do final destruction on dead-pool windows
             WindowManager::getSingleton().cleanDeadPool();
         }
-        else if(d_owner_impl->d_RenderingMode == OgreRenderer::RenderingMode_ConfigureManual)
+        else if(d_owner_impl->d_RenderingMode == OgreRenderer::RenderingModes::ConfigureManual)
         {
-            if(d_owner_impl->d_RenderingModeManual_GuiContextToRenderEveryFrame.size() > 0 || d_owner_impl->d_RenderingModeManual_GuiContextToRenderQueuedOnce.size() > 0)
+            if(d_owner_impl->d_ManualRenderingEveryFrame.size() > 0 || d_owner_impl->d_ManualRenderingOnce.size() > 0)
             {
                 //render what is configured when running automatically
                 d_owner->beginRendering();
-                for(std::vector<CEGUI::GUIContext*>::const_iterator iter = d_owner_impl->d_RenderingModeManual_GuiContextToRenderEveryFrame.begin(); iter != d_owner_impl->d_RenderingModeManual_GuiContextToRenderEveryFrame.end(); ++iter)
+                for(std::vector<CEGUI::GUIContext*>::const_iterator iter = d_owner_impl->d_ManualRenderingEveryFrame.begin(); iter != d_owner_impl->d_ManualRenderingEveryFrame.end(); ++iter)
                     (*iter)->draw();
-                for(std::vector<CEGUI::GUIContext*>::const_iterator iter = d_owner_impl->d_RenderingModeManual_GuiContextToRenderQueuedOnce.begin(); iter != d_owner_impl->d_RenderingModeManual_GuiContextToRenderQueuedOnce.end(); ++iter)
+                for(std::vector<CEGUI::GUIContext*>::const_iterator iter = d_owner_impl->d_ManualRenderingOnce.begin(); iter != d_owner_impl->d_ManualRenderingOnce.end(); ++iter)
                     (*iter)->draw();
                 d_owner->endRendering();
                 // do final destruction on dead-pool windows
                 WindowManager::getSingleton().cleanDeadPool();
             }
-            d_owner_impl->d_RenderingModeManual_GuiContextToRenderQueuedOnce.clear();
+            d_owner_impl->d_ManualRenderingOnce.clear();
         }
-        else if(d_owner->getRenderingMode() == OgreRenderer::RenderingMode_RenderAllCeguiGUIContexts)
+        else if(d_owner->getRenderingMode() == OgreRenderer::RenderingModes::RenderAllCeguiGUIContexts)
         {
             // We should only render contexts that are on this render target
             System::getSingleton().renderAllGUIContextsOnTarget(d_owner);
