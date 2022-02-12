@@ -82,7 +82,7 @@ void Editbox::ensureCaretIsVisible()
     //auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
     //if (!wr)
     //    return;
-    const float caretWidth = 10.f;
+    const float caretWidth = 5.f;
 
     const float extentToCaretVisual = d_renderedText.getCodepointBounds(getCaretIndex()).left();
     float extentToCaretLogical = extentToCaretVisual;

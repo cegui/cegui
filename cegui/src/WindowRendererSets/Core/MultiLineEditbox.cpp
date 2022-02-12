@@ -128,9 +128,8 @@ void FalagardMultiLineEditbox::createRenderGeometry()
 void FalagardMultiLineEditbox::createRenderGeometryForText(const Rectf& textArea)
 {
     MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
-
-    const Font* font = w->getActualFont();
-    if (!font)
+    const auto& renderedText = w->getRenderedText();
+    if (renderedText.empty())
         return;
 
     // Calculate the range of visible lines
@@ -138,11 +137,7 @@ void FalagardMultiLineEditbox::createRenderGeometryForText(const Rectf& textArea
         textArea.left() - w->getHorzScrollbar()->getScrollPosition(),
         textArea.top() - w->getVertScrollbar()->getScrollPosition());
 
-    // Calculate final colours to use
     const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);
-    const ColourRect selectTextCol = getOptionalColour(SelectedTextColourPropertyName);
-    const ColourRect selectBrushCol = getOptionalColour(
-        w->hasInputFocus() ? ActiveSelectionColourPropertyName : InactiveSelectionColourPropertyName);
 
     const size_t selStart = w->getSelectionStart();
     const size_t selEnd = w->getSelectionEnd();
@@ -151,14 +146,15 @@ void FalagardMultiLineEditbox::createRenderGeometryForText(const Rectf& textArea
     if (selStart < selEnd)
     {
         selectionInfo.bgBrush = d_selectionBrush;
-        selectionInfo.bgColours = selectBrushCol;
-        selectionInfo.textColours = selectTextCol;
+        selectionInfo.bgColours = getOptionalColour(
+            w->isActive() ? ActiveSelectionColourPropertyName : InactiveSelectionColourPropertyName);
+        selectionInfo.textColours = getOptionalColour(SelectedTextColourPropertyName);
         selectionInfo.start = selStart;
         selectionInfo.end = selEnd;
         selection = &selectionInfo;
     }
 
-    w->getRenderedText().createRenderGeometry(w->getGeometryBuffers(), pos, &normalTextCol, &textArea, selection);
+    renderedText.createRenderGeometry(w->getGeometryBuffers(), pos, &normalTextCol, &textArea, selection);
 }
 
 //----------------------------------------------------------------------------//

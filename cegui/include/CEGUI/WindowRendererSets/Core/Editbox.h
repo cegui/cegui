@@ -140,7 +140,7 @@ protected:
     //! helper to draw the base imagery (container and what have you)
     void renderBaseImagery(const WidgetLookFeel& wlf) const;
 
-    void createRenderGeometryForText(const WidgetLookFeel& wlf, const Rectf& textArea, float textOffset);
+    void createRenderGeometryForText(const Rectf& textArea);
 
     const Image* d_selectionBrush = nullptr;  //!< Image to use as the selection brush (should be set by derived class).
     //! time-out in seconds used for blinking the caret.
