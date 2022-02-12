@@ -107,51 +107,51 @@ void Scrollbar::initialiseComponents()
 //----------------------------------------------------------------------------//
 void Scrollbar::setDocumentSize(float document_size)
 {
-    if (d_documentSize != document_size)
-    {
-        const bool reset_max_position = d_endLockPosition && isAtEnd();
+    if (d_documentSize == document_size)
+        return;
 
-        d_documentSize = document_size;
+    const bool reset_max_position = d_endLockPosition && isAtEnd();
 
-        if (reset_max_position)
-            setScrollPosition(getMaxScrollPosition());
-        else
-            updateThumb();
+    d_documentSize = document_size;
 
-        WindowEventArgs args(this);
-        onScrollConfigChanged(args);
-    }
+    if (reset_max_position)
+        setScrollPosition(getMaxScrollPosition());
+    else
+        updateThumb();
+
+    WindowEventArgs args(this);
+    onScrollConfigChanged(args);
 }
 
 //----------------------------------------------------------------------------//
 void Scrollbar::setPageSize(float page_size)
 {
-    if (d_pageSize != page_size)
-    {
-        const bool reset_max_position = d_endLockPosition && isAtEnd();
+    if (d_pageSize == page_size)
+        return;
 
-        d_pageSize = page_size;
+    const bool reset_max_position = d_endLockPosition && isAtEnd();
 
-        if (reset_max_position)
-            setScrollPosition(getMaxScrollPosition());
-        else
-            updateThumb();
+    d_pageSize = page_size;
 
-        WindowEventArgs args(this);
-        onScrollConfigChanged(args);
-    }
+    if (reset_max_position)
+        setScrollPosition(getMaxScrollPosition());
+    else
+        updateThumb();
+
+    WindowEventArgs args(this);
+    onScrollConfigChanged(args);
 }
 
 //----------------------------------------------------------------------------//
 void Scrollbar::setStepSize(float step_size)
 {
-    if (d_stepSize != step_size)
-    {
-        d_stepSize = step_size;
+    if (d_stepSize == step_size)
+        return;
 
-        WindowEventArgs args(this);
-        onScrollConfigChanged(args);
-    }
+    d_stepSize = step_size;
+
+    WindowEventArgs args(this);
+    onScrollConfigChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -171,8 +171,6 @@ void Scrollbar::setScrollPosition(float position)
 {
     const bool modified = setScrollPosition_impl(position);
     updateThumb();
-
-    // notification if required
     if (modified)
     {
         WindowEventArgs args(this);
@@ -406,17 +404,9 @@ float Scrollbar::getAdjustDirectionFromPoint(const glm::vec2& pt) const
 //----------------------------------------------------------------------------//
 bool Scrollbar::setScrollPosition_impl(const float position)
 {
-    const float old_pos = d_position;
-    const float max_pos = getMaxScrollPosition();
-
-    // limit position to valid range:  0 <= position <= max_pos
-    d_position = (position >= 0) ?
-                 ((position <= max_pos) ?
-                  position :
-                  max_pos) :
-                     0.0f;
-
-    return d_position != old_pos;
+    const float oldPos = d_position;
+    d_position = std::max(0.f, std::min(position, getMaxScrollPosition()));
+    return d_position != oldPos;
 }
 
 //----------------------------------------------------------------------------//

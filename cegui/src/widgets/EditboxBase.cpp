@@ -86,26 +86,34 @@ EditboxBase::~EditboxBase()
 //----------------------------------------------------------------------------//
 RenderedText& EditboxBase::getRenderedText()
 {
-    if (d_renderedTextDirty)
-        renderText();
-
+    updateRenderedText();
     return d_renderedText;
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::renderText()
+void EditboxBase::updateRenderedText()
 {
-    if (d_textMaskingEnabled)
+    if (d_renderedTextDirty)
     {
-        const String maskedText(getText().size(), static_cast<char32_t>(d_textMaskingCodepoint));
-        d_renderedText.renderText(maskedText, nullptr, getActualFont(), d_defaultParagraphDirection);
-    }
-    else
-    {
-        d_renderedText.renderText(getText(), nullptr, getActualFont(), d_defaultParagraphDirection);
+        if (d_textMaskingEnabled)
+        {
+            const String maskedText(getText().size(), static_cast<char32_t>(d_textMaskingCodepoint));
+            d_renderedText.renderText(maskedText, nullptr, getActualFont(), d_defaultParagraphDirection);
+        }
+        else
+        {
+            d_renderedText.renderText(getText(), nullptr, getActualFont(), d_defaultParagraphDirection);
+        }
+
+        d_renderedTextDirty = false;
+        d_formattingDirty = true;
     }
 
-    d_renderedTextDirty = false;
+    if (d_formattingDirty)
+    {
+        updateFormatting();
+        d_formattingDirty = false;
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -144,17 +152,28 @@ void EditboxBase::setTextMaskingEnabled(bool setting)
         return;
 
     d_textMaskingEnabled = setting;
+
+    d_renderedTextDirty = false;
+    invalidate();
+
     WindowEventArgs args(this);
     onTextMaskingEnabledChanged(args);
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::setTextMaskingCodepoint(std::uint32_t code_point)
+void EditboxBase::setTextMaskingCodepoint(std::uint32_t codePoint)
 {
-    if (code_point == d_textMaskingCodepoint)
+    if (codePoint == d_textMaskingCodepoint)
         return;
 
-    d_textMaskingCodepoint = code_point;
+    d_textMaskingCodepoint = codePoint;
+
+    if (d_textMaskingEnabled)
+    {
+        d_renderedTextDirty = false;
+        invalidate();
+    }
+
     WindowEventArgs args(this);
     onTextMaskingCodepointChanged(args);
 }
@@ -191,6 +210,7 @@ void EditboxBase::setTextFormatting(HorizontalTextFormatting format)
     d_textFormatting = decomposeHorizontalFormatting(format, wordWrap);
 
     d_renderedText.setHorizontalFormatting(d_textFormatting);
+    d_formattingDirty = true;
     invalidate();
 }
 
@@ -201,8 +221,7 @@ void EditboxBase::setDefaultParagraphDirection(DefaultParagraphDirection default
         return;
 
     d_defaultParagraphDirection = defaultParagraphDirection;
-
-    notifyScreenAreaChanged();
+    d_renderedTextDirty = true;
 
     WindowEventArgs eventArgs(this);
     fireEvent(EventDefaultParagraphDirectionChanged, eventArgs, EventNamespace);
@@ -280,26 +299,26 @@ void EditboxBase::setCaretIndex(size_t caretPos)
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::setSelection(size_t start_pos, size_t end_pos)
+void EditboxBase::setSelection(size_t startPos, size_t endPos)
 {
     const auto textLen = getText().size();
 
-    // ensure selection start point is within the valid range
-    if (start_pos > textLen)
-        start_pos = textLen;
+    // Ensure selection start point is within the valid range
+    if (startPos > textLen)
+        startPos = textLen;
 
-    // ensure selection end point is within the valid range
-    if (end_pos > textLen)
-        end_pos = textLen;
+    // Ensure selection end point is within the valid range
+    if (endPos > textLen)
+        endPos = textLen;
 
-    // ensure start is before end
-    if (start_pos > end_pos)
-        std::swap(start_pos, end_pos);
+    // Ensure start is before end
+    if (startPos > endPos)
+        std::swap(startPos, endPos);
 
-    if (start_pos != d_selectionStart || end_pos != d_selectionEnd)
+    if (startPos != d_selectionStart || endPos != d_selectionEnd)
     {
-        d_selectionStart = start_pos;
-        d_selectionEnd = end_pos;
+        d_selectionStart = startPos;
+        d_selectionEnd = endPos;
 
         WindowEventArgs args(this);
         onTextSelectionChanged(args);
@@ -468,6 +487,13 @@ void EditboxBase::onCaptureLost(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+void EditboxBase::onSized(ElementEventArgs& e)
+{
+    Window::onSized(e);
+    d_formattingDirty = true;
+}
+
+//----------------------------------------------------------------------------//
 void EditboxBase::onFontChanged(WindowEventArgs& e)
 {
     Window::onFontChanged(e);
@@ -491,16 +517,8 @@ void EditboxBase::onTextChanged(WindowEventArgs& e)
     if (d_caretPos > textLen)
         setCaretIndex(textLen);
 
-    // Instead of marking the rendered text dirty we update it immediately.
-    // This is required to setup scrollbars and to ensure that the caret is visible.
+    d_renderedTextDirty = true;
     invalidate();
-    renderText();
-
-    performChildLayout(false, false); //!!!this is only for scrollbars now, need for single line editbox?
-    //!!!need to call configureScrollbars every time after renderText() - make overridable?!
-    //???or unify single- and multiline, making this a bool flag?
-
-    ensureCaretIsVisible();
 
     ++e.handled;
 }
@@ -538,20 +556,18 @@ void EditboxBase::onSemanticInputEvent(SemanticEventArgs& e)
         const auto& text = getText();
         if (d_textMaskingEnabled)
         {
-            // If masked, set up to select all
-            d_dragAnchorIdx = 0;
+            // If masked, select all
             setCaretIndex(text.size());
+            setSelection(0, d_caretPos);
         }
         else
         {
             // Not masked, so select the word that was double-clicked
-            d_dragAnchorIdx = TextUtils::getWordStartIndex(text,
+            const auto start = TextUtils::getWordStartIndex(text,
                 (d_caretPos == text.size()) ? d_caretPos : d_caretPos + 1);
-            d_caretPos = TextUtils::getNextWordStartIndex(text, d_caretPos);
+            setCaretIndex(TextUtils::getNextWordStartIndex(text, d_caretPos));
+            setSelection(start, d_caretPos);
         }
-
-        // perform actual selection operation.
-        setSelection(d_dragAnchorIdx, d_caretPos);
 
         ++e.handled;
     }
@@ -563,10 +579,8 @@ void EditboxBase::onSemanticInputEvent(SemanticEventArgs& e)
     {
         if (!getSelectionLength())
         {
-            const bool isSelection =
-                (e.d_semanticValue >= SemanticValue::SelectRange && e.d_semanticValue <= SemanticValue::SelectToEndOfLine) ||
-                (e.d_semanticValue >= SemanticValue::SelectToStartOfDocument && e.d_semanticValue <= SemanticValue::SelectToPreviousPage);
-            if (isSelection)
+            //???FIXME TEXT: need? why not remember start pos when handling selection?!
+            if (e.d_semanticValue >= SemanticValue::SelectRange && e.d_semanticValue <= SemanticValue::SelectDown)
                 d_dragAnchorIdx = d_caretPos;
         }
 
@@ -944,16 +958,12 @@ void EditboxBase::onReadOnlyChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void EditboxBase::onTextMaskingEnabledChanged(WindowEventArgs& e)
 {
-    invalidate();
     fireEvent(EventTextMaskingEnabledChanged , e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 void EditboxBase::onTextMaskingCodepointChanged(WindowEventArgs& e)
 {
-    if (isTextMaskingEnabled())
-        invalidate();
-
     fireEvent(EventTextMaskingCodepointChanged , e, EventNamespace);
 }
 

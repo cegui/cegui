@@ -81,6 +81,7 @@ public:
     bool empty() const { return d_paragraphs.empty(); }
     size_t getParagraphCount() const { return d_paragraphs.size(); }
     size_t getLineCount() const;
+    float getAreaWidth() const { return d_areaWidth; }
     const Font* getDefaultFont() const { return d_defaultFont; }
     bool isFittingIntoAreaWidth() const;
     size_t getTextIndexAtPoint(const glm::vec2& pt) const;

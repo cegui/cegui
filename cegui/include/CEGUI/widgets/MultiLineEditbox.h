@@ -148,11 +148,10 @@ public:
 
 protected:
 
+    void updateFormatting() override;
     size_t getTextIndexFromPosition(const glm::vec2& pt) const override;
     bool processSemanticInputEvent(const SemanticEventArgs& e) override;
     void onScroll(CursorInputEventArgs& e) override;
-
-    void configureScrollbars();
 
     /*!
     \brief
