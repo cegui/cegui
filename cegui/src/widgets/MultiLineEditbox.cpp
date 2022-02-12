@@ -135,35 +135,25 @@ void MultiLineEditbox::ensureCaretIsVisible()
 
     updateRenderedText();
 
-
-//// OLD:
-
-    const Font* fnt = getActualFont();
-    if (!fnt)
-        return;
-
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    Scrollbar* horzScrollbar = getHorzScrollbar();
-
-    String caretLineSubstr; //!!!text from line start to caret pos!
-    float xpos = fnt->getTextAdvance(caretLineSubstr) - horzScrollbar->getScrollPosition();
-    float ypos = 0.f; //!!!getLineNumberFromIndex(d_caretPos)* fnt->getLineSpacing() - vertScrollbar->getScrollPosition();
-
+    const auto caretGlyphRect = d_renderedText.getCodepointBounds(getCaretIndex());
     const Rectf textArea = wr->getTextRenderArea();
 
-    // if caret is above window, scroll up
-    if (ypos < 0)
-        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + ypos);
-    // if caret is below the window, scroll down
-    else if ((ypos += fnt->getLineSpacing()) > textArea.getHeight())
-        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + ypos - textArea.getHeight() + fnt->getLineSpacing());
+    //!!!TODO TEXT: get caret width from EditboxBaseRenderer?
+    const float caretWidth = 5.f;
+    const float areaWidth = textArea.getWidth() - caretWidth;
+    const float caretOffsetX = caretGlyphRect.left();
 
-    // if caret is left of the window, scroll left
-    if (xpos < 0)
-        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + xpos - 50);
-    // if caret is right of the window, scroll right
-    else if (xpos > textArea.getWidth())
-        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + xpos - textArea.getWidth() + 50);
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    if (caretGlyphRect.top() < vertScrollbar->getScrollPosition())
+        vertScrollbar->setScrollPosition(caretGlyphRect.top());
+    else if (caretGlyphRect.bottom() > vertScrollbar->getScrollPosition() + textArea.getHeight())
+        vertScrollbar->setScrollPosition(caretGlyphRect.bottom() - textArea.getHeight());
+
+    Scrollbar* horzScrollbar = getHorzScrollbar();
+    if (caretOffsetX < horzScrollbar->getScrollPosition())
+        horzScrollbar->setScrollPosition(caretOffsetX);
+    else if (caretOffsetX > horzScrollbar->getScrollPosition() + areaWidth)
+        horzScrollbar->setScrollPosition(caretOffsetX - areaWidth);
 }
 
 //----------------------------------------------------------------------------//

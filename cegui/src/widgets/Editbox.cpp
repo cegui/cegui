@@ -77,42 +77,15 @@ void Editbox::ensureCaretIsVisible()
 {
     updateRenderedText();
 
-    //!!!TODO TEXT: IMPLEMENT! Delegate ensureCaretIsVisible to the renderer because it knows
-    // the size of the caret itself? or get caret width from EditboxBaseRenderer?
-    //auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
-    //if (!wr)
-    //    return;
+    //!!!TODO TEXT: get caret width from EditboxBaseRenderer?
     const float caretWidth = 5.f;
+    const float areaWidth = d_renderedText.getAreaWidth() - caretWidth;
+    const float caretOffsetX = d_renderedText.getCodepointBounds(getCaretIndex()).left();
 
-    const float extentToCaretVisual = d_renderedText.getCodepointBounds(getCaretIndex()).left();
-    float extentToCaretLogical = extentToCaretVisual;
-    switch (d_textFormatting)
-    {
-        case HorizontalTextFormatting::CentreAligned:
-            extentToCaretLogical = (d_renderedText.getExtents().d_height - caretWidth) / 2.f;
-            break;
-        case HorizontalTextFormatting::RightAligned:
-            extentToCaretLogical = extentToCaretVisual - caretWidth;
-            break;
-    }
-
-    const float areaWidth = d_renderedText.getAreaWidth();
-
-    // Update text offset if caret is to the left or to the right of the box
-    if ((d_textOffset + extentToCaretLogical) < 0)
-        d_textOffset = -extentToCaretLogical;
-    else if ((d_textOffset + extentToCaretLogical) >= (areaWidth - caretWidth))
-        d_textOffset = areaWidth - extentToCaretLogical - caretWidth;
-
-    switch (d_textFormatting)
-    {
-        case HorizontalTextFormatting::CentreAligned:
-            d_textOffset = (areaWidth - d_renderedText.getExtents().d_height) / 2.f;
-            break;
-        case HorizontalTextFormatting::RightAligned:
-            d_textOffset = areaWidth - d_renderedText.getExtents().d_height - d_textOffset;
-            break;
-    }
+    if (caretOffsetX < d_textOffset)
+        d_textOffset = caretOffsetX;
+    else if (caretOffsetX > d_textOffset + areaWidth)
+        d_textOffset = caretOffsetX - areaWidth;
 }
 
 //----------------------------------------------------------------------------//
@@ -132,7 +105,7 @@ size_t Editbox::getTextIndexFromPosition(const glm::vec2& pt)
     glm::vec2 localPt = CoordConverter::screenToWindow(*this, pt) - textArea.d_min;
 
     //???FIXME TEXT: move to renderer? Should not rely on the same calculations in different places!
-    localPt.x -= d_textOffset;
+    localPt.x += d_textOffset;
     localPt.y -= (textArea.getHeight() - d_renderedText.getExtents().d_height) * 0.5f;
 
     return d_renderedText.getTextIndexAtPoint(localPt);

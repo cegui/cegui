@@ -125,7 +125,6 @@ protected:
     //! helper to draw the base imagery (container and what have you)
     void renderBaseImagery() const;
     void createRenderGeometryForText(const Rectf& textArea);
-    void cacheCaretImagery(const Rectf& textArea);
 
     /*!
     \brief

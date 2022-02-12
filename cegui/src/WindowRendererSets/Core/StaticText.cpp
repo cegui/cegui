@@ -647,7 +647,7 @@ void FalagardStaticText::updateFormatting() const
         {
             d_actualHorzFormatting = HorizontalTextFormatting::CentreAligned;
             d_renderedText.setHorizontalFormatting(d_actualHorzFormatting);
-            d_renderedText.updateFormatting(getTextRenderAreaWithoutUpdate().getSize().d_width);
+            d_renderedText.updateFormatting(getTextRenderAreaWithoutUpdate().getWidth());
         }
 
         if (d_window->isHeightAdjustedToContent() && (d_numOfTextLinesToShow.isAuto() || d_numOfTextLinesToShow <= lineCount))
