@@ -111,6 +111,9 @@ struct OgreRenderer_impl;
 class OGRE_GUIRENDERER_API OgreRenderer : public Renderer
 {
 public:
+    //!	Convenience function that configures a CEGUI::Window to display an Ogre RenderToTexture (RTT) 
+    void configureCeguiWindowForRTT(CEGUI::Window* window, const std::string& ogreTextureName, float textureWidth, float textureHeight);
+
     /*!
     \brief
         Convenience function that creates all the Ogre specific objects and
@@ -496,6 +499,41 @@ public:
     */
     bool usesDirect3D();
 
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+    enum class RenderingModes
+    {
+        Disabled,	//All rendering disabled
+        RenderAllCeguiGUIContexts,	//Will automatically render all CEGUI::GUIContext every frame. 
+        ConfigureManual	//User can configure which CEGUI::GUIContext will be rendered every frame and also trigger an update of a CEGUI::GUIContext manually
+    };
+
+    /*!
+      \brief
+      sets the RenderingMode to use
+      default is RenderingMode_RenderAllCeguiGUIContexts
+
+      \note
+        Following modes are availiable:
+        RenderingMode_Disabled: All rendering disabled
+        RenderingMode_RenderAllCeguiGUIContexts: Will automatically render all CEGUI::GUIContext every frame.
+        RenderingMode_ConfigureManual:	User can configure which CEGUI::GUIContext will be rendered every frame and also trigger an update of a CEGUI::GUIContext manually*/
+    void setRenderingMode(RenderingModes renderingMode);
+
+    //! return current RenderingMode
+    RenderingModes getRenderingMode() const;
+
+    //! Updates the given GUIContext and draws it now. This can be used to update a GUIContext that targets a specific Ogre::TextureGpu (only used for RenderingMode_ConfigureManual)
+    void renderGuiContext(CEGUI::GUIContext* guiContext);
+    //! Adds a GUIContext to be rendered every frame. Used i.e. for the main GUI Windows drawn on top of everthing else (only used for RenderingMode_ConfigureManual)
+    void addGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext);
+    //! Removes a GUIContext from to be rendered every frame. (only used for RenderingMode_ConfigureManual)
+    void removeGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext);
+    //! returns true if the given GUIContext is rendered every frame. (only used for RenderingMode_ConfigureManual)
+    bool hasGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext) const;
+    //! Similar to drawManualGuiContext, but it is not rendered right now, but next time when Ogre renderes one frame. (only used for RenderingMode_ConfigureManual)
+    void addGuiContextToRenderQueuedOnce(CEGUI::GUIContext* guiContext);
+#endif  
+
 protected:
     //! default constructor.
     OgreRenderer();
@@ -523,8 +561,7 @@ protected:
 #else
     void constructor_impl(Ogre::RenderTarget& target);
 #endif // CEGUI_USE_OGRE_TEXTURE_GPU
-    //! Helper that switches off shader-usage
-    void switchShaderUsageOff();
+    
     //! helper that creates and sets up shaders
     void initialiseShaders();
     //! helper to clean up shaders
