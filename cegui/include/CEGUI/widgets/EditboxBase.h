@@ -446,9 +446,6 @@ protected:
     void updateRenderedText();
     virtual void updateFormatting() = 0;
 
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const override = 0;
-    virtual bool handleFontRenderSizeChange(const Font& font) override;
-
     /*!
     \brief
         Return the text code point index that is rendered closest to screen
@@ -461,7 +458,10 @@ protected:
         Code point index into the text that is rendered closest to screen
         position \a pt.
     */
-    virtual size_t getTextIndexFromPosition(const glm::vec2& pt) const = 0;
+    virtual size_t getTextIndexFromPosition(const glm::vec2& pt) = 0;
+
+    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const override = 0;
+    virtual bool handleFontRenderSizeChange(const Font& font) override;
 
     //! Clear the currently defined selection (just the region, not the text).
     void clearSelection();

@@ -167,7 +167,7 @@ void MultiLineEditbox::ensureCaretIsVisible()
 }
 
 //----------------------------------------------------------------------------//
-size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
+size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt)
 {
     const auto& text = getText();
     if (text.empty())
@@ -177,30 +177,14 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
     if (!wr)
         return 0;
 
-    // calculate final window position to be checked
-    glm::vec2 wndPt = CoordConverter::screenToWindow(*this, pt);
+    updateRenderedText();
 
-    const Rectf textArea = wr->getTextRenderArea();
-    wndPt -= glm::vec2(textArea.d_min.x, textArea.d_min.y);
+    glm::vec2 localPt = CoordConverter::screenToWindow(*this, pt) - wr->getTextRenderArea().d_min;
 
-    // factor in scroll bar values
-    wndPt.x += getHorzScrollbar()->getScrollPosition();
-    wndPt.y += getVertScrollbar()->getScrollPosition();
+    localPt.x += getHorzScrollbar()->getScrollPosition();
+    localPt.y += getVertScrollbar()->getScrollPosition();
 
-    size_t lineNumber = static_cast<size_t>(
-        std::max(0.0f, wndPt.y) / getActualFont()->getLineSpacing());
-
-    if (lineNumber >= d_renderedText.getLineCount())
-        lineNumber = d_renderedText.getLineCount() - 1;
-
-    const String lineText;// (text.substr(line.d_startIdx, line.d_length));
-
-    size_t lineIdx = getActualFont()->getCharAtPixel(lineText, wndPt.x);
-
-    if (lineIdx >= lineText.length() - 1)
-        lineIdx = lineText.length() - 1;
-
-    return /*d_lines[lineNumber].d_startIdx +*/ lineIdx;
+    return d_renderedText.getTextIndexAtPoint(localPt);
 }
 
 //----------------------------------------------------------------------------//
