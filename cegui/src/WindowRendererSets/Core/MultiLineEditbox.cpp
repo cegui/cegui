@@ -121,7 +121,20 @@ void FalagardMultiLineEditbox::createRenderGeometry()
     // Create the render geometry for the caret
     auto w = static_cast<const MultiLineEditbox*>(d_window);
     if (w->hasInputFocus() && !w->isReadOnly() && (!d_blinkCaret || d_showCaret))
-        cacheCaretImagery(textArea);
+    {
+        const auto& caretImagery = getLookNFeel().getImagerySection("Caret");
+        const auto caretGlyphRect = w->getRenderedText().getCodepointBounds(w->getCaretIndex());
+
+        const Rectf caretRect(
+            glm::vec2(
+                textArea.left() + caretGlyphRect.left() - w->getHorzScrollbar()->getScrollPosition(),
+                textArea.top() + caretGlyphRect.top() - w->getVertScrollbar()->getScrollPosition()),
+            Sizef(
+                caretImagery.getBoundingRect(*w).getWidth(),
+                caretGlyphRect.getHeight()));
+
+        caretImagery.render(*d_window, caretRect, nullptr, &textArea);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -155,34 +168,6 @@ void FalagardMultiLineEditbox::createRenderGeometryForText(const Rectf& textArea
     }
 
     renderedText.createRenderGeometry(w->getGeometryBuffers(), pos, &normalTextCol, &textArea, selection);
-}
-
-//----------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
-{
-    MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
-    const Font* font = w->getActualFont();
-    if (!font)
-        return;
-
-    /*
-    // Calculate pixel offsets to where caret should be drawn
-    const size_t caretLineIdx = w->getCaretIndex() - lines[caretLine].d_startIdx;
-    const float ypos = caretLine * font->getLineSpacing();
-    const float xpos = font->getTextAdvance(w->getText().substr(lines[caretLine].d_startIdx, caretLineIdx));
-
-    const ImagerySection& caretImagery = getLookNFeel().getImagerySection("Caret");
-
-    // Calculate final destination area for caret
-    Rectf caretArea;
-    caretArea.left(xpos + textArea.left() - w->getHorzScrollbar()->getScrollPosition());
-    caretArea.top(ypos + textArea.top() - w->getVertScrollbar()->getScrollPosition());
-    caretArea.setWidth(caretImagery.getBoundingRect(*w).getSize().d_width);
-    caretArea.setHeight(font->getLineSpacing());
-
-    // Create the render geometry for the caret image
-    caretImagery.render(*w, caretArea, nullptr, &textArea);
-    */
 }
 
 //----------------------------------------------------------------------------//

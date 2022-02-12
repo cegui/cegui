@@ -72,7 +72,7 @@ void FalagardEditbox::createRenderGeometry()
     if (w->hasInputFocus() && !w->isReadOnly() && (!d_blinkCaret || d_showCaret))
     {
         Rectf caretRect(textArea);
-        caretRect.d_min.x += w->getRenderedText().getCodepointBounds(w->getCaretIndex()).left() + w->getTextOffset();
+        caretRect.d_min.x += w->getRenderedText().getCodepointBounds(w->getCaretIndex()).left() - w->getTextOffset();
         wlf.getImagerySection("Caret").render(*d_window, caretRect, nullptr, &textArea);
     }
 }
@@ -110,7 +110,7 @@ void FalagardEditbox::createRenderGeometryForText(const Rectf& textArea)
 
     // Scroll text to the visible part and center it vertically inside the area
     const glm::vec2 pos(
-        textArea.left() + w->getTextOffset(),
+        textArea.left() - w->getTextOffset(),
         textArea.top() + (textArea.getHeight() - renderedText.getExtents().d_height) * 0.5f);
 
     const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);

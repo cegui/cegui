@@ -448,6 +448,7 @@ void EditboxBase::onCursorPressHold(CursorInputEventArgs& e)
             //        getV2lMapping()[d_dragAnchorIdx];
 #endif
             setCaretIndex(d_dragAnchorIdx);
+            ensureCaretIsVisible();
         }
 
         ++e.handled;
@@ -480,6 +481,7 @@ void EditboxBase::onCursorMove(CursorInputEventArgs& e)
 #endif
         setCaretIndex(anchorIdx);
         setSelection(d_caretPos, d_dragAnchorIdx);
+        ensureCaretIsVisible();
     }
 
     ++e.handled;
@@ -702,6 +704,7 @@ void EditboxBase::handleCharLeft(bool select)
         size_t previousCodePointPos = caretIter.getCodeUnitIndexFromStart();
 #endif
         setCaretIndex(previousCodePointPos);
+        ensureCaretIsVisible();
     }
 
     if (select)
@@ -714,7 +717,10 @@ void EditboxBase::handleCharLeft(bool select)
 void EditboxBase::handleWordLeft(bool select)
 {
     if (d_caretPos > 0)
+    {
         setCaretIndex(TextUtils::getWordStartIndex(getText(), getCaretIndex()));
+        ensureCaretIsVisible();
+    }
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
@@ -734,6 +740,7 @@ void EditboxBase::handleCharRight(bool select)
         size_t codePointSize = String::getCodePointSize(currentText[d_caretPos]);
 #endif
         setCaretIndex(d_caretPos + codePointSize);
+        ensureCaretIsVisible();
     }
 
     if (select)
@@ -746,7 +753,10 @@ void EditboxBase::handleCharRight(bool select)
 void EditboxBase::handleWordRight(bool select)
 {
     if (d_caretPos < getText().size())
+    {
         setCaretIndex(TextUtils::getNextWordStartIndex(getText(), d_caretPos));
+        ensureCaretIsVisible();
+    }
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
@@ -758,7 +768,10 @@ void EditboxBase::handleWordRight(bool select)
 void EditboxBase::handleHome(bool select, bool lineOnly)
 {
     if (d_caretPos > 0)
+    {
         setCaretIndex(0);
+        ensureCaretIsVisible();
+    }
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
@@ -787,7 +800,10 @@ void EditboxBase::handleEnd(bool select, bool lineOnly)
 {
     const auto textLen = getText().size();
     if (d_caretPos < textLen)
+    {
         setCaretIndex(textLen);
+        ensureCaretIsVisible();
+    }
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
@@ -817,6 +833,7 @@ void EditboxBase::handleSelectAll()
     const auto textLen = getText().size();
     setSelection(0, textLen);
     setCaretIndex(textLen);
+    ensureCaretIsVisible();
 
     //!!!TODO TEXT:
     // - detect current paragraph from the caret
@@ -867,6 +884,7 @@ void EditboxBase::handleBackspace()
         {
             setCaretIndex(d_selectionStart);
             clearSelection();
+            ensureCaretIsVisible();
 
             setText(tmp);
             d_undoHandler->addUndoHistory(undoDeleteSelection);
@@ -897,6 +915,7 @@ void EditboxBase::handleBackspace()
         if (handleValidityChangeForString(tmp))
         {
             setCaretIndex(deleteStartPos);
+            ensureCaretIsVisible();
 
             // set text to the newly modified string
             setText(tmp);
@@ -926,6 +945,7 @@ void EditboxBase::handleDelete()
         {
             setCaretIndex(d_selectionStart);
             clearSelection();
+            ensureCaretIsVisible();
 
             setText(tmp);
             d_undoHandler->addUndoHistory(undoSelection);
