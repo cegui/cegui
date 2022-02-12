@@ -108,13 +108,6 @@ public:
 
     /*!
     \brief
-        Return the line number a given index falls on with the current formatting.  Will return last line
-        if index is out of range.
-    */
-    size_t getLineNumberFromIndex(size_t index) const;
-
-    /*!
-    \brief
         Initialise the Window based object ready for use.
 
     \note

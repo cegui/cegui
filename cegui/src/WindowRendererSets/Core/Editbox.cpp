@@ -64,22 +64,15 @@ void FalagardEditbox::createRenderGeometry()
 
     renderBaseImagery(wlf);
 
-    Editbox* const w = static_cast<Editbox*>(d_window);
-    auto& renderedText = w->getRenderedText();
-
     const Rectf textArea = getTextRenderArea();
-    renderedText.updateFormatting(textArea.getWidth());
-
-    //!!!???FIXME TEXT: control in widget, not in renderer!?
-    w->ensureCaretIsVisible();
-
-    createRenderGeometryForText(wlf, textArea, w->getTextOffset());
+    createRenderGeometryForText(textArea);
 
     // Create the render geometry for the caret
+    Editbox* const w = static_cast<Editbox*>(d_window);
     if (w->hasInputFocus() && !w->isReadOnly() && (!d_blinkCaret || d_showCaret))
     {
         Rectf caretRect(textArea);
-        caretRect.d_min.x += renderedText.getCodepointBounds(w->getCaretIndex()).left() + w->getTextOffset();
+        caretRect.d_min.x += w->getRenderedText().getCodepointBounds(w->getCaretIndex()).left() + w->getTextOffset();
         wlf.getImagerySection("Caret").render(*d_window, caretRect, nullptr, &textArea);
     }
 }
@@ -108,8 +101,7 @@ void FalagardEditbox::renderBaseImagery(const WidgetLookFeel& wlf) const
 }
 
 //----------------------------------------------------------------------------//
-void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
-    const Rectf& textArea, float textOffset)
+void FalagardEditbox::createRenderGeometryForText(const Rectf& textArea)
 {
     Editbox* const w = static_cast<Editbox*>(d_window);
     const auto& renderedText = w->getRenderedText();
@@ -118,7 +110,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
 
     // Scroll text to the visible part and center it vertically inside the area
     const glm::vec2 pos(
-        textArea.left() + textOffset,
+        textArea.left() + w->getTextOffset(),
         textArea.top() + (textArea.getHeight() - renderedText.getExtents().d_height) * 0.5f);
 
     const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);
@@ -131,7 +123,7 @@ void FalagardEditbox::createRenderGeometryForText(const WidgetLookFeel& wlf,
     {
         selectionInfo.bgBrush = d_selectionBrush;
         selectionInfo.bgColours = getOptionalColour(
-            w->hasInputFocus() ? ActiveSelectionColourPropertyName : InactiveSelectionColourPropertyName);
+            w->isActive() ? ActiveSelectionColourPropertyName : InactiveSelectionColourPropertyName);
         selectionInfo.textColours = getOptionalColour(SelectedTextColourPropertyName);
         selectionInfo.start = selStart;
         selectionInfo.end = selEnd;

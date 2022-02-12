@@ -113,6 +113,7 @@ void EditboxBase::updateRenderedText()
     if (d_formattingDirty)
     {
         updateFormatting();
+        invalidate();
         d_formattingDirty = false;
     }
 }
@@ -363,34 +364,39 @@ bool EditboxBase::insertString(String&& text)
     }
 
     UndoHandler::UndoAction undoDeleteSelection;
-    const bool hasSelection = !!getSelectionLength();
-    if (hasSelection)
+    const auto selLength = getSelectionLength();
+    if (selLength)
     {
-        undoDeleteSelection.d_type = UndoHandler::UndoActionType::Delete;
-        undoDeleteSelection.d_startIdx = getSelectionStart();
-        undoDeleteSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
+        const auto selStart = getSelectionStart();
 
-        tmp.erase(getSelectionStart(), getSelectionLength());
+        undoDeleteSelection.d_type = UndoHandler::UndoActionType::Delete;
+        undoDeleteSelection.d_startIdx = selStart;
+        undoDeleteSelection.d_text = tmp.substr(selStart, selLength);
+
+        tmp.erase(selStart, selLength);
     }
 
-    tmp.insert(getSelectionStart(), text);
+    const auto insertPos = getCaretIndex();
+    tmp.insert(insertPos, text);
 
     if (!handleValidityChangeForString(tmp))
         return false;
 
     UndoHandler::UndoAction undoInsert;
     undoInsert.d_type = UndoHandler::UndoActionType::Insert;
-    undoInsert.d_startIdx = getCaretIndex();
+    undoInsert.d_startIdx = insertPos;
     undoInsert.d_text = std::move(text);
 
-    setCaretIndex(d_selectionStart + undoInsert.d_text.size());
     clearSelection();
+    setCaretIndex(insertPos + undoInsert.d_text.size());
 
     setText(tmp);
 
     d_undoHandler->addUndoHistory(undoInsert);
-    if (hasSelection)
+    if (selLength)
         d_undoHandler->addUndoHistory(undoDeleteSelection);
+
+    ensureCaretIsVisible();
 
     return true;
 }

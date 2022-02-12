@@ -147,7 +147,7 @@ void MultiLineEditbox::ensureCaretIsVisible()
 
     String caretLineSubstr; //!!!text from line start to caret pos!
     float xpos = fnt->getTextAdvance(caretLineSubstr) - horzScrollbar->getScrollPosition();
-    float ypos = getLineNumberFromIndex(d_caretPos) * fnt->getLineSpacing() - vertScrollbar->getScrollPosition();
+    float ypos = 0.f; //!!!getLineNumberFromIndex(d_caretPos)* fnt->getLineSpacing() - vertScrollbar->getScrollPosition();
 
     const Rectf textArea = wr->getTextRenderArea();
 
@@ -188,32 +188,10 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt)
 }
 
 //----------------------------------------------------------------------------//
-size_t MultiLineEditbox::getLineNumberFromIndex(size_t index) const
-{
-    size_t lineCount = d_renderedText.getLineCount();
-
-    if (!lineCount)
-        return 0;
-
-    if (index >= getText().length() - 1)
-        return lineCount - 1;
-
-    size_t indexCount = 0;
-    for (size_t caretLine = 0; caretLine < lineCount; ++caretLine)
-    {
-        //indexCount += d_lines[caretLine].d_length;
-        if (index < indexCount)
-            return caretLine;
-    }
-
-    return 0;
-}
-
-//----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineUp(bool select)
 {
-    size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    if (caretLine > 0)
+    //size_t caretLine = getLineNumberFromIndex(d_caretPos);
+    //if (caretLine > 0)
     {
         //float caretPixelOffset = getActualFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
         //--caretLine;
@@ -230,8 +208,8 @@ void MultiLineEditbox::handleLineUp(bool select)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineDown(bool select)
 {
-    size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    if ((d_renderedText.getLineCount() > 1) && (caretLine < (d_renderedText.getLineCount() - 1)))
+    //size_t caretLine = getLineNumberFromIndex(d_caretPos);
+    //if ((d_renderedText.getLineCount() > 1) && (caretLine < (d_renderedText.getLineCount() - 1)))
     {
         //float caretPixelOffset = getActualFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
         //++caretLine;
@@ -252,11 +230,11 @@ void MultiLineEditbox::handlePageUp(bool select)
     if (!wr)
         return;
 
-    size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    size_t nbLine = static_cast<size_t>(wr->getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
-    size_t newline = 0;
-    if (nbLine < caretLine)
-        newline = caretLine - nbLine;
+    //size_t caretLine = getLineNumberFromIndex(d_caretPos);
+    //size_t nbLine = static_cast<size_t>(wr->getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
+    //size_t newline = 0;
+    //if (nbLine < caretLine)
+    //    newline = caretLine - nbLine;
 
     //setCaretIndex(d_lines[newline].d_startIdx);
 
@@ -275,9 +253,9 @@ void MultiLineEditbox::handlePageDown(bool select)
     if (!wr)
         return;
 
-    size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    size_t nbLine =  static_cast<size_t>(wr->getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
-    size_t newline = caretLine + nbLine;
+    //size_t caretLine = getLineNumberFromIndex(d_caretPos);
+    //size_t nbLine =  static_cast<size_t>(wr->getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
+    //size_t newline = caretLine + nbLine;
     //if (!d_lines.empty())
     //    newline = std::min(newline, d_renderedText.getLineCount() - 1);
 
