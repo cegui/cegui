@@ -433,27 +433,18 @@ public:
     */
     void setValidator(RegexMatcher* matcher);
 
-    //! \copydoc Window::performCopy
-    bool performCopy(Clipboard& clipboard) override;
-
-    //! \copydoc Window::performCut
-    bool performCut(Clipboard& clipboard) override;
-
-    //! \copydoc Window::performPaste
-    bool performPaste(Clipboard& clipboard) override;
-
-    //! \copydoc Window::setEnabled
     void setEnabled(bool enabled) override;
- 
-    //! \copydoc Window::performUndo
-    bool performUndo() override;
 
-    //! \copydoc Window::performRedo
+    bool performCopy(Clipboard& clipboard) override;
+    bool performCut(Clipboard& clipboard) override;
+    bool performPaste(Clipboard& clipboard) override;
+    bool performUndo() override;
     bool performRedo() override;
 
 protected:
 
-    void renderText();
+    void updateRenderedText();
+    virtual void updateFormatting() = 0;
 
     virtual bool validateWindowRenderer(const WindowRenderer* renderer) const override = 0;
     virtual bool handleFontRenderSizeChange(const Font& font) override;
@@ -647,6 +638,7 @@ protected:
     void onCursorActivate(CursorInputEventArgs& e) override;
     void onCursorMove(CursorInputEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;
+    void onSized(ElementEventArgs& e) override;
 
     void onFontChanged(WindowEventArgs& e) override;
     void onTextChanged(WindowEventArgs& e) override;
@@ -670,7 +662,7 @@ protected:
     //! End of selection area.
     size_t d_selectionEnd = 0;
     //! Selection index for drag selection anchor point.
-    size_t d_dragAnchorIdx;
+    size_t d_dragAnchorIdx = 0;
     //! Undo handler
     std::unique_ptr<UndoHandler> d_undoHandler;
 
@@ -696,6 +688,7 @@ protected:
     bool d_dragging = false;
 
     bool d_renderedTextDirty = true;
+    bool d_formattingDirty = true;
 
     //! specifies whether validator was created by us, or supplied by user.
     bool d_weOwnValidator = true;

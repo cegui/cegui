@@ -66,17 +66,23 @@ void Editbox::setTextFormatting(HorizontalTextFormatting format)
 }
 
 //----------------------------------------------------------------------------//
+void Editbox::updateFormatting()
+{
+    if (auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer))
+        d_renderedText.updateFormatting(wr->getTextRenderArea().getWidth());
+}
+
+//----------------------------------------------------------------------------//
 void Editbox::ensureCaretIsVisible()
 {
     auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
     if (!wr)
         return;
 
-    const Rectf textArea = wr->getTextRenderArea();
-    d_renderedText.updateFormatting(textArea.getWidth());
+    updateRenderedText();
 
-    //!!!TODO TEXT: IMPLEMENT! Delegate to the renderer because it knows the size of the caret itself?
-    //???or get caret width from EditboxBaseRenderer?
+    //!!!TODO TEXT: IMPLEMENT! Delegate ensureCaretIsVisible to the renderer because it knows
+    // the size of the caret itself? or get caret width from EditboxBaseRenderer?
     const float caretWidth = 10.f;
 
     const float extentToCaretVisual = d_renderedText.getCodepointBounds(getCaretIndex()).left();
@@ -94,8 +100,8 @@ void Editbox::ensureCaretIsVisible()
     // Update text offset if caret is to the left or to the right of the box
     if ((d_textOffset + extentToCaretLogical) < 0)
         d_textOffset = -extentToCaretLogical;
-    else if ((d_textOffset + extentToCaretLogical) >= (textArea.getWidth() - caretWidth))
-        d_textOffset = textArea.getWidth() - extentToCaretLogical - caretWidth;
+    else if ((d_textOffset + extentToCaretLogical) >= (d_renderedText.getAreaWidth() - caretWidth))
+        d_textOffset = d_renderedText.getAreaWidth() - extentToCaretLogical - caretWidth;
 }
 
 //----------------------------------------------------------------------------//

@@ -67,10 +67,8 @@ void MultiLineEditbox::initialiseComponents()
 }
 
 //----------------------------------------------------------------------------//
-void MultiLineEditbox::configureScrollbars()
+void MultiLineEditbox::updateFormatting()
 {
-    //!!!TODO TEXT: need to call configureScrollbars() when update rendered text!
-
     auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
     if (!wr)
         return;
@@ -135,10 +133,14 @@ void MultiLineEditbox::ensureCaretIsVisible()
     if (!wr)
         return;
 
+    updateRenderedText();
+
+
+//// OLD:
+
     const Font* fnt = getActualFont();
     if (!fnt)
         return;
-
 
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
@@ -337,7 +339,7 @@ void MultiLineEditbox::setShowVertScrollbar(bool setting)
     if (d_forceVertScroll == setting)return;
 
     d_forceVertScroll = setting;
-    configureScrollbars();
+    d_formattingDirty = true;
     invalidate();
 }
 
@@ -358,6 +360,7 @@ void MultiLineEditbox::setWordWrapEnabled(bool wrap)
 
     d_wordWrap = wrap;
     d_renderedText.setWordWrappingEnabled(d_wordWrap);
+    d_formattingDirty = true;
     invalidate();
 }
 
