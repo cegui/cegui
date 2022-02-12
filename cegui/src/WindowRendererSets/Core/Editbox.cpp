@@ -73,25 +73,13 @@ void FalagardEditbox::createRenderGeometry()
     //!!!???FIXME TEXT: control in widget, not in renderer!?
     w->ensureCaretIsVisible();
 
-    //???TODO TEXT: bake formatting into d_textOffset?!
-    float textOffset = w->getTextOffset();
-    switch (w->getTextFormatting())
-    {
-        case HorizontalTextFormatting::CentreAligned:
-            textOffset = (textArea.getWidth() - renderedText.getExtents().d_height) / 2.f;
-            break;
-        case HorizontalTextFormatting::RightAligned:
-            textOffset = textArea.getWidth() - renderedText.getExtents().d_height - textOffset;
-            break;
-    }
-
-    createRenderGeometryForText(wlf, textArea, textOffset);
+    createRenderGeometryForText(wlf, textArea, w->getTextOffset());
 
     // Create the render geometry for the caret
     if (w->hasInputFocus() && !w->isReadOnly() && (!d_blinkCaret || d_showCaret))
     {
         Rectf caretRect(textArea);
-        caretRect.d_min.x += renderedText.getCodepointBounds(w->getCaretIndex()).left() + textOffset;
+        caretRect.d_min.x += renderedText.getCodepointBounds(w->getCaretIndex()).left() + w->getTextOffset();
         wlf.getImagerySection("Caret").render(*d_window, caretRect, nullptr, &textArea);
     }
 }

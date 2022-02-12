@@ -32,6 +32,7 @@
 #include "CEGUI/text/Font.h"
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/UndoHandler.h"
+#include "CEGUI/CoordConverter.h"
 #if defined(CEGUI_HAS_PCRE_REGEX)
 #   include "CEGUI/PCRERegexMatcher.h"
 #elif defined(CEGUI_HAS_STD11_REGEX)

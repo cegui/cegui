@@ -601,6 +601,8 @@ size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt) const
                 glyphLeft += d_glyphs[i].advance;
                 if (d_glyphs[i].isJustifyable)
                     glyphLeft += line.justifySpaceSize;
+
+                ++i;
             }
 
             return line.glyphEndIdx - 1;

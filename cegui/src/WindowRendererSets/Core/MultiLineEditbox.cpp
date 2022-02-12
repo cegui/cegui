@@ -135,8 +135,8 @@ void FalagardMultiLineEditbox::createRenderGeometryForText(const Rectf& textArea
 
     // Calculate the range of visible lines
     const glm::vec2 pos(
-        textArea.left() - w->getVertScrollbar()->getScrollPosition(),
-        textArea.top() - w->getHorzScrollbar()->getScrollPosition());
+        textArea.left() - w->getHorzScrollbar()->getScrollPosition(),
+        textArea.top() - w->getVertScrollbar()->getScrollPosition());
 
     // Calculate final colours to use
     const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);
