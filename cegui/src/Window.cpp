@@ -1272,8 +1272,6 @@ void Window::bufferGeometry(const RenderingContext&, std::uint32_t /*drawModeMas
     if (!d_needsRedraw)
         return;
 
-    d_needsRedraw = false;
-
     // dispose of already cached geometry.
     // TODO: reuse buffers instead of destroying?
     for (auto buffer : d_geometryBuffers)
@@ -1289,6 +1287,9 @@ void Window::bufferGeometry(const RenderingContext&, std::uint32_t /*drawModeMas
         d_windowRenderer->createRenderGeometry();
     else
         populateGeometryBuffer();
+
+    // NB: this is important to do this after rendering to buffers but before setting them up
+    d_needsRedraw = false;
 
     // Setup newly created geometry with our settings
     updateGeometryTransformAndClipping();
