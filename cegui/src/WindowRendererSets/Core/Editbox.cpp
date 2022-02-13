@@ -60,10 +60,10 @@ FalagardEditbox::FalagardEditbox(const String& type) :
 //----------------------------------------------------------------------------//
 void FalagardEditbox::createRenderGeometry()
 {
-    const WidgetLookFeel& wlf = getLookNFeel();
+    // Create the render geometry for the general frame and stuff before we handle the text itself
+    renderBaseImagery();
 
-    renderBaseImagery(wlf);
-
+    // Create the render geometry for the edit box text
     const Rectf textArea = getTextRenderArea();
     createRenderGeometryForText(textArea);
 
@@ -71,14 +71,26 @@ void FalagardEditbox::createRenderGeometry()
     Editbox* const w = static_cast<Editbox*>(d_window);
     if (w->hasInputFocus() && !w->isReadOnly() && (!d_blinkCaret || d_showCaret))
     {
-        Rectf caretRect(textArea);
-        caretRect.d_min.x += w->getRenderedText().getCodepointBounds(w->getCaretIndex()).left() - w->getTextOffset();
-        wlf.getImagerySection("Caret").render(*d_window, caretRect, nullptr, &textArea);
+        Rectf caretGlyphRect;
+        if (w->getRenderedText().getTextIndexBounds(w->getCaretIndex(), caretGlyphRect))
+        {
+            const auto& caretImagery = getLookNFeel().getImagerySection("Caret");
+
+            const Rectf caretRect(
+                glm::vec2(
+                    textArea.left() + caretGlyphRect.left() - w->getTextOffset(),
+                    textArea.top()),
+                Sizef(
+                    caretImagery.getBoundingRect(*w).getWidth(),
+                    caretGlyphRect.getHeight()));
+
+            caretImagery.render(*d_window, caretRect, nullptr, &textArea);
+        }
     }
 }
 
 //----------------------------------------------------------------------------//
-void FalagardEditbox::renderBaseImagery(const WidgetLookFeel& wlf) const
+void FalagardEditbox::renderBaseImagery() const
 {
     Editbox* w = static_cast<Editbox*>(d_window);
 
@@ -97,7 +109,7 @@ void FalagardEditbox::renderBaseImagery(const WidgetLookFeel& wlf) const
             state += "Focused";
     }
 
-    wlf.getStateImagery(state).render(*w);
+    getLookNFeel().getStateImagery(state).render(*w);
 }
 
 //----------------------------------------------------------------------------//

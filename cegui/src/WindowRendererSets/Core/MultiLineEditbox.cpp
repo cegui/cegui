@@ -122,18 +122,21 @@ void FalagardMultiLineEditbox::createRenderGeometry()
     auto w = static_cast<const MultiLineEditbox*>(d_window);
     if (w->hasInputFocus() && !w->isReadOnly() && (!d_blinkCaret || d_showCaret))
     {
-        const auto& caretImagery = getLookNFeel().getImagerySection("Caret");
-        const auto caretGlyphRect = w->getRenderedText().getCodepointBounds(w->getCaretIndex());
+        Rectf caretGlyphRect;
+        if (w->getRenderedText().getTextIndexBounds(w->getCaretIndex(), caretGlyphRect))
+        {
+            const auto& caretImagery = getLookNFeel().getImagerySection("Caret");
 
-        const Rectf caretRect(
-            glm::vec2(
-                textArea.left() + caretGlyphRect.left() - w->getHorzScrollbar()->getScrollPosition(),
-                textArea.top() + caretGlyphRect.top() - w->getVertScrollbar()->getScrollPosition()),
-            Sizef(
-                caretImagery.getBoundingRect(*w).getWidth(),
-                caretGlyphRect.getHeight()));
+            const Rectf caretRect(
+                glm::vec2(
+                    textArea.left() + caretGlyphRect.left() - w->getHorzScrollbar()->getScrollPosition(),
+                    textArea.top() + caretGlyphRect.top() - w->getVertScrollbar()->getScrollPosition()),
+                Sizef(
+                    caretImagery.getBoundingRect(*w).getWidth(),
+                    caretGlyphRect.getHeight()));
 
-        caretImagery.render(*d_window, caretRect, nullptr, &textArea);
+            caretImagery.render(*d_window, caretRect, nullptr, &textArea);
+        }
     }
 }
 

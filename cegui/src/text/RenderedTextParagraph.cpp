@@ -578,6 +578,30 @@ size_t RenderedTextParagraph::getTextIndexAtPoint(const glm::vec2& pt) const
 }
 
 //----------------------------------------------------------------------------//
+bool RenderedTextParagraph::getTextIndexBounds(Rectf& out, size_t textIndex,
+    const std::vector<RenderedTextElementPtr>& elements) const
+{
+    const auto glyphIndex = getNearestGlyphIndex(textIndex);
+    if (glyphIndex != npos)
+        return getGlyphBounds(out, glyphIndex, elements);
+
+    // No glyph found, return the end of the paragraph
+    if (!d_lines.empty())
+    {
+        const auto& lastLine = d_lines.back();
+        out.d_max.y = getHeight();
+        out.d_min.y = out.d_max.y - lastLine.extents.d_height;
+        out.d_min.x = lastLine.horzOffset + lastLine.extents.d_width;
+        out.d_max.x = out.d_min.x;
+        return true;
+    }
+
+    //!!!FIXME TEXT: need to draw caret with height of default paragraph's style!
+    out = {};
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt) const
 {
     if (d_linesDirty || pt.y < 0.f)
@@ -690,10 +714,13 @@ size_t RenderedTextParagraph::getTextIndex(size_t glyphIndex) const
 }
 
 //----------------------------------------------------------------------------//
-size_t RenderedTextParagraph::getGlyphIndex(size_t textIndex) const
+size_t RenderedTextParagraph::getNearestGlyphIndex(size_t textIndex) const
 {
+    size_t nearestIdx = npos;
+    size_t nearestSrcIdx = npos;
     for (size_t i = 0; i < d_glyphs.size(); ++i)
     {
+        // Check if the glyph represents this very textIndex
         const auto srcIndex = d_glyphs[i].sourceIndex;
         if (srcIndex == textIndex)
             return i;
@@ -704,9 +731,16 @@ size_t RenderedTextParagraph::getGlyphIndex(size_t textIndex) const
             if (srcIndex < textIndex && textIndex < srcIndex + String::getCodePointUtf8Size(fontGlyph->getCodePoint()))
                 return i;
 #endif
+
+        // Track the nearest existing glyph that goes after the requested position
+        if (textIndex < srcIndex && srcIndex < nearestSrcIdx)
+        {
+            nearestIdx = i;
+            nearestSrcIdx = srcIndex;
+        }
     }
 
-    return npos;
+    return nearestIdx;
 }
 
 //----------------------------------------------------------------------------//

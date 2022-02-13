@@ -509,9 +509,9 @@ size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt) const
 
         const auto idx = p.getTextIndexAtPoint(localPt);
 
-        // No text at point means the end of the paragraph, i.e. start of the next one
+        // No text at point means the end of the paragraph
         if (idx == RenderedTextParagraph::npos && i + 1 < d_paragraphs.size())
-            return d_paragraphs[i + 1].getSourceStartIndex();
+            return d_paragraphs[i + 1].getSourceStartIndex() - 1;
 
         return idx;
     }
@@ -520,22 +520,39 @@ size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt) const
 }
 
 //----------------------------------------------------------------------------//
-Rectf RenderedText::getCodepointBounds(size_t textIndex) const
+bool RenderedText::getTextIndexBounds(size_t textIndex, Rectf& out) const
 {
-    Rectf rect;
-    float offsetY = 0.f;
-    for (const auto& p : d_paragraphs)
+    float offsetY;
+    const auto idx = findParagraphIndex(textIndex, offsetY);
+    if (idx >= d_paragraphs.size())
+        return false; //!!!TODO TEXT: return end-of-text rect!
+
+    //???FIXME TEXT: need bool result? always return sane rect?!
+
+    if (!d_paragraphs[idx].getTextIndexBounds(out, textIndex, d_elements))
+        return false;
+
+    out.d_min.y += offsetY;
+    out.d_max.y += offsetY;
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedText::findParagraphIndex(size_t textIndex, float& offsetY) const
+{
+    offsetY = 0.f;
+
+    const auto paragraphCount = d_paragraphs.size();
+    for (size_t i = 0; i < paragraphCount; ++i)
     {
-        if (p.getCodepointBounds(rect, textIndex, d_elements))
-        {
-            rect.d_min.y += offsetY;
-            rect.d_max.y += offsetY;
-            break;
-        }
+        const auto& p = d_paragraphs[i];
+        if (i + 1 == paragraphCount || d_paragraphs[i + 1].getSourceStartIndex() > textIndex)
+            return i;
 
         offsetY += p.getHeight();
     }
-    return rect;
+
+    return paragraphCount;
 }
 
 }

@@ -77,10 +77,14 @@ void Editbox::ensureCaretIsVisible()
 {
     updateRenderedText();
 
-    //!!!TODO TEXT: get caret width from EditboxBaseRenderer?
+    //!!!TODO TEXT: get caret rect from renderer? The same code as in geometry generation!
+    Rectf caretGlyphRect;
+    if (!d_renderedText.getTextIndexBounds(getCaretIndex(), caretGlyphRect))
+        return;
+
     const float caretWidth = 5.f;
     const float areaWidth = d_renderedText.getAreaWidth() - caretWidth;
-    const float caretOffsetX = d_renderedText.getCodepointBounds(getCaretIndex()).left();
+    const float caretOffsetX = caretGlyphRect.left();
 
     if (caretOffsetX < d_textOffset)
         d_textOffset = caretOffsetX;
