@@ -78,8 +78,9 @@ public:
         , d_fitsIntoAreaWidth(false)
     {}
 
-    void setupGlyphs(const std::u32string& text, const std::vector<size_t>& originalIndices,
+    void setupGlyphs(const std::u32string& text,
         const std::vector<uint16_t>& elementIndices, const std::vector<RenderedTextElementPtr>& elements);
+    void remapSourceIndices(const std::vector<size_t>& originalIndices);
 
     void createRenderGeometry(std::vector<GeometryBuffer*>& out, glm::vec2& penPosition,
         const ColourRect* modColours, const Rectf* clipRect, const SelectionInfo* selection,

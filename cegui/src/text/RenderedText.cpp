@@ -335,7 +335,7 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
         if (end > start)
         {
             // Create and setup a sequence of CEGUI glyphs for this paragraph
-            //!!!TODO TEXT: move into paragraph? Seems right but how to reuse raqm_t?!
+            //!!!TODO TEXT: move into paragraph? Seems right but how to reuse raqm_t gracefully?!
 #ifdef CEGUI_USE_RAQM
             if (!layoutParagraphWithRaqm(p, utf32Text, start, end, defaultParagraphDir,
                 elementIndices, d_elements, rq))
@@ -345,8 +345,10 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
 
             //!!!TODO TEXT: set non-default formatting of this paragraph if specified explicitly!
 
-            p.setupGlyphs(utf32Text, originalIndices, elementIndices, d_elements);
+            p.setupGlyphs(utf32Text, elementIndices, d_elements);
         }
+
+        p.remapSourceIndices(originalIndices);
 
         if (end == textLength)
             break;
