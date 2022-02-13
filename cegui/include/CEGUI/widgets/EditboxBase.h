@@ -343,7 +343,7 @@ public:
             - HorizontalTextFormatting::CentreAligned
     */
     virtual void setTextFormatting(HorizontalTextFormatting format);
-    HorizontalTextFormatting getTextFormatting() const { return d_textFormatting; }
+    HorizontalTextFormatting getTextFormatting() const;
 
     //! Sets the default paragraph direction for the displayed text.
     void setDefaultParagraphDirection(DefaultParagraphDirection defaultParagraphDirection);
@@ -675,8 +675,6 @@ protected:
 
     //! Code point to use when rendering masked text.
     std::uint32_t d_textMaskingCodepoint = '*';
-
-    HorizontalTextFormatting d_textFormatting = HorizontalTextFormatting::LeftAligned;
 
     //! Default direction of the paragraph, relevant for bidirectional text.
     DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;

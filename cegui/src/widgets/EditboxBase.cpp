@@ -73,7 +73,7 @@ EditboxBase::EditboxBase(const String& type, const String& name)
     , d_maxTextLen(String().max_size())
     , d_undoHandler(new UndoHandler(this))
 {
-    d_renderedText.setHorizontalFormatting(d_textFormatting);
+    d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::LeftAligned);
     addEditboxBaseProperties();
 }
 
@@ -205,15 +205,19 @@ void EditboxBase::setMaxTextLength(size_t maxLen)
 //----------------------------------------------------------------------------//
 void EditboxBase::setTextFormatting(HorizontalTextFormatting format)
 {
-    if (d_textFormatting == format)
+    if (d_renderedText.getHorizontalFormatting() == format)
         return;
 
     bool wordWrap = false;
-    d_textFormatting = decomposeHorizontalFormatting(format, wordWrap);
-
-    d_renderedText.setHorizontalFormatting(d_textFormatting);
+    d_renderedText.setHorizontalFormatting(decomposeHorizontalFormatting(format, wordWrap));
     d_formattingDirty = true;
     invalidate();
+}
+
+//----------------------------------------------------------------------------//
+HorizontalTextFormatting EditboxBase::getTextFormatting() const
+{
+    return d_renderedText.getHorizontalFormatting();
 }
 
 //----------------------------------------------------------------------------//
