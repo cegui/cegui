@@ -82,7 +82,7 @@ void Editbox::ensureCaretIsVisible()
     if (!d_renderedText.getTextIndexBounds(getCaretIndex(), caretGlyphRect))
         return;
 
-    const float caretWidth = 5.f;
+    const float caretWidth = 5.f; //!!!FIXME TEXT!
     const float areaWidth = d_renderedText.getAreaWidth() - caretWidth;
     const float caretOffsetX = caretGlyphRect.left();
 
