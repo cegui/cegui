@@ -48,7 +48,7 @@ MultiLineEditboxWindowRenderer::MultiLineEditboxWindowRenderer(const String& nam
 MultiLineEditbox::MultiLineEditbox(const String& type, const String& name)
     : EditboxBase(type, name)
 {
-    d_renderedText.setWordWrappingEnabled(d_wordWrap);
+    d_renderedText.setWordWrapEnabled(d_wordWrap);
     addMultiLineEditboxProperties();
 }
 
@@ -291,7 +291,8 @@ Scrollbar* MultiLineEditbox::getHorzScrollbar() const
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::setShowVertScrollbar(bool setting)
 {
-    if (d_forceVertScroll == setting)return;
+    if (d_forceVertScroll == setting)
+        return;
 
     d_forceVertScroll = setting;
     d_formattingDirty = true;
@@ -307,6 +308,18 @@ void MultiLineEditbox::setTextFormatting(HorizontalTextFormatting format)
         setWordWrapEnabled(true);
 }
 
+//----------------------------------------------------------------------------//
+void MultiLineEditbox::setLastJustifiedLineFormatting(HorizontalTextFormatting format)
+{
+    if (d_renderedText.getLastJustifiedLineFormatting() == format)
+        return;
+
+    bool wordWrap = false;
+    d_renderedText.setLastJustifiedLineFormatting(decomposeHorizontalFormatting(format, wordWrap));
+    d_formattingDirty = true;
+    invalidate();
+}
+
 //------------------------------------------------------------------------//
 void MultiLineEditbox::setWordWrapEnabled(bool wrap)
 {
@@ -314,7 +327,7 @@ void MultiLineEditbox::setWordWrapEnabled(bool wrap)
         return;
 
     d_wordWrap = wrap;
-    d_renderedText.setWordWrappingEnabled(d_wordWrap);
+    d_renderedText.setWordWrapEnabled(d_wordWrap);
     d_formattingDirty = true;
     invalidate();
 }

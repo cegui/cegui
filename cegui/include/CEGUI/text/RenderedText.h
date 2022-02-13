@@ -36,15 +36,6 @@ namespace CEGUI
 {
 class TextParser;
 
-struct CEGUIEXPORT SelectionInfo
-{
-    const Image* bgBrush = nullptr;
-    ColourRect   bgColours = 0x800080FF;
-    ColourRect   textColours = 0;         //!< Zero means keeping an existing text colour
-    size_t       start = 0;
-    size_t       end = 0;
-};
-
 //! \brief A text prepared to be rendered as graphics. Supports styles and embedded objects.
 class CEGUIEXPORT RenderedText final
 {
@@ -74,8 +65,11 @@ public:
     RenderedText clone() const;
 
     void setHorizontalFormatting(HorizontalTextFormatting fmt);
-    void setLastJustifiedLineHorizontalFormatting(HorizontalTextFormatting fmt);
-    void setWordWrappingEnabled(bool wrap);
+    HorizontalTextFormatting getHorizontalFormatting() const { return d_horzFormatting; }
+    void setLastJustifiedLineFormatting(HorizontalTextFormatting fmt);
+    HorizontalTextFormatting getLastJustifiedLineFormatting() const { return d_lastJustifiedLineFormatting; }
+    void setWordWrapEnabled(bool wrap);
+    bool isWordWrapEnabled() const { return d_wordWrap; }
 
     const Sizef& getExtents() const { return d_extents; }
     bool empty() const { return d_paragraphs.empty(); }
@@ -98,7 +92,7 @@ protected:
     float d_areaWidth = -1.f;
 
     HorizontalTextFormatting d_horzFormatting = HorizontalTextFormatting::LeftAligned;
-    HorizontalTextFormatting d_lastJustifiedLineHorzFormatting = HorizontalTextFormatting::LeftAligned;
+    HorizontalTextFormatting d_lastJustifiedLineFormatting = HorizontalTextFormatting::LeftAligned;
     bool d_wordWrap = false;
 };
 

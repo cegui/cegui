@@ -102,7 +102,7 @@ void ListboxTextItem::parseTextString() const
 {
     d_renderedText.renderText(d_textLogical, d_textParser, getFont(), DefaultParagraphDirection::LeftToRight);
     d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::LeftAligned);
-    d_renderedText.setWordWrappingEnabled(false);
+    d_renderedText.setWordWrapEnabled(false);
     d_renderedText.updateDynamicObjectExtents(d_owner);
     d_renderedText.updateFormatting(d_owner->getPixelSize().d_width);
 

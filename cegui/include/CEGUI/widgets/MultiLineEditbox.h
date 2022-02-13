@@ -129,6 +129,8 @@ public:
 
     virtual void setTextFormatting(HorizontalTextFormatting format) override;
 
+    void setLastJustifiedLineFormatting(HorizontalTextFormatting format);
+
     //! Enable or disable word wrapping.
     void setWordWrapEnabled(bool wrap);
 

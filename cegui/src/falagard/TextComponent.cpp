@@ -246,7 +246,7 @@ void TextComponent::updateRenderedText(const Window& srcWindow, const Sizef& siz
     }
 
     d_renderedText.setHorizontalFormatting(hfmt);
-    d_renderedText.setWordWrappingEnabled(wordWrap);
+    d_renderedText.setWordWrapEnabled(wordWrap);
     d_renderedText.updateDynamicObjectExtents(&srcWindow);
     d_renderedText.updateFormatting(size.d_width);
 }

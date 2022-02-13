@@ -46,7 +46,7 @@ EditboxWindowRenderer::EditboxWindowRenderer(const String& name) :
 Editbox::Editbox(const String& type, const String& name)
     : EditboxBase(type, name)
 {
-    d_renderedText.setWordWrappingEnabled(false);
+    d_renderedText.setWordWrapEnabled(false);
 }
 
 //----------------------------------------------------------------------------//

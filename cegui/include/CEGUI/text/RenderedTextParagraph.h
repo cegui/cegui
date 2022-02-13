@@ -35,8 +35,16 @@
 
 namespace CEGUI
 {
-struct SelectionInfo;
 using RenderedTextElementPtr = std::unique_ptr<class RenderedTextElement>;
+
+struct CEGUIEXPORT SelectionInfo
+{
+    const Image* bgBrush = nullptr;
+    ColourRect   bgColours = 0x800080FF;
+    ColourRect   textColours = 0;         //!< Zero means keeping an existing text colour
+    size_t       start = 0;
+    size_t       end = 0;
+};
 
 struct RenderedGlyph
 {
@@ -65,7 +73,7 @@ public:
         , d_skipWrappedWhitespace(true)
         , d_defaultWordWrap(true)
         , d_defaultHorzFormatting(true)
-        , d_defaultLastJustifiedLineHorzFormatting(true)
+        , d_defaultLastJustifiedLineFormatting(true)
         , d_linesDirty(true)
         , d_fitsIntoAreaWidth(false)
     {}
@@ -92,12 +100,12 @@ public:
     void onAreaWidthChanged();
 
     void setHorizontalFormatting(HorizontalTextFormatting fmt, bool breakDefault);
-    void setLastJustifiedLineHorizontalFormatting(HorizontalTextFormatting fmt, bool breakDefault);
-    void setWordWrappingEnabled(bool wrap, bool breakDefault);
+    void setLastJustifiedLineFormatting(HorizontalTextFormatting fmt, bool breakDefault);
+    void setWordWrapEnabled(bool wrap, bool breakDefault);
 
     bool isHorzFormattingDefault() const { return d_defaultHorzFormatting; }
-    bool isLastJustifiedLineHorzFormattingDefault() const { return d_defaultLastJustifiedLineHorzFormatting; }
-    bool isWordWrappingDefault() const { return d_defaultWordWrap; }
+    bool isLastJustifiedLineFormattingDefault() const { return d_defaultLastJustifiedLineFormatting; }
+    bool isWordWrapDefault() const { return d_defaultWordWrap; }
     bool isFittingIntoAreaWidth() const { return d_fitsIntoAreaWidth; }
     //!!!TODO TEXT: float getRequiredWidthChangeToFit() or like that - for word-wrapped count from line start to break point, otherwise lineW-areaW
 
@@ -145,13 +153,13 @@ protected:
 
     DefaultParagraphDirection d_bidiDir = DefaultParagraphDirection::Automatic;
     HorizontalTextFormatting d_horzFormatting = HorizontalTextFormatting::LeftAligned;
-    HorizontalTextFormatting d_lastJustifiedLineHorzFormatting = HorizontalTextFormatting::LeftAligned;
+    HorizontalTextFormatting d_lastJustifiedLineFormatting = HorizontalTextFormatting::LeftAligned;
     bool d_wordWrap : 1;
     bool d_skipWrappedWhitespace : 1;
 
     bool d_defaultWordWrap : 1;
     bool d_defaultHorzFormatting : 1;
-    bool d_defaultLastJustifiedLineHorzFormatting : 1;
+    bool d_defaultLastJustifiedLineFormatting : 1;
 
     bool d_linesDirty : 1;
     bool d_fitsIntoAreaWidth : 1;
