@@ -60,6 +60,10 @@ FalagardEditbox::FalagardEditbox(const String& type) :
 //----------------------------------------------------------------------------//
 void FalagardEditbox::createRenderGeometry()
 {
+    // NB: this may affect the text area and therefore is done first
+    auto w = static_cast<Editbox*>(d_window);
+    const auto& renderedText = w->getRenderedText();
+
     // Create the render geometry for the general frame and stuff before we handle the text itself
     renderBaseImagery();
 
@@ -68,11 +72,10 @@ void FalagardEditbox::createRenderGeometry()
     createRenderGeometryForText(textArea);
 
     // Create the render geometry for the caret
-    Editbox* const w = static_cast<Editbox*>(d_window);
-    if (w->hasInputFocus() && !w->isReadOnly() && (!d_blinkCaret || d_showCaret))
+    if (!w->isReadOnly() && (!d_blinkCaret || d_showCaret) && w->hasInputFocus())
     {
         Rectf caretGlyphRect;
-        if (w->getRenderedText().getTextIndexBounds(w->getCaretIndex(), caretGlyphRect))
+        if (renderedText.getTextIndexBounds(w->getCaretIndex(), caretGlyphRect))
         {
             const auto& caretImagery = getLookNFeel().getImagerySection("Caret");
 
