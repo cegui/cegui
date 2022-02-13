@@ -78,7 +78,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
     //???!!!merge between paragraphs?! pass canCombineFromIdx as arg!!!
     //???what about outline glyphs? may be in another texture, or generally the same?
     const auto canCombineFromIdx = out.size();
-    const auto penStartPos = penPosition;
+    auto penPos = penPosition;
 
     //!!!TODO TEXT: render background color before selection (under it too, because selection can be transparent)!
     //Need default bg color, selection color, selected text color etc + optional override from element.
@@ -92,28 +92,28 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
 
         for (const auto& line : d_lines)
         {
-            const float lineBottom = penPosition.y + line.extents.d_height;
+            const float lineBottom = penPos.y + line.extents.d_height;
 
             // Cull invisible lines
             if (clipRect)
             {
-                if (penPosition.y >= clipRect->bottom())
+                if (penPos.y >= clipRect->bottom())
                     break;
 
                 if (lineBottom <= clipRect->top())
                 {
                     i = line.glyphEndIdx;
-                    penPosition.y = lineBottom;
+                    penPos.y = lineBottom;
                     continue;
                 }
             }
 
-            penPosition.x = penStartPos.x + line.horzOffset;
+            penPos.x = penPosition.x + line.horzOffset;
 
             i = skipWrappedWhitespace(i, line.glyphEndIdx);
 
-            settings.d_destArea.d_min = penPosition;
-            settings.d_destArea.d_max.x = penPosition.x;
+            settings.d_destArea.d_min = penPos;
+            settings.d_destArea.d_max.x = penPos.x;
             settings.d_destArea.d_max.y = lineBottom;
             for (; i < line.glyphEndIdx; ++i)
             {
@@ -145,36 +145,36 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
             // Draw selection to the end of the line
             if (!settings.d_destArea.empty())
             {
-                settings.d_destArea.d_max.x = penPosition.x + line.extents.d_width + line.justifyableCount * line.justifySpaceSize;
+                settings.d_destArea.d_max.x = penPos.x + line.extents.d_width + line.justifyableCount * line.justifySpaceSize;
                 selection->bgBrush->createRenderGeometry(out, settings, canCombineFromIdx);
             }
 
-            penPosition.y = lineBottom;
+            penPos.y = lineBottom;
         }
     }
 
     // Render main geometry
-    penPosition = penStartPos;
+    penPos = penPosition;
     i = 0;
     for (const auto& line : d_lines)
     {
-        const float lineBottom = penPosition.y + line.extents.d_height;
+        const float lineBottom = penPos.y + line.extents.d_height;
 
         // Cull invisible lines
         if (clipRect)
         {
-            if (penPosition.y >= clipRect->bottom())
+            if (penPos.y >= clipRect->bottom())
                 break;
 
             if (lineBottom <= clipRect->top())
             {
                 i = line.glyphEndIdx;
-                penPosition.y = lineBottom;
+                penPos.y = lineBottom;
                 continue;
             }
         }
 
-        penPosition.x = penStartPos.x + line.horzOffset;
+        penPos.x = penPosition.x + line.horzOffset;
 
         i = skipWrappedWhitespace(i, line.glyphEndIdx);
 
@@ -188,14 +188,15 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
             const auto start = i;
             do ++i; while (i < line.glyphEndIdx && d_glyphs[i].elementIndex == startElementIdx);
 
-            elements[startElementIdx]->createRenderGeometry(out, &d_glyphs[start], i - start, penPosition,
+            elements[startElementIdx]->createRenderGeometry(out, &d_glyphs[start], i - start, penPos,
                 modColours, clipRect, line.extents.d_height, line.justifySpaceSize, canCombineFromIdx);
         }
 
-        penPosition.y = lineBottom;
+        penPos.y = lineBottom;
     }
 
-    penPosition.x = penStartPos.x;
+    // Advance the pen to the start of the next paragraph
+    penPosition.y += d_height;
 }
 
 //----------------------------------------------------------------------------//
@@ -323,12 +324,24 @@ void RenderedTextParagraph::updateLineHeights(const std::vector<RenderedTextElem
     if (d_linesDirty)
         return;
 
+    //!!!FIXME TEXT: get the whole style (not only font height) from the corresponding element of '\n'!
+    //There can be a string like this: "\n\n[colour="..."][font="..."]\n\n", last two paragraphs must honor style changes!
+
+    if (d_lines.empty())
+    {
+        d_height = defaultFontHeight;
+        return;
+    }
+
+    d_height = 0.f;
+
     uint32_t i = 0;
     for (auto& line : d_lines)
     {
         if (!line.heightDirty)
         {
             i = line.glyphEndIdx;
+            d_height += line.extents.d_height;
             continue;
         }
 
@@ -364,6 +377,8 @@ void RenderedTextParagraph::updateLineHeights(const std::vector<RenderedTextElem
                 do ++i; while (i < line.glyphEndIdx && d_glyphs[i].elementIndex == elementIdx);
             }
         }
+
+        d_height += line.extents.d_height;
     }
 }
 
@@ -422,19 +437,6 @@ void RenderedTextParagraph::accumulateExtents(Rectf& extents) const
         if (extents.d_max.x < right)
             extents.d_max.x = right;
     }
-}
-
-//----------------------------------------------------------------------------//
-//???TODO TEXT: cache extents rect?!
-float RenderedTextParagraph::getHeight() const
-{
-    if (d_linesDirty)
-        return 0.f;
-
-    float h = 0.f;
-    for (const auto& line : d_lines)
-        h += line.extents.d_height;
-    return h;
 }
 
 //----------------------------------------------------------------------------//
@@ -586,19 +588,22 @@ bool RenderedTextParagraph::getTextIndexBounds(Rectf& out, size_t textIndex,
         return getGlyphBounds(out, glyphIndex, elements);
 
     // No glyph found, return the end of the paragraph
-    if (!d_lines.empty())
+    if (d_lines.empty())
+    {
+        out.d_min.y = 0.f;
+        out.d_min.x = 0.f;
+    }
+    else
     {
         const auto& lastLine = d_lines.back();
-        out.d_max.y = getHeight();
-        out.d_min.y = out.d_max.y - lastLine.extents.d_height;
+        out.d_min.y = d_height - lastLine.extents.d_height;
         out.d_min.x = lastLine.horzOffset + lastLine.extents.d_width;
-        out.d_max.x = out.d_min.x;
-        return true;
     }
 
-    //!!!FIXME TEXT: need to draw caret with height of default paragraph's style!
-    out = {};
-    return false;
+    out.d_max.y = d_height;
+    out.d_max.x = out.d_min.x;
+
+    return true;
 }
 
 //----------------------------------------------------------------------------//

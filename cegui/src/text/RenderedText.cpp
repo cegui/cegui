@@ -491,7 +491,10 @@ bool RenderedText::isFittingIntoAreaWidth() const
 //----------------------------------------------------------------------------//
 size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt) const
 {
-    if (pt.y < 0.f || pt.y > d_extents.d_height)
+    if (pt.y < 0.f)
+        return 0;
+
+    if (pt.y > d_extents.d_height)
         return npos;
 
     glm::vec2 localPt = pt;
@@ -522,10 +525,18 @@ size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt) const
 //----------------------------------------------------------------------------//
 bool RenderedText::getTextIndexBounds(size_t textIndex, Rectf& out) const
 {
+    // We still have an empty line when there is no text at all
+    if (d_paragraphs.empty())
+    {
+        out.d_min.x = 0.f;
+        out.d_max.x = 0.f;
+        out.d_min.y = 0.f;
+        out.d_max.y = d_defaultFont ? d_defaultFont->getFontHeight() : 0.f;
+        return true;
+    }
+
     float offsetY;
     const auto idx = findParagraphIndex(textIndex, offsetY);
-    if (idx >= d_paragraphs.size())
-        return false; //!!!TODO TEXT: return end-of-text rect!
 
     //???FIXME TEXT: need bool result? always return sane rect?!
 

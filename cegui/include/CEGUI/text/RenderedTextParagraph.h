@@ -85,7 +85,7 @@ public:
     void updateHorizontalFormatting(float areaWidth);
 
     void accumulateExtents(Rectf& extents) const;
-    float getHeight() const;
+    float getHeight() const { return d_height; }
 
     void onElementWidthChanged(size_t elementIndex, float diff);
     void onElementHeightChanged(size_t elementIndex, float diff);
@@ -141,6 +141,7 @@ protected:
 
     //???TODO TEXT: store end idx instead?
     uint32_t d_sourceIndex = 0;  //!< Starting index of the paragraph in the logical text
+    float d_height = 0.f;
 
     DefaultParagraphDirection d_bidiDir = DefaultParagraphDirection::Automatic;
     HorizontalTextFormatting d_horzFormatting = HorizontalTextFormatting::LeftAligned;
