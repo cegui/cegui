@@ -112,11 +112,11 @@ public:
 
     size_t getLineCount() const { return d_linesDirty ? 1 : d_lines.size(); }
     size_t getTextIndexAtPoint(const glm::vec2& pt) const;
-    bool getCodepointBounds(Rectf& out, size_t textIndex, const std::vector<RenderedTextElementPtr>& elements) const { return getGlyphBounds(out, getGlyphIndex(textIndex), elements); }
+    bool getTextIndexBounds(Rectf& out, size_t textIndex, const std::vector<RenderedTextElementPtr>& elements) const;
     size_t getGlyphIndexAtPoint(const glm::vec2& pt) const;
     bool getGlyphBounds(Rectf& out, size_t glyphIndex, const std::vector<RenderedTextElementPtr>& elements) const;
     size_t getTextIndex(size_t glyphIndex) const;
-    size_t getGlyphIndex(size_t textIndex) const;
+    size_t getNearestGlyphIndex(size_t textIndex) const;
 
 protected:
 
@@ -139,6 +139,7 @@ protected:
     std::vector<RenderedGlyph> d_glyphs;
     std::vector<Line> d_lines;
 
+    //???TODO TEXT: store end idx instead?
     uint32_t d_sourceIndex = 0;  //!< Starting index of the paragraph in the logical text
 
     DefaultParagraphDirection d_bidiDir = DefaultParagraphDirection::Automatic;

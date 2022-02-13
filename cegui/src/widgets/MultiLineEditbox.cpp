@@ -135,10 +135,13 @@ void MultiLineEditbox::ensureCaretIsVisible()
 
     updateRenderedText();
 
-    const auto caretGlyphRect = d_renderedText.getCodepointBounds(getCaretIndex());
+    //!!!TODO TEXT: get caret rect from renderer? The same code as in geometry generation!
+    Rectf caretGlyphRect;
+    if (!d_renderedText.getTextIndexBounds(getCaretIndex(), caretGlyphRect))
+        return;
+
     const Rectf textArea = wr->getTextRenderArea();
 
-    //!!!TODO TEXT: get caret width from EditboxBaseRenderer?
     const float caretWidth = 5.f;
     const float areaWidth = textArea.getWidth() - caretWidth;
     const float caretOffsetX = caretGlyphRect.left();
