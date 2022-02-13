@@ -142,7 +142,7 @@ void MultiLineEditbox::ensureCaretIsVisible()
 
     const Rectf textArea = wr->getTextRenderArea();
 
-    const float caretWidth = 5.f;
+    const float caretWidth = 5.f; //!!!FIXME TEXT!
     const float areaWidth = textArea.getWidth() - caretWidth;
     const float caretOffsetX = caretGlyphRect.left();
 
