@@ -34,17 +34,17 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-void RenderedTextParagraph::setupGlyphs(const std::u32string& text, const std::vector<size_t>& originalIndices,
+void RenderedTextParagraph::setupGlyphs(const std::u32string& text,
     const std::vector<uint16_t>& elementIndices, const std::vector<RenderedTextElementPtr>& elements)
 {
     d_linesDirty = true;
 
     const size_t elementIdxCount = elementIndices.size();
     const uint16_t defaultStyleIdx = static_cast<uint16_t>(elements.size() - 1);
-    const bool adjustSourceIndices = !originalIndices.empty();
 
     for (auto& glyph : d_glyphs)
     {
+        // NB: remapSourceIndices should not have been called yet!
         const auto utf32SourceIndex = glyph.sourceIndex;
 
         // Find associated element or associate with default text style
@@ -55,11 +55,20 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text, const std::v
         // Do element-dependent initialization of the glyph
         if (auto element = elements[glyph.elementIndex].get())
             element->setupGlyph(glyph, text[utf32SourceIndex]);
-
-        // Make source index point to an original text string
-        if (adjustSourceIndices)
-            glyph.sourceIndex = static_cast<uint32_t>(originalIndices[utf32SourceIndex]);
     }
+}
+
+//----------------------------------------------------------------------------//
+void RenderedTextParagraph::remapSourceIndices(const std::vector<size_t>& originalIndices)
+{
+    if (originalIndices.empty())
+        return;
+
+    for (auto& glyph : d_glyphs)
+        glyph.sourceIndex = static_cast<uint32_t>(originalIndices[glyph.sourceIndex]);
+
+    if (d_sourceIndex < originalIndices.size())
+        d_sourceIndex = static_cast<uint32_t>(originalIndices[d_sourceIndex]);
 }
 
 //----------------------------------------------------------------------------//
