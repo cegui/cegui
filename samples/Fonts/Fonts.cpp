@@ -309,6 +309,7 @@ bool FontsSample::handleTextSelectionChanged(const EventArgs&)
 
         d_textDisplayMultiLineEditbox->setText(d_languageToTextMap[LangList[index].language]);
         d_textDisplayMultiLineEditbox->setDefaultParagraphDirection(LangList[index].direction);
+        d_textDisplayMultiLineEditbox->setTextFormatting(LangList[index].horizontalAlignment);
 
         changeFontSelectorFontSelection(d_languageToFontMap[LangList[index].language]);
     }

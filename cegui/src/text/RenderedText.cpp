@@ -510,9 +510,18 @@ size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt) const
 Rectf RenderedText::getCodepointBounds(size_t textIndex) const
 {
     Rectf rect;
+    float offsetY = 0.f;
     for (const auto& p : d_paragraphs)
+    {
         if (p.getCodepointBounds(rect, textIndex, d_elements))
+        {
+            rect.d_min.y += offsetY;
+            rect.d_max.y += offsetY;
             break;
+        }
+
+        offsetY += p.getHeight();
+    }
     return rect;
 }
 
