@@ -107,8 +107,11 @@ public:
     std::vector<RenderedGlyph>& glyphs() { return d_glyphs; }
     const std::vector<RenderedGlyph>& glyphs() const { return d_glyphs; }
 
+    void setSourceStartIndex(uint32_t index) { d_sourceIndex = index; }
+    uint32_t getSourceStartIndex() const { return d_sourceIndex; }
+
     size_t getLineCount() const { return d_linesDirty ? 1 : d_lines.size(); }
-    size_t getTextIndexAtPoint(const glm::vec2& pt) const { return getTextIndex(getGlyphIndexAtPoint(pt)); }
+    size_t getTextIndexAtPoint(const glm::vec2& pt) const;
     bool getCodepointBounds(Rectf& out, size_t textIndex, const std::vector<RenderedTextElementPtr>& elements) const { return getGlyphBounds(out, getGlyphIndex(textIndex), elements); }
     size_t getGlyphIndexAtPoint(const glm::vec2& pt) const;
     bool getGlyphBounds(Rectf& out, size_t glyphIndex, const std::vector<RenderedTextElementPtr>& elements) const;
@@ -130,11 +133,13 @@ protected:
         bool     horzFmtDirty : 1;
     };
 
-    Line* getGlyphLine(size_t glyphIndex);
+    size_t getGlyphLineIndex(size_t glyphIndex) const;
     uint32_t skipWrappedWhitespace(uint32_t start, uint32_t end) const;
 
     std::vector<RenderedGlyph> d_glyphs;
     std::vector<Line> d_lines;
+
+    uint32_t d_sourceIndex = 0;  //!< Starting index of the paragraph in the logical text
 
     DefaultParagraphDirection d_bidiDir = DefaultParagraphDirection::Automatic;
     HorizontalTextFormatting d_horzFormatting = HorizontalTextFormatting::LeftAligned;
