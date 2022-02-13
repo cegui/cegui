@@ -169,8 +169,8 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt)
 
     updateRenderedText();
 
+    //???FIXME TEXT: move to renderer? Should not rely on the same calculations in different places!
     glm::vec2 localPt = CoordConverter::screenToWindow(*this, pt) - wr->getTextRenderArea().d_min;
-
     localPt.x += getHorzScrollbar()->getScrollPosition();
     localPt.y += getVertScrollbar()->getScrollPosition();
 

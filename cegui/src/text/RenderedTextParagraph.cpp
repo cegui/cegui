@@ -584,32 +584,35 @@ size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt) const
         if (line.heightDirty)
             return npos;
 
-        if (lineLocalY <= line.extents.d_height)
+        // Not this line, skip to the next one
+        if (lineLocalY > line.extents.d_height)
         {
-            const float left = line.horzOffset;
-            if (pt.x < left)
-                return i;
-
-            i = skipWrappedWhitespace(i, line.glyphEndIdx);
-
-            float glyphLeft = left;
-            while (i < line.glyphEndIdx)
-            {
-                if (glyphLeft > pt.x)
-                    return i - 1;
-
-                glyphLeft += d_glyphs[i].advance;
-                if (d_glyphs[i].isJustifyable)
-                    glyphLeft += line.justifySpaceSize;
-
-                ++i;
-            }
-
-            return line.glyphEndIdx - 1;
+            lineLocalY -= line.extents.d_height;
+            i = line.glyphEndIdx;
+            continue;
         }
 
-        lineLocalY -= line.extents.d_height;
-        i = line.glyphEndIdx;
+        // Point is to the left of the beginning
+        if (pt.x < line.horzOffset)
+            return i;
+
+        i = skipWrappedWhitespace(i, line.glyphEndIdx);
+
+        float nextGlyphStart = line.horzOffset;
+        while (i < line.glyphEndIdx)
+        {
+            nextGlyphStart += d_glyphs[i].advance;
+            if (d_glyphs[i].isJustifyable)
+                nextGlyphStart += line.justifySpaceSize;
+
+            if (pt.x < nextGlyphStart)
+                return i;
+
+            ++i;
+        }
+
+        // Point is to the right of the end
+        return line.glyphEndIdx;
     }
 
     return npos;
@@ -623,7 +626,7 @@ bool RenderedTextParagraph::getGlyphBounds(Rectf& out, size_t glyphIndex,
         return false;
 
     float lineY = 0.f;
-    uint32_t glyphStartIdx = 0;
+    uint32_t i = 0;
     for (const auto& line : d_lines)
     {
         if (line.heightDirty)
@@ -632,34 +635,41 @@ bool RenderedTextParagraph::getGlyphBounds(Rectf& out, size_t glyphIndex,
         if (glyphIndex >= line.glyphEndIdx)
         {
             lineY += line.extents.d_height;
-            glyphStartIdx = line.glyphEndIdx;
+            i = line.glyphEndIdx;
             continue;
         }
 
         const auto& glyph = d_glyphs[glyphIndex];
         const auto element = elements[glyph.elementIndex].get();
 
+        out.d_min.y = lineY;
+        float scale = 1.f;
+        element->applyVerticalFormatting(line.extents.d_height, out.d_min.y, scale);
+
+        out.setHeight(element->getHeight());
+
+        i = skipWrappedWhitespace(i, line.glyphEndIdx);
+
         out.d_min.x = line.horzOffset;
-        for (uint32_t i = glyphStartIdx; i < glyphIndex; ++i)
+        for (; i < glyphIndex; ++i)
         {
             out.d_min.x += d_glyphs[i].advance;
             if (d_glyphs[i].isJustifyable)
                 out.d_min.x += line.justifySpaceSize;
         }
 
-        if (glyphIndex >= skipWrappedWhitespace(glyphStartIdx, line.glyphEndIdx))
+        if (glyphIndex < i)
+        {
+            // Skipped whitespace glyph is always a zero width rect at the beginning of the line
+            out.setWidth(0.f);
+        }
+        else
         {
             float glyphWidth = std::max(glyph.advance, element->getGlyphWidth(glyph));
             if (glyph.isJustifyable)
                 glyphWidth += line.justifySpaceSize;
             out.setWidth(glyphWidth);
         }
-
-        out.d_min.y = lineY;
-        float scale = 1.f;
-        element->applyVerticalFormatting(line.extents.d_height, out.d_min.y, scale);
-
-        out.setHeight(element->getHeight());
 
         return true;
     }
