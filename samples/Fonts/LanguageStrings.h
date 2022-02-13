@@ -57,11 +57,11 @@ static struct
         "Try out writing text in any language here. The used font can be changed on the right.\n"
         "You can create new fonts if needed. The new font will be set as font for the selected text/language...\n"
         "You can also edit the fonts that are part of this demo or the ones you created here "
-        "(however, this demo won't allow to change the fonts of the other Samples)\n"
+        "(however, this demo won't allow to change the fonts of the other Samples)\n\n\n"
         "Important: When you switch to a font the FIRST time, it takes some time to load it. "
         "Especially for fonts with a lot of non-ASCII characters this load time might be "
         "noticeable.!\n"
-        "The quick brown fox jumps over the lazy dog. 1234567890",
+        "The quick brown fox jumps over the lazy dog. 1234567890\n\n\n",
         CEGUI::DefaultParagraphDirection::LeftToRight,
         CEGUI::HorizontalTextFormatting::LeftAligned
     },

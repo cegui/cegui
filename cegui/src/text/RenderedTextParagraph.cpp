@@ -560,15 +560,21 @@ void RenderedTextParagraph::setWordWrappingEnabled(bool wrap, bool breakDefault)
 }
 
 //----------------------------------------------------------------------------//
-RenderedTextParagraph::Line* RenderedTextParagraph::getGlyphLine(size_t glyphIndex)
+size_t RenderedTextParagraph::getGlyphLineIndex(size_t glyphIndex) const
 {
     if (d_linesDirty)
-        return nullptr;
+        return npos;
 
-    auto it = std::upper_bound(d_lines.begin(), d_lines.end(), glyphIndex,
+    auto it = std::upper_bound(d_lines.cbegin(), d_lines.cend(), glyphIndex,
         [](uint32_t value, const Line& elm) { return value < elm.glyphEndIdx; });
 
-    return (it == d_lines.cend()) ? nullptr : &(*it);
+    return (it == d_lines.cend()) ? npos : std::distance(d_lines.cbegin(), it);
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedTextParagraph::getTextIndexAtPoint(const glm::vec2& pt) const
+{
+    return d_glyphs.empty() ? d_sourceIndex : getTextIndex(getGlyphIndexAtPoint(pt));
 }
 
 //----------------------------------------------------------------------------//

@@ -330,6 +330,7 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
         // Always create a paragraph (new line), even if it is empty
         d_paragraphs.emplace_back();
         auto& p = d_paragraphs.back();
+        p.setSourceStartIndex(start);
 
         if (end > start)
         {
@@ -494,13 +495,25 @@ size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt) const
         return npos;
 
     glm::vec2 localPt = pt;
-    for (const auto& p : d_paragraphs)
+    for (size_t i = 0; i < d_paragraphs.size(); ++i)
     {
-        const float paragraphHeight = p.getHeight();
-        if (localPt.y <= paragraphHeight)
-            return p.getTextIndexAtPoint(localPt);
+        const auto& p = d_paragraphs[i];
 
-        localPt.y -= paragraphHeight;
+        // Find the paragraph at the given height range
+        const float paragraphHeight = p.getHeight();
+        if (localPt.y > paragraphHeight)
+        {
+            localPt.y -= paragraphHeight;
+            continue;
+        }
+
+        const auto idx = p.getTextIndexAtPoint(localPt);
+
+        // No text at point means the end of the paragraph, i.e. start of the next one
+        if (idx == RenderedTextParagraph::npos && i + 1 < d_paragraphs.size())
+            return d_paragraphs[i + 1].getSourceStartIndex();
+
+        return idx;
     }
 
     return npos;
