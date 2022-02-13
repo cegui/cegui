@@ -358,8 +358,8 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
     // Push default formatting to paragraphs
     // NB: there should not be early exit when unchanged, paragraphs will handle this
     setHorizontalFormatting(d_horzFormatting);
-    setLastJustifiedLineHorizontalFormatting(d_lastJustifiedLineHorzFormatting);
-    setWordWrappingEnabled(d_wordWrap);
+    setLastJustifiedLineFormatting(d_lastJustifiedLineFormatting);
+    setWordWrapEnabled(d_wordWrap);
 
 #if defined(CEGUI_USE_RAQM)
     if (rq)
@@ -435,7 +435,7 @@ RenderedText RenderedText::clone() const
     copy.d_defaultFont = d_defaultFont;
     copy.d_areaWidth = d_areaWidth;
     copy.d_horzFormatting = d_horzFormatting;
-    copy.d_lastJustifiedLineHorzFormatting = d_lastJustifiedLineHorzFormatting;
+    copy.d_lastJustifiedLineFormatting = d_lastJustifiedLineFormatting;
     copy.d_wordWrap = d_wordWrap;
     return copy;
 }
@@ -451,23 +451,23 @@ void RenderedText::setHorizontalFormatting(HorizontalTextFormatting fmt)
 }
 
 //----------------------------------------------------------------------------//
-void RenderedText::setLastJustifiedLineHorizontalFormatting(HorizontalTextFormatting fmt)
+void RenderedText::setLastJustifiedLineFormatting(HorizontalTextFormatting fmt)
 {
-    d_lastJustifiedLineHorzFormatting = fmt;
+    d_lastJustifiedLineFormatting = fmt;
 
     for (auto& p : d_paragraphs)
-        if (p.isLastJustifiedLineHorzFormattingDefault())
-            p.setLastJustifiedLineHorizontalFormatting(fmt, false);
+        if (p.isLastJustifiedLineFormattingDefault())
+            p.setLastJustifiedLineFormatting(fmt, false);
 }
 
 //----------------------------------------------------------------------------//
-void RenderedText::setWordWrappingEnabled(bool wrap)
+void RenderedText::setWordWrapEnabled(bool wrap)
 {
     d_wordWrap = wrap;
 
     for (auto& p : d_paragraphs)
-        if (p.isWordWrappingDefault())
-            p.setWordWrappingEnabled(wrap, false);
+        if (p.isWordWrapDefault())
+            p.setWordWrapEnabled(wrap, false);
 }
 
 //----------------------------------------------------------------------------//

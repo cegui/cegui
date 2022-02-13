@@ -25,7 +25,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/text/RenderedTextParagraph.h"
-#include "CEGUI/text/RenderedText.h" // for SelectionInfo
 #include "CEGUI/text/RenderedTextElement.h"
 #include "CEGUI/text/Font.h"
 #include "CEGUI/text/FontGlyph.h"
@@ -177,9 +176,6 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
         penPos.x = penPosition.x + line.horzOffset;
 
         i = skipWrappedWhitespace(i, line.glyphEndIdx);
-
-        //!!!TODO TEXT: render background color before selection (under it too, because selection can be transparent)!
-        //Need default bg color, selection color, selected text color etc + optional override from element.
 
         // Render glyph chunks using their associated elements
         while (i < line.glyphEndIdx)
@@ -397,7 +393,7 @@ void RenderedTextParagraph::updateHorizontalFormatting(float areaWidth)
 
         const bool isLastLine = (&line == &d_lines.back());
         const auto lineHorzFmt = (isLastLine && d_horzFormatting == HorizontalTextFormatting::Justified) ?
-            d_lastJustifiedLineHorzFormatting :
+            d_lastJustifiedLineFormatting :
             d_horzFormatting;
 
         switch (lineHorzFmt)
@@ -533,15 +529,15 @@ void RenderedTextParagraph::setHorizontalFormatting(HorizontalTextFormatting fmt
 }
 
 //----------------------------------------------------------------------------//
-void RenderedTextParagraph::setLastJustifiedLineHorizontalFormatting(HorizontalTextFormatting fmt, bool breakDefault)
+void RenderedTextParagraph::setLastJustifiedLineFormatting(HorizontalTextFormatting fmt, bool breakDefault)
 {
     if (breakDefault)
-        d_defaultLastJustifiedLineHorzFormatting = false;
+        d_defaultLastJustifiedLineFormatting = false;
 
-    if (fmt == d_lastJustifiedLineHorzFormatting)
+    if (fmt == d_lastJustifiedLineFormatting)
         return;
 
-    d_lastJustifiedLineHorzFormatting = fmt;
+    d_lastJustifiedLineFormatting = fmt;
 
     if (!d_linesDirty && d_horzFormatting == HorizontalTextFormatting::Justified)
         for (auto& line : d_lines)
@@ -549,7 +545,7 @@ void RenderedTextParagraph::setLastJustifiedLineHorizontalFormatting(HorizontalT
 }
 
 //----------------------------------------------------------------------------//
-void RenderedTextParagraph::setWordWrappingEnabled(bool wrap, bool breakDefault)
+void RenderedTextParagraph::setWordWrapEnabled(bool wrap, bool breakDefault)
 {
     if (breakDefault)
         d_defaultWordWrap = false;

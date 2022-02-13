@@ -276,7 +276,7 @@ void TreeView::fillRenderingState(TreeViewItemRenderingState& item,
 
     item.d_renderedText.renderText(item.d_text, getTextParser(), getActualFont(), DefaultParagraphDirection::LeftToRight);
     item.d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::LeftAligned);
-    item.d_renderedText.setWordWrappingEnabled(false);
+    item.d_renderedText.setWordWrapEnabled(false);
     item.d_renderedText.updateDynamicObjectExtents(this);
     item.d_renderedText.updateFormatting(getPixelSize().d_width);
     item.d_size = item.d_renderedText.getExtents();

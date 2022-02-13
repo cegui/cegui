@@ -45,7 +45,7 @@ FalagardStaticText::FalagardStaticText(const String& type)
     : FalagardStatic(type)
 {
     d_renderedText.setHorizontalFormatting(d_horzFormatting);
-    d_renderedText.setWordWrappingEnabled(d_wordWrap);
+    d_renderedText.setWordWrapEnabled(d_wordWrap);
 
     CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, ColourRect,
         "TextColours", "Property to get/set the text colours for the FalagardStaticText widget."
@@ -341,7 +341,7 @@ void FalagardStaticText::setWordWrapEnabled(bool wrap)
         return;
 
     d_wordWrap = wrap;
-    d_renderedText.setWordWrappingEnabled(d_wordWrap);
+    d_renderedText.setWordWrapEnabled(d_wordWrap);
     invalidateFormatting();
     d_window->adjustSizeToContent();
 }

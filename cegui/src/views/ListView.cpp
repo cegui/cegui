@@ -242,7 +242,7 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index, fl
     itemsAreaSize.d_width -= 2;
 
     item.d_renderedText.setHorizontalFormatting(d_horzFormatting);
-    item.d_renderedText.setWordWrappingEnabled(d_wordWrap);
+    item.d_renderedText.setWordWrapEnabled(d_wordWrap);
     item.d_renderedText.updateDynamicObjectExtents(this);
     item.d_renderedText.updateFormatting(itemsAreaSize.d_width);
 

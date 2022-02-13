@@ -307,9 +307,14 @@ bool FontsSample::handleTextSelectionChanged(const EventArgs&)
     {
         unsigned int index = d_textSelector->getFirstSelectedItem()->getId();
 
+        const auto bidiDir = LangList[index].direction;
         d_textDisplayMultiLineEditbox->setText(d_languageToTextMap[LangList[index].language]);
-        d_textDisplayMultiLineEditbox->setDefaultParagraphDirection(LangList[index].direction);
+        d_textDisplayMultiLineEditbox->setDefaultParagraphDirection(bidiDir);
         d_textDisplayMultiLineEditbox->setTextFormatting(LangList[index].horizontalAlignment);
+        d_textDisplayMultiLineEditbox->setLastJustifiedLineFormatting(
+            (bidiDir == DefaultParagraphDirection::RightToLeft) ?
+            HorizontalTextFormatting::RightAligned :
+            HorizontalTextFormatting::LeftAligned);
 
         changeFontSelectorFontSelection(d_languageToFontMap[LangList[index].language]);
     }
