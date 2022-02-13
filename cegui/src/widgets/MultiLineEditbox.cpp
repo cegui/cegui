@@ -48,7 +48,7 @@ MultiLineEditboxWindowRenderer::MultiLineEditboxWindowRenderer(const String& nam
 MultiLineEditbox::MultiLineEditbox(const String& type, const String& name)
     : EditboxBase(type, name)
 {
-    d_renderedText.setWordWrapEnabled(d_wordWrap);
+    d_renderedText.setWordWrapEnabled(true);
     addMultiLineEditboxProperties();
 }
 
@@ -323,13 +323,18 @@ void MultiLineEditbox::setLastJustifiedLineFormatting(HorizontalTextFormatting f
 //------------------------------------------------------------------------//
 void MultiLineEditbox::setWordWrapEnabled(bool wrap)
 {
-    if (d_wordWrap == wrap)
+    if (d_renderedText.isWordWrapEnabled() == wrap)
         return;
 
-    d_wordWrap = wrap;
-    d_renderedText.setWordWrapEnabled(d_wordWrap);
+    d_renderedText.setWordWrapEnabled(wrap);
     d_formattingDirty = true;
     invalidate();
+}
+
+//------------------------------------------------------------------------//
+bool MultiLineEditbox::isWordWrapEnabled() const
+{
+    return d_renderedText.isWordWrapEnabled();
 }
 
 //------------------------------------------------------------------------//

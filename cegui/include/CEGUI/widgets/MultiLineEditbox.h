@@ -139,7 +139,7 @@ public:
         Return whether word-wrapping is turned on, which means words are
         wrapped to multiple lines as needed.
     */
-    bool isWordWrapEnabled() const { return d_wordWrap; }
+    bool isWordWrapEnabled() const;
 
 protected:
 
@@ -189,7 +189,6 @@ protected:
 
     bool d_forceVertScroll = false; //!< true if vertical scrollbar should always be displayed
     bool d_forceHorzScroll = false; //!< true if horizontal scrollbar should always be displayed
-    bool d_wordWrap = true;
 
 private:
 
