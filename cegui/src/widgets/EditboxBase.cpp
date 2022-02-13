@@ -387,15 +387,14 @@ bool EditboxBase::insertString(String&& text)
     undoInsert.d_startIdx = insertPos;
     undoInsert.d_text = std::move(text);
 
-    clearSelection();
-    setCaretIndex(insertPos + undoInsert.d_text.size());
-
     setText(tmp);
 
     d_undoHandler->addUndoHistory(undoInsert);
     if (selLength)
         d_undoHandler->addUndoHistory(undoDeleteSelection);
 
+    clearSelection();
+    setCaretIndex(insertPos + undoInsert.d_text.size());
     ensureCaretIsVisible();
 
     return true;
