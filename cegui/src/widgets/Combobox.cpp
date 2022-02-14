@@ -218,7 +218,7 @@ const String& Combobox::getValidationString(void) const
 /*************************************************************************
 	return the current position of the caret.
 *************************************************************************/
-size_t Combobox::getCaretIndex(void) const
+size_t Combobox::getCaretIndex() const
 {
 	return getEditbox()->getCaretIndex();
 }
