@@ -137,7 +137,7 @@ void MultiLineEditbox::ensureCaretIsVisible()
 
     //!!!TODO TEXT: get caret rect from renderer? The same code as in geometry generation!
     Rectf caretGlyphRect;
-    if (!d_renderedText.getTextIndexBounds(getCaretIndex(), caretGlyphRect))
+    if (!d_renderedText.getTextIndexBounds(d_caretPos, caretGlyphRect))
         return;
 
     const Rectf textArea = wr->getTextRenderArea();

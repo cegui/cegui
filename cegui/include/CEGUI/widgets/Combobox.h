@@ -306,7 +306,7 @@ public:
 	\return
 		Index of the insert caret relative to the start of the text.
 	*/
-	size_t	getCaretIndex(void) const;
+	size_t getCaretIndex() const;
 
 
 	/*!

@@ -150,7 +150,7 @@ public:
     \return
         Index of the insert caret relative to the start of the text.
     */
-    size_t getCaretIndex() const;
+    size_t getCaretIndex() const { return d_caretPos; }
 
     /*!
     \brief
@@ -466,7 +466,8 @@ protected:
     //! Clear the currently defined selection (just the region, not the text).
     void clearSelection();
 
-    bool insertString(String&& text);
+    bool insertString(String&& strToInsert);
+    void deleteRange(size_t start, size_t length);
 
     /*!
     \brief

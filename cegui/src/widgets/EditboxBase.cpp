@@ -352,15 +352,15 @@ void EditboxBase::clearSelection()
 }
 
 //----------------------------------------------------------------------------//
-bool EditboxBase::insertString(String&& text)
+bool EditboxBase::insertString(String&& strToInsert)
 {
     //!!!TODO TEXT: for the single line editbox need to remove all \n and \r!
 
-    if (isReadOnly() || text.empty())
+    if (isReadOnly() || strToInsert.empty())
         return false;
 
     String tmp = getText();
-    if (tmp.size() + text.size() - getSelectionLength() > d_maxTextLen)
+    if (tmp.size() + strToInsert.size() - getSelectionLength() > d_maxTextLen)
     {
         WindowEventArgs args(this);
         onEditboxFullEvent(args);
@@ -380,16 +380,15 @@ bool EditboxBase::insertString(String&& text)
         tmp.erase(selStart, selLength);
     }
 
-    const auto insertPos = getCaretIndex();
-    tmp.insert(insertPos, text);
+    tmp.insert(d_caretPos, strToInsert);
 
     if (!handleValidityChangeForString(tmp))
         return false;
 
     UndoHandler::UndoAction undoInsert;
     undoInsert.d_type = UndoHandler::UndoActionType::Insert;
-    undoInsert.d_startIdx = insertPos;
-    undoInsert.d_text = std::move(text);
+    undoInsert.d_startIdx = d_caretPos;
+    undoInsert.d_text = std::move(strToInsert);
 
     setText(tmp);
 
@@ -398,10 +397,46 @@ bool EditboxBase::insertString(String&& text)
         d_undoHandler->addUndoHistory(undoDeleteSelection);
 
     clearSelection();
-    setCaretIndex(insertPos + undoInsert.d_text.size());
+    setCaretIndex(d_caretPos + undoInsert.d_text.size());
     ensureCaretIsVisible();
 
     return true;
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::deleteRange(size_t start, size_t length)
+{
+    if (!length)
+        return;
+
+    const auto& text = getText();
+    if (start >= text.size())
+        return;
+
+    UndoHandler::UndoAction undoDelete;
+    undoDelete.d_type = UndoHandler::UndoActionType::Delete;
+    undoDelete.d_startIdx = start;
+    undoDelete.d_text = text.substr(start, length);
+
+    const auto end = start + length;
+
+    String tmp;
+    tmp.reserve(text.size() - length);
+    if (start)
+        tmp += text.substr(0, start);
+    if (end < text.size())
+        tmp += text.substr(end);
+
+    if (!handleValidityChangeForString(tmp))
+        return;
+
+    setCaretIndex(start);
+    clearSelection();
+    ensureCaretIsVisible();
+
+    setText(tmp);
+
+    d_undoHandler->addUndoHistory(undoDelete);
 }
 
 //----------------------------------------------------------------------------//
@@ -442,14 +477,9 @@ void EditboxBase::onCursorPressHold(CursorInputEventArgs& e)
     {
         if (captureInput())
         {
-            clearSelection();
             d_dragging = true;
             d_dragAnchorIdx = getTextIndexFromPosition(e.position);
-#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-            //if (getV2lMapping().size() > d_dragAnchorIdx)
-            //    d_dragAnchorIdx =
-            //        getV2lMapping()[d_dragAnchorIdx];
-#endif
+            clearSelection();
             setCaretIndex(d_dragAnchorIdx);
             ensureCaretIsVisible();
         }
@@ -477,12 +507,7 @@ void EditboxBase::onCursorMove(CursorInputEventArgs& e)
 
     if (d_dragging)
     {
-        size_t anchorIdx = getTextIndexFromPosition(e.position);
-#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-        //if (getV2lMapping().size() > anchorIdx)
-        //    anchorIdx = getV2lMapping()[anchorIdx];
-#endif
-        setCaretIndex(anchorIdx);
+        setCaretIndex(getTextIndexFromPosition(e.position));
         setSelection(d_caretPos, d_dragAnchorIdx);
         ensureCaretIsVisible();
     }
@@ -721,7 +746,7 @@ void EditboxBase::handleWordLeft(bool select)
 {
     if (d_caretPos > 0)
     {
-        setCaretIndex(TextUtils::getWordStartIndex(getText(), getCaretIndex()));
+        setCaretIndex(TextUtils::getWordStartIndex(getText(), d_caretPos));
         ensureCaretIsVisible();
     }
 
@@ -873,27 +898,11 @@ void EditboxBase::handleBackspace()
 
     String tmp(getText());
 
-    //!!!FIXME TEXT: lots of duplication between delete, backspace, paste and onCharacter!
     if (getSelectionLength())
     {
-        UndoHandler::UndoAction undoDeleteSelection;
-        undoDeleteSelection.d_type = UndoHandler::UndoActionType::Delete;
-        undoDeleteSelection.d_startIdx = getSelectionStart();
-        undoDeleteSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
-
-        tmp.erase(getSelectionStart(), getSelectionLength());
-
-        if (handleValidityChangeForString(tmp))
-        {
-            setCaretIndex(d_selectionStart);
-            clearSelection();
-            ensureCaretIsVisible();
-
-            setText(tmp);
-            d_undoHandler->addUndoHistory(undoDeleteSelection);
-        }
+        deleteRange(getSelectionStart(), getSelectionLength());
     }
-    else if (getCaretIndex() > 0)
+    else if (d_caretPos > 0)
     {
         UndoHandler::UndoAction undo;
         undo.d_type = UndoHandler::UndoActionType::Delete;
@@ -937,24 +946,9 @@ void EditboxBase::handleDelete()
 
     if (getSelectionLength())
     {
-        UndoHandler::UndoAction undoSelection;
-        undoSelection.d_type = UndoHandler::UndoActionType::Delete;
-        undoSelection.d_startIdx = getSelectionStart();
-        undoSelection.d_text = tmp.substr(getSelectionStart(), getSelectionLength());
-
-        tmp.erase(getSelectionStart(), getSelectionLength());
-
-        if (handleValidityChangeForString(tmp))
-        {
-            setCaretIndex(d_selectionStart);
-            clearSelection();
-            ensureCaretIsVisible();
-
-            setText(tmp);
-            d_undoHandler->addUndoHistory(undoSelection);
-        }
+        deleteRange(getSelectionStart(), getSelectionLength());
     }
-    else if (getCaretIndex() < tmp.size())
+    else if (d_caretPos < tmp.size())
     {
         UndoHandler::UndoAction undo;
         undo.d_type = UndoHandler::UndoActionType::Delete;
@@ -1033,18 +1027,6 @@ void EditboxBase::onValidationStringChanged(WindowEventArgs& e)
 void EditboxBase::onTextValidityChanged(RegexMatchStateEventArgs& e)
 {
     fireEvent(EventTextValidityChanged, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-size_t EditboxBase::getCaretIndex() const
-{
-#if defined(CEGUI_BIDI_SUPPORT) && !defined(CEGUI_USE_RAQM)
-    //size_t caretPos = d_caretPos;
-    //if (getL2vMapping().size() > caretPos)
-    //    caretPos = getL2vMapping()[caretPos];
-#endif
-
-    return d_caretPos;
 }
 
 //----------------------------------------------------------------------------//
