@@ -904,35 +904,16 @@ void EditboxBase::handleBackspace()
     }
     else if (d_caretPos > 0)
     {
-        UndoHandler::UndoAction undo;
-        undo.d_type = UndoHandler::UndoActionType::Delete;
-
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
-        size_t deleteStartPos = d_caretPos - 1;
-        size_t deleteLength = 1;
+        deleteRange(d_caretPos - 1, 1);
 #else
         String::codepoint_iterator caretIter(tmp.begin() + d_caretPos,
             tmp.begin(), tmp.end());
         --caretIter;
 
-        size_t deleteStartPos = caretIter.getCodeUnitIndexFromStart();
-        size_t deleteLength = d_caretPos - deleteStartPos;
+        const size_t deleteStartPos = caretIter.getCodeUnitIndexFromStart();
+        deleteRange(deleteStartPos, d_caretPos - deleteStartPos);
 #endif
-
-        undo.d_startIdx = deleteStartPos;
-        undo.d_text = tmp.substr(deleteStartPos, deleteLength);
-
-        tmp.erase(deleteStartPos, deleteLength);
-
-        if (handleValidityChangeForString(tmp))
-        {
-            setCaretIndex(deleteStartPos);
-            ensureCaretIsVisible();
-
-            // set text to the newly modified string
-            setText(tmp);
-            d_undoHandler->addUndoHistory(undo);
-        }
     }
 }
 
@@ -950,25 +931,11 @@ void EditboxBase::handleDelete()
     }
     else if (d_caretPos < tmp.size())
     {
-        UndoHandler::UndoAction undo;
-        undo.d_type = UndoHandler::UndoActionType::Delete;
-        undo.d_startIdx = d_caretPos;
-
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
-        size_t eraseLength = 1;
+        deleteRange(d_caretPos, 1);
 #else
-        size_t eraseLength = String::getCodePointSize(tmp[d_caretPos]);
+        deleteRange(d_caretPos, String::getCodePointSize(tmp[d_caretPos]));
 #endif
-
-        undo.d_text = tmp.substr(d_caretPos, eraseLength);
-
-        tmp.erase(d_caretPos, eraseLength);
-
-        if (handleValidityChangeForString(tmp))
-        {
-            setText(tmp);
-            d_undoHandler->addUndoHistory(undo);
-        }
     }
 }
 
