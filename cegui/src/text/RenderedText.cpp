@@ -516,7 +516,7 @@ size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt) const
 
         // No text at point means the end of the paragraph
         if (idx == RenderedTextParagraph::npos && i + 1 < d_paragraphs.size())
-            return d_paragraphs[i + 1].getSourceStartIndex() - 1;
+            return d_paragraphs[i + 1].getSourceStartIndex() - 1; //!!!FIXME TEXT: 1 or codepoint length?! UTF-8!
 
         return idx;
     }
@@ -548,6 +548,36 @@ bool RenderedText::getTextIndexBounds(size_t textIndex, Rectf& out) const
     out.d_min.y += offsetY;
     out.d_max.y += offsetY;
     return true;
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedText::nextTextIndex(size_t textIndex) const
+{
+    if (d_paragraphs.empty())
+        return npos;
+
+    float offsetY;
+    const auto parIdx = findParagraphIndex(textIndex, offsetY);
+    const auto idx = d_paragraphs[parIdx].nextTextIndex(textIndex);
+    if (idx == RenderedTextParagraph::npos && parIdx + 1 < d_paragraphs.size())
+        return d_paragraphs[parIdx + 1].getSourceStartIndex() - 1; //!!!FIXME TEXT: 1 or codepoint length?! UTF-8!
+
+    return idx;
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedText::prevTextIndex(size_t textIndex) const
+{
+    if (d_paragraphs.empty())
+        return npos;
+
+    float offsetY;
+    const auto parIdx = findParagraphIndex(textIndex, offsetY);
+    const auto idx = d_paragraphs[parIdx].prevTextIndex(textIndex);
+    if (idx == RenderedTextParagraph::npos && parIdx > 0)
+        return d_paragraphs[parIdx].getSourceStartIndex() - 1; //!!!FIXME TEXT: 1 or codepoint length?! UTF-8!
+
+    return idx;
 }
 
 //----------------------------------------------------------------------------//

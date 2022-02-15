@@ -735,6 +735,7 @@ size_t RenderedTextParagraph::getNearestGlyphIndex(size_t textIndex) const
         if (srcIndex == textIndex)
             return i;
 
+        //!!!TODO TEXT: handle images and other non-text glyphs!
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         // Check if textIndex is in the middle of the multi-byte UTF-8 codepoint
         if (auto fontGlyph = d_glyphs[i].fontGlyph)
@@ -751,6 +752,20 @@ size_t RenderedTextParagraph::getNearestGlyphIndex(size_t textIndex) const
     }
 
     return nearestIdx;
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedTextParagraph::nextTextIndex(size_t textIndex) const
+{
+    const auto idx = getNearestGlyphIndex(textIndex);
+    return (idx + 1 < d_glyphs.size()) ? d_glyphs[idx + 1].sourceIndex : npos;
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedTextParagraph::prevTextIndex(size_t textIndex) const
+{
+    const auto idx = getNearestGlyphIndex(textIndex);
+    return idx ? d_glyphs[idx - 1].sourceIndex : npos;
 }
 
 //----------------------------------------------------------------------------//

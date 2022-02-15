@@ -208,8 +208,7 @@ void EditboxBase::setTextFormatting(HorizontalTextFormatting format)
     if (d_renderedText.getHorizontalFormatting() == format)
         return;
 
-    bool wordWrap = false;
-    d_renderedText.setHorizontalFormatting(decomposeHorizontalFormatting(format, wordWrap));
+    d_renderedText.setHorizontalFormatting(decomposeHorizontalFormatting(format));
     d_formattingDirty = true;
     invalidate();
 }
@@ -759,6 +758,9 @@ void EditboxBase::handleWordLeft(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleCharRight(bool select)
 {
+    //updateRenderedText();
+    //setCaretIndex(d_renderedText.nextTextIndex(d_caretPos));
+
     if (d_caretPos < getText().size())
     {
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8

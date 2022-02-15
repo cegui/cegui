@@ -236,7 +236,7 @@ void TextComponent::updateRenderedText(const Window& srcWindow, const Sizef& siz
 
     //!!!FIXME TEXT: get rid of deprecated word wrapping baked into hfmt!
     bool wordWrap = false;
-    auto hfmt = decomposeHorizontalFormatting(d_horzFormatting.get(srcWindow), wordWrap);
+    auto hfmt = decomposeHorizontalFormatting(d_horzFormatting.get(srcWindow), &wordWrap);
     if (!wordWrap)
     {
         if (d_wordWrapProperty.empty())

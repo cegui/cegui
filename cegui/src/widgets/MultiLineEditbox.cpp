@@ -303,7 +303,7 @@ void MultiLineEditbox::setShowVertScrollbar(bool setting)
 void MultiLineEditbox::setTextFormatting(HorizontalTextFormatting format)
 {
     bool wordWrap = false;
-    EditboxBase::setTextFormatting(decomposeHorizontalFormatting(format, wordWrap));
+    EditboxBase::setTextFormatting(decomposeHorizontalFormatting(format, &wordWrap));
     if (wordWrap)
         setWordWrapEnabled(true);
 }
@@ -314,8 +314,7 @@ void MultiLineEditbox::setLastJustifiedLineFormatting(HorizontalTextFormatting f
     if (d_renderedText.getLastJustifiedLineFormatting() == format)
         return;
 
-    bool wordWrap = false;
-    d_renderedText.setLastJustifiedLineFormatting(decomposeHorizontalFormatting(format, wordWrap));
+    d_renderedText.setLastJustifiedLineFormatting(decomposeHorizontalFormatting(format));
     d_formattingDirty = true;
     invalidate();
 }
