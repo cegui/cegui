@@ -127,6 +127,9 @@ public:
     size_t getTextIndex(size_t glyphIndex) const;
     size_t getNearestGlyphIndex(size_t textIndex) const;
 
+    size_t nextTextIndex(size_t textIndex) const;
+    size_t prevTextIndex(size_t textIndex) const;
+
 protected:
 
     struct Line

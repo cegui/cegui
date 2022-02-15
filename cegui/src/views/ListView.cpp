@@ -106,7 +106,7 @@ void ListView::setHorizontalFormatting(HorizontalTextFormatting h_fmt)
         return;
 
     bool wordWrap = false;
-    d_horzFormatting = decomposeHorizontalFormatting(h_fmt, wordWrap);
+    d_horzFormatting = decomposeHorizontalFormatting(h_fmt, &wordWrap);
     if (wordWrap)
         setWordWrapEnabled(true);
 

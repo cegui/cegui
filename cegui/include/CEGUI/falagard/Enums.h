@@ -106,33 +106,26 @@ namespace CEGUI
     };
 
     // TODO: deprecated, remove later when users migrate their data
-    inline HorizontalTextFormatting decomposeHorizontalFormatting(HorizontalTextFormatting fmt, bool& wordWrap)
+    inline HorizontalTextFormatting decomposeHorizontalFormatting(HorizontalTextFormatting fmt, bool* wordWrap = nullptr)
     {
+        if (wordWrap)
+            *wordWrap = true;
+
         switch (fmt)
         {
             case HorizontalTextFormatting::WordWrapLeftAligned:
-            {
-                wordWrap = true;
                 return HorizontalTextFormatting::LeftAligned;
-            }
             case HorizontalTextFormatting::WordWrapRightAligned:
-            {
-                wordWrap = true;
                 return HorizontalTextFormatting::RightAligned;
-            }
             case HorizontalTextFormatting::WordWrapCentreAligned:
-            {
-                wordWrap = true;
                 return HorizontalTextFormatting::CentreAligned;
-            }
             case HorizontalTextFormatting::WordWrapJustified:
-            {
-                wordWrap = true;
                 return HorizontalTextFormatting::Justified;
-            }
         }
 
-        wordWrap = false;
+        if (wordWrap)
+            *wordWrap = false;
+
         return fmt;
     }
 
