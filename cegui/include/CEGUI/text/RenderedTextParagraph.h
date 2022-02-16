@@ -80,7 +80,7 @@ public:
 
     void setupGlyphs(const std::u32string& text,
         const std::vector<uint16_t>& elementIndices, const std::vector<RenderedTextElementPtr>& elements);
-    void remapSourceIndices(const std::vector<size_t>& originalIndices);
+    void remapSourceIndices(const std::vector<size_t>& originalIndices, size_t sourceLength);
 
     void createRenderGeometry(std::vector<GeometryBuffer*>& out, glm::vec2& penPosition,
         const ColourRect* modColours, const Rectf* clipRect, const SelectionInfo* selection,
@@ -116,8 +116,9 @@ public:
     std::vector<RenderedGlyph>& glyphs() { return d_glyphs; }
     const std::vector<RenderedGlyph>& glyphs() const { return d_glyphs; }
 
-    void setSourceStartIndex(uint32_t index) { d_sourceIndex = index; }
-    uint32_t getSourceStartIndex() const { return d_sourceIndex; }
+    void setSourceIndexRange(uint32_t start, uint32_t end) { d_sourceStartIndex = start; d_sourceEndIndex = end; }
+    uint32_t getSourceStartIndex() const { return d_sourceStartIndex; }
+    uint32_t getSourceEndIndex() const { return d_sourceEndIndex; }
 
     size_t getLineCount() const { return d_linesDirty ? 1 : d_lines.size(); }
     size_t getTextIndexAtPoint(const glm::vec2& pt) const;
@@ -152,7 +153,8 @@ protected:
     std::vector<Line> d_lines;
 
     //???TODO TEXT: store end idx instead?
-    uint32_t d_sourceIndex = 0;  //!< Starting index of the paragraph in the logical text
+    uint32_t d_sourceStartIndex = 0;  //!< Starting index of the paragraph in the logical text
+    uint32_t d_sourceEndIndex = 0;  //!< Starting index of the paragraph in the logical text
     float d_height = 0.f;
 
     DefaultParagraphDirection d_bidiDir = DefaultParagraphDirection::Automatic;

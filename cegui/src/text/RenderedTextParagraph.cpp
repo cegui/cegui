@@ -59,7 +59,7 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text,
 }
 
 //----------------------------------------------------------------------------//
-void RenderedTextParagraph::remapSourceIndices(const std::vector<size_t>& originalIndices)
+void RenderedTextParagraph::remapSourceIndices(const std::vector<size_t>& originalIndices, size_t sourceLength)
 {
     if (originalIndices.empty())
         return;
@@ -67,8 +67,10 @@ void RenderedTextParagraph::remapSourceIndices(const std::vector<size_t>& origin
     for (auto& glyph : d_glyphs)
         glyph.sourceIndex = static_cast<uint32_t>(originalIndices[glyph.sourceIndex]);
 
-    if (d_sourceIndex < originalIndices.size())
-        d_sourceIndex = static_cast<uint32_t>(originalIndices[d_sourceIndex]);
+    d_sourceStartIndex = static_cast<uint32_t>(
+        (d_sourceStartIndex < originalIndices.size()) ? originalIndices[d_sourceStartIndex] : sourceLength);
+    d_sourceEndIndex = static_cast<uint32_t>(
+        (d_sourceEndIndex < originalIndices.size()) ? originalIndices[d_sourceEndIndex] : sourceLength);
 }
 
 //----------------------------------------------------------------------------//
@@ -581,7 +583,7 @@ size_t RenderedTextParagraph::getGlyphLineIndex(size_t glyphIndex) const
 //----------------------------------------------------------------------------//
 size_t RenderedTextParagraph::getTextIndexAtPoint(const glm::vec2& pt) const
 {
-    return d_glyphs.empty() ? d_sourceIndex : getTextIndex(getGlyphIndexAtPoint(pt));
+    return d_glyphs.empty() ? d_sourceStartIndex : getTextIndex(getGlyphIndexAtPoint(pt));
 }
 
 //----------------------------------------------------------------------------//
@@ -758,14 +760,23 @@ size_t RenderedTextParagraph::getNearestGlyphIndex(size_t textIndex) const
 size_t RenderedTextParagraph::nextTextIndex(size_t textIndex) const
 {
     const auto idx = getNearestGlyphIndex(textIndex);
-    return (idx + 1 < d_glyphs.size()) ? d_glyphs[idx + 1].sourceIndex : npos;
+    return (idx + 1 < d_glyphs.size() && idx != npos) ? d_glyphs[idx + 1].sourceIndex : d_sourceEndIndex;
 }
 
 //----------------------------------------------------------------------------//
 size_t RenderedTextParagraph::prevTextIndex(size_t textIndex) const
 {
-    const auto idx = getNearestGlyphIndex(textIndex);
-    return idx ? d_glyphs[idx - 1].sourceIndex : npos;
+    if (textIndex >= d_sourceEndIndex)
+    {
+        // Handle paragraph ending (newline) which has no glyph
+        const auto idx = getNearestGlyphIndex(d_sourceEndIndex - 1);
+        return (idx == npos) ? d_sourceEndIndex : d_glyphs[idx].sourceIndex;
+    }
+    else
+    {
+        const auto idx = getNearestGlyphIndex(textIndex);
+        return (idx == npos) ? d_sourceEndIndex : idx ? d_glyphs[idx - 1].sourceIndex : d_sourceStartIndex;
+    }
 }
 
 //----------------------------------------------------------------------------//

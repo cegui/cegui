@@ -319,18 +319,18 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
 #endif
 
     // Perform layouting per paragraph
-    const size_t textLength = utf32Text.size();
+    const size_t utf32TextLength = utf32Text.size();
     size_t start = 0;
     do
     {
         size_t end = utf32Text.find('\n', start);
         if (end == std::u32string::npos)
-            end = textLength;
+            end = utf32TextLength;
 
         // Always create a paragraph (new line), even if it is empty
         d_paragraphs.emplace_back();
         auto& p = d_paragraphs.back();
-        p.setSourceStartIndex(start);
+        p.setSourceIndexRange(start, end);
 
         if (end > start)
         {
@@ -348,9 +348,9 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
             p.setupGlyphs(utf32Text, elementIndices, d_elements);
         }
 
-        p.remapSourceIndices(originalIndices);
+        p.remapSourceIndices(originalIndices, text.size());
 
-        if (end == textLength)
+        if (end == utf32TextLength)
             break;
         else
             start = end + 1;
@@ -515,8 +515,8 @@ size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt) const
         const auto idx = p.getTextIndexAtPoint(localPt);
 
         // No text at point means the end of the paragraph
-        if (idx == RenderedTextParagraph::npos && i + 1 < d_paragraphs.size())
-            return d_paragraphs[i + 1].getSourceStartIndex() - 1; //!!!FIXME TEXT: 1 or codepoint length?! UTF-8!
+        if (idx == RenderedTextParagraph::npos)
+            return d_paragraphs[i].getSourceEndIndex();
 
         return idx;
     }
@@ -558,10 +558,10 @@ size_t RenderedText::nextTextIndex(size_t textIndex) const
 
     float offsetY;
     const auto parIdx = findParagraphIndex(textIndex, offsetY);
-    const auto idx = d_paragraphs[parIdx].nextTextIndex(textIndex);
-    if (idx == RenderedTextParagraph::npos && parIdx + 1 < d_paragraphs.size())
-        return d_paragraphs[parIdx + 1].getSourceStartIndex() - 1; //!!!FIXME TEXT: 1 or codepoint length?! UTF-8!
 
+    const auto idx = d_paragraphs[parIdx].nextTextIndex(textIndex);
+    if (textIndex == d_paragraphs[parIdx].getSourceEndIndex() && parIdx + 1 < d_paragraphs.size())
+        return d_paragraphs[parIdx + 1].getSourceStartIndex();
     return idx;
 }
 
@@ -573,10 +573,10 @@ size_t RenderedText::prevTextIndex(size_t textIndex) const
 
     float offsetY;
     const auto parIdx = findParagraphIndex(textIndex, offsetY);
-    const auto idx = d_paragraphs[parIdx].prevTextIndex(textIndex);
-    if (idx == RenderedTextParagraph::npos && parIdx > 0)
-        return d_paragraphs[parIdx].getSourceStartIndex() - 1; //!!!FIXME TEXT: 1 or codepoint length?! UTF-8!
 
+    const auto idx = d_paragraphs[parIdx].prevTextIndex(textIndex);
+    if (textIndex == d_paragraphs[parIdx].getSourceStartIndex() && parIdx > 0)
+        return d_paragraphs[parIdx - 1].getSourceEndIndex();
     return idx;
 }
 
