@@ -83,6 +83,10 @@ public:
     bool getTextIndexBounds(size_t textIndex, Rectf& out) const;
     size_t nextTextIndex(size_t textIndex) const;
     size_t prevTextIndex(size_t textIndex) const;
+    size_t lineUpTextIndex(size_t textIndex, float desiredOffsetX) const;
+    size_t lineDownTextIndex(size_t textIndex, float desiredOffsetX) const;
+    size_t pageUpTextIndex(size_t textIndex, float desiredOffsetX, float pageHeight) const;
+    size_t pageDownTextIndex(size_t textIndex, float desiredOffsetX, float pageHeight) const;
 
 protected:
 

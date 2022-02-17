@@ -126,7 +126,10 @@ public:
     size_t getGlyphIndexAtPoint(const glm::vec2& pt) const;
     bool getGlyphBounds(Rectf& out, size_t glyphIndex, const std::vector<RenderedTextElementPtr>& elements) const;
     size_t getTextIndex(size_t glyphIndex) const;
+    size_t getTextIndex(size_t lineIndex, float offsetX) const;
     size_t getNearestGlyphIndex(size_t textIndex) const;
+    size_t getNearestGlyphIndex(size_t lineIndex, float offsetX) const;
+    size_t getLineIndex(size_t textIndex) const;
 
     size_t nextTextIndex(size_t textIndex) const;
     size_t prevTextIndex(size_t textIndex) const;
