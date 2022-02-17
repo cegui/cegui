@@ -581,6 +581,59 @@ size_t RenderedText::prevTextIndex(size_t textIndex) const
 }
 
 //----------------------------------------------------------------------------//
+size_t RenderedText::lineUpTextIndex(size_t textIndex, float desiredOffsetX) const
+{
+    if (d_paragraphs.empty())
+        return npos;
+
+    float offsetY;
+    const auto parIdx = findParagraphIndex(textIndex, offsetY);
+    const auto& par = d_paragraphs[parIdx];
+    const auto lineIdx = par.getLineIndex(textIndex);
+
+    if (lineIdx)
+        return par.getTextIndex(lineIdx - 1, desiredOffsetX);
+
+    if (!parIdx)
+        return textIndex;
+
+    const auto& prevPar = d_paragraphs[parIdx - 1];
+    return prevPar.getTextIndex(prevPar.getLineCount() - 1, desiredOffsetX);
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedText::lineDownTextIndex(size_t textIndex, float desiredOffsetX) const
+{
+    if (d_paragraphs.empty())
+        return npos;
+
+    float offsetY;
+    const auto parIdx = findParagraphIndex(textIndex, offsetY);
+    const auto& par = d_paragraphs[parIdx];
+    const auto lineIdx = par.getLineIndex(textIndex);
+
+    if (lineIdx + 1 < par.getLineCount())
+        return par.getTextIndex(lineIdx + 1, desiredOffsetX);
+
+    if (parIdx + 1 >= d_paragraphs.size())
+        return textIndex;
+
+    return d_paragraphs[parIdx + 1].getTextIndex(0, desiredOffsetX);
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedText::pageUpTextIndex(size_t textIndex, float desiredOffsetX, float pageHeight) const
+{
+    return textIndex;
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedText::pageDownTextIndex(size_t textIndex, float desiredOffsetX, float pageHeight) const
+{
+    return textIndex;
+}
+
+//----------------------------------------------------------------------------//
 size_t RenderedText::findParagraphIndex(size_t textIndex, float& offsetY) const
 {
     offsetY = 0.f;

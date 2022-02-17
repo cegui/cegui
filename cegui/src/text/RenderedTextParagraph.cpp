@@ -574,7 +574,7 @@ size_t RenderedTextParagraph::getGlyphLineIndex(size_t glyphIndex) const
     if (d_linesDirty)
         return npos;
 
-    auto it = std::upper_bound(d_lines.cbegin(), d_lines.cend(), glyphIndex,
+    const auto it = std::upper_bound(d_lines.cbegin(), d_lines.cend(), glyphIndex,
         [](uint32_t value, const Line& elm) { return value < elm.glyphEndIdx; });
 
     return (it == d_lines.cend()) ? npos : std::distance(d_lines.cbegin(), it);
@@ -619,42 +619,18 @@ size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt) const
     if (d_linesDirty || pt.y < 0.f)
         return npos;
 
-    uint32_t i = 0;
     float lineLocalY = pt.y;
-    for (const auto& line : d_lines)
+    for (size_t i = 0; i < d_lines.size(); ++i)
     {
+        const auto& line = d_lines[i];
+
         if (line.heightDirty)
             return npos;
 
-        // Not this line, skip to the next one
-        if (lineLocalY > line.extents.d_height)
-        {
-            lineLocalY -= line.extents.d_height;
-            i = line.glyphEndIdx;
-            continue;
-        }
+        if (lineLocalY <= line.extents.d_height)
+            return getNearestGlyphIndex(i, pt.x);
 
-        // Point is to the left of the beginning
-        if (pt.x < line.horzOffset)
-            return i;
-
-        i = skipWrappedWhitespace(i, line.glyphEndIdx);
-
-        float nextGlyphStart = line.horzOffset;
-        while (i < line.glyphEndIdx)
-        {
-            nextGlyphStart += d_glyphs[i].advance;
-            if (d_glyphs[i].isJustifyable)
-                nextGlyphStart += line.justifySpaceSize;
-
-            if (pt.x < nextGlyphStart)
-                return i;
-
-            ++i;
-        }
-
-        // Point is to the right of the end
-        return line.glyphEndIdx;
+        lineLocalY -= line.extents.d_height;
     }
 
     return npos;
@@ -726,6 +702,16 @@ size_t RenderedTextParagraph::getTextIndex(size_t glyphIndex) const
 }
 
 //----------------------------------------------------------------------------//
+size_t RenderedTextParagraph::getTextIndex(size_t lineIndex, float offsetX) const
+{
+    if (d_glyphs.empty())
+        return d_sourceStartIndex;
+
+    const auto idx = getNearestGlyphIndex(lineIndex, offsetX);
+    return (idx != npos) ? d_glyphs[idx].sourceIndex : npos;
+}
+
+//----------------------------------------------------------------------------//
 size_t RenderedTextParagraph::getNearestGlyphIndex(size_t textIndex) const
 {
     size_t nearestIdx = npos;
@@ -754,6 +740,48 @@ size_t RenderedTextParagraph::getNearestGlyphIndex(size_t textIndex) const
     }
 
     return nearestIdx;
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedTextParagraph::getNearestGlyphIndex(size_t lineIndex, float offsetX) const
+{
+    if (d_linesDirty || d_lines.size() <= lineIndex)
+        return npos;
+
+    const auto& line = d_lines[lineIndex];
+    auto i = lineIndex ? d_lines[lineIndex - 1].glyphEndIdx : 0;
+
+    // Point is to the left of the beginning
+    if (offsetX < line.horzOffset)
+        return i;
+
+    i = skipWrappedWhitespace(i, line.glyphEndIdx);
+
+    float nextGlyphStart = line.horzOffset;
+    while (i < line.glyphEndIdx)
+    {
+        nextGlyphStart += d_glyphs[i].advance;
+        if (d_glyphs[i].isJustifyable)
+            nextGlyphStart += line.justifySpaceSize;
+
+        if (offsetX < nextGlyphStart)
+            return i;
+
+        ++i;
+    }
+
+    // Point is to the right of the end
+    return line.glyphEndIdx;
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedTextParagraph::getLineIndex(size_t textIndex) const
+{
+    if (d_linesDirty || d_lines.empty())
+        return npos;
+
+    const auto idx = getNearestGlyphIndex(textIndex);
+    return (idx != npos) ? getGlyphLineIndex(idx) : (d_lines.size() - 1);
 }
 
 //----------------------------------------------------------------------------//

@@ -183,14 +183,9 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineUp(bool select)
 {
-    //size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    //if (caretLine > 0)
-    {
-        //float caretPixelOffset = getActualFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
-        //--caretLine;
-        //size_t newLineIndex = getActualFont()->getCharAtPixel(getText().substr(d_lines[caretLine].d_startIdx, d_lines[caretLine].d_length), caretPixelOffset);
-        //setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
-    }
+    updateRenderedText();
+    setCaretIndex(d_renderedText.lineUpTextIndex(d_caretPos, d_desiredCaretOffsetX));
+    ensureCaretIsVisible();
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
@@ -201,14 +196,9 @@ void MultiLineEditbox::handleLineUp(bool select)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineDown(bool select)
 {
-    //size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    //if ((d_renderedText.getLineCount() > 1) && (caretLine < (d_renderedText.getLineCount() - 1)))
-    {
-        //float caretPixelOffset = getActualFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
-        //++caretLine;
-        //size_t newLineIndex = getActualFont()->getCharAtPixel(getText().substr(d_lines[caretLine].d_startIdx, d_lines[caretLine].d_length), caretPixelOffset);
-        //setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
-    }
+    updateRenderedText();
+    setCaretIndex(d_renderedText.lineDownTextIndex(d_caretPos, d_desiredCaretOffsetX));
+    ensureCaretIsVisible();
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
