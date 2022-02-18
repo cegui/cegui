@@ -734,8 +734,6 @@ void EditboxBase::handleCharLeft(bool select)
         ensureCaretIsVisible();
     }
 
-    d_desiredCaretOffsetX = getCaretRect().left();
-
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
@@ -750,8 +748,6 @@ void EditboxBase::handleWordLeft(bool select)
         setCaretIndex(TextUtils::getWordStartIndex(getText(), d_caretPos));
         ensureCaretIsVisible();
     }
-
-    d_desiredCaretOffsetX = getCaretRect().left();
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
@@ -774,8 +770,6 @@ void EditboxBase::handleCharRight(bool select)
         ensureCaretIsVisible();
     }
 
-    d_desiredCaretOffsetX = getCaretRect().left();
-
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
@@ -791,8 +785,6 @@ void EditboxBase::handleWordRight(bool select)
         ensureCaretIsVisible();
     }
 
-    d_desiredCaretOffsetX = getCaretRect().left();
-
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
@@ -807,8 +799,6 @@ void EditboxBase::handleHome(bool select, bool lineOnly)
         setCaretIndex(0);
         ensureCaretIsVisible();
     }
-
-    d_desiredCaretOffsetX = getCaretRect().left();
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
@@ -841,8 +831,6 @@ void EditboxBase::handleEnd(bool select, bool lineOnly)
         setCaretIndex(textLen);
         ensureCaretIsVisible();
     }
-
-    d_desiredCaretOffsetX = getCaretRect().left();
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);

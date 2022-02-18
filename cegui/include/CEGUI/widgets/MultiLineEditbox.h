@@ -150,6 +150,8 @@ protected:
     size_t getTextIndexFromPosition(const glm::vec2& pt) override;
     bool processSemanticInputEvent(const SemanticEventArgs& e) override;
     void onScroll(CursorInputEventArgs& e) override;
+    void onTextChanged(WindowEventArgs& e) override;
+    void onCaretMoved(WindowEventArgs& e) override;
 
     /*!
     \brief
@@ -189,6 +191,9 @@ protected:
 
     bool handleScrollChange(const EventArgs& args);
     bool validateWindowRenderer(const WindowRenderer* renderer) const override;
+
+    float d_desiredCaretOffsetX = 0.f; //!< For preserving X offset when moving up & down
+    bool d_desiredCaretOffsetXDirty = true;
 
     bool d_forceVertScroll = false; //!< true if vertical scrollbar should always be displayed
     bool d_forceHorzScroll = false; //!< true if horizontal scrollbar should always be displayed

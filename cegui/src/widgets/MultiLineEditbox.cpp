@@ -185,8 +185,11 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt)
 void MultiLineEditbox::handleLineUp(bool select)
 {
     updateRenderedText();
+    if (d_desiredCaretOffsetXDirty)
+        d_desiredCaretOffsetX = getCaretRect().left();
     setCaretIndex(d_renderedText.lineUpTextIndex(d_caretPos, d_desiredCaretOffsetX));
     ensureCaretIsVisible();
+    d_desiredCaretOffsetXDirty = false;
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
@@ -198,8 +201,11 @@ void MultiLineEditbox::handleLineUp(bool select)
 void MultiLineEditbox::handleLineDown(bool select)
 {
     updateRenderedText();
+    if (d_desiredCaretOffsetXDirty)
+        d_desiredCaretOffsetX = getCaretRect().left();
     setCaretIndex(d_renderedText.lineDownTextIndex(d_caretPos, d_desiredCaretOffsetX));
     ensureCaretIsVisible();
+    d_desiredCaretOffsetXDirty = false;
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
@@ -215,8 +221,11 @@ void MultiLineEditbox::handlePageUp(bool select)
         return;
 
     updateRenderedText();
+    if (d_desiredCaretOffsetXDirty)
+        d_desiredCaretOffsetX = getCaretRect().left();
     setCaretIndex(d_renderedText.pageUpTextIndex(d_caretPos, d_desiredCaretOffsetX, wr->getTextRenderArea().getHeight()));
     ensureCaretIsVisible();
+    d_desiredCaretOffsetXDirty = false;
 
     if (select)
         setSelection(d_caretPos, d_selectionEnd);
@@ -234,8 +243,11 @@ void MultiLineEditbox::handlePageDown(bool select)
         return;
 
     updateRenderedText();
+    if (d_desiredCaretOffsetXDirty)
+        d_desiredCaretOffsetX = getCaretRect().left();
     setCaretIndex(d_renderedText.pageDownTextIndex(d_caretPos, d_desiredCaretOffsetX, wr->getTextRenderArea().getHeight()));
     ensureCaretIsVisible();
+    d_desiredCaretOffsetXDirty = false;
 
     if (select)
         setSelection(d_selectionStart, d_caretPos);
@@ -378,6 +390,20 @@ void MultiLineEditbox::onScroll(CursorInputEventArgs& e)
         horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
 
     ++e.handled;
+}
+
+//------------------------------------------------------------------------//
+void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
+{
+    d_desiredCaretOffsetXDirty = true;
+    EditboxBase::onTextChanged(e);
+}
+
+//------------------------------------------------------------------------//
+void MultiLineEditbox::onCaretMoved(WindowEventArgs& e)
+{
+    d_desiredCaretOffsetXDirty = true;
+    EditboxBase::onCaretMoved(e);
 }
 
 //------------------------------------------------------------------------//
