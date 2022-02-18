@@ -259,9 +259,9 @@ SemanticValue InputAggregator::getSemanticAction(Key::Scan scan_code, bool shift
         else if (scan_code == Key::Scan::Home)
             value = SemanticValue::SelectToStartOfLine;
         else if (scan_code == Key::Scan::PageUp)
-            value = SemanticValue::SelectPreviousPage;
+            value = SemanticValue::SelectToPreviousPage;
         else if (scan_code == Key::Scan::PageDown)
-            value = SemanticValue::SelectNextPage;
+            value = SemanticValue::SelectToNextPage;
     }
     if (alt_down)
     {
