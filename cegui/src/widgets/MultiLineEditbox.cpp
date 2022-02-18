@@ -184,7 +184,8 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineUp(bool select)
 {
-    d_dragAnchorIdx = d_caretPos;
+    if (select && !getSelectionLength())
+        d_dragAnchorIdx = d_caretPos;
 
     updateRenderedText();
     if (d_desiredCaretOffsetXDirty)
@@ -202,7 +203,8 @@ void MultiLineEditbox::handleLineUp(bool select)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineDown(bool select)
 {
-    d_dragAnchorIdx = d_caretPos;
+    if (select && !getSelectionLength())
+        d_dragAnchorIdx = d_caretPos;
 
     updateRenderedText();
     if (d_desiredCaretOffsetXDirty)
@@ -224,6 +226,9 @@ void MultiLineEditbox::handlePageUp(bool select)
     if (!wr)
         return;
 
+    if (select && !getSelectionLength())
+        d_dragAnchorIdx = d_caretPos;
+
     updateRenderedText();
     if (d_desiredCaretOffsetXDirty)
         d_desiredCaretOffsetX = getCaretRect().left();
@@ -232,11 +237,9 @@ void MultiLineEditbox::handlePageUp(bool select)
     d_desiredCaretOffsetXDirty = false;
 
     if (select)
-        setSelection(d_caretPos, d_selectionEnd);
+        setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
-
-    ensureCaretIsVisible();
 }
 
 //----------------------------------------------------------------------------//
@@ -246,6 +249,9 @@ void MultiLineEditbox::handlePageDown(bool select)
     if (!wr)
         return;
 
+    if (select && !getSelectionLength())
+        d_dragAnchorIdx = d_caretPos;
+
     updateRenderedText();
     if (d_desiredCaretOffsetXDirty)
         d_desiredCaretOffsetX = getCaretRect().left();
@@ -254,11 +260,9 @@ void MultiLineEditbox::handlePageDown(bool select)
     d_desiredCaretOffsetXDirty = false;
 
     if (select)
-        setSelection(d_selectionStart, d_caretPos);
+        setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
-
-    ensureCaretIsVisible();
 }
 
 //----------------------------------------------------------------------------//
