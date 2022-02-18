@@ -708,7 +708,8 @@ bool EditboxBase::processSemanticInputEvent(const SemanticEventArgs& e)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleCharLeft(bool select)
 {
-    d_dragAnchorIdx = d_caretPos;
+    if (select && !getSelectionLength())
+        d_dragAnchorIdx = d_caretPos;
 
     if (d_caretPos > 0)
     {
@@ -735,7 +736,8 @@ void EditboxBase::handleCharLeft(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleWordLeft(bool select)
 {
-    d_dragAnchorIdx = d_caretPos;
+    if (select && !getSelectionLength())
+        d_dragAnchorIdx = d_caretPos;
 
     if (d_caretPos > 0)
     {
@@ -752,7 +754,8 @@ void EditboxBase::handleWordLeft(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleCharRight(bool select)
 {
-    d_dragAnchorIdx = d_caretPos;
+    if (select && !getSelectionLength())
+        d_dragAnchorIdx = d_caretPos;
 
     if (d_caretPos < getText().size())
     {
@@ -775,7 +778,8 @@ void EditboxBase::handleCharRight(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleWordRight(bool select)
 {
-    d_dragAnchorIdx = d_caretPos;
+    if (select && !getSelectionLength())
+        d_dragAnchorIdx = d_caretPos;
 
     if (d_caretPos < getText().size())
     {
@@ -792,7 +796,8 @@ void EditboxBase::handleWordRight(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleHome(bool select, bool lineOnly)
 {
-    d_dragAnchorIdx = d_caretPos;
+    if (select && !getSelectionLength())
+        d_dragAnchorIdx = d_caretPos;
 
     updateRenderedText();
     const auto destIdx = lineOnly ? d_renderedText.lineStartTextIndex(d_caretPos) : 0;
@@ -811,7 +816,8 @@ void EditboxBase::handleHome(bool select, bool lineOnly)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleEnd(bool select, bool lineOnly)
 {
-    d_dragAnchorIdx = d_caretPos;
+    if (select && !getSelectionLength())
+        d_dragAnchorIdx = d_caretPos;
 
     updateRenderedText();
     const auto destIdx = lineOnly ? d_renderedText.lineEndTextIndex(d_caretPos) : d_renderedText.endTextIndex();
