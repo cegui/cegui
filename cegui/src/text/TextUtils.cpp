@@ -59,94 +59,47 @@ String TextUtils::getNextWord(const String& str, String::size_type start_idx, co
     return str.substr(start_idx, (word_end - start_idx));
 }
 
-
-/*************************************************************************
-    Return the index of the first character of the word at 'idx'.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 String::size_type TextUtils::getWordStartIndex(const String& str, String::size_type idx)
 {
-    String  temp = str.substr(0, idx);
-
-    trimTrailingChars(temp, DefaultWhitespace);
-
-    if (temp.length() <= 1)
-    {
+    const auto trimIdx = str.find_last_not_of(DefaultWhitespace, idx);
+    if (trimIdx == String::npos || !trimIdx)
         return 0;
-    }
 
-    // identify the type of character at 'pos'
-    if (String::npos != DefaultAlphanumerical.find(temp[temp.length() - 1]))
-    {
-        idx = temp.find_last_not_of(DefaultAlphanumerical);
-    }
-    // since whitespace was stripped, character must be a symbol
+    if (String::npos != DefaultAlphanumerical.find(str[trimIdx]))
+        idx = str.find_last_not_of(DefaultAlphanumerical, trimIdx);
     else
-    {
-        idx = temp.find_last_of(DefaultAlphanumerical + DefaultWhitespace);
-    }
+        idx = str.find_last_of(DefaultAlphanumerical + DefaultWhitespace, trimIdx);
 
-    // make sure we do not go past end of string (+1)
-    if (idx == String::npos)
-    {
-        return 0;
-    }
-    else
-    {
-        return idx + 1;
-    }
-
+    return (idx == String::npos) ? 0 : idx + 1;
 }
 
+//----------------------------------------------------------------------------//
+String::size_type TextUtils::getWordEndIndex(const String& str, String::size_type idx)
+{
+    //!!!FIXME!
+    return getNextWordStartIndex(str, idx);
+}
 
-/*************************************************************************
-    Return the index of the first character of the word after the word
-    at 'idx'.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 String::size_type TextUtils::getNextWordStartIndex(const String& str, String::size_type idx)
 {
-    String::size_type str_len = str.length();
+    const auto strLen = str.size();
+    if (idx >= strLen)
+        return strLen;
 
-    // do some checks for simple cases
-    if ((idx >= str_len) || (str_len == 0))
-    {
-        return str_len;
-    }
-
-    // is character at 'idx' alphanumeric
     if (String::npos != DefaultAlphanumerical.find(str[idx]))
-    {
-        // find position of next character that is not alphanumeric
         idx = str.find_first_not_of(DefaultAlphanumerical, idx);
-    }
-    // is character also not whitespace (therefore a symbol)
     else if (String::npos == DefaultWhitespace.find(str[idx]))
-    {
-        // find index of next character that is either alphanumeric or whitespace
         idx = str.find_first_of(DefaultAlphanumerical + DefaultWhitespace, idx);
-    }
 
-    // check result at this stage.
     if (String::npos == idx)
-    {
-        idx = str_len;
-    }
-    else
-    {
-        // if character at 'idx' is whitespace
-        if (String::npos != DefaultWhitespace.find(str[idx]))
-        {
-            // find next character that is not whitespace
-            idx = str.find_first_not_of(DefaultWhitespace, idx);
-        }
+        return strLen;
 
-        if (String::npos == idx)
-        {
-            idx = str_len;
-        }
+    if (String::npos != DefaultWhitespace.find(str[idx]))
+        idx = str.find_first_not_of(DefaultWhitespace, idx);
 
-    }
-
-    return idx;
+    return (String::npos == idx) ? strLen : idx;
 }
 
 
@@ -176,17 +129,11 @@ void TextUtils::trimLeadingChars(String& str, const String& chars)
 *************************************************************************/
 void TextUtils::trimTrailingChars(String& str, const String& chars)
 {
-    String::size_type idx = str.find_last_not_of(chars);
-
+    const auto idx = str.find_last_not_of(chars);
     if (idx != String::npos)
-    {
         str.resize(idx + 1);
-    }
     else
-    {
         str.erase();
-    }
-
 }
 
-} // End of  CEGUI namespace section
+}

@@ -93,6 +93,25 @@ public:
     */
     static String::size_type getWordStartIndex(const String& str, String::size_type idx);
 
+    /*!
+    \brief
+        Return the index of the first character after the word at \a idx.
+
+    \note
+        This currently uses DefaultWhitespace and DefaultAlphanumerical to determine groupings for what constitutes a 'word'.
+
+    \param str
+        String containing text.
+
+    \param idx
+        Index into \a str where search is to begin.
+
+    \return
+        Index into \a str which marks the end of the word at index \a idx.
+        If \a idx is within the last word, then the return is the last index in \a str.
+    */
+    static String::size_type getWordEndIndex(const String& str, String::size_type idx);
+
 
     /*!
     \brief

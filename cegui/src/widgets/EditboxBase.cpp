@@ -525,7 +525,8 @@ void EditboxBase::onCaptureLost(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void EditboxBase::onSelectWord(CursorInputEventArgs& e)
 {
-    if (e.source == CursorInputSource::Left || !isReadOnly())
+    const bool byLMB = e.source == CursorInputSource::Left;
+    if (byLMB || !isReadOnly())
     {
         const auto& text = getText();
         if (d_textMaskingEnabled)
@@ -534,10 +535,12 @@ void EditboxBase::onSelectWord(CursorInputEventArgs& e)
         }
         else
         {
-            const auto start = TextUtils::getWordStartIndex(text,
-                (d_caretPos == text.size()) ? d_caretPos : d_caretPos + 1);
-            setCaretIndex(TextUtils::getNextWordStartIndex(text, d_caretPos));
-            setSelection(start, d_caretPos);
+            const auto start = TextUtils::getWordStartIndex(text, d_caretPos);
+            const auto end = byLMB ?
+                TextUtils::getWordEndIndex(text, d_caretPos) :
+                TextUtils::getNextWordStartIndex(text, d_caretPos);
+            setCaretIndex(end);
+            setSelection(start, end);
         }
 
         ++e.handled;
