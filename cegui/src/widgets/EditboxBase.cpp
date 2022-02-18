@@ -611,20 +611,10 @@ void EditboxBase::onSemanticInputEvent(SemanticEventArgs& e)
     if (e.handled || !hasInputFocus())
         return;
 
-    if (!isReadOnly())
+    if (!isReadOnly() && processSemanticInputEvent(e))
     {
-        if (!getSelectionLength())
-        {
-            //???FIXME TEXT: need? why not remember start pos when handling selection?!
-            if (e.d_semanticValue >= SemanticValue::SelectRange && e.d_semanticValue <= SemanticValue::SelectDown)
-                d_dragAnchorIdx = d_caretPos;
-        }
-
-        if (processSemanticInputEvent(e))
-        {
-            ++e.handled;
-            return;
-        }
+        ++e.handled;
+        return;
     }
 
     Window::onSemanticInputEvent(e);
@@ -718,6 +708,8 @@ bool EditboxBase::processSemanticInputEvent(const SemanticEventArgs& e)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleCharLeft(bool select)
 {
+    d_dragAnchorIdx = d_caretPos;
+
     if (d_caretPos > 0)
     {
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
@@ -743,6 +735,8 @@ void EditboxBase::handleCharLeft(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleWordLeft(bool select)
 {
+    d_dragAnchorIdx = d_caretPos;
+
     if (d_caretPos > 0)
     {
         setCaretIndex(TextUtils::getWordStartIndex(getText(), d_caretPos));
@@ -758,6 +752,8 @@ void EditboxBase::handleWordLeft(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleCharRight(bool select)
 {
+    d_dragAnchorIdx = d_caretPos;
+
     if (d_caretPos < getText().size())
     {
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
@@ -779,6 +775,8 @@ void EditboxBase::handleCharRight(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleWordRight(bool select)
 {
+    d_dragAnchorIdx = d_caretPos;
+
     if (d_caretPos < getText().size())
     {
         setCaretIndex(TextUtils::getNextWordStartIndex(getText(), d_caretPos));
@@ -794,6 +792,8 @@ void EditboxBase::handleWordRight(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleHome(bool select, bool lineOnly)
 {
+    d_dragAnchorIdx = d_caretPos;
+
     updateRenderedText();
     const auto destIdx = lineOnly ? d_renderedText.lineStartTextIndex(d_caretPos) : 0;
     if (d_caretPos > destIdx)
@@ -811,6 +811,8 @@ void EditboxBase::handleHome(bool select, bool lineOnly)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleEnd(bool select, bool lineOnly)
 {
+    d_dragAnchorIdx = d_caretPos;
+
     updateRenderedText();
     const auto destIdx = lineOnly ? d_renderedText.lineEndTextIndex(d_caretPos) : d_renderedText.endTextIndex();
     if (d_caretPos < destIdx)

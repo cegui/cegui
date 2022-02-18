@@ -184,6 +184,8 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineUp(bool select)
 {
+    d_dragAnchorIdx = d_caretPos;
+
     updateRenderedText();
     if (d_desiredCaretOffsetXDirty)
         d_desiredCaretOffsetX = getCaretRect().left();
@@ -200,6 +202,8 @@ void MultiLineEditbox::handleLineUp(bool select)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineDown(bool select)
 {
+    d_dragAnchorIdx = d_caretPos;
+
     updateRenderedText();
     if (d_desiredCaretOffsetXDirty)
         d_desiredCaretOffsetX = getCaretRect().left();
