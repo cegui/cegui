@@ -654,6 +654,58 @@ size_t RenderedText::pageDownTextIndex(size_t textIndex, float desiredOffsetX, f
 }
 
 //----------------------------------------------------------------------------//
+size_t RenderedText::lineStartTextIndex(size_t textIndex) const
+{
+    if (d_paragraphs.empty())
+        return npos;
+
+    float offsetY;
+    const auto parIdx = findParagraphIndex(textIndex, offsetY);
+    const auto& par = d_paragraphs[parIdx];
+    return par.getLineStartTextIndex(par.getLineIndex(textIndex));
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedText::lineEndTextIndex(size_t textIndex) const
+{
+    if (d_paragraphs.empty())
+        return npos;
+
+    float offsetY;
+    const auto parIdx = findParagraphIndex(textIndex, offsetY);
+    const auto& par = d_paragraphs[parIdx];
+    return par.getLineEndTextIndex(par.getLineIndex(textIndex));
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedText::paragraphStartTextIndex(size_t textIndex) const
+{
+    if (d_paragraphs.empty())
+        return npos;
+
+    float offsetY;
+    const auto parIdx = findParagraphIndex(textIndex, offsetY);
+    return d_paragraphs[parIdx].getSourceStartIndex();
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedText::paragraphEndTextIndex(size_t textIndex) const
+{
+    if (d_paragraphs.empty())
+        return npos;
+
+    float offsetY;
+    const auto parIdx = findParagraphIndex(textIndex, offsetY);
+    return d_paragraphs[parIdx].getSourceEndIndex();
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedText::endTextIndex() const
+{
+    return d_paragraphs.empty() ? npos : d_paragraphs.back().getSourceEndIndex();
+}
+
+//----------------------------------------------------------------------------//
 size_t RenderedText::findParagraphIndex(size_t textIndex, float& offsetY) const
 {
     offsetY = 0.f;

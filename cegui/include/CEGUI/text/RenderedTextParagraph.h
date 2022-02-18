@@ -132,6 +132,8 @@ public:
     size_t getLineIndex(size_t textIndex) const;
     float getLineOffsetY(size_t lineIndex) const;
     float getLineHeight(size_t lineIndex) const;
+    size_t getLineStartTextIndex(size_t lineIndex) const;
+    size_t getLineEndTextIndex(size_t lineIndex) const;
 
     size_t nextTextIndex(size_t textIndex) const;
     size_t prevTextIndex(size_t textIndex) const;
