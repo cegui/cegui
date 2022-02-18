@@ -62,27 +62,32 @@ String TextUtils::getNextWord(const String& str, String::size_type start_idx, co
 //----------------------------------------------------------------------------//
 String::size_type TextUtils::getWordStartIndex(const String& str, String::size_type idx)
 {
-    const auto trimIdx = str.find_last_not_of(DefaultWhitespace, idx);
-    if (trimIdx == String::npos || !trimIdx)
+    if (!idx)
         return 0;
 
-    if (String::npos != DefaultAlphanumerical.find(str[trimIdx]))
-        idx = str.find_last_not_of(DefaultAlphanumerical, trimIdx);
+    // Find last non-delimiter before idx
+    String::size_type trimIdx = idx - 1;
+    for (; trimIdx > 0; --trimIdx)
+        if (String::npos == DefaultWhitespace.find(str[trimIdx]))
+            break;
+
+    // Single character line has only one valid index anyway
+    if (!trimIdx)
+        return 0;
+
+    // FIXME: write manual iteration or use string view instead of copying
+    const String temp = str.substr(0, trimIdx);
+
+    if (String::npos != DefaultAlphanumerical.find(temp.back()))
+        idx = temp.find_last_not_of(DefaultAlphanumerical);
     else
-        idx = str.find_last_of(DefaultAlphanumerical + DefaultWhitespace, trimIdx);
+        idx = temp.find_last_of(DefaultAlphanumerical + DefaultWhitespace);
 
     return (idx == String::npos) ? 0 : idx + 1;
 }
 
 //----------------------------------------------------------------------------//
 String::size_type TextUtils::getWordEndIndex(const String& str, String::size_type idx)
-{
-    //!!!FIXME!
-    return getNextWordStartIndex(str, idx);
-}
-
-//----------------------------------------------------------------------------//
-String::size_type TextUtils::getNextWordStartIndex(const String& str, String::size_type idx)
 {
     const auto strLen = str.size();
     if (idx >= strLen)
@@ -93,12 +98,22 @@ String::size_type TextUtils::getNextWordStartIndex(const String& str, String::si
     else if (String::npos == DefaultWhitespace.find(str[idx]))
         idx = str.find_first_of(DefaultAlphanumerical + DefaultWhitespace, idx);
 
-    if (String::npos == idx)
+    return (String::npos == idx) ? strLen : idx;
+}
+
+//----------------------------------------------------------------------------//
+String::size_type TextUtils::getNextWordStartIndex(const String& str, String::size_type idx)
+{
+    const auto wordEndIdx = getWordEndIndex(str, idx);
+
+    const auto strLen = str.size();
+    if (wordEndIdx >= strLen)
         return strLen;
 
-    if (String::npos != DefaultWhitespace.find(str[idx]))
-        idx = str.find_first_not_of(DefaultWhitespace, idx);
+    if (String::npos == DefaultWhitespace.find(str[wordEndIdx]))
+        return wordEndIdx;
 
+    idx = str.find_first_not_of(DefaultWhitespace, wordEndIdx);
     return (String::npos == idx) ? strLen : idx;
 }
 
