@@ -266,6 +266,14 @@ public:
         d_max += v;
     }
 
+    inline void offset(float x, float y)
+    {
+        d_min.x += x;
+        d_min.y += y;
+        d_max.x += x;
+        d_max.y += y;
+    }
+
     /*!
     \    
         Return true if the given Vector2 falls within this Rectf
