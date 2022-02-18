@@ -213,13 +213,9 @@ void MultiLineEditbox::handlePageUp(bool select)
     if (!wr)
         return;
 
-    //size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    //size_t nbLine = static_cast<size_t>(wr->getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
-    //size_t newline = 0;
-    //if (nbLine < caretLine)
-    //    newline = caretLine - nbLine;
-
-    //setCaretIndex(d_lines[newline].d_startIdx);
+    updateRenderedText();
+    setCaretIndex(d_renderedText.pageUpTextIndex(d_caretPos, d_desiredCaretOffsetX, wr->getTextRenderArea().getHeight()));
+    ensureCaretIsVisible();
 
     if (select)
         setSelection(d_caretPos, d_selectionEnd);
@@ -236,13 +232,9 @@ void MultiLineEditbox::handlePageDown(bool select)
     if (!wr)
         return;
 
-    //size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    //size_t nbLine =  static_cast<size_t>(wr->getTextRenderArea().getHeight() / getActualFont()->getLineSpacing());
-    //size_t newline = caretLine + nbLine;
-    //if (!d_lines.empty())
-    //    newline = std::min(newline, d_renderedText.getLineCount() - 1);
-
-    //setCaretIndex(d_lines[newline].d_startIdx + d_lines[newline].d_length - 1);
+    updateRenderedText();
+    setCaretIndex(d_renderedText.pageDownTextIndex(d_caretPos, d_desiredCaretOffsetX, wr->getTextRenderArea().getHeight()));
+    ensureCaretIsVisible();
 
     if (select)
         setSelection(d_selectionStart, d_caretPos);
@@ -261,7 +253,7 @@ bool MultiLineEditbox::validateWindowRenderer(const WindowRenderer* renderer) co
 //----------------------------------------------------------------------------//
 bool MultiLineEditbox::handleScrollChange(const EventArgs&)
 {
-    // simply trigger a redraw of the MultiLineEditbox
+    // Simply trigger a redraw of the MultiLineEditbox
     invalidate();
     return true;
 }

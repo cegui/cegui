@@ -624,13 +624,33 @@ size_t RenderedText::lineDownTextIndex(size_t textIndex, float desiredOffsetX) c
 //----------------------------------------------------------------------------//
 size_t RenderedText::pageUpTextIndex(size_t textIndex, float desiredOffsetX, float pageHeight) const
 {
-    return textIndex;
+    if (d_paragraphs.empty())
+        return npos;
+
+    float offsetY;
+    const auto parIdx = findParagraphIndex(textIndex, offsetY);
+    const auto& par = d_paragraphs[parIdx];
+    const auto lineIdx = par.getLineIndex(textIndex);
+    offsetY += par.getLineOffsetY(lineIdx);
+    offsetY += par.getLineHeight(lineIdx) * 0.5f;
+
+    return getTextIndexAtPoint(glm::vec2(desiredOffsetX, std::max(0.f, offsetY - pageHeight)));
 }
 
 //----------------------------------------------------------------------------//
 size_t RenderedText::pageDownTextIndex(size_t textIndex, float desiredOffsetX, float pageHeight) const
 {
-    return textIndex;
+    if (d_paragraphs.empty())
+        return npos;
+
+    float offsetY;
+    const auto parIdx = findParagraphIndex(textIndex, offsetY);
+    const auto& par = d_paragraphs[parIdx];
+    const auto lineIdx = par.getLineIndex(textIndex);
+    offsetY += par.getLineOffsetY(lineIdx);
+    offsetY += par.getLineHeight(lineIdx) * 0.5f;
+
+    return getTextIndexAtPoint(glm::vec2(desiredOffsetX, std::min(d_extents.d_height, offsetY + pageHeight)));
 }
 
 //----------------------------------------------------------------------------//

@@ -130,6 +130,8 @@ public:
     size_t getNearestGlyphIndex(size_t textIndex) const;
     size_t getNearestGlyphIndex(size_t lineIndex, float offsetX) const;
     size_t getLineIndex(size_t textIndex) const;
+    float getLineOffsetY(size_t lineIndex) const;
+    float getLineHeight(size_t lineIndex) const;
 
     size_t nextTextIndex(size_t textIndex) const;
     size_t prevTextIndex(size_t textIndex) const;

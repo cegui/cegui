@@ -785,6 +785,32 @@ size_t RenderedTextParagraph::getLineIndex(size_t textIndex) const
 }
 
 //----------------------------------------------------------------------------//
+float RenderedTextParagraph::getLineOffsetY(size_t lineIndex) const
+{
+    if (d_linesDirty || d_lines.size() <= lineIndex)
+        return 0.f;
+
+    float lineOffsetY = 0.f;
+    for (size_t i = 0; i < lineIndex; ++i)
+    {
+        const auto& line = d_lines[i];
+        if (line.heightDirty)
+            break;
+        lineOffsetY += line.extents.d_height;
+    }
+
+    return lineOffsetY;
+}
+
+//----------------------------------------------------------------------------//
+float RenderedTextParagraph::getLineHeight(size_t lineIndex) const
+{
+    if (d_linesDirty || d_lines.size() <= lineIndex || d_lines[lineIndex].heightDirty)
+        return 0.f;
+    return d_lines[lineIndex].extents.d_height;
+}
+
+//----------------------------------------------------------------------------//
 size_t RenderedTextParagraph::nextTextIndex(size_t textIndex) const
 {
     const auto idx = getNearestGlyphIndex(textIndex);
