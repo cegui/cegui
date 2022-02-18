@@ -817,6 +817,30 @@ float RenderedTextParagraph::getLineHeight(size_t lineIndex) const
 }
 
 //----------------------------------------------------------------------------//
+size_t RenderedTextParagraph::getLineStartTextIndex(size_t lineIndex) const
+{
+    if (d_linesDirty || d_lines.size() <= lineIndex)
+        return npos;
+
+    if (d_glyphs.empty())
+        return d_sourceStartIndex;
+
+    return d_glyphs[lineIndex ? d_lines[lineIndex - 1].glyphEndIdx : 0].sourceIndex;
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedTextParagraph::getLineEndTextIndex(size_t lineIndex) const
+{
+    if (d_linesDirty || d_lines.size() <= lineIndex)
+        return npos;
+
+    if (lineIndex + 1 == d_lines.size())
+        return d_sourceEndIndex;
+
+    return d_glyphs[d_lines[lineIndex].glyphEndIdx - 1].sourceIndex;
+}
+
+//----------------------------------------------------------------------------//
 size_t RenderedTextParagraph::nextTextIndex(size_t textIndex) const
 {
     const auto idx = getNearestGlyphIndex(textIndex);

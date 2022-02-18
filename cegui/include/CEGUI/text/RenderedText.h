@@ -87,6 +87,11 @@ public:
     size_t lineDownTextIndex(size_t textIndex, float desiredOffsetX) const;
     size_t pageUpTextIndex(size_t textIndex, float desiredOffsetX, float pageHeight) const;
     size_t pageDownTextIndex(size_t textIndex, float desiredOffsetX, float pageHeight) const;
+    size_t lineStartTextIndex(size_t textIndex) const;
+    size_t lineEndTextIndex(size_t textIndex) const;
+    size_t paragraphStartTextIndex(size_t textIndex) const;
+    size_t paragraphEndTextIndex(size_t textIndex) const;
+    size_t endTextIndex() const;
 
 protected:
 

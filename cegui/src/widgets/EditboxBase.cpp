@@ -794,9 +794,11 @@ void EditboxBase::handleWordRight(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleHome(bool select, bool lineOnly)
 {
-    if (d_caretPos > 0)
+    updateRenderedText();
+    const auto destIdx = lineOnly ? d_renderedText.lineStartTextIndex(d_caretPos) : 0;
+    if (d_caretPos > destIdx)
     {
-        setCaretIndex(0);
+        setCaretIndex(destIdx);
         ensureCaretIsVisible();
     }
 
@@ -804,31 +806,16 @@ void EditboxBase::handleHome(bool select, bool lineOnly)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
-
-    //!!!TODO TEXT!
-    /*
-    size_t line = getLineNumberFromIndex(d_caretPos);
-    if (line < d_lines.size())
-    {
-        size_t lineStartIdx = d_lines[line].d_startIdx;
-        if (d_caretPos > lineStartIdx)
-            setCaretIndex(lineStartIdx);
-
-        if (select)
-            setSelection(d_caretPos, d_dragAnchorIdx);
-        else
-            clearSelection();
-    }
-    */
 }
 
 //----------------------------------------------------------------------------//
 void EditboxBase::handleEnd(bool select, bool lineOnly)
 {
-    const auto textLen = getText().size();
-    if (d_caretPos < textLen)
+    updateRenderedText();
+    const auto destIdx = lineOnly ? d_renderedText.lineEndTextIndex(d_caretPos) : d_renderedText.endTextIndex();
+    if (d_caretPos < destIdx)
     {
-        setCaretIndex(textLen);
+        setCaretIndex(destIdx);
         ensureCaretIsVisible();
     }
 
@@ -836,21 +823,6 @@ void EditboxBase::handleEnd(bool select, bool lineOnly)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
-
-    /*
-    size_t line = getLineNumberFromIndex(d_caretPos);
-    if (line < d_lines.size())
-    {
-        size_t lineEndIdx = d_lines[line].d_startIdx + d_lines[line].d_length - 1;
-        if (d_caretPos < lineEndIdx)
-            setCaretIndex(lineEndIdx);
-
-        if (select)
-            setSelection(d_caretPos, d_dragAnchorIdx);
-        else
-            clearSelection();
-    }
-    */
 }
 
 //----------------------------------------------------------------------------//
