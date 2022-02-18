@@ -347,8 +347,16 @@ bool MultiLineEditbox::processSemanticInputEvent(const SemanticEventArgs& e)
             handlePageUp(false);
             return true;
 
+        case SemanticValue::SelectToPreviousPage:
+            handlePageUp(true);
+            return true;
+
         case SemanticValue::GoToNextPage:
             handlePageDown(false);
+            return true;
+
+        case SemanticValue::SelectToNextPage:
+            handlePageDown(true);
             return true;
     }
 
