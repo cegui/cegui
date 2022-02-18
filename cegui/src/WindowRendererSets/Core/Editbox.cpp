@@ -72,15 +72,8 @@ Rectf FalagardEditbox::getCaretRect() const
     if (!w->getRenderedText().getTextIndexBounds(w->getCaretIndex(), caretGlyphRect))
         return {};
 
-    const Rectf textArea = getTextRenderArea();
-
-    return Rectf(
-        glm::vec2(
-            textArea.left() + caretGlyphRect.left() - w->getTextOffset(),
-            textArea.top()),
-        Sizef(
-            getLookNFeel().getImagerySection("Caret").getBoundingRect(*w).getWidth(),
-            caretGlyphRect.getHeight()));
+    caretGlyphRect.setWidth(getLookNFeel().getImagerySection("Caret").getBoundingRect(*w).getWidth());
+    return caretGlyphRect;
 }
 
 //----------------------------------------------------------------------------//
@@ -99,7 +92,11 @@ void FalagardEditbox::createRenderGeometry()
 
     // Create the render geometry for the caret
     if (!w->isReadOnly() && (!d_blinkCaret || d_showCaret) && w->hasInputFocus())
-        getLookNFeel().getImagerySection("Caret").render(*d_window, getCaretRect(), nullptr, &textArea);
+    {
+        Rectf caretRect = getCaretRect();
+        caretRect.offset(textArea.left() - w->getTextOffset(), textArea.top());
+        getLookNFeel().getImagerySection("Caret").render(*d_window, caretRect, nullptr, &textArea);
+    }
 }
 
 //----------------------------------------------------------------------------//

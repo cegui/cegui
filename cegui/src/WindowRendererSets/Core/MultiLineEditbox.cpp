@@ -94,15 +94,32 @@ Rectf FalagardMultiLineEditbox::getCaretRect() const
     if (!w->getRenderedText().getTextIndexBounds(w->getCaretIndex(), caretGlyphRect))
         return {};
 
-    const Rectf textArea = getTextRenderArea();
+    caretGlyphRect.setWidth(getLookNFeel().getImagerySection("Caret").getBoundingRect(*w).getWidth());
+    return caretGlyphRect;
+}
 
-    return Rectf(
-        glm::vec2(
-            textArea.left() + caretGlyphRect.left() - w->getHorzScrollbar()->getScrollPosition(),
-            textArea.top() + caretGlyphRect.top() - w->getVertScrollbar()->getScrollPosition()),
-        Sizef(
-            getLookNFeel().getImagerySection("Caret").getBoundingRect(*w).getWidth(),
-            caretGlyphRect.getHeight()));
+//----------------------------------------------------------------------------//
+void FalagardMultiLineEditbox::createRenderGeometry()
+{
+    // NB: this may affect the text area and therefore is done first
+    auto w = static_cast<MultiLineEditbox*>(d_window);
+    const auto& renderedText = w->getRenderedText();
+
+    // Create the render geometry for the general frame and stuff before we handle the text itself
+    renderBaseImagery();
+
+    // Create the render geometry for the edit box text
+    const Rectf textArea = getTextRenderArea();
+    createRenderGeometryForText(textArea);
+
+    // Create the render geometry for the caret
+    if (!w->isReadOnly() && (!d_blinkCaret || d_showCaret) && w->hasInputFocus())
+    {
+        Rectf caretRect = getCaretRect();
+        caretRect.offset(textArea.left() - w->getHorzScrollbar()->getScrollPosition(),
+            textArea.top() - w->getVertScrollbar()->getScrollPosition());
+        getLookNFeel().getImagerySection("Caret").render(*d_window, caretRect, nullptr, &textArea);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -126,25 +143,6 @@ void FalagardMultiLineEditbox::renderBaseImagery() const
     }
 
     getLookNFeel().getStateImagery(state).render(*w);
-}
-
-//----------------------------------------------------------------------------//
-void FalagardMultiLineEditbox::createRenderGeometry()
-{
-    // NB: this may affect the text area and therefore is done first
-    auto w = static_cast<MultiLineEditbox*>(d_window);
-    const auto& renderedText = w->getRenderedText();
-
-    // Create the render geometry for the general frame and stuff before we handle the text itself
-    renderBaseImagery();
-
-    // Create the render geometry for the edit box text
-    const Rectf textArea = getTextRenderArea();
-    createRenderGeometryForText(textArea);
-
-    // Create the render geometry for the caret
-    if (!w->isReadOnly() && (!d_blinkCaret || d_showCaret) && w->hasInputFocus())
-        getLookNFeel().getImagerySection("Caret").render(*d_window, getCaretRect(), nullptr, &textArea);
 }
 
 //----------------------------------------------------------------------------//

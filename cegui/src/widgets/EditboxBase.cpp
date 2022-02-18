@@ -523,6 +523,61 @@ void EditboxBase::onCaptureLost(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+void EditboxBase::onSelectWord(CursorInputEventArgs& e)
+{
+    if (e.source == CursorInputSource::Left || !isReadOnly())
+    {
+        const auto& text = getText();
+        if (d_textMaskingEnabled)
+        {
+            handleSelectAll();
+        }
+        else
+        {
+            const auto start = TextUtils::getWordStartIndex(text,
+                (d_caretPos == text.size()) ? d_caretPos : d_caretPos + 1);
+            setCaretIndex(TextUtils::getNextWordStartIndex(text, d_caretPos));
+            setSelection(start, d_caretPos);
+        }
+
+        ++e.handled;
+    }
+
+    Window::onSelectWord(e);
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::onSelectAll(CursorInputEventArgs& e)
+{
+    if (e.source == CursorInputSource::Left)
+    {
+        // LMB selects only the current paragraph
+        const auto& text = getText();
+        if (d_textMaskingEnabled)
+        {
+            handleSelectAll();
+        }
+        else
+        {
+            updateRenderedText();
+            const auto start = d_renderedText.paragraphStartTextIndex(d_caretPos);
+            setCaretIndex(d_renderedText.paragraphEndTextIndex(d_caretPos));
+            setSelection(start, d_caretPos);
+        }
+
+        ++e.handled;
+    }
+    else if (!isReadOnly())
+    {
+        // Regular 'select all'
+        handleSelectAll();
+        ++e.handled;
+    }
+
+    Window::onSelectAll(e);
+}
+
+//----------------------------------------------------------------------------//
 void EditboxBase::onSized(ElementEventArgs& e)
 {
     Window::onSized(e);
@@ -579,39 +634,10 @@ void EditboxBase::onCharacter(TextEventArgs& e)
 //----------------------------------------------------------------------------//
 void EditboxBase::onSemanticInputEvent(SemanticEventArgs& e)
 {
-    if (isDisabled())
-        return;
-
-    if (e.d_semanticValue == SemanticValue::SelectAll && e.d_payload.source == CursorInputSource::Left)
-    {
-        handleSelectAll();
-        ++e.handled;
-    }
-    else if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == CursorInputSource::Left)
-    {
-        const auto& text = getText();
-        if (d_textMaskingEnabled)
-        {
-            // If masked, select all
-            setCaretIndex(text.size());
-            setSelection(0, d_caretPos);
-        }
-        else
-        {
-            // Not masked, so select the word that was double-clicked
-            const auto start = TextUtils::getWordStartIndex(text,
-                (d_caretPos == text.size()) ? d_caretPos : d_caretPos + 1);
-            setCaretIndex(TextUtils::getNextWordStartIndex(text, d_caretPos));
-            setSelection(start, d_caretPos);
-        }
-
-        ++e.handled;
-    }
-
-    if (e.handled || !hasInputFocus())
-        return;
-
-    if (!isReadOnly() && processSemanticInputEvent(e))
+    if (!isEffectiveDisabled() &&
+        !isReadOnly() &&
+        hasInputFocus() &&
+        processSemanticInputEvent(e))
     {
         ++e.handled;
         return;
@@ -695,10 +721,6 @@ bool EditboxBase::processSemanticInputEvent(const SemanticEventArgs& e)
 
         case SemanticValue::SelectToEndOfLine:
             handleEnd(true, true);
-            return true;
-
-        case SemanticValue::SelectAll:
-            handleSelectAll();
             return true;
     }
 

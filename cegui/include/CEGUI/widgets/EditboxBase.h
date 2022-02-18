@@ -542,7 +542,7 @@ protected:
         Selects the entire text.
     */
     void handleSelectAll();
-    
+
 
     /*!
     \brief
@@ -641,6 +641,8 @@ protected:
     void onCursorActivate(CursorInputEventArgs& e) override;
     void onCursorMove(CursorInputEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;
+    void onSelectWord(CursorInputEventArgs& e) override;
+    void onSelectAll(CursorInputEventArgs& e) override;
     void onSized(ElementEventArgs& e) override;
 
     void onFontChanged(WindowEventArgs& e) override;
