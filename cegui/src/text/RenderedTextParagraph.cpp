@@ -708,7 +708,7 @@ size_t RenderedTextParagraph::getTextIndex(size_t lineIndex, float offsetX) cons
         return d_sourceStartIndex;
 
     const auto idx = getNearestGlyphIndex(lineIndex, offsetX);
-    return (idx != npos) ? d_glyphs[idx].sourceIndex : npos;
+    return (idx == npos) ? npos : (idx < d_glyphs.size()) ? d_glyphs[idx].sourceIndex : d_sourceEndIndex;
 }
 
 //----------------------------------------------------------------------------//

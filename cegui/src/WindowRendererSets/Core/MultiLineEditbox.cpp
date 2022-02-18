@@ -86,6 +86,26 @@ Rectf FalagardMultiLineEditbox::getTextRenderArea() const
 }
 
 //----------------------------------------------------------------------------//
+Rectf FalagardMultiLineEditbox::getCaretRect() const
+{
+    auto w = static_cast<MultiLineEditbox*>(d_window);
+
+    Rectf caretGlyphRect;
+    if (!w->getRenderedText().getTextIndexBounds(w->getCaretIndex(), caretGlyphRect))
+        return {};
+
+    const Rectf textArea = getTextRenderArea();
+
+    return Rectf(
+        glm::vec2(
+            textArea.left() + caretGlyphRect.left() - w->getHorzScrollbar()->getScrollPosition(),
+            textArea.top() + caretGlyphRect.top() - w->getVertScrollbar()->getScrollPosition()),
+        Sizef(
+            getLookNFeel().getImagerySection("Caret").getBoundingRect(*w).getWidth(),
+            caretGlyphRect.getHeight()));
+}
+
+//----------------------------------------------------------------------------//
 void FalagardMultiLineEditbox::renderBaseImagery() const
 {
     MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
@@ -124,23 +144,7 @@ void FalagardMultiLineEditbox::createRenderGeometry()
 
     // Create the render geometry for the caret
     if (!w->isReadOnly() && (!d_blinkCaret || d_showCaret) && w->hasInputFocus())
-    {
-        Rectf caretGlyphRect;
-        if (renderedText.getTextIndexBounds(w->getCaretIndex(), caretGlyphRect))
-        {
-            const auto& caretImagery = getLookNFeel().getImagerySection("Caret");
-
-            const Rectf caretRect(
-                glm::vec2(
-                    textArea.left() + caretGlyphRect.left() - w->getHorzScrollbar()->getScrollPosition(),
-                    textArea.top() + caretGlyphRect.top() - w->getVertScrollbar()->getScrollPosition()),
-                Sizef(
-                    caretImagery.getBoundingRect(*w).getWidth(),
-                    caretGlyphRect.getHeight()));
-
-            caretImagery.render(*d_window, caretRect, nullptr, &textArea);
-        }
-    }
+        getLookNFeel().getImagerySection("Caret").render(*d_window, getCaretRect(), nullptr, &textArea);
 }
 
 //----------------------------------------------------------------------------//

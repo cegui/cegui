@@ -90,6 +90,8 @@ public:
     FalagardMultiLineEditbox(const String& type);
 
     Rectf getTextRenderArea() const override;
+    Rectf getCaretRect() const override;
+
     void createRenderGeometry() override;
     void update(float elapsed) override;
 

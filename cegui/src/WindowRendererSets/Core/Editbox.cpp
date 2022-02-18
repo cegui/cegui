@@ -58,6 +58,32 @@ FalagardEditbox::FalagardEditbox(const String& type) :
 }
 
 //----------------------------------------------------------------------------//
+Rectf FalagardEditbox::getTextRenderArea() const
+{
+    return getLookNFeel().getNamedArea("TextArea").getArea().getPixelRect(*d_window);
+}
+
+//----------------------------------------------------------------------------//
+Rectf FalagardEditbox::getCaretRect() const
+{
+    auto w = static_cast<Editbox*>(d_window);
+
+    Rectf caretGlyphRect;
+    if (!w->getRenderedText().getTextIndexBounds(w->getCaretIndex(), caretGlyphRect))
+        return {};
+
+    const Rectf textArea = getTextRenderArea();
+
+    return Rectf(
+        glm::vec2(
+            textArea.left() + caretGlyphRect.left() - w->getTextOffset(),
+            textArea.top()),
+        Sizef(
+            getLookNFeel().getImagerySection("Caret").getBoundingRect(*w).getWidth(),
+            caretGlyphRect.getHeight()));
+}
+
+//----------------------------------------------------------------------------//
 void FalagardEditbox::createRenderGeometry()
 {
     // NB: this may affect the text area and therefore is done first
@@ -73,23 +99,7 @@ void FalagardEditbox::createRenderGeometry()
 
     // Create the render geometry for the caret
     if (!w->isReadOnly() && (!d_blinkCaret || d_showCaret) && w->hasInputFocus())
-    {
-        Rectf caretGlyphRect;
-        if (renderedText.getTextIndexBounds(w->getCaretIndex(), caretGlyphRect))
-        {
-            const auto& caretImagery = getLookNFeel().getImagerySection("Caret");
-
-            const Rectf caretRect(
-                glm::vec2(
-                    textArea.left() + caretGlyphRect.left() - w->getTextOffset(),
-                    textArea.top()),
-                Sizef(
-                    caretImagery.getBoundingRect(*w).getWidth(),
-                    caretGlyphRect.getHeight()));
-
-            caretImagery.render(*d_window, caretRect, nullptr, &textArea);
-        }
-    }
+        getLookNFeel().getImagerySection("Caret").render(*d_window, getCaretRect(), nullptr, &textArea);
 }
 
 //----------------------------------------------------------------------------//
@@ -146,12 +156,6 @@ void FalagardEditbox::createRenderGeometryForText(const Rectf& textArea)
     }
 
     renderedText.createRenderGeometry(w->getGeometryBuffers(), pos, &normalTextCol, &textArea, selection);
-}
-
-//----------------------------------------------------------------------------//
-Rectf FalagardEditbox::getTextRenderArea() const
-{
-    return getLookNFeel().getNamedArea("TextArea").getArea().getPixelRect(*d_window);
 }
 
 //----------------------------------------------------------------------------//

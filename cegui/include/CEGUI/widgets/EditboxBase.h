@@ -152,6 +152,8 @@ public:
     */
     size_t getCaretIndex() const { return d_caretPos; }
 
+    virtual Rectf getCaretRect() const = 0;
+
     /*!
     \brief
         return the current selection start point.
@@ -676,6 +678,8 @@ protected:
 
     //! Code point to use when rendering masked text.
     std::uint32_t d_textMaskingCodepoint = '*';
+
+    float d_desiredCaretOffsetX = 0.f; //!!!FIXME TEXT: only for multiline, but must be handled in common code too!
 
     //! Default direction of the paragraph, relevant for bidirectional text.
     DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
