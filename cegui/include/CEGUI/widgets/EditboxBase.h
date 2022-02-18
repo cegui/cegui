@@ -679,8 +679,6 @@ protected:
     //! Code point to use when rendering masked text.
     std::uint32_t d_textMaskingCodepoint = '*';
 
-    float d_desiredCaretOffsetX = 0.f; //!!!FIXME TEXT: only for multiline, but must be handled in common code too!
-
     //! Default direction of the paragraph, relevant for bidirectional text.
     DefaultParagraphDirection d_defaultParagraphDirection = DefaultParagraphDirection::LeftToRight;
     //! True if the editbox is in read-only mode
