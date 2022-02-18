@@ -59,6 +59,8 @@ public:
         Rect object describing the area of the Window to be used for rendering text.
     */
     virtual Rectf getTextRenderArea() const = 0;
+
+    virtual Rectf getCaretRect() const = 0;
 };
 
 //----------------------------------------------------------------------------//
@@ -94,6 +96,7 @@ public:
     */
     virtual void setTextFormatting(HorizontalTextFormatting format) override;
 
+    virtual Rectf getCaretRect() const override;
     virtual void ensureCaretIsVisible() override;
 
     float getTextOffset() const { return d_textOffset; }

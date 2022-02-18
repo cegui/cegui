@@ -734,6 +734,8 @@ void EditboxBase::handleCharLeft(bool select)
         ensureCaretIsVisible();
     }
 
+    d_desiredCaretOffsetX = getCaretRect().left();
+
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
@@ -749,6 +751,8 @@ void EditboxBase::handleWordLeft(bool select)
         ensureCaretIsVisible();
     }
 
+    d_desiredCaretOffsetX = getCaretRect().left();
+
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
@@ -758,9 +762,6 @@ void EditboxBase::handleWordLeft(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleCharRight(bool select)
 {
-    //updateRenderedText();
-    //setCaretIndex(d_renderedText.nextTextIndex(d_caretPos));
-
     if (d_caretPos < getText().size())
     {
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
@@ -772,6 +773,8 @@ void EditboxBase::handleCharRight(bool select)
         setCaretIndex(d_caretPos + codePointSize);
         ensureCaretIsVisible();
     }
+
+    d_desiredCaretOffsetX = getCaretRect().left();
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
@@ -788,6 +791,8 @@ void EditboxBase::handleWordRight(bool select)
         ensureCaretIsVisible();
     }
 
+    d_desiredCaretOffsetX = getCaretRect().left();
+
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
@@ -802,6 +807,8 @@ void EditboxBase::handleHome(bool select, bool lineOnly)
         setCaretIndex(0);
         ensureCaretIsVisible();
     }
+
+    d_desiredCaretOffsetX = getCaretRect().left();
 
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
@@ -835,6 +842,8 @@ void EditboxBase::handleEnd(bool select, bool lineOnly)
         ensureCaretIsVisible();
     }
 
+    d_desiredCaretOffsetX = getCaretRect().left();
+
     if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
@@ -864,32 +873,6 @@ void EditboxBase::handleSelectAll()
     setSelection(0, textLen);
     setCaretIndex(textLen);
     ensureCaretIsVisible();
-
-    //!!!TODO TEXT:
-    // - detect current paragraph from the caret
-    // - return min-max range of source indices from that paragraph
-    // - select this range
-    // - for the single line editbox this implies selecting the whole text
-
-    /*
-    size_t caretLine = getLineNumberFromIndex(d_caretPos);
-    size_t lineStart = d_lines[caretLine].d_startIdx;
-
-    // find end of last paragraph
-    String::size_type paraStart = getText().find_last_of("\n", lineStart);
-    if (paraStart == String::npos)
-        paraStart = 0;
-
-    // find end of this paragraph
-    String::size_type paraEnd = getText().find_first_of("\n", lineStart);
-    if (paraEnd == String::npos)
-        paraEnd = getText().length();
-
-    // set up selection using new values.
-    d_dragAnchorIdx = paraStart;
-    setCaretIndex(paraEnd);
-    setSelection(d_dragAnchorIdx, d_caretPos);
-    */
 }
 
 //----------------------------------------------------------------------------//

@@ -73,18 +73,24 @@ void Editbox::updateFormatting()
 }
 
 //----------------------------------------------------------------------------//
+Rectf Editbox::getCaretRect() const
+{
+    auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
+    return wr ? wr->getCaretRect() : Rectf{};
+}
+
+//----------------------------------------------------------------------------//
 void Editbox::ensureCaretIsVisible()
 {
-    updateRenderedText();
-
-    //!!!TODO TEXT: get caret rect from renderer? The same code as in geometry generation!
-    Rectf caretGlyphRect;
-    if (!d_renderedText.getTextIndexBounds(d_caretPos, caretGlyphRect))
+    auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
+    if (!wr)
         return;
 
-    const float caretWidth = 5.f; //!!!FIXME TEXT!
-    const float areaWidth = d_renderedText.getAreaWidth() - caretWidth;
-    const float caretOffsetX = caretGlyphRect.left();
+    updateRenderedText();
+
+    const Rectf caretRect = wr->getCaretRect();
+    const float areaWidth = d_renderedText.getAreaWidth() - caretRect.getWidth();
+    const float caretOffsetX = caretRect.left();
 
     if (caretOffsetX < d_textOffset)
         d_textOffset = caretOffsetX;

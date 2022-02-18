@@ -127,6 +127,13 @@ void MultiLineEditbox::updateFormatting()
 }
 
 //----------------------------------------------------------------------------//
+Rectf MultiLineEditbox::getCaretRect() const
+{
+    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
+    return wr ? wr->getCaretRect() : Rectf{};
+}
+
+//----------------------------------------------------------------------------//
 void MultiLineEditbox::ensureCaretIsVisible()
 {
     auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
@@ -135,22 +142,16 @@ void MultiLineEditbox::ensureCaretIsVisible()
 
     updateRenderedText();
 
-    //!!!TODO TEXT: get caret rect from renderer? The same code as in geometry generation!
-    Rectf caretGlyphRect;
-    if (!d_renderedText.getTextIndexBounds(d_caretPos, caretGlyphRect))
-        return;
-
     const Rectf textArea = wr->getTextRenderArea();
-
-    const float caretWidth = 5.f; //!!!FIXME TEXT!
-    const float areaWidth = textArea.getWidth() - caretWidth;
-    const float caretOffsetX = caretGlyphRect.left();
+    const Rectf caretRect = wr->getCaretRect();
+    const float areaWidth = textArea.getWidth() - caretRect.getWidth();
+    const float caretOffsetX = caretRect.left();
 
     Scrollbar* vertScrollbar = getVertScrollbar();
-    if (caretGlyphRect.top() < vertScrollbar->getScrollPosition())
-        vertScrollbar->setScrollPosition(caretGlyphRect.top());
-    else if (caretGlyphRect.bottom() > vertScrollbar->getScrollPosition() + textArea.getHeight())
-        vertScrollbar->setScrollPosition(caretGlyphRect.bottom() - textArea.getHeight());
+    if (caretRect.top() < vertScrollbar->getScrollPosition())
+        vertScrollbar->setScrollPosition(caretRect.top());
+    else if (caretRect.bottom() > vertScrollbar->getScrollPosition() + textArea.getHeight())
+        vertScrollbar->setScrollPosition(caretRect.bottom() - textArea.getHeight());
 
     Scrollbar* horzScrollbar = getHorzScrollbar();
     if (caretOffsetX < horzScrollbar->getScrollPosition())

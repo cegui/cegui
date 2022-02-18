@@ -130,10 +130,11 @@ public:
     */
     const Image* getSelectionBrushImage() const { return d_selectionBrush; }
 
+    Rectf getTextRenderArea() const override;
+    Rectf getCaretRect() const override;
+
     void createRenderGeometry() override;
     void update(float elapsed) override;
-
-    Rectf getTextRenderArea() const override;
 
 protected:
 

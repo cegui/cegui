@@ -54,6 +54,8 @@ public:
         Rect object describing the area of the Window to be used for rendering text.
     */
     virtual Rectf getTextRenderArea() const = 0;
+
+    virtual Rectf getCaretRect() const = 0;
 };
 
 //! \brief Base class for the multi-line edit box widget.
@@ -115,6 +117,7 @@ public:
     */
     void initialiseComponents() override;
 
+    virtual Rectf getCaretRect() const override;
     virtual void ensureCaretIsVisible() override;
 
     /*!
@@ -187,7 +190,6 @@ protected:
     bool handleScrollChange(const EventArgs& args);
     bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
-    float d_desiredCaretOffsetX = 0.f;
     bool d_forceVertScroll = false; //!< true if vertical scrollbar should always be displayed
     bool d_forceHorzScroll = false; //!< true if horizontal scrollbar should always be displayed
 
