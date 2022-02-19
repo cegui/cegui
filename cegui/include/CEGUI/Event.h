@@ -125,12 +125,14 @@ public:
 
         ScopedConnection& operator=(Event::Connection&& connection)
         {
+            disconnect();
             d_connection = std::move(connection);
             return *this;
         }
 
         ScopedConnection& operator=(ScopedConnection&& other) noexcept
         {
+            disconnect();
             d_connection = std::move(other.d_connection);
             return *this;
         }
