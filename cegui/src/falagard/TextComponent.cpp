@@ -96,18 +96,6 @@ void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf
 
     // add geometry for text to the target window.
     d_renderedText.createRenderGeometry(srcWindow.getGeometryBuffers(), destRect.getPosition(), &finalColours, clipper);
-
-    if (d_renderedText.getExtents().d_width > 150.f)
-    {
-        int xxx = 0;
-
-        //!!!DBG TMP!
-        //srcWindow.getGeometryBuffers().reserve(300000);
-        //for (size_t i = 0; i < 100000; ++i)
-        //    d_renderedText.createRenderGeometry(srcWindow.getGeometryBuffers(), destRect.getPosition(), &finalColours, clipper);
-
-        int yyy = 0;
-    }
 }
 
 //----------------------------------------------------------------------------//

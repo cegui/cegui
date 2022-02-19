@@ -94,7 +94,7 @@ void BitmapImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     if (canCombineFromIdx < out.size())
     {
         // TODO: need more checks than just a texture? Clipping region, alpha.
-        auto it = std::find_if(out.begin() + canCombineFromIdx, out.end(),
+        auto it = std::find_if(out.cbegin() + canCombineFromIdx, out.cend(),
             [tex = d_texture](const GeometryBuffer* buffer)
         {
             return tex == buffer->getMainTexture();
