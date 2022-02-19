@@ -27,23 +27,22 @@
 #ifndef _CEGUIRenderMaterial_h_
 #define _CEGUIRenderMaterial_h_
 
-#include "CEGUI/Base.h"
+#include "CEGUI/ShaderParameterBindings.h"
 
 namespace CEGUI
 {
 class ShaderWrapper;
-class ShaderParameterBindings;
 
 /*!
 \brief
     A RenderMaterial is used for rendering GeometryBuffers. It contains
     a pointer to the used shader (ShaderWrapper) and owns shader parameters.
 */
-class CEGUIEXPORT RenderMaterial
+class CEGUIEXPORT RenderMaterial final
 {
 public:
+
     RenderMaterial(ShaderWrapper* shaderWrapper);
-    ~RenderMaterial();
 
     /*!
 	\brief
@@ -52,7 +51,8 @@ public:
 	\return
 		The pointer to the ShaderParameterBindings.
 	*/
-    ShaderParameterBindings* getShaderParamBindings() const;
+    ShaderParameterBindings* getShaderParamBindings() { return &d_shaderParamBindings; }
+    const ShaderParameterBindings* getShaderParamBindings() const { return &d_shaderParamBindings; }
 
     /*!
 	\brief
@@ -61,21 +61,19 @@ public:
 	\return
 		The pointer to the ShaderWrapper used for this Renderer.
 	*/
-    const ShaderWrapper* getShaderWrapper() const;
+    const ShaderWrapper* getShaderWrapper() const { return d_shaderWrapper; }
 
-    /*!
-	\brief
-		Applies the shader parameter bindings to the shader of this material.
-	*/
+    //! \brief Applies the shader parameter bindings to the shader of this material.
     void prepareForRendering() const;
 
 protected:
+
     //! pointer to the Shader that is used in this material.
     ShaderWrapper* d_shaderWrapper;
 
     //! data structure that contains all the shader parameters that are
     //  to be sent to the shader program using the parameter's name
-    ShaderParameterBindings* d_shaderParamBindings;
+    ShaderParameterBindings d_shaderParamBindings;
 };
 
 }

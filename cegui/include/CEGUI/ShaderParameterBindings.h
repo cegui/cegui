@@ -77,14 +77,8 @@ enum class ShaderParamType : int
 class ShaderParameter
 {
 public:
-    ShaderParameter()
-    {}
 
-    virtual ~ShaderParameter()
-    {}
-
-    ShaderParameter(const ShaderParameter& /*other*/)
-    {}
+    virtual ~ShaderParameter() = default;
 
     /*!
     \brief
