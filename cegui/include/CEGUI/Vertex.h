@@ -39,61 +39,45 @@ namespace CEGUI
 {
 /*!
 \brief
-    Structure that is used to hold the attributes of a vertex for coloured and
-    textured geometry in 3D space.
-*/
-struct CEGUIEXPORT TexturedColouredVertex
-{
-    //! Constructor
-    TexturedColouredVertex()
-    {}
-
-    TexturedColouredVertex(const glm::vec3& position,
-                           const glm::vec4& colour,
-                           const glm::vec2& texCoords) :
-        d_position(position),
-        d_colour(colour),
-        d_texCoords(texCoords)
-    {}
-
-    //! Sets the colour of the struct
-    void setColour(const Colour& colour);
-
-    //! Position of the vertex in 3D space.
-    glm::vec3   d_position;
-    //! Multiplicative-colour attribute of the vertex.
-    glm::vec4   d_colour;
-    //! Texture coordinates of the vertex.
-    glm::vec2   d_texCoords;
-};
-
-/*!
-\brief
     Structure that is used to hold the attributes of coloured geometry
     in 3D space.
 */
 struct CEGUIEXPORT ColouredVertex
 {
-    //! Constructor
-    ColouredVertex()
-    {}
-
-    ColouredVertex(const glm::vec3& position,
-                   const glm::vec4& colour) :
+    ColouredVertex() = default;
+    ColouredVertex(const glm::vec3& position, const glm::vec4& colour) :
         d_position(position),
         d_colour(colour)
     {}
 
     //! Sets the colour of the struct
-    void setColour(const Colour& colour);
+    void setColour(const Colour& colour)
+    {
+        d_colour.r = colour.getRed();
+        d_colour.g = colour.getGreen();
+        d_colour.b = colour.getBlue();
+        d_colour.a = colour.getAlpha();
+    }
 
-    //! Position of the vertex in 3D space.
-    glm::vec3   d_position;
-
-    //! Colour attribute of the vertex.
-    glm::vec4   d_colour;
+    glm::vec3 d_position; //<! Position of the vertex in 3D space.
+    glm::vec4 d_colour;   //<! Colour attribute of the vertex.
 };
 
+/*!
+\brief
+    Structure that is used to hold the attributes of a vertex for coloured and
+    textured geometry in 3D space.
+*/
+struct CEGUIEXPORT TexturedColouredVertex : public ColouredVertex
+{
+    TexturedColouredVertex() = default;
+    TexturedColouredVertex(const glm::vec3& position, const glm::vec4& colour, const glm::vec2& texCoords) :
+        ColouredVertex(position, colour),
+        d_texCoords(texCoords)
+    {}
+    
+    glm::vec2 d_texCoords; //<! Texture coordinates of the vertex.
+};
 
 }
 
