@@ -99,9 +99,7 @@ void TabButton::onCursorActivate(CursorInputEventArgs& e)
 {
     if ((e.source == CursorInputSource::Left) && isPushed())
 	{
-		Window* sheet = getGUIContext().getRootWindow();
-
-		if (sheet)
+		if (auto sheet = getGUIContext().getRootWindow())
 		{
             // if cursor was released over this widget
             // (use cursor position, as e.position has been unprojected)

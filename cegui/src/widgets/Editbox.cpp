@@ -67,8 +67,36 @@ void Editbox::setTextFormatting(HorizontalTextFormatting format)
 //----------------------------------------------------------------------------//
 void Editbox::updateFormatting()
 {
-    if (auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer))
-        d_renderedText.updateFormatting(wr->getTextRenderArea().getWidth());
+    auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
+    if (!wr)
+        return;
+
+    const auto textArea = wr->getTextRenderArea();
+    d_renderedText.updateFormatting(textArea.getWidth());
+
+    // Center text vertically inside an area
+    d_textOffset.y = (d_renderedText.getExtents().d_height - textArea.getHeight()) * 0.5f;
+}
+
+//----------------------------------------------------------------------------//
+void Editbox::setTextOffsetX(float value)
+{
+    auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
+    if (!wr)
+        return;
+
+    updateRenderedText();
+
+    const float textWidth = d_renderedText.getExtents().d_width;
+    const float areaWidth = d_renderedText.getAreaWidth();
+    const float caretWidth = wr->getCaretRect().getWidth();
+    const float offset = std::max(0.f, std::min(value, textWidth - areaWidth + caretWidth));
+
+    if (d_textOffset.x != offset)
+    {
+        d_textOffset.x = offset;
+        invalidate();
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -91,10 +119,10 @@ void Editbox::ensureCaretIsVisible()
     const float areaWidth = d_renderedText.getAreaWidth() - caretRect.getWidth();
     const float caretOffsetX = caretRect.left();
 
-    if (caretOffsetX < d_textOffset)
-        d_textOffset = caretOffsetX;
-    else if (caretOffsetX > d_textOffset + areaWidth)
-        d_textOffset = caretOffsetX - areaWidth;
+    if (caretOffsetX < d_textOffset.x)
+        d_textOffset.x = caretOffsetX;
+    else if (caretOffsetX > d_textOffset.x + areaWidth)
+        d_textOffset.x = caretOffsetX - areaWidth;
 }
 
 //----------------------------------------------------------------------------//
@@ -110,11 +138,7 @@ size_t Editbox::getTextIndexFromPosition(const glm::vec2& pt)
     updateRenderedText();
 
     //???FIXME TEXT: move to renderer? Should not rely on the same calculations in different places!
-    const auto textArea = wr->getTextRenderArea();
-    glm::vec2 localPt = CoordConverter::screenToWindow(*this, pt) - textArea.d_min;
-    localPt.x += d_textOffset;
-    localPt.y -= (textArea.getHeight() - d_renderedText.getExtents().d_height) * 0.5f;
-
+    const auto localPt = CoordConverter::screenToWindow(*this, pt) - wr->getTextRenderArea().d_min + getTextOffset();
     return d_renderedText.getTextIndexAtPoint(localPt);
 }
 

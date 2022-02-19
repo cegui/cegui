@@ -224,6 +224,9 @@ public:
     */
     void setReadOnly(bool setting);
 
+    void setDragPanningEnabled(bool setting);
+    bool isDragPanningEnabled() const { return d_dragPanningEnabled; }
+
     /*!
     \brief
         Specify whether the text for the Editbox will be rendered masked.
@@ -329,6 +332,14 @@ public:
         Nothing.
     */
     virtual void setMaxTextLength(size_t maxLen);
+
+    virtual float getTextOffsetX() const = 0;
+    virtual float getTextOffsetY() const = 0;
+    virtual void setTextOffsetX(float value) = 0;
+    virtual void setTextOffsetY(float value) = 0;
+
+    void setTextOffset(const glm::vec2& offset) { setTextOffsetX(offset.x); setTextOffsetY(offset.y); }
+    glm::vec2 getTextOffset() const { return glm::vec2(getTextOffsetX(), getTextOffsetY()); }
 
     RenderedText& getRenderedText();
     const RenderedText& getRenderedText() const { return d_renderedText; }
@@ -627,7 +638,11 @@ protected:
     //! True if the editbox text should be rendered masked.
     bool d_textMaskingEnabled = false;
     //! true when a selection is being dragged.
-    bool d_dragging = false;
+    bool d_dragSelecting = false;
+    //! true when a selection is being dragged.
+    bool d_dragPanning = false;
+    //! true when a selection is being dragged.
+    bool d_dragPanningEnabled = true;
 
     bool d_renderedTextDirty = true;
     bool d_formattingDirty = true;
