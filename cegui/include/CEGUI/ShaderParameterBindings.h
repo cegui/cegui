@@ -32,13 +32,6 @@
 #include <glm/glm.hpp>
 #include <map>
 
-#ifdef CEGUI_BUILD_RENDERER_OGRE
-namespace Ogre
-{
-    class Matrix4;
-}
-#endif
-
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
@@ -127,16 +120,11 @@ public:
 class ShaderParameterFloat : public ShaderParameter
 {
 public:
-    ShaderParameterFloat(float parameterValue)
-    : d_parameterValue(parameterValue)
-    {}
 
-    //! Implementation of the shader_parameter interface
-    ShaderParamType getType() const override
-    { return ShaderParamType::Float; }
+    ShaderParameterFloat(float value) : d_parameterValue(value) {}
 
-    ShaderParameterFloat* clone() const override
-    { return new ShaderParameterFloat(*this); }
+    ShaderParamType getType() const override { return ShaderParamType::Float; }
+    ShaderParameterFloat* clone() const override { return new ShaderParameterFloat(*this); }
     bool equal(const ShaderParameter* other_parameter) const override;
     void takeOverParameterValue(const ShaderParameter* other_parameter) override;
 
@@ -152,20 +140,15 @@ public:
 class ShaderParameterInt : public ShaderParameter
 {
 public:
-    ShaderParameterInt(int parameterValue)
-    : d_parameterValue(parameterValue)
-    {}
 
-    //! Implementation of the shader_parameter interface
-    ShaderParamType getType() const override
-    { return ShaderParamType::Int; }
+    ShaderParameterInt(int value) : d_parameterValue(value) {}
 
-    ShaderParameterInt* clone() const override
-    { return new ShaderParameterInt(*this); }
+    ShaderParamType getType() const override { return ShaderParamType::Int; }
+    ShaderParameterInt* clone() const override { return new ShaderParameterInt(*this); }
     bool equal(const ShaderParameter* other_parameter) const override;
     void takeOverParameterValue(const ShaderParameter* other_parameter) override;
 
-    //! The float parameter value
+    //! The int parameter value
     int d_parameterValue;
 };
 
@@ -177,21 +160,16 @@ public:
 class ShaderParameterTexture : public ShaderParameter
 {
 public:
-    ShaderParameterTexture(const CEGUI::Texture* parameterValue)
-        : d_parameterValue(parameterValue)
-    {}
 
-    //! Implementation of the shader_parameter interface
-    ShaderParamType getType() const override
-    { return ShaderParamType::Texture; }
+    ShaderParameterTexture(const Texture* value) : d_parameterValue(value) {}
 
-    ShaderParameterTexture* clone() const override
-    { return new ShaderParameterTexture(*this); }
+    ShaderParamType getType() const override { return ShaderParamType::Texture; }
+    ShaderParameterTexture* clone() const override { return new ShaderParameterTexture(*this); }
     bool equal(const ShaderParameter* other_parameter) const override;
     void takeOverParameterValue(const ShaderParameter* other_parameter) override;
 
-    //! The float parameter value
-    const CEGUI::Texture* d_parameterValue;
+    //! The texture parameter value
+    const Texture* d_parameterValue;
 };
 
 /*!
@@ -202,32 +180,25 @@ public:
 class ShaderParameterMatrix : public ShaderParameter
 {
 public:
-    ShaderParameterMatrix(const glm::mat4& parameterValue)
-        : d_parameterValue(parameterValue)
-    {}
 
-    //! Implementation of the shader_parameter interface
-    ShaderParamType getType() const override
-    { return ShaderParamType::Matrix4X4; }
+    ShaderParameterMatrix(const glm::mat4& value) : d_parameterValue(value) {}
 
-    ShaderParameterMatrix* clone() const override
-    { return new ShaderParameterMatrix(*this); }
+    ShaderParamType getType() const override { return ShaderParamType::Matrix4X4; }
+    ShaderParameterMatrix* clone() const override { return new ShaderParameterMatrix(*this); }
     bool equal(const ShaderParameter* other_parameter) const override;
     void takeOverParameterValue(const ShaderParameter* other_parameter) override;
 
+    //! The matrix parameter value
     glm::mat4 d_parameterValue;
 };
 
-/*!
-\brief
-
-*/
-class CEGUIEXPORT ShaderParameterBindings
+//! \brief A set of values associated with shader parameters
+class CEGUIEXPORT ShaderParameterBindings final
 {
 public:
+
     typedef std::map<std::string, ShaderParameter*> ShaderParameterBindingsMap;
 
-    ShaderParameterBindings();
     ~ShaderParameterBindings();
 
     /*!
@@ -240,8 +211,7 @@ public:
     \param matrix
         The pointer to the matrix
     */
-    void setParameter(const std::string& parameter_name, 
-        const glm::mat4& matrix);
+    void setParameter(const std::string& parameter_name, const glm::mat4& matrix);
 
     /*!
     \brief
@@ -253,8 +223,7 @@ public:
     \param texture
         The pointer to the CEGUI::Texture
     */
-    void setParameter(const std::string& parameter_name, 
-        const CEGUI::Texture* texture);
+    void setParameter(const std::string& parameter_name, const Texture* texture);
 
     /*!
     \brief
@@ -266,8 +235,7 @@ public:
     \param fvalue
         The value of the float parameter
     */
-    void setParameter(const std::string& parameter_name, 
-        const float fvalue);
+    void setParameter(const std::string& parameter_name, float fvalue);
 
     /*!
     \brief
@@ -292,9 +260,10 @@ public:
     */
     void removeParameter(const std::string& parameter_name);
 
-    const ShaderParameterBindingsMap& getShaderParameterBindings() const;
+    const std::map<std::string, ShaderParameter*>& getShaderParameterBindings() const { return d_shaderParameterBindings; }
 
 protected:
+
     /*!
     \brief
         Adds a new shader parameter to the parameter bindings. If an old one exists it will be
@@ -309,7 +278,7 @@ protected:
     void setNewParameter(const std::string& parameter_name, ShaderParameter* shader_parameter);
 
     //! Map of the names of the shader parameter and the respective shader parameter value
-    ShaderParameterBindingsMap d_shaderParameterBindings;
+    std::map<std::string, ShaderParameter*> d_shaderParameterBindings;
 };
 
 }
