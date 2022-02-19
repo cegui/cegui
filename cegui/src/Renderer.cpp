@@ -63,17 +63,13 @@ void Renderer::destroyAllGeometryBuffers()
 //----------------------------------------------------------------------------//
 GeometryBuffer& Renderer::createGeometryBufferTextured()
 {
-    GeometryBuffer& geometry_buffer = createGeometryBufferTextured(createRenderMaterial(DefaultShaderType::Textured));
-
-    return geometry_buffer;
+    return createGeometryBufferTextured(createRenderMaterial(DefaultShaderType::Textured));
 }
 
 //----------------------------------------------------------------------------//
 GeometryBuffer& Renderer::createGeometryBufferColoured()
 {
-    GeometryBuffer& geometry_buffer = createGeometryBufferColoured(createRenderMaterial(DefaultShaderType::Solid));
-
-    return geometry_buffer;
+    return createGeometryBufferColoured(createRenderMaterial(DefaultShaderType::Solid));
 }
 
 //----------------------------------------------------------------------------//
