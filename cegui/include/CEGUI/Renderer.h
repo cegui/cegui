@@ -32,8 +32,9 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/RefCounted.h"
 #include <glm/glm.hpp>
-#include <set>
+#include <map>
 #include <vector>
+#include <set>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -43,6 +44,7 @@
 
 namespace CEGUI
 {
+class ShaderWrapper;
 class RenderMaterial;
 class String;
 class Sizef;
@@ -95,9 +97,10 @@ enum class DefaultShaderType : int
 class CEGUIEXPORT Renderer
 {
 public:
-    Renderer(const float fontScale = 1.0f);
 
-    virtual ~Renderer() {}
+    Renderer(float fontScale = 1.0f);
+
+    virtual ~Renderer();
 
     //! This is the DPI value that was assumed up to CEGUI version 0.8.X
     static const int ReferenceDpiValue = 96;
@@ -175,13 +178,6 @@ public:
         Destroys all GeometryBuffer objects created by this Renderer.
     */
     void destroyAllGeometryBuffers();
-
-    /*!
-    \brief
-        Goes through all geometry buffers and updates their texture
-        coordinates if the texture matches the supplied texture.
-    */
-    void updateGeometryBufferTexCoords(const Texture* texture, const float scaleFactor);
 
     /*!
     \brief
@@ -422,6 +418,12 @@ public:
     */
     virtual void invalidateGeomBufferMatrices(const CEGUI::RenderTarget* renderTarget);
 
+    /*!
+    \brief
+        Goes through all geometry buffers and updates their texture
+        coordinates if the texture matches the supplied texture.
+    */
+    void updateGeometryBufferTexCoords(const Texture* texture, const float scaleFactor);
 
     virtual void uploadBuffers(RenderingSurface& /*surface*/) {}
     virtual void uploadBuffers(const std::vector<GeometryBuffer*>& /*buffers*/) {}
@@ -442,7 +444,7 @@ public:
     \return
         The active RenderTarget.
     */
-    RenderTarget* getActiveRenderTarget();
+    RenderTarget* getActiveRenderTarget() { return d_activeRenderTarget; }
 
     /*!
     \brief
@@ -460,7 +462,7 @@ public:
     \return
         The currently active view projection matrix.
     */
-    const glm::mat4& getViewProjectionMatrix() const;
+    const glm::mat4& getViewProjectionMatrix() const { return d_viewProjectionMatrix; }
 
     /*!
     \brief
@@ -532,13 +534,22 @@ protected:
     void addGeometryBuffer(GeometryBuffer& buffer);
 
     //! The currently active RenderTarget
-    RenderTarget* d_activeRenderTarget;
+    RenderTarget* d_activeRenderTarget = nullptr;
 
     //! The currently active view projection matrix 
     glm::mat4 d_viewProjectionMatrix;
+
 private:
-    //! Container used to track geometry buffers.
+
+    // FIXME: extremely stupid way to associate material type to shader pointer.
+    // This is only to maintain compatibility with existing renderers. This should be rewritten later!
+    const ShaderWrapper* d_coloredShader = nullptr;
+    const ShaderWrapper* d_texturedShader = nullptr;
+
+    //! Container used to track active geometry buffers.
     std::set<GeometryBuffer*> d_geometryBuffers;
+    //! Pool of reusable geometry buffers
+    std::map<const ShaderWrapper*, std::vector<GeometryBuffer*>> d_geomeryBufferPool;
     //! The Font scale factor to be used when rendering Fonts (except Bitmap Fonts).
     float d_fontScale;
 };

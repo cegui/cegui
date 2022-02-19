@@ -537,10 +537,10 @@ protected:
     float           d_alpha = 1.f;
     //! The activation number of the RenderTarget that this GeometryBuffer's matrix was last updated for
     mutable unsigned int    d_lastRenderTargetActivationCount = 0;
-    //! The amount of vertices that need to be rendered after rendering to the stencil buffer.
-    unsigned int    d_postStencilVertexCount = 0;
     //! The vertex count which is determined based on the used vertex layout
     unsigned int                d_vertexCount = 0;
+    //! The amount of vertices that need to be rendered after rendering to the stencil buffer.
+    unsigned int    d_postStencilVertexCount = 0;
     //! The BlendMode to use when rendering this GeometryBuffer.
     BlendMode       d_blendMode;
     //! The fill rule that should be used when rendering the geometry.

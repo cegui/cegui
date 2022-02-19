@@ -26,18 +26,31 @@
  ***************************************************************************/
 #include "CEGUI/Renderer.h"
 #include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/RenderMaterial.h"
 #include "CEGUI/FontManager.h"
 
 namespace CEGUI
 {
 
-Renderer::Renderer(const float fontScale):
-    d_activeRenderTarget(nullptr),
-    d_fontScale(fontScale)
-{}
+//----------------------------------------------------------------------------//
+Renderer::Renderer(float fontScale)
+    : d_fontScale(fontScale)
+{
+}
 
 //----------------------------------------------------------------------------//
-void Renderer::addGeometryBuffer(GeometryBuffer& buffer) 
+Renderer::~Renderer()
+{
+    for (auto buffer : d_geometryBuffers)
+        delete buffer;
+
+    for (auto& pair : d_geomeryBufferPool)
+        for (auto buffer : pair.second)
+            delete buffer;
+}
+
+//----------------------------------------------------------------------------//
+void Renderer::addGeometryBuffer(GeometryBuffer& buffer)
 {
     d_geometryBuffers.insert(&buffer);
 }
@@ -45,51 +58,86 @@ void Renderer::addGeometryBuffer(GeometryBuffer& buffer)
 //----------------------------------------------------------------------------//
 void Renderer::destroyGeometryBuffer(GeometryBuffer& buffer)
 {
-    auto findIter = d_geometryBuffers.find(&buffer);
-    if (findIter != d_geometryBuffers.end())
-    {
-        d_geometryBuffers.erase(findIter);
-        delete &buffer;
-    }
+    auto it = d_geometryBuffers.find(&buffer);
+    if (it == d_geometryBuffers.cend())
+        return;
+
+    d_geometryBuffers.erase(it);
+    buffer.reset();
+    d_geomeryBufferPool[buffer.getRenderMaterial()->getShaderWrapper()].push_back(&buffer);
 }
 
 //----------------------------------------------------------------------------//
 void Renderer::destroyAllGeometryBuffers()
 {
-    while (!d_geometryBuffers.empty())
-        destroyGeometryBuffer(*(*d_geometryBuffers.begin()));
+    for (auto buffer : d_geometryBuffers)
+    {
+        buffer->reset();
+        d_geomeryBufferPool[buffer->getRenderMaterial()->getShaderWrapper()].push_back(buffer);
+    }
+
+    d_geometryBuffers.clear();
 }
 
 //----------------------------------------------------------------------------//
 GeometryBuffer& Renderer::createGeometryBufferTextured()
 {
+    // FIXME: see field comment!
+    if (!d_texturedShader)
+        if (auto mtl = createRenderMaterial(DefaultShaderType::Textured))
+            d_texturedShader = mtl->getShaderWrapper();
+
+    auto it = d_geomeryBufferPool.find(d_texturedShader);
+    if (it != d_geomeryBufferPool.cend() && !it->second.empty())
+    {
+        GeometryBuffer* buffer = it->second.back();
+        it->second.pop_back();
+        addGeometryBuffer(*buffer);
+        return *buffer;
+    }
+
     return createGeometryBufferTextured(createRenderMaterial(DefaultShaderType::Textured));
 }
 
 //----------------------------------------------------------------------------//
 GeometryBuffer& Renderer::createGeometryBufferColoured()
 {
+    // FIXME: see field comment!
+    if (!d_coloredShader)
+        if (auto mtl = createRenderMaterial(DefaultShaderType::Solid))
+            d_coloredShader = mtl->getShaderWrapper();
+
+    auto it = d_geomeryBufferPool.find(d_coloredShader);
+    if (it != d_geomeryBufferPool.cend() && !it->second.empty())
+    {
+        GeometryBuffer* buffer = it->second.back();
+        it->second.pop_back();
+        addGeometryBuffer(*buffer);
+        return *buffer;
+    }
+
     return createGeometryBufferColoured(createRenderMaterial(DefaultShaderType::Solid));
 }
 
 //----------------------------------------------------------------------------//
 void Renderer::invalidateGeomBufferMatrices(const CEGUI::RenderTarget* renderTarget)
 {
-    for (auto geomBuffer : d_geometryBuffers)
-        if(geomBuffer->getLastRenderTarget() == renderTarget)
-            geomBuffer->invalidateMatrix();
+    for (auto buffer : d_geometryBuffers)
+        if (buffer->getLastRenderTarget() == renderTarget)
+            buffer->invalidateMatrix();
+}
+
+//----------------------------------------------------------------------------//
+void Renderer::updateGeometryBufferTexCoords(const Texture* texture, const float scaleFactor)
+{
+    for (auto buffer : d_geometryBuffers)
+        buffer->updateTextureCoordinates(texture, scaleFactor);
 }
 
 //----------------------------------------------------------------------------//
 void Renderer::setActiveRenderTarget(RenderTarget* renderTarget)
 {
     d_activeRenderTarget = renderTarget;
-}
-        
-//----------------------------------------------------------------------------//
-RenderTarget* Renderer::getActiveRenderTarget()
-{
-    return d_activeRenderTarget;
 }
 
 //----------------------------------------------------------------------------//
@@ -99,24 +147,10 @@ void Renderer::setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix)
 }
 
 //----------------------------------------------------------------------------//
-const glm::mat4& Renderer::getViewProjectionMatrix() const
-{
-    return d_viewProjectionMatrix;
-}
-
 void Renderer::setFontScale(const float fontScale)
 {
     d_fontScale = fontScale;
-
     FontManager::getSingleton().updateAllFonts();
-}
-
-void Renderer::updateGeometryBufferTexCoords(const Texture* texture, const float scaleFactor)
-{
-    for(auto& curGeomBuffer : d_geometryBuffers)
-    {
-        curGeomBuffer->updateTextureCoordinates(texture, scaleFactor);
-    }
 }
 
 }

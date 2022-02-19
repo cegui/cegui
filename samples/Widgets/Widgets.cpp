@@ -25,11 +25,9 @@ author:     Lukas E Meindl
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 #include "Widgets.h"
-
 #include "CEGUI/CEGUI.h"
-
 #include <cmath>
-
+#include <set>
 
 using namespace CEGUI;
 
