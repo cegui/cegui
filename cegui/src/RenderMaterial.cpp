@@ -25,42 +25,21 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RenderMaterial.h"
-#include "CEGUI/ShaderParameterBindings.h"
 #include "CEGUI/ShaderWrapper.h"
 
 namespace CEGUI
 {
+
 //----------------------------------------------------------------------------//
 RenderMaterial::RenderMaterial(ShaderWrapper* shaderWrapper)
     : d_shaderWrapper(shaderWrapper)
 {
-    d_shaderParamBindings = new ShaderParameterBindings();
-}
-
-//----------------------------------------------------------------------------//
-RenderMaterial::~RenderMaterial()
-{
-    delete d_shaderParamBindings;
-}
-
-//----------------------------------------------------------------------------//
-ShaderParameterBindings* RenderMaterial::getShaderParamBindings() const
-{
-    return d_shaderParamBindings;
 }
 
 //----------------------------------------------------------------------------//
 void RenderMaterial::prepareForRendering() const
 {
-    d_shaderWrapper->prepareForRendering(d_shaderParamBindings);
+    d_shaderWrapper->prepareForRendering(&d_shaderParamBindings);
 }
 
-//----------------------------------------------------------------------------//
-const ShaderWrapper* RenderMaterial::getShaderWrapper() const
-{
-    return d_shaderWrapper;
 }
-
-//----------------------------------------------------------------------------//
-}
-

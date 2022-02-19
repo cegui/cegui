@@ -28,7 +28,6 @@
 #ifndef _CEGUIGeometryBuffer_h_
 #define _CEGUIGeometryBuffer_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/Rectf.h"
 #include "CEGUI/RefCounted.h"
 #include <glm/gtc/quaternion.hpp>
@@ -41,8 +40,8 @@
 
 namespace CEGUI
 {
-
 class RenderMaterial;
+class ShaderParameterTexture;
 enum class BlendMode : int;
 
 //----------------------------------------------------------------------------//
@@ -71,7 +70,7 @@ enum class VertexAttributeType : int
     should be rendered. For further information see "fill-rule" in the SVG
     standard: http://www.w3.org/TR/SVGTiny12/painting.html#FillRuleProperty
 */
-enum class PolygonFillRule : int
+enum class PolygonFillRule : uint8_t
 {
     //! Draw the polygon normally - without a fill-rule.
     NoFilling,
@@ -91,6 +90,7 @@ enum class PolygonFillRule : int
 class CEGUIEXPORT GeometryBuffer
 {
 public:
+
     virtual ~GeometryBuffer();
 
     /*!
@@ -167,17 +167,11 @@ public:
     */
     virtual void setClippingRegion(const Rectf& region);
 
-    /*!
-    \brief
-        Gets the set clipping region for this buffer.
-    */
-    const Rectf& getClippingRegion() const;
+    //! \brief Gets the set clipping region for this buffer.
+    const Rectf& getClippingRegion() const { return d_clippingRegion; }
 
-    /*!
-    \brief
-        Gets the prepared clipping region to be used when rendering this buffer.
-    */
-    const Rectf& getPreparedClippingRegion() const;
+    //! \brief Gets the prepared clipping region to be used when rendering this buffer.
+    const Rectf& getPreparedClippingRegion() const { return d_preparedClippingRegion; }
 
     /*!
     \brief
@@ -186,7 +180,7 @@ public:
     \param fill_rule
         The fill rule that should be used when rendering the geometry.
     */
-    void setStencilRenderingActive(PolygonFillRule fill_rule);
+    void setStencilRenderingActive(PolygonFillRule fill_rule) { d_polygonFillRule = fill_rule; }
 
     /*!
     \brief
@@ -195,7 +189,7 @@ public:
     \param vertex_count
         The number of vertices that should be rendered after the stencil buffer was filled.
     */
-    void setStencilPostRenderingVertexCount(unsigned int vertex_count);
+    void setStencilPostRenderingVertexCount(unsigned int vertex_count) { d_postStencilVertexCount = vertex_count; }
 
     /*!
     \brief
@@ -306,6 +300,13 @@ public:
 
     /*!
     \brief
+        Scales the texture coordinates of this geometry buffer by the supplied factor, if the
+        texture is matching the texture (if one exists) of this geometry buffer.
+    */
+    void updateTextureCoordinates(const Texture* texture, float scaleFactor);
+
+    /*!
+    \brief
         Clear all buffered data and reset the GeometryBuffer to the default
         state. This excludes resettings the vertex attributes.
     */
@@ -319,7 +320,7 @@ public:
     \return
         The number of vertices that have been appended to this GeometryBuffer.
     */
-    virtual std::size_t getVertexCount() const;
+    virtual std::size_t getVertexCount() const { return d_vertexCount; }
 
     /*!
     \brief
@@ -347,14 +348,14 @@ public:
         you need to be careful not to delete the RenderEffect if it might still
         be in use!
     */
-    virtual void setRenderEffect(RenderEffect* effect);
+    virtual void setRenderEffect(RenderEffect* effect) { d_effect = effect; }
 
     /*!
     \brief
         Return the RenderEffect object that is assigned to this GeometryBuffer
         or 0 if none.
     */
-    virtual RenderEffect* getRenderEffect();
+    virtual RenderEffect* getRenderEffect() { return d_effect; }
 
     /*!
     \brief
@@ -368,7 +369,7 @@ public:
         One of the BlendMode enumerated values indicating the blending mode to
         be used.
     */
-    virtual void setBlendMode(const BlendMode mode);
+    virtual void setBlendMode(const BlendMode mode) { d_blendMode = mode; }
 
     /*!
     \brief
@@ -379,7 +380,7 @@ public:
         that will be used when rendering all geometry added to this
         GeometryBuffer object.
     */
-    virtual BlendMode getBlendMode() const;
+    virtual BlendMode getBlendMode() const { return d_blendMode; }
 
     /*!
     \brief
@@ -391,7 +392,7 @@ public:
         - false if vertices added after this call should not be clipped
           (other than to the edges of rendering target.
     */
-    virtual void setClippingActive(const bool active);
+    virtual void setClippingActive(bool active) { d_clippingActive = active; }
 
     /*
     \brief
@@ -404,7 +405,7 @@ public:
         - false if vertices subsequently added will not be clipped (other than
           to the edges of the rendering target).
     */
-    virtual bool isClippingActive() const;
+    virtual bool isClippingActive() const { return d_clippingActive; }
 
     /*
     \brief
@@ -434,7 +435,7 @@ public:
     \return
         A reference to the RenderMaterial that is used by this GeometryBuffer.
     */
-    RefCounted<RenderMaterial> getRenderMaterial() const;
+    RenderMaterial* getRenderMaterial() const;
 
     /*
     \brief
@@ -451,23 +452,20 @@ public:
         Sets the alpha for this window
     \param alpha The new alpha value in the range 0.f-1.f
     */
-    void setAlpha(float alpha);
+    void setAlpha(float alpha) { d_alpha = alpha; }
 
-    /*!
-    \brief 
-        Gets the current alpha value
-    */
-    float getAlpha() const;
+    //! \brief Gets the current alpha value
+    float getAlpha() const { return d_alpha; }
 
     /*!
     \brief 
         Invalidates the local matrix. This should be called whenever anything extraordinary
         that requires to recalculate the matrix has occured
     */
-    void invalidateMatrix();
+    void invalidateMatrix() { d_matrixValid = false; }
 
     //TODO DOCU
-    const RenderTarget* getLastRenderTarget() const;
+    const RenderTarget* getLastRenderTarget() const { return d_lastRenderTarget; }
 
     /*!
     \brief 
@@ -490,26 +488,21 @@ public:
     */
     glm::mat4 getModelMatrix() const;
 
-    /*!
-    \brief
-        Scales the texture coordinates of this geometry buffer by the supplied factor, if the
-        texture is matching the texture (if one exists) of this geometry buffer.
-    */
-    void updateTextureCoordinates(const Texture* texture, const float scaleFactor);
+    const std::vector<float>& getVertexData() const { return d_vertexData; }
 
-    const std::vector<float>& getVertexData() const {return d_vertexData;}
+protected:
 
-protected:  
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
 
     //! Reference to the RenderMaterial used for this GeometryBuffer
     RefCounted<RenderMaterial>  d_renderMaterial;
-
+    //! RenderEffect that will be used by the GeometryBuffer
+    RenderEffect* d_effect = nullptr;
+    //! The RenderTarget that this GeometryBuffer's matrix was last updated for
+    mutable const RenderTarget* d_lastRenderTarget = nullptr;
 
     //! The container in which the vertex data is stored.
     std::vector<float>          d_vertexData;
-    //! The vertex count which is determined based on the used vertex layout
-    unsigned int                d_vertexCount;
     /*
     \brief
         A vector of the attributes of the vertices of this GeometryBuffer. The order
@@ -518,36 +511,6 @@ protected:
     */
     std::vector<VertexAttributeType> d_vertexAttributes;
 
-
-    //! translation vector
-    glm::vec3       d_translation;
-    //! rotation quaternion
-    glm::quat       d_rotation;
-    //! scaling vector
-    glm::vec3       d_scale;
-    //! pivot point for rotation
-    glm::vec3       d_pivot;
-    //! custom transformation matrix
-    glm::mat4x4     d_customTransform;
-    /*
-    \brief
-        true, when there have been no translations, rotations or other transformations applied to the GeometryBuffer,
-        as well as when it is guaranteed that the view projection matrix of the RenderTarget has been unchanged
-        since the last update.
-    */
-    mutable bool    d_matrixValid;
-    //! The RenderTarget that this GeometryBuffer's matrix was last updated for
-    mutable const RenderTarget*   d_lastRenderTarget;
-    //! The activation number of the RenderTarget that this GeometryBuffer's matrix was last updated for
-    mutable unsigned int    d_lastRenderTargetActivationCount;
-    //! The BlendMode to use when rendering this GeometryBuffer.
-    BlendMode       d_blendMode;
-    //! The fill rule that should be used when rendering the geometry.
-    PolygonFillRule d_polygonFillRule;
-    //! The amount of vertices that need to be rendered after rendering to the stencil buffer.
-    unsigned int    d_postStencilVertexCount;
-    //! RenderEffect that will be used by the GeometryBuffer
-    RenderEffect*   d_effect;
     /*
     \brief  The last clipping region that was set. Negative values in this one are
             not clamped to 0.
@@ -555,10 +518,37 @@ protected:
     Rectf           d_clippingRegion;
     //! Clipping region clamped to 0, for usage in rendering
     Rectf           d_preparedClippingRegion;
-    //! True if clipping will be active for the current batch
-    bool            d_clippingActive;
+    //! custom transformation matrix
+    glm::mat4x4     d_customTransform;
+    //! rotation quaternion
+    glm::quat       d_rotation;
+    //! translation vector
+    glm::vec3       d_translation;
+    //! scaling vector
+    glm::vec3       d_scale;
+    //! pivot point for rotation
+    glm::vec3       d_pivot;
     //! The alpha value which will be applied to the whole buffer when rendering
-    float           d_alpha;
+    float           d_alpha = 1.f;
+    //! The activation number of the RenderTarget that this GeometryBuffer's matrix was last updated for
+    mutable unsigned int    d_lastRenderTargetActivationCount = 0;
+    //! The amount of vertices that need to be rendered after rendering to the stencil buffer.
+    unsigned int    d_postStencilVertexCount = 0;
+    //! The vertex count which is determined based on the used vertex layout
+    unsigned int                d_vertexCount = 0;
+    //! The BlendMode to use when rendering this GeometryBuffer.
+    BlendMode       d_blendMode;
+    //! The fill rule that should be used when rendering the geometry.
+    PolygonFillRule d_polygonFillRule = PolygonFillRule::NoFilling;
+    //! True if clipping will be active for the current batch
+    bool            d_clippingActive = false;
+    /*
+    \brief
+        true, when there have been no translations, rotations or other transformations applied to the GeometryBuffer,
+        as well as when it is guaranteed that the view projection matrix of the RenderTarget has been unchanged
+        since the last update.
+    */
+    mutable bool    d_matrixValid = false;
 
 };
 
