@@ -126,6 +126,30 @@ void MultiLineEditbox::updateFormatting()
 }
 
 //----------------------------------------------------------------------------//
+float MultiLineEditbox::getTextOffsetX() const
+{
+    return getHorzScrollbar()->getScrollPosition();
+}
+
+//----------------------------------------------------------------------------//
+float MultiLineEditbox::getTextOffsetY() const
+{
+    return getVertScrollbar()->getScrollPosition();
+}
+
+//----------------------------------------------------------------------------//
+void MultiLineEditbox::setTextOffsetX(float value)
+{
+    getHorzScrollbar()->setScrollPosition(value);
+}
+
+//----------------------------------------------------------------------------//
+void MultiLineEditbox::setTextOffsetY(float value)
+{
+    getVertScrollbar()->setScrollPosition(value);
+}
+
+//----------------------------------------------------------------------------//
 Rectf MultiLineEditbox::getCaretRect() const
 {
     auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
@@ -172,10 +196,7 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt)
     updateRenderedText();
 
     //???FIXME TEXT: move to renderer? Should not rely on the same calculations in different places!
-    glm::vec2 localPt = CoordConverter::screenToWindow(*this, pt) - wr->getTextRenderArea().d_min;
-    localPt.x += getHorzScrollbar()->getScrollPosition();
-    localPt.y += getVertScrollbar()->getScrollPosition();
-
+    const auto localPt = CoordConverter::screenToWindow(*this, pt) - wr->getTextRenderArea().d_min + getTextOffset();
     return d_renderedText.getTextIndexAtPoint(localPt);
 }
 

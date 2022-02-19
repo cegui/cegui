@@ -96,10 +96,13 @@ public:
     */
     virtual void setTextFormatting(HorizontalTextFormatting format) override;
 
+    virtual float getTextOffsetX() const override { return d_textOffset.x; }
+    virtual float getTextOffsetY() const override { return d_textOffset.y; }
+    virtual void setTextOffsetX(float value) override;
+    virtual void setTextOffsetY(float value) override { /* Auto-calculated */ }
+
     virtual Rectf getCaretRect() const override;
     virtual void ensureCaretIsVisible() override;
-
-    float getTextOffset() const { return d_textOffset; }
 
 protected:
 
@@ -115,7 +118,7 @@ protected:
     */
     virtual void onTextAcceptedEvent(WindowEventArgs& e);
 
-    float d_textOffset = 0.f; //<! Offset of the text graphics inside a client rect
+    glm::vec2 d_textOffset = glm::vec2(0.f, 0.f); //<! Offset of the text graphics inside a client rect
 };
 
 }

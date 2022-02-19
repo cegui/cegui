@@ -136,6 +136,17 @@ void EditboxBase::setReadOnly(bool setting)
 }
 
 //----------------------------------------------------------------------------//
+void EditboxBase::setDragPanningEnabled(bool setting)
+{
+    if (d_dragPanningEnabled == setting)
+        return;
+
+    d_dragPanningEnabled = setting;
+    if (!setting && d_dragPanning)
+        releaseInput();
+}
+
+//----------------------------------------------------------------------------//
 void EditboxBase::setEnabled(bool enabled)
 {
     Window::setEnabled(enabled);
@@ -507,14 +518,25 @@ void EditboxBase::onCursorPressHold(CursorInputEventArgs& e)
     {
         if (captureInput())
         {
-            d_dragging = true;
+            d_dragSelecting = true;
             d_dragAnchorIdx = getTextIndexFromPosition(e.position);
             clearSelection();
             setCaretIndex(d_dragAnchorIdx);
             ensureCaretIsVisible();
+            ++e.handled;
         }
-
-        ++e.handled;
+    }
+    else if (e.source == CursorInputSource::Middle)
+    {
+        if (d_dragPanningEnabled)
+        {
+            activate();
+            if (captureInput())
+            {
+                d_dragPanning = true;
+                ++e.handled;
+            }
+        }
     }
 }
 
@@ -523,8 +545,9 @@ void EditboxBase::onCursorActivate(CursorInputEventArgs& e)
 {
     Window::onCursorActivate(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.source == CursorInputSource::Left || e.source == CursorInputSource::Middle)
     {
+        // Actual handling happens in onCaptureLost
         releaseInput();
         ++e.handled;
     }
@@ -535,11 +558,17 @@ void EditboxBase::onCursorMove(CursorInputEventArgs& e)
 {
     Window::onCursorMove(e);
 
-    if (d_dragging)
+    if (d_dragSelecting)
     {
         setCaretIndex(getTextIndexFromPosition(e.position));
         setSelection(d_caretPos, d_dragAnchorIdx);
         ensureCaretIsVisible();
+    }
+
+    if (d_dragPanning)
+    {
+        setTextOffsetX(getTextOffsetX() - e.moveDelta.x);
+        setTextOffsetY(getTextOffsetY() - e.moveDelta.y);
     }
 
     ++e.handled;
@@ -548,7 +577,8 @@ void EditboxBase::onCursorMove(CursorInputEventArgs& e)
 //----------------------------------------------------------------------------//
 void EditboxBase::onCaptureLost(WindowEventArgs& e)
 {
-    d_dragging = false;
+    d_dragSelecting = false;
+    d_dragPanning = false;
     Window::onCaptureLost(e);
     ++e.handled;
 }
@@ -989,6 +1019,10 @@ void EditboxBase::addEditboxBaseProperties()
     CEGUI_DEFINE_PROPERTY(EditboxBase, bool,
         "ReadOnly", "Property to get/set the read-only setting for the Editbox.  Value is either \"true\" or \"false\".",
         &EditboxBase::setReadOnly, &EditboxBase::isReadOnly, false
+    );
+    CEGUI_DEFINE_PROPERTY(EditboxBase, bool,
+        "DragPanningEnabled", "Enables panning by dragging with Middle mouse button. Value is either \"true\" or \"false\".",
+        &EditboxBase::setDragPanningEnabled, &EditboxBase::isDragPanningEnabled, true
     );
     CEGUI_DEFINE_PROPERTY(EditboxBase, bool,
         "TextMaskingEnabled", "Property to get/set the mask text setting for the Editbox.  Value is either \"true\" or \"false\".",

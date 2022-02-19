@@ -117,6 +117,11 @@ public:
     */
     void initialiseComponents() override;
 
+    virtual float getTextOffsetX() const override;
+    virtual float getTextOffsetY() const override;
+    virtual void setTextOffsetX(float value) override;
+    virtual void setTextOffsetY(float value) override;
+
     virtual Rectf getCaretRect() const override;
     virtual void ensureCaretIsVisible() override;
 

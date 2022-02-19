@@ -116,8 +116,7 @@ void FalagardMultiLineEditbox::createRenderGeometry()
     if (!w->isReadOnly() && (!d_blinkCaret || d_showCaret) && w->hasInputFocus())
     {
         Rectf caretRect = getCaretRect();
-        caretRect.offset(textArea.left() - w->getHorzScrollbar()->getScrollPosition(),
-            textArea.top() - w->getVertScrollbar()->getScrollPosition());
+        caretRect.offset(textArea.d_min - w->getTextOffset());
         getLookNFeel().getImagerySection("Caret").render(*d_window, caretRect, nullptr, &textArea);
     }
 }
@@ -155,11 +154,7 @@ void FalagardMultiLineEditbox::createRenderGeometryForText(const Rectf& textArea
     if (renderedText.empty())
         return;
 
-    // Calculate the range of visible lines
-    const glm::vec2 pos(
-        textArea.left() - w->getHorzScrollbar()->getScrollPosition(),
-        textArea.top() - w->getVertScrollbar()->getScrollPosition());
-
+    const glm::vec2 pos = textArea.d_min - w->getTextOffset();
     const ColourRect normalTextCol = getOptionalColour(UnselectedTextColourPropertyName);
 
     const size_t selStart = w->getSelectionStart();
