@@ -151,15 +151,11 @@ namespace CEGUI
 
     void FalagardMultiColumnList::cacheListboxBaseImagery()
     {
-        const StateImagery* imagery;
-
-        // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
-        // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled"
-            : (d_window->isFocused() ? "EnabledFocused" : "Enabled"));
-        // perform the rendering operation.
-        imagery->render(*d_window);
+        const auto& imagery = wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled"
+            : ((d_window->isFocused() && wlf.isStateImageryPresent("EnabledFocused")) ? "EnabledFocused" :
+                "Enabled"));
+        imagery.render(*d_window);
     }
 
-} // End of  CEGUI namespace section
+}

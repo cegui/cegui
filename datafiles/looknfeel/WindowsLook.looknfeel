@@ -871,18 +871,6 @@
                 </Section>
             </Layer>
         </StateImagery>
-        <StateImagery name="EnabledFocused">
-            <Layer>
-                <Section section="container_normal"/>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="ReadOnlyFocused">
-            <Layer>
-                <Section section="container_normal">
-                    <ColourProperty name="ReadOnlyBGColour"/>
-                </Section>
-            </Layer>
-        </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
                 <Section section="container_normal">
@@ -2338,18 +2326,6 @@
             </Layer>
         </StateImagery>
         <StateImagery name="ReadOnly">
-            <Layer>
-                <Section section="main">
-                    <ColourProperty name="ReadOnlyBGColour"/>
-                </Section>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="EnabledFocused">
-            <Layer>
-                <Section section="main"/>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="ReadOnlyFocused">
             <Layer>
                 <Section section="main">
                     <ColourProperty name="ReadOnlyBGColour"/>
