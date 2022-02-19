@@ -405,7 +405,7 @@ bool EditboxBase::insertString(String&& strToInsert)
 //----------------------------------------------------------------------------//
 void EditboxBase::deleteRange(size_t start, size_t length)
 {
-    if (!length)
+    if (isReadOnly() || !length)
         return;
 
     const auto& text = getText();
@@ -436,6 +436,21 @@ void EditboxBase::deleteRange(size_t start, size_t length)
     setText(tmp);
 
     d_undoHandler->addUndoHistory(undoDelete);
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::handleCaretMovement(size_t newIndex, bool select)
+{
+    if (select && !getSelectionLength())
+        d_dragAnchorIdx = d_caretPos;
+
+    setCaretIndex(newIndex);
+    ensureCaretIsVisible();
+
+    if (select)
+        setSelection(d_caretPos, d_dragAnchorIdx);
+    else
+        clearSelection();
 }
 
 //----------------------------------------------------------------------------//
@@ -570,7 +585,7 @@ void EditboxBase::onSelectAll(CursorInputEventArgs& e)
 
         ++e.handled;
     }
-    else if (!isReadOnly())
+    else
     {
         // Regular 'select all'
         handleSelectAll();
@@ -733,129 +748,65 @@ bool EditboxBase::processSemanticInputEvent(const SemanticEventArgs& e)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleCharLeft(bool select)
 {
-    if (select && !getSelectionLength())
-        d_dragAnchorIdx = d_caretPos;
-
+    size_t previousCodePointPos = 0;
     if (d_caretPos > 0)
     {
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
-        size_t previousCodePointPos = d_caretPos - 1;
+        previousCodePointPos = d_caretPos - 1;
 #else
         const String& currentText = getText();
         String::codepoint_iterator caretIter(currentText.begin() + d_caretPos,
-                                             currentText.begin(), currentText.end());
+            currentText.begin(), currentText.end());
         --caretIter;
 
-        size_t previousCodePointPos = caretIter.getCodeUnitIndexFromStart();
+        previousCodePointPos = caretIter.getCodeUnitIndexFromStart();
 #endif
-        setCaretIndex(previousCodePointPos);
-        ensureCaretIsVisible();
     }
 
-    if (select)
-        setSelection(d_caretPos, d_dragAnchorIdx);
-    else
-        clearSelection();
+    handleCaretMovement(previousCodePointPos, select);
 }
 
 //----------------------------------------------------------------------------//
 void EditboxBase::handleWordLeft(bool select)
 {
-    if (select && !getSelectionLength())
-        d_dragAnchorIdx = d_caretPos;
-
-    if (d_caretPos > 0)
-    {
-        setCaretIndex(TextUtils::getWordStartIndex(getText(), d_caretPos));
-        ensureCaretIsVisible();
-    }
-
-    if (select)
-        setSelection(d_caretPos, d_dragAnchorIdx);
-    else
-        clearSelection();
+    handleCaretMovement(TextUtils::getWordStartIndex(getText(), d_caretPos), select);
 }
 
 //----------------------------------------------------------------------------//
 void EditboxBase::handleCharRight(bool select)
 {
-    if (select && !getSelectionLength())
-        d_dragAnchorIdx = d_caretPos;
-
-    if (d_caretPos < getText().size())
+    size_t codePointSize = 0;
+    const auto& currentText = getText();
+    if (d_caretPos < currentText.size())
     {
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
-        size_t codePointSize = 1;
+        codePointSize = 1;
 #else
-        const CEGUI::String& currentText = getText();
-        size_t codePointSize = String::getCodePointSize(currentText[d_caretPos]);
+        codePointSize = String::getCodePointSize(currentText[d_caretPos]);
 #endif
-        setCaretIndex(d_caretPos + codePointSize);
-        ensureCaretIsVisible();
     }
 
-    if (select)
-        setSelection(d_caretPos, d_dragAnchorIdx);
-    else
-        clearSelection();
+    handleCaretMovement(d_caretPos + codePointSize, select);
 }
 
 //----------------------------------------------------------------------------//
 void EditboxBase::handleWordRight(bool select)
 {
-    if (select && !getSelectionLength())
-        d_dragAnchorIdx = d_caretPos;
-
-    if (d_caretPos < getText().size())
-    {
-        setCaretIndex(TextUtils::getNextWordStartIndex(getText(), d_caretPos));
-        ensureCaretIsVisible();
-    }
-
-    if (select)
-        setSelection(d_caretPos, d_dragAnchorIdx);
-    else
-        clearSelection();
+    handleCaretMovement(TextUtils::getNextWordStartIndex(getText(), d_caretPos), select);
 }
 
 //----------------------------------------------------------------------------//
 void EditboxBase::handleHome(bool select, bool lineOnly)
 {
-    if (select && !getSelectionLength())
-        d_dragAnchorIdx = d_caretPos;
-
     updateRenderedText();
-    const auto destIdx = lineOnly ? d_renderedText.lineStartTextIndex(d_caretPos) : 0;
-    if (d_caretPos > destIdx)
-    {
-        setCaretIndex(destIdx);
-        ensureCaretIsVisible();
-    }
-
-    if (select)
-        setSelection(d_caretPos, d_dragAnchorIdx);
-    else
-        clearSelection();
+    handleCaretMovement(lineOnly ? d_renderedText.lineStartTextIndex(d_caretPos) : 0, select);
 }
 
 //----------------------------------------------------------------------------//
 void EditboxBase::handleEnd(bool select, bool lineOnly)
 {
-    if (select && !getSelectionLength())
-        d_dragAnchorIdx = d_caretPos;
-
     updateRenderedText();
-    const auto destIdx = lineOnly ? d_renderedText.lineEndTextIndex(d_caretPos) : d_renderedText.endTextIndex();
-    if (d_caretPos < destIdx)
-    {
-        setCaretIndex(destIdx);
-        ensureCaretIsVisible();
-    }
-
-    if (select)
-        setSelection(d_caretPos, d_dragAnchorIdx);
-    else
-        clearSelection();
+    handleCaretMovement(lineOnly ? d_renderedText.lineEndTextIndex(d_caretPos) : d_renderedText.endTextIndex(), select);
 }
 
 //----------------------------------------------------------------------------//

@@ -101,8 +101,7 @@ void Editbox::ensureCaretIsVisible()
 //----------------------------------------------------------------------------//
 size_t Editbox::getTextIndexFromPosition(const glm::vec2& pt)
 {
-    const auto& text = getText();
-    if (text.empty())
+    if (getText().empty())
         return 0;
 
     auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
