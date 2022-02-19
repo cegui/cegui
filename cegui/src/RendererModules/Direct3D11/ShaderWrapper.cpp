@@ -138,10 +138,10 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
         }
 
         // Get the data pointer pointing to the memory position of our current uniform variable
-        unsigned char* paramDataPointer = 0;
+        unsigned char* paramDataPointer = nullptr;
         if (parameterDescription.d_shaderType == ShaderType::VERTEX)
             paramDataPointer = resourceDataVS + parameterDescription.d_boundLocation;
-        else if (parameterDescription.d_shaderType == ShaderType::PIXEL)
+        else
             paramDataPointer = resourceDataPS + parameterDescription.d_boundLocation;
 
         switch(parameterType)

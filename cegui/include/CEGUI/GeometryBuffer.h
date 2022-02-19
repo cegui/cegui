@@ -271,7 +271,7 @@ public:
     /*!
     \brief
         A helper function that sets a texture parameter of the RenderMaterial of this
-        Geometrybuffer.
+        GeometryBuffer.
 
     \param parameterName
         Name of the parameter as used inside the shader program. The regular CEGUI
@@ -280,13 +280,12 @@ public:
     \param texture
         Pointer to the Texture object that shall be set for this parameter.
     */
-    virtual void setTexture(const std::string& parameterName, const Texture* texture);
+    void setTexture(const std::string& parameterName, const Texture* texture);
 
-    
     /*!
     \brief
         A helper function that gets a texture parameter of the RenderMaterial of this
-        Geometrybuffer.
+        GeometryBuffer.
 
     \param parameterName
         Name of the parameter as used inside the shader program. The regular CEGUI
@@ -297,6 +296,12 @@ public:
         returns a nullptr.
     */
     const Texture* getTexture(const std::string& parameterName) const;
+
+    //! \brief An optimized way to set the main CEGUI texture ("texture0")
+    void setMainTexture(const Texture* texture);
+
+    //! \brief An optimized way to get the main CEGUI texture ("texture0")
+    const Texture* getMainTexture() const;
 
     /*!
     \brief

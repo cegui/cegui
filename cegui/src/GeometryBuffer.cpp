@@ -268,15 +268,27 @@ void GeometryBuffer::setTexture(const std::string& parameterName, const Texture*
 //--------------------------------------------------------------------------//
 const Texture* GeometryBuffer::getTexture(const std::string& parameterName) const
 {
-    auto shaderParam = getRenderMaterial()->getShaderParamBindings()->getParameter(parameterName);
+    auto shaderParam = d_renderMaterial->getShaderParamBindings()->getParameter(parameterName);
     return shaderParam ? static_cast<ShaderParameterTexture*>(shaderParam)->d_parameterValue : nullptr;
+}
+
+//--------------------------------------------------------------------------//
+void GeometryBuffer::setMainTexture(const Texture* texture)
+{
+    d_renderMaterial->setMainTexture(texture);
+}
+
+//--------------------------------------------------------------------------//
+const Texture* GeometryBuffer::getMainTexture() const
+{
+    return d_renderMaterial->getMainTexture();
 }
 
 //--------------------------------------------------------------------------//
 void GeometryBuffer::updateTextureCoordinates(const Texture* texture, float scaleFactor)
 {
-    // Check that the buffer is textured
-    if (!texture || getTexture("texture0") != texture)
+    // Check that the buffer is textured and uses the given texture
+    if (!texture || getMainTexture() != texture)
         return;
 
     for (size_t i = 0; i < d_vertexCount; ++i)

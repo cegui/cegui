@@ -239,6 +239,18 @@ public:
 
     /*!
     \brief
+        Adds an int shader parameter to the parameter bindings
+
+    \param parameter_name
+        The name of the parameter as used by the shader
+
+    \param value
+        The value of the int parameter
+    */
+    void setParameter(const std::string& parameter_name, int value);
+
+    /*!
+    \brief
         Returns a pointer to the shader_parameter with the specified parameter name
 
     \param parameter_name

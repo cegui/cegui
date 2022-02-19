@@ -143,10 +143,19 @@ void ShaderParameterBindings::setParameter(const std::string& parameter_name, fl
 {
     ShaderParameter* shader_param = getParameter(parameter_name);
     if (shader_param && (shader_param->getType() == ShaderParamType::Float))
-        static_cast<ShaderParameterFloat*>(shader_param)->d_parameterValue = 
-        fvalue;
+        static_cast<ShaderParameterFloat*>(shader_param)->d_parameterValue = fvalue;
     else
         setNewParameter(parameter_name, new ShaderParameterFloat(fvalue));
+}
+
+//----------------------------------------------------------------------------//
+void ShaderParameterBindings::setParameter(const std::string& parameter_name, int value)
+{
+    ShaderParameter* shader_param = getParameter(parameter_name);
+    if (shader_param && (shader_param->getType() == ShaderParamType::Int))
+        static_cast<ShaderParameterInt*>(shader_param)->d_parameterValue = value;
+    else
+        setNewParameter(parameter_name, new ShaderParameterInt(value));
 }
 
 //----------------------------------------------------------------------------//

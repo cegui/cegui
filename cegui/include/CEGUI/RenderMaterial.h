@@ -54,6 +54,9 @@ public:
     ShaderParameterBindings* getShaderParamBindings() { return &d_shaderParamBindings; }
     const ShaderParameterBindings* getShaderParamBindings() const { return &d_shaderParamBindings; }
 
+    void setMainTexture(const Texture* texture);
+    const Texture* getMainTexture() const;
+
     /*!
 	\brief
 		Returns a pointer to the ShaderWrapper used for this Renderer.
@@ -69,7 +72,10 @@ public:
 protected:
 
     //! pointer to the Shader that is used in this material.
-    ShaderWrapper* d_shaderWrapper;
+    ShaderWrapper* d_shaderWrapper = nullptr;
+
+    //! Cached shader parameter for the main texture, optimization for frequent access
+    ShaderParameterTexture* d_mainTextureParam = nullptr;
 
     //! data structure that contains all the shader parameters that are
     //  to be sent to the shader program using the parameter's name

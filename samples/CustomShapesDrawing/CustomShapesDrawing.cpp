@@ -380,7 +380,7 @@ void CustomShapesDrawingSample::setupCustomGeometryGraph(CEGUI::GUIContext* guiC
     CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
 
     // GeometryBuffer used for drawing in this Sample
-    d_FPSGraphGeometryBuffer = &renderer->createGeometryBufferColoured(renderer->createRenderMaterial(DefaultShaderType::Solid));
+    d_FPSGraphGeometryBuffer = &renderer->createGeometryBufferColoured();
 
     // Calculate and save our custom graph background
     setupCustomGeometryGraphBackground();

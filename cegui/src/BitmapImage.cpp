@@ -36,7 +36,6 @@
 
 namespace CEGUI
 {
-const std::string ImageTextureParameterName("texture0");
 const String ImageTypeAttribute( "type" );
 const String ImageNameAttribute( "name" );
 const String ImageTextureAttribute( "texture" );
@@ -98,7 +97,7 @@ void BitmapImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
         auto it = std::find_if(out.begin() + canCombineFromIdx, out.end(),
             [tex = d_texture](const GeometryBuffer* buffer)
         {
-            return tex == buffer->getTexture(ImageTextureParameterName);
+            return tex == buffer->getMainTexture();
         });
         if (it != out.end())
             buffer = *it;
@@ -110,7 +109,7 @@ void BitmapImage::createRenderGeometry(std::vector<GeometryBuffer*>& out,
         buffer->setClippingActive(!!renderSettings.d_clipArea);
         if (renderSettings.d_clipArea)
             buffer->setClippingRegion(*renderSettings.d_clipArea);
-        buffer->setTexture(ImageTextureParameterName, d_texture);
+        buffer->setMainTexture(d_texture);
         buffer->setAlpha(renderSettings.d_alpha);
         out.push_back(buffer);
     }
