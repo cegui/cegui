@@ -35,7 +35,6 @@ endif()
 
 if (NOT CEGUI_HAS_FREETYPE)
     list (REMOVE_ITEM CORE_SOURCE_FILES text/FreeTypeFont.cpp)
-    list (REMOVE_ITEM CORE_SOURCE_FILES text/FreeTypeFontGlyph.cpp)
 endif()
 
 if (NOT CEGUI_HAS_PCRE_REGEX)

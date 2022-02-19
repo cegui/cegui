@@ -50,8 +50,6 @@ public:
         , d_initialised(valid)
     {}
 
-    float getRenderedAdvance() const override;
-
     //! mark the FontGlyph as initialised
     void markAsInitialised() { d_initialised = true; }
 
