@@ -24,21 +24,16 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-
 #include "CEGUI/ShaderParameterBindings.h"
-#include "CEGUI/System.h"
-
-#include <glm/glm.hpp>
 
 namespace CEGUI
 {
+
 //----------------------------------------------------------------------------//
 bool ShaderParameterFloat::equal(const ShaderParameter* other_parameter) const
 {
-    if (this->getType() == other_parameter->getType())
-        return (d_parameterValue == static_cast<const ShaderParameterFloat*>(other_parameter)->d_parameterValue);
-    else
-        return false;
+    return getType() == other_parameter->getType() &&
+        d_parameterValue == static_cast<const ShaderParameterFloat*>(other_parameter)->d_parameterValue;
 }
 
 //----------------------------------------------------------------------------//
@@ -51,10 +46,8 @@ void ShaderParameterFloat::takeOverParameterValue(const ShaderParameter* other_p
 //----------------------------------------------------------------------------//
 bool ShaderParameterInt::equal(const ShaderParameter* other_parameter) const
 {
-    if (this->getType() == other_parameter->getType())
-        return (d_parameterValue == static_cast<const ShaderParameterInt*>(other_parameter)->d_parameterValue);
-    else
-        return false;
+    return getType() == other_parameter->getType() &&
+        d_parameterValue == static_cast<const ShaderParameterInt*>(other_parameter)->d_parameterValue;
 }
 
 //----------------------------------------------------------------------------//
@@ -67,10 +60,8 @@ void ShaderParameterInt::takeOverParameterValue(const ShaderParameter* other_par
 //----------------------------------------------------------------------------//
 bool ShaderParameterTexture::equal(const ShaderParameter* other_parameter) const
 {
-    if (this->getType() == other_parameter->getType())
-        return (d_parameterValue == static_cast<const ShaderParameterTexture*>(other_parameter)->d_parameterValue);
-    else
-        return false;
+    return getType() == other_parameter->getType() &&
+        d_parameterValue == static_cast<const ShaderParameterTexture*>(other_parameter)->d_parameterValue;
 }
 
 //----------------------------------------------------------------------------//
@@ -83,10 +74,8 @@ void ShaderParameterTexture::takeOverParameterValue(const ShaderParameter* other
 //----------------------------------------------------------------------------//
 bool ShaderParameterMatrix::equal(const ShaderParameter* other_parameter) const
 {
-    if (this->getType() == other_parameter->getType())
-        return (d_parameterValue == static_cast<const ShaderParameterMatrix*>(other_parameter)->d_parameterValue);
-    else
-        return false;
+    return getType() == other_parameter->getType() &&
+        d_parameterValue == static_cast<const ShaderParameterMatrix*>(other_parameter)->d_parameterValue;
 }
 
 //----------------------------------------------------------------------------//
@@ -97,55 +86,40 @@ void ShaderParameterMatrix::takeOverParameterValue(const ShaderParameter* other_
 }
 
 //----------------------------------------------------------------------------//
-ShaderParameterBindings::ShaderParameterBindings()
-{
-}
-
-//----------------------------------------------------------------------------//
 ShaderParameterBindings::~ShaderParameterBindings()
 {
-    ShaderParameterBindings::ShaderParameterBindingsMap::iterator iter = d_shaderParameterBindings.begin();
-    ShaderParameterBindings::ShaderParameterBindingsMap::iterator end = d_shaderParameterBindings.end();
-
-    while (iter != end)
-    {
-        delete iter->second;
-        ++iter;
-    }
-
-    d_shaderParameterBindings.clear();
+    for (auto& pair : d_shaderParameterBindings)
+        delete pair.second;
 }
 
 //----------------------------------------------------------------------------//
 void ShaderParameterBindings::removeParameter(const std::string& parameter_name)
 {
-    ShaderParameterBindingsMap::iterator found_iterator = d_shaderParameterBindings.find(parameter_name);
-    if (found_iterator != d_shaderParameterBindings.end())
+    auto it = d_shaderParameterBindings.find(parameter_name);
+    if (it != d_shaderParameterBindings.end())
     {
-        delete found_iterator->second;
-        d_shaderParameterBindings.erase(found_iterator);
+        delete it->second;
+        d_shaderParameterBindings.erase(it);
     }
 }
 
 //----------------------------------------------------------------------------//
 void ShaderParameterBindings::setNewParameter(const std::string& parameter_name, ShaderParameter* shader_parameter)
 {
-    std::map<std::string, ShaderParameter*>::iterator found_iterator = d_shaderParameterBindings.find(parameter_name);
-    if (found_iterator != d_shaderParameterBindings.end())
+    auto it = d_shaderParameterBindings.find(parameter_name);
+    if (it != d_shaderParameterBindings.end())
     {
-        delete found_iterator->second;
-        found_iterator->second = shader_parameter;
+        delete it->second;
+        it->second = shader_parameter;
     }
     else
     {
-        std::pair<std::string, ShaderParameter*> shader_params_pair(parameter_name, shader_parameter);
-        d_shaderParameterBindings.insert(shader_params_pair);
+        d_shaderParameterBindings.emplace(parameter_name, shader_parameter);
     }
 }
 
 //----------------------------------------------------------------------------//
-void ShaderParameterBindings::setParameter(const std::string& parameter_name, 
-    const glm::mat4& matrix)
+void ShaderParameterBindings::setParameter(const std::string& parameter_name, const glm::mat4& matrix)
 {
     ShaderParameter* shader_param = getParameter(parameter_name);
     if (shader_param && ( shader_param->getType() == ShaderParamType::Matrix4X4 ) )
@@ -165,8 +139,7 @@ void ShaderParameterBindings::setParameter(const std::string& parameter_name, co
 }
 
 //----------------------------------------------------------------------------//
-void ShaderParameterBindings::setParameter(const std::string& parameter_name, 
-    const float fvalue)
+void ShaderParameterBindings::setParameter(const std::string& parameter_name, float fvalue)
 {
     ShaderParameter* shader_param = getParameter(parameter_name);
     if (shader_param && (shader_param->getType() == ShaderParamType::Float))
@@ -179,19 +152,8 @@ void ShaderParameterBindings::setParameter(const std::string& parameter_name,
 //----------------------------------------------------------------------------//
 ShaderParameter* ShaderParameterBindings::getParameter(const std::string& parameter_name)
 {
-    std::map<std::string, ShaderParameter*>::iterator found_iterator = d_shaderParameterBindings.find(parameter_name);
-    if (found_iterator != d_shaderParameterBindings.end())
-        return found_iterator->second;
-    else
-        return nullptr;
+    auto it = d_shaderParameterBindings.find(parameter_name);
+    return (it != d_shaderParameterBindings.end()) ? it->second : nullptr;
 }
 
-
-//----------------------------------------------------------------------------//
-const ShaderParameterBindings::ShaderParameterBindingsMap& ShaderParameterBindings::getShaderParameterBindings() const
-{
-    return d_shaderParameterBindings;
-}
-
-//----------------------------------------------------------------------------//
 }
