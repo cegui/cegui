@@ -380,18 +380,18 @@ size_t EditboxBase::getPrevTextIndex(size_t idx) const
 //----------------------------------------------------------------------------//
 bool EditboxBase::insertString(String&& strToInsert)
 {
-    //!!!TODO TEXT: for the single line editbox need to remove all \n and \r!
-
     if (isReadOnly() || strToInsert.empty())
         return false;
 
-    String tmp = getText();
-    if (tmp.size() + strToInsert.size() - getSelectionLength() > d_maxTextLen)
+    const auto& text = getText();
+    if (getText().size() + strToInsert.size() - getSelectionLength() > d_maxTextLen)
     {
         WindowEventArgs args(this);
         onEditboxFullEvent(args);
         return false;
     }
+
+    String tmp = text;
 
     UndoHandler::UndoAction undoDeleteSelection;
     const auto insertPos = getSelectionStart();
