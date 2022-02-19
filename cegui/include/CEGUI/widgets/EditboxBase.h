@@ -468,82 +468,21 @@ protected:
     //! Clear the currently defined selection (just the region, not the text).
     void clearSelection();
 
+    size_t getPrevTextIndex(size_t idx) const;
+
     bool insertString(String&& strToInsert);
     void deleteRange(size_t start, size_t length);
     void handleCaretMovement(size_t newIndex, bool select);
 
-    /*!
-    \brief
-        Processing for Backspace key
-    */
     void handleBackspace();
-
-    /*!
-    \brief
-        Processing for Delete key
-    */
     void handleDelete();
-
-    /*!
-    \brief
-        Processing to move caret one character left
-
-    \param select
-        when true, the left character will be also selected
-    */
     void handleCharLeft(bool select);
-
-    /*!
-    \brief
-        Processing to move caret one character right
-
-    \param select
-        when true, the right character will be also selected
-    */
     void handleCharRight(bool select);
-
-    /*!
-    \brief
-        Processing to move caret one word left
-
-    \param select
-        If true the left word will be also selected
-    */
     void handleWordLeft(bool select);
-
-    /*!
-    \brief
-        Processing to move caret one word right
-
-    \param select
-        when true, the right word will be also selected
-    */
     void handleWordRight(bool select);
-
-    /*!
-    \brief
-        Processing to move caret to the start of the entire text.
-
-    \param select
-        When true, the text until the beginning of the entire text will be also selected
-    */
     void handleHome(bool select, bool lineOnly);
-
-    /*!
-    \brief
-        Processing to move caret to the end of the entire text.
-
-    \param select
-        When true, the text until the end of the entire text will be also selected
-    */
     void handleEnd(bool select, bool lineOnly);
-
-    /*!
-    \brief
-        Selects the entire text.
-    */
     void handleSelectAll();
-
 
     /*!
     \brief
@@ -619,7 +558,6 @@ protected:
      * as the current text for the Editbox.
      */
     bool handleValidityChangeForString(const String& str);
-
 
     /*!
     \brief
