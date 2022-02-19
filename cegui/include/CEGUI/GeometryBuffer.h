@@ -93,6 +93,8 @@ public:
 
     virtual ~GeometryBuffer();
 
+    void clear();
+
     /*!
     \brief
         Draw the geometry buffered within this GeometryBuffer object.

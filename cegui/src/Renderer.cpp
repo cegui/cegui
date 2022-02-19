@@ -63,7 +63,7 @@ void Renderer::destroyGeometryBuffer(GeometryBuffer& buffer)
         return;
 
     d_geometryBuffers.erase(it);
-    buffer.reset();
+    buffer.clear();
     d_geomeryBufferPool[buffer.getRenderMaterial()->getShaderWrapper()].push_back(&buffer);
 }
 
@@ -72,7 +72,7 @@ void Renderer::destroyAllGeometryBuffers()
 {
     for (auto buffer : d_geometryBuffers)
     {
-        buffer->reset();
+        buffer->clear();
         d_geomeryBufferPool[buffer->getRenderMaterial()->getShaderWrapper()].push_back(buffer);
     }
 

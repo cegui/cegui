@@ -52,6 +52,34 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
 //---------------------------------------------------------------------------//
 GeometryBuffer::~GeometryBuffer() = default;
 
+//----------------------------------------------------------------------------//
+void GeometryBuffer::clear()
+{
+    reset();
+
+    d_vertexData.clear();
+    d_vertexCount = 0;
+    d_postStencilVertexCount = 0;
+
+    d_lastRenderTarget = nullptr;
+    d_lastRenderTargetActivationCount = 0;
+
+    d_translation = glm::vec3(0.f, 0.f, 0.f);
+    d_rotation = glm::quat(1.f, 0.f, 0.f, 0.f);
+    d_scale = glm::vec3(1.f, 1.f, 1.f);
+    d_pivot = glm::vec3(0.f, 0.f, 0.f);
+    d_customTransform = glm::mat4x4(1.f);
+    d_clippingRegion = Rectf();
+    d_preparedClippingRegion = Rectf();
+
+    d_effect = nullptr;
+    d_alpha = 1.f;
+    d_blendMode = BlendMode::Normal;
+    d_polygonFillRule = PolygonFillRule::NoFilling;
+    d_clippingActive = false;
+    d_matrixValid = false;
+}
+
 //---------------------------------------------------------------------------//
 void GeometryBuffer::appendGeometry(const std::vector<ColouredVertex>& coloured_vertices)
 {
@@ -254,26 +282,7 @@ void GeometryBuffer::setClippingRegion(const Rectf& region)
 void GeometryBuffer::reset()
 {
     d_vertexData.clear();
-    d_vertexCount = 0;
-    d_postStencilVertexCount = 0;
-
-    d_lastRenderTarget = nullptr;
-    d_lastRenderTargetActivationCount = 0;
-
-    d_translation = glm::vec3(0.f, 0.f, 0.f);
-    d_rotation = glm::quat(1.f, 0.f, 0.f, 0.f);
-    d_scale = glm::vec3(1.f, 1.f, 1.f);
-    d_pivot = glm::vec3(0.f, 0.f, 0.f);
-    d_customTransform = glm::mat4x4(1.f);
-    d_clippingRegion = Rectf();
-    d_preparedClippingRegion = Rectf();
-
-    d_effect = nullptr;
-    d_alpha = 1.f;
-    d_blendMode = BlendMode::Normal;
-    d_polygonFillRule = PolygonFillRule::NoFilling;
-    d_clippingActive = false;
-    d_matrixValid = false;
+    d_clippingActive = true;
 }
 
 //----------------------------------------------------------------------------//
