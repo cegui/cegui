@@ -351,6 +351,22 @@ void EditboxBase::clearSelection()
 }
 
 //----------------------------------------------------------------------------//
+size_t EditboxBase::getPrevTextIndex(size_t idx) const
+{
+    if (!idx)
+        return 0;
+
+    const String& text = getText();
+    if (idx > text.size())
+        idx = text.size();
+
+    String::codepoint_iterator caretIter(text.begin() + idx, text.begin(), text.end());
+    --caretIter;
+
+    return caretIter.getCodeUnitIndexFromStart();
+}
+
+//----------------------------------------------------------------------------//
 bool EditboxBase::insertString(String&& strToInsert)
 {
     //!!!TODO TEXT: for the single line editbox need to remove all \n and \r!
@@ -754,12 +770,7 @@ void EditboxBase::handleCharLeft(bool select)
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
         previousCodePointPos = d_caretPos - 1;
 #else
-        const String& currentText = getText();
-        String::codepoint_iterator caretIter(currentText.begin() + d_caretPos,
-            currentText.begin(), currentText.end());
-        --caretIter;
-
-        previousCodePointPos = caretIter.getCodeUnitIndexFromStart();
+        previousCodePointPos = getPrevTextIndex(d_caretPos);
 #endif
     }
 
@@ -776,13 +787,13 @@ void EditboxBase::handleWordLeft(bool select)
 void EditboxBase::handleCharRight(bool select)
 {
     size_t codePointSize = 0;
-    const auto& currentText = getText();
-    if (d_caretPos < currentText.size())
+    const auto& text = getText();
+    if (d_caretPos < text.size())
     {
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
         codePointSize = 1;
 #else
-        codePointSize = String::getCodePointSize(currentText[d_caretPos]);
+        codePointSize = String::getCodePointSize(text[d_caretPos]);
 #endif
     }
 
@@ -825,8 +836,6 @@ void EditboxBase::handleBackspace()
     if (isReadOnly())
         return;
 
-    const auto& text = getText();
-
     if (getSelectionLength())
     {
         deleteRange(getSelectionStart(), getSelectionLength());
@@ -836,11 +845,7 @@ void EditboxBase::handleBackspace()
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
         deleteRange(d_caretPos - 1, 1);
 #else
-        String::codepoint_iterator caretIter(text.begin() + d_caretPos,
-            text.begin(), text.end());
-        --caretIter;
-
-        const size_t deleteStartPos = caretIter.getCodeUnitIndexFromStart();
+        const size_t deleteStartPos = getPrevTextIndex(d_caretPos);
         deleteRange(deleteStartPos, d_caretPos - deleteStartPos);
 #endif
     }
@@ -853,7 +858,6 @@ void EditboxBase::handleDelete()
         return;
 
     const auto& text = getText();
-
     if (getSelectionLength())
     {
         deleteRange(getSelectionStart(), getSelectionLength());
@@ -928,27 +932,21 @@ void EditboxBase::onTextValidityChanged(RegexMatchStateEventArgs& e)
 //----------------------------------------------------------------------------//
 bool EditboxBase::performUndo()
 {
-    bool result = false;
-    if (!isReadOnly())
-    {
-        clearSelection();
-        result = d_undoHandler->undo(d_caretPos);
-    }
+    if (isReadOnly())
+        return false;
 
-    return result;
+    clearSelection();
+    return d_undoHandler->undo(d_caretPos);
 }
 
 //----------------------------------------------------------------------------//
 bool EditboxBase::performRedo()
 {
-    bool result = false;
-    if (!isReadOnly())
-    {
-        clearSelection();
-        result = d_undoHandler->redo(d_caretPos);
-    }
+    if (isReadOnly())
+        return false;
 
-    return result;
+    clearSelection();
+    return d_undoHandler->redo(d_caretPos);
 }
 
 //----------------------------------------------------------------------------//

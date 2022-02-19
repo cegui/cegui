@@ -27,7 +27,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/Editbox.h"
-#include "CEGUI/text/Font.h"
 #include "CEGUI/CoordConverter.h"
 
 namespace CEGUI

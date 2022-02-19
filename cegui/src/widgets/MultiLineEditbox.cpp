@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "CEGUI/widgets/MultiLineEditbox.h"
 #include "CEGUI/widgets/Scrollbar.h"
-#include "CEGUI/text/Font.h"
 #include "CEGUI/CoordConverter.h"
 
 namespace CEGUI
@@ -73,11 +72,11 @@ void MultiLineEditbox::updateFormatting()
     if (!wr)
         return;
 
-    Scrollbar* const vertScrollbar = getVertScrollbar();
-    Scrollbar* const horzScrollbar = getHorzScrollbar();
-
     Rectf textArea = wr->getTextRenderArea();
     d_renderedText.updateFormatting(textArea.getWidth());
+
+    Scrollbar* const vertScrollbar = getVertScrollbar();
+    Scrollbar* const horzScrollbar = getHorzScrollbar();
 
     // Update vertical scrollbar state
     {
