@@ -55,11 +55,12 @@ void FalagardSlider::createRenderGeometry()
 {
     // TODO: use the same LnF for vertical and horizontal, rotate geometry here!
 
-    const StateImagery* imagery = &getLookNFeel().getStateImagery(
+    const auto& lnf = getLookNFeel();
+    const auto& imagery = lnf.getStateImagery(
         d_window->isEffectiveDisabled() ? "Disabled" :
-        d_window->isFocused() ? "EnabledFocused" :
+        (d_window->isFocused() && lnf.isStateImageryPresent("EnabledFocused")) ? "EnabledFocused" :
         "Enabled");
-    imagery->render(*d_window);
+    imagery.render(*d_window);
 }
 
 //----------------------------------------------------------------------------//

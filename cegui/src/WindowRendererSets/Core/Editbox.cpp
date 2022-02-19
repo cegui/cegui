@@ -104,6 +104,8 @@ void FalagardEditbox::renderBaseImagery() const
 {
     Editbox* w = static_cast<Editbox*>(d_window);
 
+    const auto& lnf = getLookNFeel();
+
     String state;
 
     if (w->isEffectiveDisabled())
@@ -115,11 +117,11 @@ void FalagardEditbox::renderBaseImagery() const
         else
             state = "Enabled";
 
-        if (w->isFocused())
+        if (w->isFocused() && lnf.isStateImageryPresent(state + "Focused"))
             state += "Focused";
     }
 
-    getLookNFeel().getStateImagery(state).render(*w);
+    lnf.getStateImagery(state).render(*w);
 }
 
 //----------------------------------------------------------------------------//

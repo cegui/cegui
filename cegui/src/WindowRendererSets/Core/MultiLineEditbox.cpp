@@ -127,6 +127,8 @@ void FalagardMultiLineEditbox::renderBaseImagery() const
 {
     MultiLineEditbox* w = static_cast<MultiLineEditbox*>(d_window);
 
+    const auto& lnf = getLookNFeel();
+
     String state;
 
     if (w->isEffectiveDisabled())
@@ -138,11 +140,11 @@ void FalagardMultiLineEditbox::renderBaseImagery() const
         else
             state = "Enabled";
 
-        if (w->isFocused())
+        if (w->isFocused() && lnf.isStateImageryPresent(state + "Focused"))
             state += "Focused";
     }
 
-    getLookNFeel().getStateImagery(state).render(*w);
+    lnf.getStateImagery(state).render(*w);
 }
 
 //----------------------------------------------------------------------------//
