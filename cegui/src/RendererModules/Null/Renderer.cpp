@@ -29,6 +29,7 @@
 #include "CEGUI/RendererModules/Null/TextureTarget.h"
 #include "CEGUI/RendererModules/Null/Texture.h"
 #include "CEGUI/RendererModules/Null/ShaderWrapper.h"
+#include "CEGUI/RenderMaterial.h"
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"

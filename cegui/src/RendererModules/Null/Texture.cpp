@@ -25,6 +25,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RendererModules/Null/Texture.h"
+#include "CEGUI/ResourceProvider.h"
+#include "CEGUI/DataContainer.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/System.h"
