@@ -82,11 +82,13 @@ void TabButton::onCursorPressHold(CursorInputEventArgs& e)
 {
     if (e.source == CursorInputSource::Middle)
     {
-        captureInput ();
-        ++e.handled;
-        d_dragging = true;
-
-        fireEvent(EventDragged, e, EventNamespace);
+        activate();
+        if (captureInput())
+        {
+            ++e.handled;
+            d_dragging = true;
+            fireEvent(EventDragged, e, EventNamespace);
+        }
     }
 
 	// default handling
