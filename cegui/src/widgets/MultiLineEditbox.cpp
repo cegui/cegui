@@ -163,8 +163,7 @@ void MultiLineEditbox::ensureCaretIsVisible()
 //----------------------------------------------------------------------------//
 size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt)
 {
-    const auto& text = getText();
-    if (text.empty())
+    if (getText().empty())
         return 0;
 
     auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
@@ -184,39 +183,25 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineUp(bool select)
 {
-    if (select && !getSelectionLength())
-        d_dragAnchorIdx = d_caretPos;
-
-    updateRenderedText();
     if (d_desiredCaretOffsetXDirty)
         d_desiredCaretOffsetX = getCaretRect().left();
-    setCaretIndex(d_renderedText.lineUpTextIndex(d_caretPos, d_desiredCaretOffsetX));
-    ensureCaretIsVisible();
-    d_desiredCaretOffsetXDirty = false;
 
-    if (select)
-        setSelection(d_caretPos, d_dragAnchorIdx);
-    else
-        clearSelection();
+    updateRenderedText();
+    handleCaretMovement(d_renderedText.lineUpTextIndex(d_caretPos, d_desiredCaretOffsetX), select);
+
+    d_desiredCaretOffsetXDirty = false;
 }
 
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineDown(bool select)
 {
-    if (select && !getSelectionLength())
-        d_dragAnchorIdx = d_caretPos;
-
-    updateRenderedText();
     if (d_desiredCaretOffsetXDirty)
         d_desiredCaretOffsetX = getCaretRect().left();
-    setCaretIndex(d_renderedText.lineDownTextIndex(d_caretPos, d_desiredCaretOffsetX));
-    ensureCaretIsVisible();
-    d_desiredCaretOffsetXDirty = false;
 
-    if (select)
-        setSelection(d_caretPos, d_dragAnchorIdx);
-    else
-        clearSelection();
+    updateRenderedText();
+    handleCaretMovement(d_renderedText.lineDownTextIndex(d_caretPos, d_desiredCaretOffsetX), select);
+
+    d_desiredCaretOffsetXDirty = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -226,20 +211,15 @@ void MultiLineEditbox::handlePageUp(bool select)
     if (!wr)
         return;
 
-    if (select && !getSelectionLength())
-        d_dragAnchorIdx = d_caretPos;
+    const float pageHeight = wr->getTextRenderArea().getHeight();
 
-    updateRenderedText();
     if (d_desiredCaretOffsetXDirty)
         d_desiredCaretOffsetX = getCaretRect().left();
-    setCaretIndex(d_renderedText.pageUpTextIndex(d_caretPos, d_desiredCaretOffsetX, wr->getTextRenderArea().getHeight()));
-    ensureCaretIsVisible();
-    d_desiredCaretOffsetXDirty = false;
 
-    if (select)
-        setSelection(d_caretPos, d_dragAnchorIdx);
-    else
-        clearSelection();
+    updateRenderedText();
+    handleCaretMovement(d_renderedText.pageUpTextIndex(d_caretPos, d_desiredCaretOffsetX, pageHeight), select);
+
+    d_desiredCaretOffsetXDirty = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -249,20 +229,15 @@ void MultiLineEditbox::handlePageDown(bool select)
     if (!wr)
         return;
 
-    if (select && !getSelectionLength())
-        d_dragAnchorIdx = d_caretPos;
+    const float pageHeight = wr->getTextRenderArea().getHeight();
 
-    updateRenderedText();
     if (d_desiredCaretOffsetXDirty)
         d_desiredCaretOffsetX = getCaretRect().left();
-    setCaretIndex(d_renderedText.pageDownTextIndex(d_caretPos, d_desiredCaretOffsetX, wr->getTextRenderArea().getHeight()));
-    ensureCaretIsVisible();
-    d_desiredCaretOffsetXDirty = false;
 
-    if (select)
-        setSelection(d_caretPos, d_dragAnchorIdx);
-    else
-        clearSelection();
+    updateRenderedText();
+    handleCaretMovement(d_renderedText.pageDownTextIndex(d_caretPos, d_desiredCaretOffsetX, pageHeight), select);
+
+    d_desiredCaretOffsetXDirty = false;
 }
 
 //----------------------------------------------------------------------------//

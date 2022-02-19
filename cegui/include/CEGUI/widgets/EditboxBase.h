@@ -470,6 +470,7 @@ protected:
 
     bool insertString(String&& strToInsert);
     void deleteRange(size_t start, size_t length);
+    void handleCaretMovement(size_t newIndex, bool select);
 
     /*!
     \brief
