@@ -63,21 +63,31 @@ float RenderedTextStyle::getHeight() const
 }
 
 //----------------------------------------------------------------------------//
-void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out,
-    const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,
-    const Rectf* clipRect, float lineHeight, float justifySpaceSize, size_t canCombineFromIdx) const
+void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, const RenderedGlyph* begin,
+    size_t count, glm::vec2& penPosition, const ColourRect* modColours, const Rectf* clipRect,
+    float lineHeight, float justifySpaceSize, size_t canCombineFromIdx, const SelectionInfo* selection) const
 {
     glm::vec2 pos = penPosition;
     float heightScale = 1.f;
     applyVerticalFormatting(lineHeight, pos.y, heightScale);
 
-    ImageRenderSettings settings(Rectf(), clipRect, d_colours, 1.f, true);
-    if (modColours)
-        settings.d_multiplyColours *= *modColours;
+    const auto normalColour = modColours ? d_colours * (*modColours) : d_colours;
+    const auto selectedColour = (!selection) ? normalColour :
+        modColours ? selection->textColours * (*modColours) : selection->textColours;
 
+    ImageRenderSettings settings(Rectf(), clipRect, normalColour, 1.f, true);
+
+    bool selected = false;
     const RenderedGlyph* end = begin + count;
     for (auto glyph = begin; glyph != end; ++glyph)
     {
+        const bool newSelected = selection && glyph->sourceIndex >= selection->start && glyph->sourceIndex < selection->end;
+        if (selected != newSelected)
+        {
+            selected = newSelected;
+            settings.d_multiplyColours = selected ? selectedColour : normalColour;
+        }
+
         // Render the main image of the glyph
         if (glyph->fontGlyph)
         {

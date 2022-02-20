@@ -321,6 +321,14 @@ private:
 	mutable bool d_argbValid;					//!< True if argb value is valid.
 };
 
+inline Colour operator *(const Colour& a, const Colour& b)
+{
+    return Colour(a.getRed() * b.getRed(),
+        a.getGreen() * b.getGreen(),
+        a.getBlue() * b.getBlue(),
+        a.getAlpha() * b.getAlpha());
+}
+
 } // End of  CEGUI namespace section
 
 

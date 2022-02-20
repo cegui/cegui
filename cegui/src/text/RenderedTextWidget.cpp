@@ -85,7 +85,8 @@ float RenderedTextWidget::getGlyphWidth(const RenderedGlyph& glyph) const
 //----------------------------------------------------------------------------//
 void RenderedTextWidget::createRenderGeometry(std::vector<GeometryBuffer*>& out,
     const RenderedGlyph* begin, size_t /*count*/, glm::vec2& penPosition, const ColourRect* /*modColours*/,
-    const Rectf* /*clipRect*/, float lineHeight, float /*justifySpaceSize*/, size_t /*canCombineFromIdx*/) const
+    const Rectf* /*clipRect*/, float lineHeight, float /*justifySpaceSize*/, size_t /*canCombineFromIdx*/,
+    const SelectionInfo* /*selection*/) const
 {
     if (!d_widget)
         return;

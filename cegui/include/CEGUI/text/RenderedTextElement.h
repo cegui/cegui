@@ -36,6 +36,7 @@
 
 namespace CEGUI
 {
+struct SelectionInfo;
 struct RenderedGlyph;
 using RenderedTextElementPtr = std::unique_ptr<class RenderedTextElement>;
 
@@ -55,9 +56,9 @@ public:
     virtual float getGlyphWidth(const RenderedGlyph& glyph) const = 0;
     virtual float getHeight() const = 0;
 
-    virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out,
-        const RenderedGlyph* begin, size_t count, glm::vec2& penPosition, const ColourRect* modColours,
-        const Rectf* clipRect, float lineHeight, float justifySpaceSize, size_t canCombineFromIdx) const = 0;
+    virtual void createRenderGeometry(std::vector<GeometryBuffer*>& out, const RenderedGlyph* begin,
+        size_t count, glm::vec2& penPosition, const ColourRect* modColours, const Rectf* clipRect,
+        float lineHeight, float justifySpaceSize, size_t canCombineFromIdx, const SelectionInfo* selection) const = 0;
 
     virtual RenderedTextElementPtr clone() const = 0;
 

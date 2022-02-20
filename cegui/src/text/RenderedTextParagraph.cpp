@@ -195,8 +195,8 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
             const auto start = i;
             do ++i; while (i < line.glyphEndIdx && d_glyphs[i].elementIndex == startElementIdx);
 
-            elements[startElementIdx]->createRenderGeometry(out, &d_glyphs[start], i - start, penPos,
-                modColours, clipRect, line.extents.d_height, line.justifySpaceSize, canCombineFromIdx);
+            elements[startElementIdx]->createRenderGeometry(out, &d_glyphs[start], i - start, penPos, modColours,
+                clipRect, line.extents.d_height, line.justifySpaceSize, canCombineFromIdx, selection);
         }
 
         penPos.y = lineBottom;
