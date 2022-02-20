@@ -41,7 +41,12 @@ class CEGUIEXPORT RenderedTextStyle : public RenderedTextElement
 {
 public:
 
-    RenderedTextStyle(const Font* font = nullptr) { d_font = font; }
+    RenderedTextStyle(const Font* font = nullptr, bool underline = false, bool strikeout = false)
+        : d_underline(underline)
+        , d_strikeout(strikeout)
+    {
+        d_font = font;
+    }
 
     virtual void setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) const override;
     virtual Sizef updateMetrics(const Window* /*hostWindow*/) override { /*Never changes*/ return {}; }
@@ -60,7 +65,7 @@ public:
 
 protected:
 
-    void drawEffects(GeometryBuffer* effectBuffer, float left, float right, const ColourRect& colours) const;
+    void drawEffects(GeometryBuffer* effectBuffer, float left, float right, float y, const ColourRect& colours, const Rectf* clipRect) const;
 
     ColourRect d_colours = 0xFFFFFFFF;
     ColourRect d_backgroundColours = 0xFFFFFFFF;

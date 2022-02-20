@@ -37,6 +37,7 @@
 #include "CEGUI/BitmapImage.h"
 #include "CEGUI/XMLSerializer.h"
 #include "CEGUI/SharedStringStream.h"
+#include <freetype/tttables.h>
 
 namespace CEGUI
 {
@@ -534,6 +535,7 @@ void FreeTypeFont::updateFont()
         tryToCreateFontWithClosestFontHeight(errorResult, requestedFontSizeInPixels);
     }
 
+    bool initStrikeout = false;
     if (d_fontFace->face_flags & FT_FACE_FLAG_SCALABLE)
     {
         const float yScale = d_fontFace->size->metrics.y_scale * s_16dot16_toFloat * s_26dot6_toFloat;
@@ -542,6 +544,13 @@ void FreeTypeFont::updateFont()
         d_height = d_fontFace->height * yScale;
         d_underlineThickness = d_fontFace->underline_thickness * yScale;
         d_underlineTop = std::round(d_fontFace->underline_position * yScale - 0.5f * d_underlineThickness);
+
+        if (auto os2 = static_cast<const TT_OS2*>(FT_Get_Sfnt_Table(d_fontFace, FT_SFNT_OS2)))
+        {
+            d_strikeoutThickness = os2->yStrikeoutSize * yScale;
+            d_strikeoutTop = std::round(os2->yStrikeoutPosition * yScale - 0.5f * d_strikeoutThickness);
+            initStrikeout = false;
+        }
     }
     else
     {
@@ -552,8 +561,11 @@ void FreeTypeFont::updateFont()
         d_underlineTop = 0.f;
     }
 
-    // TODO: try to get from TT OS2 table etc!
-    d_strikeoutTop = std::round(d_underlineTop + (d_ascender - d_descender) * 0.5f);
+    if (initStrikeout)
+    {
+        d_strikeoutThickness = d_underlineThickness;
+        d_strikeoutTop = std::round(d_underlineTop + (d_ascender - d_descender) * 0.4f);
+    }
 
     if (d_specificLineSpacing > 0.0f)
         d_height = d_specificLineSpacing;
