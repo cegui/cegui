@@ -89,7 +89,6 @@ FreeTypeFont::FreeTypeFont(
     d_size(size),
     d_sizeUnit(sizeUnit),
     d_antiAliased(anti_aliased),
-    d_fontFace(nullptr),
     d_fontLayers(std::move(fontLayers))
 {
     if (!s_fontUsageCount++)
@@ -414,14 +413,13 @@ void FreeTypeFont::free()
     if (!d_fontFace)
         return;
 
-    d_replacementGlyph = nullptr;
+    d_replacementGlyphIdx = std::numeric_limits<size_t>().max();
 
-    for (auto codePointMapEntry : d_codePointToGlyphMap)
-        delete codePointMapEntry.second;
-
+    d_glyphs.clear();
     d_codePointToGlyphMap.clear();
     d_indexToGlyphMap.clear();
 
+    //???FIXME TEXT: use destroyImageCollection?
     for (size_t i = 0; i < d_glyphImages.size(); ++i)
         delete d_glyphImages[i];
     d_glyphImages.clear();
@@ -432,18 +430,6 @@ void FreeTypeFont::free()
 
     FT_Done_Face(d_fontFace);
     d_fontFace = nullptr;
-    System::getSingleton().getResourceProvider()->unloadRawDataContainer(d_fontData);
-}
-
-//----------------------------------------------------------------------------//
-void FreeTypeFont::createFreetypeMemoryFace()
-{
-    // create face using input font
-    FT_Error error = FT_New_Memory_Face(s_freetypeLibHandle, d_fontData.getDataPtr(),
-        static_cast<FT_Long>(d_fontData.getSize()), 0, &d_fontFace);
-
-    if (error != 0)
-        findAndThrowFreeTypeError(error, "Failed to create face from font file");
 }
 
 //----------------------------------------------------------------------------//
@@ -459,18 +445,6 @@ void FreeTypeFont::findAndThrowFreeTypeError(FT_Error error, const String& error
     }
 
     throw GenericException(errorMessageIntro + " - '" + d_filename + "' error was: " + errorMsg);
-}
-
-//----------------------------------------------------------------------------//
-void FreeTypeFont::checkUnicodeCharMapAvailability()
-{
-    if (d_fontFace->charmap)
-        return;
-
-    FT_Done_Face(d_fontFace);
-    d_fontFace = nullptr;
-    throw GenericException("The font '" + d_name +
-        "' does not have a Unicode charmap, and cannot be used.");
 }
 
 //----------------------------------------------------------------------------//
@@ -511,18 +485,33 @@ void FreeTypeFont::updateFont()
 {
     free();
 
+    RawDataContainer fontData;
     System::getSingleton().getResourceProvider()->loadRawDataContainer(
-        d_filename, d_fontData, d_resourceGroup.empty() ? getDefaultResourceGroup() : d_resourceGroup);
+        d_filename, fontData, d_resourceGroup.empty() ? getDefaultResourceGroup() : d_resourceGroup);
 
-    createFreetypeMemoryFace();
+    // create face using input font
+    FT_Error error = FT_New_Memory_Face(s_freetypeLibHandle, fontData.getDataPtr(),
+        static_cast<FT_Long>(fontData.getSize()), 0, &d_fontFace);
 
-    checkUnicodeCharMapAvailability();
-    
+    System::getSingleton().getResourceProvider()->unloadRawDataContainer(fontData);
+
+    if (error != 0)
+        findAndThrowFreeTypeError(error, "Failed to create face from font file");
+
+    // Check unicode character map availability
+    if (!d_fontFace->charmap)
+    {
+        FT_Done_Face(d_fontFace);
+        d_fontFace = nullptr;
+        throw GenericException("The font '" + d_name +
+            "' does not have a Unicode charmap, and cannot be used.");
+    }
+
     float fontScaleFactor = System::getSingleton().getRenderer()->getFontScale();
     if (d_autoScaled != AutoScaledMode::Disabled)
         fontScaleFactor *= d_vertScaling;
     
-    uint32_t requestedFontSizeInPixels = static_cast<uint32_t>(
+    const uint32_t requestedFontSizeInPixels = static_cast<uint32_t>(
         std::lround(getSizeInPixels() * fontScaleFactor));
 
     FT_Error errorResult = FT_Set_Pixel_Sizes(d_fontFace, 0, requestedFontSizeInPixels);
@@ -570,32 +559,26 @@ void FreeTypeFont::updateFont()
     if (d_specificLineSpacing > 0.0f)
         d_height = d_specificLineSpacing;
 
-    initialiseGlyphMap();
-}
+    // Initialise glyph map
 
-//----------------------------------------------------------------------------//
-void FreeTypeFont::initialiseGlyphMap()
-{
     FT_UInt gindex;
     FT_ULong codepoint = FT_Get_First_Char(d_fontFace, &gindex);
-
     while (gindex != 0)
     {
         if (d_codePointToGlyphMap.find(codepoint) != d_codePointToGlyphMap.end())
         {
             throw InvalidRequestException("FreeTypeFont::initialiseGlyphMap - Requesting "
-                "adding an already added glyph to the codepoint glyph map.");        
+                "adding an already added glyph to the codepoint glyph map.");
         }
 
-        //???TODO TEXT: allocate an array of glyph instances, not pointers, and use pointers only in maps?
-        FreeTypeFontGlyph* newFontGlyph = new FreeTypeFontGlyph(codepoint, gindex);
-        d_codePointToGlyphMap[codepoint] = newFontGlyph;
-        d_indexToGlyphMap[gindex] = newFontGlyph;
+        d_glyphs.emplace_back(codepoint, gindex);
+        d_codePointToGlyphMap[codepoint] = d_glyphs.size() - 1;
+        d_indexToGlyphMap[gindex] = d_glyphs.size() - 1;
 
         codepoint = FT_Get_Next_Char(d_fontFace, codepoint, &gindex);
     }
 
-    d_replacementGlyph = getGlyphForCodepoint(UnicodeReplacementCharacter);
+    d_replacementGlyphIdx = getGlyphForCodepoint(UnicodeReplacementCharacter);
 }
 
 //----------------------------------------------------------------------------//
