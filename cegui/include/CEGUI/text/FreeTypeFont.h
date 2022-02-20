@@ -43,7 +43,6 @@
 #   pragma warning(disable : 4251) // STL classes in API
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 class BitmapImage;
@@ -62,44 +61,45 @@ class BitmapImage;
 class CEGUIEXPORT FreeTypeFont : public Font
 {
 public:
+
     /*!
-        \brief
-            Constructor for FreeTypeFont based fonts.
+    \brief
+        Constructor for FreeTypeFont based fonts.
     
-        \param font_name
-            The name that the font will use within the CEGUI system.
+    \param font_name
+        The name that the font will use within the CEGUI system.
     
-        \param size
-            Specifies the point size that the font is to be rendered at.
+    \param size
+        Specifies the point size that the font is to be rendered at.
     
-        \param sizeUnit
-            Specifies the size unit of the Font size.
+    \param sizeUnit
+        Specifies the size unit of the Font size.
     
-        \param anti_aliased
-            Specifies whether the font should be rendered using anti aliasing.
+    \param anti_aliased
+        Specifies whether the font should be rendered using anti aliasing.
     
-        \param font_filename
-            The filename of an font file that will be used as the source for
-            glyph images for this font.
+    \param font_filename
+        The filename of an font file that will be used as the source for
+        glyph images for this font.
     
-        \param resource_group
-            The resource group identifier to use when loading the font file
-            specified by \a font_filename.
+    \param resource_group
+        The resource group identifier to use when loading the font file
+        specified by \a font_filename.
     
-        \param auto_scaled
-            Specifies whether the font imagery should be automatically scaled to
-            maintain the same physical size (which is calculated by using the
-            native resolution setting).
+    \param auto_scaled
+        Specifies whether the font imagery should be automatically scaled to
+        maintain the same physical size (which is calculated by using the
+        native resolution setting).
     
-        \param native_res
-            The native resolution value.  This is only significant when
-            auto scaling is enabled.
+    \param native_res
+        The native resolution value.  This is only significant when
+        auto scaling is enabled.
     
-        \param specific_line_spacing
-            If specified (non-zero), this will be the line spacing that we will
-            report for this font, regardless of what is mentioned in the font file
-            itself.
-        */
+    \param specific_line_spacing
+        If specified (non-zero), this will be the line spacing that we will
+        report for this font, regardless of what is mentioned in the font file
+        itself.
+    */
     FreeTypeFont(const String& font_name, const float size,
                  const FontSizeUnit sizeUnit,
                  const bool anti_aliased, const String& font_filename,
@@ -109,45 +109,21 @@ public:
                  const Sizef& native_res = Sizef(640.0f, 480.0f),
                  const float specific_line_spacing = 0.0f);
 
-    //! Destructor.
-    virtual ~FreeTypeFont();
+    virtual ~FreeTypeFont() override;
     
     void updateFont() override;
     float getKerning(const FontGlyph* prev, const FontGlyph& curr) const override;
     bool isCodepointAvailable(char32_t codePoint) const override;
-    FreeTypeFontGlyph* getGlyphForCodepoint(char32_t codePoint, bool prepare = false) const override;
+    FreeTypeFontGlyph* getGlyphForCodepoint(char32_t codePoint, bool prepare = false) override;
     FreeTypeFontGlyph* getGlyphByIndex(uint32_t ftGlyphIndex, bool prepare = false) const;
 
-    /*!
-    \brief
-        Sets the Font size of this font.
-    \param size
-        The font size.
-    */
+    //! \brief Sets the Font size of this font.
     void setSize(float size) { setSizeAndUnit(size, d_sizeUnit); }
-
-    /*!
-    \brief
-        Returns the Font size of this font.
-    \return
-        The font size.
-    */
+    //! \brief Returns the Font size of this font.
     float getSize() const { return d_size; }
-
-    /*!
-    \brief
-        Sets the Font size unit of this font.
-    \param sizeUnit
-        The font size unit.
-    */
+    //! \brief Sets the Font size unit of this font.
     void setSizeUnit(FontSizeUnit sizeUnit) { setSizeAndUnit(d_size, sizeUnit); }
-
-    /*!
-    \brief
-        Returns the Font size unit of this font.
-    \return
-        The font size unit.
-    */
+    //! \brief Returns the Font size unit of this font.
     FontSizeUnit getSizeUnit() const { return d_sizeUnit; }
 
     /*!
@@ -178,45 +154,28 @@ public:
     */
     void setSizeAndUnit(float size, const FontSizeUnit sizeUnit);
 
-    /*!
-    \brief
-        Calculates and returns the Font size of this font in pixels.
-    \return
-        The font size in pixels.
-    */
+    //! \brief Calculates and returns the Font size of this font in pixels.
     float getSizeInPixels() const;
-
-    /*!
-    \brief
-        Calculates and returns the Font size of this font in points.
-    \return
-        The font size in points.
-    */
+    //! \brief Calculates and returns the Font size of this font in points.
     float getSizeInPoints() const;
 
-    /*!
-    \brief
-        Sets whether the Freetype font should be rendered anti-aliased
-        or not.
-    */
+    //! \brief Sets whether this font should be rendered anti-aliased or not.
     void setAntiAliased(bool anti_alaised);
-
     //! Returns whether the Freetype font is rendered anti-aliased or not.
     bool isAntiAliased() const { return d_antiAliased; }
 
     //! Returns the Freetype font face
     const FT_Face& getFontFace() const { return d_fontFace; }
-
     //! Returns the FreeType load flags for the layer
     FT_Int32 getGlyphLoadFlags(uint32_t layer = 0) const;
 
     //! Returns the initial size to be used for any new glyph atlas texture.
     int getInitialGlyphAtlasSize() const { return d_initialGlyphAtlasSize; }
-
     //! Sets the initial size to be used for any new glyph atlas texture.
     void setInitialGlyphAtlasSize(int val) { d_initialGlyphAtlasSize = val; }
 
 protected:
+
     /*!
         A data structure containing info about one horizontal line inside
         a glyph atlas. The data is used when deciding where to place a new glyph.
@@ -271,18 +230,11 @@ protected:
     void addFreeTypeFontProperties();
     //! Free all allocated font data.
     void free();
-    void createFreetypeMemoryFace();
 
-    void findAndThrowFreeTypeError(
-        FT_Error error, const CEGUI::String& errorMessageIntro) const;
+    void findAndThrowFreeTypeError(FT_Error error, const CEGUI::String& errorMessageIntro) const;
 
-    void checkUnicodeCharMapAvailability();
-    void tryToCreateFontWithClosestFontHeight(
-        FT_Error errorResult, int requestedFontPixelHeight) const;
-    //! initialise FontGlyph for given codepoint.
+    void tryToCreateFontWithClosestFontHeight(FT_Error errorResult, int requestedFontPixelHeight) const;
     void prepareGlyph(FreeTypeFontGlyph* glyph) const;
-
-    void initialiseGlyphMap();
 
     void handleFontSizeOrFontUnitChange();
 
@@ -320,23 +272,20 @@ protected:
     //! True if the font should be rendered as anti-aliased by freeType.
     bool d_antiAliased;
     //! FreeType-specific font handle
-    FT_Face d_fontFace;
-    //! Font file data
-    RawDataContainer d_fontData;
-    //! Type definition for TextureVector.
-    typedef std::vector<Texture*> TextureVector;
+    FT_Face d_fontFace = nullptr;
 
-    typedef std::vector<BitmapImage*> ImageVector;
+    std::vector<FreeTypeFontGlyph> d_glyphs;
+
     //! collection of images defined for this font.
-    mutable ImageVector d_glyphImages;
+    mutable std::vector<BitmapImage*> d_glyphImages;
 
     //! Textures that hold the glyph imagery for this font.
-    mutable TextureVector d_glyphTextures;
+    mutable std::vector<Texture*> d_glyphTextures;
 
     //! Contains mappings from code points to Font glyphs
-    mutable std::unordered_map<char32_t, FreeTypeFontGlyph*> d_codePointToGlyphMap;
+    mutable std::unordered_map<char32_t, size_t> d_codePointToGlyphMap;
     //! Contains mappings from freetype indices to Font glyphs
-    mutable std::unordered_map<FT_UInt, FreeTypeFontGlyph*> d_indexToGlyphMap;
+    mutable std::unordered_map<FT_UInt, size_t> d_indexToGlyphMap;
 
     //! The size with which new texture atlases for glyphs are going to be initialised
     uint32_t d_initialGlyphAtlasSize = 32;
@@ -351,10 +300,10 @@ protected:
     mutable std::vector<FreeTypeFontLayer> d_fontLayers;
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
 
-#endif	// end of guard _CEGUIFreeTypeFont_h_
+#endif

@@ -49,11 +49,10 @@ namespace CEGUI
     This class is not specific to any font renderer, it just provides the
     basic interfaces needed to manage fonts.
 */
-class CEGUIEXPORT Font :
-    public PropertySet,
-    public EventSet
+class CEGUIEXPORT Font : public PropertySet, public EventSet
 {
 public:
+
     //! Colour value used whenever a colour is not specified.
     static const argb_t DefaultColour;
 
@@ -259,11 +258,12 @@ public:
     */
     float getTextExtent(const String& text) const;
 
-    //! Returns the FontGlyph corresponding to the codepoint or 0 if it can't be found.
-    virtual FontGlyph* getGlyphForCodepoint(const char32_t codePoint, bool prepare = false) const = 0;
-
-    //! Returns cached glyph used for replacing unknown glyphs
-    FontGlyph* getReplacementGlyph() const { return d_replacementGlyph; }
+    //! Returns the index of the glyph corresponding to the codepoint or invalid idx if it can't be found.
+    virtual size_t getGlyphForCodepoint(char32_t codePoint) = 0;
+    //! Returns the glyph object at the given index or nullptr if no such glyph exists.
+    virtual FontGlyph* getGlyph(size_t index, bool prepare = false) const = 0;
+    //! Returns cached index of the glyph used for replacing unknown glyphs
+    size_t getReplacementGlyphIndex() const { return d_replacementGlyphIdx; }
 
     /*!
     \brief
@@ -407,7 +407,7 @@ protected:
     //! Holds default resource group for font loading.
     static String d_defaultResourceGroup;
 
-    FontGlyph* d_replacementGlyph = nullptr;
+    size_t d_replacementGlyphIdx = std::numeric_limits<size_t>().max();
 
     //! maximal font ascender (pixels above the baseline)
     float d_ascender = 0.f;

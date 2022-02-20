@@ -65,7 +65,7 @@ public:
         The rendered advance value is the total number of pixels from the
         current pen position that will be occupied by this glyph when rendered.
     */
-    virtual float getRenderedAdvance() const
+    float getRenderedAdvance() const
     {
         float max = 0.f;
         for (const Image* d_image : d_imageLayers)

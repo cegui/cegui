@@ -62,7 +62,7 @@ PixmapFont::~PixmapFont()
 }
 
 //----------------------------------------------------------------------------//
-void PixmapFont::addPixmapFontProperties ()
+void PixmapFont::addPixmapFontProperties()
 {
     const String propertyOrigin("PixmapFont");
 
@@ -110,11 +110,12 @@ void PixmapFont::updateFont()
     d_descender = 0;
     d_height = 0;
 
-    for (CodePointToGlyphMap::iterator i = d_codePointToGlyphMap.begin(); i != d_codePointToGlyphMap.end(); ++i)
+    for (const auto& pair : d_codePointToGlyphMap)
     {
-        i->second->setAdvance(i->second->getAdvance() * factor);
+        auto& glyph = d_glyphs[pair.second];
+        glyph.setAdvance(glyph.getAdvance() * factor);
 
-        Image* img = i->second->getImage();
+        Image* img = glyph.getImage();
 
         if (BitmapImage* bi = dynamic_cast<BitmapImage*>(img))
         {
@@ -138,36 +139,39 @@ void PixmapFont::updateFont()
 //----------------------------------------------------------------------------//
 void PixmapFont::writeXMLToStream_impl (XMLSerializer& xml_stream) const
 {
-    float advscale = 1.0f / d_origHorzScaling;
-    for (CodePointToGlyphMap::const_iterator i = d_codePointToGlyphMap.begin(); i != d_codePointToGlyphMap.end(); ++i)
+    const float advscale = 1.0f / d_origHorzScaling;
+    for (const auto& pair : d_codePointToGlyphMap)
     {
+        const auto& glyph = d_glyphs[pair.second];
         xml_stream.openTag("Mapping")
             .attribute(Font_xmlHandler::MappingCodepointAttribute,
-                       PropertyHelper<std::uint32_t>::toString(i->first))
+                       PropertyHelper<std::uint32_t>::toString(pair.first))
             .attribute(Font_xmlHandler::MappingHorzAdvanceAttribute,
-                       PropertyHelper<float>::toString(i->second->getAdvance() * advscale))
+                       PropertyHelper<float>::toString(glyph.getAdvance() * advscale))
             .attribute(Font_xmlHandler::MappingImageAttribute,
-                       i->second->getImage()->getName());
+                glyph.getImage()->getName());
 
         xml_stream.closeTag();
     }
 }
 
 //----------------------------------------------------------------------------//
-void PixmapFont::defineMapping(const char32_t codePoint, const String& imageName,
-                               const float horzAdvance)
+void PixmapFont::defineMapping(char32_t codePoint, const String& imageName, float horzAdvance)
 {
+    if (d_codePointToGlyphMap.find(codePoint) != d_codePointToGlyphMap.end())
+        throw InvalidRequestException("PixmapFont::defineMapping - Requesting "
+            "adding an already added glyph to the codepoint glyph map.");
+
     Image& image(ImageManager::getSingleton().get(d_imageNamePrefix + '/' + imageName));
 
     float adv = (horzAdvance == -1.0f) ?
-        static_cast<float>(static_cast<int>(image.getRenderedSize().d_width + image.getRenderedOffset().x)) :
+        std::floor(image.getRenderedSize().d_width + image.getRenderedOffset().x) :
         horzAdvance;
 
     if (d_autoScaled != AutoScaledMode::Disabled)
         adv *= d_origHorzScaling;
 
-    // create a new FontGlyph with given character code
-    FontGlyph* const glyph = new FontGlyph(codePoint, adv, &image);
+    d_glyphs.emplace_back(codePoint, adv, &image);
 
     if (image.getRenderedOffset().y < -d_ascender)
         d_ascender = -image.getRenderedOffset().y;
@@ -176,17 +180,10 @@ void PixmapFont::defineMapping(const char32_t codePoint, const String& imageName
 
     d_height = d_ascender - d_descender;
 
-    // add glyph to the map
-    if (d_codePointToGlyphMap.find(codePoint) != d_codePointToGlyphMap.end())
-    {
-        throw InvalidRequestException("PixmapFont::defineMapping - Requesting "
-            "adding an already added glyph to the codepoint glyph map.");
-    }
-
-    d_codePointToGlyphMap[codePoint] = glyph;
+    d_codePointToGlyphMap[codePoint] = d_glyphs.size() - 1;
 
     if (codePoint == UnicodeReplacementCharacter)
-        d_replacementGlyph = glyph;
+        d_replacementGlyphIdx = d_glyphs.size() - 1;
 }
 
 //----------------------------------------------------------------------------//
@@ -238,10 +235,10 @@ bool PixmapFont::isCodepointAvailable(char32_t codePoint) const
 }
 
 //----------------------------------------------------------------------------//
-FontGlyph* PixmapFont::getGlyphForCodepoint(const char32_t codepoint, bool /*prepare*/) const
+FontGlyph* PixmapFont::getGlyphForCodepoint(char32_t codepoint, bool /*prepare*/)
 {
     auto it = d_codePointToGlyphMap.find(codepoint);
-    return (it != d_codePointToGlyphMap.end()) ? it->second : nullptr;
+    return (it != d_codePointToGlyphMap.end()) ? &d_glyphs[it->second] : nullptr;
 }
 
 }
