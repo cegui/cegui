@@ -540,13 +540,20 @@ void FreeTypeFont::updateFont()
         d_ascender = d_fontFace->ascender * yScale;
         d_descender = d_fontFace->descender * yScale;
         d_height = d_fontFace->height * yScale;
+        d_underlineThickness = d_fontFace->underline_thickness * yScale;
+        d_underlineTop = std::round(d_fontFace->underline_position * yScale - 0.5f * d_underlineThickness);
     }
     else
     {
         d_ascender = d_fontFace->size->metrics.ascender * s_26dot6_toFloat;
         d_descender = d_fontFace->size->metrics.descender * s_26dot6_toFloat;
         d_height = d_fontFace->size->metrics.height * s_26dot6_toFloat;
+        d_underlineThickness = 1.f;
+        d_underlineTop = 0.f;
     }
+
+    // TODO: try to get from TT OS2 table etc!
+    d_strikeoutTop = std::round(d_underlineTop + (d_ascender - d_descender) * 0.5f);
 
     if (d_specificLineSpacing > 0.0f)
         d_height = d_specificLineSpacing;

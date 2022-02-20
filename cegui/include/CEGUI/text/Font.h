@@ -218,6 +218,13 @@ public:
     */
     float getBaseline() const { return d_ascender; }
 
+    //! Return the height of the underline top edge relative to the baseline
+    float getUnderlineTop() const { return d_underlineTop; }
+    //! Return the height of the underline top edge relative to the baseline
+    float getStrikeoutTop() const { return d_strikeoutTop; }
+    //! Get the thickness of the underline or strikeout in pixels
+    float getUnderlineThickness() const { return d_underlineThickness; }
+
     //! \brief Calculates and returns kerning between two glyphs (in pixels, not rounded)
     virtual float getKerning(const FontGlyph* prev, const FontGlyph& curr) const { return 0.f; }
 
@@ -406,6 +413,12 @@ protected:
     float d_descender = 0.f;
     //! (ascender - descender) + linegap
     float d_height = 0.f;
+    //! Height of the underline top edge relative to the baseline
+    float d_underlineTop = 0.f;
+    //! Height of the strikeout top edge relative to the baseline
+    float d_strikeoutTop = 0.f;
+    //! Thickness of the underline or strikeout in pixels
+    float d_underlineThickness = 1.f;
 
     //! which mode should we use for auto-scaling
     AutoScaledMode d_autoScaled;

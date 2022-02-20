@@ -28,6 +28,10 @@
 #include "CEGUI/text/RenderedTextParagraph.h"
 #include "CEGUI/text/Font.h"
 #include "CEGUI/text/FontGlyph.h"
+#include "CEGUI/System.h"
+#include "CEGUI/Renderer.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/Vertex.h"
 
 namespace CEGUI
 {
@@ -67,6 +71,9 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
     size_t count, glm::vec2& penPosition, const ColourRect* modColours, const Rectf* clipRect,
     float lineHeight, float justifySpaceSize, size_t canCombineFromIdx, const SelectionInfo* selection) const
 {
+    if (!begin || !count)
+        return;
+
     glm::vec2 pos = penPosition;
     float heightScale = 1.f;
     applyVerticalFormatting(lineHeight, pos.y, heightScale);
@@ -75,9 +82,19 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
     const auto selectedColour = (!selection) ? normalColour :
         modColours ? selection->textColours * (*modColours) : selection->textColours;
 
+    bool selected = false;
     ImageRenderSettings settings(Rectf(), clipRect, normalColour, 1.f, true);
 
-    bool selected = false;
+    float effectStart = pos.x;
+    GeometryBuffer* effectBuffer = nullptr;
+    if (d_underline || d_strikeout)
+    {
+        effectBuffer = &System::getSingleton().getRenderer()->createGeometryBufferColoured();
+        effectBuffer->setClippingActive(!!clipRect);
+        if (clipRect)
+            effectBuffer->setClippingRegion(*clipRect);
+    }
+
     const RenderedGlyph* end = begin + count;
     for (auto glyph = begin; glyph != end; ++glyph)
     {
@@ -86,6 +103,8 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
         {
             selected = newSelected;
             settings.d_multiplyColours = selected ? selectedColour : normalColour;
+            drawEffects(effectBuffer, effectStart, pos.x, settings.d_multiplyColours);
+            effectStart = pos.x;
         }
 
         // Render the main image of the glyph
@@ -111,17 +130,70 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
             pos.x += justifySpaceSize;
     }
 
+    if (effectBuffer)
+    {
+        drawEffects(effectBuffer, effectStart, pos.x, settings.d_multiplyColours);
+
+        if (effectBuffer->getVertexCount())
+            out.push_back(effectBuffer);
+        else
+            System::getSingleton().getRenderer()->destroyGeometryBuffer(*effectBuffer);
+    }
+
+    penPosition.x = pos.x;
+}
+
+//----------------------------------------------------------------------------//
+void RenderedTextStyle::drawEffects(GeometryBuffer* effectBuffer, float left, float right, const ColourRect& colours) const
+{
+    if (!effectBuffer || !d_font || left >= right)
+        return;
+
+    const float thickness = std::max(1.f, std::round(d_font->getUnderlineThickness()));
+
     if (d_underline)
     {
-        // TODO TEXT: draw underline
+        const float top = d_font->getUnderlineTop();
+        const float bottom = top + thickness;
+
+        ColouredVertex v[6];
+        v[0].setColour(colours.d_top_left);
+        v[0].d_position = glm::vec3(left, top, 0.0f);
+        v[1].setColour(colours.d_bottom_left);
+        v[1].d_position = glm::vec3(left, bottom, 0.0f);
+        v[2].setColour(colours.d_bottom_right);
+        v[2].d_position = glm::vec3(right, bottom, 0.0f);
+        v[3].setColour(colours.d_top_right);
+        v[3].d_position = glm::vec3(right, top, 0.0f);
+        v[4].setColour(colours.d_top_left);
+        v[4].d_position = glm::vec3(left, top, 0.0f);
+        v[5].setColour(colours.d_bottom_right);
+        v[5].d_position = glm::vec3(right, bottom, 0.0f);
+
+        effectBuffer->appendGeometry(v, 6);
     }
 
     if (d_strikeout)
     {
-        // TODO TEXT: draw strikeout
-    }
+        const float top = d_font->getStrikeoutTop();
+        const float bottom = top + thickness;
 
-    penPosition.x = pos.x;
+        ColouredVertex v[6];
+        v[0].setColour(colours.d_top_left);
+        v[0].d_position = glm::vec3(left, top, 0.0f);
+        v[1].setColour(colours.d_bottom_left);
+        v[1].d_position = glm::vec3(left, bottom, 0.0f);
+        v[2].setColour(colours.d_bottom_right);
+        v[2].d_position = glm::vec3(right, bottom, 0.0f);
+        v[3].setColour(colours.d_top_right);
+        v[3].d_position = glm::vec3(right, top, 0.0f);
+        v[4].setColour(colours.d_top_left);
+        v[4].d_position = glm::vec3(left, top, 0.0f);
+        v[5].setColour(colours.d_bottom_right);
+        v[5].d_position = glm::vec3(right, bottom, 0.0f);
+
+        effectBuffer->appendGeometry(v, 6);
+    }
 }
 
 //----------------------------------------------------------------------------//
