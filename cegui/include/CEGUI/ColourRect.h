@@ -248,6 +248,14 @@ public:
 	Colour	d_top_left, d_top_right, d_bottom_left, d_bottom_right;		//!< ColourRect component colours
 };
 
+inline ColourRect operator *(const ColourRect& a, const ColourRect& b)
+{
+    return ColourRect(a.d_top_left * b.d_top_left,
+        a.d_top_right * b.d_top_right,
+        a.d_bottom_left * b.d_bottom_left,
+        a.d_bottom_right * b.d_bottom_right);
+}
+
 } // End of  CEGUI namespace section
 
 
