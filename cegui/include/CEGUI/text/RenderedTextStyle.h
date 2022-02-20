@@ -60,6 +60,8 @@ public:
 
 protected:
 
+    void drawEffects(GeometryBuffer* effectBuffer, float left, float right, const ColourRect& colours) const;
+
     ColourRect d_colours = 0xFFFFFFFF;
     ColourRect d_backgroundColours = 0xFFFFFFFF;
     ColourRect d_outlineColours = 0xFFFFFFFF;
