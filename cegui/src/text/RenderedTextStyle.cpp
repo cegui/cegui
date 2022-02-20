@@ -86,14 +86,9 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
     ImageRenderSettings settings(Rectf(), clipRect, normalColour, 1.f, true);
 
     float effectStart = pos.x;
-    GeometryBuffer* effectBuffer = nullptr;
-    if (d_underline || d_strikeout)
-    {
-        effectBuffer = &System::getSingleton().getRenderer()->createGeometryBufferColoured();
-        effectBuffer->setClippingActive(!!clipRect);
-        if (clipRect)
-            effectBuffer->setClippingRegion(*clipRect);
-    }
+    auto effectBuffer = (d_underline || d_strikeout) ?
+        &System::getSingleton().getRenderer()->createGeometryBufferColoured() :
+        nullptr;
 
     const RenderedGlyph* end = begin + count;
     for (auto glyph = begin; glyph != end; ++glyph)
@@ -101,10 +96,10 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
         const bool newSelected = selection && glyph->sourceIndex >= selection->start && glyph->sourceIndex < selection->end;
         if (selected != newSelected)
         {
+            drawEffects(effectBuffer, effectStart, pos.x, pos.y, settings.d_multiplyColours, clipRect);
+            effectStart = pos.x;
             selected = newSelected;
             settings.d_multiplyColours = selected ? selectedColour : normalColour;
-            drawEffects(effectBuffer, effectStart, pos.x, settings.d_multiplyColours);
-            effectStart = pos.x;
         }
 
         // Render the main image of the glyph
@@ -132,7 +127,7 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
 
     if (effectBuffer)
     {
-        drawEffects(effectBuffer, effectStart, pos.x, settings.d_multiplyColours);
+        drawEffects(effectBuffer, effectStart, pos.x, pos.y, settings.d_multiplyColours, clipRect);
 
         if (effectBuffer->getVertexCount())
             out.push_back(effectBuffer);
@@ -144,55 +139,61 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
 }
 
 //----------------------------------------------------------------------------//
-void RenderedTextStyle::drawEffects(GeometryBuffer* effectBuffer, float left, float right, const ColourRect& colours) const
+static inline void drawLine(GeometryBuffer* effectBuffer, float left, float right,
+    float top, float bottom, const ColourRect& colours, const Rectf* clipRect)
 {
-    if (!effectBuffer || !d_font || left >= right)
+    if (clipRect && (top >= clipRect->bottom() || bottom <= clipRect->top()))
         return;
 
-    const float thickness = std::max(1.f, std::round(d_font->getUnderlineThickness()));
+    ColouredVertex v[6];
+    v[0].setColour(colours.d_top_left);
+    v[0].d_position = glm::vec3(left, top, 0.0f);
+    v[1].setColour(colours.d_bottom_left);
+    v[1].d_position = glm::vec3(left, bottom, 0.0f);
+    v[2].setColour(colours.d_bottom_right);
+    v[2].d_position = glm::vec3(right, bottom, 0.0f);
+    v[3].setColour(colours.d_top_right);
+    v[3].d_position = glm::vec3(right, top, 0.0f);
+    v[4].setColour(colours.d_top_left);
+    v[4].d_position = glm::vec3(left, top, 0.0f);
+    v[5].setColour(colours.d_bottom_right);
+    v[5].d_position = glm::vec3(right, bottom, 0.0f);
+
+    effectBuffer->appendGeometry(v, 6);
+}
+
+//----------------------------------------------------------------------------//
+void RenderedTextStyle::drawEffects(GeometryBuffer* effectBuffer, float left,
+    float right, float y, const ColourRect& colours, const Rectf* clipRect) const
+{
+    if (!effectBuffer || !d_font)
+        return;
+
+    if (clipRect)
+    {
+        if (left < clipRect->left())
+            left = clipRect->left();
+        if (right > clipRect->right())
+            right = clipRect->right();
+    }
+
+    if (left >= right)
+        return;
+
+    y = std::round(y + d_font->getBaseline());
 
     if (d_underline)
     {
-        const float top = d_font->getUnderlineTop();
-        const float bottom = top + thickness;
-
-        ColouredVertex v[6];
-        v[0].setColour(colours.d_top_left);
-        v[0].d_position = glm::vec3(left, top, 0.0f);
-        v[1].setColour(colours.d_bottom_left);
-        v[1].d_position = glm::vec3(left, bottom, 0.0f);
-        v[2].setColour(colours.d_bottom_right);
-        v[2].d_position = glm::vec3(right, bottom, 0.0f);
-        v[3].setColour(colours.d_top_right);
-        v[3].d_position = glm::vec3(right, top, 0.0f);
-        v[4].setColour(colours.d_top_left);
-        v[4].d_position = glm::vec3(left, top, 0.0f);
-        v[5].setColour(colours.d_bottom_right);
-        v[5].d_position = glm::vec3(right, bottom, 0.0f);
-
-        effectBuffer->appendGeometry(v, 6);
+        const float top = y - d_font->getUnderlineTop();
+        const float bottom = top + std::max(1.f, std::round(d_font->getUnderlineThickness()));
+        drawLine(effectBuffer, left, right, top, bottom, colours, clipRect);
     }
 
     if (d_strikeout)
     {
-        const float top = d_font->getStrikeoutTop();
-        const float bottom = top + thickness;
-
-        ColouredVertex v[6];
-        v[0].setColour(colours.d_top_left);
-        v[0].d_position = glm::vec3(left, top, 0.0f);
-        v[1].setColour(colours.d_bottom_left);
-        v[1].d_position = glm::vec3(left, bottom, 0.0f);
-        v[2].setColour(colours.d_bottom_right);
-        v[2].d_position = glm::vec3(right, bottom, 0.0f);
-        v[3].setColour(colours.d_top_right);
-        v[3].d_position = glm::vec3(right, top, 0.0f);
-        v[4].setColour(colours.d_top_left);
-        v[4].d_position = glm::vec3(left, top, 0.0f);
-        v[5].setColour(colours.d_bottom_right);
-        v[5].d_position = glm::vec3(right, bottom, 0.0f);
-
-        effectBuffer->appendGeometry(v, 6);
+        const float top = y - d_font->getStrikeoutTop();
+        const float bottom = top + std::max(1.f, std::round(d_font->getStrikeoutThickness()));
+        drawLine(effectBuffer, left, right, top, bottom, colours, clipRect);
     }
 }
 

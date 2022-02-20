@@ -44,6 +44,8 @@ namespace CEGUI
     Basic text parser class that offers support for the following legacy (v0.8) tags:
     - 'colour' value is a CEGUI colour property value.
     - 'font' value is the name of a font.
+    - 'underline' value is a boolean
+    - 'strikeout' value is a boolean
     - 'image' value is a CEGUI image property value.
     - 'window' value is the name of a window.
     - 'vert-alignment' value is either top, bottom, centre or stretch.
@@ -64,6 +66,8 @@ public:
     // Strings for supported tags
     static const String ColourTagName;
     static const String FontTagName;
+    static const String UnderlineTagName;
+    static const String StrikeoutTagName;
     static const String ImageTagName;
     static const String WindowTagName;
     static const String VertFormattingTagName;
@@ -93,6 +97,8 @@ protected:
     //! handlers for the various tags supported
     void handleColour(const String& value);
     void handleFont(const String& value);
+    void handleUnderline(const String& value);
+    void handleStrikeout(const String& value);
     void handleVertFormatting(const String& value);
     void handlePadding(const String& value);
     void handleTopPadding(const String& value);
@@ -116,6 +122,8 @@ protected:
     VerticalImageFormatting d_vertFormatting = VerticalImageFormatting::BottomAligned;
     //! active image size
     Sizef d_imageSize;
+    bool d_underline = false;
+    bool d_strikeout = false;
     bool d_styleChanged = false;
 };
 

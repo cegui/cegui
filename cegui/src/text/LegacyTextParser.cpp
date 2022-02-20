@@ -40,6 +40,8 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 const String LegacyTextParser::ColourTagName("colour");
 const String LegacyTextParser::FontTagName("font");
+const String LegacyTextParser::UnderlineTagName("underline");
+const String LegacyTextParser::StrikeoutTagName("strikeout");
 const String LegacyTextParser::ImageTagName("image");
 const String LegacyTextParser::WindowTagName("window");
 const String LegacyTextParser::VertFormattingTagName("vert-formatting");
@@ -59,6 +61,8 @@ LegacyTextParser::LegacyTextParser()
 {
     d_tagHandlers[ColourTagName] = &LegacyTextParser::handleColour;
     d_tagHandlers[FontTagName] = &LegacyTextParser::handleFont;
+    d_tagHandlers[UnderlineTagName] = &LegacyTextParser::handleUnderline;
+    d_tagHandlers[StrikeoutTagName] = &LegacyTextParser::handleStrikeout;
 
     // FIXME: legacy separation on Image and Text, left for compatibility but may behave unexpectedly!
     d_tagHandlers[VertFormattingTagName] = &LegacyTextParser::handleVertFormatting;
@@ -129,7 +133,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
                 {
                     //!!!TODO TEXT: try to find the same style first!
 
-                    auto style = std::make_unique<RenderedTextStyle>(d_font);
+                    auto style = std::make_unique<RenderedTextStyle>(d_font, d_underline, d_strikeout);
                     style->setTextColour(d_colours);
                     style->setPadding(d_padding);
                     style->setVerticalFormatting(d_vertFormatting);
@@ -284,6 +288,18 @@ void LegacyTextParser::handleColour(const String& value)
 void LegacyTextParser::handleFont(const String& value)
 {
     d_font = value.empty() ? nullptr : &FontManager::getSingleton().get(value);
+}
+
+//----------------------------------------------------------------------------//
+void LegacyTextParser::handleUnderline(const String& value)
+{
+    d_underline = PropertyHelper<bool>::fromString(value);
+}
+
+//----------------------------------------------------------------------------//
+void LegacyTextParser::handleStrikeout(const String& value)
+{
+    d_strikeout = PropertyHelper<bool>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
