@@ -53,6 +53,8 @@ class CEGUIEXPORT Font : public PropertySet, public EventSet
 {
 public:
 
+    static constexpr size_t NO_GLYPH = std::numeric_limits<size_t>().max();
+
     //! Colour value used whenever a colour is not specified.
     static const argb_t DefaultColour;
 
@@ -125,19 +127,6 @@ public:
 
     //! Return the filename of the used font.
     const String& getFileName() const { return d_filename; }
-    
-    /*!
-    \brief
-        Return whether this Font can draw the specified code-point
-
-    \param cp
-        char32_t code point that is the subject of the query.
-
-    \return
-        true if the font contains a mapping for code point \a cp,
-        false if it does not contain a mapping for \a cp.
-    */
-    virtual bool isCodepointAvailable(char32_t codePoint) const = 0;
   
     /*!
       \brief
@@ -226,6 +215,15 @@ public:
     //! Get the thickness of the strikeout in pixels
     float getStrikeoutThickness() const { return d_strikeoutThickness; }
 
+    //! Returns the index of the glyph corresponding to the codepoint or invalid idx if it can't be found.
+    size_t getGlyphForCodepoint(char32_t codePoint) const;
+    //! \brief Returns whether this Font can draw the specified code-point
+    bool isCodepointAvailable(char32_t codePoint) const;
+    //! Returns the glyph object at the given index or nullptr if no such glyph exists.
+    virtual FontGlyph* getGlyph(size_t index, bool prepare = false) const = 0;
+    //! Returns cached index of the glyph used for replacing unknown glyphs
+    size_t getReplacementGlyphIndex() const { return d_replacementGlyphIdx; }
+
     //! \brief Calculates and returns kerning between two glyphs (in pixels, not rounded)
     virtual float getKerning(const FontGlyph* prev, const FontGlyph& curr) const { return 0.f; }
 
@@ -257,13 +255,6 @@ public:
     \see getTextAdvance
     */
     float getTextExtent(const String& text) const;
-
-    //! Returns the index of the glyph corresponding to the codepoint or invalid idx if it can't be found.
-    virtual size_t getGlyphForCodepoint(char32_t codePoint) = 0;
-    //! Returns the glyph object at the given index or nullptr if no such glyph exists.
-    virtual FontGlyph* getGlyph(size_t index, bool prepare = false) const = 0;
-    //! Returns cached index of the glyph used for replacing unknown glyphs
-    size_t getReplacementGlyphIndex() const { return d_replacementGlyphIdx; }
 
     /*!
     \brief
@@ -396,6 +387,8 @@ protected:
     //! event trigger function for when the font rendering size changes.
     virtual void onRenderSizeChanged(FontEventArgs& args);
 
+    std::unordered_map<char32_t, size_t> d_codePointToGlyphMap;
+
     //! Name of this font.
     String d_name;
     //! Type name string for this font (not used internally)
@@ -407,7 +400,7 @@ protected:
     //! Holds default resource group for font loading.
     static String d_defaultResourceGroup;
 
-    size_t d_replacementGlyphIdx = std::numeric_limits<size_t>().max();
+    size_t d_replacementGlyphIdx = NO_GLYPH;
 
     //! maximal font ascender (pixels above the baseline)
     float d_ascender = 0.f;

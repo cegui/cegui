@@ -430,6 +430,7 @@ void FreeTypeFont::free()
 
     FT_Done_Face(d_fontFace);
     d_fontFace = nullptr;
+    System::getSingleton().getResourceProvider()->unloadRawDataContainer(d_fontData);
 }
 
 //----------------------------------------------------------------------------//
@@ -485,15 +486,12 @@ void FreeTypeFont::updateFont()
 {
     free();
 
-    RawDataContainer fontData;
     System::getSingleton().getResourceProvider()->loadRawDataContainer(
-        d_filename, fontData, d_resourceGroup.empty() ? getDefaultResourceGroup() : d_resourceGroup);
+        d_filename, d_fontData, d_resourceGroup.empty() ? getDefaultResourceGroup() : d_resourceGroup);
 
     // create face using input font
-    FT_Error error = FT_New_Memory_Face(s_freetypeLibHandle, fontData.getDataPtr(),
-        static_cast<FT_Long>(fontData.getSize()), 0, &d_fontFace);
-
-    System::getSingleton().getResourceProvider()->unloadRawDataContainer(fontData);
+    FT_Error error = FT_New_Memory_Face(s_freetypeLibHandle, d_fontData.getDataPtr(),
+        static_cast<FT_Long>(d_fontData.getSize()), 0, &d_fontFace);
 
     if (error != 0)
         findAndThrowFreeTypeError(error, "Failed to create face from font file");
@@ -566,10 +564,8 @@ void FreeTypeFont::updateFont()
     while (gindex != 0)
     {
         if (d_codePointToGlyphMap.find(codepoint) != d_codePointToGlyphMap.end())
-        {
             throw InvalidRequestException("FreeTypeFont::initialiseGlyphMap - Requesting "
                 "adding an already added glyph to the codepoint glyph map.");
-        }
 
         d_glyphs.emplace_back(codepoint, gindex);
         d_codePointToGlyphMap[codepoint] = d_glyphs.size() - 1;
@@ -811,35 +807,24 @@ float FreeTypeFont::getKerning(const FontGlyph* prev, const FontGlyph& curr) con
 }
 
 //----------------------------------------------------------------------------//
-bool FreeTypeFont::isCodepointAvailable(char32_t codePoint) const
+FreeTypeFontGlyph* FreeTypeFont::getGlyph(size_t index, bool prepare) const
 {
-    return d_codePointToGlyphMap.find(codePoint) != d_codePointToGlyphMap.end();
-}
-
-//----------------------------------------------------------------------------//
-FreeTypeFontGlyph* FreeTypeFont::getGlyphForCodepoint(const char32_t codepoint, bool prepare) const
-{
-    auto it = d_codePointToGlyphMap.find(codepoint);
-    if (it == d_codePointToGlyphMap.end() || !it->second)
+    if (index >= d_glyphs.size())
         return nullptr;
 
-    if (prepare)
-        prepareGlyph(it->second);
+    auto glyph = const_cast<FreeTypeFontGlyph*>(&d_glyphs[index]);
 
-    return it->second;
+    if (prepare)
+        prepareGlyph(glyph);
+
+    return glyph;
 }
 
 //----------------------------------------------------------------------------//
-FreeTypeFontGlyph* FreeTypeFont::getGlyphByIndex(uint32_t ftGlyphIndex, bool prepare) const
+size_t FreeTypeFont::getGlyphByFreetypeIndex(uint32_t ftGlyphIndex) const
 {
     auto it = d_indexToGlyphMap.find(ftGlyphIndex);
-    if (it == d_indexToGlyphMap.end() || !it->second)
-        return nullptr;
-
-    if (prepare)
-        prepareGlyph(it->second);
-
-    return it->second;
+    return (it != d_indexToGlyphMap.end()) ? it->second : d_replacementGlyphIdx;
 }
 
 }

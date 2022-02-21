@@ -113,9 +113,8 @@ public:
     
     void updateFont() override;
     float getKerning(const FontGlyph* prev, const FontGlyph& curr) const override;
-    bool isCodepointAvailable(char32_t codePoint) const override;
-    FreeTypeFontGlyph* getGlyphForCodepoint(char32_t codePoint, bool prepare = false) override;
-    FreeTypeFontGlyph* getGlyphByIndex(uint32_t ftGlyphIndex, bool prepare = false) const;
+    FreeTypeFontGlyph* getGlyph(size_t index, bool prepare = false) const override;
+    size_t getGlyphByFreetypeIndex(uint32_t ftGlyphIndex) const;
 
     //! \brief Sets the Font size of this font.
     void setSize(float size) { setSizeAndUnit(size, d_sizeUnit); }
@@ -273,6 +272,8 @@ protected:
     bool d_antiAliased;
     //! FreeType-specific font handle
     FT_Face d_fontFace = nullptr;
+    //! Font file in memory, must be accessible during the font face lifetime
+    RawDataContainer d_fontData;
 
     std::vector<FreeTypeFontGlyph> d_glyphs;
 
@@ -282,8 +283,6 @@ protected:
     //! Textures that hold the glyph imagery for this font.
     mutable std::vector<Texture*> d_glyphTextures;
 
-    //! Contains mappings from code points to Font glyphs
-    mutable std::unordered_map<char32_t, size_t> d_codePointToGlyphMap;
     //! Contains mappings from freetype indices to Font glyphs
     mutable std::unordered_map<FT_UInt, size_t> d_indexToGlyphMap;
 
