@@ -113,8 +113,8 @@ public:
     
     void updateFont() override;
     float getKerning(const FontGlyph* prev, const FontGlyph& curr) const override;
-    FreeTypeFontGlyph* getGlyph(size_t index, bool prepare = false) const override;
-    size_t getGlyphByFreetypeIndex(uint32_t ftGlyphIndex) const;
+    FreeTypeFontGlyph* getGlyph(uint32_t index, bool prepare = false) const override;
+    uint32_t getGlyphByFreetypeIndex(FT_UInt ftGlyphIndex) const;
 
     //! \brief Sets the Font size of this font.
     void setSize(float size) { setSizeAndUnit(size, d_sizeUnit); }
@@ -284,7 +284,7 @@ protected:
     mutable std::vector<Texture*> d_glyphTextures;
 
     //! Contains mappings from freetype indices to Font glyphs
-    mutable std::unordered_map<FT_UInt, size_t> d_indexToGlyphMap;
+    mutable std::unordered_map<FT_UInt, uint32_t> d_indexToGlyphMap;
 
     //! The size with which new texture atlases for glyphs are going to be initialised
     uint32_t d_initialGlyphAtlasSize = 32;

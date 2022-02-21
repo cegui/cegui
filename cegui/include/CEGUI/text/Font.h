@@ -53,8 +53,6 @@ class CEGUIEXPORT Font : public PropertySet, public EventSet
 {
 public:
 
-    static constexpr size_t NO_GLYPH = std::numeric_limits<size_t>().max();
-
     //! Colour value used whenever a colour is not specified.
     static const argb_t DefaultColour;
 
@@ -216,13 +214,13 @@ public:
     float getStrikeoutThickness() const { return d_strikeoutThickness; }
 
     //! Returns the index of the glyph corresponding to the codepoint or invalid idx if it can't be found.
-    size_t getGlyphForCodepoint(char32_t codePoint) const;
+    uint32_t getGlyphForCodepoint(char32_t codePoint) const;
     //! \brief Returns whether this Font can draw the specified code-point
     bool isCodepointAvailable(char32_t codePoint) const;
     //! Returns the glyph object at the given index or nullptr if no such glyph exists.
-    virtual FontGlyph* getGlyph(size_t index, bool prepare = false) const = 0;
+    virtual FontGlyph* getGlyph(uint32_t index, bool prepare = false) const = 0;
     //! Returns cached index of the glyph used for replacing unknown glyphs
-    size_t getReplacementGlyphIndex() const { return d_replacementGlyphIdx; }
+    uint32_t getReplacementGlyphIndex() const { return d_replacementGlyphIdx; }
 
     //! \brief Calculates and returns kerning between two glyphs (in pixels, not rounded)
     virtual float getKerning(const FontGlyph* prev, const FontGlyph& curr) const { return 0.f; }
@@ -387,7 +385,7 @@ protected:
     //! event trigger function for when the font rendering size changes.
     virtual void onRenderSizeChanged(FontEventArgs& args);
 
-    std::unordered_map<char32_t, size_t> d_codePointToGlyphMap;
+    std::unordered_map<char32_t, uint32_t> d_codePointToGlyphMap;
 
     //! Name of this font.
     String d_name;
@@ -400,7 +398,7 @@ protected:
     //! Holds default resource group for font loading.
     static String d_defaultResourceGroup;
 
-    size_t d_replacementGlyphIdx = NO_GLYPH;
+    uint32_t d_replacementGlyphIdx = std::numeric_limits<uint32_t>().max();
 
     //! maximal font ascender (pixels above the baseline)
     float d_ascender = 0.f;

@@ -413,7 +413,7 @@ void FreeTypeFont::free()
     if (!d_fontFace)
         return;
 
-    d_replacementGlyphIdx = std::numeric_limits<size_t>().max();
+    d_replacementGlyphIdx = std::numeric_limits<uint32_t>().max();
 
     d_glyphs.clear();
     d_codePointToGlyphMap.clear();
@@ -807,7 +807,7 @@ float FreeTypeFont::getKerning(const FontGlyph* prev, const FontGlyph& curr) con
 }
 
 //----------------------------------------------------------------------------//
-FreeTypeFontGlyph* FreeTypeFont::getGlyph(size_t index, bool prepare) const
+FreeTypeFontGlyph* FreeTypeFont::getGlyph(uint32_t index, bool prepare) const
 {
     if (index >= d_glyphs.size())
         return nullptr;
@@ -821,7 +821,7 @@ FreeTypeFontGlyph* FreeTypeFont::getGlyph(size_t index, bool prepare) const
 }
 
 //----------------------------------------------------------------------------//
-size_t FreeTypeFont::getGlyphByFreetypeIndex(uint32_t ftGlyphIndex) const
+uint32_t FreeTypeFont::getGlyphByFreetypeIndex(FT_UInt ftGlyphIndex) const
 {
     auto it = d_indexToGlyphMap.find(ftGlyphIndex);
     return (it != d_indexToGlyphMap.end()) ? it->second : d_replacementGlyphIdx;

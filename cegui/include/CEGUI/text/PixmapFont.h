@@ -80,11 +80,10 @@ public:
                const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
                const Sizef& native_res = Sizef(640.0f, 480.0f));
 
-    //! Destructor.
-    ~PixmapFont();
+    ~PixmapFont() override;
 
     void updateFont() override;
-    FontGlyph* getGlyph(size_t index, bool prepare = false) const override;
+    FontGlyph* getGlyph(uint32_t index, bool prepare = false) const override;
 
     void defineMapping(char32_t codePoint, const String& imageName, float horzAdvance);
     void defineMapping(const String& value);
