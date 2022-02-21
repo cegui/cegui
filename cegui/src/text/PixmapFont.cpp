@@ -137,7 +137,7 @@ void PixmapFont::updateFont()
 }
 
 //----------------------------------------------------------------------------//
-FontGlyph* PixmapFont::getGlyph(size_t index, bool /*prepare*/) const
+FontGlyph* PixmapFont::getGlyph(uint32_t index, bool /*prepare*/) const
 {
     return (index < d_glyphs.size()) ? const_cast<FontGlyph*>(&d_glyphs[index]) : nullptr;
 }
