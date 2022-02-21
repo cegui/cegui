@@ -32,7 +32,6 @@
 #include "CEGUI/text/Font.h"
 #include "CEGUI/DataContainer.h"
 #include "CEGUI/text/FreeTypeFontGlyph.h"
-#include "CEGUI/text/FreeTypeFontLayer.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -103,7 +102,6 @@ public:
     FreeTypeFont(const String& font_name, const float size,
                  const FontSizeUnit sizeUnit,
                  const bool anti_aliased, const String& font_filename,
-                 std::vector<FreeTypeFontLayer> fontLayers = { FreeTypeFontLayer() },
                  const String& resource_group = "",
                  const AutoScaledMode auto_scaled = AutoScaledMode::Disabled,
                  const Sizef& native_res = Sizef(640.0f, 480.0f),
@@ -165,8 +163,8 @@ public:
 
     //! Returns the Freetype font face
     const FT_Face& getFontFace() const { return d_fontFace; }
-    //! Returns the FreeType load flags for the layer
-    FT_Int32 getGlyphLoadFlags(uint32_t layer = 0) const;
+    //! Returns the FreeType load flags
+    FT_Int32 getGlyphLoadFlags() const;
 
     //! Returns the initial size to be used for any new glyph atlas texture.
     int getInitialGlyphAtlasSize() const { return d_initialGlyphAtlasSize; }
@@ -239,14 +237,13 @@ protected:
 
     //! Rasterises the glyph and adds it into a glyph atlas texture
     void rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap,
-        int32_t glyphLeft, int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight,
-        uint32_t layer) const;
+        int32_t glyphLeft, int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight) const;
     
     //! Helper functions for rasterisation
     void addRasterisedGlyphToTextureAndSetupGlyphImage(
         FreeTypeFontGlyph* glyph, Texture* texture,
         FT_Bitmap& glyphBitmap, int32_t glyphLeft, int32_t glyphTop,
-        uint32_t glyphWidth, uint32_t glyphHeight, uint32_t layer,
+        uint32_t glyphWidth, uint32_t glyphHeight,
         const TextureGlyphLine& glyphTexLine) const;
 
     size_t findTextureLineWithFittingSpot(uint32_t glyphWidth, uint32_t glyphHeight) const;
@@ -254,11 +251,6 @@ protected:
 
     void createGlyphAtlasTexture() const;
     static std::vector<argb_t> createGlyphTextureData(FT_Bitmap& glyph_bitmap);
-
-    //! Converts the FreeTypeLineCap to the assocated freetype library data type value
-    static FT_Stroker_LineCap getLineCap(FreeTypeLineCap line_cap);
-    //! Converts the FreeTypeLineLine to the assocated freetype library data type value
-    static FT_Stroker_LineJoin getLineJoin(FreeTypeLineJoin line_join);
 
     void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;
 
@@ -277,9 +269,6 @@ protected:
 
     std::vector<FreeTypeFontGlyph> d_glyphs;
 
-    //! collection of images defined for this font.
-    mutable std::vector<BitmapImage*> d_glyphImages;
-
     //! Textures that hold the glyph imagery for this font.
     mutable std::vector<Texture*> d_glyphTextures;
 
@@ -294,9 +283,6 @@ protected:
     mutable std::vector<argb_t> d_lastTextureBuffer;
     //! Contains information about the extents of each line of glyphs of the latest texture
     mutable std::vector<TextureGlyphLine> d_textureGlyphLines;
-
-    //! collection of outline image layers defined for this font.
-    mutable std::vector<FreeTypeFontLayer> d_fontLayers;
 };
 
 }
