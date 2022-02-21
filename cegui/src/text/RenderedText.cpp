@@ -211,7 +211,7 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
         if (!raqm_set_freetype_face_range(rq, range.first->getFontFace(), fontStart, range.second))
             return false;
 
-        if (!raqm_set_freetype_load_flags_range(rq, range.first->getGlyphLoadFlags(0), fontStart, range.second))
+        if (!raqm_set_freetype_load_flags_range(rq, range.first->getGlyphLoadFlags(), fontStart, range.second))
             return false;
 
         fontStart += range.second;

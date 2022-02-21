@@ -156,40 +156,32 @@ void FontsSample::deinitialise()
 
 bool FontsSample::handleFontCreationButtonClicked(const EventArgs&)
 {
-    FontManager& fontMgr(FontManager::getSingleton());
+    FontManager& fontMgr = FontManager::getSingleton();
 
-    CEGUI::String fontName = d_fontNameEditbox->getText();
-    bool fontNameExists = fontMgr.isDefined(fontName);
-    if (fontNameExists || fontName.size() == 0)
+    const CEGUI::String& fontName = d_fontNameEditbox->getText();
+    if (fontName.empty() || fontMgr.isDefined(fontName))
     {
         d_fontEditorInfoLabel->setText("Font name already in use.");
         return true;
     }
 
     CEGUI::String fontFileName = d_fontFileNameSelector->getSelectedItem()->getText();
-
-    CEGUI::String fontSizeString = d_fontSizeEditbox->getText();
-    float fontSize = CEGUI::PropertyHelper<float>::fromString(fontSizeString);
-    if (fontSize == 0.0f)
-        return true;
-
-    bool antiAlias = d_fontAntiAliasCheckbox->isSelected();
-
-
     AutoScaledMode autoScaleMode = static_cast<AutoScaledMode>(getAutoScaleMode());
-
-
-    String::size_type pos = fontFileName.rfind(".imageset");
-    if (pos != String::npos)
+    if (fontFileName.rfind(".imageset") != String::npos)
     {
         fontMgr.createPixmapFont(fontName, fontFileName, Font::getDefaultResourceGroup(), autoScaleMode,
             CEGUI::Sizef(1280.0f, 720.0f), XmlResourceExistsAction::Throw);
     }
     else
     {
-       fontMgr.createFreeTypeFont(fontName, fontSize, FontSizeUnit::Pixels,
+        const float fontSize = CEGUI::PropertyHelper<float>::fromString(d_fontSizeEditbox->getText());
+        if (fontSize <= 0.0f)
+            return true;
+
+        const bool antiAlias = d_fontAntiAliasCheckbox->isSelected();
+        fontMgr.createFreeTypeFont(fontName, fontSize, FontSizeUnit::Pixels,
            antiAlias, fontFileName, Font::getDefaultResourceGroup(), autoScaleMode,
-           CEGUI::Sizef(1280.0f, 720.0f), 0.0f, {}, XmlResourceExistsAction::Throw);
+           CEGUI::Sizef(1280.0f, 720.0f), 0.0f, XmlResourceExistsAction::Throw);
     }
 
     d_fontSelector->addItem(fontName);
