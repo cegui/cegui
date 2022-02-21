@@ -285,7 +285,6 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
         autoScaledmode,
         nativeResolution,
         fontLineSpacing,
-        { FreeTypeFontLayer() },
         d_resourceExistsAction);
 #else
     throw InvalidRequestException(

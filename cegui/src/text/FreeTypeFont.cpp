@@ -590,7 +590,6 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
     int glyphLeft = 0;
     int glyphTop = 0;
     FT_Set_Transform(d_fontFace, nullptr, &position);
-    FT_UInt glyphIndex = FT_Get_Char_Index(d_fontFace, glyph->getCodePoint());
 
     uint32_t layer = 0;
 
@@ -600,7 +599,7 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
         FontLayerType fontLayerType = FontLayerType::Standard;
 
         // Load the code point, "rendering" the glyph
-        FT_Error error = FT_Load_Glyph(d_fontFace, glyphIndex, getGlyphLoadFlags());
+        FT_Error error = FT_Load_Glyph(d_fontFace, glyph->getGlyphIndex(), getGlyphLoadFlags());
 
         glyph->markAsInitialised();
 
@@ -617,16 +616,16 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
         }
         else
         {
-            uint32_t outlinePixels = d_fontLayers[layer].d_outlinePixels; // n * 64 result in n pixels outline
+            uint32_t outlinePixels = 64; // d_fontLayers[layer].d_outlinePixels; // n * 64 result in n pixels outline
             bool errorFlag = false;
 
             FT_Stroker stroker;
             FT_Stroker_New(s_freetypeLibHandle, &stroker);
             FT_Stroker_Set(stroker,
                 outlinePixels * 64,
-                getLineCap(d_fontLayers[layer].d_lineCap),
-                getLineJoin(d_fontLayers[layer].d_lineJoin),
-                d_fontLayers[layer].d_miterLimit);
+                getLineCap(FreeTypeLineCap::Round),// d_fontLayers[layer].d_lineCap),
+                getLineJoin(FreeTypeLineJoin::Round),// d_fontLayers[layer].d_lineJoin),
+                10);// d_fontLayers[layer].d_miterLimit);
 
             if (FT_Get_Glyph(d_fontFace->glyph, &ft_glyph))
                 errorFlag = true;
@@ -658,7 +657,7 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
         if (!glyph->getImage())
         {
             // Rasterise the 0 position glyph
-            rasterise(glyph, ft_bitmap, glyphLeft, glyphTop, glyphWidth, glyphHeight, 0);
+            rasterise(glyph, ft_bitmap, glyphLeft, glyphTop, glyphWidth, glyphHeight);
 
             glyph->setLsbDelta(d_fontFace->glyph->lsb_delta);
             glyph->setRsbDelta(d_fontFace->glyph->rsb_delta);        
@@ -763,12 +762,9 @@ void FreeTypeFont::setAntiAliased(bool antiAliased)
 }
 
 //----------------------------------------------------------------------------//
-FT_Int32 FreeTypeFont::getGlyphLoadFlags(uint32_t layer) const
+FT_Int32 FreeTypeFont::getGlyphLoadFlags() const
 {
-    if (layer >= d_fontLayers.size())
-        return 0;
-
-    const FontLayerType fontLayerType = d_fontLayers[layer].d_fontLayerType;
+    const FontLayerType fontLayerType = FontLayerType::Standard; // d_fontLayers[layer].d_fontLayerType;
 
     const FT_Int32 targetType = d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
     const FT_Int32 loadType = (fontLayerType == FontLayerType::Standard) ? FT_LOAD_RENDER : FT_LOAD_NO_BITMAP;
