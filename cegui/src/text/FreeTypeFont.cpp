@@ -39,6 +39,9 @@
 #include "CEGUI/SharedStringStream.h"
 #include <freetype/tttables.h>
 
+//!!!DBG TMP!
+#include "CEGUI/text/FreeTypeFontLayer.h"
+
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
@@ -78,7 +81,6 @@ FreeTypeFont::FreeTypeFont(
     const float size,
     const FontSizeUnit sizeUnit,
     const bool anti_aliased, const String& font_filename,
-    std::vector<FreeTypeFontLayer> fontLayers,
     const String& resource_group,
     const AutoScaledMode auto_scaled,
     const Sizef& native_res,
@@ -88,8 +90,7 @@ FreeTypeFont::FreeTypeFont(
     d_specificLineSpacing(specific_line_spacing),
     d_size(size),
     d_sizeUnit(sizeUnit),
-    d_antiAliased(anti_aliased),
-    d_fontLayers(std::move(fontLayers))
+    d_antiAliased(anti_aliased)
 {
     if (!s_fontUsageCount++)
         FT_Init_FreeType(&s_freetypeLibHandle);
@@ -182,7 +183,7 @@ void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, uin
 //----------------------------------------------------------------------------//
 void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
     FreeTypeFontGlyph* glyph, Texture* texture, FT_Bitmap& glyphBitmap, int32_t glyphLeft, int32_t glyphTop,
-    uint32_t glyphWidth, uint32_t glyphHeight, uint32_t layer, const TextureGlyphLine& glyphTexLine) const
+    uint32_t glyphWidth, uint32_t glyphHeight, const TextureGlyphLine& glyphTexLine) const
 {
     // Create the data containing the pixels of the glyph
     std::vector<argb_t> subTextureData = createGlyphTextureData(glyphBitmap);
@@ -209,10 +210,7 @@ void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
 
     const String name(std::to_string(glyph->getCodePoint()));
 
-    BitmapImage* img = new BitmapImage(name, texture, area, offset, AutoScaledMode::Disabled, d_nativeResolution);
-    d_glyphImages.push_back(img);
-
-    glyph->setImage(img, layer);
+    glyph->setImage(new BitmapImage(name, texture, area, offset, AutoScaledMode::Disabled, d_nativeResolution));
 }
 
 //----------------------------------------------------------------------------//
@@ -252,7 +250,7 @@ size_t FreeTypeFont::findTextureLineWithFittingSpot(uint32_t glyphWidth, uint32_
 
 //----------------------------------------------------------------------------//
 void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap, int32_t glyphLeft,
-    int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight, uint32_t layer) const
+    int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight) const
 {
     if (d_glyphTextures.empty())
         createGlyphAtlasTexture();
@@ -265,14 +263,14 @@ void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap, int
     if (fittingLineIndex >= d_textureGlyphLines.size())
     {
         createTextureSpaceForGlyphRasterisation(d_glyphTextures.back(), glyphWidth, glyphHeight);
-        rasterise(glyph, ft_bitmap, glyphLeft, glyphTop, glyphWidth, glyphHeight, layer);
+        rasterise(glyph, ft_bitmap, glyphLeft, glyphTop, glyphWidth, glyphHeight);
         return;
     }
 
     const TextureGlyphLine& glyphTexLine = d_textureGlyphLines[fittingLineIndex];
 
     addRasterisedGlyphToTextureAndSetupGlyphImage(glyph, d_glyphTextures.back(), ft_bitmap,
-        glyphLeft, glyphTop, glyphWidth, glyphHeight, layer, glyphTexLine);
+        glyphLeft, glyphTop, glyphWidth, glyphHeight, glyphTexLine);
 
     // Advance to next position, add padding
     glyphTexLine.d_lastXPos += glyphWidth + s_glyphPadding;
@@ -356,7 +354,7 @@ std::vector<argb_t> FreeTypeFont::createGlyphTextureData(FT_Bitmap& glyphBitmap)
 }
 
 //----------------------------------------------------------------------------//
-FT_Stroker_LineCap FreeTypeFont::getLineCap(FreeTypeLineCap line_cap)
+static FT_Stroker_LineCap getLineCap(FreeTypeLineCap line_cap)
 {
     switch (line_cap)
     {
@@ -371,7 +369,7 @@ FT_Stroker_LineCap FreeTypeFont::getLineCap(FreeTypeLineCap line_cap)
 }
 
 //----------------------------------------------------------------------------//
-FT_Stroker_LineJoin FreeTypeFont::getLineJoin(FreeTypeLineJoin line_join)
+static FT_Stroker_LineJoin getLineJoin(FreeTypeLineJoin line_join)
 {
     switch (line_join)
     {
@@ -413,20 +411,19 @@ void FreeTypeFont::free()
     if (!d_fontFace)
         return;
 
-    d_replacementGlyphIdx = std::numeric_limits<uint32_t>().max();
-
-    d_glyphs.clear();
-    d_codePointToGlyphMap.clear();
-    d_indexToGlyphMap.clear();
-
     //???FIXME TEXT: use destroyImageCollection?
-    for (size_t i = 0; i < d_glyphImages.size(); ++i)
-        delete d_glyphImages[i];
-    d_glyphImages.clear();
+    for (const auto& glyph : d_glyphs)
+        delete glyph.getImage();
 
     for (size_t i = 0; i < d_glyphTextures.size(); i++)
         System::getSingleton().getRenderer()->destroyTexture(*d_glyphTextures[i]);
     d_glyphTextures.clear();
+
+    d_replacementGlyphIdx = std::numeric_limits<uint32_t>().max();
+
+    d_codePointToGlyphMap.clear();
+    d_indexToGlyphMap.clear();
+    d_glyphs.clear();
 
     FT_Done_Face(d_fontFace);
     d_fontFace = nullptr;
@@ -595,16 +592,15 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
     FT_Set_Transform(d_fontFace, nullptr, &position);
     FT_UInt glyphIndex = FT_Get_Char_Index(d_fontFace, glyph->getCodePoint());
 
-    // Retrieved from font somehow
-    uint32_t layerCount = d_fontLayers.size();
+    uint32_t layer = 0;
 
     //layer 0 is the top rendered layer (rendered last over the other layers)
-    for (uint32_t layer = 0; layer < layerCount; layer++)
+    //for (uint32_t layer = 0; layer < layerCount; layer++)
     {
-        FontLayerType fontLayerType = d_fontLayers[layer].d_fontLayerType;
+        FontLayerType fontLayerType = FontLayerType::Standard;
 
         // Load the code point, "rendering" the glyph
-        FT_Error error = FT_Load_Glyph(d_fontFace, glyphIndex, getGlyphLoadFlags(layer));
+        FT_Error error = FT_Load_Glyph(d_fontFace, glyphIndex, getGlyphLoadFlags());
 
         glyph->markAsInitialised();
 
@@ -659,10 +655,10 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
             }
         }
 
-        if (!glyph->getImage(layer))
+        if (!glyph->getImage())
         {
             // Rasterise the 0 position glyph
-            rasterise(glyph, ft_bitmap, glyphLeft, glyphTop, glyphWidth, glyphHeight, layer);
+            rasterise(glyph, ft_bitmap, glyphLeft, glyphTop, glyphWidth, glyphHeight, 0);
 
             glyph->setLsbDelta(d_fontFace->glyph->lsb_delta);
             glyph->setRsbDelta(d_fontFace->glyph->rsb_delta);        

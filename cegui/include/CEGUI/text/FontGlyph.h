@@ -48,12 +48,11 @@ class CEGUIEXPORT FontGlyph
 {
 public:
 
-    FontGlyph(char32_t codePoint, float advance = 0.f, Image* image = nullptr) :
-        d_advance(advance),
-        d_codePoint(codePoint)
+    FontGlyph(char32_t codePoint, float advance = 0.f, Image* image = nullptr)
+        : d_image(image)
+        , d_advance(advance)
+        , d_codePoint(codePoint)
     {
-        if (image)
-            d_imageLayers.push_back(image);
     }
 
     virtual ~FontGlyph() = default;
@@ -67,10 +66,7 @@ public:
     */
     float getRenderedAdvance() const
     {
-        float max = 0.f;
-        for (const Image* d_image : d_imageLayers)
-            max = std::max(max, d_image->getRenderedSize().d_width + d_image->getRenderedOffset().x);
-        return max;
+        return d_image ? d_image->getRenderedSize().d_width + d_image->getRenderedOffset().x : 0.f;
     }
 
     /*!
@@ -88,24 +84,10 @@ public:
     void setAdvance(float advance) { d_advance = advance; }
 
     //! Return the CEGUI::Image object rendered for this glyph.
-    Image* getImage(unsigned int layer = 0) const
-    {
-        return (layer < d_imageLayers.size()) ? d_imageLayers[layer] : nullptr;
-    }
+    Image* getImage() const { return d_image; }
 
     //! Set the CEGUI::Image object rendered for this glyph.
-    void setImage(Image* image, unsigned int layer = 0)
-    {
-        if (d_imageLayers.size() <= layer)
-        {
-            if (image)
-                d_imageLayers.resize(layer + 1, nullptr);
-            else
-                return;
-        }
-
-        d_imageLayers[layer] = image;
-    }
+    void setImage(Image* image) { d_image = image; }
 
     //! Returns the code point that this glyph is based on
     char32_t getCodePoint() const { return d_codePoint; }
@@ -113,7 +95,7 @@ public:
 private:
 
     //! The image which will be rendered for this glyph.
-    std::vector<Image*> d_imageLayers;
+    Image* d_image;
     //! Amount to advance the pen after rendering this glyph
     float d_advance;
     //! Code point
