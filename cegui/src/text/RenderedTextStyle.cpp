@@ -55,7 +55,8 @@ void RenderedTextStyle::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) con
 //----------------------------------------------------------------------------//
 float RenderedTextStyle::getGlyphWidth(const RenderedGlyph& glyph) const
 {
-    const Image* image = glyph.fontGlyph ? glyph.fontGlyph->getImage(0) : nullptr;
+    const FontGlyph* fontGlyph = d_font->getGlyph(glyph.fontGlyphIndex);
+    const Image* image = fontGlyph ? fontGlyph->getImage(0) : nullptr;
     const float visualWidth = image ? image->getRenderedSize().d_width : 0.f;
     return std::max(glyph.advance, visualWidth + getLeftPadding() + getRightPadding());
 }
@@ -103,9 +104,10 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
         }
 
         // Render the main image of the glyph
-        if (glyph->fontGlyph)
+        const FontGlyph* fontGlyph = d_font->getGlyph(glyph->fontGlyphIndex);
+        if (fontGlyph)
         {
-            if (auto image = glyph->fontGlyph->getImage(0))
+            if (auto image = fontGlyph->getImage(0))
             {
                 Sizef size = image->getRenderedSize();
                 size.d_height *= heightScale;

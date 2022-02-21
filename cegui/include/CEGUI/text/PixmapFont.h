@@ -83,9 +83,8 @@ public:
     //! Destructor.
     ~PixmapFont();
 
-    void updateFont () override;
-    bool isCodepointAvailable(char32_t codePoint) const override;
-    FontGlyph* getGlyphForCodepoint(char32_t codePoint, bool prepare = false) override;
+    void updateFont() override;
+    FontGlyph* getGlyph(size_t index, bool prepare = false) const override;
 
     void defineMapping(char32_t codePoint, const String& imageName, float horzAdvance);
     void defineMapping(const String& value);
@@ -126,7 +125,6 @@ protected:
 private:
 
     std::vector<FontGlyph> d_glyphs;
-    std::unordered_map<char32_t, size_t> d_codePointToGlyphMap;
 };
 
 }

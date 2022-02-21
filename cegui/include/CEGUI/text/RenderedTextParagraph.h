@@ -48,18 +48,18 @@ struct CEGUIEXPORT SelectionInfo
 
 struct RenderedGlyph
 {
-    const FontGlyph* fontGlyph; //!< Actual font glyph, may be nullptr for missing glyphs and for embedded objects
-
     glm::vec2 offset; //!< Offset from the current pen position where the content must be drawn
     float advance;    //!< Shift to be applied to the pen after drawing this glyph
 
-    uint32_t sourceIndex;  //!< Starting index of the corresponding sequence in the logical text
-    uint16_t elementIndex; //!< Index of controlling RenderedTextElement, stored instead of pointer to reduce struct size
+    uint32_t fontGlyphIndex; //!< Actual font glyph, may be invalid for missing glyphs and for embedded objects
+    uint32_t sourceIndex;    //!< Starting index of the corresponding sequence in the logical text
+    uint16_t elementIndex;   //!< Index of controlling RenderedTextElement, stored instead of pointer to reduce struct size
+    uint8_t sourceLength;    //!< This may be up to 4 for multibyte UTF-8 source, and even more for embedded objects
 
-    bool isJustifyable : 1;    //!< This glyph can be expanded in a justified text
-    bool isBreakable : 1;      //!< This glyph can be transferred to the next line due to word wrapping
-    bool isWhitespace : 1;     //!< This glyph is a whitespace that should not be rendered at the wrapped line start
-    bool isRightToLeft : 1;    //!< Is this glyph directed from right to left? This affects caret etc.
+    bool isJustifyable : 1;  //!< This glyph can be expanded in a justified text
+    bool isBreakable : 1;    //!< This glyph can be transferred to the next line due to word wrapping
+    bool isWhitespace : 1;   //!< This glyph is a whitespace that should not be rendered at the wrapped line start
+    bool isRightToLeft : 1;  //!< Is this glyph directed from right to left? This affects caret etc.
 };
 
 class RenderedTextParagraph

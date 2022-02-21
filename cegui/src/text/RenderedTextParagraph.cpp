@@ -64,13 +64,22 @@ void RenderedTextParagraph::remapSourceIndices(const std::vector<size_t>& origin
     if (originalIndices.empty())
         return;
 
+    const auto mapSize = originalIndices.size();
+
     for (auto& glyph : d_glyphs)
-        glyph.sourceIndex = static_cast<uint32_t>(originalIndices[glyph.sourceIndex]);
+    {
+        const auto utf32Index = glyph.sourceIndex;
+        glyph.sourceIndex = static_cast<uint32_t>(originalIndices[utf32Index]);
+
+        // Cache source length to detect being in the middle of multibyte glyph
+        const auto nextIndex = (utf32Index + 1 < mapSize) ? originalIndices[utf32Index + 1] : sourceLength;
+        glyph.sourceLength = static_cast<uint8_t>(nextIndex - glyph.sourceIndex);
+    }
 
     d_sourceStartIndex = static_cast<uint32_t>(
-        (d_sourceStartIndex < originalIndices.size()) ? originalIndices[d_sourceStartIndex] : sourceLength);
+        (d_sourceStartIndex < mapSize) ? originalIndices[d_sourceStartIndex] : sourceLength);
     d_sourceEndIndex = static_cast<uint32_t>(
-        (d_sourceEndIndex < originalIndices.size()) ? originalIndices[d_sourceEndIndex] : sourceLength);
+        (d_sourceEndIndex < mapSize) ? originalIndices[d_sourceEndIndex] : sourceLength);
 }
 
 //----------------------------------------------------------------------------//
@@ -726,16 +735,8 @@ size_t RenderedTextParagraph::getNearestGlyphIndex(size_t textIndex) const
     {
         // Check if the glyph represents this very textIndex
         const auto srcIndex = d_glyphs[i].sourceIndex;
-        if (srcIndex == textIndex)
+        if (srcIndex <= textIndex && textIndex < srcIndex + d_glyphs[i].sourceLength)
             return i;
-
-        //!!!TODO TEXT: handle images and other non-text glyphs!
-#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
-        // Check if textIndex is in the middle of the multi-byte UTF-8 codepoint
-        if (auto fontGlyph = d_glyphs[i].fontGlyph)
-            if (srcIndex < textIndex && textIndex < srcIndex + String::getCodePointUtf8Size(fontGlyph->getCodePoint()))
-                return i;
-#endif
 
         // Track the nearest existing glyph that goes after the requested position
         if (textIndex < srcIndex && srcIndex < nearestSrcIdx)

@@ -98,6 +98,19 @@ void Font::addFontProperties()
 }
 
 //----------------------------------------------------------------------------//
+size_t Font::getGlyphForCodepoint(char32_t codePoint) const
+{
+    auto it = d_codePointToGlyphMap.find(codePoint);
+    return (it != d_codePointToGlyphMap.end()) ? it->second : d_replacementGlyphIdx;
+}
+
+//----------------------------------------------------------------------------//
+bool Font::isCodepointAvailable(char32_t codePoint) const
+{
+    return d_codePointToGlyphMap.find(codePoint) != d_codePointToGlyphMap.end();
+}
+
+//----------------------------------------------------------------------------//
 float Font::getTextExtent(const String& text) const
 {
     float curExtent = 0.0f;
@@ -112,7 +125,7 @@ float Font::getTextExtent(const String& text) const
     {
         const char32_t currentCodePoint = *currentCodePointIter;
 #endif
-        if (const FontGlyph* currentGlyph = getGlyphForCodepoint(currentCodePoint, true))
+        if (const FontGlyph* currentGlyph = getGlyph(getGlyphForCodepoint(currentCodePoint), true))
         {
             const float width = currentGlyph->getRenderedAdvance();
             if (curExtent < advExtent + width)
@@ -142,7 +155,7 @@ float Font::getTextAdvance(const String& text) const
     {
         const char32_t currentCodePoint = *currentCodePointIter;
 #endif
-        if (const FontGlyph* glyph = getGlyphForCodepoint(currentCodePoint, true))
+        if (const FontGlyph* glyph = getGlyph(getGlyphForCodepoint(currentCodePoint), true))
             advance += glyph->getAdvance();
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         ++currentCodePointIter;
@@ -166,7 +179,7 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel) 
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = start_char; c < char_count; ++c)
     {
-        glyph = getGlyphForCodepoint(text[c]);
+        glyph = getGlyph(getGlyphForCodepoint(text[c]));
 
         if (glyph)
         {
@@ -183,7 +196,7 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel) 
     while (!currentCodePointIter.isAtEnd())
     {
         char32_t currentCodePoint = *currentCodePointIter;
-        glyph = getGlyphForCodepoint(currentCodePoint);
+        glyph = getGlyph(getGlyphForCodepoint(currentCodePoint));
 
         if (glyph)
         {
@@ -206,8 +219,7 @@ void Font::setNativeResolution(const Sizef& size)
     d_nativeResolution = size;
 
     // re-calculate scaling factors & notify images as required
-    notifyDisplaySizeChanged(
-        System::getSingleton().getRenderer()->getDisplaySize());
+    notifyDisplaySizeChanged(System::getSingleton().getRenderer()->getDisplaySize());
 }
 
 //----------------------------------------------------------------------------//

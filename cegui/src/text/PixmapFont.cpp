@@ -137,6 +137,12 @@ void PixmapFont::updateFont()
 }
 
 //----------------------------------------------------------------------------//
+FontGlyph* PixmapFont::getGlyph(size_t index, bool /*prepare*/) const
+{
+    return (index < d_glyphs.size()) ? const_cast<FontGlyph*>(&d_glyphs[index]) : nullptr;
+}
+
+//----------------------------------------------------------------------------//
 void PixmapFont::writeXMLToStream_impl (XMLSerializer& xml_stream) const
 {
     const float advscale = 1.0f / d_origHorzScaling;
@@ -226,19 +232,6 @@ void PixmapFont::setImageNamePrefix(const String& name_prefix)
     d_resourceGroup = BuiltInResourceGroup;
     d_imageNamePrefix = name_prefix;
     reinit();
-}
-
-//----------------------------------------------------------------------------//
-bool PixmapFont::isCodepointAvailable(char32_t codePoint) const
-{
-    return d_codePointToGlyphMap.find(codePoint) != d_codePointToGlyphMap.end();
-}
-
-//----------------------------------------------------------------------------//
-FontGlyph* PixmapFont::getGlyphForCodepoint(char32_t codepoint, bool /*prepare*/)
-{
-    auto it = d_codePointToGlyphMap.find(codepoint);
-    return (it != d_codePointToGlyphMap.end()) ? &d_glyphs[it->second] : nullptr;
 }
 
 }

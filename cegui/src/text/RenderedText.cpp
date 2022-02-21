@@ -97,24 +97,21 @@ static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& te
         if (!font)
             return false;
 
-        const FontGlyph* fontGlyph = font->getGlyphForCodepoint(codePoint, true);
-        if (!fontGlyph)
-            fontGlyph = font->getReplacementGlyph();
-
+        renderedGlyph.fontGlyphIndex = font->getGlyphForCodepoint(codePoint);
+        auto fontGlyph = font->getGlyph(renderedGlyph.fontGlyphIndex, true);
         if (fontGlyph)
         {
             const float kerning = font->getKerning(prevGlyph, *fontGlyph);
-            renderedGlyph.fontGlyph = fontGlyph;
             renderedGlyph.offset.x = kerning;
             renderedGlyph.advance = fontGlyph->getAdvance() + kerning;
         }
         else
         {
-            renderedGlyph.fontGlyph = nullptr;
             renderedGlyph.offset.x = 0.f;
             renderedGlyph.advance = 0.f;
         }
         renderedGlyph.sourceIndex = static_cast<uint32_t>(logicalIndex);
+        renderedGlyph.sourceLength = 1;
         renderedGlyph.offset.y = font->getBaseline();
 #if defined(CEGUI_BIDI_SUPPORT)
         renderedGlyph.isRightToLeft = (BidiVisualMapping::getBidiCharType(codePoint) == BidiCharType::RIGHT_TO_LEFT);
@@ -249,15 +246,16 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
         });
 
         const FreeTypeFont* font = (*it).first;
-        const FontGlyph* fontGlyph = font->getGlyphByIndex(rqGlyph.index, true);
-        if (!fontGlyph)
-            fontGlyph = font->getReplacementGlyph();
+        renderedGlyph.fontGlyphIndex = font->getGlyphByFreetypeIndex(rqGlyph.index);
+
+        //!!!FIXME TEXT: need more straightforward glyph preparing API, e.g. font->load/validate/prepareGlyph(index);
+        font->getGlyph(renderedGlyph.fontGlyphIndex, true);
 
         // A multiplication coefficient to convert 26.6 fixed point values into normal floats
         constexpr float s_26dot6_toFloat = (1.0f / 64.f);
 
-        renderedGlyph.fontGlyph = fontGlyph;
         renderedGlyph.sourceIndex = static_cast<uint32_t>(rqGlyph.cluster + start);
+        renderedGlyph.sourceLength = 1;
         renderedGlyph.offset.x = rqGlyph.x_offset * s_26dot6_toFloat;
         renderedGlyph.offset.y = rqGlyph.y_offset * s_26dot6_toFloat + font->getBaseline();
         renderedGlyph.advance = ((rqGlyphDir == RAQM_DIRECTION_TTB) ? rqGlyph.y_advance : rqGlyph.x_advance) * s_26dot6_toFloat;
@@ -290,7 +288,7 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
         utf32Text = String::convertUtf8ToUtf32(text.c_str(), &originalIndices);
 #else
         originalIndices.clear();
-        utf32Text = text.getString(); //???can avoid copying? e.g. passing utf32Text further as an arg? or mutability is useful later?
+        utf32Text = text.getString();
 #endif
     }
 
@@ -337,13 +335,11 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
             // Create and setup a sequence of CEGUI glyphs for this paragraph
             //!!!TODO TEXT: move into paragraph? Seems right but how to reuse raqm_t gracefully?!
 #ifdef CEGUI_USE_RAQM
-            if (!layoutParagraphWithRaqm(p, utf32Text, start, end, defaultParagraphDir,
-                elementIndices, d_elements, rq))
+            if (!layoutParagraphWithRaqm(p, utf32Text, start, end, defaultParagraphDir, elementIndices, d_elements, rq))
 #endif
-                layoutParagraph(p, utf32Text, start, end, defaultParagraphDir,
-                    elementIndices, d_elements);
+                layoutParagraph(p, utf32Text, start, end, defaultParagraphDir, elementIndices, d_elements);
 
-            //!!!TODO TEXT: set non-default formatting of this paragraph if specified explicitly!
+            //!!!TODO TEXT: set non-default formatting for this paragraph if specified explicitly!
 
             p.setupGlyphs(utf32Text, elementIndices, d_elements);
         }
