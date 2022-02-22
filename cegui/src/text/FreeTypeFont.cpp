@@ -213,7 +213,7 @@ size_t FreeTypeFont::findTextureLineWithFittingSpot(uint32_t glyphWidth, uint32_
 }
 
 //----------------------------------------------------------------------------//
-Image* FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, const FT_Bitmap& ft_bitmap, int32_t glyphLeft,
+BitmapImage* FreeTypeFont::rasterise(const String& name, const FT_Bitmap& ft_bitmap, int32_t glyphLeft,
     int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight) const
 {
     if (d_glyphTextures.empty())
@@ -227,7 +227,7 @@ Image* FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, const FT_Bitmap& ft_bit
     if (fittingLineIndex >= d_textureGlyphLines.size())
     {
         createTextureSpaceForGlyphRasterisation(d_glyphTextures.back(), glyphWidth, glyphHeight);
-        return rasterise(glyph, ft_bitmap, glyphLeft, glyphTop, glyphWidth, glyphHeight);
+        return rasterise(name, ft_bitmap, glyphLeft, glyphTop, glyphWidth, glyphHeight);
     }
 
     const TextureGlyphLine& glyphTexLine = d_textureGlyphLines[fittingLineIndex];
@@ -250,7 +250,6 @@ Image* FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, const FT_Bitmap& ft_bit
     glyphTexLine.d_lastXPos += glyphWidth + s_glyphPadding;
 
     // This is the right bearing for bitmap glyphs, not d_fontFace->glyph->metrics.horiBearingX
-    const String name(std::to_string(glyph->getCodePoint()));
     const glm::vec2 offset(glyphLeft, -1.f * glyphTop);
     return new BitmapImage(name, d_glyphTextures.back(), imageArea, offset, AutoScaledMode::Disabled, d_nativeResolution);
 }
@@ -372,6 +371,9 @@ void FreeTypeFont::free()
     d_indexToGlyphMap.clear();
     d_glyphs.clear();
 
+    FT_Stroker_Done(d_stroker);
+    d_stroker = nullptr;
+
     FT_Done_Face(d_fontFace);
     d_fontFace = nullptr;
     System::getSingleton().getResourceProvider()->unloadRawDataContainer(d_fontData);
@@ -439,6 +441,8 @@ void FreeTypeFont::updateFont()
 
     if (error != 0)
         findAndThrowFreeTypeError(error, "Failed to create face from font file");
+
+    FT_Stroker_New(s_freetypeLibHandle, &d_stroker);
 
     // Check unicode character map availability
     if (!d_fontFace->charmap)
@@ -535,8 +539,9 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
     if (FT_Load_Glyph(d_fontFace, glyph->getGlyphIndex(), getGlyphLoadFlags() | FT_LOAD_RENDER))
         return;
 
+    const String name(std::to_string(glyph->getCodePoint()));
     const auto& ft_bitmap = d_fontFace->glyph->bitmap;
-    auto image = rasterise(glyph, ft_bitmap, d_fontFace->glyph->bitmap_left, d_fontFace->glyph->bitmap_top, ft_bitmap.width, ft_bitmap.rows);
+    auto image = rasterise(name, ft_bitmap, d_fontFace->glyph->bitmap_left, d_fontFace->glyph->bitmap_top, ft_bitmap.width, ft_bitmap.rows);
     glyph->setImage(image);
     glyph->setAdvance(d_fontFace->glyph->advance.x * static_cast<float>(s_26dot6_toFloat));
     glyph->setLsbDelta(d_fontFace->glyph->lsb_delta);
@@ -544,39 +549,34 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::renderOutline(FreeTypeFontGlyph* glyph, float thickness) const
+Image* FreeTypeFont::renderOutline(uint32_t index, FT_Fixed thickness)
 {
+    if (!d_stroker || index >= d_glyphs.size())
+        return nullptr;
+
     FT_Set_Transform(d_fontFace, nullptr, nullptr);
 
-    if (FT_Load_Glyph(d_fontFace, glyph->getGlyphIndex(), getGlyphLoadFlags() | FT_LOAD_NO_BITMAP))
-        return;
-
-    uint32_t outlinePixels = 1; // d_fontLayers[layer].d_outlinePixels; // n * 64 result in n pixels outline
-    bool errorFlag = false;
-
-    //!!!TODO TEXT: cache stroker!
-    FT_Stroker stroker;
-    FT_Stroker_New(s_freetypeLibHandle, &stroker);
-    FT_Stroker_Set(stroker, outlinePixels * 64, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
+    if (FT_Load_Glyph(d_fontFace, d_glyphs[index].getGlyphIndex(), getGlyphLoadFlags() | FT_LOAD_NO_BITMAP))
+        return nullptr;
 
     FT_Glyph ft_glyph;
-    if (FT_Get_Glyph(d_fontFace->glyph, &ft_glyph))
-        errorFlag = true;
+    FT_Get_Glyph(d_fontFace->glyph, &ft_glyph);
+    FT_Stroker_Set(d_stroker, thickness, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
+    FT_Glyph_Stroke(&ft_glyph, d_stroker, true); // can also use FT_Glyph_StrokeBorder
+    FT_Glyph_To_Bitmap(&ft_glyph, FT_RENDER_MODE_NORMAL, 0, true);
 
-    FT_Error error = FT_Glyph_Stroke(&ft_glyph, stroker, true); // can also use FT_Glyph_StrokeBorder
-    if (error > 0)
-        errorFlag = true;
+    const FT_BitmapGlyph& bitmapGlyph = reinterpret_cast<const FT_BitmapGlyph&>(ft_glyph);
 
-    error = FT_Glyph_To_Bitmap(&ft_glyph, FT_RENDER_MODE_NORMAL, 0, true);
-    if (error > 0)
-        errorFlag = true;
+    auto it = d_outlines.find(thickness);
+    if (it == d_outlines.cend())
+        it = d_outlines.emplace(thickness, std::vector<BitmapImage*>(d_glyphs.size())).first;
 
-    FT_BitmapGlyph bitmapGlyph = reinterpret_cast<FT_BitmapGlyph>(ft_glyph);
-    FT_Stroker_Done(stroker);
-
-    auto image = rasterise(glyph, bitmapGlyph->bitmap, bitmapGlyph->left, bitmapGlyph->top, bitmapGlyph->bitmap.width, bitmapGlyph->bitmap.rows);
+    const String name(std::to_string(d_glyphs[index].getCodePoint()) + "_ol_" + std::to_string(thickness));
+    it->second[index] = rasterise(name, bitmapGlyph->bitmap, bitmapGlyph->left, bitmapGlyph->top, bitmapGlyph->bitmap.width, bitmapGlyph->bitmap.rows);
 
     FT_Done_Glyph(ft_glyph);
+
+    return it->second[index];
 }
 
 //----------------------------------------------------------------------------//
@@ -709,13 +709,16 @@ Image* FreeTypeFont::getOutline(uint32_t index, float thickness)
     if (index >= d_glyphs.size())
         return nullptr;
 
-    //auto glyph = const_cast<FreeTypeFontGlyph*>(&d_glyphs[index]);
+    const auto outlineThickness = static_cast<FT_Fixed>(std::round(thickness * 64.f));
+    if (outlineThickness < 1)
+        return nullptr;
 
-    //if (prepare)
-    //    prepareGlyph(glyph);
+    //!!!TODO TEXT: need to make distinction between not yet rendered and failed outline to avoid repeated recreation on failure!
+    auto it = d_outlines.find(outlineThickness);
+    if (it != d_outlines.cend() && it->second[index])
+        return it->second[index];
 
-    //return glyph;
-    return nullptr;
+    return renderOutline(index, outlineThickness);
 }
 
 //----------------------------------------------------------------------------//

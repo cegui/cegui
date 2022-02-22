@@ -231,12 +231,12 @@ protected:
 
     void tryToCreateFontWithClosestFontHeight(FT_Error errorResult, int requestedFontPixelHeight) const;
     void prepareGlyph(FreeTypeFontGlyph* glyph) const;
-    void renderOutline(FreeTypeFontGlyph* glyph, float thickness) const;
+    Image* renderOutline(uint32_t index, FT_Fixed thickness);
 
     void handleFontSizeOrFontUnitChange();
 
     //! Rasterises the glyph and adds it into a glyph atlas texture
-    Image* rasterise(FreeTypeFontGlyph* glyph, const FT_Bitmap& ft_bitmap,
+    BitmapImage* rasterise(const String& name, const FT_Bitmap& ft_bitmap,
         int32_t glyphLeft, int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight) const;
 
     size_t findTextureLineWithFittingSpot(uint32_t glyphWidth, uint32_t glyphHeight) const;
@@ -257,6 +257,7 @@ protected:
     bool d_antiAliased;
     //! FreeType-specific font handle
     FT_Face d_fontFace = nullptr;
+    FT_Stroker d_stroker = nullptr;
     //! Font file in memory, must be accessible during the font face lifetime
     RawDataContainer d_fontData;
 
@@ -268,7 +269,7 @@ protected:
     //! Contains mappings from freetype indices to Font glyphs
     mutable std::unordered_map<FT_UInt, uint32_t> d_indexToGlyphMap;
 
-    std::map<float, std::vector<BitmapImage*>> d_outlines;
+    std::map<FT_Fixed, std::vector<BitmapImage*>> d_outlines;
 
     //! The size with which new texture atlases for glyphs are going to be initialised
     uint32_t d_initialGlyphAtlasSize = 32;

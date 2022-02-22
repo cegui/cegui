@@ -78,12 +78,12 @@ public:
 
     void applyVerticalFormatting(float lineHeight, float& posY, float& heightScale) const;
 
-    void setFont(const Font* font) { d_font = font; }
+    void setFont(Font* font) { d_font = font; }
     const Font* getFont() const { return d_font; }
 
 protected:
 
-    const Font*             d_font = nullptr;
+    Font*                   d_font = nullptr;
     Rectf                   d_padding = Rectf(0.f, 0.f, 0.f, 0.f);
     VerticalImageFormatting d_verticalFormatting = VerticalImageFormatting::BottomAligned;
 };

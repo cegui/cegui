@@ -309,7 +309,8 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
         if (!defaultFont)
             return false;
 
-        element->setFont(defaultFont);
+        //!!!FIXME TEXT: constness of fonts! Make glyph cache mutable?
+        element->setFont(const_cast<Font*>(defaultFont));
     }
 
 #ifdef CEGUI_USE_RAQM
