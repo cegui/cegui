@@ -371,10 +371,13 @@ size_t EditboxBase::getPrevTextIndex(size_t idx) const
     if (idx > text.size())
         idx = text.size();
 
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
+    return idx - 1;
+#else
     String::codepoint_iterator caretIter(text.begin() + idx, text.begin(), text.end());
     --caretIter;
-
     return caretIter.getCodeUnitIndexFromStart();
+#endif
 }
 
 //----------------------------------------------------------------------------//
@@ -793,17 +796,7 @@ bool EditboxBase::processSemanticInputEvent(const SemanticEventArgs& e)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleCharLeft(bool select)
 {
-    size_t previousCodePointPos = 0;
-    if (d_caretPos > 0)
-    {
-#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
-        previousCodePointPos = d_caretPos - 1;
-#else
-        previousCodePointPos = getPrevTextIndex(d_caretPos);
-#endif
-    }
-
-    handleCaretMovement(previousCodePointPos, select);
+    handleCaretMovement(getPrevTextIndex(d_caretPos), select);
 }
 
 //----------------------------------------------------------------------------//
@@ -869,14 +862,10 @@ void EditboxBase::handleBackspace()
     {
         deleteRange(getSelectionStart(), getSelectionLength());
     }
-    else if (d_caretPos > 0)
+    else
     {
-#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
-        deleteRange(d_caretPos - 1, 1);
-#else
         const size_t deleteStartPos = getPrevTextIndex(d_caretPos);
         deleteRange(deleteStartPos, d_caretPos - deleteStartPos);
-#endif
     }
 }
 
