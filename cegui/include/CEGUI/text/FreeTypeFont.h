@@ -113,6 +113,7 @@ public:
     float getKerning(const FontGlyph* prev, const FontGlyph& curr) const override;
     FreeTypeFontGlyph* getGlyph(uint32_t index, bool prepare = false) const override;
     uint32_t getGlyphByFreetypeIndex(FT_UInt ftGlyphIndex) const;
+    Image* getOutline(uint32_t index, float thickness = 1.f) override;
 
     //! \brief Sets the Font size of this font.
     void setSize(float size) { setSizeAndUnit(size, d_sizeUnit); }
@@ -230,19 +231,13 @@ protected:
 
     void tryToCreateFontWithClosestFontHeight(FT_Error errorResult, int requestedFontPixelHeight) const;
     void prepareGlyph(FreeTypeFontGlyph* glyph) const;
+    void renderOutline(FreeTypeFontGlyph* glyph, float thickness) const;
 
     void handleFontSizeOrFontUnitChange();
 
     //! Rasterises the glyph and adds it into a glyph atlas texture
-    void rasterise(FreeTypeFontGlyph* glyph, const FT_Bitmap& ft_bitmap,
+    Image* rasterise(FreeTypeFontGlyph* glyph, const FT_Bitmap& ft_bitmap,
         int32_t glyphLeft, int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight) const;
-    
-    //! Helper functions for rasterisation
-    void addRasterisedGlyphToTextureAndSetupGlyphImage(
-        FreeTypeFontGlyph* glyph, Texture* texture,
-        const FT_Bitmap& glyphBitmap, int32_t glyphLeft, int32_t glyphTop,
-        uint32_t glyphWidth, uint32_t glyphHeight,
-        const TextureGlyphLine& glyphTexLine) const;
 
     size_t findTextureLineWithFittingSpot(uint32_t glyphWidth, uint32_t glyphHeight) const;
     size_t addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWidth) const;
@@ -272,6 +267,8 @@ protected:
 
     //! Contains mappings from freetype indices to Font glyphs
     mutable std::unordered_map<FT_UInt, uint32_t> d_indexToGlyphMap;
+
+    std::map<float, std::vector<BitmapImage*>> d_outlines;
 
     //! The size with which new texture atlases for glyphs are going to be initialised
     uint32_t d_initialGlyphAtlasSize = 32;

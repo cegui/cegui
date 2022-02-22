@@ -178,39 +178,6 @@ void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, uin
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
-    FreeTypeFontGlyph* glyph, Texture* texture, const FT_Bitmap& glyphBitmap, int32_t glyphLeft, int32_t glyphTop,
-    uint32_t glyphWidth, uint32_t glyphHeight, const TextureGlyphLine& glyphTexLine) const
-{
-    // Create the data containing the pixels of the glyph
-    std::vector<argb_t> subTextureData = createGlyphTextureData(glyphBitmap);
-
-    // Update the cached texture data in memory
-    size_t bufferDataGlyphPos = (glyphTexLine.d_lastYPos * d_lastTextureSize) + glyphTexLine.d_lastXPos;
-    updateTextureBufferSubImage(d_lastTextureBuffer.data() + bufferDataGlyphPos,
-        glyphWidth, glyphHeight, subTextureData);
-
-    // Update the sub-image in the texture on the GPU
-    glm::vec2 subImagePos(glyphTexLine.d_lastXPos, glyphTexLine.d_lastYPos);
-    Sizef subImageSize(static_cast<float>(glyphWidth), static_cast<float>(glyphHeight));
-    Rectf subImageArea(subImagePos, subImageSize);
-    texture->blitFromMemory(subTextureData.data(), subImageArea);
-
-    // Create a new image in the imageset
-    const Rectf area(static_cast<float>(glyphTexLine.d_lastXPos),
-        static_cast<float>(glyphTexLine.d_lastYPos),
-        static_cast<float>(glyphTexLine.d_lastXPos + glyphWidth),
-        static_cast<float>(glyphTexLine.d_lastYPos + glyphHeight));
-
-    // This is the right bearing for bitmap glyphs, not d_fontFace->glyph->metrics.horiBearingX
-    const glm::vec2 offset(glyphLeft, -1.f * glyphTop);
-
-    const String name(std::to_string(glyph->getCodePoint()));
-
-    glyph->setImage(new BitmapImage(name, texture, area, offset, AutoScaledMode::Disabled, d_nativeResolution));
-}
-
-//----------------------------------------------------------------------------//
 size_t FreeTypeFont::findTextureLineWithFittingSpot(uint32_t glyphWidth, uint32_t glyphHeight) const
 {
     // Go through the lines and find one that fits
@@ -246,7 +213,7 @@ size_t FreeTypeFont::findTextureLineWithFittingSpot(uint32_t glyphWidth, uint32_
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, const FT_Bitmap& ft_bitmap, int32_t glyphLeft,
+Image* FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, const FT_Bitmap& ft_bitmap, int32_t glyphLeft,
     int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight) const
 {
     if (d_glyphTextures.empty())
@@ -260,17 +227,32 @@ void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, const FT_Bitmap& ft_bitma
     if (fittingLineIndex >= d_textureGlyphLines.size())
     {
         createTextureSpaceForGlyphRasterisation(d_glyphTextures.back(), glyphWidth, glyphHeight);
-        rasterise(glyph, ft_bitmap, glyphLeft, glyphTop, glyphWidth, glyphHeight);
-        return;
+        return rasterise(glyph, ft_bitmap, glyphLeft, glyphTop, glyphWidth, glyphHeight);
     }
 
     const TextureGlyphLine& glyphTexLine = d_textureGlyphLines[fittingLineIndex];
 
-    addRasterisedGlyphToTextureAndSetupGlyphImage(glyph, d_glyphTextures.back(), ft_bitmap,
-        glyphLeft, glyphTop, glyphWidth, glyphHeight, glyphTexLine);
+    // Create the data containing the pixels of the glyph
+    std::vector<argb_t> subTextureData = createGlyphTextureData(ft_bitmap);
+
+    // Update the cached texture data in memory
+    size_t bufferDataGlyphPos = (glyphTexLine.d_lastYPos * d_lastTextureSize) + glyphTexLine.d_lastXPos;
+    updateTextureBufferSubImage(d_lastTextureBuffer.data() + bufferDataGlyphPos,
+        glyphWidth, glyphHeight, subTextureData);
+
+    // Update the sub-image in the texture on the GPU
+    const Rectf imageArea(
+        glm::vec2(glyphTexLine.d_lastXPos, glyphTexLine.d_lastYPos),
+        Sizef(static_cast<float>(glyphWidth), static_cast<float>(glyphHeight)));
+    d_glyphTextures.back()->blitFromMemory(subTextureData.data(), imageArea);
 
     // Advance to next position, add padding
     glyphTexLine.d_lastXPos += glyphWidth + s_glyphPadding;
+
+    // This is the right bearing for bitmap glyphs, not d_fontFace->glyph->metrics.horiBearingX
+    const String name(std::to_string(glyph->getCodePoint()));
+    const glm::vec2 offset(glyphLeft, -1.f * glyphTop);
+    return new BitmapImage(name, d_glyphTextures.back(), imageArea, offset, AutoScaledMode::Disabled, d_nativeResolution);
 }
 
 //----------------------------------------------------------------------------//
@@ -549,27 +531,30 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
 
     FT_Set_Transform(d_fontFace, nullptr, nullptr);
 
+    // Non-zero result is an error
     if (FT_Load_Glyph(d_fontFace, glyph->getGlyphIndex(), getGlyphLoadFlags() | FT_LOAD_RENDER))
         return;
 
     const auto& ft_bitmap = d_fontFace->glyph->bitmap;
-    rasterise(glyph, ft_bitmap, d_fontFace->glyph->bitmap_left, d_fontFace->glyph->bitmap_top, ft_bitmap.width, ft_bitmap.rows);
-
-    //!!!DBG TMP!
-    assert(d_fontFace->glyph->advance.x == d_fontFace->glyph->metrics.horiAdvance);
-
+    auto image = rasterise(glyph, ft_bitmap, d_fontFace->glyph->bitmap_left, d_fontFace->glyph->bitmap_top, ft_bitmap.width, ft_bitmap.rows);
+    glyph->setImage(image);
     glyph->setAdvance(d_fontFace->glyph->advance.x * static_cast<float>(s_26dot6_toFloat));
     glyph->setLsbDelta(d_fontFace->glyph->lsb_delta);
     glyph->setRsbDelta(d_fontFace->glyph->rsb_delta);
 }
 
-/*
+//----------------------------------------------------------------------------//
+void FreeTypeFont::renderOutline(FreeTypeFontGlyph* glyph, float thickness) const
+{
+    FT_Set_Transform(d_fontFace, nullptr, nullptr);
+
     if (FT_Load_Glyph(d_fontFace, glyph->getGlyphIndex(), getGlyphLoadFlags() | FT_LOAD_NO_BITMAP))
         return;
 
     uint32_t outlinePixels = 1; // d_fontLayers[layer].d_outlinePixels; // n * 64 result in n pixels outline
     bool errorFlag = false;
 
+    //!!!TODO TEXT: cache stroker!
     FT_Stroker stroker;
     FT_Stroker_New(s_freetypeLibHandle, &stroker);
     FT_Stroker_Set(stroker, outlinePixels * 64, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
@@ -578,7 +563,7 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
     if (FT_Get_Glyph(d_fontFace->glyph, &ft_glyph))
         errorFlag = true;
 
-    error = FT_Glyph_Stroke(&ft_glyph, stroker, true); // can also use FT_Glyph_StrokeBorder
+    FT_Error error = FT_Glyph_Stroke(&ft_glyph, stroker, true); // can also use FT_Glyph_StrokeBorder
     if (error > 0)
         errorFlag = true;
 
@@ -587,16 +572,12 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
         errorFlag = true;
 
     FT_BitmapGlyph bitmapGlyph = reinterpret_cast<FT_BitmapGlyph>(ft_glyph);
-    ft_bitmap = bitmapGlyph->bitmap;
-    glyphTop = bitmapGlyph->top;
-    glyphLeft = bitmapGlyph->left;
     FT_Stroker_Done(stroker);
 
-    rasterise(glyph, ft_bitmap, glyphLeft, glyphTop, ft_bitmap.width, ft_bitmap.rows);
+    auto image = rasterise(glyph, bitmapGlyph->bitmap, bitmapGlyph->left, bitmapGlyph->top, bitmapGlyph->bitmap.width, bitmapGlyph->bitmap.rows);
 
-    if (fontLayerType != FontLayerType::Standard)
-        FT_Done_Glyph(ft_glyph);
-*/
+    FT_Done_Glyph(ft_glyph);
+}
 
 //----------------------------------------------------------------------------//
 void FreeTypeFont::writeXMLToStream_impl(XMLSerializer& xml_stream) const
@@ -720,6 +701,21 @@ FreeTypeFontGlyph* FreeTypeFont::getGlyph(uint32_t index, bool prepare) const
         prepareGlyph(glyph);
 
     return glyph;
+}
+
+//----------------------------------------------------------------------------//
+Image* FreeTypeFont::getOutline(uint32_t index, float thickness)
+{
+    if (index >= d_glyphs.size())
+        return nullptr;
+
+    //auto glyph = const_cast<FreeTypeFontGlyph*>(&d_glyphs[index]);
+
+    //if (prepare)
+    //    prepareGlyph(glyph);
+
+    //return glyph;
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------//
