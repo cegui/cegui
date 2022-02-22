@@ -41,7 +41,7 @@ class CEGUIEXPORT RenderedTextStyle : public RenderedTextElement
 {
 public:
 
-    RenderedTextStyle(const Font* font = nullptr, bool underline = false, bool strikeout = false)
+    RenderedTextStyle(Font* font = nullptr, bool underline = false, bool strikeout = false)
         : d_underline(underline)
         , d_strikeout(strikeout)
     {

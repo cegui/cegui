@@ -117,7 +117,7 @@ protected:
     //! active colour values.
     ColourRect d_colours;
     //! active font.
-    const Font* d_font = nullptr;
+    Font* d_font = nullptr;
     //! active vertical image formatting
     VerticalImageFormatting d_vertFormatting = VerticalImageFormatting::BottomAligned;
     //! active image size

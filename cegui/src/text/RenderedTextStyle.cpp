@@ -91,6 +91,9 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
         &System::getSingleton().getRenderer()->createGeometryBufferColoured() :
         nullptr;
 
+    //!!!DBG TMP!
+    const bool hasOutline = true;// (d_outlineSize > 0.f);
+
     const RenderedGlyph* end = begin + count;
     for (auto glyph = begin; glyph != end; ++glyph)
     {
@@ -103,22 +106,28 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
             settings.d_multiplyColours = selected ? selectedColour : normalColour;
         }
 
-        // Render the main image of the glyph
-        const FontGlyph* fontGlyph = d_font->getGlyph(glyph->fontGlyphIndex);
-        if (fontGlyph)
+        if (const FontGlyph* fontGlyph = d_font->getGlyph(glyph->fontGlyphIndex))
         {
             if (auto image = fontGlyph->getImage())
             {
                 Sizef size = image->getRenderedSize();
                 size.d_height *= heightScale;
                 settings.d_destArea.set(pos + glyph->offset, size);
-                image->createRenderGeometry(out, settings, canCombineFromIdx);
-            }
 
-            if (d_outlineSize > 0.f)
-            {
-                // TODO TEXT: draw outline, or do this before main graphics?
-                //???draw all outlines, then all main glyphs, to simplify buffer combining?
+                // Render the outline
+                if (hasOutline)
+                {
+                    //!!!DBG TMP!
+                    if (auto outlineImage = d_font->getOutline(glyph->fontGlyphIndex, 1.f)) //d_outlineSize))
+                    {
+                        settings.d_multiplyColours = Colour(0xffff0077);// d_outlineColours;
+                        outlineImage->createRenderGeometry(out, settings, canCombineFromIdx);
+                        settings.d_multiplyColours = selected ? selectedColour : normalColour;
+                    }
+                }
+
+                // Render the main image of the glyph
+                image->createRenderGeometry(out, settings, canCombineFromIdx);
             }
         }
 
