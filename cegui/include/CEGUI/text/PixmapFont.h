@@ -84,6 +84,7 @@ public:
 
     void updateFont() override;
     FontGlyph* getGlyph(uint32_t index, bool prepare = false) const override;
+    Image* getOutline(uint32_t index, float thickness = 1.f) override { return nullptr; }
 
     void defineMapping(char32_t codePoint, const String& imageName, float horzAdvance);
     void defineMapping(const String& value);

@@ -219,6 +219,8 @@ public:
     bool isCodepointAvailable(char32_t codePoint) const;
     //! Returns the glyph object at the given index or nullptr if no such glyph exists.
     virtual FontGlyph* getGlyph(uint32_t index, bool prepare = false) const = 0;
+    //! Returns an outline image for the given glyph and thickness.
+    virtual Image* getOutline(uint32_t index, float thickness = 1.f) = 0;
     //! Returns cached index of the glyph used for replacing unknown glyphs
     uint32_t getReplacementGlyphIndex() const { return d_replacementGlyphIdx; }
 
