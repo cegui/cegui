@@ -39,9 +39,6 @@
 #include "CEGUI/SharedStringStream.h"
 #include <freetype/tttables.h>
 
-//!!!DBG TMP!
-#include "CEGUI/text/FreeTypeFontLayer.h"
-
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
@@ -182,7 +179,7 @@ void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, uin
 
 //----------------------------------------------------------------------------//
 void FreeTypeFont::addRasterisedGlyphToTextureAndSetupGlyphImage(
-    FreeTypeFontGlyph* glyph, Texture* texture, FT_Bitmap& glyphBitmap, int32_t glyphLeft, int32_t glyphTop,
+    FreeTypeFontGlyph* glyph, Texture* texture, const FT_Bitmap& glyphBitmap, int32_t glyphLeft, int32_t glyphTop,
     uint32_t glyphWidth, uint32_t glyphHeight, const TextureGlyphLine& glyphTexLine) const
 {
     // Create the data containing the pixels of the glyph
@@ -249,7 +246,7 @@ size_t FreeTypeFont::findTextureLineWithFittingSpot(uint32_t glyphWidth, uint32_
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap, int32_t glyphLeft,
+void FreeTypeFont::rasterise(FreeTypeFontGlyph* glyph, const FT_Bitmap& ft_bitmap, int32_t glyphLeft,
     int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight) const
 {
     if (d_glyphTextures.empty())
@@ -320,7 +317,7 @@ void FreeTypeFont::createGlyphAtlasTexture() const
 }
 
 //----------------------------------------------------------------------------//
-std::vector<argb_t> FreeTypeFont::createGlyphTextureData(FT_Bitmap& glyphBitmap)
+std::vector<argb_t> FreeTypeFont::createGlyphTextureData(const FT_Bitmap& glyphBitmap)
 {
     uint32_t bitmapHeight = static_cast<uint32_t>(glyphBitmap.rows);
     uint32_t bitmapWidth = static_cast<uint32_t>(glyphBitmap.width);
@@ -351,38 +348,6 @@ std::vector<argb_t> FreeTypeFont::createGlyphTextureData(FT_Bitmap& glyphBitmap)
     }
 
     return glyphTextureData;
-}
-
-//----------------------------------------------------------------------------//
-static FT_Stroker_LineCap getLineCap(FreeTypeLineCap line_cap)
-{
-    switch (line_cap)
-    {
-        case FreeTypeLineCap::Round:
-            return FT_STROKER_LINECAP_ROUND;
-        case FreeTypeLineCap::Butt:
-            return FT_STROKER_LINECAP_BUTT;
-        case FreeTypeLineCap::Square:
-            return FT_STROKER_LINECAP_SQUARE;
-    }
-    return FT_STROKER_LINECAP_SQUARE;
-}
-
-//----------------------------------------------------------------------------//
-static FT_Stroker_LineJoin getLineJoin(FreeTypeLineJoin line_join)
-{
-    switch (line_join)
-    {
-        case FreeTypeLineJoin::Round:
-            return FT_STROKER_LINEJOIN_ROUND;
-        case FreeTypeLineJoin::Bevel:
-            return FT_STROKER_LINEJOIN_BEVEL;
-        case FreeTypeLineJoin::MiterFixed:
-            return FT_STROKER_LINEJOIN_MITER_FIXED;
-        case FreeTypeLineJoin::MiterVariable:
-            return FT_STROKER_LINEJOIN_MITER_VARIABLE;
-    }
-    return FT_STROKER_LINEJOIN_ROUND;
 }
 
 //----------------------------------------------------------------------------//
@@ -580,109 +545,58 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
     if (glyph->isInitialised())
         return;
 
-    FT_Glyph ft_glyph;
-    FT_Bitmap ft_bitmap;
-    FT_Vector position;
-    position.x = 0L;
-    position.y = 0L;
-    int glyphWidth = 0;
-    int glyphHeight = 0;
-    int glyphLeft = 0;
-    int glyphTop = 0;
-    FT_Set_Transform(d_fontFace, nullptr, &position);
+    glyph->markAsInitialised();
 
-    uint32_t layer = 0;
+    FT_Set_Transform(d_fontFace, nullptr, nullptr);
 
-    //layer 0 is the top rendered layer (rendered last over the other layers)
-    //for (uint32_t layer = 0; layer < layerCount; layer++)
-    {
-        FontLayerType fontLayerType = FontLayerType::Standard;
+    if (FT_Load_Glyph(d_fontFace, glyph->getGlyphIndex(), getGlyphLoadFlags() | FT_LOAD_RENDER))
+        return;
 
-        // Load the code point, "rendering" the glyph
-        FT_Error error = FT_Load_Glyph(d_fontFace, glyph->getGlyphIndex(), getGlyphLoadFlags());
+    const auto& ft_bitmap = d_fontFace->glyph->bitmap;
+    rasterise(glyph, ft_bitmap, d_fontFace->glyph->bitmap_left, d_fontFace->glyph->bitmap_top, ft_bitmap.width, ft_bitmap.rows);
 
-        glyph->markAsInitialised();
+    //!!!DBG TMP!
+    assert(d_fontFace->glyph->advance.x == d_fontFace->glyph->metrics.horiAdvance);
 
-        if (error != 0)
-            return;
-
-        if (fontLayerType == FontLayerType::Standard)
-        {
-            ft_bitmap = d_fontFace->glyph->bitmap;
-            glyphWidth = d_fontFace->glyph->bitmap.width;
-            glyphHeight = d_fontFace->glyph->bitmap.rows;
-            glyphTop = d_fontFace->glyph->bitmap_top;
-            glyphLeft = d_fontFace->glyph->bitmap_left;
-        }
-        else
-        {
-            uint32_t outlinePixels = 64; // d_fontLayers[layer].d_outlinePixels; // n * 64 result in n pixels outline
-            bool errorFlag = false;
-
-            FT_Stroker stroker;
-            FT_Stroker_New(s_freetypeLibHandle, &stroker);
-            FT_Stroker_Set(stroker,
-                outlinePixels * 64,
-                getLineCap(FreeTypeLineCap::Round),// d_fontLayers[layer].d_lineCap),
-                getLineJoin(FreeTypeLineJoin::Round),// d_fontLayers[layer].d_lineJoin),
-                10);// d_fontLayers[layer].d_miterLimit);
-
-            if (FT_Get_Glyph(d_fontFace->glyph, &ft_glyph))
-                errorFlag = true;
-            if (fontLayerType == FontLayerType::Outline)
-              error = FT_Glyph_Stroke(&ft_glyph, stroker, true);
-            if (fontLayerType == FontLayerType::Outer)
-              error = FT_Glyph_StrokeBorder(&ft_glyph, stroker, false, true);
-            if (fontLayerType == FontLayerType::Inner)
-              error = FT_Glyph_StrokeBorder(&ft_glyph, stroker, true, true);
-            if (error > 0)
-                errorFlag = true;
-            error = FT_Glyph_To_Bitmap(&ft_glyph, FT_RENDER_MODE_NORMAL, 0, true);
-            if (error > 0)
-                errorFlag = true;
-
-            FT_BitmapGlyph bitmapGlyph = reinterpret_cast<FT_BitmapGlyph>(ft_glyph);
-            ft_bitmap = bitmapGlyph->bitmap;
-            glyphWidth = bitmapGlyph->bitmap.width;
-            glyphHeight = bitmapGlyph->bitmap.rows;
-            glyphTop = bitmapGlyph->top;
-            glyphLeft = bitmapGlyph->left;
-            FT_Stroker_Done(stroker);
-            if (errorFlag)
-            {
-                //return;
-            }
-        }
-
-        if (!glyph->getImage())
-        {
-            // Rasterise the 0 position glyph
-            rasterise(glyph, ft_bitmap, glyphLeft, glyphTop, glyphWidth, glyphHeight);
-
-            glyph->setLsbDelta(d_fontFace->glyph->lsb_delta);
-            glyph->setRsbDelta(d_fontFace->glyph->rsb_delta);        
-        }
-
-        // FT_Fixed advance;
-        // TODO TEXT: update freetype and use FT_Get_Advance(d_fontFace, glyphIndex, loadBitmask, &advance);
-        // If scaling is performed (based on the value of `load_flags`), the advance value is in 16.16 format.
-        // Otherwise, it is in font units. Zero return value is success.
-
-        float adv;
-        if (fontLayerType == FontLayerType::Standard)
-        {
-            //adv = d_fontFace->glyph->advance.x * static_cast<float>(s_26dot6_toFloat);
-            adv = d_fontFace->glyph->metrics.horiAdvance * static_cast<float>(s_26dot6_toFloat);
-        }
-        else
-        {
-            adv = d_fontFace->glyph->metrics.horiAdvance * static_cast<float>(s_26dot6_toFloat);
-            FT_Done_Glyph(ft_glyph);
-        }
-
-        glyph->setAdvance(adv);
-    }
+    glyph->setAdvance(d_fontFace->glyph->advance.x * static_cast<float>(s_26dot6_toFloat));
+    glyph->setLsbDelta(d_fontFace->glyph->lsb_delta);
+    glyph->setRsbDelta(d_fontFace->glyph->rsb_delta);
 }
+
+/*
+    if (FT_Load_Glyph(d_fontFace, glyph->getGlyphIndex(), getGlyphLoadFlags() | FT_LOAD_NO_BITMAP))
+        return;
+
+    uint32_t outlinePixels = 1; // d_fontLayers[layer].d_outlinePixels; // n * 64 result in n pixels outline
+    bool errorFlag = false;
+
+    FT_Stroker stroker;
+    FT_Stroker_New(s_freetypeLibHandle, &stroker);
+    FT_Stroker_Set(stroker, outlinePixels * 64, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
+
+    FT_Glyph ft_glyph;
+    if (FT_Get_Glyph(d_fontFace->glyph, &ft_glyph))
+        errorFlag = true;
+
+    error = FT_Glyph_Stroke(&ft_glyph, stroker, true); // can also use FT_Glyph_StrokeBorder
+    if (error > 0)
+        errorFlag = true;
+
+    error = FT_Glyph_To_Bitmap(&ft_glyph, FT_RENDER_MODE_NORMAL, 0, true);
+    if (error > 0)
+        errorFlag = true;
+
+    FT_BitmapGlyph bitmapGlyph = reinterpret_cast<FT_BitmapGlyph>(ft_glyph);
+    ft_bitmap = bitmapGlyph->bitmap;
+    glyphTop = bitmapGlyph->top;
+    glyphLeft = bitmapGlyph->left;
+    FT_Stroker_Done(stroker);
+
+    rasterise(glyph, ft_bitmap, glyphLeft, glyphTop, ft_bitmap.width, ft_bitmap.rows);
+
+    if (fontLayerType != FontLayerType::Standard)
+        FT_Done_Glyph(ft_glyph);
+*/
 
 //----------------------------------------------------------------------------//
 void FreeTypeFont::writeXMLToStream_impl(XMLSerializer& xml_stream) const
@@ -764,11 +678,7 @@ void FreeTypeFont::setAntiAliased(bool antiAliased)
 //----------------------------------------------------------------------------//
 FT_Int32 FreeTypeFont::getGlyphLoadFlags() const
 {
-    const FontLayerType fontLayerType = FontLayerType::Standard; // d_fontLayers[layer].d_fontLayerType;
-
-    const FT_Int32 targetType = d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO;
-    const FT_Int32 loadType = (fontLayerType == FontLayerType::Standard) ? FT_LOAD_RENDER : FT_LOAD_NO_BITMAP;
-    return loadType | FT_LOAD_FORCE_AUTOHINT | targetType;
+    return FT_LOAD_FORCE_AUTOHINT | (d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO);
 }
 
 //----------------------------------------------------------------------------//
