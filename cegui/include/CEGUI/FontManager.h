@@ -31,7 +31,6 @@
 #include "CEGUI/ResourceEventSet.h"
 #include "CEGUI/XmlResourceExistsAction.h"
 #include "CEGUI/text/FontSizeUnit.h"
-#include "CEGUI/text/FreeTypeFontLayer.h"
 #include "CEGUI/Image.h" // for AutoScaledMode
 #include <unordered_map>
 

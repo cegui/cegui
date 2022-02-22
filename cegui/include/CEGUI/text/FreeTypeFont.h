@@ -179,9 +179,7 @@ protected:
     */
     struct TextureGlyphLine
     {
-        TextureGlyphLine()
-        {
-        }
+        TextureGlyphLine() = default;
 
         TextureGlyphLine(uint32_t lastPosX, uint32_t lastPosY, uint32_t maximumExtentY)
             : d_lastXPos(lastPosX)
@@ -236,13 +234,13 @@ protected:
     void handleFontSizeOrFontUnitChange();
 
     //! Rasterises the glyph and adds it into a glyph atlas texture
-    void rasterise(FreeTypeFontGlyph* glyph, FT_Bitmap& ft_bitmap,
+    void rasterise(FreeTypeFontGlyph* glyph, const FT_Bitmap& ft_bitmap,
         int32_t glyphLeft, int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight) const;
     
     //! Helper functions for rasterisation
     void addRasterisedGlyphToTextureAndSetupGlyphImage(
         FreeTypeFontGlyph* glyph, Texture* texture,
-        FT_Bitmap& glyphBitmap, int32_t glyphLeft, int32_t glyphTop,
+        const FT_Bitmap& glyphBitmap, int32_t glyphLeft, int32_t glyphTop,
         uint32_t glyphWidth, uint32_t glyphHeight,
         const TextureGlyphLine& glyphTexLine) const;
 
@@ -250,7 +248,7 @@ protected:
     size_t addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWidth) const;
 
     void createGlyphAtlasTexture() const;
-    static std::vector<argb_t> createGlyphTextureData(FT_Bitmap& glyph_bitmap);
+    static std::vector<argb_t> createGlyphTextureData(const FT_Bitmap& glyph_bitmap);
 
     void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;
 
