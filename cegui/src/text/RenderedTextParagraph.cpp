@@ -669,13 +669,15 @@ bool RenderedTextParagraph::getTextIndexBounds(Rectf& out, bool* outRtl, size_t 
     {
         const auto& lastLine = d_lines.back();
         out.d_min.y = d_height - lastLine.extents.d_height;
-        out.d_min.x = lastLine.horzOffset + lastLine.extents.d_width;
+        out.d_min.x = lastLine.horzOffset;
+        if (d_bidiDir == DefaultParagraphDirection::LeftToRight)
+            out.d_min.x += lastLine.extents.d_width;
     }
 
     out.d_max.y = d_height;
     out.d_max.x = out.d_min.x;
     if (outRtl)
-        *outRtl = false;
+        *outRtl = (d_bidiDir == DefaultParagraphDirection::RightToLeft);
 
     return true;
 }
@@ -822,7 +824,7 @@ size_t RenderedTextParagraph::getNearestGlyphIndex(size_t lineIndex, float offse
 
     // Point is to the left of the beginning
     if (offsetX < line.horzOffset)
-        return i;
+        return (d_bidiDir == DefaultParagraphDirection::LeftToRight) ? i : line.glyphEndIdx;
 
     i = skipWrappedWhitespace(i, line.glyphEndIdx);
 
@@ -840,7 +842,7 @@ size_t RenderedTextParagraph::getNearestGlyphIndex(size_t lineIndex, float offse
     }
 
     // Point is to the right of the end
-    return line.glyphEndIdx;
+    return (d_bidiDir == DefaultParagraphDirection::LeftToRight) ? line.glyphEndIdx : line.glyphEndIdx - 1;
 }
 
 //----------------------------------------------------------------------------//
