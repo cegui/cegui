@@ -531,10 +531,17 @@ bool RenderedText::getTextIndexBounds(size_t textIndex, Rectf& out, bool* outRtl
     // We still have an empty line when there is no text at all
     if (d_paragraphs.empty())
     {
-        out.d_min.x = 0.f;
-        out.d_max.x = 0.f;
+        switch (d_horzFormatting)
+        {
+            case HorizontalTextFormatting::CentreAligned: out.d_min.x = d_areaWidth * 0.5f; break;
+            case HorizontalTextFormatting::RightAligned: out.d_min.x = d_areaWidth; break;
+            default: out.d_min.x = 0.f; break;
+        }
+        out.d_max.x = out.d_min.x;
         out.d_min.y = 0.f;
         out.d_max.y = d_defaultFont ? d_defaultFont->getFontHeight() : 0.f;
+        if (outRtl)
+            *outRtl = false;
         return true;
     }
 

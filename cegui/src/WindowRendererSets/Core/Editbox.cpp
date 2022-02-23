@@ -73,13 +73,18 @@ Rectf FalagardEditbox::getCaretRect() const
     if (!w->getRenderedText().getTextIndexBounds(w->getCaretIndex(), caretGlyphRect, &isRightToLeft))
         return {};
 
-    const float caretWidth = getLookNFeel().getImagerySection("Caret").getBoundingRect(*w).getWidth();
     if (isRightToLeft)
-        caretGlyphRect.d_min.x = caretGlyphRect.d_max.x - caretWidth;
+        caretGlyphRect.d_min.x = caretGlyphRect.d_max.x - getCaretWidth();
     else
-        caretGlyphRect.d_max.x = caretGlyphRect.d_min.x + caretWidth;
+        caretGlyphRect.d_max.x = caretGlyphRect.d_min.x + getCaretWidth();
 
     return caretGlyphRect;
+}
+
+//----------------------------------------------------------------------------//
+float FalagardEditbox::getCaretWidth() const
+{
+    return getLookNFeel().getImagerySection("Caret").getBoundingRect(*d_window).getWidth();
 }
 
 //----------------------------------------------------------------------------//

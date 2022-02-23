@@ -87,7 +87,7 @@ void Editbox::updateFormatting()
         return;
 
     const auto textArea = wr->getTextRenderArea();
-    d_renderedText.updateFormatting(textArea.getWidth());
+    d_renderedText.updateFormatting(textArea.getWidth() - wr->getCaretWidth());
 
     // Center text vertically inside an area
     d_textOffset.y = (d_renderedText.getExtents().d_height - textArea.getHeight()) * 0.5f;
@@ -102,23 +102,14 @@ void Editbox::setTextOffsetX(float value)
 
     updateRenderedText();
 
-    const float textWidth = d_renderedText.getExtents().d_width;
-    const float areaWidth = d_renderedText.getAreaWidth();
-    const float caretWidth = wr->getCaretRect().getWidth();
-    const float offset = std::max(0.f, std::min(value, textWidth - areaWidth + caretWidth));
+    const float offset = std::max(0.f,
+        std::min(value, d_renderedText.getExtents().d_width - d_renderedText.getAreaWidth()));
 
     if (d_textOffset.x != offset)
     {
         d_textOffset.x = offset;
         invalidate();
     }
-}
-
-//----------------------------------------------------------------------------//
-Rectf Editbox::getCaretRect() const
-{
-    auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
-    return wr ? wr->getCaretRect() : Rectf{};
 }
 
 //----------------------------------------------------------------------------//
@@ -130,14 +121,11 @@ void Editbox::ensureCaretIsVisible()
 
     updateRenderedText();
 
-    const Rectf caretRect = wr->getCaretRect();
-    const float areaWidth = d_renderedText.getAreaWidth() - caretRect.getWidth();
-    const float caretOffsetX = caretRect.left();
-
+    const float caretOffsetX = wr->getCaretRect().left();
     if (caretOffsetX < d_textOffset.x)
         d_textOffset.x = caretOffsetX;
-    else if (caretOffsetX > d_textOffset.x + areaWidth)
-        d_textOffset.x = caretOffsetX - areaWidth;
+    else if (caretOffsetX > d_textOffset.x + d_renderedText.getAreaWidth())
+        d_textOffset.x = caretOffsetX - d_renderedText.getAreaWidth();
 }
 
 //----------------------------------------------------------------------------//

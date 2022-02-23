@@ -56,6 +56,7 @@ public:
     virtual Rectf getTextRenderArea() const = 0;
 
     virtual Rectf getCaretRect() const = 0;
+    virtual float getCaretWidth() const = 0;
 };
 
 //! \brief Base class for the multi-line edit box widget.
@@ -122,7 +123,6 @@ public:
     virtual void setTextOffsetX(float value) override;
     virtual void setTextOffsetY(float value) override;
 
-    virtual Rectf getCaretRect() const override;
     virtual void ensureCaretIsVisible() override;
 
     /*!

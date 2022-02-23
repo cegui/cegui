@@ -72,8 +72,10 @@ void MultiLineEditbox::updateFormatting()
     if (!wr)
         return;
 
+    const float caretWidth = wr->getCaretWidth();
+
     Rectf textArea = wr->getTextRenderArea();
-    d_renderedText.updateFormatting(textArea.getWidth());
+    d_renderedText.updateFormatting(textArea.getWidth() - caretWidth);
 
     Scrollbar* const vertScrollbar = getVertScrollbar();
     Scrollbar* const horzScrollbar = getHorzScrollbar();
@@ -85,7 +87,7 @@ void MultiLineEditbox::updateFormatting()
         {
             vertScrollbar->setVisible(show);
             textArea = wr->getTextRenderArea();
-            d_renderedText.updateFormatting(textArea.getWidth());
+            d_renderedText.updateFormatting(textArea.getWidth() - caretWidth);
         }
     }
 
@@ -97,7 +99,7 @@ void MultiLineEditbox::updateFormatting()
         {
             horzScrollbar->setVisible(show);
             textArea = wr->getTextRenderArea();
-            d_renderedText.updateFormatting(textArea.getWidth());
+            d_renderedText.updateFormatting(textArea.getWidth() - caretWidth);
         }
     }
 
@@ -110,7 +112,7 @@ void MultiLineEditbox::updateFormatting()
         {
             vertScrollbar->setVisible(show);
             textArea = wr->getTextRenderArea();
-            d_renderedText.updateFormatting(textArea.getWidth());
+            d_renderedText.updateFormatting(textArea.getWidth() - caretWidth);
         }
     }
 
@@ -150,13 +152,6 @@ void MultiLineEditbox::setTextOffsetY(float value)
 }
 
 //----------------------------------------------------------------------------//
-Rectf MultiLineEditbox::getCaretRect() const
-{
-    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
-    return wr ? wr->getCaretRect() : Rectf{};
-}
-
-//----------------------------------------------------------------------------//
 void MultiLineEditbox::ensureCaretIsVisible()
 {
     auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
@@ -167,7 +162,6 @@ void MultiLineEditbox::ensureCaretIsVisible()
 
     const Rectf textArea = wr->getTextRenderArea();
     const Rectf caretRect = wr->getCaretRect();
-    const float areaWidth = textArea.getWidth() - caretRect.getWidth();
     const float caretOffsetX = caretRect.left();
 
     Scrollbar* vertScrollbar = getVertScrollbar();
@@ -179,8 +173,8 @@ void MultiLineEditbox::ensureCaretIsVisible()
     Scrollbar* horzScrollbar = getHorzScrollbar();
     if (caretOffsetX < horzScrollbar->getScrollPosition())
         horzScrollbar->setScrollPosition(caretOffsetX);
-    else if (caretOffsetX > horzScrollbar->getScrollPosition() + areaWidth)
-        horzScrollbar->setScrollPosition(caretOffsetX - areaWidth);
+    else if (caretOffsetX > horzScrollbar->getScrollPosition() + d_renderedText.getAreaWidth())
+        horzScrollbar->setScrollPosition(caretOffsetX - d_renderedText.getAreaWidth());
 }
 
 //----------------------------------------------------------------------------//
@@ -203,8 +197,12 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineUp(bool select)
 {
+    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
+    if (!wr)
+        return;
+
     if (d_desiredCaretOffsetXDirty)
-        d_desiredCaretOffsetX = getCaretRect().left();
+        d_desiredCaretOffsetX = wr->getCaretRect().left();
 
     updateRenderedText();
     handleCaretMovement(d_renderedText.lineUpTextIndex(d_caretPos, d_desiredCaretOffsetX), select);
@@ -215,8 +213,12 @@ void MultiLineEditbox::handleLineUp(bool select)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineDown(bool select)
 {
+    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
+    if (!wr)
+        return;
+
     if (d_desiredCaretOffsetXDirty)
-        d_desiredCaretOffsetX = getCaretRect().left();
+        d_desiredCaretOffsetX = wr->getCaretRect().left();
 
     updateRenderedText();
     handleCaretMovement(d_renderedText.lineDownTextIndex(d_caretPos, d_desiredCaretOffsetX), select);
@@ -234,7 +236,7 @@ void MultiLineEditbox::handlePageUp(bool select)
     const float pageHeight = wr->getTextRenderArea().getHeight();
 
     if (d_desiredCaretOffsetXDirty)
-        d_desiredCaretOffsetX = getCaretRect().left();
+        d_desiredCaretOffsetX = wr->getCaretRect().left();
 
     updateRenderedText();
     handleCaretMovement(d_renderedText.pageUpTextIndex(d_caretPos, d_desiredCaretOffsetX, pageHeight), select);
@@ -252,7 +254,7 @@ void MultiLineEditbox::handlePageDown(bool select)
     const float pageHeight = wr->getTextRenderArea().getHeight();
 
     if (d_desiredCaretOffsetXDirty)
-        d_desiredCaretOffsetX = getCaretRect().left();
+        d_desiredCaretOffsetX = wr->getCaretRect().left();
 
     updateRenderedText();
     handleCaretMovement(d_renderedText.pageDownTextIndex(d_caretPos, d_desiredCaretOffsetX, pageHeight), select);
