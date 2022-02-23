@@ -381,6 +381,20 @@ size_t EditboxBase::getPrevTextIndex(size_t idx) const
 }
 
 //----------------------------------------------------------------------------//
+size_t EditboxBase::getNextTextIndex(size_t idx) const
+{
+    const String& text = getText();
+    if (idx >= text.size())
+        return text.size();
+
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
+    return idx + 1;
+#else
+    return idx + String::getCodePointSize(text[idx]);
+#endif
+}
+
+//----------------------------------------------------------------------------//
 bool EditboxBase::insertString(String&& strToInsert)
 {
     if (isReadOnly() || strToInsert.empty())
@@ -808,18 +822,7 @@ void EditboxBase::handleWordLeft(bool select)
 //----------------------------------------------------------------------------//
 void EditboxBase::handleCharRight(bool select)
 {
-    size_t codePointSize = 0;
-    const auto& text = getText();
-    if (d_caretPos < text.size())
-    {
-#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
-        codePointSize = 1;
-#else
-        codePointSize = String::getCodePointSize(text[d_caretPos]);
-#endif
-    }
-
-    handleCaretMovement(d_caretPos + codePointSize, select);
+    handleCaretMovement(getNextTextIndex(d_caretPos), select);
 }
 
 //----------------------------------------------------------------------------//
@@ -875,19 +878,10 @@ void EditboxBase::handleDelete()
     if (isReadOnly())
         return;
 
-    const auto& text = getText();
     if (getSelectionLength())
-    {
         deleteRange(getSelectionStart(), getSelectionLength());
-    }
-    else if (d_caretPos < text.size())
-    {
-#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8
-        deleteRange(d_caretPos, 1);
-#else
-        deleteRange(d_caretPos, String::getCodePointSize(text[d_caretPos]));
-#endif
-    }
+    else
+        deleteRange(d_caretPos, getNextTextIndex(d_caretPos) - d_caretPos);
 }
 
 //----------------------------------------------------------------------------//

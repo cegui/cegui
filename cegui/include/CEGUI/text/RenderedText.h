@@ -79,7 +79,7 @@ public:
     const Font* getDefaultFont() const { return d_defaultFont; }
     bool isFittingIntoAreaWidth() const;
 
-    size_t getTextIndexAtPoint(const glm::vec2& pt) const;
+    size_t getTextIndexAtPoint(const glm::vec2& pt, float* outRelPos = nullptr) const;
     bool getTextIndexBounds(size_t textIndex, Rectf& out, bool* outRtl = nullptr) const;
     size_t nextTextIndex(size_t textIndex) const;
     size_t prevTextIndex(size_t textIndex) const;

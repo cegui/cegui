@@ -142,7 +142,10 @@ size_t Editbox::getTextIndexFromPosition(const glm::vec2& pt)
 
     //???FIXME TEXT: move to renderer? Should not rely on the same calculations in different places!
     const auto localPt = CoordConverter::screenToWindow(*this, pt) - wr->getTextRenderArea().d_min + getTextOffset();
-    return d_renderedText.getTextIndexAtPoint(localPt);
+
+    float relPos;
+    const auto idx = d_renderedText.getTextIndexAtPoint(localPt, &relPos);
+    return (relPos >= 0.5f) ? getNextTextIndex(idx) : idx;
 }
 
 //----------------------------------------------------------------------------//
