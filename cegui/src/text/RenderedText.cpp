@@ -393,6 +393,8 @@ bool RenderedText::updateFormatting(float areaWidth)
     const bool areaWidthChanged = (d_areaWidth != areaWidth);
     d_areaWidth = areaWidth;
 
+    const float defaultFontHeight = d_defaultFont ? d_defaultFont->getFontHeight() : 0.f;
+
     Rectf extents;
     bool fitsIntoAreaWidth = true;
     for (auto& p : d_paragraphs)
@@ -401,7 +403,7 @@ bool RenderedText::updateFormatting(float areaWidth)
             p.onAreaWidthChanged();
 
         p.updateLines(d_elements, areaWidth);
-        p.updateLineHeights(d_elements, d_defaultFont ? d_defaultFont->getFontHeight() : 0.f);
+        p.updateLineHeights(d_elements, defaultFontHeight);
         p.updateHorizontalFormatting(areaWidth);
 
         p.accumulateExtents(extents);
@@ -410,6 +412,8 @@ bool RenderedText::updateFormatting(float areaWidth)
     }
 
     d_extents = extents.getSize();
+    if (d_paragraphs.empty())
+        d_extents.d_height = defaultFontHeight;
 
     return fitsIntoAreaWidth;
 }
