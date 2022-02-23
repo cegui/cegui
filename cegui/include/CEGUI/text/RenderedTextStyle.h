@@ -64,7 +64,8 @@ public:
 
 protected:
 
-    void drawEffects(GeometryBuffer* effectBuffer, float left, float right, float y, const ColourRect& colours, const Rectf* clipRect) const;
+    void drawEffects(GeometryBuffer* effectBuffer, float left, float right, float y,
+        const ColourRect& colours, const Rectf* clipRect, bool outline) const;
 
     ColourRect d_colours = 0xFFFFFFFF;
     ColourRect d_outlineColours = 0xFF000000;

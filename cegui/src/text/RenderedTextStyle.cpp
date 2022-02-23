@@ -76,15 +76,19 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
         return;
 
     glm::vec2 pos = penPosition;
-    float heightScale = 1.f;
-    applyVerticalFormatting(lineHeight, pos.y, heightScale);
+    glm::vec2 scale(1.f, 1.f);
+    applyVerticalFormatting(lineHeight, pos.y, scale.y);
 
     const RenderedGlyph* end = begin + count;
+
+    auto effectBuffer = (d_underline || d_strikeout) ?
+        &System::getSingleton().getRenderer()->createGeometryBufferColoured() :
+        nullptr;
 
     // Render the outline
     if (d_outlineSize > 0.f)
     {
-        ImageRenderSettings outlineSettings(Rectf(), clipRect, d_outlineColours, 1.f, false);
+        ImageRenderSettings outlineSettings(Rectf(), clipRect, d_outlineColours, 1.f, true);
 
         for (auto glyph = begin; glyph != end; ++glyph)
         {
@@ -94,7 +98,7 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
             if (auto outlineImage = d_font->getOutline(glyph->fontGlyphIndex, d_outlineSize))
             {
                 Sizef size = outlineImage->getRenderedSize();
-                size.d_height *= heightScale;
+                //size.d_height *= heightScale;
                 outlineSettings.d_destArea.set(pos + glyph->offset, size);
                 outlineImage->createRenderGeometry(out, outlineSettings, canCombineFromIdx);
             }
@@ -103,6 +107,9 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
             if (glyph->isJustifyable)
                 pos.x += justifySpaceSize;
         }
+
+        if (effectBuffer)
+            drawEffects(effectBuffer, penPosition.x, pos.x, pos.y, d_outlineColours, clipRect, true);
     }
 
     // Render main images of glyphs
@@ -116,16 +123,13 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
 
     pos.x = penPosition.x;
     float effectStart = pos.x;
-    auto effectBuffer = (d_underline || d_strikeout) ?
-        &System::getSingleton().getRenderer()->createGeometryBufferColoured() :
-        nullptr;
 
     for (auto glyph = begin; glyph != end; ++glyph)
     {
         const bool newSelected = selection && glyph->sourceIndex >= selection->start && glyph->sourceIndex < selection->end;
         if (selected != newSelected)
         {
-            drawEffects(effectBuffer, effectStart, pos.x, pos.y, settings.d_multiplyColours, clipRect);
+            drawEffects(effectBuffer, effectStart, pos.x, pos.y, settings.d_multiplyColours, clipRect, false);
             effectStart = pos.x;
             selected = newSelected;
             settings.d_multiplyColours = selected ? selectedColour : normalColour;
@@ -135,9 +139,7 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
         {
             if (auto image = fontGlyph->getImage())
             {
-                Sizef size = image->getRenderedSize();
-                size.d_height *= heightScale;
-                settings.d_destArea.set(pos + glyph->offset, size);
+                settings.d_destArea.set(pos + glyph->offset * scale, image->getRenderedSize() * scale);
                 image->createRenderGeometry(out, settings, canCombineFromIdx);
             }
         }
@@ -149,7 +151,7 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
 
     if (effectBuffer)
     {
-        drawEffects(effectBuffer, effectStart, pos.x, pos.y, settings.d_multiplyColours, clipRect);
+        drawEffects(effectBuffer, effectStart, pos.x, pos.y, settings.d_multiplyColours, clipRect, false);
 
         if (effectBuffer->getVertexCount())
             out.push_back(effectBuffer);
@@ -162,10 +164,14 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
 
 //----------------------------------------------------------------------------//
 void RenderedTextStyle::drawEffects(GeometryBuffer* effectBuffer, float left,
-    float right, float y, const ColourRect& colours, const Rectf* clipRect) const
+    float right, float y, const ColourRect& colours, const Rectf* clipRect, bool outline) const
 {
     if (!effectBuffer || !d_font || left >= right)
         return;
+
+    const float inflation = outline ? d_outlineSize : 0.f;
+    left -= inflation;
+    right += inflation;
 
     y = std::round(y + d_font->getBaseline());
 
@@ -173,7 +179,7 @@ void RenderedTextStyle::drawEffects(GeometryBuffer* effectBuffer, float left,
     {
         const float top = y - d_font->getUnderlineTop();
         const float bottom = top + std::max(1.f, std::round(d_font->getUnderlineThickness()));
-        const Rectf rect(left, top, right, bottom);
+        const Rectf rect(left, top - inflation, right, bottom + inflation);
         effectBuffer->appendSolidRect(clipRect ? rect.getIntersection(*clipRect) : rect, colours);
     }
 
@@ -181,7 +187,7 @@ void RenderedTextStyle::drawEffects(GeometryBuffer* effectBuffer, float left,
     {
         const float top = y - d_font->getStrikeoutTop();
         const float bottom = top + std::max(1.f, std::round(d_font->getStrikeoutThickness()));
-        const Rectf rect(left, top, right, bottom);
+        const Rectf rect(left, top - inflation, right, bottom + inflation);
         effectBuffer->appendSolidRect(clipRect ? rect.getIntersection(*clipRect) : rect, colours);
     }
 }

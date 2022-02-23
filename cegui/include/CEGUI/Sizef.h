@@ -73,9 +73,16 @@ public:
         return !operator==(other);
     }
 
-    Sizef operator*(const float c) const
+    Sizef operator*(float c) const
     {
         return Sizef(d_width * c, d_height * c);
+    }
+
+    Sizef& operator*=(float c)
+    {
+        d_width *= c;
+        d_height *= c;
+        return *this;
     }
 
     Sizef operator*(const Sizef& s) const
@@ -86,6 +93,13 @@ public:
     Sizef operator*(const glm::vec2& vec) const
     {
         return Sizef(d_width * vec.x, d_height * vec.y);
+    }
+
+    Sizef& operator*=(const glm::vec2& vec)
+    {
+        d_width *= vec.x;
+        d_height *= vec.y;
+        return *this;
     }
 
     Sizef operator+(const Sizef& s) const
