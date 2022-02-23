@@ -442,8 +442,6 @@ void FreeTypeFont::updateFont()
     if (error != 0)
         findAndThrowFreeTypeError(error, "Failed to create face from font file");
 
-    FT_Stroker_New(s_freetypeLibHandle, &d_stroker);
-
     // Check unicode character map availability
     if (!d_fontFace->charmap)
     {
@@ -457,17 +455,15 @@ void FreeTypeFont::updateFont()
     if (d_autoScaled != AutoScaledMode::Disabled)
         fontScaleFactor *= d_vertScaling;
     
-    const uint32_t requestedFontSizeInPixels = static_cast<uint32_t>(
-        std::lround(getSizeInPixels() * fontScaleFactor));
-
-    FT_Error errorResult = FT_Set_Pixel_Sizes(d_fontFace, 0, requestedFontSizeInPixels);
-    if (errorResult != 0)
+    const uint32_t fontSize = static_cast<uint32_t>(std::lround(getSizeInPixels() * fontScaleFactor));
+    FT_Error errorResult = FT_Set_Pixel_Sizes(d_fontFace, 0, fontSize);
+    if (errorResult != FT_Err_Ok)
     {
         // Usually, an error occurs with a fixed-size font format (like FNT or PCF)
         // when trying to set the pixel size to a value that is not listed in the
         // face->fixed_sizes array. For bitmap fonts we can render only at specific
         // point sizes. Try to find Font with closest pixel height and use it instead.
-        tryToCreateFontWithClosestFontHeight(errorResult, requestedFontSizeInPixels);
+        tryToCreateFontWithClosestFontHeight(errorResult, fontSize);
     }
 
     bool initStrikeout = false;
@@ -504,6 +500,8 @@ void FreeTypeFont::updateFont()
 
     if (d_specificLineSpacing > 0.0f)
         d_height = d_specificLineSpacing;
+
+    FT_Stroker_New(s_freetypeLibHandle, &d_stroker);
 
     // Initialise glyph map
 

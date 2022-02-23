@@ -270,6 +270,8 @@ public:
     */
     virtual void appendGeometry(const TexturedColouredVertex* vertex_array, std::size_t vertex_count);
 
+    void appendSolidRect(const Rectf& rect, const ColourRect& colours);
+
     /*!
     \brief
         A helper function that sets a texture parameter of the RenderMaterial of this

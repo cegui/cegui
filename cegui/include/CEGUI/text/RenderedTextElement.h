@@ -27,6 +27,7 @@
 #pragma once
 #include "CEGUI/Rectf.h"
 #include "CEGUI/falagard/Enums.h"
+#include "CEGUI/ColourRect.h"
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -81,9 +82,14 @@ public:
     void setFont(Font* font) { d_font = font; }
     const Font* getFont() const { return d_font; }
 
+    void setBackgroundColour(const ColourRect& colours) { d_backgroundColours = colours; }
+    ColourRect getBackgroundColour() const { return d_backgroundColours; }
+    bool hasBackgroundColour() const { return !d_backgroundColours.isFullyTransparent(); }
+
 protected:
 
     Font*                   d_font = nullptr;
+    ColourRect              d_backgroundColours = 0x00000000;
     Rectf                   d_padding = Rectf(0.f, 0.f, 0.f, 0.f);
     VerticalImageFormatting d_verticalFormatting = VerticalImageFormatting::BottomAligned;
 };

@@ -161,45 +161,10 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
 }
 
 //----------------------------------------------------------------------------//
-static inline void drawLine(GeometryBuffer* effectBuffer, float left, float right,
-    float top, float bottom, const ColourRect& colours, const Rectf* clipRect)
-{
-    if (clipRect && (top >= clipRect->bottom() || bottom <= clipRect->top()))
-        return;
-
-    ColouredVertex v[6];
-    v[0].setColour(colours.d_top_left);
-    v[0].d_position = glm::vec3(left, top, 0.0f);
-    v[1].setColour(colours.d_bottom_left);
-    v[1].d_position = glm::vec3(left, bottom, 0.0f);
-    v[2].setColour(colours.d_bottom_right);
-    v[2].d_position = glm::vec3(right, bottom, 0.0f);
-    v[3].setColour(colours.d_top_right);
-    v[3].d_position = glm::vec3(right, top, 0.0f);
-    v[4].setColour(colours.d_top_left);
-    v[4].d_position = glm::vec3(left, top, 0.0f);
-    v[5].setColour(colours.d_bottom_right);
-    v[5].d_position = glm::vec3(right, bottom, 0.0f);
-
-    effectBuffer->appendGeometry(v, 6);
-}
-
-//----------------------------------------------------------------------------//
 void RenderedTextStyle::drawEffects(GeometryBuffer* effectBuffer, float left,
     float right, float y, const ColourRect& colours, const Rectf* clipRect) const
 {
-    if (!effectBuffer || !d_font)
-        return;
-
-    if (clipRect)
-    {
-        if (left < clipRect->left())
-            left = clipRect->left();
-        if (right > clipRect->right())
-            right = clipRect->right();
-    }
-
-    if (left >= right)
+    if (!effectBuffer || !d_font || left >= right)
         return;
 
     y = std::round(y + d_font->getBaseline());
@@ -208,14 +173,16 @@ void RenderedTextStyle::drawEffects(GeometryBuffer* effectBuffer, float left,
     {
         const float top = y - d_font->getUnderlineTop();
         const float bottom = top + std::max(1.f, std::round(d_font->getUnderlineThickness()));
-        drawLine(effectBuffer, left, right, top, bottom, colours, clipRect);
+        const Rectf rect(left, top, right, bottom);
+        effectBuffer->appendSolidRect(clipRect ? rect.getIntersection(*clipRect) : rect, colours);
     }
 
     if (d_strikeout)
     {
         const float top = y - d_font->getStrikeoutTop();
         const float bottom = top + std::max(1.f, std::round(d_font->getStrikeoutThickness()));
-        drawLine(effectBuffer, left, right, top, bottom, colours, clipRect);
+        const Rectf rect(left, top, right, bottom);
+        effectBuffer->appendSolidRect(clipRect ? rect.getIntersection(*clipRect) : rect, colours);
     }
 }
 

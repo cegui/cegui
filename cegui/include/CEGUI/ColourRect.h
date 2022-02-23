@@ -136,6 +136,13 @@ public:
 	*/
 	bool	isMonochromatic() const;
 
+    bool isFullyTransparent() const
+    {
+        return d_top_left.getAlpha() <= 0.f &&
+            d_top_right.getAlpha() <= 0.f &&
+            d_bottom_left.getAlpha() <= 0.f &&
+            d_bottom_right.getAlpha() <= 0.f;
+    }
 
 	/*!
 	\brief
