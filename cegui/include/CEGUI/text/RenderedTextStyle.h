@@ -64,7 +64,7 @@ public:
 
 protected:
 
-    void drawEffects(GeometryBuffer* effectBuffer, float left, float right, float y,
+    void drawEffects(GeometryBuffer* effectBuffer, float left, float right, float y, const glm::vec2& scale,
         const ColourRect& colours, const Rectf* clipRect, bool outline) const;
 
     ColourRect d_colours = 0xFFFFFFFF;

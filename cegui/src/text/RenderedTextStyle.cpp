@@ -78,6 +78,7 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
     glm::vec2 pos = penPosition;
     glm::vec2 scale(1.f, 1.f);
     applyVerticalFormatting(lineHeight, pos.y, scale.y);
+    const glm::vec2 scaleDiff(scale.x - 1.f, scale.y - 1.f);
 
     const RenderedGlyph* end = begin + count;
 
@@ -95,12 +96,10 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
             //!!!TODO TEXT: can optimize out map search by caching outline object, like:
             // auto outline = font->getOutline(size);
             // for each glyph: outline->getOrCreateImage(glyphIdx)!
-            if (auto outlineImage = d_font->getOutline(glyph->fontGlyphIndex, d_outlineSize))
+            if (auto image = d_font->getOutline(glyph->fontGlyphIndex, d_outlineSize))
             {
-                Sizef size = outlineImage->getRenderedSize();
-                //size.d_height *= heightScale;
-                outlineSettings.d_destArea.set(pos + glyph->offset, size);
-                outlineImage->createRenderGeometry(out, outlineSettings, canCombineFromIdx);
+                outlineSettings.d_destArea.set(pos + glyph->offset * scale + image->getRenderedOffset() * scaleDiff, image->getRenderedSize() * scale);
+                image->createRenderGeometry(out, outlineSettings, canCombineFromIdx);
             }
 
             pos.x += glyph->advance;
@@ -109,7 +108,7 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
         }
 
         if (effectBuffer)
-            drawEffects(effectBuffer, penPosition.x, pos.x, pos.y, d_outlineColours, clipRect, true);
+            drawEffects(effectBuffer, penPosition.x, pos.x, pos.y, scale, d_outlineColours, clipRect, true);
     }
 
     // Render main images of glyphs
@@ -129,7 +128,7 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
         const bool newSelected = selection && glyph->sourceIndex >= selection->start && glyph->sourceIndex < selection->end;
         if (selected != newSelected)
         {
-            drawEffects(effectBuffer, effectStart, pos.x, pos.y, settings.d_multiplyColours, clipRect, false);
+            drawEffects(effectBuffer, effectStart, pos.x, pos.y, scale, settings.d_multiplyColours, clipRect, false);
             effectStart = pos.x;
             selected = newSelected;
             settings.d_multiplyColours = selected ? selectedColour : normalColour;
@@ -139,7 +138,7 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
         {
             if (auto image = fontGlyph->getImage())
             {
-                settings.d_destArea.set(pos + glyph->offset * scale, image->getRenderedSize() * scale);
+                settings.d_destArea.set(pos + glyph->offset * scale + image->getRenderedOffset() * scaleDiff, image->getRenderedSize() * scale);
                 image->createRenderGeometry(out, settings, canCombineFromIdx);
             }
         }
@@ -151,7 +150,7 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
 
     if (effectBuffer)
     {
-        drawEffects(effectBuffer, effectStart, pos.x, pos.y, settings.d_multiplyColours, clipRect, false);
+        drawEffects(effectBuffer, effectStart, pos.x, pos.y, scale, settings.d_multiplyColours, clipRect, false);
 
         if (effectBuffer->getVertexCount())
             out.push_back(effectBuffer);
@@ -164,30 +163,35 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
 
 //----------------------------------------------------------------------------//
 void RenderedTextStyle::drawEffects(GeometryBuffer* effectBuffer, float left,
-    float right, float y, const ColourRect& colours, const Rectf* clipRect, bool outline) const
+    float right, float y, const glm::vec2& scale, const ColourRect& colours,
+    const Rectf* clipRect, bool outline) const
 {
     if (!effectBuffer || !d_font || left >= right)
         return;
 
     const float inflation = outline ? d_outlineSize : 0.f;
-    left -= inflation;
-    right += inflation;
-
-    y = std::round(y + d_font->getBaseline());
+    left = (left - inflation) * scale.x;
+    right = (right + inflation) * scale.x;
 
     if (d_underline)
     {
-        const float top = y - d_font->getUnderlineTop();
-        const float bottom = top + std::max(1.f, std::round(d_font->getUnderlineThickness()));
-        const Rectf rect(left, top - inflation, right, bottom + inflation);
+        const float localTop = d_font->getBaseline() - d_font->getUnderlineTop() - inflation;
+        const float localHeight = d_font->getUnderlineThickness() + inflation + inflation;
+
+        const float top = std::round(y + localTop * scale.y);
+        const float bottom = std::round(top + std::max(1.f, localHeight * scale.y));
+        const Rectf rect(left, top, right, bottom);
         effectBuffer->appendSolidRect(clipRect ? rect.getIntersection(*clipRect) : rect, colours);
     }
 
     if (d_strikeout)
     {
-        const float top = y - d_font->getStrikeoutTop();
-        const float bottom = top + std::max(1.f, std::round(d_font->getStrikeoutThickness()));
-        const Rectf rect(left, top - inflation, right, bottom + inflation);
+        const float localTop = d_font->getBaseline() - d_font->getStrikeoutTop() - inflation;
+        const float localHeight = d_font->getStrikeoutThickness() + inflation + inflation;
+
+        const float top = std::round(y + localTop * scale.y);
+        const float bottom = std::round(top + std::max(1.f, localHeight * scale.y));
+        const Rectf rect(left, top, right, bottom);
         effectBuffer->appendSolidRect(clipRect ? rect.getIntersection(*clipRect) : rect, colours);
     }
 }
