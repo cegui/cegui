@@ -106,6 +106,7 @@ public:
 
 protected:
 
+    bool insertString(String&& strToInsert) override;
     void updateFormatting() override;
     size_t getTextIndexFromPosition(const glm::vec2& pt) override;
     bool processSemanticInputEvent(const SemanticEventArgs& e) override;
