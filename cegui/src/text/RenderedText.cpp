@@ -526,7 +526,7 @@ size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt) const
 }
 
 //----------------------------------------------------------------------------//
-bool RenderedText::getTextIndexBounds(size_t textIndex, Rectf& out) const
+bool RenderedText::getTextIndexBounds(size_t textIndex, Rectf& out, bool* outRtl) const
 {
     // We still have an empty line when there is no text at all
     if (d_paragraphs.empty())
@@ -543,7 +543,7 @@ bool RenderedText::getTextIndexBounds(size_t textIndex, Rectf& out) const
 
     //???FIXME TEXT: need bool result? always return sane rect?!
 
-    if (!d_paragraphs[idx].getTextIndexBounds(out, textIndex, d_elements))
+    if (!d_paragraphs[idx].getTextIndexBounds(out, outRtl, textIndex, d_elements))
         return false;
 
     out.d_min.y += offsetY;

@@ -91,10 +91,16 @@ Rectf FalagardMultiLineEditbox::getCaretRect() const
     auto w = static_cast<MultiLineEditbox*>(d_window);
 
     Rectf caretGlyphRect;
-    if (!w->getRenderedText().getTextIndexBounds(w->getCaretIndex(), caretGlyphRect))
+    bool isRightToLeft;
+    if (!w->getRenderedText().getTextIndexBounds(w->getCaretIndex(), caretGlyphRect, &isRightToLeft))
         return {};
 
-    caretGlyphRect.setWidth(getLookNFeel().getImagerySection("Caret").getBoundingRect(*w).getWidth());
+    const float caretWidth = getLookNFeel().getImagerySection("Caret").getBoundingRect(*w).getWidth();
+    if (isRightToLeft)
+        caretGlyphRect.d_min.x = caretGlyphRect.d_max.x - caretWidth;
+    else
+        caretGlyphRect.d_max.x = caretGlyphRect.d_min.x + caretWidth;
+
     return caretGlyphRect;
 }
 

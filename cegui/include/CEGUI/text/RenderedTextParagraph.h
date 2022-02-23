@@ -122,9 +122,9 @@ public:
 
     size_t getLineCount() const { return d_linesDirty ? 1 : d_lines.size(); }
     size_t getTextIndexAtPoint(const glm::vec2& pt) const;
-    bool getTextIndexBounds(Rectf& out, size_t textIndex, const std::vector<RenderedTextElementPtr>& elements) const;
+    bool getTextIndexBounds(Rectf& out, bool* outRtl, size_t textIndex, const std::vector<RenderedTextElementPtr>& elements) const;
     size_t getGlyphIndexAtPoint(const glm::vec2& pt) const;
-    bool getGlyphBounds(Rectf& out, size_t glyphIndex, const std::vector<RenderedTextElementPtr>& elements) const;
+    bool getGlyphBounds(Rectf& out, bool* outRtl, size_t glyphIndex, const std::vector<RenderedTextElementPtr>& elements) const;
     size_t getTextIndex(size_t glyphIndex) const;
     size_t getTextIndex(size_t lineIndex, float offsetX) const;
     size_t getNearestGlyphIndex(size_t textIndex) const;

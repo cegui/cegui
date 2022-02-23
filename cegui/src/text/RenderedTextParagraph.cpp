@@ -652,12 +652,12 @@ size_t RenderedTextParagraph::getTextIndexAtPoint(const glm::vec2& pt) const
 }
 
 //----------------------------------------------------------------------------//
-bool RenderedTextParagraph::getTextIndexBounds(Rectf& out, size_t textIndex,
+bool RenderedTextParagraph::getTextIndexBounds(Rectf& out, bool* outRtl, size_t textIndex,
     const std::vector<RenderedTextElementPtr>& elements) const
 {
     const auto glyphIndex = getNearestGlyphIndex(textIndex);
     if (glyphIndex != npos)
-        return getGlyphBounds(out, glyphIndex, elements);
+        return getGlyphBounds(out, outRtl, glyphIndex, elements);
 
     // No glyph found, return the end of the paragraph
     if (d_lines.empty())
@@ -674,6 +674,7 @@ bool RenderedTextParagraph::getTextIndexBounds(Rectf& out, size_t textIndex,
 
     out.d_max.y = d_height;
     out.d_max.x = out.d_min.x;
+    outRtl = false;
 
     return true;
 }
@@ -702,7 +703,7 @@ size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt) const
 }
 
 //----------------------------------------------------------------------------//
-bool RenderedTextParagraph::getGlyphBounds(Rectf& out, size_t glyphIndex,
+bool RenderedTextParagraph::getGlyphBounds(Rectf& out, bool* outRtl, size_t glyphIndex,
     const std::vector<RenderedTextElementPtr>& elements) const
 {
     if (d_linesDirty || glyphIndex >= d_glyphs.size())
@@ -745,6 +746,8 @@ bool RenderedTextParagraph::getGlyphBounds(Rectf& out, size_t glyphIndex,
         {
             // Skipped whitespace glyph is always a zero width rect at the beginning of the line
             out.setWidth(0.f);
+            if (outRtl)
+                *outRtl = false;
         }
         else
         {
@@ -752,6 +755,8 @@ bool RenderedTextParagraph::getGlyphBounds(Rectf& out, size_t glyphIndex,
             if (glyph.isJustifyable)
                 glyphWidth += line.justifySpaceSize;
             out.setWidth(glyphWidth);
+            if (outRtl)
+                *outRtl = glyph.isRightToLeft;
         }
 
         return true;
