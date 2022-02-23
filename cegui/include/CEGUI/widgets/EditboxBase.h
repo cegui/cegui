@@ -481,7 +481,7 @@ protected:
 
     size_t getPrevTextIndex(size_t idx) const;
 
-    bool insertString(String&& strToInsert);
+    virtual bool insertString(String&& strToInsert);
     void deleteRange(size_t start, size_t length);
     void handleCaretMovement(size_t newIndex, bool select);
 

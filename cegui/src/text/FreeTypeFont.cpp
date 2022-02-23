@@ -509,7 +509,7 @@ void FreeTypeFont::updateFont()
     FT_ULong codepoint = FT_Get_First_Char(d_fontFace, &gindex);
     while (gindex != 0)
     {
-        if (d_codePointToGlyphMap.find(codepoint) != d_codePointToGlyphMap.end())
+        if (d_codePointToGlyphMap.find(codepoint) != d_codePointToGlyphMap.cend())
             throw InvalidRequestException("FreeTypeFont::initialiseGlyphMap - Requesting "
                 "adding an already added glyph to the codepoint glyph map.");
 

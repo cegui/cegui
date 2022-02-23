@@ -65,6 +65,21 @@ void Editbox::setTextFormatting(HorizontalTextFormatting format)
 }
 
 //----------------------------------------------------------------------------//
+bool Editbox::insertString(String&& strToInsert)
+{
+    if (isReadOnly() || strToInsert.empty())
+        return false;
+
+    // TODO TEXT: make sure that this works for UTF-8 multibyte string too!
+    strToInsert.erase(std::remove_if(strToInsert.begin(), strToInsert.end(), [](String::value_type ch)
+    {
+        return ch == '\n' || ch == '\r';
+    }), strToInsert.end());
+
+    return EditboxBase::insertString(std::move(strToInsert));
+}
+
+//----------------------------------------------------------------------------//
 void Editbox::updateFormatting()
 {
     auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
