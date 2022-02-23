@@ -674,7 +674,8 @@ bool RenderedTextParagraph::getTextIndexBounds(Rectf& out, bool* outRtl, size_t 
 
     out.d_max.y = d_height;
     out.d_max.x = out.d_min.x;
-    outRtl = false;
+    if (outRtl)
+        *outRtl = false;
 
     return true;
 }

@@ -61,6 +61,7 @@ public:
     virtual Rectf getTextRenderArea() const = 0;
 
     virtual Rectf getCaretRect() const = 0;
+    virtual float getCaretWidth() const = 0;
 };
 
 //----------------------------------------------------------------------------//
@@ -101,7 +102,6 @@ public:
     virtual void setTextOffsetX(float value) override;
     virtual void setTextOffsetY(float value) override { /* Auto-calculated */ }
 
-    virtual Rectf getCaretRect() const override;
     virtual void ensureCaretIsVisible() override;
 
 protected:

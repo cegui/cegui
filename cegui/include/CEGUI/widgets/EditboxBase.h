@@ -152,8 +152,6 @@ public:
     */
     size_t getCaretIndex() const { return d_caretPos; }
 
-    virtual Rectf getCaretRect() const = 0;
-
     /*!
     \brief
         return the current selection start point.

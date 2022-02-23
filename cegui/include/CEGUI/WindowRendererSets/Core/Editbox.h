@@ -132,6 +132,7 @@ public:
 
     Rectf getTextRenderArea() const override;
     Rectf getCaretRect() const override;
+    float getCaretWidth() const override;
 
     void createRenderGeometry() override;
     void update(float elapsed) override;
