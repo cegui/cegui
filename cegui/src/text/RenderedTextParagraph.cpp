@@ -97,7 +97,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
     auto initialPenPos = penPosition;
     penPosition.y += d_height;
 
-    // Define visible line range
+    // Determine the range of visible lines
     const auto lineCount = d_lines.size();
     size_t lineStart = 0;
     size_t lineEnd = lineCount;
@@ -177,7 +177,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
     }
 
     // Render selection background (can be semi-transparent so must go after the main background)
-    if (selection && selection->bgBrush && selection->end > selection->start)
+    if (selection && selection->end > selection->start)
     {
         ImageRenderSettings settings(Rectf(), clipRect, selection->bgColours);
 
@@ -215,7 +215,10 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
                     // Draw currently collected selection and reset range
                     if (hasSelection)
                     {
-                        selection->bgBrush->createRenderGeometry(out, settings, canCombineFromIdx);
+                        if (selection->bgBrush)
+                            selection->bgBrush->createRenderGeometry(out, settings, canCombineFromIdx);
+                        else
+                            bgBuffer->appendSolidRect(clipRect ? settings.d_destArea.getIntersection(*clipRect) : settings.d_destArea, selection->bgColours);
                         settings.d_destArea.d_min.x = settings.d_destArea.d_max.x;
                     }
                     settings.d_destArea.d_min.x += glyphWidth;
@@ -226,7 +229,10 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
             if (!settings.d_destArea.empty())
             {
                 settings.d_destArea.d_max.x = penPos.x + line.extents.d_width + line.justifyableCount * line.justifySpaceSize;
-                selection->bgBrush->createRenderGeometry(out, settings, canCombineFromIdx);
+                if (selection->bgBrush)
+                    selection->bgBrush->createRenderGeometry(out, settings, canCombineFromIdx);
+                else
+                    bgBuffer->appendSolidRect(clipRect ? settings.d_destArea.getIntersection(*clipRect) : settings.d_destArea, selection->bgColours);
             }
 
             penPos.y = lineBottom;
