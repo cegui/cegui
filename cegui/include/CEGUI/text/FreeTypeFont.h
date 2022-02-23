@@ -269,7 +269,7 @@ protected:
     //! Contains mappings from freetype indices to Font glyphs
     mutable std::unordered_map<FT_UInt, uint32_t> d_indexToGlyphMap;
 
-    std::map<FT_Fixed, std::vector<BitmapImage*>> d_outlines;
+    std::map<FT_Fixed, std::vector<std::unique_ptr<BitmapImage>>> d_outlines;
 
     //! The size with which new texture atlases for glyphs are going to be initialised
     uint32_t d_initialGlyphAtlasSize = 32;

@@ -116,6 +116,8 @@ void PixmapFont::updateFont()
         glyph.setAdvance(glyph.getAdvance() * factor);
 
         Image* img = glyph.getImage();
+        if (!img)
+            continue;
 
         if (BitmapImage* bi = dynamic_cast<BitmapImage*>(img))
         {
@@ -133,7 +135,7 @@ void PixmapFont::updateFont()
     d_descender = -d_descender;
     d_height = d_ascender - d_descender;
 
-    d_origHorzScaling = d_autoScaled != AutoScaledMode::Disabled ? d_horzScaling : 1.0f;
+    d_origHorzScaling = (d_autoScaled != AutoScaledMode::Disabled) ? d_horzScaling : 1.0f;
 }
 
 //----------------------------------------------------------------------------//
@@ -168,7 +170,7 @@ void PixmapFont::defineMapping(char32_t codePoint, const String& imageName, floa
         throw InvalidRequestException("PixmapFont::defineMapping - Requesting "
             "adding an already added glyph to the codepoint glyph map.");
 
-    Image& image(ImageManager::getSingleton().get(d_imageNamePrefix + '/' + imageName));
+    Image& image = ImageManager::getSingleton().get(d_imageNamePrefix + '/' + imageName);
 
     float adv = (horzAdvance == -1.0f) ?
         std::floor(image.getRenderedSize().d_width + image.getRenderedOffset().x) :

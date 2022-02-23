@@ -537,6 +537,7 @@ void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
     if (FT_Load_Glyph(d_fontFace, glyph->getGlyphIndex(), getGlyphLoadFlags() | FT_LOAD_RENDER))
         return;
 
+    // NB: glyph doesn't own an image (see PixmapFont), so we have to delete an image manually in free()
     const String name(std::to_string(glyph->getCodePoint()));
     const auto& ft_bitmap = d_fontFace->glyph->bitmap;
     auto image = rasterise(name, ft_bitmap, d_fontFace->glyph->bitmap_left, d_fontFace->glyph->bitmap_top, ft_bitmap.width, ft_bitmap.rows);
@@ -567,14 +568,14 @@ Image* FreeTypeFont::renderOutline(uint32_t index, FT_Fixed thickness)
 
     auto it = d_outlines.find(thickness);
     if (it == d_outlines.cend())
-        it = d_outlines.emplace(thickness, std::vector<BitmapImage*>(d_glyphs.size())).first;
+        it = d_outlines.emplace(thickness, std::vector<std::unique_ptr<BitmapImage>>(d_glyphs.size())).first;
 
     const String name(std::to_string(d_glyphs[index].getCodePoint()) + "_ol_" + std::to_string(thickness));
-    it->second[index] = rasterise(name, bitmapGlyph->bitmap, bitmapGlyph->left, bitmapGlyph->top, bitmapGlyph->bitmap.width, bitmapGlyph->bitmap.rows);
+    it->second[index].reset(rasterise(name, bitmapGlyph->bitmap, bitmapGlyph->left, bitmapGlyph->top, bitmapGlyph->bitmap.width, bitmapGlyph->bitmap.rows));
 
     FT_Done_Glyph(ft_glyph);
 
-    return it->second[index];
+    return it->second[index].get();
 }
 
 //----------------------------------------------------------------------------//
@@ -714,7 +715,7 @@ Image* FreeTypeFont::getOutline(uint32_t index, float thickness)
     //!!!TODO TEXT: need to make distinction between not yet rendered and failed outline to avoid repeated recreation on failure!
     auto it = d_outlines.find(outlineThickness);
     if (it != d_outlines.cend() && it->second[index])
-        return it->second[index];
+        return it->second[index].get();
 
     return renderOutline(index, outlineThickness);
 }
