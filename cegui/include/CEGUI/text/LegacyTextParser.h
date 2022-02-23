@@ -42,10 +42,12 @@ namespace CEGUI
 /*!
 \brief
     Basic text parser class that offers support for the following legacy (v0.8) tags:
-    - 'colour' value is a CEGUI colour property value.
+    - 'colour' / 'color' value is a CEGUI colour property value.
     - 'font' value is the name of a font.
-    - 'underline' value is a boolean
-    - 'strikeout' value is a boolean
+    - 'underline' value is a boolean.
+    - 'strikeout' value is a boolean.
+    - 'outline-colour' / 'outline-color' value is a CEGUI colour property value.
+    - 'outline-size' value is a float.
     - 'image' value is a CEGUI image property value.
     - 'window' value is the name of a window.
     - 'vert-alignment' value is either top, bottom, centre or stretch.
@@ -65,9 +67,13 @@ public:
 
     // Strings for supported tags
     static const String ColourTagName;
+    static const String ColorTagName;
     static const String FontTagName;
     static const String UnderlineTagName;
     static const String StrikeoutTagName;
+    static const String OutlineColourTagName;
+    static const String OutlineColorTagName;
+    static const String OutlineSizeTagName;
     static const String ImageTagName;
     static const String WindowTagName;
     static const String VertFormattingTagName;
@@ -99,6 +105,8 @@ protected:
     void handleFont(const String& value);
     void handleUnderline(const String& value);
     void handleStrikeout(const String& value);
+    void handleOutlineColour(const String& value);
+    void handleOutlineSize(const String& value);
     void handleVertFormatting(const String& value);
     void handlePadding(const String& value);
     void handleTopPadding(const String& value);
@@ -116,12 +124,14 @@ protected:
     Rectf d_padding;
     //! active colour values.
     ColourRect d_colours;
+    ColourRect d_outlineColours;
     //! active font.
     Font* d_font = nullptr;
     //! active vertical image formatting
     VerticalImageFormatting d_vertFormatting = VerticalImageFormatting::BottomAligned;
     //! active image size
     Sizef d_imageSize;
+    float d_outlineSize = 0.f;
     bool d_underline = false;
     bool d_strikeout = false;
     bool d_styleChanged = false;

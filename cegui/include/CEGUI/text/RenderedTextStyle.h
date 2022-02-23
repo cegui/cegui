@@ -62,6 +62,7 @@ public:
     void setTextColour(const ColourRect& colours) { d_colours = colours; }
     void setBackgroundColour(const ColourRect& colours) { d_backgroundColours = colours; }
     void setOutlineColour(const ColourRect& colours) { d_outlineColours = colours; }
+    void setOutlineSize(float size) { d_outlineSize = size; }
 
 protected:
 

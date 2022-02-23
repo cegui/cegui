@@ -79,6 +79,34 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
     float heightScale = 1.f;
     applyVerticalFormatting(lineHeight, pos.y, heightScale);
 
+    const RenderedGlyph* end = begin + count;
+
+    // Render the outline
+    if (d_outlineSize > 0.f)
+    {
+        ImageRenderSettings outlineSettings(Rectf(), clipRect, d_outlineColours, 1.f, false);
+
+        for (auto glyph = begin; glyph != end; ++glyph)
+        {
+            //!!!TODO TEXT: can optimize out map search by caching outline object, like:
+            // auto outline = font->getOutline(size);
+            // for each glyph: outline->getOrCreateImage(glyphIdx)!
+            if (auto outlineImage = d_font->getOutline(glyph->fontGlyphIndex, d_outlineSize))
+            {
+                Sizef size = outlineImage->getRenderedSize();
+                size.d_height *= heightScale;
+                outlineSettings.d_destArea.set(pos + glyph->offset, size);
+                outlineImage->createRenderGeometry(out, outlineSettings, canCombineFromIdx);
+            }
+
+            pos.x += glyph->advance;
+            if (glyph->isJustifyable)
+                pos.x += justifySpaceSize;
+        }
+    }
+
+    // Render main images of glyphs
+
     const auto normalColour = modColours ? d_colours * (*modColours) : d_colours;
     const auto selectedColour = (!selection) ? normalColour :
         modColours ? selection->textColours * (*modColours) : selection->textColours;
@@ -86,15 +114,12 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
     bool selected = false;
     ImageRenderSettings settings(Rectf(), clipRect, normalColour, 1.f, true);
 
+    pos.x = penPosition.x;
     float effectStart = pos.x;
     auto effectBuffer = (d_underline || d_strikeout) ?
         &System::getSingleton().getRenderer()->createGeometryBufferColoured() :
         nullptr;
 
-    //!!!DBG TMP!
-    const bool hasOutline = true;// (d_outlineSize > 0.f);
-
-    const RenderedGlyph* end = begin + count;
     for (auto glyph = begin; glyph != end; ++glyph)
     {
         const bool newSelected = selection && glyph->sourceIndex >= selection->start && glyph->sourceIndex < selection->end;
@@ -113,20 +138,6 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
                 Sizef size = image->getRenderedSize();
                 size.d_height *= heightScale;
                 settings.d_destArea.set(pos + glyph->offset, size);
-
-                // Render the outline
-                if (hasOutline)
-                {
-                    //!!!DBG TMP!
-                    if (auto outlineImage = d_font->getOutline(glyph->fontGlyphIndex, 1.f)) //d_outlineSize))
-                    {
-                        settings.d_multiplyColours = Colour(0xffff0077);// d_outlineColours;
-                        outlineImage->createRenderGeometry(out, settings, canCombineFromIdx);
-                        settings.d_multiplyColours = selected ? selectedColour : normalColour;
-                    }
-                }
-
-                // Render the main image of the glyph
                 image->createRenderGeometry(out, settings, canCombineFromIdx);
             }
         }
