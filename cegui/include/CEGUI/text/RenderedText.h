@@ -80,7 +80,7 @@ public:
     bool isFittingIntoAreaWidth() const;
 
     size_t getTextIndexAtPoint(const glm::vec2& pt) const;
-    bool getTextIndexBounds(size_t textIndex, Rectf& out) const;
+    bool getTextIndexBounds(size_t textIndex, Rectf& out, bool* outRtl = nullptr) const;
     size_t nextTextIndex(size_t textIndex) const;
     size_t prevTextIndex(size_t textIndex) const;
     size_t lineUpTextIndex(size_t textIndex, float desiredOffsetX) const;
