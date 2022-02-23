@@ -40,6 +40,8 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 const String LegacyTextParser::ColourTagName("colour");
 const String LegacyTextParser::ColorTagName("color");
+const String LegacyTextParser::BgColourTagName("bg-colour");
+const String LegacyTextParser::BgColorTagName("bg-color");
 const String LegacyTextParser::FontTagName("font");
 const String LegacyTextParser::UnderlineTagName("underline");
 const String LegacyTextParser::StrikeoutTagName("strikeout");
@@ -65,6 +67,8 @@ LegacyTextParser::LegacyTextParser()
 {
     d_tagHandlers[ColourTagName] = &LegacyTextParser::handleColour;
     d_tagHandlers[ColorTagName] = &LegacyTextParser::handleColour;
+    d_tagHandlers[BgColourTagName] = &LegacyTextParser::handleBgColour;
+    d_tagHandlers[BgColorTagName] = &LegacyTextParser::handleBgColour;
     d_tagHandlers[FontTagName] = &LegacyTextParser::handleFont;
     d_tagHandlers[UnderlineTagName] = &LegacyTextParser::handleUnderline;
     d_tagHandlers[StrikeoutTagName] = &LegacyTextParser::handleStrikeout;
@@ -103,10 +107,14 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
 
     // Initialize formatting parameters with default values
     d_colours = Colour(0xFFFFFFFF);
+    d_bgColours = Colour(0x00000000);
     d_font = nullptr;
     d_padding = Rectf(0.f, 0.f, 0.f, 0.f);
     d_imageSize = Sizef(0.f, 0.f);
     d_vertFormatting = VerticalImageFormatting::BottomAligned;
+    d_outlineSize = 0.f;
+    d_underline = false;
+    d_strikeout = false;
     d_styleChanged = true;
 
     outText.reserve(inText.size());
@@ -143,6 +151,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
 
                     auto style = std::make_unique<RenderedTextStyle>(d_font, d_underline, d_strikeout);
                     style->setTextColour(d_colours);
+                    style->setBackgroundColour(d_bgColours);
                     style->setPadding(d_padding);
                     style->setVerticalFormatting(d_vertFormatting);
                     style->setOutlineColour(d_outlineColours);
@@ -253,6 +262,7 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
         auto element = std::make_unique<RenderedTextImage>(
             PropertyHelper<Image*>::fromString(ctrlStr.substr(valueStart, valueEnd - valueStart)));
         element->setColour(d_colours);
+        element->setBackgroundColour(d_bgColours);
         element->setSize(d_imageSize);
         element->setFont(d_font);
         element->setPadding(d_padding);
@@ -273,6 +283,7 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
 
         auto element = std::make_unique<RenderedTextWidget>(ctrlStr.substr(valueStart, valueEnd - valueStart));
         element->setFont(d_font);
+        element->setBackgroundColour(d_bgColours);
         element->setPadding(d_padding);
         element->setVerticalFormatting(d_vertFormatting);
         const auto elementIndex = static_cast<uint16_t>(outElements.size());
@@ -292,6 +303,12 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
 void LegacyTextParser::handleColour(const String& value)
 {
     d_colours.setColours(PropertyHelper<Colour>::fromString(value));
+}
+
+//----------------------------------------------------------------------------//
+void LegacyTextParser::handleBgColour(const String& value)
+{
+    d_bgColours.setColours(PropertyHelper<Colour>::fromString(value));
 }
 
 //----------------------------------------------------------------------------//

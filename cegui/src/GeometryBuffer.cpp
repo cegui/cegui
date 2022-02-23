@@ -30,6 +30,7 @@
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/Renderer.h" // for BlendMode
 #include "CEGUI/RenderMaterial.h"
+#include "CEGUI/ColourRect.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace CEGUI
@@ -120,6 +121,29 @@ void GeometryBuffer::appendGeometry(const float* vertexArray, std::size_t arrayS
     std::memcpy(dest, vertexArray, arraySize * sizeof(float));
 
     d_vertexCount = d_vertexData.size() / getVertexAttributeElementCount();
+}
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::appendSolidRect(const Rectf& rect, const ColourRect& colours)
+{
+    if (rect.empty())
+        return;
+
+    ColouredVertex v[6];
+    v[0].setColour(colours.d_top_left);
+    v[0].d_position = glm::vec3(rect.left(), rect.top(), 0.0f);
+    v[1].setColour(colours.d_bottom_left);
+    v[1].d_position = glm::vec3(rect.left(), rect.bottom(), 0.0f);
+    v[2].setColour(colours.d_bottom_right);
+    v[2].d_position = glm::vec3(rect.right(), rect.bottom(), 0.0f);
+    v[3].setColour(colours.d_top_right);
+    v[3].d_position = glm::vec3(rect.right(), rect.top(), 0.0f);
+    v[4].setColour(colours.d_top_left);
+    v[4].d_position = glm::vec3(rect.left(), rect.top(), 0.0f);
+    v[5].setColour(colours.d_bottom_right);
+    v[5].d_position = glm::vec3(rect.right(), rect.bottom(), 0.0f);
+
+    appendGeometry(v, 6);
 }
 
 //---------------------------------------------------------------------------//

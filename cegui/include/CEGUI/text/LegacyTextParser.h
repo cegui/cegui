@@ -43,6 +43,7 @@ namespace CEGUI
 \brief
     Basic text parser class that offers support for the following legacy (v0.8) tags:
     - 'colour' / 'color' value is a CEGUI colour property value.
+    - 'bg-colour' / 'bg-color' value is a CEGUI colour property value.
     - 'font' value is the name of a font.
     - 'underline' value is a boolean.
     - 'strikeout' value is a boolean.
@@ -68,6 +69,8 @@ public:
     // Strings for supported tags
     static const String ColourTagName;
     static const String ColorTagName;
+    static const String BgColourTagName;
+    static const String BgColorTagName;
     static const String FontTagName;
     static const String UnderlineTagName;
     static const String StrikeoutTagName;
@@ -102,6 +105,7 @@ protected:
 
     //! handlers for the various tags supported
     void handleColour(const String& value);
+    void handleBgColour(const String& value);
     void handleFont(const String& value);
     void handleUnderline(const String& value);
     void handleStrikeout(const String& value);
@@ -124,6 +128,7 @@ protected:
     Rectf d_padding;
     //! active colour values.
     ColourRect d_colours;
+    ColourRect d_bgColours;
     ColourRect d_outlineColours;
     //! active font.
     Font* d_font = nullptr;
