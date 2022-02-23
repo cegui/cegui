@@ -39,9 +39,13 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const String LegacyTextParser::ColourTagName("colour");
+const String LegacyTextParser::ColorTagName("color");
 const String LegacyTextParser::FontTagName("font");
 const String LegacyTextParser::UnderlineTagName("underline");
 const String LegacyTextParser::StrikeoutTagName("strikeout");
+const String LegacyTextParser::OutlineColourTagName("outline-colour");
+const String LegacyTextParser::OutlineColorTagName("outline-color");
+const String LegacyTextParser::OutlineSizeTagName("outline-size");
 const String LegacyTextParser::ImageTagName("image");
 const String LegacyTextParser::WindowTagName("window");
 const String LegacyTextParser::VertFormattingTagName("vert-formatting");
@@ -60,9 +64,13 @@ const String LegacyTextParser::ImageHeightTagName("image-height");
 LegacyTextParser::LegacyTextParser()
 {
     d_tagHandlers[ColourTagName] = &LegacyTextParser::handleColour;
+    d_tagHandlers[ColorTagName] = &LegacyTextParser::handleColour;
     d_tagHandlers[FontTagName] = &LegacyTextParser::handleFont;
     d_tagHandlers[UnderlineTagName] = &LegacyTextParser::handleUnderline;
     d_tagHandlers[StrikeoutTagName] = &LegacyTextParser::handleStrikeout;
+    d_tagHandlers[OutlineColourTagName] = &LegacyTextParser::handleOutlineColour;
+    d_tagHandlers[OutlineColorTagName] = &LegacyTextParser::handleOutlineColour;
+    d_tagHandlers[OutlineSizeTagName] = &LegacyTextParser::handleOutlineSize;
 
     // FIXME: legacy separation on Image and Text, left for compatibility but may behave unexpectedly!
     d_tagHandlers[VertFormattingTagName] = &LegacyTextParser::handleVertFormatting;
@@ -137,6 +145,8 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
                     style->setTextColour(d_colours);
                     style->setPadding(d_padding);
                     style->setVerticalFormatting(d_vertFormatting);
+                    style->setOutlineColour(d_outlineColours);
+                    style->setOutlineSize(d_outlineSize);
                     elementIndex = static_cast<uint16_t>(outElements.size());
                     outElements.push_back(std::move(style));
                     d_styleChanged = false;
@@ -282,6 +292,18 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
 void LegacyTextParser::handleColour(const String& value)
 {
     d_colours.setColours(PropertyHelper<Colour>::fromString(value));
+}
+
+//----------------------------------------------------------------------------//
+void LegacyTextParser::handleOutlineColour(const String& value)
+{
+    d_outlineColours.setColours(PropertyHelper<Colour>::fromString(value));
+}
+
+//----------------------------------------------------------------------------//
+void LegacyTextParser::handleOutlineSize(const String& value)
+{
+    d_outlineSize = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
