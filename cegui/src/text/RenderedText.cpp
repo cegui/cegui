@@ -492,7 +492,7 @@ bool RenderedText::isFittingIntoAreaWidth() const
 }
 
 //----------------------------------------------------------------------------//
-size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt) const
+size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt, float* outRelPos) const
 {
     if (pt.y < 0.f)
         return 0;
@@ -513,7 +513,7 @@ size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt) const
             continue;
         }
 
-        const auto idx = p.getTextIndexAtPoint(localPt);
+        const auto idx = p.getTextIndexAtPoint(localPt, outRelPos);
 
         // No text at point means the end of the paragraph
         if (idx == RenderedTextParagraph::npos)

@@ -478,6 +478,7 @@ protected:
     void clearSelection();
 
     size_t getPrevTextIndex(size_t idx) const;
+    size_t getNextTextIndex(size_t idx) const;
 
     virtual bool insertString(String&& strToInsert);
     void deleteRange(size_t start, size_t length);

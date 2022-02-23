@@ -121,14 +121,14 @@ public:
     uint32_t getSourceEndIndex() const { return d_sourceEndIndex; }
 
     size_t getLineCount() const { return d_linesDirty ? 1 : d_lines.size(); }
-    size_t getTextIndexAtPoint(const glm::vec2& pt) const;
+    size_t getTextIndexAtPoint(const glm::vec2& pt, float* outRelPos = nullptr) const;
     bool getTextIndexBounds(Rectf& out, bool* outRtl, size_t textIndex, const std::vector<RenderedTextElementPtr>& elements) const;
-    size_t getGlyphIndexAtPoint(const glm::vec2& pt) const;
+    size_t getGlyphIndexAtPoint(const glm::vec2& pt, float* outRelPos = nullptr) const;
     bool getGlyphBounds(Rectf& out, bool* outRtl, size_t glyphIndex, const std::vector<RenderedTextElementPtr>& elements) const;
     size_t getTextIndex(size_t glyphIndex) const;
-    size_t getTextIndex(size_t lineIndex, float offsetX) const;
+    size_t getTextIndex(size_t lineIndex, float offsetX, float* outRelPos = nullptr) const;
     size_t getNearestGlyphIndex(size_t textIndex) const;
-    size_t getNearestGlyphIndex(size_t lineIndex, float offsetX) const;
+    size_t getNearestGlyphIndex(size_t lineIndex, float offsetX, float* outRelPos = nullptr) const;
     size_t getLineIndex(size_t textIndex) const;
     float getLineOffsetY(size_t lineIndex) const;
     float getLineHeight(size_t lineIndex) const;

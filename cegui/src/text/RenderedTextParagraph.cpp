@@ -646,9 +646,9 @@ size_t RenderedTextParagraph::getGlyphLineIndex(size_t glyphIndex) const
 }
 
 //----------------------------------------------------------------------------//
-size_t RenderedTextParagraph::getTextIndexAtPoint(const glm::vec2& pt) const
+size_t RenderedTextParagraph::getTextIndexAtPoint(const glm::vec2& pt, float* outRelPos) const
 {
-    return d_glyphs.empty() ? d_sourceStartIndex : getTextIndex(getGlyphIndexAtPoint(pt));
+    return d_glyphs.empty() ? d_sourceStartIndex : getTextIndex(getGlyphIndexAtPoint(pt, outRelPos));
 }
 
 //----------------------------------------------------------------------------//
@@ -683,7 +683,7 @@ bool RenderedTextParagraph::getTextIndexBounds(Rectf& out, bool* outRtl, size_t 
 }
 
 //----------------------------------------------------------------------------//
-size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt) const
+size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt, float* outRelPos) const
 {
     if (d_linesDirty || pt.y < 0.f)
         return npos;
@@ -697,7 +697,7 @@ size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt) const
             return npos;
 
         if (lineLocalY <= line.extents.d_height)
-            return getNearestGlyphIndex(i, pt.x);
+            return getNearestGlyphIndex(i, pt.x, outRelPos);
 
         lineLocalY -= line.extents.d_height;
     }
@@ -775,12 +775,12 @@ size_t RenderedTextParagraph::getTextIndex(size_t glyphIndex) const
 }
 
 //----------------------------------------------------------------------------//
-size_t RenderedTextParagraph::getTextIndex(size_t lineIndex, float offsetX) const
+size_t RenderedTextParagraph::getTextIndex(size_t lineIndex, float offsetX, float* outRelPos) const
 {
     if (d_glyphs.empty())
         return d_sourceStartIndex;
 
-    const auto idx = getNearestGlyphIndex(lineIndex, offsetX);
+    const auto idx = getNearestGlyphIndex(lineIndex, offsetX, outRelPos);
     if (idx == npos)
         return npos;
 
@@ -814,7 +814,7 @@ size_t RenderedTextParagraph::getNearestGlyphIndex(size_t textIndex) const
 }
 
 //----------------------------------------------------------------------------//
-size_t RenderedTextParagraph::getNearestGlyphIndex(size_t lineIndex, float offsetX) const
+size_t RenderedTextParagraph::getNearestGlyphIndex(size_t lineIndex, float offsetX, float* outRelPos) const
 {
     if (d_linesDirty || d_lines.size() <= lineIndex)
         return npos;
@@ -822,27 +822,43 @@ size_t RenderedTextParagraph::getNearestGlyphIndex(size_t lineIndex, float offse
     const auto& line = d_lines[lineIndex];
     auto i = lineIndex ? d_lines[lineIndex - 1].glyphEndIdx : 0;
 
+    const bool isLtr = (d_bidiDir == DefaultParagraphDirection::LeftToRight);
+
     // Point is to the left of the beginning
     if (offsetX < line.horzOffset)
-        return (d_bidiDir == DefaultParagraphDirection::LeftToRight) ? i : line.glyphEndIdx;
+    {
+        if (outRelPos)
+            *outRelPos = 0.f;
+        return isLtr ? i : line.glyphEndIdx;
+    }
 
     i = skipWrappedWhitespace(i, line.glyphEndIdx);
 
     float nextGlyphStart = line.horzOffset;
     while (i < line.glyphEndIdx)
     {
+        const float currGlyphStart = nextGlyphStart;
         nextGlyphStart += d_glyphs[i].advance;
         if (d_glyphs[i].isJustifyable)
             nextGlyphStart += line.justifySpaceSize;
 
         if (offsetX < nextGlyphStart)
+        {
+            if (outRelPos)
+            {
+                const float relPos = (offsetX - currGlyphStart) / (nextGlyphStart - currGlyphStart);
+                *outRelPos = d_glyphs[i].isRightToLeft ? (1.f - relPos) : relPos;
+            }
             return i;
+        }
 
         ++i;
     }
 
     // Point is to the right of the end
-    return (d_bidiDir == DefaultParagraphDirection::LeftToRight) ? line.glyphEndIdx : line.glyphEndIdx - 1;
+    if (outRelPos)
+        *outRelPos = 0.f;
+    return isLtr ? line.glyphEndIdx : (line.glyphEndIdx - 1);
 }
 
 //----------------------------------------------------------------------------//
