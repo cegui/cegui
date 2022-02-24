@@ -28,6 +28,7 @@
 #include "CEGUI/text/RenderedTextParagraph.h"
 #include "CEGUI/text/RenderedTextStyle.h"
 #include "CEGUI/text/TextParser.h"
+#include "CEGUI/text/TextUtils.h"
 #ifdef CEGUI_BIDI_SUPPORT
 #include "CEGUI/text/BidiVisualMapping.h"
 #endif
@@ -42,8 +43,6 @@
 
 namespace CEGUI
 {
-const std::u32string UTF32_NEWLINE_CHARACTERS(U"\n\r\x85\x2028\x2029");
-
 //----------------------------------------------------------------------------//
 RenderedText::RenderedText() = default;
 RenderedText::~RenderedText() = default;
@@ -325,7 +324,7 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
     size_t start = 0;
     do
     {
-        size_t end = utf32Text.find_first_of(UTF32_NEWLINE_CHARACTERS, start);
+        size_t end = utf32Text.find_first_of(TextUtils::UTF32_NEWLINE_CHARACTERS, start);
         if (end == std::u32string::npos)
             end = utf32TextLength;
 

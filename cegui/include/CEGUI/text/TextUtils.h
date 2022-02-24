@@ -32,21 +32,24 @@
 
 #include "CEGUI/String.h"
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 namespace CEGUI
 {
-/*!
-\brief
-    Text utility support class.  This class is all static members.  You do not create instances of this class.
-*/
+
+//! \brief Text utility support class. This class is all static members.
 class CEGUIEXPORT TextUtils
 {
 public:
     /*************************************************************************
         Constants
     *************************************************************************/
+    static const std::u32string UTF32_NEWLINE_CHARACTERS;
     static const String DefaultWhitespace;      //!< The default set of whitespace
     static const String DefaultAlphanumerical;  //!< default set of alphanumericals.
-    static const String DefaultWrapDelimiters;  //!< The default set of word-wrap delimiters
 
 
     /*************************************************************************
@@ -159,25 +162,14 @@ public:
     static  void    trimTrailingChars(String& str, const String& chars);
 
 private:
-    /*************************************************************************
-        Data
-    *************************************************************************/
-    static  String      d_delimiters;           //!< Current set of delimiters.
-    static  String      d_whitespace;           //!< Current set of whitespace.
 
-
-    /*************************************************************************
-        Construction / Destruction
-    *************************************************************************/
-    /*!
-    \brief
-        Constructor and Destructor are private.  This class has all static members.
-    */
-    TextUtils(void);
-    ~TextUtils(void);
+    TextUtils() = delete;
 };
 
-} // End of  CEGUI namespace section
+}
 
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
-#endif  // end of guard _CEGUITextUtils_h_
+#endif
