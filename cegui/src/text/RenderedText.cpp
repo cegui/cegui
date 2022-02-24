@@ -42,6 +42,8 @@
 
 namespace CEGUI
 {
+const std::u32string UTF32_NEWLINE_CHARACTERS(U"\n\r\x85\x2028\x2029");
+
 //----------------------------------------------------------------------------//
 RenderedText::RenderedText() = default;
 RenderedText::~RenderedText() = default;
@@ -296,8 +298,10 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
     if (utf32Text.empty())
         return true;
 
+    const size_t utf32TextLength = utf32Text.size();
+
     // There are characters without associated text style. Add a default one.
-    if (elementIndices.size() < utf32Text.size())
+    if (elementIndices.size() < utf32TextLength)
         d_elements.emplace_back(new RenderedTextStyle());
 
     // Characters without an explicit font ust use a default font
@@ -318,11 +322,10 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
 #endif
 
     // Perform layouting per paragraph
-    const size_t utf32TextLength = utf32Text.size();
     size_t start = 0;
     do
     {
-        size_t end = utf32Text.find('\n', start);
+        size_t end = utf32Text.find_first_of(UTF32_NEWLINE_CHARACTERS, start);
         if (end == std::u32string::npos)
             end = utf32TextLength;
 
@@ -350,7 +353,13 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
         if (end == utf32TextLength)
             break;
         else
+        {
+            // \r\n (CRLF) should be treated as a single newline according to Unicode spec
+            if (end < utf32TextLength - 1 && utf32Text[end] == '\r' && utf32Text[end + 1] == '\n')
+                ++end;
+
             start = end + 1;
+        }
     }
     while (true);
 
