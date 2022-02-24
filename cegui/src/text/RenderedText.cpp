@@ -352,14 +352,12 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
 
         if (end == utf32TextLength)
             break;
-        else
-        {
-            // \r\n (CRLF) should be treated as a single newline according to Unicode spec
-            if (end < utf32TextLength - 1 && utf32Text[end] == '\r' && utf32Text[end + 1] == '\n')
-                ++end;
 
-            start = end + 1;
-        }
+        // \r\n (CRLF) should be treated as a single newline according to Unicode spec
+        if (end < utf32TextLength - 1 && utf32Text[end] == '\r' && utf32Text[end + 1] == '\n')
+            ++end;
+
+        start = end + 1;
     }
     while (true);
 
