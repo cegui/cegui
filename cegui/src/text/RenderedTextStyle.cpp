@@ -45,7 +45,7 @@ void RenderedTextStyle::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) con
 
     // Setup traits based on the character
     glyph.isJustifyable = (codePoint == ' ');
-    glyph.isBreakable = (codePoint == ' ' || codePoint == '\t' || codePoint == '\r');
+    glyph.isBreakable = (codePoint == ' ' || codePoint == '\t');
     glyph.isWhitespace = glyph.isBreakable;
 
     //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?

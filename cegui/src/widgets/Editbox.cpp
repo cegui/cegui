@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "CEGUI/widgets/Editbox.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/text/TextUtils.h"
 
 namespace CEGUI
 {
@@ -70,11 +71,22 @@ bool Editbox::insertString(String&& strToInsert)
     if (isReadOnly() || strToInsert.empty())
         return false;
 
-    // TODO TEXT: make sure that this works for UTF-8 multibyte string too!
-    strToInsert.erase(std::remove_if(strToInsert.begin(), strToInsert.end(), [](String::value_type ch)
+    // TODO TEXT: can implement UTF-8 multibyte string friendly remove_if to avoid copying
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+    std::u32string utf32String = String::convertUtf8ToUtf32(strToInsert.c_str());
+#else
+    String& utf32String = strToInsert;
+#endif
+
+    // Erase newline characters from the single line editbox input
+    utf32String.erase(std::remove_if(utf32String.begin(), utf32String.end(), [](char32_t ch)
     {
-        return ch == '\n' || ch == '\r';
-    }), strToInsert.end());
+        return TextUtils::UTF32_NEWLINE_CHARACTERS.find(ch) != std::u32string::npos;
+    }), utf32String.end());
+
+#if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
+    strToInsert = String::convertUtf32ToUtf8(utf32String.c_str());
+#endif
 
     return EditboxBase::insertString(std::move(strToInsert));
 }

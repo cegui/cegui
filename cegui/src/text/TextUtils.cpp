@@ -33,9 +33,9 @@ namespace CEGUI
 /*************************************************************************
     Constants
 *************************************************************************/
+const std::u32string TextUtils::UTF32_NEWLINE_CHARACTERS(U"\n\r\x85\x2028\x2029");
 const String    TextUtils::DefaultWhitespace(" \n\t\r");
 const String    TextUtils::DefaultAlphanumerical("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
-const String    TextUtils::DefaultWrapDelimiters(" \n\t\r");
 
 /*************************************************************************
     return a String containing the the next word in a String.
