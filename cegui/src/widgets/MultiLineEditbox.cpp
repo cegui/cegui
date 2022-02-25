@@ -38,12 +38,6 @@ const String MultiLineEditbox::VertScrollbarName("__auto_vscrollbar__");
 const String MultiLineEditbox::HorzScrollbarName("__auto_hscrollbar__");
 
 //----------------------------------------------------------------------------//
-MultiLineEditboxWindowRenderer::MultiLineEditboxWindowRenderer(const String& name) :
-    WindowRenderer(name, MultiLineEditbox::EventNamespace)
-{
-}
-
-//----------------------------------------------------------------------------//
 MultiLineEditbox::MultiLineEditbox(const String& type, const String& name)
     : EditboxBase(type, name)
 {
@@ -68,7 +62,7 @@ void MultiLineEditbox::initialiseComponents()
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::updateFormatting()
 {
-    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
+    auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
     if (!wr)
         return;
 
@@ -154,53 +148,33 @@ void MultiLineEditbox::setTextOffsetY(float value)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::ensureCaretIsVisible()
 {
-    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
+    auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
     if (!wr)
         return;
 
     updateRenderedText();
 
-    const Rectf textArea = wr->getTextRenderArea();
     const Rectf caretRect = wr->getCaretRect();
+
     const float caretOffsetX = caretRect.left();
+    const float textOffsetX = getTextOffsetX();
+    if (caretOffsetX < textOffsetX)
+        setTextOffsetX(caretOffsetX);
+    else if (caretOffsetX > textOffsetX + d_renderedText.getAreaWidth())
+        setTextOffsetX(caretOffsetX - d_renderedText.getAreaWidth());
 
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    if (caretRect.top() < vertScrollbar->getScrollPosition())
-        vertScrollbar->setScrollPosition(caretRect.top());
-    else if (caretRect.bottom() > vertScrollbar->getScrollPosition() + textArea.getHeight())
-        vertScrollbar->setScrollPosition(caretRect.bottom() - textArea.getHeight());
-
-    Scrollbar* horzScrollbar = getHorzScrollbar();
-    if (caretOffsetX < horzScrollbar->getScrollPosition())
-        horzScrollbar->setScrollPosition(caretOffsetX);
-    else if (caretOffsetX > horzScrollbar->getScrollPosition() + d_renderedText.getAreaWidth())
-        horzScrollbar->setScrollPosition(caretOffsetX - d_renderedText.getAreaWidth());
-}
-
-//----------------------------------------------------------------------------//
-size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt)
-{
-    if (getText().empty())
-        return 0;
-
-    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
-    if (!wr)
-        return 0;
-
-    updateRenderedText();
-
-    //???FIXME TEXT: move to renderer? Should not rely on the same calculations in different places!
-    const auto localPt = CoordConverter::screenToWindow(*this, pt) - wr->getTextRenderArea().d_min + getTextOffset();
-
-    float relPos;
-    const auto idx = d_renderedText.getTextIndexAtPoint(localPt, &relPos);
-    return (relPos >= 0.5f) ? getNextTextIndex(idx) : idx;
+    const Rectf textArea = wr->getTextRenderArea();
+    const float textOffsetY = getTextOffsetY();
+    if (caretRect.top() < textOffsetY)
+        setTextOffsetY(caretRect.top());
+    else if (caretRect.bottom() > textOffsetY + textArea.getHeight())
+        setTextOffsetY(caretRect.bottom() - textArea.getHeight());
 }
 
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineUp(bool select)
 {
-    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
+    auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
     if (!wr)
         return;
 
@@ -216,7 +190,7 @@ void MultiLineEditbox::handleLineUp(bool select)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handleLineDown(bool select)
 {
-    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
+    auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
     if (!wr)
         return;
 
@@ -232,7 +206,7 @@ void MultiLineEditbox::handleLineDown(bool select)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handlePageUp(bool select)
 {
-    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
+    auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
     if (!wr)
         return;
 
@@ -250,7 +224,7 @@ void MultiLineEditbox::handlePageUp(bool select)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::handlePageDown(bool select)
 {
-    auto wr = static_cast<const MultiLineEditboxWindowRenderer*>(d_windowRenderer);
+    auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
     if (!wr)
         return;
 
@@ -263,12 +237,6 @@ void MultiLineEditbox::handlePageDown(bool select)
     handleCaretMovement(d_renderedText.pageDownTextIndex(d_caretPos, d_desiredCaretOffsetX, pageHeight), select);
 
     d_desiredCaretOffsetXDirty = false;
-}
-
-//----------------------------------------------------------------------------//
-bool MultiLineEditbox::validateWindowRenderer(const WindowRenderer* renderer) const
-{
-    return dynamic_cast<const MultiLineEditboxWindowRenderer*>(renderer) != nullptr;
 }
 
 //----------------------------------------------------------------------------//

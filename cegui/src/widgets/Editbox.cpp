@@ -141,26 +141,6 @@ void Editbox::ensureCaretIsVisible()
 }
 
 //----------------------------------------------------------------------------//
-size_t Editbox::getTextIndexFromPosition(const glm::vec2& pt)
-{
-    if (getText().empty())
-        return 0;
-
-    auto wr = static_cast<const EditboxWindowRenderer*>(d_windowRenderer);
-    if (!wr)
-        return 0;
-
-    updateRenderedText();
-
-    //???FIXME TEXT: move to renderer? Should not rely on the same calculations in different places!
-    const auto localPt = CoordConverter::screenToWindow(*this, pt) - wr->getTextRenderArea().d_min + getTextOffset();
-
-    float relPos;
-    const auto idx = d_renderedText.getTextIndexAtPoint(localPt, &relPos);
-    return (relPos >= 0.5f) ? getNextTextIndex(idx) : idx;
-}
-
-//----------------------------------------------------------------------------//
 bool Editbox::processSemanticInputEvent(const SemanticEventArgs& e)
 {
     switch (e.d_semanticValue)
@@ -180,12 +160,6 @@ bool Editbox::processSemanticInputEvent(const SemanticEventArgs& e)
 void Editbox::onTextAcceptedEvent(WindowEventArgs& e)
 {
     fireEvent(EventTextAccepted, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-bool Editbox::validateWindowRenderer(const WindowRenderer* renderer) const
-{
-    return dynamic_cast<const EditboxWindowRenderer*>(renderer) != nullptr;
 }
 
 }

@@ -27,31 +27,19 @@
 #include "CEGUI/FactoryRegisterer.h"
 #include "CEGUI/Logger.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-FactoryRegisterer::FactoryRegisterer(const String& type) :
-    d_type(type)
-{}
-
-//----------------------------------------------------------------------------//
-FactoryRegisterer::~FactoryRegisterer()
-{}
 
 //----------------------------------------------------------------------------//
 void FactoryRegisterer::registerFactory() const
 {
-    if (this->isAlreadyRegistered())
+    if (isAlreadyRegistered())
         CEGUI::Logger::getSingleton().logEvent(
             "Factory for '" + CEGUI::String(d_type) +
             "' appears to be  already registered, skipping.",
             CEGUI::LoggingLevel::Informative);
     else
-        this->doFactoryAdd();
+        doFactoryAdd();
 }
 
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section
-
+}

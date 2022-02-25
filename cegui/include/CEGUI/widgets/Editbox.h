@@ -30,7 +30,6 @@
 #define _CEGUIEditbox_h_
 
 #include "CEGUI/widgets/EditboxBase.h"
-#include "CEGUI/WindowRenderer.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -39,32 +38,6 @@
 
 namespace CEGUI
 {
-
-//! Base class for the EditboxWindowRenderer class
-class CEGUIEXPORT EditboxWindowRenderer : public WindowRenderer
-{
-public:
-
-    EditboxWindowRenderer(const String& name);
-
-    //! Editbox text parsing is forcefully disabled
-    virtual bool isTextParsingEnabled() const override { return false; }
-
-    /*!
-    \brief
-        Return a Rect object describing, in un-clipped pixels, the window relative area
-        that the text should be rendered in to.
-
-    \return
-        Rect object describing the area of the Window to be used for rendering text.
-    */
-    virtual Rectf getTextRenderArea() const = 0;
-
-    virtual Rectf getCaretRect() const = 0;
-    virtual float getCaretWidth() const = 0;
-};
-
-//----------------------------------------------------------------------------//
 
 //! Class for an Editbox widget
 class CEGUIEXPORT Editbox : public EditboxBase
@@ -108,9 +81,7 @@ protected:
 
     bool insertString(String&& strToInsert) override;
     void updateFormatting() override;
-    size_t getTextIndexFromPosition(const glm::vec2& pt) override;
     bool processSemanticInputEvent(const SemanticEventArgs& e) override;
-    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
     /*!
     \brief

@@ -40,7 +40,6 @@
 #include "CEGUI/WindowRendererSets/Core/Menubar.h"
 #include "CEGUI/WindowRendererSets/Core/MenuItem.h"
 #include "CEGUI/WindowRendererSets/Core/MultiColumnList.h"
-#include "CEGUI/WindowRendererSets/Core/MultiLineEditbox.h"
 #include "CEGUI/WindowRendererSets/Core/PopupMenu.h"
 #include "CEGUI/WindowRendererSets/Core/ProgressBar.h"
 #include "CEGUI/WindowRendererSets/Core/ScrollablePane.h"
@@ -80,7 +79,6 @@ CoreWindowRendererModule::CoreWindowRendererModule()
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardMenubar>());
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardMenuItem>());
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardMultiColumnList>());
-    d_registry.push_back(new TplWRFactoryRegisterer<FalagardMultiLineEditbox>());
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardPopupMenu>());
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardProgressBar>());
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardScrollablePane>());
@@ -95,16 +93,48 @@ CoreWindowRendererModule::CoreWindowRendererModule()
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardToggleButton>());
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardTooltip>());
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardTreeView>());
+
+    // FIXME: deprecated, remove when all users migrate their data to "Core/Editbox"
+    class FalagardMultiLineEditboxFactory : public WindowRendererFactory
+    {
+    public:
+
+        FalagardMultiLineEditboxFactory() : WindowRendererFactory("Core/MultiLineEditbox") {}
+
+        WindowRenderer* create() override { return new FalagardEditbox("Core/MultiLineEditbox"); }
+        void destroy(WindowRenderer* wr) override { delete wr; }
+    };
+    class FalagardMultiLineEditboxFactoryRegisterer : public FactoryRegisterer
+    {
+    public:
+
+        FalagardMultiLineEditboxFactoryRegisterer() : FactoryRegisterer("Core/MultiLineEditbox") {}
+
+        void unregisterFactory() const override
+        {
+            WindowRendererManager::getSingleton().removeFactory(d_type);
+        }
+
+    protected:
+
+        void doFactoryAdd() const override
+        {
+            WindowRendererManager::addFactory<FalagardMultiLineEditboxFactory>();
+        }
+
+        bool isAlreadyRegistered() const override
+        {
+            return WindowRendererManager::getSingleton().isFactoryPresent(d_type);
+        }
+    };
+    d_registry.push_back(new FalagardMultiLineEditboxFactoryRegisterer());
 }
 
 //----------------------------------------------------------------------------//
 CoreWindowRendererModule::~CoreWindowRendererModule()
 {
-    FactoryRegistry::iterator i = d_registry.begin();
-    for ( ; i != d_registry.end(); ++i)
-        delete (*i);
+    for (auto registerer : d_registry)
+        delete registerer;
 }
-
-//----------------------------------------------------------------------------//
 
 }

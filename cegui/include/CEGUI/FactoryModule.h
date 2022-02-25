@@ -55,10 +55,9 @@ public:
     unsigned int unregisterAllFactories();
 
 protected:
-    //! Collection type that holds pointers to the factory registerer objects.
-    typedef std::vector<FactoryRegisterer*> FactoryRegistry;
+
     //! The collection of factorty registerer object pointers.
-    FactoryRegistry d_registry;
+    std::vector<FactoryRegisterer*> d_registry;
 };
 
 } // End of  CEGUI namespace section

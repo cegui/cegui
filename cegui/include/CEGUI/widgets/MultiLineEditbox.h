@@ -30,34 +30,9 @@
 #define _CEGUIMultiLineEditbox_h_
 
 #include "CEGUI/widgets/EditboxBase.h"
-#include "CEGUI/WindowRenderer.h"
 
 namespace CEGUI
 {
-
-//! \brief Base class for multi-line edit box window renderer objects.
-class CEGUIEXPORT MultiLineEditboxWindowRenderer : public WindowRenderer
-{
-public:
-
-    MultiLineEditboxWindowRenderer(const String& name);
-
-    //! Editbox text parsing is forcefully disabled
-    virtual bool isTextParsingEnabled() const override { return false; }
-
-    /*!
-    \brief
-        Return a Rect object describing, in un-clipped pixels, the window relative area
-        that the text should be rendered in to.
-
-    \return
-        Rect object describing the area of the Window to be used for rendering text.
-    */
-    virtual Rectf getTextRenderArea() const = 0;
-
-    virtual Rectf getCaretRect() const = 0;
-    virtual float getCaretWidth() const = 0;
-};
 
 //! \brief Base class for the multi-line edit box widget.
 class CEGUIEXPORT MultiLineEditbox : public EditboxBase
@@ -152,7 +127,6 @@ public:
 protected:
 
     void updateFormatting() override;
-    size_t getTextIndexFromPosition(const glm::vec2& pt) override;
     bool processSemanticInputEvent(const SemanticEventArgs& e) override;
     void onScroll(CursorInputEventArgs& e) override;
     void onTextChanged(WindowEventArgs& e) override;
@@ -195,7 +169,6 @@ protected:
     void handlePageDown(bool select);
 
     bool handleScrollChange(const EventArgs& args);
-    bool validateWindowRenderer(const WindowRenderer* renderer) const override;
 
     float d_desiredCaretOffsetX = 0.f; //!< For preserving X offset when moving up & down
     bool d_desiredCaretOffsetXDirty = true;

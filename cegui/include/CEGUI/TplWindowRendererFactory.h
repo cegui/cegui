@@ -51,37 +51,13 @@ template <typename T>
 class TplWindowRendererFactory : public WindowRendererFactory
 {
 public:
-    //! Default constructor.
-    TplWindowRendererFactory();
 
-    // Implement WindowRendererFactory interface
-    WindowRenderer* create() override;
-    void destroy(WindowRenderer* wr) override;
+    TplWindowRendererFactory() : WindowRendererFactory(T::TypeName) {}
+
+    WindowRenderer* create() override { return new T(T::TypeName); }
+    void destroy(WindowRenderer* wr) override { delete wr; }
 };
 
-//----------------------------------------------------------------------------//
-template <typename T>
-TplWindowRendererFactory<T>::TplWindowRendererFactory() :
-    WindowRendererFactory(T::TypeName)
-{
 }
 
-//----------------------------------------------------------------------------//
-template <typename T>
-WindowRenderer* TplWindowRendererFactory<T>::create()
-{
-    return new T(T::TypeName);
-}
-
-//----------------------------------------------------------------------------//
-template <typename T>
-void TplWindowRendererFactory<T>::destroy(WindowRenderer* wr)
-{
-    delete wr;
-}
-
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section
-
-#endif  // end of guard _CEGUITplWindowRendererFactory_h_
+#endif
