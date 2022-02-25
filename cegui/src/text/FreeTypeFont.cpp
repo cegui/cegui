@@ -558,13 +558,16 @@ Image* FreeTypeFont::renderOutline(uint32_t index, FT_Fixed thickness)
     if (FT_Load_Glyph(d_fontFace, d_glyphs[index].getGlyphIndex(), getGlyphLoadFlags() | FT_LOAD_NO_BITMAP))
         return nullptr;
 
-    FT_Glyph ft_glyph;
-    FT_Get_Glyph(d_fontFace->glyph, &ft_glyph);
-    FT_Stroker_Set(d_stroker, thickness, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
-    FT_Glyph_Stroke(&ft_glyph, d_stroker, true); // can also use FT_Glyph_StrokeBorder
-    FT_Glyph_To_Bitmap(&ft_glyph, FT_RENDER_MODE_NORMAL, 0, true);
+    if (d_fontFace->glyph->format != FT_GLYPH_FORMAT_OUTLINE)
+        return nullptr;
 
-    const FT_BitmapGlyph& bitmapGlyph = reinterpret_cast<const FT_BitmapGlyph&>(ft_glyph);
+    FT_Glyph ftGlyph;
+    FT_Get_Glyph(d_fontFace->glyph, &ftGlyph);
+    FT_Stroker_Set(d_stroker, thickness, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
+    FT_Glyph_Stroke(&ftGlyph, d_stroker, true); // can also use FT_Glyph_StrokeBorder
+    FT_Glyph_To_Bitmap(&ftGlyph, FT_RENDER_MODE_NORMAL, 0, true);
+
+    const FT_BitmapGlyph& bitmapGlyph = reinterpret_cast<const FT_BitmapGlyph&>(ftGlyph);
 
     auto it = d_outlines.find(thickness);
     if (it == d_outlines.cend())
@@ -573,7 +576,7 @@ Image* FreeTypeFont::renderOutline(uint32_t index, FT_Fixed thickness)
     const String name(std::to_string(d_glyphs[index].getCodePoint()) + "_ol_" + std::to_string(thickness));
     it->second[index].reset(rasterise(name, bitmapGlyph->bitmap, bitmapGlyph->left, bitmapGlyph->top, bitmapGlyph->bitmap.width, bitmapGlyph->bitmap.rows));
 
-    FT_Done_Glyph(ft_glyph);
+    FT_Done_Glyph(ftGlyph);
 
     return it->second[index].get();
 }
