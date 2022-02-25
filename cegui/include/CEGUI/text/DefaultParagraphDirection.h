@@ -39,9 +39,9 @@ namespace CEGUI
         Enum for specifying the default direction of paragraphs (Also known as "direction" in CSS
         and LayoutDirection in Qt. Relevant for bidirectional text)
         
-        This is only in effect if raqm is linked and activate. Specifies the default order of words in a
-        paragraph, which is relevant when having sentences in a RightToLeft language that may start with a word
-        (or to be specific: first character of a word) from a LeftToRight language.
+        Specifies the default order of words in a paragraph, which is relevant when having sentences in
+        a RightToLeft language that may start with a word (or to be specific: first character of a word)
+        from a LeftToRight language.
         Example: If the mode is set to Automatic and the first word of a paragraph in Hebrew is a German
         company name, written in German alphabet, the German word will end up left, whereas the rest of
         the Hebrew sentences starts from the righ, continuing towards the left. With the setting RightToLeft
