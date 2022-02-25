@@ -33,6 +33,7 @@
 #include "CEGUI/text/RenderedText.h"
 #include "CEGUI/falagard/Enums.h"
 #include "CEGUI/RegexMatcher.h"
+#include "CEGUI/WindowRenderer.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -42,6 +43,32 @@
 namespace CEGUI
 {
 class UndoHandler;
+
+//! Base class for editbox window renderers
+class CEGUIEXPORT EditboxWindowRenderer : public WindowRenderer
+{
+public:
+
+    EditboxWindowRenderer(const String& name);
+
+    //! Editbox text parsing is forcefully disabled
+    virtual bool isTextParsingEnabled() const override { return false; }
+
+    /*!
+    \brief
+        Return a Rect object describing, in un-clipped pixels, the window relative area
+        that the text should be rendered in to.
+
+    \return
+        Rect object describing the area of the Window to be used for rendering text.
+    */
+    virtual Rectf getTextRenderArea() const = 0;
+
+    virtual Rectf getCaretRect() const = 0;
+    virtual float getCaretWidth() const = 0;
+};
+
+//----------------------------------------------------------------------------//
 
 //! Base class for an Editbox widget
 class CEGUIEXPORT EditboxBase : public Window
@@ -469,9 +496,9 @@ protected:
         Code point index into the text that is rendered closest to screen
         position \a pt.
     */
-    virtual size_t getTextIndexFromPosition(const glm::vec2& pt) = 0;
+    size_t getTextIndexFromPosition(const glm::vec2& pt);
 
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const override = 0;
+    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const override;
     virtual bool handleFontRenderSizeChange(const Font& font) override;
 
     //! Clear the currently defined selection (just the region, not the text).

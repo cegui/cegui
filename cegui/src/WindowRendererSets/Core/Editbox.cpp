@@ -27,6 +27,9 @@
 #include "CEGUI/WindowRendererSets/Core/Editbox.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/TplWindowRendererProperty.h"
+#include "CEGUI/widgets/MultiLineEditbox.h"
+#include "CEGUI/widgets/Scrollbar.h"
+
 
 namespace CEGUI
 {
@@ -60,13 +63,35 @@ FalagardEditbox::FalagardEditbox(const String& type) :
 //----------------------------------------------------------------------------//
 Rectf FalagardEditbox::getTextRenderArea() const
 {
-    return getLookNFeel().getNamedArea("TextArea").getArea().getPixelRect(*d_window);
+    const WidgetLookFeel& wlf = getLookNFeel();
+
+    if (auto w = dynamic_cast<MultiLineEditbox*>(d_window))
+    {
+        // If either of the scrollbars are visible, we might want to use another text rendering area
+        const bool v_visible = w->getVertScrollbar()->isVisible();
+        const bool h_visible = w->getHorzScrollbar()->isVisible();
+        if (v_visible || h_visible)
+        {
+            String areaName("TextArea");
+            if (h_visible)
+                areaName += "H";
+            if (v_visible)
+                areaName += "V";
+            areaName += "Scroll";
+
+            if (wlf.isNamedAreaPresent(areaName))
+                return wlf.getNamedArea(areaName).getArea().getPixelRect(*w);
+        }
+    }
+
+    // Default to plain TextArea
+    return wlf.getNamedArea("TextArea").getArea().getPixelRect(*d_window);
 }
 
 //----------------------------------------------------------------------------//
 Rectf FalagardEditbox::getCaretRect() const
 {
-    auto w = static_cast<Editbox*>(d_window);
+    auto w = static_cast<EditboxBase*>(d_window);
 
     Rectf caretGlyphRect;
     bool isRightToLeft;
@@ -91,7 +116,7 @@ float FalagardEditbox::getCaretWidth() const
 void FalagardEditbox::createRenderGeometry()
 {
     // NB: this may affect the text area and therefore is done first
-    auto w = static_cast<Editbox*>(d_window);
+    auto w = static_cast<EditboxBase*>(d_window);
     const auto& renderedText = w->getRenderedText();
 
     // Create the render geometry for the general frame and stuff before we handle the text itself
@@ -113,7 +138,7 @@ void FalagardEditbox::createRenderGeometry()
 //----------------------------------------------------------------------------//
 void FalagardEditbox::renderBaseImagery() const
 {
-    Editbox* w = static_cast<Editbox*>(d_window);
+    auto w = static_cast<EditboxBase*>(d_window);
 
     const auto& lnf = getLookNFeel();
 
@@ -138,7 +163,7 @@ void FalagardEditbox::renderBaseImagery() const
 //----------------------------------------------------------------------------//
 void FalagardEditbox::createRenderGeometryForText(const Rectf& textArea)
 {
-    Editbox* const w = static_cast<Editbox*>(d_window);
+    auto w = static_cast<EditboxBase*>(d_window);
     const auto& renderedText = w->getRenderedText();
     if (renderedText.empty())
         return;
