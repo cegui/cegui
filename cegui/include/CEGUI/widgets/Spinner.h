@@ -258,6 +258,7 @@ protected:
     void onTextChanged(WindowEventArgs& e) override;
     void onActivated(ActivationEventArgs& e) override;
     void onScroll(CursorInputEventArgs& e) override;
+    void onSemanticInputEvent(SemanticEventArgs& e) override;
 
     /*************************************************************************
         New Event handler methods

@@ -310,6 +310,27 @@ void Spinner::onScroll(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+void Spinner::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    switch (e.d_semanticValue)
+    {
+        case SemanticValue::GoUp:
+            setCurrentValue(d_currentValue + d_stepSize);
+            getEditbox()->setCaretIndex(0);
+            ++e.handled;
+            return;
+
+        case SemanticValue::GoDown:
+            setCurrentValue(d_currentValue - d_stepSize);
+            getEditbox()->setCaretIndex(0);
+            ++e.handled;
+            return;
+    }
+
+    Window::onSemanticInputEvent(e);
+}
+
+//----------------------------------------------------------------------------//
 void Spinner::onValueChanged(WindowEventArgs& e)
 {
     // Update editbox and spinner text with new value.
