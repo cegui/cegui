@@ -28,6 +28,7 @@
 #include "CEGUI/text/RenderedTextParagraph.h"
 #include "CEGUI/text/Font.h"
 #include "CEGUI/text/FontGlyph.h"
+#include "CEGUI/text/TextUtils.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Renderer.h"
 #include "CEGUI/GeometryBuffer.h"
@@ -44,9 +45,8 @@ void RenderedTextStyle::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) con
     glyph.advance += getLeftPadding() + getRightPadding();
 
     // Setup traits based on the character
-    glyph.isJustifyable = (codePoint == ' ');
-    glyph.isBreakable = (codePoint == ' ' || codePoint == '\t');
-    glyph.isWhitespace = glyph.isBreakable;
+    glyph.isJustifiable = (codePoint == ' ');
+    glyph.isWhitespace = (TextUtils::UTF32_WHITESPACE_CHARACTERS.find(codePoint) != std::u32string::npos);
 
     //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
     //if (glyph.isRightToLeft) ...
@@ -103,7 +103,7 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
             }
 
             pos.x += glyph->advance;
-            if (glyph->isJustifyable)
+            if (glyph->isJustifiable)
                 pos.x += justifySpaceSize;
         }
 
@@ -144,7 +144,7 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
         }
 
         pos.x += glyph->advance;
-        if (glyph->isJustifyable)
+        if (glyph->isJustifiable)
             pos.x += justifySpaceSize;
     }
 

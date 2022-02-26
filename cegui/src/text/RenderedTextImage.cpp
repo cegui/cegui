@@ -38,7 +38,7 @@ void RenderedTextImage::setupGlyph(RenderedGlyph& glyph, uint32_t /*codePoint*/)
     glyph.offset = getPadding().getPosition();
     glyph.advance = d_effectiveSize.d_width;
 
-    glyph.isJustifyable = false;
+    glyph.isJustifiable = false;
     glyph.isBreakable = true;
     glyph.isWhitespace = false;
 
@@ -100,7 +100,7 @@ void RenderedTextImage::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
         d_image->createRenderGeometry(out, settings, canCombineFromIdx);
 
         pos.x += glyph->advance;
-        if (glyph->isJustifyable)
+        if (glyph->isJustifiable)
             pos.x += justifySpaceSize;
     }
 
