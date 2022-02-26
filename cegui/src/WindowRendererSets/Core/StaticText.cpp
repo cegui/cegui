@@ -626,7 +626,6 @@ void FalagardStaticText::updateFormatting() const
 
     d_actualVertFormatting = d_vertFormatting;
 
-    //!!!TODO TEXT: make an universal method getEffectiveTextParser()!
     TextParser* parser = nullptr;
     if (isTextParsingEnabled())
     {

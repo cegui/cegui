@@ -147,11 +147,6 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
     if (lineStart >= lineEnd)
         return;
 
-    //!!!TODO TEXT: need to pass default style here! not only colors but also underline flag etc!
-    //???how to know where to apply a default style? now this style element is the same as explicit ones! Last is not always default!
-
-    //???TODO TEXT: to what buffers really can be merged?! need to see rendering order first!
-    //???!!!TODO TEXT: merge between paragraphs?! pass canCombineFromIdx as arg!!!
     const auto canCombineFromIdx = out.size();
 
     auto bgBuffer = &System::getSingleton().getRenderer()->createGeometryBufferColoured();
@@ -512,7 +507,6 @@ void RenderedTextParagraph::updateHorizontalFormatting(float areaWidth)
 }
 
 //----------------------------------------------------------------------------//
-//???TODO TEXT: cache extents rect?!
 void RenderedTextParagraph::accumulateExtents(Rectf& extents) const
 {
     if (d_linesDirty)

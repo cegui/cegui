@@ -312,7 +312,6 @@ private:
     String d_text; //!< text rendered by this component, either string or property name.
     String d_font; //!< font to use, either font name or property name.
 
-    //!!!FIXME TEXT: improve falagard prop/value, extend it beyound falagard enums!
     String d_wordWrapProperty;
 
     // Cache for avoiding redundant calulations

@@ -47,9 +47,6 @@ void RenderedTextStyle::setupGlyph(RenderedGlyph& glyph, uint32_t codePoint) con
     // Setup traits based on the character
     glyph.isJustifiable = (codePoint == ' ');
     glyph.isWhitespace = (TextUtils::UTF32_WHITESPACE_CHARACTERS.find(codePoint) != std::u32string::npos);
-
-    //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
-    //if (glyph.isRightToLeft) ...
 }
 
 //----------------------------------------------------------------------------//

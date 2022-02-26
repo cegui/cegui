@@ -45,7 +45,7 @@ TextComponent& TextComponent::operator =(TextComponent && other) noexcept = defa
 //----------------------------------------------------------------------------//
 String TextComponent::getEffectiveText(const Window& wnd) const
 {
-    //!!!FIXME TEXT: retrieve a reference to String from String-typed property!
+    // TODO: retrieve a reference to String from String-typed property!
     if (d_textFromProperty)
         return wnd.getProperty(d_text);
     else
@@ -234,7 +234,6 @@ void TextComponent::updateRenderedText(const Window& srcWindow, const Sizef& siz
         d_lastText = std::move(text);
     }
 
-    //!!!FIXME TEXT: get rid of deprecated word wrapping baked into hfmt!
     bool wordWrap = false;
     auto hfmt = decomposeHorizontalFormatting(d_horzFormatting.get(srcWindow), &wordWrap);
     if (!wordWrap)

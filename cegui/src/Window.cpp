@@ -673,8 +673,6 @@ void Window::setVisible(bool setting, bool force)
 
             if (!d_hideAnimInst->isRunning())
             {
-                // FIXME: assignment of non-scoped connection must disconnect the previous connection if not the same!
-                d_visibilityAnimEndConnection.disconnect();
                 d_visibilityAnimEndConnection = subscribeEvent(AnimationInstance::EventAnimationEnded,
                     [this](const EventArgs& e)
                 {
