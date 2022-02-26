@@ -60,7 +60,7 @@ const String Element::EventNonClientChanged("NonClientChanged");
 const String Element::EventIsSizeAdjustedToContentChanged("IsSizeAdjustedToContentChanged");
 
 //----------------------------------------------------------------------------//
-// NB: we promised not to change incoming elements, but we don't want to prevent users from doing so with return values
+// NB: we promised not to change incoming elements, but we don't want to prevent users from changing return values
 std::pair<Element*, Element*> Element::getSiblingsInCommonAncestor(const Element* e1, const Element* e2)
 {
     if (!e1 || !e2)
@@ -837,7 +837,7 @@ bool Element::isChild(const Element* element) const
 }
 
 //----------------------------------------------------------------------------//
-bool Element::isAncestor(const Element* element) const
+bool Element::isDescendantOf(const Element* element) const
 {
     const Element* current = d_parent;
     while (current)

@@ -25,13 +25,11 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/falagard/TextComponent.h"
-#include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/WindowRenderer.h"
 #include "CEGUI/XMLSerializer.h"
 #include "CEGUI/System.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/text/RenderedText.h"
 
 namespace CEGUI
 {
@@ -99,13 +97,13 @@ void TextComponent::addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf
 }
 
 //----------------------------------------------------------------------------//
-const Font* TextComponent::getFontObject(const Window& window) const
+Font* TextComponent::getFontObject(const Window& window) const
 {
     try
     {
         return d_fontFromProperty ?
             &FontManager::getSingleton().get(window.getProperty(d_font)) :
-            (d_font.empty() ? window.getActualFont() : &FontManager::getSingleton().get(d_font));
+            (d_font.empty() ? window.getEffectiveFont() : &FontManager::getSingleton().get(d_font));
     }
     catch (UnknownObjectException&)
     {
@@ -215,7 +213,7 @@ TextParser* TextComponent::getTextParser(const Window& window) const
 //------------------------------------------------------------------------//
 void TextComponent::updateRenderedText(const Window& srcWindow, const Sizef& size) const
 {
-    const Font* font = getFontObject(srcWindow);
+    Font* font = getFontObject(srcWindow);
     if (!font)
         throw InvalidRequestException("TextComponent > Window doesn't have a font.");
 

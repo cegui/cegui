@@ -269,7 +269,7 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
 
 //----------------------------------------------------------------------------//
 bool RenderedText::renderText(const String& text, TextParser* parser,
-    const Font* defaultFont, DefaultParagraphDirection defaultParagraphDir)
+    Font* defaultFont, DefaultParagraphDirection defaultParagraphDir)
 {
     d_paragraphs.clear();
     d_elements.clear();
@@ -312,8 +312,7 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
         if (!defaultFont)
             return false;
 
-        //!!!FIXME TEXT: constness of fonts! Make glyph cache mutable?
-        element->setFont(const_cast<Font*>(defaultFont));
+        element->setFont(defaultFont);
     }
 
 #ifdef CEGUI_USE_RAQM

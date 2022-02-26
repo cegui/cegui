@@ -233,7 +233,7 @@ void ListView::updateItem(ListViewItemRenderingState &item, ModelIndex index, fl
     item.d_text = d_itemModel->getData(index);
 
     TextParser* parser = getTextParser();
-    item.d_renderedText.renderText(item.d_text, getTextParser(), getActualFont(), DefaultParagraphDirection::LeftToRight);
+    item.d_renderedText.renderText(item.d_text, getTextParser(), getEffectiveFont(), DefaultParagraphDirection::LeftToRight);
 
     Sizef itemsAreaSize = getPixelSize();
     const Scrollbar* const vertScrollbar = getVertScrollbar();

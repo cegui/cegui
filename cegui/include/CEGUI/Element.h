@@ -846,10 +846,10 @@ public:
           parent, etc) of this Element.
         - false if \a element is not an ancestor of this element.
     */
-    bool isAncestor(const Element* element) const;
+    bool isDescendantOf(const Element* element) const;
 
     //! \brief Checks whether the element is in a subtree starting at the given root
-    bool isInHierarchyOf(const Element* root) const { return root && (root == this || isAncestor(root)); }
+    bool isInHierarchyOf(const Element* root) const { return root && (root == this || isDescendantOf(root)); }
 
     /*!
     \brief Set whether the Element is non-client.

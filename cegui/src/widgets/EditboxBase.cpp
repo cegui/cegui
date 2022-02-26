@@ -99,11 +99,11 @@ void EditboxBase::updateRenderedText()
         if (d_textMaskingEnabled)
         {
             const String maskedText(getText().size(), static_cast<char32_t>(d_textMaskingCodepoint));
-            d_renderedText.renderText(maskedText, nullptr, getActualFont(), d_defaultParagraphDirection);
+            d_renderedText.renderText(maskedText, nullptr, getEffectiveFont(), d_defaultParagraphDirection);
         }
         else
         {
-            d_renderedText.renderText(getText(), nullptr, getActualFont(), d_defaultParagraphDirection);
+            d_renderedText.renderText(getText(), nullptr, getEffectiveFont(), d_defaultParagraphDirection);
         }
 
         d_renderedTextDirty = false;
@@ -669,7 +669,7 @@ void EditboxBase::onFontChanged(WindowEventArgs& e)
 {
     Window::onFontChanged(e);
 
-    if (d_renderedText.getDefaultFont() != getActualFont())
+    if (d_renderedText.getDefaultFont() != getEffectiveFont())
     {
         d_renderedTextDirty = true;
         invalidate();
@@ -704,7 +704,7 @@ void EditboxBase::onCharacter(TextEventArgs& e)
 
     fireEvent(EventCharacterKey, e, Window::EventNamespace);
 
-    if (e.handled || !hasInputFocus() || !getActualFont()->isCodepointAvailable(e.d_character))
+    if (e.handled || !hasInputFocus() || !getEffectiveFont()->isCodepointAvailable(e.d_character))
         return;
 
     if (insertString(String(1, e.d_character)))
@@ -991,7 +991,7 @@ bool EditboxBase::handleFontRenderSizeChange(const Font& font)
 {
     const bool res = Window::handleFontRenderSizeChange(font);
 
-    if (getActualFont() == &font)
+    if (getEffectiveFont() == &font)
     {
         d_renderedTextDirty = true;
         invalidate();

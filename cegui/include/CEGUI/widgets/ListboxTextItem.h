@@ -58,7 +58,7 @@ public:
     \return
         Font to be used for rendering this item
     */
-    const Font*    getFont() const;
+    Font* getFont() const;
 
 
     /*!

@@ -103,7 +103,7 @@ void FalagardListView::createRenderGeometry(ListView* list_view)
         Rectf item_clipper(item_rect.getIntersection(items_area));
 
         createRenderGeometryAndAddToItemView(list_view, item->d_renderedText,
-            item_rect, list_view->getActualFont(), &list_view->getTextColourRect(), &item_clipper, item->d_isSelected);
+            item_rect, list_view->getEffectiveFont(), &list_view->getTextColourRect(), &item_clipper, item->d_isSelected);
 
         item_pos.y += size.d_height;
     }

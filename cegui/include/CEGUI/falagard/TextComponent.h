@@ -296,7 +296,7 @@ protected:
     void addImageRenderGeometryToWindow_impl(Window& srcWindow, Rectf& destRect,
         const CEGUI::ColourRect* modColours, const Rectf* clipper) const override;
 
-    const Font* getFontObject(const Window& window) const;
+    Font* getFontObject(const Window& window) const;
     TextParser* getTextParser(const Window& window) const;
     void updateRenderedText(const Window& srcWindow, const Sizef& size) const;
 
