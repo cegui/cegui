@@ -357,7 +357,6 @@ void FreeTypeFont::free()
     if (!d_fontFace)
         return;
 
-    //???FIXME TEXT: use destroyImageCollection?
     for (const auto& glyph : d_glyphs)
         delete glyph.getImage();
 

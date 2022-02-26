@@ -41,9 +41,6 @@ void RenderedTextImage::setupGlyph(RenderedGlyph& glyph, uint32_t /*codePoint*/)
     glyph.isJustifiable = false;
     glyph.isBreakable = true;
     glyph.isWhitespace = false;
-
-    //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
-    //if (glyph.isRightToLeft) ...
 }
 
 //----------------------------------------------------------------------------//
@@ -69,7 +66,6 @@ Sizef RenderedTextImage::updateMetrics(const Window* /*hostWindow*/)
 //----------------------------------------------------------------------------//
 float RenderedTextImage::getGlyphWidth(const RenderedGlyph& glyph) const
 {
-    //???TODO TEXT: or return d_effectiveSize.d_width?!
     return glyph.advance;
 }
 

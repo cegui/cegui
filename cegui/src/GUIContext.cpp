@@ -853,7 +853,6 @@ void GUIContext::setRenderTarget(RenderTarget& target)
     RenderTarget* const old_target = d_target;
     d_target = &target;
 
-    d_areaChangedEventConnection.disconnect();
     d_areaChangedEventConnection = d_target->subscribeEvent(
             RenderTarget::EventAreaChanged,
             Event::Subscriber(&GUIContext::areaChangedHandler, this));

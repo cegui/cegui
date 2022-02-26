@@ -41,9 +41,6 @@ void RenderedTextWidget::setupGlyph(RenderedGlyph& glyph, uint32_t /*codePoint*/
     glyph.isJustifiable = false;
     glyph.isBreakable = true;
     glyph.isWhitespace = false;
-
-    //!!!TODO TEXT: how must be padding applied to RTL characters? Should L/R padding be inverted or not?
-    //if (glyph.isRightToLeft) ...
 }
 
 //----------------------------------------------------------------------------//
@@ -58,8 +55,6 @@ Sizef RenderedTextWidget::updateMetrics(const Window* hostWindow)
         d_effectiveSize.d_width += getLeftPadding() + getRightPadding();
         d_effectiveSize.d_height += getTopPadding() + getBottomPadding();
 
-        //!!!FIXME TEXT: ensure that scoped connection disconnects on re-assign!
-        d_widgetDestroyConnection.disconnect();
         d_widgetDestroyConnection = d_widget->subscribeEvent(Window::EventDestructionStarted, [this]()
         {
             d_widgetDestroyConnection.disconnect();
@@ -78,7 +73,6 @@ Sizef RenderedTextWidget::updateMetrics(const Window* hostWindow)
 //----------------------------------------------------------------------------//
 float RenderedTextWidget::getGlyphWidth(const RenderedGlyph& glyph) const
 {
-    //???TODO TEXT: or return d_effectiveSize.d_width?!
     return glyph.advance;
 }
 

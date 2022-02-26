@@ -108,7 +108,6 @@ public:
     bool isLastJustifiedLineFormattingDefault() const { return d_defaultLastJustifiedLineFormatting; }
     bool isWordWrapDefault() const { return d_defaultWordWrap; }
     bool isFittingIntoAreaWidth() const { return d_fitsIntoAreaWidth; }
-    //!!!TODO TEXT: float getRequiredWidthChangeToFit() or like that - for word-wrapped count from line start to break point, otherwise lineW-areaW
 
     void setBidiDirection(DefaultParagraphDirection dir) { d_bidiDir = dir; }
     DefaultParagraphDirection getBidiDirection() const { return d_bidiDir; }
@@ -159,7 +158,6 @@ protected:
     std::vector<RenderedGlyph> d_glyphs;
     std::vector<Line> d_lines;
 
-    //???TODO TEXT: store end idx instead?
     uint32_t d_sourceStartIndex = 0;  //!< Starting index of the paragraph in the logical text
     uint32_t d_sourceEndIndex = 0;  //!< Starting index of the paragraph in the logical text
     float d_height = 0.f;

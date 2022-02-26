@@ -336,13 +336,10 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
         if (end > start)
         {
             // Create and setup a sequence of CEGUI glyphs for this paragraph
-            //!!!TODO TEXT: move into paragraph? Seems right but how to reuse raqm_t gracefully?!
 #ifdef CEGUI_USE_RAQM
             if (!layoutParagraphWithRaqm(p, utf32Text, start, end, defaultParagraphDir, elementIndices, d_elements, rq))
 #endif
                 layoutParagraph(p, utf32Text, start, end, defaultParagraphDir, elementIndices, d_elements);
-
-            //!!!TODO TEXT: set non-default formatting for this paragraph if specified explicitly!
 
             p.setupGlyphs(utf32Text, elementIndices, d_elements);
         }
@@ -553,8 +550,6 @@ bool RenderedText::getTextIndexBounds(size_t textIndex, Rectf& out, bool* outRtl
 
     float offsetY;
     const auto idx = findParagraphIndex(textIndex, offsetY);
-
-    //???FIXME TEXT: need bool result? always return sane rect?!
 
     if (!d_paragraphs[idx].getTextIndexBounds(out, outRtl, textIndex, d_elements))
         return false;

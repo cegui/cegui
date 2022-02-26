@@ -88,57 +88,55 @@ public:
     class ScopedConnection final
     {
     public:
+
         ScopedConnection() = default;
+        ScopedConnection(const ScopedConnection& other) : d_connection(other.d_connection) {}
+        ScopedConnection(ScopedConnection&& other) noexcept : d_connection(std::move(other.d_connection)) {}
+        ScopedConnection(const Event::Connection& connection) : d_connection(connection) {}
+        ScopedConnection(Event::Connection&& connection) noexcept : d_connection(std::move(connection)) {}
+        ~ScopedConnection() { disconnect(); }
 
-        ~ScopedConnection()
+        ScopedConnection& operator =(const ScopedConnection& other)
         {
-            disconnect();
-        }
-
-        ScopedConnection(const ScopedConnection& other) :
-            d_connection(other.d_connection)
-        {}
-
-        ScopedConnection(ScopedConnection&& other) noexcept :
-            d_connection(std::move(other.d_connection))
-        {}
-
-        ScopedConnection(const Event::Connection& connection) :
-            d_connection(connection)
-        {}
-
-        ScopedConnection(Event::Connection&& connection) :
-            d_connection(std::move(connection))
-        {}
-
-        ScopedConnection& operator=(const ScopedConnection& other)
-        {
-            d_connection = other.d_connection;
+            if (this != &other)
+            {
+                disconnect();
+                d_connection = other.d_connection;
+            }
             return *this;
         }
 
-        ScopedConnection& operator=(const Event::Connection& connection)
+        ScopedConnection& operator =(ScopedConnection&& other) noexcept
         {
-            d_connection = connection;
+            if (this != &other)
+            {
+                disconnect();
+                d_connection = std::move(other.d_connection);
+            }
             return *this;
         }
 
-        ScopedConnection& operator=(Event::Connection&& connection)
+        ScopedConnection& operator =(const Event::Connection& connection)
         {
-            d_connection = std::move(connection);
+            if (d_connection != connection)
+            {
+                disconnect();
+                d_connection = connection;
+            }
             return *this;
         }
 
-        ScopedConnection& operator=(ScopedConnection&& other) noexcept
+        ScopedConnection& operator =(Event::Connection&& connection)
         {
-            d_connection = std::move(other.d_connection);
+            if (d_connection != connection)
+            {
+                disconnect();
+                d_connection = std::move(connection);
+            }
             return *this;
         }
 
-        bool connected() const
-        {
-            return d_connection ? d_connection->connected() : false;
-        }
+        bool connected() const { return d_connection && d_connection->connected(); }
 
         void disconnect()
         {
@@ -149,7 +147,15 @@ public:
             }
         }
 
+        Event::Connection release()
+        {
+            Event::Connection ret;
+            std::swap(ret, d_connection);
+            return ret;
+        }
+
     private:
+
         Event::Connection d_connection;
     };
 

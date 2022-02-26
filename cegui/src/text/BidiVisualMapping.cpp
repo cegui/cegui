@@ -101,7 +101,6 @@ bool BidiVisualMapping::applyBidi(const char32_t* start, size_t length, std::u32
     const bool inplace = (start == outVisual.c_str());
 
     // Forbid aliasing other than exact matching of source and destination pointers
-    //???TODO TEXT: allow partial inplace conversions?
     if (!inplace && start > outVisual.c_str() && start <= (outVisual.c_str() + length))
         return false;
 
