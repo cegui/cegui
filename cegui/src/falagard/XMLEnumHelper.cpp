@@ -73,6 +73,7 @@ namespace CEGUI
     const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::CentreAligned("CentreAligned");
     const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::RightAligned("RightAligned");
     const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::Justified("Justified");
+    const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::Bidi("Bidi");
     const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::WordWrapLeftAligned("WordWrapLeftAligned");
     const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::WordWrapRightAligned("WordWrapRightAligned");
     const CEGUI::String FalagardXMLHelper<HorizontalTextFormatting>::WordWrapCentreAligned("WordWrapCentreAligned");
