@@ -62,8 +62,8 @@ static struct
         "Especially for fonts with a lot of non-ASCII characters this load time might be "
         "noticeable.!\n"
         "The quick brown fox jumps over the lazy dog. 1234567890\n\n\n",
-        CEGUI::DefaultParagraphDirection::LeftToRight,
-        CEGUI::HorizontalTextFormatting::LeftAligned
+        CEGUI::DefaultParagraphDirection::Automatic,
+        CEGUI::HorizontalTextFormatting::Bidi
     },
     {
         "European characters using DejaVuSans font",
