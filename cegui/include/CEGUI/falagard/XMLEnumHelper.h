@@ -373,28 +373,28 @@ public:
     {
         switch (val)
         {
-        case HorizontalTextFormatting::RightAligned:
-            return RightAligned;
+            case HorizontalTextFormatting::RightAligned:
+                return RightAligned;
+            case HorizontalTextFormatting::CentreAligned:
+                return CentreAligned;
+            case HorizontalTextFormatting::Justified:
+                return Justified;
+            case HorizontalTextFormatting::Bidi:
+                return Bidi;
 
-        case HorizontalTextFormatting::CentreAligned:
-            return CentreAligned;
+            // TODO: deprecated, remove later when users migrate their data
+            case HorizontalTextFormatting::WordWrapLeftAligned:
+                return WordWrapLeftAligned;
+            case HorizontalTextFormatting::WordWrapCentreAligned:
+                return WordWrapCentreAligned;
+            case HorizontalTextFormatting::WordWrapRightAligned:
+                return WordWrapRightAligned;
+            case HorizontalTextFormatting::WordWrapJustified:
+                return WordWrapJustified;
+            ////////////////////////////////////////////////////////////////
 
-        case HorizontalTextFormatting::Justified:
-            return Justified;
-
-        // TODO: deprecated, remove later when users migrate their data
-        case HorizontalTextFormatting::WordWrapLeftAligned:
-            return WordWrapLeftAligned;
-        case HorizontalTextFormatting::WordWrapCentreAligned:
-            return WordWrapCentreAligned;
-        case HorizontalTextFormatting::WordWrapRightAligned:
-            return WordWrapRightAligned;
-        case HorizontalTextFormatting::WordWrapJustified:
-            return WordWrapJustified;
-        ////////////////////////////////////////////////////////////////
-
-        default:
-            return LeftAligned;
+            default:
+                return LeftAligned;
         }
     }
 
@@ -402,12 +402,12 @@ public:
     {
         if (str == CentreAligned)
             return HorizontalTextFormatting::CentreAligned;
-
         else if (str == RightAligned)
             return HorizontalTextFormatting::RightAligned;
-
         else if (str == Justified)
             return HorizontalTextFormatting::Justified;
+        else if (str == Bidi)
+            return HorizontalTextFormatting::Bidi;
 
         // TODO: deprecated, remove later when users migrate their data
         else if (str == WordWrapLeftAligned)
@@ -429,6 +429,9 @@ public:
     static const CEGUI::String CentreAligned;
     static const CEGUI::String RightAligned;
     static const CEGUI::String Justified;
+    static const CEGUI::String Bidi;
+
+    // TODO: deprecated, remove later when users migrate their data
     static const CEGUI::String WordWrapLeftAligned;
     static const CEGUI::String WordWrapRightAligned;
     static const CEGUI::String WordWrapCentreAligned;
