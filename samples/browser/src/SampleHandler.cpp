@@ -224,7 +224,7 @@ void SampleHandler::initialiseInputAggregator()
     {
         //! Creating the an input aggregator for this sample
         d_inputAggregator = new CEGUI::InputAggregator(d_guiContext);
-        d_inputAggregator->initialise();
+        d_inputAggregator->initialise(false);
     }
 }
 
