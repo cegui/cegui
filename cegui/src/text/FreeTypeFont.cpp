@@ -89,10 +89,31 @@ FreeTypeFont::FreeTypeFont(
     d_sizeUnit(sizeUnit),
     d_antiAliased(anti_aliased)
 {
+    addFreeTypeFontProperties();
+
     if (!s_fontUsageCount++)
         FT_Init_FreeType(&s_freetypeLibHandle);
 
-    addFreeTypeFontProperties();
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(
+        d_filename, d_fontData, d_resourceGroup.empty() ? getDefaultResourceGroup() : d_resourceGroup);
+
+    // create face using input font
+    FT_Error error = FT_New_Memory_Face(s_freetypeLibHandle, d_fontData.getDataPtr(),
+        static_cast<FT_Long>(d_fontData.getSize()), 0, &d_fontFace);
+
+    if (error != 0)
+        findAndThrowFreeTypeError(error, "Failed to create face from font file");
+
+    // Check unicode character map availability
+    if (!d_fontFace->charmap)
+    {
+        FT_Done_Face(d_fontFace);
+        d_fontFace = nullptr;
+        throw GenericException("The font '" + d_name +
+            "' does not have a Unicode charmap, and cannot be used.");
+    }
+
+    FT_Stroker_New(s_freetypeLibHandle, &d_stroker);
 
     FreeTypeFont::updateFont();
 
@@ -105,6 +126,13 @@ FreeTypeFont::FreeTypeFont(
 FreeTypeFont::~FreeTypeFont()
 {
     free();
+
+    FT_Stroker_Done(d_stroker);
+    d_stroker = nullptr;
+
+    FT_Done_Face(d_fontFace);
+    d_fontFace = nullptr;
+    System::getSingleton().getResourceProvider()->unloadRawDataContainer(d_fontData);
 
     if (!--s_fontUsageCount)
         FT_Done_FreeType(s_freetypeLibHandle);
@@ -357,6 +385,8 @@ void FreeTypeFont::free()
     if (!d_fontFace)
         return;
 
+    d_outlines.clear();
+
     for (const auto& glyph : d_glyphs)
         delete glyph.getImage();
 
@@ -369,13 +399,6 @@ void FreeTypeFont::free()
     d_codePointToGlyphMap.clear();
     d_indexToGlyphMap.clear();
     d_glyphs.clear();
-
-    FT_Stroker_Done(d_stroker);
-    d_stroker = nullptr;
-
-    FT_Done_Face(d_fontFace);
-    d_fontFace = nullptr;
-    System::getSingleton().getResourceProvider()->unloadRawDataContainer(d_fontData);
 }
 
 //----------------------------------------------------------------------------//
@@ -431,25 +454,6 @@ void FreeTypeFont::updateFont()
 {
     free();
 
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(
-        d_filename, d_fontData, d_resourceGroup.empty() ? getDefaultResourceGroup() : d_resourceGroup);
-
-    // create face using input font
-    FT_Error error = FT_New_Memory_Face(s_freetypeLibHandle, d_fontData.getDataPtr(),
-        static_cast<FT_Long>(d_fontData.getSize()), 0, &d_fontFace);
-
-    if (error != 0)
-        findAndThrowFreeTypeError(error, "Failed to create face from font file");
-
-    // Check unicode character map availability
-    if (!d_fontFace->charmap)
-    {
-        FT_Done_Face(d_fontFace);
-        d_fontFace = nullptr;
-        throw GenericException("The font '" + d_name +
-            "' does not have a Unicode charmap, and cannot be used.");
-    }
-
     float fontScaleFactor = System::getSingleton().getRenderer()->getFontScale();
     if (d_autoScaled != AutoScaledMode::Disabled)
         fontScaleFactor *= d_vertScaling;
@@ -499,8 +503,6 @@ void FreeTypeFont::updateFont()
 
     if (d_specificLineSpacing > 0.0f)
         d_height = d_specificLineSpacing;
-
-    FT_Stroker_New(s_freetypeLibHandle, &d_stroker);
 
     // Initialise glyph map
 
