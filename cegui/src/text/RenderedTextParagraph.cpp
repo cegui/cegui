@@ -467,10 +467,13 @@ void RenderedTextParagraph::updateHorizontalFormatting(float areaWidth)
 
         line.horzFmtDirty = false;
 
-        const bool isLastLine = (&line == &d_lines.back());
-        const auto lineHorzFmt = (isLastLine && d_horzFormatting == HorizontalTextFormatting::Justified) ?
-            d_lastJustifiedLineFormatting :
-            d_horzFormatting;
+        HorizontalTextFormatting lineHorzFmt;
+        if (d_horzFormatting == HorizontalTextFormatting::Justified && (&line == &d_lines.back()))
+            lineHorzFmt = d_lastJustifiedLineFormatting;
+        else if (d_horzFormatting == HorizontalTextFormatting::Bidi)
+            lineHorzFmt = (d_bidiDir == DefaultParagraphDirection::RightToLeft) ? HorizontalTextFormatting::RightAligned : HorizontalTextFormatting::LeftAligned;
+        else
+            lineHorzFmt = d_horzFormatting;
 
         switch (lineHorzFmt)
         {

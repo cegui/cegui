@@ -95,8 +95,9 @@ namespace CEGUI
     {
         LeftAligned,        //!< Left of text should be aligned with the left of the destination area.
         RightAligned,       //!< Right of text should be aligned with the right of the destination area.
-        CentreAligned,      //!< text should be horizontally centred within the destination area.
-        Justified,          //!< text should be spaced so that it takes the full width of the destination area.
+        CentreAligned,      //!< Text should be horizontally centred within the destination area.
+        Justified,          //!< Text should be spaced so that it takes the full width of the destination area.
+        Bidi,               //!< LeftAligned or RightAligned based on the paragraph BIDI direction.
 
         // TODO: deprecated, remove later when users migrate their data
         WordWrapLeftAligned,
