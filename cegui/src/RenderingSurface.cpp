@@ -30,19 +30,8 @@
 #include "CEGUI/Renderer.h"
 #include <algorithm>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-// RenderQueueEventArgs
-//----------------------------------------------------------------------------//
-RenderQueueEventArgs::RenderQueueEventArgs(const RenderQueueID id) :
-    queueID(id)
-{}
-
-//----------------------------------------------------------------------------//
-// RenderingSurface
-//----------------------------------------------------------------------------//
 // Namespace for global events
 const String RenderingSurface::EventNamespace("RenderingSurface");
 // Event that signals the start of rendering for a queue.
@@ -51,19 +40,16 @@ const String RenderingSurface::EventRenderQueueStarted("RenderQueueStarted");
 const String RenderingSurface::EventRenderQueueEnded("RenderQueueEnded");
 
 //----------------------------------------------------------------------------//
-RenderingSurface::RenderingSurface(RenderTarget& target) :
-    d_target(&target),
-    d_invalidated(true)
+RenderingSurface::RenderingSurface(RenderTarget& target)
+    : d_target(&target)
 {
 }
 
 //----------------------------------------------------------------------------//
 RenderingSurface::~RenderingSurface()
 {
-    // destroy all the RenderingWindow objects attached to this surface
-    const size_t count = d_windows.size();
-    for (size_t i = 0; i < count; ++i)
-        delete d_windows[i];
+    for (auto wnd : d_windows)
+        delete wnd;
 }
 
 //----------------------------------------------------------------------------//
@@ -96,10 +82,8 @@ void RenderingSurface::clearGeometry(const RenderQueueID queue)
 //----------------------------------------------------------------------------//
 void RenderingSurface::clearGeometry()
 {
-    RenderQueueList::iterator i = d_queues.begin();
-
-    for ( ; d_queues.end() != i; ++i)
-        i->second.reset();
+    for (auto& pair : d_queues)
+        pair.second.reset();
 }
 
 //----------------------------------------------------------------------------//
@@ -118,22 +102,16 @@ void RenderingSurface::draw(std::uint32_t drawMode)
 void RenderingSurface::drawContent(std::uint32_t drawModeMask)
 {
     RenderQueueEventArgs evt_args(RenderQueueID::User0);
-
-    for (RenderQueueList::iterator i = d_queues.begin();
-         d_queues.end() != i;
-         ++i)
+    for (const auto& pair : d_queues)
     {
         evt_args.handled = 0;
-        evt_args.queueID = i->first;
-        draw(i->second, evt_args, drawModeMask);
+        evt_args.queueID = pair.first;
+        draw(pair.second, evt_args, drawModeMask);
     }
 }
 
 //----------------------------------------------------------------------------//
-void RenderingSurface::draw(
-    const RenderQueue& queue,
-    RenderQueueEventArgs& args,
-    std::uint32_t drawModeMask)
+void RenderingSurface::draw(const RenderQueue& queue, RenderQueueEventArgs& args, std::uint32_t drawModeMask)
 {
     fireEvent(EventRenderQueueStarted, args, EventNamespace);
 
@@ -144,21 +122,9 @@ void RenderingSurface::draw(
 }
 
 //----------------------------------------------------------------------------//
-void RenderingSurface::invalidate()
-{
-    d_invalidated = true;
-}
-
-//----------------------------------------------------------------------------//
 bool RenderingSurface::isInvalidated() const
 {
     return d_invalidated || !d_target->isImageryCache();
-}
-
-//----------------------------------------------------------------------------//
-bool RenderingSurface::isRenderingWindow() const
-{
-    return false;
 }
 
 //----------------------------------------------------------------------------//
@@ -166,7 +132,6 @@ RenderingWindow& RenderingSurface::createRenderingWindow(TextureTarget& target)
 {
     RenderingWindow* w = new RenderingWindow(target, *this);
     attachWindow(*w);
-
     return *w;
 }
 
@@ -185,11 +150,8 @@ void RenderingSurface::transferRenderingWindow(RenderingWindow& window)
 {
     if (&window.getOwner() != this)
     {
-        // detach window from it's current owner
         window.getOwner().detachWindow(window);
-        // add window to this surface.
         attachWindow(window);
-
         window.setOwner(*this);
     }
 }
@@ -197,12 +159,10 @@ void RenderingSurface::transferRenderingWindow(RenderingWindow& window)
 //----------------------------------------------------------------------------//
 void RenderingSurface::detachWindow(RenderingWindow& w)
 {
-    RenderingWindowList::iterator i =
-        std::find(d_windows.begin(), d_windows.end(), &w);
-
-    if (i != d_windows.end())
+    auto it = std::find(d_windows.cbegin(), d_windows.cend(), &w);
+    if (it != d_windows.cend())
     {
-        d_windows.erase(i);
+        d_windows.erase(it);
         invalidate();
     }
 }
@@ -214,19 +174,4 @@ void RenderingSurface::attachWindow(RenderingWindow& w)
     invalidate();
 }
 
-//----------------------------------------------------------------------------//
-const RenderTarget& RenderingSurface::getRenderTarget() const
-{
-    return *d_target;
 }
-
-//----------------------------------------------------------------------------//
-RenderTarget& RenderingSurface::getRenderTarget()
-{
-    return const_cast<RenderTarget&>(
-        static_cast<const RenderingSurface*>(this)->getRenderTarget());
-}
-
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section

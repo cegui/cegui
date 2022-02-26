@@ -605,7 +605,7 @@ protected:
     void writeXMLElementName_impl(XMLSerializer& xml_stream) const override;
     void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const override;
 
-    const Font* getFontObject(const Window& window) const;
+    Font* getFontObject(const Window& window) const;
 
 private:
     //! Name of Font.  If empty font will be taken from Window.

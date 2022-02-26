@@ -609,13 +609,13 @@ void FalagardStaticText::setUnitIntervalVerticalScrollPosition(float position)
 //----------------------------------------------------------------------------//
 float FalagardStaticText::getLineHeight() const
 {
-    return d_window->getActualFont()->getFontHeight();
+    return d_window->getEffectiveFont()->getFontHeight();
 }
 
 //----------------------------------------------------------------------------//
 float FalagardStaticText::getVerticalAdvance() const
 {
-    return d_window->getActualFont()->getFontHeight();
+    return d_window->getEffectiveFont()->getFontHeight();
 }
 
 //----------------------------------------------------------------------------//
@@ -634,7 +634,7 @@ void FalagardStaticText::updateFormatting() const
             parser = CEGUI::System::getSingleton().getDefaultTextParser();
     }
 
-    d_renderedText.renderText(d_window->getText(), parser, d_window->getActualFont());
+    d_renderedText.renderText(d_window->getText(), parser, d_window->getEffectiveFont());
 
     configureScrollbars();
 
@@ -661,7 +661,7 @@ bool FalagardStaticText::handleFontRenderSizeChange(const Font* const font)
 {
     const bool res = WindowRenderer::handleFontRenderSizeChange(font);
 
-    if (d_window->getActualFont() == font)
+    if (d_window->getEffectiveFont() == font)
     {
         invalidateFormatting();
         d_window->adjustSizeToContent();

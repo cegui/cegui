@@ -51,7 +51,7 @@ public:
     RenderedText& operator =(const RenderedText& rhs) = delete; // Use clone() instead
     RenderedText& operator =(RenderedText&&) noexcept;
 
-    bool renderText(const String& text, TextParser* parser = nullptr, const Font* defaultFont = nullptr,
+    bool renderText(const String& text, TextParser* parser = nullptr, Font* defaultFont = nullptr,
         DefaultParagraphDirection defaultParagraphDir = DefaultParagraphDirection::LeftToRight);
 
     void updateDynamicObjectExtents(const Window* hostWindow = nullptr);

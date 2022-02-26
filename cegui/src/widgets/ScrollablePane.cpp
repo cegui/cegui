@@ -257,7 +257,7 @@ void ScrollablePane::initialiseComponents()
     // do a bit of initialisation
     horzScrollbar->setAlwaysOnTop(true);
     vertScrollbar->setAlwaysOnTop(true);
-    container->setCursor(getActualCursor());
+    container->setCursor(getEffectiveCursor());
 
     // subscribe to events we need to hear about
     vertScrollbar->subscribeEvent(

@@ -233,19 +233,18 @@ PropertyHelper<Font*>::fromString(const String& str)
     if (str.empty())
         return nullptr;
 
-    return_type image;
-
+    return_type value;
     try
     {
-        image = &FontManager::getSingleton().get(str);
+        value = &FontManager::getSingleton().get(str);
     }
     catch (UnknownObjectException&)
     {
-        image = nullptr;
+        value = nullptr;
         throwParsingException(getDataTypeName(), str);
     }
 
-    return image;
+    return value;
 }
 
 PropertyHelper<Font*>::string_return_type PropertyHelper<Font*>::toString(

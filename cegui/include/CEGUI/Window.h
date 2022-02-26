@@ -466,7 +466,7 @@ public:
 
     using Element::isChild;
     using Element::removeChild;
-    using Element::isAncestor;
+    using Element::isDescendantOf;
 
     /*!
     \brief
@@ -766,7 +766,7 @@ public:
         true if an window named \a name is an ancestor (parent, or parent of
         parent, etc) of this element, false otherwise.
     */
-    bool isAncestor(const String& name) const;
+    bool isDescendantOf(const String& name) const;
 
     /*!
     \brief
@@ -891,21 +891,20 @@ public:
           the ID code \a ID.
         - false if no ancestor window has the ID code \a ID.
     */
-    bool isAncestor(unsigned int ID) const;
+    bool isDescendantOf(unsigned int ID) const;
 
     /*!
     \brief
-        return the active Font object for the Window.
+        Returns an effective Font object for the Window.
 
     \return
-        Pointer to the Font being used by this Window.  If the window has no
-        assigned font, and \a useDefault is true, then the default system font
-        is returned.
+        Pointer to the Font being used by this Window. If the window has no
+        assigned font, then the default font of the GUI context is returned.
     */
-    const Font* getActualFont() const;
+    Font* getEffectiveFont() const;
 
     //! Returns the font set for this window, nullptr means that a default font will be used
-    const Font* getFont() const { return d_font; }
+    Font* getFont() const { return d_font; }
 
     /*!
     \brief
@@ -1042,7 +1041,7 @@ public:
 
     /*!
     \brief
-        Return a pointer to the cursor image to use when the cursor
+        Returns a pointer to the cursor image to use when the cursor
         indicator is within this window's area.
 
     \return
@@ -1050,7 +1049,7 @@ public:
         enters this window's area. May return NULL indicating no indicator will
         be drawn for this window.
     */
-    const Image* getActualCursor() const;
+    const Image* getEffectiveCursor() const;
 
     //! Returns the cursor set for this window, nullptr means that a default cursor will be used
     const Image* getCursor() const { return d_cursor; }
@@ -1803,9 +1802,9 @@ public:
 
     \param font
         Pointer to the Font object to be used by this Window.
-        If \a font is NULL, the default font will be used.
+        If \a font is nullptr, the default font will be used.
     */
-    void setFont(const Font* font);
+    void setFont(Font* font);
 
     /*!
     \brief
@@ -3346,7 +3345,7 @@ protected:
     //! Holds pointer to the Window objects current cursor image.
     const Image* d_cursor = nullptr;
     //! Holds pointer to the Window objects current Font.
-    const Font* d_font = nullptr;
+    Font* d_font = nullptr;
     //! Animations that play when the window visibility is changed
     AnimationInstance* d_showAnimInst = nullptr;
     AnimationInstance* d_hideAnimInst = nullptr;

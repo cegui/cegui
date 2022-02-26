@@ -521,9 +521,9 @@ template<>
 class CEGUIEXPORT PropertyHelper<Font*>
 {
 public:
-    typedef const Font* return_type;
+    typedef Font* return_type;
     typedef return_type safe_method_return_type;
-    typedef const Font* const pass_type;
+    typedef Font* const pass_type;
     typedef String string_return_type;
     
     static const String& getDataTypeName();

@@ -204,7 +204,7 @@ void DragContainer::cancelDragging()
 void DragContainer::updateActiveCursorImage() const
 {
     if (d_guiContext)
-        d_guiContext->getCursor().setImage(d_dragging ? getDragIndicatorImage() : getActualCursor());
+        d_guiContext->getCursor().setImage(d_dragging ? getDragIndicatorImage() : getEffectiveCursor());
 }
 
 //----------------------------------------------------------------------------//

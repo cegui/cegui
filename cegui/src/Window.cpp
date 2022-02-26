@@ -346,7 +346,7 @@ Window* Window::getChildRecursive(const String& name) const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isAncestor(const String& name) const
+bool Window::isDescendantOf(const String& name) const
 {
     const Window* current = getParent();
     while (current)
@@ -425,7 +425,7 @@ Window* Window::getChildRecursive(unsigned int ID) const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isAncestor(unsigned int ID) const
+bool Window::isDescendantOf(unsigned int ID) const
 {
     const Window* current = getParent();
     while (current)
@@ -440,7 +440,7 @@ bool Window::isAncestor(unsigned int ID) const
 }
 
 //----------------------------------------------------------------------------//
-const Font* Window::getActualFont() const
+Font* Window::getEffectiveFont() const
 {
     return d_font ? d_font :
         d_guiContext ? d_guiContext->getDefaultFont() :
@@ -919,7 +919,7 @@ void Window::appendText(const String& text)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setFont(const Font* font)
+void Window::setFont(Font* font)
 {
     if (d_font == font)
         return;
@@ -1383,7 +1383,7 @@ void Window::onZChange_impl()
 }
 
 //----------------------------------------------------------------------------//
-const Image* Window::getActualCursor() const
+const Image* Window::getEffectiveCursor() const
 {
     return d_cursor ? d_cursor :
         d_guiContext ? d_guiContext->getCursor().getDefaultImage() :
@@ -3173,7 +3173,7 @@ void Window::attachToGUIContext(GUIContext* context)
             notifyDefaultFontChanged();
 
         // Need to call this since we could have missed notifications while we were detached
-        if (auto font = getActualFont())
+        if (auto font = getEffectiveFont())
             notifyFontRenderSizeChanged(*font);
     }
 }

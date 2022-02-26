@@ -74,7 +74,7 @@ bool ButtonBase::calculateCurrentHoverState(const glm::vec2& cursor_pos)
     if (auto captureWnd = d_guiContext->getInputCaptureWindow())
     {
         return
-            ((captureWnd == this) || (captureWnd->distributesCapturedInputs() && isAncestor(captureWnd))) &&
+            ((captureWnd == this) || (captureWnd->distributesCapturedInputs() && isDescendantOf(captureWnd))) &&
             isHit(cursor_pos);
     }
 

@@ -46,9 +46,9 @@ ListboxTextItem::ListboxTextItem(const String& text, unsigned int item_id, void*
 }
 
 //----------------------------------------------------------------------------//
-const Font* ListboxTextItem::getFont() const
+Font* ListboxTextItem::getFont() const
 {
-    return d_font ? d_font : d_owner ? d_owner->getActualFont() : nullptr;  
+    return d_font ? d_font : d_owner ? d_owner->getEffectiveFont() : nullptr;
 }
 
 //----------------------------------------------------------------------------//

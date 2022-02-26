@@ -268,7 +268,7 @@ String Spinner::getTextFromValue() const
 //----------------------------------------------------------------------------//
 void Spinner::onFontChanged(WindowEventArgs& e)
 {
-    getEditbox()->setFont(getActualFont());
+    getEditbox()->setFont(getEffectiveFont());
     Window::onFontChanged(e);
 }
 

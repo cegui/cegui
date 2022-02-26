@@ -80,7 +80,7 @@ public:
         RenderQueueID value indicating the queue that the event is being
         generated for.
     */
-    RenderQueueEventArgs(const RenderQueueID id);
+    RenderQueueEventArgs(const RenderQueueID id) : queueID(id) {}
 
     //! ID of the queue that this event has been fired for.
     RenderQueueID queueID;
@@ -104,8 +104,7 @@ public:
     these are queues that have had some interaction - such as clearing or adding
     geometry.
 */
-class CEGUIEXPORT RenderingSurface :
-    public EventSet
+class CEGUIEXPORT RenderingSurface : public EventSet
 {
 public:
     //! Namespace for global events from RenderingSurface objects.
@@ -267,7 +266,7 @@ public:
         the rendered output - that geometry content has changed and the cached
         imagery should be cleared and redrawn.
     */
-    virtual void invalidate();
+    virtual void invalidate() { d_invalidated = true; }
 
     /*!
     \brief
@@ -295,7 +294,7 @@ public:
         - true to indicate the RenderingSurface is a RenderingWindow instance.
         - false to indicate the RenderingSurface is not a RenderingWindow.
     */
-    virtual bool isRenderingWindow() const;
+    virtual bool isRenderingWindow() const { return false; }
 
     /*!
     \brief
@@ -358,12 +357,10 @@ public:
         RenderTarget object that the RenderingSurface is using to draw it's
         output.
     */
-    const RenderTarget& getRenderTarget() const;
-    RenderTarget& getRenderTarget();
+    const RenderTarget& getRenderTarget() const { return *d_target; }
+    RenderTarget& getRenderTarget() { return *d_target; }
 
-	//! collection type for the queues
-	typedef std::map<RenderQueueID, RenderQueue> RenderQueueList;
-	RenderQueueList& getRenderQueueList()         {return d_queues;}
+    std::map<RenderQueueID, RenderQueue>& getRenderQueueList() { return d_queues; }
 
 protected:
     /** draw the surface content. Default impl draws the render queues.
@@ -380,16 +377,14 @@ protected:
     //! attach ReneringWindow from this RenderingSurface
     void attachWindow(RenderingWindow& w);
 
-    //! collection type for created RenderingWindow objects
-    typedef std::vector<RenderingWindow*> RenderingWindowList;
     //! the collection of RenderQueue objects.
-    RenderQueueList d_queues;
+    std::map<RenderQueueID, RenderQueue> d_queues;
     //! collection of RenderingWindow object we own
-    RenderingWindowList d_windows;
+    std::vector<RenderingWindow*> d_windows;
     //! RenderTarget that this surface actually draws to.
     RenderTarget* d_target;
     //! holds invalidated state of target (as far as we are concerned)
-    bool d_invalidated;
+    bool d_invalidated = true;
 };
 
 } // End of  CEGUI namespace section

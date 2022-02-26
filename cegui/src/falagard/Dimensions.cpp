@@ -776,10 +776,9 @@ float FontDim::getValue(const Window& wnd) const
 }
 
 //----------------------------------------------------------------------------//
-const Font* FontDim::getFontObject(const Window& window) const
+Font* FontDim::getFontObject(const Window& window) const
 {
-    return d_font.empty() ? window.getActualFont() :
-                            &FontManager::getSingleton().get(d_font);
+    return d_font.empty() ? window.getEffectiveFont() : &FontManager::getSingleton().get(d_font);
 }
 
 //----------------------------------------------------------------------------//
