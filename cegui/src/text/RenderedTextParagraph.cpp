@@ -374,7 +374,7 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
                     currLine = &d_lines.back();
                 }
             }
-            else if (d_glyphs[i].isBreakable)
+            else if (d_glyphs[i].isBreakable && i > lineStartGlyphIdx)
             {
                 // Remember this glyph as the most recent word wrapping point
                 lastBreakPointIdx = i;
