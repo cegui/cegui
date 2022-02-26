@@ -675,6 +675,9 @@ size_t RenderedTextParagraph::getTextIndexAtPoint(const glm::vec2& pt, float* ou
 bool RenderedTextParagraph::getTextIndexBounds(Rectf& out, bool* outRtl, size_t textIndex,
     const std::vector<RenderedTextElementPtr>& elements) const
 {
+    if (d_linesDirty)
+        return false;
+
     const auto glyphIndex = getNearestGlyphIndex(textIndex);
     if (glyphIndex != npos)
         return getGlyphBounds(out, outRtl, glyphIndex, elements);
