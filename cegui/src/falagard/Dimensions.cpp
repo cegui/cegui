@@ -747,7 +747,7 @@ float FontDim::getValue(const Window& wnd) const
     // get window to use.
     const Window& sourceWindow = d_childName.empty() ? wnd : *wnd.getChild(d_childName);
     // get font to use
-    const Font* fontObj = getFontObject(sourceWindow);
+    Font* fontObj = getFontObject(sourceWindow);
 
     if (fontObj)
     {

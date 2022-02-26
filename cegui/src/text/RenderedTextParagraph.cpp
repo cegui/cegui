@@ -408,8 +408,8 @@ void RenderedTextParagraph::updateLineHeights(const std::vector<RenderedTextElem
     if (d_linesDirty)
         return;
 
-    //!!!FIXME TEXT: get the whole style (not only font height) from the corresponding element of '\n'!
-    //There can be a string like this: "\n\n[colour="..."][font="..."]\n\n", last two paragraphs must honor style changes!
+    // TODO: get the whole style (not only font height) from the corresponding element of '\n'! There can be 
+    //       a string like this: "\n\n[colour="..."][font="..."]\n\n", last two paragraphs must honor style changes!
 
     if (d_lines.empty())
     {

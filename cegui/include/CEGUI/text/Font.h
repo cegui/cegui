@@ -53,9 +53,6 @@ class CEGUIEXPORT Font : public PropertySet, public EventSet
 {
 public:
 
-    //! Colour value used whenever a colour is not specified.
-    static const argb_t DefaultColour;
-
     //! Event namespace for font events
     static const String EventNamespace;
     /** Event fired when the font internal state has changed such that the
@@ -72,8 +69,7 @@ public:
     */
     static const char32_t UnicodeReplacementCharacter;
 
-    //! Destructor.
-    virtual ~Font();
+    virtual ~Font() = default;
 
     /*!
     \brief
@@ -214,18 +210,21 @@ public:
     float getStrikeoutThickness() const { return d_strikeoutThickness; }
 
     //! Returns the index of the glyph corresponding to the codepoint or invalid idx if it can't be found.
-    uint32_t getGlyphForCodepoint(char32_t codePoint) const;
+    uint32_t getGlyphIndexForCodepoint(char32_t codePoint) const;
     //! \brief Returns whether this Font can draw the specified code-point
     bool isCodepointAvailable(char32_t codePoint) const;
-    //! Returns the glyph object at the given index or nullptr if no such glyph exists.
-    virtual FontGlyph* getGlyph(uint32_t index, bool prepare = false) const = 0;
-    //! Returns an outline image for the given glyph and thickness.
-    virtual Image* getOutline(uint32_t index, float thickness = 1.f) = 0;
     //! Returns cached index of the glyph used for replacing unknown glyphs
     uint32_t getReplacementGlyphIndex() const { return d_replacementGlyphIdx; }
 
+    //! Loads the glyph object at the given index and returns its pointer or nullptr on failure.
+    virtual FontGlyph* loadGlyph(uint32_t index) = 0;
+    //! Returns the glyph object at the given index or nullptr if no such glyph is loaded or exists.
+    virtual const FontGlyph* getGlyph(uint32_t index) const = 0;
+    //! Returns an outline image for the given glyph and thickness.
+    virtual Image* getOutline(uint32_t index, float thickness = 1.f) = 0;
     //! \brief Calculates and returns kerning between two glyphs (in pixels, not rounded)
     virtual float getKerning(const FontGlyph* prev, const FontGlyph& curr) const { return 0.f; }
+
 
     /*!
     \brief
@@ -254,7 +253,7 @@ public:
 
     \see getTextAdvance
     */
-    float getTextExtent(const String& text) const;
+    float getTextExtent(const String& text);
 
     /*!
     \brief
@@ -280,7 +279,7 @@ public:
 
     \see getTextExtent
     */
-    float getTextAdvance(const String& text) const;
+    float getTextAdvance(const String& text);
 
     /*!
     \brief
@@ -301,7 +300,7 @@ public:
         0 to text.length(), so may actually return an index past the end of
         the string, which indicates \a pixel was beyond the last character.
     */
-    size_t getCharAtPixel(const String& text, float pixel) const { return getCharAtPixel(text, 0, pixel); }
+    size_t getCharAtPixel(const String& text, float pixel) { return getCharAtPixel(text, 0, pixel); }
 
     /*!
     \brief
@@ -327,7 +326,7 @@ public:
         0 to text.length(), so may actually return an index past the end of
         the string, which indicates \a pixel was beyond the last character.
     */
-    size_t getCharAtPixel(const String& text, size_t start_char, float pixel) const;
+    size_t getCharAtPixel(const String& text, size_t start_char, float pixel);
 
     /*!
     \brief

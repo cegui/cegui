@@ -111,8 +111,9 @@ public:
     
     void updateFont() override;
     float getKerning(const FontGlyph* prev, const FontGlyph& curr) const override;
-    FreeTypeFontGlyph* getGlyph(uint32_t index, bool prepare = false) const override;
-    uint32_t getGlyphByFreetypeIndex(FT_UInt ftGlyphIndex) const;
+    FreeTypeFontGlyph* loadGlyph(uint32_t index) override;
+    const FreeTypeFontGlyph* getGlyph(uint32_t index) const override;
+    uint32_t getGlyphIndexByFreetypeIndex(FT_UInt ftGlyphIndex) const;
     Image* getOutline(uint32_t index, float thickness = 1.f) override;
 
     //! \brief Sets the Font size of this font.
@@ -220,8 +221,8 @@ protected:
         Changes the size of the texture and updates the data in it based on the old
         texture's data. The size must be larger than the original one.
      */
-    void resizeAndUpdateTexture(Texture* texture, uint32_t newSize) const;
-    void createTextureSpaceForGlyphRasterisation(Texture* texture, uint32_t glyphWidth, uint32_t glyphHeight) const;
+    void resizeAndUpdateTexture(Texture* texture, uint32_t newSize);
+    void createTextureSpaceForGlyphRasterisation(Texture* texture, uint32_t glyphWidth, uint32_t glyphHeight);
    //! Register all properties of this class.
     void addFreeTypeFontProperties();
     //! Free all allocated font data.
@@ -230,19 +231,18 @@ protected:
     void findAndThrowFreeTypeError(FT_Error error, const CEGUI::String& errorMessageIntro) const;
 
     void tryToCreateFontWithClosestFontHeight(FT_Error errorResult, int requestedFontPixelHeight) const;
-    void prepareGlyph(FreeTypeFontGlyph* glyph) const;
     Image* renderOutline(uint32_t index, FT_Fixed thickness);
 
     void handleFontSizeOrFontUnitChange();
 
     //! Rasterises the glyph and adds it into a glyph atlas texture
     BitmapImage* rasterise(const String& name, const FT_Bitmap& ft_bitmap,
-        int32_t glyphLeft, int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight) const;
+        int32_t glyphLeft, int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight);
 
     size_t findTextureLineWithFittingSpot(uint32_t glyphWidth, uint32_t glyphHeight) const;
-    size_t addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWidth) const;
+    size_t addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWidth);
 
-    void createGlyphAtlasTexture() const;
+    void createGlyphAtlasTexture();
     static std::vector<argb_t> createGlyphTextureData(const FT_Bitmap& glyph_bitmap);
 
     void writeXMLToStream_impl(XMLSerializer& xml_stream) const override;
@@ -262,23 +262,24 @@ protected:
     RawDataContainer d_fontData;
 
     std::vector<FreeTypeFontGlyph> d_glyphs;
-
-    //! Textures that hold the glyph imagery for this font.
-    mutable std::vector<Texture*> d_glyphTextures;
+    std::vector<bool> d_glyphLoadStatus;
 
     //! Contains mappings from freetype indices to Font glyphs
-    mutable std::unordered_map<FT_UInt, uint32_t> d_indexToGlyphMap;
+    std::unordered_map<FT_UInt, uint32_t> d_indexToGlyphMap;
 
     std::map<FT_Fixed, std::vector<std::unique_ptr<BitmapImage>>> d_outlines;
 
     //! The size with which new texture atlases for glyphs are going to be initialised
     uint32_t d_initialGlyphAtlasSize = 32;
+
     //! The size of the last texture that has been created
-    mutable uint32_t d_lastTextureSize = 0;
+    uint32_t d_lastTextureSize = 0;
+    //! Textures that hold the glyph imagery for this font.
+    std::vector<Texture*> d_glyphTextures;
     //! Memory buffer for rendering the glyphs, this contains the data of the latest texture
-    mutable std::vector<argb_t> d_lastTextureBuffer;
+    std::vector<argb_t> d_lastTextureBuffer;
     //! Contains information about the extents of each line of glyphs of the latest texture
-    mutable std::vector<TextureGlyphLine> d_textureGlyphLines;
+    std::vector<TextureGlyphLine> d_textureGlyphLines;
 };
 
 }

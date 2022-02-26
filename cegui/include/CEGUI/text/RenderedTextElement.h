@@ -80,7 +80,7 @@ public:
     void applyVerticalFormatting(float lineHeight, float& posY, float& heightScale) const;
 
     void setFont(Font* font) { d_font = font; }
-    const Font* getFont() const { return d_font; }
+    Font* getFont() const { return d_font; }
 
     void setBackgroundColour(const ColourRect& colours) { d_backgroundColours = colours; }
     ColourRect getBackgroundColour() const { return d_backgroundColours; }

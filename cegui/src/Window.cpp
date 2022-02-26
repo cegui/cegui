@@ -1851,7 +1851,7 @@ void Window::onNameChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onTextChanged(WindowEventArgs& e)
 {
-    //???TODO TEXT: invalidate only widgets that really render text?! Falagard and Window subclasses.
+    // TODO: invalidate only widgets that really render text?! Falagard and Window subclasses.
     invalidate();
     fireEvent(EventTextChanged, e, EventNamespace);
 }
