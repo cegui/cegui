@@ -56,7 +56,7 @@ struct RenderedGlyph
     uint16_t elementIndex;   //!< Index of controlling RenderedTextElement, stored instead of pointer to reduce struct size
     uint8_t sourceLength;    //!< This may be up to 4 for multibyte UTF-8 source, and even more for embedded objects
 
-    bool isJustifyable : 1;  //!< This glyph can be expanded in a justified text
+    bool isJustifiable : 1;  //!< This glyph can be expanded in a justified text
     bool isBreakable : 1;    //!< This glyph can be transferred to the next line due to word wrapping
     bool isWhitespace : 1;   //!< This glyph is a whitespace that should not be rendered at the wrapped line start
     bool isRightToLeft : 1;  //!< Is this glyph directed from right to left? This affects caret etc.
@@ -148,7 +148,7 @@ protected:
         Sizef    extents;
         float    horzOffset = 0.f;
         float    justifySpaceSize = 0.f;
-        uint16_t justifyableCount = 0;
+        uint16_t justifiableCount = 0;
         bool     heightDirty : 1;
         bool     horzFmtDirty : 1;
     };

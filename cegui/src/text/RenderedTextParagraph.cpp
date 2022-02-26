@@ -28,6 +28,7 @@
 #include "CEGUI/text/RenderedTextElement.h"
 #include "CEGUI/text/Font.h"
 #include "CEGUI/text/FontGlyph.h"
+#include "CEGUI/text/TextUtils.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Renderer.h"
 #include "CEGUI/GeometryBuffer.h"
@@ -45,6 +46,7 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text,
     const size_t elementIdxCount = elementIndices.size();
     const uint16_t defaultStyleIdx = static_cast<uint16_t>(elements.size() - 1);
 
+    bool breakNext = false;
     for (auto& glyph : d_glyphs)
     {
         // NB: remapSourceIndices should not have been called yet!
@@ -55,9 +57,24 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text,
             elementIndices[utf32SourceIndex] :
             defaultStyleIdx;
 
+        const char32_t codePoint = text[utf32SourceIndex];
+
         // Do element-dependent initialization of the glyph
         if (auto element = elements[glyph.elementIndex].get())
-            element->setupGlyph(glyph, text[utf32SourceIndex]);
+            element->setupGlyph(glyph, codePoint);
+
+        // Always breakable after whitespace and before/after wordbreak characters
+        if (breakNext)
+        {
+            glyph.isBreakable = true;
+            breakNext = glyph.isWhitespace;
+        }
+        else
+        {
+            const bool isNonBreakable = (TextUtils::UTF32_NON_BREAKABLE_CHARACTERS.find(codePoint) != std::u32string::npos);
+            glyph.isBreakable = !isNonBreakable && (TextUtils::UTF32_WORDBREAK_CHARACTERS.find(codePoint) != std::u32string::npos);
+            breakNext = glyph.isBreakable || (glyph.isWhitespace && !isNonBreakable);
+        }
     }
 }
 
@@ -158,7 +175,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
             do
             {
                 penPos.x += d_glyphs[i].advance;
-                if (d_glyphs[i].isJustifyable)
+                if (d_glyphs[i].isJustifiable)
                     penPos.x += line.justifySpaceSize;
 
                 ++i;
@@ -201,7 +218,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
                 const bool hasSelection = !settings.d_destArea.empty();
 
                 float glyphWidth = glyph.advance;
-                if (glyph.isJustifyable)
+                if (glyph.isJustifiable)
                     glyphWidth += line.justifySpaceSize;
 
                 if (glyph.sourceIndex >= selection->start && glyph.sourceIndex < selection->end)
@@ -228,7 +245,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
             // Draw selection to the end of the line
             if (!settings.d_destArea.empty())
             {
-                settings.d_destArea.d_max.x = penPos.x + line.extents.d_width + line.justifyableCount * line.justifySpaceSize;
+                settings.d_destArea.d_max.x = penPos.x + line.extents.d_width + line.justifiableCount * line.justifySpaceSize;
                 if (selection->bgBrush)
                     selection->bgBrush->createRenderGeometry(out, settings, canCombineFromIdx);
                 else
@@ -300,7 +317,7 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
 
     // Word wrapping breakpoint tracking
     size_t lastBreakPointIdx = std::numeric_limits<size_t>().max();
-    uint16_t lastBreakPointJustifyableCount = 0;
+    uint16_t lastBreakPointjustifiableCount = 0;
     float lastBreakPointWidth = 0.f;
 
     uint32_t lineStartGlyphIdx = 0;
@@ -316,7 +333,7 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
                 if (lastBreakPointIdx < glyphCount)
                 {
                     // Restore the current line to the saved state
-                    currLine->justifyableCount = lastBreakPointJustifyableCount;
+                    currLine->justifiableCount = lastBreakPointjustifiableCount;
                     currLine->extents.d_width = lastBreakPointWidth;
                     currLine->glyphEndIdx = static_cast<uint32_t>(lastBreakPointIdx);
                     lineStartGlyphIdx = skipWrappedWhitespace(currLine->glyphEndIdx, glyphCount);
@@ -361,7 +378,7 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
             {
                 // Remember this glyph as the most recent word wrapping point
                 lastBreakPointIdx = i;
-                lastBreakPointJustifyableCount = currLine->justifyableCount;
+                lastBreakPointjustifiableCount = currLine->justifiableCount;
                 lastBreakPointWidth = currLine->extents.d_width + widthAdvanceDiff;
             }
 
@@ -371,8 +388,8 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
         // Count the current glyph in the current line
         // NB: 'i' might change in the word wrapping code
         currLine->extents.d_width += d_glyphs[i].advance;
-        if (d_glyphs[i].isJustifyable)
-            ++currLine->justifyableCount;
+        if (d_glyphs[i].isJustifiable)
+            ++currLine->justifiableCount;
     }
 
     // Calculate widthAdvanceDiff of the last glyph if not done during word wrapping
@@ -487,8 +504,8 @@ void RenderedTextParagraph::updateHorizontalFormatting(float areaWidth)
                 break;
             case HorizontalTextFormatting::Justified:
                 line.horzOffset = 0.f;
-                if (line.justifyableCount && line.extents.d_width < areaWidth)
-                    line.justifySpaceSize = (areaWidth - line.extents.d_width) / line.justifyableCount;
+                if (line.justifiableCount && line.extents.d_width < areaWidth)
+                    line.justifySpaceSize = (areaWidth - line.extents.d_width) / line.justifiableCount;
                 break;
         }
     }
@@ -744,7 +761,7 @@ bool RenderedTextParagraph::getGlyphBounds(Rectf& out, bool* outRtl, size_t glyp
         for (; i < glyphIndex; ++i)
         {
             out.d_min.x += d_glyphs[i].advance;
-            if (d_glyphs[i].isJustifyable)
+            if (d_glyphs[i].isJustifiable)
                 out.d_min.x += line.justifySpaceSize;
         }
 
@@ -758,7 +775,7 @@ bool RenderedTextParagraph::getGlyphBounds(Rectf& out, bool* outRtl, size_t glyp
         else
         {
             float glyphWidth = std::max(glyph.advance, element->getGlyphWidth(glyph));
-            if (glyph.isJustifyable)
+            if (glyph.isJustifiable)
                 glyphWidth += line.justifySpaceSize;
             out.setWidth(glyphWidth);
             if (outRtl)
@@ -842,7 +859,7 @@ size_t RenderedTextParagraph::getNearestGlyphIndex(size_t lineIndex, float offse
     {
         const float currGlyphStart = nextGlyphStart;
         nextGlyphStart += d_glyphs[i].advance;
-        if (d_glyphs[i].isJustifyable)
+        if (d_glyphs[i].isJustifiable)
             nextGlyphStart += line.justifySpaceSize;
 
         if (offsetX < nextGlyphStart)

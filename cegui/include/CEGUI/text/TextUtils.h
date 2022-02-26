@@ -48,9 +48,11 @@ public:
         Constants
     *************************************************************************/
     static const std::u32string UTF32_NEWLINE_CHARACTERS;
+    static const std::u32string UTF32_WHITESPACE_CHARACTERS;
+    static const std::u32string UTF32_NON_BREAKABLE_CHARACTERS;
+    static const std::u32string UTF32_WORDBREAK_CHARACTERS;
     static const String DefaultWhitespace;      //!< The default set of whitespace
     static const String DefaultAlphanumerical;  //!< default set of alphanumericals.
-
 
     /*************************************************************************
         Methods

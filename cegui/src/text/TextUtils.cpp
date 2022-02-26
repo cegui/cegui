@@ -30,12 +30,17 @@
 
 namespace CEGUI
 {
-/*************************************************************************
-    Constants
-*************************************************************************/
+const String TextUtils::DefaultWhitespace(" \n\t\r");
+const String TextUtils::DefaultAlphanumerical("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
 const std::u32string TextUtils::UTF32_NEWLINE_CHARACTERS(U"\n\r\x85\x2028\x2029");
-const String    TextUtils::DefaultWhitespace(" \n\t\r");
-const String    TextUtils::DefaultAlphanumerical("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+const std::u32string TextUtils::UTF32_WHITESPACE_CHARACTERS(U" \t");
+const std::u32string TextUtils::UTF32_NON_BREAKABLE_CHARACTERS(U"\xA0\x202F\x2007\x2060");
+
+// Very rough approximation of https://unicode.org/reports/tr29
+const std::u32string TextUtils::UTF32_WORDBREAK_CHARACTERS(U".;,:+-*/\\\xA0"
+    U"\x2000\x2001\x2002\x2003\x2004\x2005\x2006\x2007\x2008\x2009\x200A\x2018\x2019"
+    U"\x2024\x2027\x205F\x3000\xFE52\xFF07\xFF0E\x00B7\x0387\x055F\x05F4\xFE13\xFE55"
+    U"\x066C\xFF1A\xFE50\xFE54\xFF0C\xFF1B");
 
 /*************************************************************************
     return a String containing the the next word in a String.
