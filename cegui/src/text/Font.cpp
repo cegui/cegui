@@ -38,7 +38,6 @@ namespace CEGUI
 String Font::d_defaultResourceGroup;
 const String Font::EventNamespace("Font");
 const String Font::EventRenderSizeChanged("RenderSizeChanged");
-const argb_t Font::DefaultColour = 0xFFFFFFFF;
 const char32_t Font::UnicodeReplacementCharacter = 0xFFFD;
 
 //----------------------------------------------------------------------------//
@@ -58,9 +57,6 @@ Font::Font(const String& name, const String& type_name, const String& filename,
     Image::computeScalingFactors(d_autoScaled, size, d_nativeResolution,
                                  d_horzScaling, d_vertScaling);
 }
-
-//----------------------------------------------------------------------------//
-Font::~Font() = default;
 
 //----------------------------------------------------------------------------//
 float Font::convertPointsToPixels(float pointSize, int dotsPerInch)
@@ -98,7 +94,7 @@ void Font::addFontProperties()
 }
 
 //----------------------------------------------------------------------------//
-size_t Font::getGlyphForCodepoint(char32_t codePoint) const
+size_t Font::getGlyphIndexForCodepoint(char32_t codePoint) const
 {
     auto it = d_codePointToGlyphMap.find(codePoint);
     return (it != d_codePointToGlyphMap.end()) ? it->second : d_replacementGlyphIdx;
@@ -111,7 +107,7 @@ bool Font::isCodepointAvailable(char32_t codePoint) const
 }
 
 //----------------------------------------------------------------------------//
-float Font::getTextExtent(const String& text) const
+float Font::getTextExtent(const String& text)
 {
     float curExtent = 0.0f;
     float advExtent = 0.0f;
@@ -125,7 +121,7 @@ float Font::getTextExtent(const String& text) const
     {
         const char32_t currentCodePoint = *currentCodePointIter;
 #endif
-        if (const FontGlyph* currentGlyph = getGlyph(getGlyphForCodepoint(currentCodePoint), true))
+        if (const FontGlyph* currentGlyph = loadGlyph(getGlyphIndexForCodepoint(currentCodePoint)))
         {
             const float width = currentGlyph->getRenderedAdvance();
             if (curExtent < advExtent + width)
@@ -142,7 +138,7 @@ float Font::getTextExtent(const String& text) const
 }
 
 //----------------------------------------------------------------------------//
-float Font::getTextAdvance(const String& text) const
+float Font::getTextAdvance(const String& text)
 {
     float advance = 0.0f;
 
@@ -155,7 +151,7 @@ float Font::getTextAdvance(const String& text) const
     {
         const char32_t currentCodePoint = *currentCodePointIter;
 #endif
-        if (const FontGlyph* glyph = getGlyph(getGlyphForCodepoint(currentCodePoint), true))
+        if (const FontGlyph* glyph = loadGlyph(getGlyphIndexForCodepoint(currentCodePoint)))
             advance += glyph->getAdvance();
 #if (CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UTF_8)
         ++currentCodePointIter;
@@ -166,7 +162,7 @@ float Font::getTextAdvance(const String& text) const
 }
 
 //----------------------------------------------------------------------------//
-size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel) const
+size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel)
 {
     const FontGlyph* glyph;
     float cur_extent = 0;
@@ -179,7 +175,7 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel) 
 #if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_8)
     for (size_t c = start_char; c < char_count; ++c)
     {
-        glyph = getGlyph(getGlyphForCodepoint(text[c]));
+        glyph = loadGlyph(getGlyphIndexForCodepoint(text[c]));
 
         if (glyph)
         {
@@ -196,7 +192,7 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel) 
     while (!currentCodePointIter.isAtEnd())
     {
         char32_t currentCodePoint = *currentCodePointIter;
-        glyph = getGlyph(getGlyphForCodepoint(currentCodePoint));
+        glyph = loadGlyph(getGlyphIndexForCodepoint(currentCodePoint));
 
         if (glyph)
         {

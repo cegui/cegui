@@ -94,12 +94,12 @@ static bool layoutParagraph(RenderedTextParagraph& out, const std::u32string& te
             elements.size() - 1;
 
         // Get a font for the current character
-        const Font* font = elements[elementIndex]->getFont();
+        Font* font = elements[elementIndex]->getFont();
         if (!font)
             return false;
 
-        renderedGlyph.fontGlyphIndex = font->getGlyphForCodepoint(codePoint);
-        auto fontGlyph = font->getGlyph(renderedGlyph.fontGlyphIndex, true);
+        renderedGlyph.fontGlyphIndex = font->getGlyphIndexForCodepoint(codePoint);
+        auto fontGlyph = font->loadGlyph(renderedGlyph.fontGlyphIndex);
         if (fontGlyph)
         {
             const float kerning = font->getKerning(prevGlyph, *fontGlyph);
@@ -136,11 +136,11 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
     const size_t elementIdxCount = elementIndices.size();
 
     // Build font ranges an check if we can use raqm before we allocate something big inside it
-    std::vector<std::pair<const FreeTypeFont*, size_t>> fontRanges;
+    std::vector<std::pair<FreeTypeFont*, size_t>> fontRanges;
     if (start >= elementIdxCount)
     {
         // Only freetype fonts can be laid out with raqm
-        auto ftDefaultFont = dynamic_cast<const FreeTypeFont*>(elements.back()->getFont());
+        auto ftDefaultFont = dynamic_cast<FreeTypeFont*>(elements.back()->getFont());
         if (!ftDefaultFont)
             return false;
 
@@ -150,7 +150,7 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
     {
         fontRanges.reserve(16);
         size_t fontLen = 0;
-        const FreeTypeFont* currFont = nullptr;
+        FreeTypeFont* currFont = nullptr;
         for (size_t i = start; i < end; ++i)
         {
             const auto elementIndex = (i < elementIndices.size()) ?
@@ -158,14 +158,14 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
                 elements.size() - 1;
 
             // Get a font for the current character
-            const Font* charFont = elements[elementIndex]->getFont();
+            Font* charFont = elements[elementIndex]->getFont();
             if (!charFont)
                 return false;
 
             if (charFont != currFont)
             {
                 // Only freetype fonts can be laid out with raqm
-                auto ftCharFont = dynamic_cast<const FreeTypeFont*>(charFont);
+                auto ftCharFont = dynamic_cast<FreeTypeFont*>(charFont);
                 if (!ftCharFont)
                     return false;
 
@@ -246,11 +246,10 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
             return value < elm.second;
         });
 
-        const FreeTypeFont* font = (*it).first;
-        renderedGlyph.fontGlyphIndex = font->getGlyphByFreetypeIndex(rqGlyph.index);
+        FreeTypeFont* font = (*it).first;
+        renderedGlyph.fontGlyphIndex = font->getGlyphIndexByFreetypeIndex(rqGlyph.index);
 
-        //!!!FIXME TEXT: need more straightforward glyph preparing API, e.g. font->load/validate/prepareGlyph(index);
-        font->getGlyph(renderedGlyph.fontGlyphIndex, true);
+        font->loadGlyph(renderedGlyph.fontGlyphIndex);
 
         // A multiplication coefficient to convert 26.6 fixed point values into normal floats
         constexpr float s_26dot6_toFloat = (1.0f / 64.f);

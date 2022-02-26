@@ -161,7 +161,7 @@ void FreeTypeFont::addFreeTypeFontProperties()
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::resizeAndUpdateTexture(Texture* texture, uint32_t newSize) const
+void FreeTypeFont::resizeAndUpdateTexture(Texture* texture, uint32_t newSize)
 {
     if (d_lastTextureSize >= newSize)
         throw InvalidRequestException("Must supply a larger than previous size when "
@@ -189,7 +189,7 @@ void FreeTypeFont::resizeAndUpdateTexture(Texture* texture, uint32_t newSize) co
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, uint32_t glyphWidth, uint32_t glyphHeight) const
+void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, uint32_t glyphWidth, uint32_t glyphHeight)
 {
     const auto maxTextureSize = static_cast<uint32_t>(System::getSingleton().getRenderer()->getMaxTextureSize());
     const uint32_t scaleFactor = 2;
@@ -242,7 +242,7 @@ size_t FreeTypeFont::findTextureLineWithFittingSpot(uint32_t glyphWidth, uint32_
 
 //----------------------------------------------------------------------------//
 BitmapImage* FreeTypeFont::rasterise(const String& name, const FT_Bitmap& ft_bitmap, int32_t glyphLeft,
-    int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight) const
+    int32_t glyphTop, uint32_t glyphWidth, uint32_t glyphHeight)
 {
     if (d_glyphTextures.empty())
         createGlyphAtlasTexture();
@@ -283,7 +283,7 @@ BitmapImage* FreeTypeFont::rasterise(const String& name, const FT_Bitmap& ft_bit
 }
 
 //----------------------------------------------------------------------------//
-size_t FreeTypeFont::addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWidth) const
+size_t FreeTypeFont::addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWidth)
 {
     const auto& lastLine = d_textureGlyphLines.back();
 
@@ -302,7 +302,7 @@ size_t FreeTypeFont::addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWid
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::createGlyphAtlasTexture() const
+void FreeTypeFont::createGlyphAtlasTexture()
 {
     std::uint32_t newTextureIndex = d_glyphTextures.size();
     const String texture_name(d_name + "_auto_glyph_images_texture_" +
@@ -398,6 +398,7 @@ void FreeTypeFont::free()
 
     d_codePointToGlyphMap.clear();
     d_indexToGlyphMap.clear();
+    d_glyphLoadStatus.clear();
     d_glyphs.clear();
 }
 
@@ -521,31 +522,9 @@ void FreeTypeFont::updateFont()
         codepoint = FT_Get_Next_Char(d_fontFace, codepoint, &gindex);
     }
 
-    d_replacementGlyphIdx = getGlyphForCodepoint(UnicodeReplacementCharacter);
-}
+    d_glyphLoadStatus.resize(d_glyphs.size(), false);
 
-//----------------------------------------------------------------------------//
-void FreeTypeFont::prepareGlyph(FreeTypeFontGlyph* glyph) const
-{
-    if (glyph->isInitialised())
-        return;
-
-    glyph->markAsInitialised();
-
-    FT_Set_Transform(d_fontFace, nullptr, nullptr);
-
-    // Non-zero result is an error
-    if (FT_Load_Glyph(d_fontFace, glyph->getGlyphIndex(), getGlyphLoadFlags() | FT_LOAD_RENDER))
-        return;
-
-    // NB: glyph doesn't own an image (see PixmapFont), so we have to delete an image manually in free()
-    const String name(std::to_string(glyph->getCodePoint()));
-    const auto& ft_bitmap = d_fontFace->glyph->bitmap;
-    auto image = rasterise(name, ft_bitmap, d_fontFace->glyph->bitmap_left, d_fontFace->glyph->bitmap_top, ft_bitmap.width, ft_bitmap.rows);
-    glyph->setImage(image);
-    glyph->setAdvance(d_fontFace->glyph->advance.x * static_cast<float>(s_26dot6_toFloat));
-    glyph->setLsbDelta(d_fontFace->glyph->lsb_delta);
-    glyph->setRsbDelta(d_fontFace->glyph->rsb_delta);
+    d_replacementGlyphIdx = getGlyphIndexForCodepoint(UnicodeReplacementCharacter);
 }
 
 //----------------------------------------------------------------------------//
@@ -693,17 +672,41 @@ float FreeTypeFont::getKerning(const FontGlyph* prev, const FontGlyph& curr) con
 }
 
 //----------------------------------------------------------------------------//
-FreeTypeFontGlyph* FreeTypeFont::getGlyph(uint32_t index, bool prepare) const
+FreeTypeFontGlyph* FreeTypeFont::loadGlyph(uint32_t index)
 {
     if (index >= d_glyphs.size())
         return nullptr;
 
-    auto glyph = const_cast<FreeTypeFontGlyph*>(&d_glyphs[index]);
+    auto glyph = &d_glyphs[index];
 
-    if (prepare)
-        prepareGlyph(glyph);
+    if (d_glyphLoadStatus[index])
+        return glyph;
+
+    // Mark as loaded immediately to avoid retrying on error
+    d_glyphLoadStatus[index] = true;
+
+    FT_Set_Transform(d_fontFace, nullptr, nullptr);
+
+    // Non-zero result is an error
+    if (FT_Load_Glyph(d_fontFace, glyph->getGlyphIndex(), getGlyphLoadFlags() | FT_LOAD_RENDER))
+        return nullptr;
+
+    // NB: FontGlyph doesn't own an image (see PixmapFont), so we have to delete an image manually in free()
+    const String name(std::to_string(glyph->getCodePoint()));
+    const auto& ft_bitmap = d_fontFace->glyph->bitmap;
+    auto image = rasterise(name, ft_bitmap, d_fontFace->glyph->bitmap_left, d_fontFace->glyph->bitmap_top, ft_bitmap.width, ft_bitmap.rows);
+    glyph->setImage(image);
+    glyph->setAdvance(d_fontFace->glyph->advance.x * static_cast<float>(s_26dot6_toFloat));
+    glyph->setLsbDelta(d_fontFace->glyph->lsb_delta);
+    glyph->setRsbDelta(d_fontFace->glyph->rsb_delta);
 
     return glyph;
+}
+
+//----------------------------------------------------------------------------//
+const FreeTypeFontGlyph* FreeTypeFont::getGlyph(uint32_t index) const
+{
+    return (index < d_glyphs.size()) ? &d_glyphs[index] : nullptr;
 }
 
 //----------------------------------------------------------------------------//
@@ -725,7 +728,7 @@ Image* FreeTypeFont::getOutline(uint32_t index, float thickness)
 }
 
 //----------------------------------------------------------------------------//
-uint32_t FreeTypeFont::getGlyphByFreetypeIndex(FT_UInt ftGlyphIndex) const
+uint32_t FreeTypeFont::getGlyphIndexByFreetypeIndex(FT_UInt ftGlyphIndex) const
 {
     auto it = d_indexToGlyphMap.find(ftGlyphIndex);
     return (it != d_indexToGlyphMap.end()) ? it->second : d_replacementGlyphIdx;

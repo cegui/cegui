@@ -83,7 +83,8 @@ public:
     ~PixmapFont() override;
 
     void updateFont() override;
-    FontGlyph* getGlyph(uint32_t index, bool prepare = false) const override;
+    FontGlyph* loadGlyph(uint32_t index) override;
+    const FontGlyph* getGlyph(uint32_t index) const override;
     Image* getOutline(uint32_t index, float thickness = 1.f) override { return nullptr; }
 
     void defineMapping(char32_t codePoint, const String& imageName, float horzAdvance);

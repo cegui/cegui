@@ -43,25 +43,17 @@ class CEGUIEXPORT FreeTypeFontGlyph : public FontGlyph
 {
 public:
 
-    FreeTypeFontGlyph(char32_t codePoint, uint32_t glyphIndex,
-        float advance = 0.f, Image* image = nullptr, bool valid = false)
+    FreeTypeFontGlyph(char32_t codePoint, uint32_t glyphIndex, float advance = 0.f, Image* image = nullptr)
         : FontGlyph(codePoint, advance, image)
         , d_glyphIndex(glyphIndex)
-        , d_initialised(valid)
     {}
 
-    //! mark the FontGlyph as initialised
-    void markAsInitialised() { d_initialised = true; }
-
-    //! return whether the glyph is valid
-    bool isInitialised() const { return d_initialised; }
-
-    void setLsbDelta(long lsbDelta) { d_lsbDelta = lsbDelta; }
-    long getLsbDelta() const { return d_lsbDelta; }
-    void setRsbDelta(long rsbDelta) { d_rsbDelta = rsbDelta; }
-    long getRsbDelta() const { return d_rsbDelta; }
-
     uint32_t getGlyphIndex() const { return d_glyphIndex; }
+
+    void setLsbDelta(int32_t lsbDelta) { d_lsbDelta = lsbDelta; }
+    int32_t getLsbDelta() const { return d_lsbDelta; }
+    void setRsbDelta(int32_t rsbDelta) { d_rsbDelta = rsbDelta; }
+    int32_t getRsbDelta() const { return d_rsbDelta; }
 
 private:
 
@@ -69,11 +61,8 @@ private:
     const uint32_t d_glyphIndex;
 
     //! The difference between hinted and unhinted side bearing while auto-hinting is active. Zero otherwise.
-    long d_lsbDelta = 0;
-    long d_rsbDelta = 0;
-
-    //! Says whether this glyph is initialised or not
-    bool d_initialised = false;
+    int32_t d_lsbDelta = 0;
+    int32_t d_rsbDelta = 0;
 };
 
 }
