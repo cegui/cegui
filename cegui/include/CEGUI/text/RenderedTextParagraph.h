@@ -62,14 +62,17 @@ struct RenderedGlyph
     bool isRightToLeft : 1;  //!< Is this glyph directed from right to left? This affects caret etc.
 };
 
+//! One paragraph of visualized text. It is an internal class, you don't need to use it directly.
 class RenderedTextParagraph
 {
 public:
 
     static constexpr size_t npos = std::numeric_limits<size_t>().max();
 
-    RenderedTextParagraph()
-        : d_wordWrap(false)
+    RenderedTextParagraph(uint32_t sourceStartIndex, uint32_t sourceEndIndex)
+        : d_sourceStartIndex(sourceStartIndex)
+        , d_sourceEndIndex(sourceEndIndex)
+        , d_wordWrap(false)
         , d_skipWrappedWhitespace(true)
         , d_defaultWordWrap(true)
         , d_defaultHorzFormatting(true)
@@ -78,10 +81,13 @@ public:
         , d_fitsIntoAreaWidth(false)
     {}
 
-    void setupGlyphs(const std::u32string& text,
-        const std::vector<uint16_t>& elementIndices, const std::vector<RenderedTextElementPtr>& elements);
+    //! Assign elements and calculate glyph traits. Called once when preparing the text.
+    void setupGlyphs(const std::u32string& text, const std::vector<uint16_t>& elementIndices,
+        const std::vector<RenderedTextElementPtr>& elements);
+    //! Remaps UTF-32 source indices into original indices (UTF-32 or UTF-8) if required
     void remapSourceIndices(const std::vector<size_t>& originalIndices, size_t sourceLength);
 
+    //! Generate geometry buffers for rendering this text object
     void createRenderGeometry(std::vector<GeometryBuffer*>& out, glm::vec2& penPosition,
         const ColourRect* modColours, const Rectf* clipRect, const SelectionInfo* selection,
         const std::vector<RenderedTextElementPtr>& elements) const;
@@ -93,6 +99,7 @@ public:
     //! Update horizontal alignment of lines
     void updateHorizontalFormatting(float areaWidth);
 
+    //! Extends a rect with total extents of this paragraph
     void accumulateExtents(Rectf& extents) const;
     float getHeight() const { return d_height; }
 
@@ -115,7 +122,6 @@ public:
     std::vector<RenderedGlyph>& glyphs() { return d_glyphs; }
     const std::vector<RenderedGlyph>& glyphs() const { return d_glyphs; }
 
-    void setSourceIndexRange(uint32_t start, uint32_t end) { d_sourceStartIndex = start; d_sourceEndIndex = end; }
     uint32_t getSourceStartIndex() const { return d_sourceStartIndex; }
     uint32_t getSourceEndIndex() const { return d_sourceEndIndex; }
 
@@ -125,7 +131,21 @@ public:
     size_t getGlyphIndexAtPoint(const glm::vec2& pt, float* outRelPos = nullptr) const;
     bool getGlyphBounds(Rectf& out, bool* outRtl, size_t glyphIndex, const std::vector<RenderedTextElementPtr>& elements) const;
     size_t getTextIndex(size_t glyphIndex) const;
+    /*!
+    \brief
+        Get a source text index for the X offset at the given line
+
+    \param[out] outRelPos
+        Optional. A relative [0; 1] position of the \a offsetX inside a glyph with respect to BIDI.
+
+    \return
+        - a source index of the glyph at the offset when such glyph is found
+        - paragraph start index when the paragraph is empty
+        - paragraph end index when the next nearest glyph is past the end of this paragraph
+        - 
+    */
     size_t getTextIndex(size_t lineIndex, float offsetX, float* outRelPos = nullptr) const;
+    //! Get the glyph representing a given source index or the next closest one
     size_t getNearestGlyphIndex(size_t textIndex) const;
     size_t getNearestGlyphIndex(size_t lineIndex, float offsetX, float* outRelPos = nullptr) const;
     size_t getLineIndex(size_t textIndex) const;
