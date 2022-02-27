@@ -327,9 +327,8 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
             end = utf32TextLength;
 
         // Always create a paragraph (new line), even if it is empty
-        d_paragraphs.emplace_back();
+        d_paragraphs.emplace_back(start, end);
         auto& p = d_paragraphs.back();
-        p.setSourceIndexRange(start, end);
 
         if (end > start)
         {
