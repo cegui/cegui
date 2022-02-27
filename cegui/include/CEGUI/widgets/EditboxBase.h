@@ -511,14 +511,6 @@ protected:
     void deleteRange(size_t start, size_t length);
     void handleCaretMovement(size_t newIndex, bool select);
 
-    void handleBackspace();
-    void handleDelete();
-    void handleCharLeft(bool select);
-    void handleCharRight(bool select);
-    void handleWordLeft(bool select);
-    void handleWordRight(bool select);
-    void handleHome(bool select, bool lineOnly);
-    void handleEnd(bool select, bool lineOnly);
     void handleSelectAll();
 
     /*!

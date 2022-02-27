@@ -515,7 +515,7 @@ bool EditboxBase::performCut(Clipboard& clipboard)
     if (!performCopy(clipboard))
         return false;
 
-    handleDelete();
+    deleteRange(getSelectionStart(), getSelectionLength());
     return true;
 }
 
@@ -732,117 +732,94 @@ bool EditboxBase::processSemanticInputEvent(const SemanticEventArgs& e)
     switch (e.d_semanticValue)
     {
         case SemanticValue::DeletePreviousCharacter:
-            handleBackspace();
+            if (getSelectionLength())
+            {
+                deleteRange(getSelectionStart(), getSelectionLength());
+            }
+            else
+            {
+                const size_t deleteStartPos = getPrevTextIndex(d_caretPos);
+                deleteRange(deleteStartPos, d_caretPos - deleteStartPos);
+            }
             return true;
 
         case SemanticValue::DeleteNextCharacter:
-            handleDelete();
+            if (getSelectionLength())
+                deleteRange(getSelectionStart(), getSelectionLength());
+            else
+                deleteRange(d_caretPos, getNextTextIndex(d_caretPos) - d_caretPos);
             return true;
 
         case SemanticValue::GoToPreviousCharacter:
-            handleCharLeft(false);
+            handleCaretMovement(getPrevTextIndex(d_caretPos), false);
             return true;
 
         case SemanticValue::GoToNextCharacter:
-            handleCharRight(false);
+            handleCaretMovement(getNextTextIndex(d_caretPos), false);
             return true;
 
         case SemanticValue::SelectPreviousCharacter:
-            handleCharLeft(true);
+            handleCaretMovement(getPrevTextIndex(d_caretPos), true);
             return true;
 
         case SemanticValue::SelectNextCharacter:
-            handleCharRight(true);
+            handleCaretMovement(getNextTextIndex(d_caretPos), true);
             return true;
 
         case SemanticValue::GoToPreviousWord:
-            handleWordLeft(false);
+            handleCaretMovement(TextUtils::getWordStartIndex(getText(), d_caretPos), false);
             return true;
 
         case SemanticValue::GoToNextWord:
-            handleWordRight(false);
+            handleCaretMovement(TextUtils::getNextWordStartIndex(getText(), d_caretPos), false);
             return true;
 
         case SemanticValue::SelectPreviousWord:
-            handleWordLeft(true);
+            handleCaretMovement(TextUtils::getWordStartIndex(getText(), d_caretPos), true);
             return true;
 
         case SemanticValue::SelectNextWord:
-            handleWordRight(true);
+            handleCaretMovement(TextUtils::getNextWordStartIndex(getText(), d_caretPos), true);
             return true;
 
         case SemanticValue::GoToStartOfDocument:
-            handleHome(false, false);
+            handleCaretMovement(0, false);
             return true;
 
         case SemanticValue::GoToEndOfDocument:
-            handleEnd(false, false);
+            handleCaretMovement(getText().size(), false);
             return true;
 
         case SemanticValue::SelectToStartOfDocument:
-            handleHome(true, false);
+            handleCaretMovement(0, true);
             return true;
 
         case SemanticValue::SelectToEndOfDocument:
-            handleEnd(true, false);
+            handleCaretMovement(getText().size(), true);
             return true;
 
         case SemanticValue::GoToStartOfLine:
-            handleHome(false, true);
+            updateRenderedText();
+            handleCaretMovement(d_renderedText.lineStartTextIndex(d_caretPos), false);
             return true;
 
         case SemanticValue::GoToEndOfLine:
-            handleEnd(false, true);
+            updateRenderedText();
+            handleCaretMovement(d_renderedText.lineEndTextIndex(d_caretPos), false);
             return true;
 
         case SemanticValue::SelectToStartOfLine:
-            handleHome(true, true);
+            updateRenderedText();
+            handleCaretMovement(d_renderedText.lineStartTextIndex(d_caretPos), true);
             return true;
 
         case SemanticValue::SelectToEndOfLine:
-            handleEnd(true, true);
+            updateRenderedText();
+            handleCaretMovement(d_renderedText.lineEndTextIndex(d_caretPos), true);
             return true;
     }
 
     return false;
-}
-
-//----------------------------------------------------------------------------//
-void EditboxBase::handleCharLeft(bool select)
-{
-    handleCaretMovement(getPrevTextIndex(d_caretPos), select);
-}
-
-//----------------------------------------------------------------------------//
-void EditboxBase::handleWordLeft(bool select)
-{
-    handleCaretMovement(TextUtils::getWordStartIndex(getText(), d_caretPos), select);
-}
-
-//----------------------------------------------------------------------------//
-void EditboxBase::handleCharRight(bool select)
-{
-    handleCaretMovement(getNextTextIndex(d_caretPos), select);
-}
-
-//----------------------------------------------------------------------------//
-void EditboxBase::handleWordRight(bool select)
-{
-    handleCaretMovement(TextUtils::getNextWordStartIndex(getText(), d_caretPos), select);
-}
-
-//----------------------------------------------------------------------------//
-void EditboxBase::handleHome(bool select, bool lineOnly)
-{
-    updateRenderedText();
-    handleCaretMovement(lineOnly ? d_renderedText.lineStartTextIndex(d_caretPos) : 0, select);
-}
-
-//----------------------------------------------------------------------------//
-void EditboxBase::handleEnd(bool select, bool lineOnly)
-{
-    updateRenderedText();
-    handleCaretMovement(lineOnly ? d_renderedText.lineEndTextIndex(d_caretPos) : d_renderedText.endTextIndex(), select);
 }
 
 //----------------------------------------------------------------------------//
@@ -853,35 +830,6 @@ void EditboxBase::handleSelectAll()
     setSelection(0, textLen);
     setCaretIndex(textLen);
     ensureCaretIsVisible();
-}
-
-//----------------------------------------------------------------------------//
-void EditboxBase::handleBackspace()
-{
-    if (isReadOnly())
-        return;
-
-    if (getSelectionLength())
-    {
-        deleteRange(getSelectionStart(), getSelectionLength());
-    }
-    else
-    {
-        const size_t deleteStartPos = getPrevTextIndex(d_caretPos);
-        deleteRange(deleteStartPos, d_caretPos - deleteStartPos);
-    }
-}
-
-//----------------------------------------------------------------------------//
-void EditboxBase::handleDelete()
-{
-    if (isReadOnly())
-        return;
-
-    if (getSelectionLength())
-        deleteRange(getSelectionStart(), getSelectionLength());
-    else
-        deleteRange(d_caretPos, getNextTextIndex(d_caretPos) - d_caretPos);
 }
 
 //----------------------------------------------------------------------------//
