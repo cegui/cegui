@@ -312,12 +312,16 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
 
     // Word wrapping breakpoint tracking
     size_t lastBreakPointIdx = std::numeric_limits<size_t>().max();
-    uint16_t lastBreakPointjustifiableCount = 0;
+    uint16_t lastBreakPointJustifiableCount = 0;
     float lastBreakPointWidth = 0.f;
+    size_t lastNonWhitespace = std::numeric_limits<size_t>().max();
 
     uint32_t lineStartGlyphIdx = 0;
     for (size_t i = 0; i < glyphCount; ++i)
     {
+        if (!d_glyphs[i].isWhitespace)
+            lastNonWhitespace = i;
+
         // Break too long lines if word wrapping is enabled
         if (d_wordWrap)
         {
@@ -328,13 +332,10 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
                 if (lastBreakPointIdx < glyphCount)
                 {
                     // Restore the current line to the saved state
-                    currLine->justifiableCount = lastBreakPointjustifiableCount;
+                    currLine->justifiableCount = lastBreakPointJustifiableCount;
                     currLine->extents.d_width = lastBreakPointWidth;
                     currLine->glyphEndIdx = static_cast<uint32_t>(lastBreakPointIdx);
                     lineStartGlyphIdx = skipWrappedWhitespace(currLine->glyphEndIdx, glyphCount);
-
-                    // Restart from the first wrapped glyph, 'i' will be incremented by the loop
-                    i = lineStartGlyphIdx - 1;
 
                     // Break only once at the same breakable glyph to prevent infinite looping
                     lastBreakPointIdx = std::numeric_limits<size_t>().max();
@@ -345,6 +346,8 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
                     // Clear widthAdvanceDiff because the first glyph is not added to the line yet
                     widthAdvanceDiff = 0.f;
 
+                    // Restart from the first wrapped glyph, 'i' will be incremented by the loop
+                    i = lineStartGlyphIdx - 1;
                     continue;
                 }
 
@@ -361,6 +364,7 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
                     if (i != lineStartGlyphIdx)
                     {
                         // 'i' changed, cached glyphWidth is no longer valid
+                        //???!!!FIXME TEXT: should set i first, then update width?!
                         glyphWidth = elements[d_glyphs[i].elementIndex]->getGlyphWidth(d_glyphs[i]);
                         i = lineStartGlyphIdx;
                     }
@@ -373,7 +377,7 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
             {
                 // Remember this glyph as the most recent word wrapping point
                 lastBreakPointIdx = i;
-                lastBreakPointjustifiableCount = currLine->justifiableCount;
+                lastBreakPointJustifiableCount = currLine->justifiableCount;
                 lastBreakPointWidth = currLine->extents.d_width + widthAdvanceDiff;
             }
 
