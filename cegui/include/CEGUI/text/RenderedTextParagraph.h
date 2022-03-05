@@ -163,6 +163,7 @@ protected:
     {
         Line() : heightDirty(true), horzFmtDirty(true) {}
 
+        uint32_t glyphStartIdx = std::numeric_limits<uint32_t>().max();
         uint32_t glyphEndIdx = std::numeric_limits<uint32_t>().max();
         uint32_t glyphSkipStartIdx = std::numeric_limits<uint32_t>().max();
         Sizef    extents;
