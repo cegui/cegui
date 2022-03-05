@@ -126,10 +126,10 @@ public:
     uint32_t getSourceEndIndex() const { return d_sourceEndIndex; }
 
     size_t getLineCount() const { return d_linesDirty ? 1 : d_lines.size(); }
-    size_t getTextIndexAtPoint(const glm::vec2& pt, float* outRelPos = nullptr) const;
-    bool getTextIndexBounds(Rectf& out, bool* outRtl, size_t textIndex, const std::vector<RenderedTextElementPtr>& elements) const;
-    size_t getGlyphIndexAtPoint(const glm::vec2& pt, float* outRelPos = nullptr) const;
-    bool getGlyphBounds(Rectf& out, bool* outRtl, size_t glyphIndex, const std::vector<RenderedTextElementPtr>& elements) const;
+    size_t getTextIndexAtPoint(const glm::vec2& pt, float areaWidth, float* outRelPos = nullptr) const;
+    bool getTextIndexBounds(Rectf& out, bool* outRtl, size_t textIndex, const std::vector<RenderedTextElementPtr>& elements, float areaWidth) const;
+    size_t getGlyphIndexAtPoint(const glm::vec2& pt, float areaWidth, float* outRelPos = nullptr) const;
+    bool getGlyphBounds(Rectf& out, bool* outRtl, size_t glyphIndex, const std::vector<RenderedTextElementPtr>& elements, float areaWidth) const;
     size_t getTextIndex(size_t glyphIndex) const;
     /*!
     \brief
@@ -144,10 +144,10 @@ public:
         - paragraph end index when the next nearest glyph is past the end of this paragraph
         - 
     */
-    size_t getTextIndex(size_t lineIndex, float offsetX, float* outRelPos = nullptr) const;
+    size_t getTextIndex(size_t lineIndex, float offsetX, float areaWidth, float* outRelPos = nullptr) const;
     //! Get the glyph representing a given source index or the next closest one
     size_t getNearestGlyphIndex(size_t textIndex) const;
-    size_t getNearestGlyphIndex(size_t lineIndex, float offsetX, float* outRelPos = nullptr) const;
+    size_t getNearestGlyphIndex(size_t lineIndex, float offsetX, float areaWidth, float* outRelPos = nullptr) const;
     size_t getLineIndex(size_t textIndex) const;
     float getLineOffsetY(size_t lineIndex) const;
     float getLineHeight(size_t lineIndex) const;
@@ -164,6 +164,7 @@ protected:
         Line() : heightDirty(true), horzFmtDirty(true) {}
 
         uint32_t glyphEndIdx = std::numeric_limits<uint32_t>().max();
+        uint32_t glyphSkipStartIdx = std::numeric_limits<uint32_t>().max();
         Sizef    extents;
         float    horzOffset = 0.f;
         float    justifySpaceSize = 0.f;
@@ -173,7 +174,6 @@ protected:
     };
 
     size_t getGlyphLineIndex(size_t glyphIndex) const;
-    uint32_t skipWrappedWhitespace(uint32_t start, uint32_t end) const;
 
     std::vector<RenderedGlyph> d_glyphs;
     std::vector<Line> d_lines;

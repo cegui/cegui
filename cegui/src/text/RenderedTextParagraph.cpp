@@ -158,7 +158,6 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
     {
         const auto& line = d_lines[lineIdx];
         const float lineBottom = penPos.y + line.extents.d_height;
-        auto jusitfiableLeft = line.justifiableCount;
 
         penPos.x = initialPenPos.x + line.horzOffset;
 
@@ -169,11 +168,8 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
             do
             {
                 penPos.x += d_glyphs[i].advance;
-                if (jusitfiableLeft && d_glyphs[i].isJustifiable)
-                {
-                    --jusitfiableLeft;
+                if (i < line.glyphSkipStartIdx && d_glyphs[i].isJustifiable)
                     penPos.x += line.justifySpaceSize;
-                }
 
                 ++i;
             }
@@ -201,7 +197,6 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
         {
             const auto& line = d_lines[lineIdx];
             const float lineBottom = penPos.y + line.extents.d_height;
-            auto jusitfiableLeft = line.justifiableCount;
 
             penPos.x = initialPenPos.x + line.horzOffset;
 
@@ -214,11 +209,8 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
                 const bool hasSelection = !settings.d_destArea.empty();
 
                 float glyphWidth = glyph.advance;
-                if (jusitfiableLeft && glyph.isJustifiable)
-                {
-                    --jusitfiableLeft;
+                if (i < line.glyphSkipStartIdx && glyph.isJustifiable)
                     glyphWidth += line.justifySpaceSize;
-                }
 
                 if (glyph.sourceIndex >= selection->start && glyph.sourceIndex < selection->end)
                 {
@@ -269,16 +261,18 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
 
         penPos.x = initialPenPos.x + line.horzOffset;
 
-        // Render glyph chunks using their associated elements
-        while (i < line.glyphEndIdx)
+        // Render glyph chunks using their associated elements. Don't render skipped whitespace.
+        while (i < line.glyphSkipStartIdx)
         {
             const auto startElementIdx = d_glyphs[i].elementIndex;
             const auto start = i;
-            do ++i; while (i < line.glyphEndIdx && d_glyphs[i].elementIndex == startElementIdx);
+            do ++i; while (i < line.glyphSkipStartIdx && d_glyphs[i].elementIndex == startElementIdx);
 
             elements[startElementIdx]->createRenderGeometry(out, &d_glyphs[start], i - start, penPos, modColours,
                 clipRect, line.extents.d_height, line.justifySpaceSize, canCombineFromIdx, selection);
         }
+
+        i = line.glyphEndIdx;
 
         penPos.y += line.extents.d_height;
     }
@@ -303,6 +297,7 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
     if (!glyphCount)
     {
         currLine->glyphEndIdx = 0;
+        currLine->glyphSkipStartIdx = 0;
         return;
     }
 
@@ -312,6 +307,7 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
     float widthAdvanceDiff = 0.f;
 
     size_t breakIdx = std::numeric_limits<size_t>().max();
+    size_t skipStartIdx = std::numeric_limits<size_t>().max();
     uint16_t breakJustifiableCount = 0;
     float breakLineWidth = 0.f;
     uint16_t visibleJustifiableCount = 0;
@@ -328,11 +324,9 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
             if (lineWidth > areaWidth)
             {
                 uint32_t wrapIdx = std::numeric_limits<uint32_t>().max();
-
-                // If there is a point suitable for word wrapping in the current line, use it
                 if (breakIdx < glyphCount)
                 {
-                    // Revert the line to the state at the last break point
+                    // There is a point suitable for word wrapping in the current line
                     wrapIdx = static_cast<uint32_t>(breakIdx);
                     currLine->extents.d_width = breakLineWidth;
                     currLine->justifiableCount = breakJustifiableCount;
@@ -356,8 +350,23 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
 
                 if (wrapIdx < glyphCount)
                 {
-                    lineStartGlyphIdx = skipWrappedWhitespace(wrapIdx, glyphCount);
+                    lineStartGlyphIdx = wrapIdx;
+                    if (d_skipWrappedWhitespace)
+                    {
+                        // Find next non-whitespace. Don't skip anything if only whitespace remain.
+                        for (uint32_t skipEndIdx = wrapIdx; skipEndIdx < glyphCount; ++skipEndIdx)
+                        {
+                            if (!d_glyphs[skipEndIdx].isWhitespace)
+                            {
+                                lineStartGlyphIdx = skipEndIdx;
+                                break;
+                            }
+                        }
+                    }
+
                     currLine->glyphEndIdx = lineStartGlyphIdx;
+                    currLine->glyphSkipStartIdx = std::min(static_cast<uint32_t>(skipStartIdx), lineStartGlyphIdx);
+                    skipStartIdx = std::numeric_limits<size_t>().max();
 
                     d_lines.emplace_back();
                     currLine = &d_lines.back();
@@ -383,6 +392,7 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
                 if (!d_skipWrappedWhitespace || !d_glyphs[i].isWhitespace)
                 {
                     // Accept this glyph as the last visible content in the line
+                    skipStartIdx = i + 1;
                     visibleJustifiableCount = currLine->justifiableCount;
                     if (d_glyphs[i].isJustifiable)
                         ++visibleJustifiableCount;
@@ -408,7 +418,8 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
     }
 
     currLine->extents.d_width += widthAdvanceDiff;
-    currLine->glyphEndIdx = glyphCount;
+    currLine->glyphEndIdx = static_cast<uint32_t>(glyphCount);
+    currLine->glyphSkipStartIdx = static_cast<uint32_t>(glyphCount);
 
     // Track the paragraph exceeding an area width
     if (!d_wordWrap && currLine->extents.d_width > areaWidth)
@@ -673,21 +684,21 @@ size_t RenderedTextParagraph::getGlyphLineIndex(size_t glyphIndex) const
 }
 
 //----------------------------------------------------------------------------//
-size_t RenderedTextParagraph::getTextIndexAtPoint(const glm::vec2& pt, float* outRelPos) const
+size_t RenderedTextParagraph::getTextIndexAtPoint(const glm::vec2& pt, float areaWidth, float* outRelPos) const
 {
-    return d_glyphs.empty() ? d_sourceStartIndex : getTextIndex(getGlyphIndexAtPoint(pt, outRelPos));
+    return d_glyphs.empty() ? d_sourceStartIndex : getTextIndex(getGlyphIndexAtPoint(pt, areaWidth, outRelPos));
 }
 
 //----------------------------------------------------------------------------//
 bool RenderedTextParagraph::getTextIndexBounds(Rectf& out, bool* outRtl, size_t textIndex,
-    const std::vector<RenderedTextElementPtr>& elements) const
+    const std::vector<RenderedTextElementPtr>& elements, float areaWidth) const
 {
     if (d_linesDirty)
         return false;
 
     const auto glyphIndex = getNearestGlyphIndex(textIndex);
     if (glyphIndex != npos)
-        return getGlyphBounds(out, outRtl, glyphIndex, elements);
+        return getGlyphBounds(out, outRtl, glyphIndex, elements, areaWidth);
 
     // No glyph found, return the end of the paragraph
     if (d_lines.empty())
@@ -713,7 +724,7 @@ bool RenderedTextParagraph::getTextIndexBounds(Rectf& out, bool* outRtl, size_t 
 }
 
 //----------------------------------------------------------------------------//
-size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt, float* outRelPos) const
+size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt, float areaWidth, float* outRelPos) const
 {
     if (d_linesDirty || pt.y < 0.f)
         return npos;
@@ -727,7 +738,7 @@ size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt, float* o
             return npos;
 
         if (lineLocalY <= line.extents.d_height)
-            return getNearestGlyphIndex(i, pt.x, outRelPos);
+            return getNearestGlyphIndex(i, pt.x, areaWidth, outRelPos);
 
         lineLocalY -= line.extents.d_height;
     }
@@ -737,7 +748,7 @@ size_t RenderedTextParagraph::getGlyphIndexAtPoint(const glm::vec2& pt, float* o
 
 //----------------------------------------------------------------------------//
 bool RenderedTextParagraph::getGlyphBounds(Rectf& out, bool* outRtl, size_t glyphIndex,
-    const std::vector<RenderedTextElementPtr>& elements) const
+    const std::vector<RenderedTextElementPtr>& elements, float areaWidth) const
 {
     if (d_linesDirty || glyphIndex >= d_glyphs.size())
         return false;
@@ -758,7 +769,6 @@ bool RenderedTextParagraph::getGlyphBounds(Rectf& out, bool* outRtl, size_t glyp
 
         const auto& glyph = d_glyphs[glyphIndex];
         const auto element = elements[glyph.elementIndex].get();
-        auto jusitfiableLeft = line.justifiableCount;
 
         out.d_min.y = lineY;
         float scale = 1.f;
@@ -766,34 +776,41 @@ bool RenderedTextParagraph::getGlyphBounds(Rectf& out, bool* outRtl, size_t glyp
 
         out.setHeight(element->getHeight());
 
-        //!!!stop when skipped whitespace reaches the right edge!
         out.d_min.x = line.horzOffset;
         for (; i < glyphIndex; ++i)
         {
             out.d_min.x += d_glyphs[i].advance;
-            if (jusitfiableLeft && d_glyphs[i].isJustifiable)
+            if (i < line.glyphSkipStartIdx)
             {
-                --jusitfiableLeft;
-                out.d_min.x += line.justifySpaceSize;
+                // Only not skipped glyphs participate in justification
+                if (d_glyphs[i].isJustifiable)
+                    out.d_min.x += line.justifySpaceSize;
+            }
+            else
+            {
+                // Skipped whitespace glyph is always clamped to the end of the line
+                if (out.d_min.x > areaWidth)
+                    break;
             }
         }
 
-        if (glyph_is_skipped_whitespace)
+        out.setWidth(std::max(glyph.advance, element->getGlyphWidth(glyph)));
+
+        if (glyphIndex < line.glyphSkipStartIdx)
         {
-            // Skipped whitespace glyph is always a zero width rect at the beginning of the line
-            out.setWidth(0.f);
-            if (outRtl)
-                *outRtl = false;
+            if (glyph.isJustifiable)
+                out.d_max.x += line.justifySpaceSize;
         }
         else
         {
-            float glyphWidth = std::max(glyph.advance, element->getGlyphWidth(glyph));
-            if (jusitfiableLeft && glyph.isJustifiable)
-                glyphWidth += line.justifySpaceSize;
-            out.setWidth(glyphWidth);
-            if (outRtl)
-                *outRtl = glyph.isRightToLeft;
+            if (out.d_min.x > areaWidth)
+                out.d_min.x = areaWidth;
+            if (out.d_max.x > areaWidth)
+                out.d_max.x = areaWidth;
         }
+
+        if (outRtl)
+            *outRtl = glyph.isRightToLeft;
 
         return true;
     }
@@ -808,12 +825,12 @@ size_t RenderedTextParagraph::getTextIndex(size_t glyphIndex) const
 }
 
 //----------------------------------------------------------------------------//
-size_t RenderedTextParagraph::getTextIndex(size_t lineIndex, float offsetX, float* outRelPos) const
+size_t RenderedTextParagraph::getTextIndex(size_t lineIndex, float offsetX, float areaWidth, float* outRelPos) const
 {
     if (d_glyphs.empty())
         return d_sourceStartIndex;
 
-    const auto idx = getNearestGlyphIndex(lineIndex, offsetX, outRelPos);
+    const auto idx = getNearestGlyphIndex(lineIndex, offsetX, areaWidth, outRelPos);
     if (idx == npos)
         return npos;
 
@@ -847,13 +864,14 @@ size_t RenderedTextParagraph::getNearestGlyphIndex(size_t textIndex) const
 }
 
 //----------------------------------------------------------------------------//
-size_t RenderedTextParagraph::getNearestGlyphIndex(size_t lineIndex, float offsetX, float* outRelPos) const
+size_t RenderedTextParagraph::getNearestGlyphIndex(size_t lineIndex, float offsetX, float areaWidth, float* outRelPos) const
 {
-    if (d_linesDirty || d_lines.size() <= lineIndex)
+    const auto lineCount = d_lines.size();
+    if (d_linesDirty || lineCount <= lineIndex)
         return npos;
 
     const auto& line = d_lines[lineIndex];
-    auto i = lineIndex ? d_lines[lineIndex - 1].glyphEndIdx : 0;
+    const auto lineStartIdx = lineIndex ? d_lines[lineIndex - 1].glyphEndIdx : 0;
 
     const bool isRtl = (d_bidiDir == DefaultParagraphDirection::RightToLeft);
 
@@ -862,18 +880,26 @@ size_t RenderedTextParagraph::getNearestGlyphIndex(size_t lineIndex, float offse
     {
         if (outRelPos)
             *outRelPos = 0.f;
-        return isRtl ? line.glyphEndIdx : i;
+        return (isRtl && lineIndex + 1 == lineCount) ? line.glyphEndIdx : lineStartIdx;
     }
 
-    //i = skipWrappedWhitespace(i, line.glyphEndIdx);
-
     float nextGlyphStart = line.horzOffset;
-    while (i < line.glyphEndIdx)
+    for (uint32_t i = lineStartIdx; i < line.glyphEndIdx; ++i)
     {
         const float currGlyphStart = nextGlyphStart;
         nextGlyphStart += d_glyphs[i].advance;
-        if (d_glyphs[i].isJustifiable)
-            nextGlyphStart += line.justifySpaceSize;
+        if (i < line.glyphSkipStartIdx)
+        {
+            if (d_glyphs[i].isJustifiable)
+                nextGlyphStart += line.justifySpaceSize;
+        }
+        else
+        {
+            // Skipped whitespace glyphs are clamped to the area width, so extending past the
+            // text bounds means that we skipped everything to the end of the line
+            if (nextGlyphStart > areaWidth)
+                break;
+        }
 
         if (offsetX < nextGlyphStart)
         {
@@ -884,14 +910,12 @@ size_t RenderedTextParagraph::getNearestGlyphIndex(size_t lineIndex, float offse
             }
             return i;
         }
-
-        ++i;
     }
 
     // Point is to the right of the end
     if (outRelPos)
         *outRelPos = 0.f;
-    return isRtl ? (line.glyphEndIdx - 1) : line.glyphEndIdx;
+    return (isRtl || lineIndex + 1 < lineCount) ? (line.glyphEndIdx - 1) : line.glyphEndIdx;
 }
 
 //----------------------------------------------------------------------------//
@@ -975,21 +999,6 @@ size_t RenderedTextParagraph::prevTextIndex(size_t textIndex) const
         const auto idx = getNearestGlyphIndex(textIndex);
         return (idx == npos) ? d_sourceEndIndex : idx ? d_glyphs[idx - 1].sourceIndex : d_sourceStartIndex;
     }
-}
-
-//----------------------------------------------------------------------------//
-uint32_t RenderedTextParagraph::skipWrappedWhitespace(uint32_t start, uint32_t end) const
-{
-    // Never skip leading whitespaces in a paragraph
-    if (!start || !d_wordWrap || !d_skipWrappedWhitespace)
-        return start;
-
-    for (uint32_t i = start; i < end; ++i)
-        if (!d_glyphs[i].isWhitespace)
-            return i;
-
-    // Don't skip anything if there are only whitespace glyphs in the line
-    return start;
 }
 
 }

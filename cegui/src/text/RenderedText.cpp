@@ -513,7 +513,7 @@ size_t RenderedText::getTextIndexAtPoint(const glm::vec2& pt, float* outRelPos) 
             continue;
         }
 
-        const auto idx = p.getTextIndexAtPoint(localPt, outRelPos);
+        const auto idx = p.getTextIndexAtPoint(localPt, d_areaWidth, outRelPos);
 
         // No text at point means the end of the paragraph
         if (idx == RenderedTextParagraph::npos)
@@ -548,7 +548,7 @@ bool RenderedText::getTextIndexBounds(size_t textIndex, Rectf& out, bool* outRtl
     float offsetY;
     const auto idx = findParagraphIndex(textIndex, offsetY);
 
-    if (!d_paragraphs[idx].getTextIndexBounds(out, outRtl, textIndex, d_elements))
+    if (!d_paragraphs[idx].getTextIndexBounds(out, outRtl, textIndex, d_elements, d_areaWidth))
         return false;
 
     out.d_min.y += offsetY;
@@ -598,13 +598,13 @@ size_t RenderedText::lineUpTextIndex(size_t textIndex, float desiredOffsetX) con
     const auto lineIdx = par.getLineIndex(textIndex);
 
     if (lineIdx)
-        return par.getTextIndex(lineIdx - 1, desiredOffsetX);
+        return par.getTextIndex(lineIdx - 1, desiredOffsetX, d_areaWidth);
 
     if (!parIdx)
         return textIndex;
 
     const auto& prevPar = d_paragraphs[parIdx - 1];
-    return prevPar.getTextIndex(prevPar.getLineCount() - 1, desiredOffsetX);
+    return prevPar.getTextIndex(prevPar.getLineCount() - 1, desiredOffsetX, d_areaWidth);
 }
 
 //----------------------------------------------------------------------------//
@@ -619,12 +619,12 @@ size_t RenderedText::lineDownTextIndex(size_t textIndex, float desiredOffsetX) c
     const auto lineIdx = par.getLineIndex(textIndex);
 
     if (lineIdx + 1 < par.getLineCount())
-        return par.getTextIndex(lineIdx + 1, desiredOffsetX);
+        return par.getTextIndex(lineIdx + 1, desiredOffsetX, d_areaWidth);
 
     if (parIdx + 1 >= d_paragraphs.size())
         return textIndex;
 
-    return d_paragraphs[parIdx + 1].getTextIndex(0, desiredOffsetX);
+    return d_paragraphs[parIdx + 1].getTextIndex(0, desiredOffsetX, d_areaWidth);
 }
 
 //----------------------------------------------------------------------------//
