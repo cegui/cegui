@@ -133,7 +133,7 @@ RestaurantGameSample::RestaurantGameSample() :
     Sample::d_credits = "Lukas \"Ident\" Meindl, graphics: Charles \"Syg\" Mattei";
     Sample::d_description =
         "The RestaurantGame presents a game that uses a head-up display. This shows that CEGUI has "
-        "full capabilities for rendering HUD's for first person shooters or other any other types of games. "
+        "full capabilities for rendering HUD's for first person shooters or any other type of games. "
         "The interface consists of a health bar, lives, switchable weapons and power-ups. "
         "The game itself consists of moving dishes that have to be clicked on to receive points. "
         "When clicked, the points appear in red or green text as a pop-up text that moves "
