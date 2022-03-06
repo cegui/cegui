@@ -362,6 +362,8 @@ void RenderedTextParagraph::updateLines(const std::vector<RenderedTextElementPtr
                     currLine->glyphSkipStartIdx = std::min(static_cast<uint32_t>(skipStartIdx), wrapIdx);
                     skipStartIdx = std::numeric_limits<size_t>().max();
 
+                    // FIXME: right-to-left word wrapping must be implemented completely differently,
+                    // this is just a hack to make it work at least to some extent
                     if (d_glyphs[wrapIdx].isRightToLeft)
                     {
                         const auto newLineIdx = std::distance(d_lines.begin(), currLineIt);
@@ -765,7 +767,7 @@ bool RenderedTextParagraph::getGlyphBounds(Rectf& out, bool* outRtl, size_t glyp
         if (line.heightDirty)
             return false;
 
-        if (glyphIndex >= line.glyphEndIdx)
+        if (glyphIndex < line.glyphStartIdx || glyphIndex >= line.glyphEndIdx)
         {
             lineY += line.extents.d_height;
             continue;
@@ -882,7 +884,7 @@ size_t RenderedTextParagraph::getNearestGlyphIndex(size_t lineIndex, float offse
     {
         if (outRelPos)
             *outRelPos = 0.f;
-        return (isRtl && lineIndex + 1 == lineCount) ? line.glyphEndIdx : line.glyphStartIdx;
+        return (isRtl && lineIndex + 1 == lineCount) ? d_glyphs.size() : line.glyphStartIdx;
     }
 
     float nextGlyphStart = line.horzOffset;
