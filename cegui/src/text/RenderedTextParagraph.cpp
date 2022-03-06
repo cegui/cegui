@@ -64,16 +64,17 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text,
             element->setupGlyph(glyph, codePoint);
 
         // Always breakable after whitespace and before/after wordbreak characters
+        const bool isBreakable = (TextUtils::UTF32_NON_BREAKABLE_CHARACTERS.find(codePoint) == std::u32string::npos);
+        const bool isBreakableWhitespace = (glyph.isWhitespace && isBreakable);
         if (breakNext)
         {
             glyph.isBreakable = true;
-            breakNext = glyph.isWhitespace;
+            breakNext = isBreakableWhitespace;
         }
         else
         {
-            const bool isNonBreakable = (TextUtils::UTF32_NON_BREAKABLE_CHARACTERS.find(codePoint) != std::u32string::npos);
-            glyph.isBreakable = !isNonBreakable && (TextUtils::UTF32_WORDBREAK_CHARACTERS.find(codePoint) != std::u32string::npos);
-            breakNext = glyph.isBreakable || (glyph.isWhitespace && !isNonBreakable);
+            glyph.isBreakable = isBreakable && (TextUtils::UTF32_WORDBREAK_CHARACTERS.find(codePoint) != std::u32string::npos);
+            breakNext = glyph.isBreakable || isBreakableWhitespace;
         }
     }
 }
