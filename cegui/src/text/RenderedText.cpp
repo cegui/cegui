@@ -223,8 +223,9 @@ static bool layoutParagraphWithRaqm(RenderedTextParagraph& out, const std::u32st
         return false;
 
     const raqm_direction_t rqDir = raqm_get_par_resolved_direction(rq);
-    out.setBidiDirection((rqDir == RAQM_DIRECTION_RTL) ?
-        DefaultParagraphDirection::RightToLeft :
+    out.setBidiDirection(
+        (rqDir == RAQM_DIRECTION_RTL) ? DefaultParagraphDirection::RightToLeft :
+        (rqDir == RAQM_DIRECTION_DEFAULT) ? DefaultParagraphDirection::Automatic :
         DefaultParagraphDirection::LeftToRight);
 
     // Glyph generation
@@ -320,6 +321,7 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
 
     // Perform layouting per paragraph
     size_t start = 0;
+    DefaultParagraphDirection lastBidiDir = DefaultParagraphDirection::LeftToRight;
     do
     {
         size_t end = utf32Text.find_first_of(TextUtils::UTF32_NEWLINE_CHARACTERS, start);
@@ -337,6 +339,12 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
             if (!layoutParagraphWithRaqm(p, utf32Text, start, end, defaultParagraphDir, elementIndices, d_elements, rq))
 #endif
                 layoutParagraph(p, utf32Text, start, end, defaultParagraphDir, elementIndices, d_elements);
+
+            // Inherit explicit direction from the previous text for direction neutral paragraphs
+            if (p.getBidiDirection() == DefaultParagraphDirection::Automatic)
+                p.setBidiDirection(lastBidiDir);
+            else
+                lastBidiDir = p.getBidiDirection();
 
             p.setupGlyphs(utf32Text, elementIndices, d_elements);
         }
