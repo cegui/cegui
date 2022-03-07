@@ -698,13 +698,13 @@ void GameMenuSample::updateIntroText()
 
     CEGUI::String finalText;
 
-    auto firstPartTypeProgress = static_cast<size_t>((d_timeSinceStart - s_firstStartDelay) / 0.08f);
+    auto firstPartTypeProgress = static_cast<ptrdiff_t>((d_timeSinceStart - s_firstStartDelay) / 0.08f);
     if(firstPartTypeProgress > 0)
-        finalText += firstPart.substr(0, std::min(firstPart.size(), firstPartTypeProgress));
+        finalText += firstPart.substr(0, std::min<size_t>(firstPart.size(), firstPartTypeProgress));
 
-    auto secondPartTypeProgress = static_cast<size_t>((d_timeSinceStart - s_secondStartDelay) / 0.08f);
+    auto secondPartTypeProgress = static_cast<ptrdiff_t>((d_timeSinceStart - s_secondStartDelay) / 0.08f);
     if(secondPartTypeProgress > 0)
-        finalText += "\n" + secondPart.substr(0, std::min(secondPart.length(), secondPartTypeProgress));
+        finalText += "\n" + secondPart.substr(0, std::min<size_t>(secondPart.length(), secondPartTypeProgress));
 
     finalText += "[font='DejaVuSans-12']";
 
@@ -728,9 +728,9 @@ void GameMenuSample::updateLoginWelcomeText()
     CEGUI::String displayText = firstPart + d_userName;
     CEGUI::String finalText;
 
-    auto progress = static_cast<size_t>(d_timeSinceLoginAccepted / 0.08f);
+    auto progress = static_cast<ptrdiff_t>(d_timeSinceLoginAccepted / 0.08f);
     if(progress > 0)
-        finalText += displayText.substr(0, std::min(displayText.length(), progress));
+        finalText += displayText.substr(0, std::min<size_t>(displayText.length(), progress));
 
     finalText += "[font='DejaVuSans-12']";
 
@@ -755,9 +755,9 @@ void GameMenuSample::updateLoginStartButtonText()
 
     CEGUI::String finalText;
 
-    auto progress = static_cast<size_t>((d_timeSinceLoginAccepted - writeDelay) / 0.08f);
+    auto progress = static_cast<ptrdiff_t>((d_timeSinceLoginAccepted - writeDelay) / 0.08f);
     if(progress > 0)
-        finalText += displayText.substr(0, std::min(displayText.length(), progress));
+        finalText += displayText.substr(0, std::min<size_t>(displayText.length(), progress));
 
     finalText += "[font='DejaVuSans-12']";
 
