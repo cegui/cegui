@@ -116,7 +116,7 @@ void UndoHandler::setUndoLimit(int limit)
     while (d_undoList.size() > d_undoLimit)
         d_undoList.pop_front();
 
-    d_undoPosition = d_undoList.size() - 1;
+    d_undoPosition = static_cast<int>(d_undoList.size()) - 1;
 }
 
 //----------------------------------------------------------------------------//
@@ -130,7 +130,7 @@ void UndoHandler::addUndoHistory(UndoAction &action)
         d_undoList.pop_front();
 
     d_undoList.push_back(action);
-    d_undoPosition = d_undoList.size() - 1;
+    d_undoPosition = static_cast<int>(d_undoList.size()) - 1;
 }
 
 //----------------------------------------------------------------------------//

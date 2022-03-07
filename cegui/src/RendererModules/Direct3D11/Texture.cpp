@@ -234,7 +234,7 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
     D3D11_SUBRESOURCE_DATA data;
     ZeroMemory(&data, sizeof(D3D11_SUBRESOURCE_DATA));
     data.pSysMem = img_src;
-    data.SysMemPitch = calculateDataWidth(tex_desc.Width, pixel_format);
+    data.SysMemPitch = static_cast<UINT>(calculateDataWidth(tex_desc.Width, pixel_format));
 
     HRESULT hr = d_device.CreateTexture2D(&tex_desc, &data, &d_texture);
 

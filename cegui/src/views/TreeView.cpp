@@ -217,7 +217,7 @@ TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(
 {
     ModelIndex index = d_itemModel->makeIndex(child_id, parent_index);
     TreeViewItemRenderingState state(this);
-    state.d_nestedLevel = nested_level;
+    state.d_nestedLevel = static_cast<int>(nested_level);
     state.d_parentIndex = parent_index;
     state.d_childId = child_id;
 

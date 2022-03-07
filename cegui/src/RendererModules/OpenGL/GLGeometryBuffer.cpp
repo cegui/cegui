@@ -87,7 +87,7 @@ void OpenGLGeometryBuffer::draw(std::uint32_t /*drawModeMask*/) const
         setupVertexDataPointers();
 
         // draw the geometry
-        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount);
+        glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(d_vertexCount));
     }
 
     // clean up RenderEffect

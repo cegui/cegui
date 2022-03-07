@@ -122,7 +122,7 @@ static void dumpBacktrace(size_t frames)
         }
         else
         {
-            const void* addressPtr = ULongToPtr(symbol->Address);
+            const void* addressPtr = (void*)(ULONG_PTR)(symbol->Address);
             sstream << addressPtr;
         }
  

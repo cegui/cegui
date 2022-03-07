@@ -621,7 +621,7 @@ Window* GridLayoutContainer::getChildAutoWindow(const String& name)
 //----------------------------------------------------------------------------//
 int GridLayoutContainer::writeChildWindowsXML(XMLSerializer& xml_stream) const
 {
-    int windowsWritten = 0;
+    size_t windowsWritten = 0;
     size_t dummiesSkipped = 0;
     for (const Element* child : d_children)
     {
@@ -648,7 +648,7 @@ int GridLayoutContainer::writeChildWindowsXML(XMLSerializer& xml_stream) const
         }
     }
 
-    return windowsWritten;
+    return static_cast<int>(windowsWritten);
 }
 
 //----------------------------------------------------------------------------//

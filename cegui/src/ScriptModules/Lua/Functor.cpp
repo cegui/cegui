@@ -197,7 +197,7 @@ void LuaFunctor::pushNamedFunction(lua_State* L, const String& handler_name)
     int top = lua_gettop(L);
 
     // do we have any dots in the handler name? if so we grab the function as a table field
-    String::size_type i = handler_name.find_first_of((utf32)'.');
+    String::size_type i = handler_name.find_first_of(U'.');
     if (i!=String::npos)
     {
         // split the rest of the string up in parts seperated by '.'
@@ -208,14 +208,18 @@ void LuaFunctor::pushNamedFunction(lua_State* L, const String& handler_name)
         {
             parts.push_back(handler_name.substr(start,i-start));
             start = i+1;
-            i = handler_name.find_first_of((utf32)'.',start);
+            i = handler_name.find_first_of(U'.',start);
         } while(i!=String::npos);
 
         // add last part
         parts.push_back(handler_name.substr(start));
 
         // first part is the global
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32)
         lua_getglobal(L, parts[0].c_str());
+#else
+        lua_getglobal(L, String::convertUtf32ToUtf8(parts[0].c_str()).c_str());
+#endif
         if (!lua_istable(L,-1))
         {
             lua_settop(L,top);
@@ -231,7 +235,11 @@ void LuaFunctor::pushNamedFunction(lua_State* L, const String& handler_name)
             while (vi<visz)
             {
                 // push key, and get the next table
-                lua_pushstring(L,parts[vi].c_str());
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32)
+                lua_pushstring(L, parts[vi].c_str());
+#else
+                lua_pushstring(L, String::convertUtf32ToUtf8(parts[vi].c_str()).c_str());
+#endif
                 lua_gettable(L,-2);
                 if (!lua_istable(L,-1))
                 {
@@ -245,14 +253,22 @@ void LuaFunctor::pushNamedFunction(lua_State* L, const String& handler_name)
         }
 
         // now we are ready to get the function to call ... phew :)
-        lua_pushstring(L,parts[visz].c_str());
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32)
+        lua_pushstring(L, parts[visz].c_str());
+#else
+        lua_pushstring(L, String::convertUtf32ToUtf8(parts[visz].c_str()).c_str());
+#endif
         lua_gettable(L,-2);
         lua_remove(L,-2); // get rid of the table
     }
     // just a regular global function
     else
     {
+#if (CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UTF_32)
         lua_getglobal(L, handler_name.c_str());
+#else
+        lua_getglobal(L, String::convertUtf32ToUtf8(handler_name.c_str()).c_str());
+#endif
     }
 
     // is it a function

@@ -112,7 +112,7 @@ namespace CEGUI
             The size of the string data. It can be computed using \code XMLString::stringLen(xmlch_str) \endcode
 
          */
-        static String transcodeXmlCharToString(const XMLCh* const xmlch_str, unsigned int length);
+        static String transcodeXmlCharToString(const XMLCh* const xmlch_str, size_t length);
 
         /*!
         \brief

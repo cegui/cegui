@@ -27,6 +27,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/ImageCodecModules/Corona/ImageCodec.h" 
+#include "CEGUI/DataContainer.h"
+#include "CEGUI/Texture.h"
 #include "CEGUI/Logger.h" 
 #include "CEGUI/Sizef.h"
 
@@ -87,8 +89,8 @@ Texture* CoronaImageCodec::load(const RawDataContainer& data, Texture* result)
         return 0; 
     }
     result->loadFromMemory(texImg->getPixels(),
-                           Sizef(texImg->getWidth(),
-                                  texImg->getHeight()),
+                           Sizef(static_cast<float>(texImg->getWidth()),
+                               static_cast<float>(texImg->getHeight())),
                            cefmt);
     delete texImg;
     return result;    

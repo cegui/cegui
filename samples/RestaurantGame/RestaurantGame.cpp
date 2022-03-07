@@ -328,19 +328,16 @@ const CEGUI::String& RestaurantGameSample::getRandomGameImage()
 
 void RestaurantGameSample::updatePlates(float timeSinceLastUpdate)
 {
-    unsigned int vectorSize = d_gamePlates.size();
-
-    for(unsigned int i = 0; i < vectorSize;)
+    for (size_t i = 0; i < d_gamePlates.size(); /**/)
     {
         GamePlate* currentPlate = d_gamePlates[i];
 
         currentPlate->update(timeSinceLastUpdate);
-        if(currentPlate->d_isDestroyed)
+        if (currentPlate->d_isDestroyed)
         {
             delete currentPlate;
             d_gamePlates[i] = d_gamePlates.back();
             d_gamePlates.pop_back();
-            vectorSize = d_gamePlates.size();
         }
         else
             ++i;

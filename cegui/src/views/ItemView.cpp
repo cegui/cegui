@@ -535,7 +535,7 @@ int ItemView::getSelectedIndexPosition(const ModelIndex& index) const
     for (size_t i = 0; i < d_indexSelectionStates.size(); ++i)
     {
         if (d_itemModel->areIndicesEqual(index, d_indexSelectionStates.at(i).d_selectedIndex))
-            return i;
+            return static_cast<uint32_t>(i);
     }
 
     return -1;
@@ -897,7 +897,7 @@ void ItemView::clearSelections()
 void ItemView::handleSelectionNavigation(SemanticEventArgs& e)
 {
     ModelIndex parent_index = d_itemModel->getRootIndex();
-    int last_selected_child_id = -1;
+    ptrdiff_t last_selected_child_id = -1;
     if (!d_indexSelectionStates.empty())
     {
         ModelIndexSelectionState last_selection = d_indexSelectionStates.back();
@@ -909,17 +909,17 @@ void ItemView::handleSelectionNavigation(SemanticEventArgs& e)
     if (children_count == 0)
         return;
 
-    int next_selected_child_id = last_selected_child_id;
+    auto next_selected_child_id = last_selected_child_id;
     if (e.d_semanticValue == SemanticValue::GoDown)
     {
         next_selected_child_id = std::min(
             next_selected_child_id + 1,
-            static_cast<int>(children_count)-1
+            static_cast<ptrdiff_t>(children_count)-1
             );
     }
     else if (e.d_semanticValue == SemanticValue::GoUp)
     {
-        next_selected_child_id = std::max(0, next_selected_child_id - 1);
+        next_selected_child_id = std::max<ptrdiff_t>(0, next_selected_child_id - 1);
     }
 
     if (next_selected_child_id == -1 ||

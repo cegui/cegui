@@ -40,18 +40,18 @@ namespace CEGUI
 // returns horizontal range as two values for lua
 void ceguiLua_Thumb_getHorzRange(Thumb* wnd, float* min, float* max)
 {
-	std::pair<float,float> range_pair = wnd->getHorzRange();
-	*min = range_pair.first;
-	*max = range_pair.second;
+	const auto range_pair = wnd->getHorzRange();
+	*min = range_pair.x;
+	*max = range_pair.y;
 }
 
 
 // returns vertical range as two values for lua
 void ceguiLua_Thumb_getVertRange(Thumb* wnd, float* min, float* max)
 {
-	std::pair<float,float> range_pair = wnd->getVertRange();
-	*min = range_pair.first;
-	*max = range_pair.second;
+    const auto range_pair = wnd->getVertRange();
+	*min = range_pair.x;
+	*max = range_pair.y;
 }
 
 
@@ -64,17 +64,6 @@ ListboxTextItem* ceguiLua_createListboxTextItem(const String& text, unsigned int
 {
 	return new ListboxTextItem(text,item_id,item_data,disabled,auto_delete);
 }
-
-/*************************************************************************
-Functions for creating tree items
-*************************************************************************/
-
-// allocates and returns a new TreeItem
-TreeItem* ceguiLua_createTreeItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete)
-{
-	return new TreeItem(text,item_id,item_data,disabled,auto_delete);
-}
-
 
 /************************************************************************
     OutStream
@@ -132,9 +121,9 @@ Sizef ceguiLua_PropertyHelper::stringToSize(const String& str)
 }
 
 //----------------------------------------------------------------------------//
-Vector2f ceguiLua_PropertyHelper::stringToVector2(const String& str)
+glm::vec2 ceguiLua_PropertyHelper::stringToVector2(const String& str)
 {
-    return PropertyHelper<Vector2f >::fromString(str);
+    return PropertyHelper<glm::vec2>::fromString(str);
 }
 
 //----------------------------------------------------------------------------//
@@ -216,9 +205,9 @@ String ceguiLua_PropertyHelper::sizeToString(const Sizef& val)
 }
 
 //----------------------------------------------------------------------------//
-String ceguiLua_PropertyHelper::vector2ToString(const Vector2f& val)
+String ceguiLua_PropertyHelper::vector2ToString(const glm::vec2& val)
 {
-    return PropertyHelper<Vector2f >::toString(val);
+    return PropertyHelper<glm::vec2>::toString(val);
 }
 
 //----------------------------------------------------------------------------//

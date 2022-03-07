@@ -251,7 +251,7 @@ bool MinesweeperSample::handleMineButtonClicked(const CEGUI::EventArgs& event)
     if (boardDiscover(*buttonLoc))
     {
         // We did not find a mine
-        button->setText(CEGUI::PropertyHelper<std::uint32_t>::toString(d_board[buttonLoc->d_row][buttonLoc->d_col]));
+        button->setText(CEGUI::PropertyHelper<size_t>::toString(d_board[buttonLoc->d_row][buttonLoc->d_col]));
         if (isGameWin())
             gameEnd(true);
     }
@@ -270,7 +270,7 @@ bool MinesweeperSample::handleMineButtonClicked(const CEGUI::EventArgs& event)
                     }
                     else
                     {
-                        d_buttons[i][j]->setText(CEGUI::PropertyHelper<std::uint32_t>::toString(d_board[i][j]));
+                        d_buttons[i][j]->setText(CEGUI::PropertyHelper<size_t>::toString(d_board[i][j]));
                     }
                 }
                 d_buttons[i][j]->setEnabled(false);
@@ -419,7 +419,7 @@ bool MinesweeperSample::boardDiscover(const Location& loc)
 
     if (d_board[loc.d_row][loc.d_col] > 8)
         return false;
-    d_buttons[loc.d_row][loc.d_col]->setText(CEGUI::PropertyHelper<std::uint32_t>::toString(d_board[loc.d_row][loc.d_col]));
+    d_buttons[loc.d_row][loc.d_col]->setText(CEGUI::PropertyHelper<size_t>::toString(d_board[loc.d_row][loc.d_col]));
     d_buttons[loc.d_row][loc.d_col]->setEnabled(false);
     ++d_boardCellDiscovered;
     // Discover surrounding case

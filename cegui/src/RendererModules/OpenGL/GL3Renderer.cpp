@@ -478,7 +478,7 @@ void OpenGL3Renderer::uploadVertexData(std::vector<float>& vertex_data, GLuint v
     if(vertex_data.size() * sizeof(float) > vbo_max_size)
     {
         glBufferData(GL_ARRAY_BUFFER, vertex_data.size() * sizeof(float), &vertex_data[0], GL_DYNAMIC_DRAW);
-        vbo_max_size = vertex_data.size() * sizeof(float);
+        vbo_max_size = static_cast<GLuint>(vertex_data.size() * sizeof(float));
     }
     else
     {

@@ -62,7 +62,7 @@ void ExpatParser::parseXML(XMLHandler& handler, const RawDataContainer& source, 
     XML_SetCharacterDataHandler(parser, characterData); // Register callback for character data
 
     // Parse the data (note that the last true parameter tels Expat that this is the last chunk of the document
-    if (!XML_Parse(parser, reinterpret_cast<const char*>(source.getDataPtr()), source.getSize(), true))
+    if (!XML_Parse(parser, reinterpret_cast<const char*>(source.getDataPtr()), static_cast<int>(source.getSize()), true))
     {
         String exception (String("XML Parsing error '") +
                           String(XML_ErrorString(XML_GetErrorCode(parser))) +

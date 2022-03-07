@@ -94,7 +94,7 @@ void Font::addFontProperties()
 }
 
 //----------------------------------------------------------------------------//
-size_t Font::getGlyphIndexForCodepoint(char32_t codePoint) const
+uint32_t Font::getGlyphIndexForCodepoint(char32_t codePoint) const
 {
     auto it = d_codePointToGlyphMap.find(codePoint);
     return (it != d_codePointToGlyphMap.end()) ? it->second : d_replacementGlyphIdx;

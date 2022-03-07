@@ -194,10 +194,10 @@ void PixmapFont::defineMapping(char32_t codePoint, const String& imageName, floa
 
     d_height = d_ascender - d_descender;
 
-    d_codePointToGlyphMap[codePoint] = d_glyphs.size() - 1;
+    d_codePointToGlyphMap[codePoint] = static_cast<uint32_t>(d_glyphs.size()) - 1;
 
     if (codePoint == UnicodeReplacementCharacter)
-        d_replacementGlyphIdx = d_glyphs.size() - 1;
+        d_replacementGlyphIdx = static_cast<uint32_t>(d_glyphs.size()) - 1;
 }
 
 //----------------------------------------------------------------------------//

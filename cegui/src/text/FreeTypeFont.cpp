@@ -304,7 +304,7 @@ size_t FreeTypeFont::addNewLineIfFitting(uint32_t glyphHeight, uint32_t glyphWid
 //----------------------------------------------------------------------------//
 void FreeTypeFont::createGlyphAtlasTexture()
 {
-    std::uint32_t newTextureIndex = d_glyphTextures.size();
+    const auto newTextureIndex = static_cast<uint32_t>(d_glyphTextures.size());
     const String texture_name(d_name + "_auto_glyph_images_texture_" +
         PropertyHelper<std::uint32_t>::toString(newTextureIndex));
 
@@ -516,8 +516,8 @@ void FreeTypeFont::updateFont()
                 "adding an already added glyph to the codepoint glyph map.");
 
         d_glyphs.emplace_back(codepoint, gindex);
-        d_codePointToGlyphMap[codepoint] = d_glyphs.size() - 1;
-        d_indexToGlyphMap[gindex] = d_glyphs.size() - 1;
+        d_codePointToGlyphMap[codepoint] = static_cast<uint32_t>(d_glyphs.size()) - 1;
+        d_indexToGlyphMap[gindex] = static_cast<uint32_t>(d_glyphs.size()) - 1;
 
         codepoint = FT_Get_Next_Char(d_fontFace, codepoint, &gindex);
     }

@@ -289,12 +289,14 @@ void OpenGL3GeometryBuffer::appendGeometry(const float* vertex_data, std::size_t
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
 {
+    const auto vboPos = static_cast<GLint>(d_verticesVBOPosition);
+    const auto vertexCount = static_cast<GLsizei>(d_vertexCount);
     if(d_polygonFillRule == PolygonFillRule::NoFilling)
     {
         d_glStateChanger->disable(GL_CULL_FACE);
         d_glStateChanger->disable(GL_STENCIL_TEST);
 
-        glDrawArrays(GL_TRIANGLES, d_verticesVBOPosition, d_vertexCount);
+        glDrawArrays(GL_TRIANGLES, vboPos, vertexCount);
     }
     else if(d_polygonFillRule == PolygonFillRule::EvenOdd)
     {
@@ -309,13 +311,13 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
         glClear(GL_STENCIL_BUFFER_BIT);
         glStencilFunc(GL_ALWAYS, 0x00, 0xFF);
         glStencilOp(GL_INVERT, GL_KEEP, GL_INVERT);
-        glDrawArrays(GL_TRIANGLES, d_verticesVBOPosition, d_vertexCount - d_postStencilVertexCount);
+        glDrawArrays(GL_TRIANGLES, vboPos, vertexCount - d_postStencilVertexCount);
 
-        unsigned int postStencilStart = d_vertexCount - d_postStencilVertexCount;
+        unsigned int postStencilStart = vertexCount - d_postStencilVertexCount;
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
         glStencilMask(0x00);
         glStencilFunc(GL_EQUAL, 0xFF, 0xFF);
-        glDrawArrays(GL_TRIANGLES, d_verticesVBOPosition + postStencilStart, d_postStencilVertexCount);
+        glDrawArrays(GL_TRIANGLES, vboPos + postStencilStart, d_postStencilVertexCount);
     }
     else if(d_polygonFillRule == PolygonFillRule::NonZero)
     {
@@ -325,7 +327,7 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
         //A resulting 0 value means we are outside.
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
-        unsigned int solid_fill_count = d_vertexCount - d_postStencilVertexCount;
+        unsigned int solid_fill_count = vertexCount - d_postStencilVertexCount;
         unsigned int vertex_pos = 0;
 
         //Performing the back/front faces stencil incr and decr stencil op
@@ -337,11 +339,11 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
 
         glCullFace(GL_FRONT);
         glStencilOp(GL_KEEP, GL_KEEP, GL_INCR_WRAP);
-        glDrawArrays(GL_TRIANGLES, d_verticesVBOPosition + vertex_pos, solid_fill_count);
+        glDrawArrays(GL_TRIANGLES, vboPos + vertex_pos, solid_fill_count);
 
         glCullFace(GL_BACK);
         glStencilOp(GL_KEEP, GL_KEEP, GL_DECR_WRAP);
-        glDrawArrays(GL_TRIANGLES, d_verticesVBOPosition + vertex_pos, solid_fill_count);
+        glDrawArrays(GL_TRIANGLES, vboPos + vertex_pos, solid_fill_count);
 
         vertex_pos += solid_fill_count;
 
@@ -354,7 +356,7 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
         if(d_postStencilVertexCount != 0)
         {
             glStencilFunc(GL_NOTEQUAL, 0x00, 0xFF);
-            glDrawArrays(GL_TRIANGLES, d_verticesVBOPosition + d_vertexCount - d_postStencilVertexCount, d_postStencilVertexCount);
+            glDrawArrays(GL_TRIANGLES, vboPos + vertexCount - d_postStencilVertexCount, d_postStencilVertexCount);
         }
     }
 }

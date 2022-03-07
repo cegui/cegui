@@ -304,7 +304,7 @@ void WidgetsSample::initialiseAvailableWidgetsMap()
     {
         CEGUI::String falagardBaseType = falMappingIter.getCurrentValue().d_windowType;
 
-        int slashPos = falagardBaseType.find_first_of('/');
+        const auto slashPos = falagardBaseType.find_first_of('/');
         CEGUI::String group = falagardBaseType.substr(0, slashPos);
         CEGUI::String name = falagardBaseType.substr(slashPos + 1, falagardBaseType.size() - 1);
 

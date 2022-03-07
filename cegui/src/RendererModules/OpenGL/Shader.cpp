@@ -136,7 +136,7 @@ GLuint OpenGLBaseShader::compile(GLuint type, const std::string &source)
     // Define shader source and compile
 
     const char* src = source.data();
-    int len = source.size();
+    auto len = static_cast<GLint>(source.size());
 
     glShaderSource(shader, 1, &src, &len);
 

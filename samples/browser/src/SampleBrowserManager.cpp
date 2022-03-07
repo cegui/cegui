@@ -96,11 +96,8 @@ void SampleBrowserManager::setWindowRatio(float aspectRatio)
 
 void SampleBrowserManager::updateWindows()
 {
-    int max = d_sampleWindows.size();
-    for(int i = 0; i < max; ++i)
+    for (auto window : d_sampleWindows)
     {
-        CEGUI::Window* window(d_sampleWindows[i]);
-
         window->setAspectRatio(d_aspectRatio);
         window->setSize(USize(UDim(1.0f, -10.0f), cegui_absdim(1.0f)));
     }

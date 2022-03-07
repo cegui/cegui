@@ -601,13 +601,13 @@ void SampleBrowser::renderSampleGUIContexts()
 //----------------------------------------------------------------------------//
 void SampleBrowser::displaySampleBrowserLayoutLoadProgress()
 {
-    std::int32_t totalNum = d_samples.size() + 2;
+    const size_t totalNum = d_samples.size() + 2;
 
     CEGUI::String loadText = CEGUI::String("Loading SampleBrowser skin ...");
     d_loadingScreenText->setText(loadText);
 
     CEGUI::String progressText =  PropertyHelper<std::int32_t>::toString(1) + "/" +
-        PropertyHelper<std::int32_t>::toString(totalNum - 1);
+        PropertyHelper<size_t>::toString(totalNum - 1);
     d_loadScreenChunkProgressText->setText(progressText);
 
     d_loadingProgressBar->setProgress(1.0f / (totalNum - 1.0f));
@@ -618,12 +618,12 @@ void SampleBrowser::displaySampleLoadProgress(std::int32_t sampleNumber)
 {
     SampleHandler* sampleData = d_samples[sampleNumber + 1];
 
-    int totalNum = d_samples.size() + 2;
+    const size_t totalNum = d_samples.size() + 2;
     CEGUI::String loadText = "Loading " + sampleData->getNameText() + " ...";
     d_loadingScreenText->setText(loadText);
 
     CEGUI::String progressText = PropertyHelper<std::int32_t>::toString(sampleNumber + 3) +
-        "/" + PropertyHelper<std::int32_t>::toString(totalNum - 1);
+        "/" + PropertyHelper<size_t>::toString(totalNum - 1);
     d_loadScreenChunkProgressText->setText(progressText);
 
     d_loadingProgressBar->setProgress( (sampleNumber + 3.f) / (totalNum - 1.0f) );

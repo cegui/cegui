@@ -183,7 +183,7 @@ namespace CEGUI
         }
     }
 
-    String XercesParser::transcodeXmlCharToString(const XMLCh* const xmlch_str, unsigned int inputLength)
+    String XercesParser::transcodeXmlCharToString(const XMLCh* const xmlch_str, size_t inputLength)
     {
         XERCES_CPP_NAMESPACE_USE;
 

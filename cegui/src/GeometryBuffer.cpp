@@ -120,7 +120,7 @@ void GeometryBuffer::appendGeometry(const float* vertexArray, std::size_t arrayS
     float* dest = d_vertexData.data() + prevFloatCount;
     std::memcpy(dest, vertexArray, arraySize * sizeof(float));
 
-    d_vertexCount = d_vertexData.size() / getVertexAttributeElementCount();
+    d_vertexCount = d_vertexData.size() / static_cast<size_t>(getVertexAttributeElementCount());
 }
 
 //---------------------------------------------------------------------------//
@@ -189,8 +189,8 @@ int GeometryBuffer::getVertexAttributeElementCount() const
 {
     int count = 0;
 
-    const unsigned int attribute_count = d_vertexAttributes.size();
-    for (unsigned int i = 0; i < attribute_count; ++i)
+    const auto attribute_count = d_vertexAttributes.size();
+    for (size_t i = 0; i < attribute_count; ++i)
     {
         switch (d_vertexAttributes.at(i))
         {

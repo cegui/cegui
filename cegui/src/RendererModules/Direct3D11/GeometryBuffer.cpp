@@ -144,7 +144,7 @@ void Direct3D11GeometryBuffer::updateVertexBuffer() const
 {
     bool needNewBuffer = false;
     size_t vertexCount = d_vertexData.size();
-    UINT dataSize = vertexCount * sizeof(float);
+    UINT dataSize = static_cast<UINT>(vertexCount * sizeof(float));
 
     if(d_bufferSize < dataSize)
     {
@@ -209,7 +209,7 @@ void Direct3D11GeometryBuffer::drawDependingOnFillRule() const
     {
     */
 
-    d_owner.getDirect3DDeviceContext()->Draw(d_vertexCount, 0);
+    d_owner.getDirect3DDeviceContext()->Draw(static_cast<UINT>(d_vertexCount), 0);
             /* 
     }
     else if(d_polygonFillRule == PolygonFillRule::EvenOdd)
@@ -268,7 +268,7 @@ void Direct3D11GeometryBuffer::finaliseVertexAttributes()
         d_inputLayout->Release();
 
     if (FAILED(d_owner.getDirect3DDevice()->CreateInputLayout(&vertexLayoutVector[0],
-                                            vertexLayoutVector.size(),
+                                            static_cast<UINT>(vertexLayoutVector.size()),
                                             shaderWrapper->getVertShaderBufferPointer(),
                                             shaderWrapper->getVertShaderBufferSize(),
                                             &d_inputLayout)))

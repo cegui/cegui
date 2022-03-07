@@ -27,6 +27,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/MinizipResourceProvider.h"
+#include "CEGUI/DataContainer.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
 
@@ -213,7 +214,7 @@ void MinizipResourceProvider::loadRawDataContainer(const String& filename,
             "' error opening file");
     }
 
-    std::uint64_t size = file_info.uncompressed_size;
+    const auto size = file_info.uncompressed_size;
     std::uint8_t* buffer = new std::uint8_t[size];
 
     if (unzReadCurrentFile(d_pimpl->d_zfile, buffer, size) < 0)

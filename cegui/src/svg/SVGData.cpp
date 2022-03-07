@@ -141,9 +141,8 @@ void SVGData::addShape(SVGBasicShape* svg_shape)
 //----------------------------------------------------------------------------//
 void SVGData::destroyShapes()
 {
-    const unsigned int shape_count = d_svgBasicShapes.size();
-    for (unsigned int i = 0; i < shape_count; ++i)
-        delete d_svgBasicShapes[i];
+    for (auto shape : d_svgBasicShapes)
+        delete shape;
 
     d_svgBasicShapes.clear();
 }

@@ -27,6 +27,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/ImageCodecModules/DevIL/ImageCodec.h"
+#include "CEGUI/DataContainer.h"
+#include "CEGUI/Texture.h"
 #include "CEGUI/Sizef.h"
 #include "CEGUI/Exceptions.h"
 #include <IL/il.h>
@@ -66,10 +68,10 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
 
     if (IL_FALSE != ilLoadL(IL_TYPE_UNKNOWN,
                             static_cast<const void*>(data.getDataPtr()),
-                            data.getSize()))
+                            static_cast<ILuint>(data.getSize())))
     {
-        const size_t width = ilGetInteger(IL_IMAGE_WIDTH);
-        const size_t height = ilGetInteger(IL_IMAGE_HEIGHT);
+        const ILuint width = ilGetInteger(IL_IMAGE_WIDTH);
+        const ILuint height = ilGetInteger(IL_IMAGE_HEIGHT);
 
         Texture::PixelFormat cefmt;
         std::uint8_t* pixel_data;
@@ -126,7 +128,7 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
         // create cegui texture
         try
         {
-            result->loadFromMemory(pixel_data, Sizef(width, height), cefmt);
+            result->loadFromMemory(pixel_data, Sizef(static_cast<float>(width), static_cast<float>(height)), cefmt);
         }
         catch (...)
         {

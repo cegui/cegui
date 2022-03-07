@@ -367,7 +367,7 @@ int GenericItemModel<TGenericItem>::getChildId(const GenericItem* item) const
     if (itor == parent_item->getChildren().end())
         return -1;
 
-    return std::distance(parent_item->getChildren().begin(), itor);
+    return static_cast<int>(std::distance(parent_item->getChildren().begin(), itor));
 }
 
 //----------------------------------------------------------------------------//

@@ -451,8 +451,8 @@ void FontsSample::changeFontSelectorFontSelection(const CEGUI::String& font)
 {
     d_fontSelector->clearSelections();
 
-    unsigned int itemCount = d_fontSelector->getItemCount();
-    for (unsigned int i = 0; i < itemCount; ++i)
+    const auto itemCount = d_fontSelector->getItemCount();
+    for (size_t i = 0; i < itemCount; ++i)
     {
         StandardItem* item = d_fontSelector->getItemAtIndex(i);
         String itemFontName = item->getText();

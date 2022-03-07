@@ -559,11 +559,11 @@ void RenderedTextParagraph::accumulateExtents(Rectf& extents) const
 //----------------------------------------------------------------------------//
 void RenderedTextParagraph::onElementWidthChanged(size_t elementIndex, float diff)
 {
-    const size_t glyphCount = d_glyphs.size();
-    size_t firstGlyphIndex = glyphCount;
+    const auto glyphCount = static_cast<uint32_t>(d_glyphs.size());
+    auto firstGlyphIndex = glyphCount;
 
     // Glyph advances must be updated in any case
-    for (size_t i = 0; i < glyphCount; ++i)
+    for (uint32_t i = 0; i < glyphCount; ++i)
     {
         if (elementIndex == d_glyphs[i].elementIndex)
         {
@@ -844,7 +844,7 @@ size_t RenderedTextParagraph::getTextIndex(size_t lineIndex, float offsetX, floa
     if (idx >= d_glyphs.size())
         return d_sourceEndIndex;
 
-    return d_glyphs[std::min(idx, d_lines[lineIndex].glyphEndIdx - 1)].sourceIndex;
+    return d_glyphs[std::min(static_cast<uint32_t>(idx), d_lines[lineIndex].glyphEndIdx - 1)].sourceIndex;
 }
 
 //----------------------------------------------------------------------------//

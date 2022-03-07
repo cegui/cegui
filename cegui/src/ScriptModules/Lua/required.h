@@ -90,11 +90,6 @@ void ceguiLua_Thumb_getVertRange(Thumb* wnd, float* min, float* max);
 *************************************************************************/
 ListboxTextItem* ceguiLua_createListboxTextItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete);
 
-/*************************************************************************
-Functions for creating tree items
-*************************************************************************/
-TreeItem* ceguiLua_createTreeItem(const String& text, unsigned int item_id, void* item_data, bool disabled, bool auto_delete);
-
 /************************************************************************
     Stuff needed to make the iterators work
 *************************************************************************/
@@ -104,8 +99,6 @@ typedef WindowManager::WindowIterator WindowIterator;
 typedef WindowFactoryManager::WindowFactoryIterator WindowFactoryIterator;
 typedef WindowFactoryManager::FalagardMappingIterator FalagardMappingIterator;
 typedef WindowFactoryManager::FalagardWindowMapping FalagardWindowMapping;
-typedef SchemeManager::SchemeIterator SchemeIterator;
-typedef FontManager::FontIterator FontIterator;
 typedef ImageManager::ImageIterator ImageIterator;
 typedef ImageManager::ImagePair ImagePair;
 
@@ -136,10 +129,10 @@ class ceguiLua_PropertyHelper
 {
 public:
     static float stringToFloat(const String& str);
-    static unsigned int stringToUint(const String& str);
+    static unsigned int stringToUint32(const String& str);
     static bool stringToBool(const String& str);
     static Sizef stringToSize(const String& str);
-    static Vector2f stringToVector2(const String& str);
+    static glm::vec2 stringToVector2(const String& str);
     static Rectf stringToRect(const String& str);
     static const Image* stringToImage(const String& str);
     static Colour stringToColour(const String& str);
@@ -151,10 +144,10 @@ public:
     static AspectMode stringToAspectMode(const String& str);
 
     static String floatToString(float val);
-    static String uintToString(unsigned int val);
+    static String uint32ToString(unsigned int val);
     static String boolToString(bool val);
     static String sizeToString(const Sizef& val);
-    static String vector2ToString(const Vector2f& val);
+    static String vector2ToString(const glm::vec2& val);
     static String rectToString(const Rectf& val);
     static String imageToString(const Image* val);
     static String colourToString(const Colour& val);
