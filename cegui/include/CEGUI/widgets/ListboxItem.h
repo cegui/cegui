@@ -315,7 +315,7 @@ public:
         - true if some action was taken.
         - false if no action was taken (i.e font is not used here).
     */
-    virtual bool handleFontRenderSizeChange(const Font* const font) { return false; }
+    virtual bool handleFontRenderSizeChange(const Font* const /*font*/) { return false; }
 
     /*************************************************************************
         Abstract portion of interface

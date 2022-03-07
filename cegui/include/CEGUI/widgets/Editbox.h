@@ -73,7 +73,7 @@ public:
     virtual float getTextOffsetX() const override { return d_textOffset.x; }
     virtual float getTextOffsetY() const override { return d_textOffset.y; }
     virtual void setTextOffsetX(float value) override;
-    virtual void setTextOffsetY(float value) override { /* Auto-calculated */ }
+    virtual void setTextOffsetY(float /*value*/) override { /* Auto-calculated */ }
 
     virtual void ensureCaretIsVisible() override;
 

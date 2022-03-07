@@ -3169,7 +3169,7 @@ protected:
         Returns true if the given WindowRenderer class name is valid for this window.
         False if not.
     */
-    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const { return true; }
+    virtual bool validateWindowRenderer(const WindowRenderer* /*renderer*/) const { return true; }
 
     /*!
     \brief

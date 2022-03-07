@@ -223,7 +223,7 @@ public:
     //! Returns an outline image for the given glyph and thickness.
     virtual Image* getOutline(uint32_t index, float thickness = 1.f) = 0;
     //! \brief Calculates and returns kerning between two glyphs (in pixels, not rounded)
-    virtual float getKerning(const FontGlyph* prev, const FontGlyph& curr) const { return 0.f; }
+    virtual float getKerning(const FontGlyph* /*prev*/, const FontGlyph& /*curr*/) const { return 0.f; }
 
 
     /*!
