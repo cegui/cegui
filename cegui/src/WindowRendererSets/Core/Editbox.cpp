@@ -190,15 +190,6 @@ void FalagardEditbox::createRenderGeometryForText(const Rectf& textArea)
 }
 
 //----------------------------------------------------------------------------//
-ColourRect FalagardEditbox::getOptionalColour(const String& propertyName) const
-{
-    ColourRect rect(0);
-    if (d_window->isPropertyPresent(propertyName))
-        rect = d_window->getProperty<ColourRect>(propertyName);
-    return rect;
-}
-
-//----------------------------------------------------------------------------//
 void FalagardEditbox::update(float elapsed)
 {
     WindowRenderer::update(elapsed);

@@ -89,20 +89,6 @@ public:
 
     FalagardEditbox(const String& type);
 
-    /*!
-    \brief
-        Set the given ColourRect to the colour(s) fetched from the named
-        property if it exists, else the default colour of black.
-
-    \param propertyName
-        String object holding the name of the property to be accessed if it
-        exists.
-
-    \param colour_rect
-        Reference to a ColourRect that will be set.
-    */
-    ColourRect getOptionalColour(const String& propertyName) const;
-
     //! return whether the blinking caret is enabled.
     bool isCaretBlinkEnabled() const { return d_blinkCaret; }
     //! return the caret blink timeout period (only used if blink is enabled).

@@ -240,18 +240,19 @@ bool WidgetsSample::handleRenderingEnded(const CEGUI::EventArgs&)
 
 bool WidgetsSample::handleRootWindowUpdate(const CEGUI::EventArgs& args)
 {
+    if (!d_currentlyDisplayedWidgetRoot)
+        return true;
+
     const CEGUI::UpdateEventArgs& updateArgs = static_cast<const CEGUI::UpdateEventArgs&>(args);
     float passedTime = updateArgs.d_timeSinceLastFrame;
 
-    if (d_currentlyDisplayedWidgetRoot == nullptr)
-        return true;
-
-    CEGUI::ProgressBar* progressBar = dynamic_cast<CEGUI::ProgressBar*>(d_currentlyDisplayedWidgetRoot);
-    if (progressBar != nullptr)
+    if (auto progressBar = dynamic_cast<CEGUI::ProgressBar*>(d_currentlyDisplayedWidgetRoot))
     {
-        float newProgress = progressBar->getProgress() + passedTime * 0.2f;
-        if (newProgress < 1.0f)
-            progressBar->setProgress(newProgress);
+        if (progressBar->getProgress() < 1.f)
+        {
+            const float newProgress = progressBar->getProgress() + passedTime * 0.2f;
+            progressBar->setProgress(std::min(newProgress, 1.f));
+        }
     }
 
     return true;

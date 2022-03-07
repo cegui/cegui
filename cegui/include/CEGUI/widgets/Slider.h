@@ -64,6 +64,8 @@ public:
         - +1 to indicate slider should be moved to a higher setting.
     */
     virtual float getAdjustDirectionFromPoint(const glm::vec2& pt) const = 0;
+
+    virtual bool isVertical() const { return false; }
 };
 
 /*!
@@ -194,6 +196,8 @@ public:
     */
     void setDiscrete(bool discrete);
 
+    bool isVertical() const;
+
     /*!
     \brief
         Return a pointer to the Thumb component widget for this Slider.
@@ -245,6 +249,7 @@ protected:
 	*************************************************************************/
     void onCursorPressHold(CursorInputEventArgs& e) override;
     void onScroll(CursorInputEventArgs& e) override;
+    void onSemanticInputEvent(SemanticEventArgs& e) override;
 
 	/*************************************************************************
 		Implementation Data

@@ -81,6 +81,9 @@
     <Image height="48" name="VertSliderBody" width="9" xPos="234" yPos="2" />
     <Image height="6" name="VertSliderThumbNormal" width="15" xPos="217" yPos="28" />
     <Image height="6" name="VertSliderThumbHover" width="15" xPos="217" yPos="36" />
+    <Image xPos="186" name="HorzSliderBody" height="9" yPos="112" width="48"/>
+    <Image xPos="238" name="HorzSliderThumbHover" height="15" yPos="109" width="6"/>
+    <Image xPos="247" name="HorzSliderThumbNormal" height="15" yPos="109" width="4"/>
     <Image height="4" name="MiniHorzScrollBarSegment" width="10" xPos="244" yPos="80" />
     <Image height="7" name="MiniHorzScrollThumbNormal" width="22" xPos="233" yPos="87" />
     <Image height="7" name="MiniHorzScrollThumbLeftNormal" width="5" xPos="233" yPos="87" />

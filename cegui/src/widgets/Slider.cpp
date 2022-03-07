@@ -162,6 +162,12 @@ void Slider::setDiscrete(bool discrete)
 }
 
 //----------------------------------------------------------------------------//
+bool Slider::isVertical() const
+{
+    return d_windowRenderer && static_cast<SliderWindowRenderer*>(d_windowRenderer)->isVertical();
+}
+
+//----------------------------------------------------------------------------//
 void Slider::onValueChanged(WindowEventArgs& e)
 {
 	fireEvent(EventValueChanged, e, EventNamespace);
@@ -227,6 +233,47 @@ void Slider::onScroll(CursorInputEventArgs& e)
     setCurrentValue(d_currentValue + d_stepSize * e.scroll);
     if (prevValue != d_currentValue)
         ++e.handled;
+}
+
+//----------------------------------------------------------------------------//
+void Slider::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    switch (e.d_semanticValue)
+    {
+        case SemanticValue::GoUp:
+            if (isVertical())
+            {
+                setCurrentValue(d_currentValue + d_stepSize);
+                ++e.handled;
+            }
+            break;
+
+        case SemanticValue::GoDown:
+            if (isVertical())
+            {
+                setCurrentValue(d_currentValue - d_stepSize);
+                ++e.handled;
+            }
+            break;
+
+        case SemanticValue::GoToPreviousCharacter:
+            if (!isVertical())
+            {
+                setCurrentValue(d_currentValue - d_stepSize);
+                ++e.handled;
+            }
+            break;
+
+        case SemanticValue::GoToNextCharacter:
+            if (!isVertical())
+            {
+                setCurrentValue(d_currentValue + d_stepSize);
+                ++e.handled;
+            }
+            break;
+    }
+
+    Window::onSemanticInputEvent(e);
 }
 
 //----------------------------------------------------------------------------//

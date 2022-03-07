@@ -61,6 +61,15 @@ namespace CEGUI
     public:
         static const String TypeName;       //!< type name for this widget.
 
+        //! Name of the optional property to access for the unselected text colour.
+        static const String UnselectedTextColourPropertyName;
+        //! Name of the optional property to access for the selected text colour.
+        static const String SelectedTextColourPropertyName;
+        //! Name of the optional property to access to obtain active selection rendering colour.
+        static const String ActiveSelectionColourPropertyName;
+        //! Name of the optional property to access to obtain inactive selection rendering colour.
+        static const String InactiveSelectionColourPropertyName;
+
         /*!
         \brief
             Constructor

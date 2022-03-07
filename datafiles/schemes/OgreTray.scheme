@@ -18,7 +18,7 @@
     <FalagardMapping windowType="OgreTray/ProgressBar"          targetType="CEGUI/ProgressBar"      renderer="Core/ProgressBar"         lookNFeel="OgreTray/ProgressBar" />
     <FalagardMapping windowType="OgreTray/Editbox"              targetType="CEGUI/Editbox"          renderer="Core/Editbox"             lookNFeel="OgreTray/Editbox" />
     <FalagardMapping windowType="OgreTray/MultiLineEditbox"     targetType="CEGUI/MultiLineEditbox" renderer="Core/MultiLineEditbox"    lookNFeel="OgreTray/MultiLineEditbox" />
-    <FalagardMapping windowType="OgreTray/ComboDropList"        targetType="CEGUI/ComboDropList"    renderer="Core/ListWidget"          lookNFeel="OgreTray/ListView" />
+    <FalagardMapping windowType="OgreTray/ComboDropList"        targetType="CEGUI/ComboDropList"    renderer="Core/ListView"          lookNFeel="OgreTray/ListView" />
     <FalagardMapping windowType="OgreTray/Combobox"             targetType="CEGUI/Combobox"         renderer="Core/Default"             lookNFeel="OgreTray/Combobox" />
     <FalagardMapping windowType="OgreTray/DropDownMenu"         targetType="CEGUI/Combobox"         renderer="Core/Default"             lookNFeel="OgreTray/DropDownMenu" />
     <FalagardMapping windowType="OgreTray/Group"                targetType="DefaultWindow"          renderer="Core/Default"             lookNFeel="OgreTray/Group" />

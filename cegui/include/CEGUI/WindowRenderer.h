@@ -30,6 +30,7 @@
 #define _CEGUIWindowRenderer_h_
 
 #include "CEGUI/String.h"
+#include "CEGUI/Colour.h"
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -103,6 +104,20 @@ public:
         Get the Look'N'Feel assigned to our window
     */
     const WidgetLookFeel& getLookNFeel() const;
+
+    /*!
+    \brief
+        Set the given ColourRect to the colour(s) fetched from the named
+        property if it exists, else the default colour of black.
+
+    \param propertyName
+        String object holding the name of the property to be accessed if it
+        exists.
+
+    \param colour_rect
+        Reference to a ColourRect that will be set.
+    */
+    ColourRect getOptionalColour(const String& propertyName, const Colour& defaultColour = 0x00000000) const;
 
     /*!
     \brief
