@@ -105,8 +105,10 @@
                 <Property name="Text" value="Volume:" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
             </Window>
-            <Window type="TaharezLook/HorizontalScrollbar" name="VolumeScrollbar" >
+            <Window type="TaharezLook/HorizontalSlider" name="VolumeSlider" >
                 <Property name="Area" value="{{0,130},{0,79},{1,-46},{0,95}}" />
+				<Property name="Discrete" value="false" />
+                <Property name="MaximumValue" value="10" />
                 <Property name="StepSize" value="0.1" />
             </Window>
             <Window type="TaharezLook/Checkbox" name="EnableSoundButton" >

@@ -60,6 +60,15 @@ const WidgetLookFeel& WindowRenderer::getLookNFeel() const
     return WidgetLookManager::getSingleton().getWidgetLook(d_window->getLookNFeel());
 }
 
+//----------------------------------------------------------------------------//
+ColourRect WindowRenderer::getOptionalColour(const String& propertyName, const Colour& defaultColour) const
+{
+    ColourRect rect(defaultColour);
+    if (d_window->isPropertyPresent(propertyName))
+        rect = d_window->getProperty<ColourRect>(propertyName);
+    return rect;
+}
+
 /************************************************************************
     Get unclipped inner rectangle.
 *************************************************************************/

@@ -63,7 +63,7 @@ public:
 
     FalagardSlider(const String& type);
 
-    bool isVertical() const { return d_vertical; }
+    bool isVertical() const override { return d_vertical; }
     void setVertical(bool setting) { d_vertical = setting; }
 
     bool isReversedDirection() const { return d_reversed; }

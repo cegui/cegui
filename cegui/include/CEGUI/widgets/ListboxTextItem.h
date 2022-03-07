@@ -68,7 +68,7 @@ public:
     \return
         ColourRect object describing the currently set colours
     */
-    ColourRect getTextColours() const {return d_textCols;}
+    const ColourRect& getTextColours() const { return d_textCols; }
 
     /*************************************************************************
         Manipulator methods

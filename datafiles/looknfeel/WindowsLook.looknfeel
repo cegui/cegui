@@ -1978,6 +1978,10 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/MultiColumnList">
+        <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="NormalTextColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="SelectedTextColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FF607FFF" type="ColourRect" name="ActiveSelectionColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -3488,24 +3492,10 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/SliderThumb">
-        <Property name="HorzFree" value="true"/>
+        <Property name="VertFree" value="true" />
         <Property name="CursorInputPropagationEnabled" value="true"/>
         <ImagerySection name="normal">
             <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge">
-                        <AbsoluteDim value="0"/>
-                    </Dim>
-                    <Dim type="TopEdge">
-                        <AbsoluteDim value="0"/>
-                    </Dim>
-                    <Dim type="Width">
-                        <UnifiedDim scale="1.0" type="Width"/>
-                    </Dim>
-                    <Dim type="Height">
-                        <UnifiedDim scale="1.0" type="Height"/>
-                    </Dim>
-                </Area>
                 <Image name="WindowsLook/SliderThumbNormal"/>
                 <VertFormat type="Stretched"/>
                 <HorzFormat type="Stretched"/>
@@ -3513,20 +3503,6 @@
         </ImagerySection>
         <ImagerySection name="hover">
             <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge">
-                        <AbsoluteDim value="0"/>
-                    </Dim>
-                    <Dim type="TopEdge">
-                        <AbsoluteDim value="0"/>
-                    </Dim>
-                    <Dim type="Width">
-                        <UnifiedDim scale="1.0" type="Width"/>
-                    </Dim>
-                    <Dim type="Height">
-                        <UnifiedDim scale="1.0" type="Height"/>
-                    </Dim>
-                </Area>
                 <Image name="WindowsLook/SliderThumbHover"/>
                 <VertFormat type="Stretched"/>
                 <HorzFormat type="Stretched"/>
@@ -3564,40 +3540,13 @@
         <Property name="VerticalSlider" value="true"/>
         <Property name="CursorAutoRepeatEnabled" value="true"/>
         <Property name="Size" value="{{0, 32}, {0, 256}}" />
-        <NamedArea name="ThumbTrackArea">
+        <NamedArea name="ThumbTrackArea" />
+        <Child type="WindowsLook/SliderThumb" nameSuffix="__auto_thumb__">
             <Area>
-                <Dim type="LeftEdge">
-                    <AbsoluteDim value="0"/>
-                </Dim>
-                <Dim type="TopEdge">
-                    <AbsoluteDim value="0"/>
-                </Dim>
-                <Dim type="RightEdge">
-                    <UnifiedDim scale="1.0" type="RightEdge"/>
-                </Dim>
-                <Dim type="BottomEdge">
-                    <UnifiedDim scale="1.0" type="BottomEdge"/>
-                </Dim>
+                <Dim type="Height" ><ImageDim name="WindowsLook/SliderThumbNormal" dimension="Height" /></Dim>
             </Area>
-        </NamedArea>
-        <Child nameSuffix="__auto_thumb__" type="WindowsLook/SliderThumb">
-            <Area>
-                <Dim type="LeftEdge">
-                    <AbsoluteDim value="0"/>
-                </Dim>
-                <Dim type="TopEdge">
-                    <AbsoluteDim value="0"/>
-                </Dim>
-                <Dim type="Width">
-                    <ImageDim name="WindowsLook/SliderThumbNormal" dimension="Width"/>
-                </Dim>
-                <Dim type="Height">
-                    <ImageDim name="WindowsLook/SliderThumbNormal" dimension="Height"/>
-                </Dim>
-            </Area>
-            <VertAlignment type="CentreAligned"/>
         </Child>
-        <ImagerySection name="track">
+        <ImagerySection name="main">
             <FrameComponent>
                 <Area>
                     <Dim type="LeftEdge">
@@ -3637,12 +3586,12 @@
         </ImagerySection>
         <StateImagery name="Enabled">
             <Layer>
-                <Section section="track"/>
+                <Section section="main"/>
             </Layer>
         </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
-                <Section section="track"/>
+                <Section section="main"/>
             </Layer>
         </StateImagery>
     </WidgetLook>

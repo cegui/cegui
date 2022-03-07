@@ -56,6 +56,7 @@ Added:
 - Any Window can be used as a tooltip
 - Slider discrete mode
 - Slider minimum value setting
+- Slider scrolling by Up/Down or Left/Right arrows
 - Spinner scrolling by wheel and Up/Down arrows
 - Spinner precision setting (number of decimal places)
 - Draw mode mask controls which windows are rendered at the current pass (WIP)
@@ -70,6 +71,8 @@ Added:
 - Ability to unsubscribe from an event inside its handler
 - WordWrap, ParagraphDir and ParagraphDirProperty tags added to falagard text component
 - New text formatting capabilities (underline, strikeout, background color etc) with respective tags. See LegacyTextParser.h for details.
+- MultiColumnList falagard properties NormalTextColour, SelectedTextColour, ActiveSelectionColour, InactiveSelectionColour
+- TaharezLook/HorizontalSlider widget
 
 Fixed:
 - Spinner buttons now start auto-repeating on the first mouse press
