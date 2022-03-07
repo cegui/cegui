@@ -1577,7 +1577,7 @@ void Window::setName(const String& name)
     if (d_name == name)
         return;
 
-    if (getParent()->isChild(name))
+    if (getParent() && getParent()->isChild(name))
     {
         throw AlreadyExistsException("Failed to rename "
             "Window at: " + getNamePath() + " as: " + name + ". A Window "
