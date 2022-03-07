@@ -29,6 +29,11 @@
 
 #include "CEGUI/RegexMatcher.h"
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 #if (__cplusplus >= 201103L) || (_MSC_VER >= 1600)
 #include <regex>
 #else
@@ -57,5 +62,9 @@ private:
 };
 
 }
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif
