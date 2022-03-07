@@ -333,18 +333,7 @@ void OgreRenderer::configureCeguiWindowForRTT(CEGUI::Window* window, const std::
     image->setTexture(&rendererTexture);
 
     //Flipping is necessary due to differences between renderers regarding top or bottom being the origin
-#ifdef CEGUI_USE_OGRE_TEXTURE_GPU 
-    bool isTextureTargetVerticallyFlipped = ogreTexture->requiresTextureFlipping();
-#else
-    bool isTextureTargetVerticallyFlipped = d_pimpl->d_renderSystem->_getViewport()->getTarget()->requiresTextureFlipping();
-#endif
-    CEGUI::Rectf imageArea;
-
-    if(isTextureTargetVerticallyFlipped)
-        imageArea = CEGUI::Rectf(0.0f, textureHeight, textureWidth, 0.0f);
-    else
-        imageArea = CEGUI::Rectf(0.0f, 0.0f, textureWidth, textureHeight);
-
+    CEGUI::Rectf imageArea = CEGUI::Rectf(0.0f, 0.0f, textureWidth, textureHeight);
     image->setImageArea(imageArea);
     image->setAutoScaled(CEGUI::AutoScaledMode::Disabled);
 
