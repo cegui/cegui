@@ -274,12 +274,16 @@ void TreeView::fillRenderingState(TreeViewItemRenderingState& item,
     item.d_text = d_itemModel->getData(index);
     item.d_icon = d_itemModel->getData(index, ItemDataRole::Icon);
 
-    item.d_renderedText.renderText(item.d_text, getTextParser(), getEffectiveFont(), DefaultParagraphDirection::LeftToRight);
-    item.d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::LeftAligned);
-    item.d_renderedText.setWordWrapEnabled(false);
-    item.d_renderedText.updateDynamicObjectExtents(this);
-    item.d_renderedText.updateFormatting(getPixelSize().d_width);
-    item.d_size = item.d_renderedText.getExtents();
+    // The root item is never rendered in a tree, so we don't waste time and also keep its extents empty
+    if (&item != &d_rootItemState)
+    {
+        item.d_renderedText.renderText(item.d_text, getTextParser(), getEffectiveFont(), DefaultParagraphDirection::LeftToRight);
+        item.d_renderedText.setHorizontalFormatting(HorizontalTextFormatting::LeftAligned);
+        item.d_renderedText.setWordWrapEnabled(false);
+        item.d_renderedText.updateDynamicObjectExtents(this);
+        item.d_renderedText.updateFormatting(getPixelSize().d_width);
+        item.d_size = item.d_renderedText.getExtents();
+    }
 
     const float indent = getViewRenderer()->getSubtreeExpanderXIndent(item.d_nestedLevel) +
         getViewRenderer()->getSubtreeExpanderSize().d_width;
