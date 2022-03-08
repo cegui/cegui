@@ -53,9 +53,9 @@ MATH( EXPR CEGUI_SOVERSION ${CEGUI_ABI_CURRENT}-${CEGUI_ABI_AGE} )
 set( CEGUI_ABI_VERSION ${CEGUI_SOVERSION}.${CEGUI_ABI_AGE}.${CEGUI_ABI_REVISION} )
 
 if (CMAKE_SIZEOF_VOID_P EQUAL 4)
-	set(CEGUI_ARCH_SUFFIX x86)
+    set(CEGUI_ARCH_SUFFIX x86)
 else()
-	set(CEGUI_ARCH_SUFFIX x64)
+    set(CEGUI_ARCH_SUFFIX x64)
 endif()
 
 ################################################################################
@@ -780,11 +780,13 @@ endif()
 ################################################################################
 # Copy dependency binaries to the target bin folder
 ################################################################################
-set(DEPS_BIN_PATH "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/bin/${CEGUI_ARCH_SUFFIX}")
-file(GLOB DEPS_BIN_FILES LIST_DIRECTORIES false RELATIVE "${DEPS_BIN_PATH}" "${DEPS_BIN_PATH}/*")
-foreach(_FILE_NAME ${DEPS_BIN_FILES})
-	configure_file("${DEPS_BIN_PATH}/${_FILE_NAME}" "${CMAKE_BINARY_DIR}/bin/${_FILE_NAME}" COPYONLY)
-endforeach() 
+if (CEGUI_SAMPLES_ENABLED OR CEGUI_BUILD_APPLICATION_TEMPLATES)
+    set(DEPS_BIN_PATH "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/bin/${CEGUI_ARCH_SUFFIX}")
+    file(GLOB DEPS_BIN_FILES LIST_DIRECTORIES false RELATIVE "${DEPS_BIN_PATH}" "${DEPS_BIN_PATH}/*")
+    foreach(_FILE_NAME ${DEPS_BIN_FILES})
+        configure_file("${DEPS_BIN_PATH}/${_FILE_NAME}" "${CMAKE_BINARY_DIR}/bin/${_FILE_NAME}" COPYONLY)
+    endforeach()
+endif()
 
 ################################################################################
 # Perhaps install pkg-config ("*.pc") files.
