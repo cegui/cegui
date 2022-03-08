@@ -4,8 +4,8 @@
 include(FindPackageHandleStandardArgs)
 
 find_path(ZZIP_H_PATH NAMES zzip.h)
-find_library(ZZIP_LIB NAMES zzip libzzip PATH_SUFFIXES dynamic)
-find_library(ZZIP_LIB_DBG NAMES zzipd libzzipd zzip_d libzzip_d PATH_SUFFIXES dynamic)
+find_library(ZZIP_LIB NAMES zzip libzzip PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
+find_library(ZZIP_LIB_DBG NAMES zzipd libzzipd zzip_d libzzip_d PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
 mark_as_advanced(ZZIP_H_PATH ZZIP_LIB ZZIP_LIB_DBG)
 
 if (ZZIP_H_PATH AND ZZIP_LIB)

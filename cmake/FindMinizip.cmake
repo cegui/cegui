@@ -4,13 +4,13 @@
 include(FindPackageHandleStandardArgs)
 
 find_path(MINIZIP_H_PATH NAMES minizip/unzip.h)
-find_library(MINIZIP_LIB NAMES minizip PATH_SUFFIXES dynamic)
-find_library(MINIZIP_LIB_DBG NAMES minizip_d minizipd PATH_SUFFIXES dynamic)
+find_library(MINIZIP_LIB NAMES minizip PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
+find_library(MINIZIP_LIB_DBG NAMES minizip_d minizipd PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
 mark_as_advanced(MINIZIP_H_PATH MINIZIP_LIB MINIZIP_LIB_DBG)
 
 if (WIN32 OR APPLE)
-    find_library(MINIZIP_LIB_STATIC NAMES minizip PATH_SUFFIXES static)
-    find_library(MINIZIP_LIB_STATIC_DBG NAMES minizip_d minizipd PATH_SUFFIXES static)
+    find_library(MINIZIP_LIB_STATIC NAMES minizip PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
+    find_library(MINIZIP_LIB_STATIC_DBG NAMES minizip_d minizipd PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
     mark_as_advanced(MINIZIP_LIB_STATIC MINIZIP_LIB_STATIC_DBG)
 endif()
 

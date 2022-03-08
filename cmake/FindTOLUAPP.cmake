@@ -4,13 +4,13 @@
 include(FindPackageHandleStandardArgs)
 
 find_path(TOLUAPP_H_PATH NAMES tolua++.h)
-find_library(TOLUAPP_LIB NAMES tolua++-5.1 tolua++5.1 toluapp-5.1 tolua++ toluapp PATH_SUFFIXES dynamic)
-find_library(TOLUAPP_LIB_DBG NAMES tolua++-5.1_d tolua++5.1_d toluapp-5.1_d tolua++_d toluapp_d PATH_SUFFIXES dynamic)
+find_library(TOLUAPP_LIB NAMES tolua++-5.1 tolua++5.1 toluapp-5.1 tolua++ toluapp PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
+find_library(TOLUAPP_LIB_DBG NAMES tolua++-5.1_d tolua++5.1_d toluapp-5.1_d tolua++_d toluapp_d PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
 mark_as_advanced(TOLUAPP_H_PATH TOLUAPP_LIB TOLUAPP_LIB_DBG)
 
 if (WIN32 OR APPLE)
-    find_library(TOLUAPP_LIB_STATIC NAMES tolua++5.1 tolua++ toluapp PATH_SUFFIXES static)
-    find_library(TOLUAPP_LIB_STATIC_DBG NAMES tolua++5.1_d tolua++_d toluapp_d PATH_SUFFIXES static)
+    find_library(TOLUAPP_LIB_STATIC NAMES tolua++5.1 tolua++ toluapp PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
+    find_library(TOLUAPP_LIB_STATIC_DBG NAMES tolua++5.1_d tolua++_d toluapp_d PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
     mark_as_advanced(TOLUAPP_LIB_STATIC TOLUAPP_LIB_STATIC_DBG)
 endif()
 

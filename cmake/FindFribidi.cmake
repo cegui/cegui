@@ -4,13 +4,13 @@
 include(FindPackageHandleStandardArgs)
 
 find_path(FRIBIDI_H_PATH NAMES fribidi.h PATH_SUFFIXES fribidi)
-find_library(FRIBIDI_LIB NAMES fribidi PATH_SUFFIXES dynamic)
-find_library(FRIBIDI_LIB_DBG NAMES fribidi_d PATH_SUFFIXES dynamic)
+find_library(FRIBIDI_LIB NAMES fribidi PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
+find_library(FRIBIDI_LIB_DBG NAMES fribidi_d PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
 mark_as_advanced(FRIBIDI_H_PATH FRIBIDI_LIB FRIBIDI_LIB_DBG)
 
 if (WIN32 OR APPLE)
-    find_library(FRIBIDI_LIB_STATIC NAMES fribidi PATH_SUFFIXES static)
-    find_library(FRIBIDI_LIB_STATIC_DBG NAMES fribidi_d PATH_SUFFIXES static)
+    find_library(FRIBIDI_LIB_STATIC NAMES fribidi PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
+    find_library(FRIBIDI_LIB_STATIC_DBG NAMES fribidi_d PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
     mark_as_advanced(FRIBIDI_LIB_STATIC FRIBIDI_LIB_STATIC_DBG)
 endif()
 

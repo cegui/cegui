@@ -45,31 +45,29 @@ namespace tinyxml2
     class XMLElement;
 }
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-    /*!
-    \brief
-    Implementation of XMLParser using TinyXML2
-     */
-    class CEGUITINYXML2PARSER_API TinyXML2Parser : public XMLParser
-    {
-    public:
-        TinyXML2Parser(void);
-        ~TinyXML2Parser(void);
 
-        // Implementation of public abstract interface
-        void parseXML(XMLHandler& handler, const RawDataContainer& filename, const String& schemaName, bool allowXmlValidation) override;
+/*!
+\brief
+Implementation of XMLParser using TinyXML2
+    */
+class CEGUITINYXML2PARSER_API TinyXML2Parser : public XMLParser
+{
+public:
 
-    protected:
-        // Implementation of abstract interface.
-        bool initialiseImpl(void) override;
-        void cleanupImpl(void) override;
+    TinyXML2Parser();
+
+    void parseXML(XMLHandler& handler, const RawDataContainer& filename, const String& schemaName, bool allowXmlValidation) override;
+
+protected:
+
+    bool initialiseImpl() override;
+    void cleanupImpl() override;
  
-        static void processElement(XMLHandler& handler, const tinyxml2::XMLElement* element);
-   };
+    static void processElement(XMLHandler& handler, const tinyxml2::XMLElement* element);
+};
 
-} // End of  CEGUI namespace section
+}
 
-
-#endif  // end of guard _CEGUITinyXML2Parser_h_
+#endif

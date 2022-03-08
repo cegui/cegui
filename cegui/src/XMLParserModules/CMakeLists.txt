@@ -10,10 +10,6 @@ if (CEGUI_BUILD_XMLPARSER_LIBXML2)
     add_subdirectory(Libxml2)
 endif()
 
-if (CEGUI_BUILD_XMLPARSER_TINYXML)
-    add_subdirectory(TinyXML)
-endif()
-
 if (CEGUI_BUILD_XMLPARSER_TINYXML2)
     add_subdirectory(TinyXML2)
 endif()

@@ -4,13 +4,13 @@
 include(FindPackageHandleStandardArgs)
 
 find_path(EXPAT_H_PATH NAMES expat.h)
-find_library(EXPAT_LIB NAMES expat libexpat PATH_SUFFIXES dynamic)
-find_library(EXPAT_LIB_DBG NAMES expat_d libexpat_d PATH_SUFFIXES dynamic)
+find_library(EXPAT_LIB NAMES expat libexpat PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
+find_library(EXPAT_LIB_DBG NAMES expat_d libexpat_d PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
 mark_as_advanced(EXPAT_H_PATH EXPAT_LIB EXPAT_LIB_DBG)
 
 if (WIN32 OR APPLE)
-    find_library(EXPAT_LIB_STATIC NAMES expat libexpat PATH_SUFFIXES static)
-    find_library(EXPAT_LIB_STATIC_DBG NAMES expat_d libexpat_d PATH_SUFFIXES static)
+    find_library(EXPAT_LIB_STATIC NAMES expat libexpat PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
+    find_library(EXPAT_LIB_STATIC_DBG NAMES expat_d libexpat_d PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
     set( EXPAT_DEFINITIONS "XML_STATIC" CACHE STRING "preprocessor definitions" )
     mark_as_advanced(EXPAT_DEFINITIONS EXPAT_LIB_STATIC EXPAT_LIB_STATIC_DBG)
 endif()

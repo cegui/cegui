@@ -1,14 +1,16 @@
 ################################################################################
 # Custom cmake module for CEGUI to find tinyxml2
 ################################################################################
-find_path(TINYXML2_H_PATH NAMES tinyxml2.h)
-find_library(TINYXML2_LIB NAMES tinyxml2 libtinyxml2 PATH_SUFFIXES dynamic)
-find_library(TINYXML2_LIB_DBG NAMES tinyxml2_d libtinyxml2_d PATH_SUFFIXES dynamic)
+include(FindPackageHandleStandardArgs)
+
+find_path(TINYXML2_H_PATH NAMES tinyxml2.h PATH_SUFFIXES tinyxml2)
+find_library(TINYXML2_LIB NAMES tinyxml2 PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
+find_library(TINYXML2_LIB_DBG NAMES tinyxml2_d PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
 mark_as_advanced(TINYXML2_H_PATH TINYXML2_LIB TINYXML2_LIB_DBG)
 
 if (WIN32 OR APPLE)
-    find_library(TINYXML2_LIB_STATIC NAMES tinyxml2 libtinyxml2 PATH_SUFFIXES static)
-    find_library(TINYXML2_LIB_STATIC_DBG NAMES tinyxml2_d libtinyxml2_d PATH_SUFFIXES static)
+    find_library(TINYXML2_LIB_STATIC NAMES tinyxml2 PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
+    find_library(TINYXML2_LIB_STATIC_DBG NAMES tinyxml2_d PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
     mark_as_advanced(TINYXML2_LIB_STATIC TINYXML2_LIB_STATIC_DBG)
 endif()
 

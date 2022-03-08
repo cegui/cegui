@@ -4,8 +4,8 @@
 include(FindPackageHandleStandardArgs)
 
 find_path(GLFW_H_PATH NAMES GL/glfw.h glfw.h)
-find_library(GLFW_LIB NAMES glfw PATH_SUFFIXES dynamic)
-find_library(GLFW_LIB_DBG NAMES glfw_d PATH_SUFFIXES dynamic)
+find_library(GLFW_LIB NAMES glfw PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
+find_library(GLFW_LIB_DBG NAMES glfw_d PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
 mark_as_advanced(GLFW_H_PATH GLFW_LIB GLFW_LIB_DBG)
 
 if (WIN32)
@@ -14,8 +14,8 @@ if (WIN32)
 endif()
 
 if (WIN32 OR APPLE)
-    find_library(GLFW_LIB_STATIC NAMES glfw PATH_SUFFIXES static)
-    find_library(GLFW_LIB_STATIC_DBG NAMES glfw_d PATH_SUFFIXES static)
+    find_library(GLFW_LIB_STATIC NAMES glfw PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
+    find_library(GLFW_LIB_STATIC_DBG NAMES glfw_d PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
     mark_as_advanced(GLFW_LIB_STATIC GLFW_LIB_STATIC_DBG)
 endif()
 

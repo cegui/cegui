@@ -4,13 +4,13 @@
 include(FindPackageHandleStandardArgs)
 
 find_path(HARFBUZZ_H_PATH NAMES hb.h PATH_SUFFIXES harfbuzz)
-find_library(HARFBUZZ_LIB NAMES harfbuzz PATH_SUFFIXES dynamic)
-find_library(HARFBUZZ_LIB_DBG NAMES harfbuzz_d PATH_SUFFIXES dynamic)
+find_library(HARFBUZZ_LIB NAMES harfbuzz PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
+find_library(HARFBUZZ_LIB_DBG NAMES harfbuzz_d PATH_SUFFIXES dynamic/${CEGUI_ARCH_SUFFIX})
 mark_as_advanced(HARFBUZZ_H_PATH HARFBUZZ_LIB HARFBUZZ_LIB_DBG)
 
 if (WIN32 OR APPLE)
-    find_library(HARFBUZZ_LIB_STATIC NAMES harfbuzz PATH_SUFFIXES static)
-    find_library(HARFBUZZ_LIB_DBG_STATIC NAMES harfbuzz_d PATH_SUFFIXES static)
+    find_library(HARFBUZZ_LIB_STATIC NAMES harfbuzz PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
+    find_library(HARFBUZZ_LIB_DBG_STATIC NAMES harfbuzz_d PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
     mark_as_advanced(HARFBUZZ_LIB_STATIC HARFBUZZ_LIB_DBG_STATIC)
 endif ()
 

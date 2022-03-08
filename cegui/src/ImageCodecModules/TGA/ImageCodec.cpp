@@ -28,6 +28,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/ImageCodecModules/TGA/ImageCodec.h"
+#include "CEGUI/DataContainer.h"
+#include "CEGUI/Texture.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Sizef.h"
 #	define TGA_RGB		 2		// This tells us it's a normal RGB (really BGR) file
@@ -47,7 +49,7 @@ TGAImageCodec::~TGAImageCodec()
 
 Texture* TGAImageCodec::load(const RawDataContainer& data, Texture* result)
 {
-    Logger::getSingleton().logEvent("TGAImageCodec::load()", Informative);
+    Logger::getSingleton().logEvent("TGAImageCodec::load()", LoggingLevel::Informative);
     ImageTGA* img = loadTGA(data.getDataPtr(), data.getSize());
     if (img == 0)
     {

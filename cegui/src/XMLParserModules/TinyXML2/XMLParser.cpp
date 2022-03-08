@@ -30,19 +30,13 @@
 #include "CEGUI/DataContainer.h"
 #include "CEGUI/XMLHandler.h"
 #include "CEGUI/XMLAttributes.h"
-#include <tinyxml2.h>
+#include <tinyxml2/tinyxml2.h>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-    TinyXML2Parser::TinyXML2Parser(void)
+    TinyXML2Parser::TinyXML2Parser()
     {
-        // set ID string
         d_identifierString = "CEGUI::TinyXML2Parser - Official TinyXML2 based parser module for CEGUI";
-    }
-
-    TinyXML2Parser::~TinyXML2Parser(void)
-    {
     }
 
     void TinyXML2Parser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& /*schemaName*/, bool /*allowXmlValidation*/)
@@ -99,12 +93,12 @@ namespace CEGUI
         handler.elementEnd(element->Value());
     }
     
-    bool TinyXML2Parser::initialiseImpl(void)
+    bool TinyXML2Parser::initialiseImpl()
     {
         return true;
     }
 
-    void TinyXML2Parser::cleanupImpl(void)
+    void TinyXML2Parser::cleanupImpl()
     {
     }
 
