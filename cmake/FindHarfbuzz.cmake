@@ -10,8 +10,8 @@ mark_as_advanced(HARFBUZZ_H_PATH HARFBUZZ_LIB HARFBUZZ_LIB_DBG)
 
 if (WIN32 OR APPLE)
     find_library(HARFBUZZ_LIB_STATIC NAMES harfbuzz PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
-    find_library(HARFBUZZ_LIB_DBG_STATIC NAMES harfbuzz_d PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
-    mark_as_advanced(HARFBUZZ_LIB_STATIC HARFBUZZ_LIB_DBG_STATIC)
+    find_library(HARFBUZZ_LIB_STATIC_DBG NAMES harfbuzz_d PATH_SUFFIXES static/${CEGUI_ARCH_SUFFIX})
+    mark_as_advanced(HARFBUZZ_LIB_STATIC HARFBUZZ_LIB_STATIC_DBG)
 endif ()
 
 cegui_find_package_handle_standard_args(Harfbuzz HARFBUZZ_LIB HARFBUZZ_H_PATH)
