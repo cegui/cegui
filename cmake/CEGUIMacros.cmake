@@ -58,9 +58,7 @@ macro (cegui_target_link_libraries _TARGET_NAME)
             if (${_LIB} STREQUAL optimized OR ${_LIB} STREQUAL debug OR ${_LIB} STREQUAL general)
                 set (_BUILD ${_LIB})
             else()
-                get_target_property(_LIB_IS_IN_PROJECT ${_LIB}_Static TYPE)
-
-                if (_LIB_IS_IN_PROJECT)
+                if (TARGET ${_LIB}_Static)
                     target_link_libraries(${_TARGET_NAME}_Static ${_BUILD} ${_LIB}_Static)
                 else()
                     target_link_libraries(${_TARGET_NAME}_Static ${_BUILD} ${_LIB})
@@ -211,7 +209,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
         add_library(${_LIB_NAME}_Static STATIC ${${_SOURCE_FILES_VAR}} ${${_HEADER_FILES_VAR}})
         target_compile_definitions(${_LIB_NAME}_Static PUBLIC
             CEGUI_STATIC
-            $<${CEGUI_BUILD_STATIC_FACTORY_MODULE}:CEGUI_BUILD_STATIC_FACTORY_MODULE>)
+            $<$<BOOL:${CEGUI_BUILD_STATIC_FACTORY_MODULE}>:CEGUI_BUILD_STATIC_FACTORY_MODULE>)
         set_target_properties(${_LIB_NAME}_Static PROPERTIES
             C_STANDARD 11
             C_STANDARD_REQUIRED ON
