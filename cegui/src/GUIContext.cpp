@@ -176,8 +176,12 @@ bool GUIContext::isWindowActive(const Window* window) const
 void GUIContext::setModalWindow(Window* window)
 {
     // TODO: need stack to show one modal dialog inside of another?
-    if (!d_modalWindow || setActiveWindow(d_modalWindow, true))
-        d_modalWindow = window;
+    if (!d_modalWindow)
+    {
+        setActiveWindow(d_modalWindow, true);
+        if (d_activeWindow == window)
+            d_modalWindow = window;
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -351,8 +355,13 @@ void GUIContext::onWindowDetached(Window* window)
             d_tooltips.erase(itTooltip);
     }
 
+    // Try to pass focus to the parent. Clear focus if failed.
     if (window == d_activeWindow)
+    {
         setActiveWindow(window->getParent(), false);
+        if (window == d_activeWindow)
+            setActiveWindow(nullptr, false);
+    }
 
     if (window == d_windowContainingCursor)
     {
