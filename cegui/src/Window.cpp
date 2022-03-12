@@ -546,7 +546,7 @@ Rectf Window::getHitTestRect_impl() const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isHit(const glm::vec2& position, const bool allow_disabled) const
+bool Window::isHit(const glm::vec2& position, bool allow_disabled) const
 {
     // cannot be hit if we are disabled.
     if (!allow_disabled && isEffectiveDisabled())
@@ -594,7 +594,7 @@ Window* Window::getChildAtPosition(const glm::vec2& position,
 
 //----------------------------------------------------------------------------//
 Window* Window::getTargetChildAtPosition(const glm::vec2& position,
-                                         const bool allow_disabled,
+                                         bool allow_disabled,
                                          const Window* const exclude) const
 {
     return getChildAtPosition(position, &Window::isHitTargetWindow, allow_disabled, exclude);
@@ -1201,7 +1201,7 @@ void Window::setInheritsAlpha(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::invalidate(const bool recursive)
+void Window::invalidate(bool recursive)
 {
     invalidate_impl(recursive);
 
@@ -1210,7 +1210,7 @@ void Window::invalidate(const bool recursive)
 }
 
 //----------------------------------------------------------------------------//
-void Window::invalidate_impl(const bool recursive)
+void Window::invalidate_impl(bool recursive)
 {
     d_needsRedraw = true;
 
@@ -1273,7 +1273,6 @@ void Window::bufferGeometry(const RenderingContext&, std::uint32_t /*drawModeMas
         return;
 
     // dispose of already cached geometry.
-    // TODO: reuse buffers instead of destroying?
     for (auto buffer : d_geometryBuffers)
         System::getSingleton().getRenderer()->destroyGeometryBuffer(*buffer);
     d_geometryBuffers.clear();
@@ -1288,7 +1287,7 @@ void Window::bufferGeometry(const RenderingContext&, std::uint32_t /*drawModeMas
     else
         populateGeometryBuffer();
 
-    // NB: this is important to do this after rendering to buffers but before setting them up
+    // NB: it is important to do this after rendering to buffers but before setting them up
     d_needsRedraw = false;
 
     // Setup newly created geometry with our settings
@@ -1821,25 +1820,6 @@ void Window::removeWindowFromDrawList(const Window& wnd)
         // remove the window if it was found in the draw list
         if (position != d_drawList.end())
             d_drawList.erase(position);
-    }
-}
-
-//----------------------------------------------------------------------------//
-void Window::onMoved(ElementEventArgs& e)
-{
-    Element::onMoved(e);
-
-    // Handle invalidation of surfaces and trigger needed redraws
-    if (d_parent)
-    {
-        if (auto rs = getParent()->getTargetRenderingSurface())
-        {
-            rs->invalidate();
-
-            // Need to redraw some geometry if parent uses a caching surface
-            if (d_guiContext && rs->isRenderingWindow())
-                d_guiContext->markAsDirty();
-        }
     }
 }
 
@@ -3093,6 +3073,16 @@ void Window::updateGeometryTransformAndClipping()
         clippingRegion = getOuterRectClipper();
         if (!clippingRegion.empty())
             clippingRegion.offset(-ctx.offset);
+
+        // Need to redraw the target surface if geometry offset or clipping changed
+        const GeometryBuffer* anyBuffer = d_geometryBuffers.front();
+        if (ctx.surface && ctx.surface->isRenderingWindow() &&
+            (translation != anyBuffer->getTranslation() || clippingRegion != anyBuffer->getClippingRegion()))
+        {
+            ctx.surface->invalidate();
+            if (d_guiContext)
+                d_guiContext->markAsDirty();
+        }
     }
 
     for (CEGUI::GeometryBuffer* currentBuffer : d_geometryBuffers)

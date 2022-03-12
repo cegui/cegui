@@ -989,7 +989,7 @@ public:
         - false if \a position does not hit this window.
     */
     virtual bool isHit(const glm::vec2& position,
-                       const bool allow_disabled = false) const;
+                       bool allow_disabled = false) const;
 
     /*!
     \brief
@@ -1026,7 +1026,7 @@ public:
         \a position, or 0 if no child of this window was hit.
     */
     Window* getTargetChildAtPosition(const glm::vec2& position,
-                                     const bool allow_disabled = false,
+                                     bool allow_disabled = false,
                                      const Window* const exclude = nullptr) const;
 
     /*!
@@ -1959,7 +1959,7 @@ public:
         - true will cause all child content to be invalidated also.
         - false will just invalidate this single window.
     */
-    void invalidate(const bool recursive = false);
+    void invalidate(bool recursive = false);
 
     /*!
     \brief
@@ -2643,17 +2643,6 @@ protected:
     //! \copydoc Element::handleAreaChanges
     virtual uint8_t handleAreaChanges(bool movedOnScreen, bool movedInParent, bool sized) override;
 
-    /*!
-    \brief
-        Handler called when the window's position changes.
-
-    \param e
-        WindowEventArgs object whose 'window' pointer field is set to the window
-        that triggered the event.  For this event the trigger window is always
-        'this'.
-    */
-    void onMoved(ElementEventArgs& e) override;
-
     void onRotated(ElementEventArgs& e) override;
 
     /*!
@@ -3243,7 +3232,7 @@ protected:
     void transferChildSurfaces();
 
     //! helper function to invalidate window and optionally child windows.
-    void invalidate_impl(const bool recursive);
+    void invalidate_impl(bool recursive);
 
     Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const override;
     //! Default implementation of function to return Window outer clipper area.

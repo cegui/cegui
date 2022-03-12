@@ -182,7 +182,7 @@ void Element::notifyScreenAreaChanged(bool adjust_size_to_content)
         }
         else if (flags)
         {
-            // Lightweight code path for non-resized widgets
+            // Lightweight code path for not resized widgets
             const bool client = flags & (ClientMoved | ClientClippingChanged);
             const bool nonClient = flags & (NonClientMoved | NonClientClippingChanged);
             const bool clientMoved = flags & ClientMoved;

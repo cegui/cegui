@@ -111,6 +111,9 @@ public:
     */
     virtual void setTranslation(const glm::vec3& translation);
 
+    //! \brief Returns a translation set for this buffer with a call to setTranslation.
+    const glm::vec3& getTranslation() const { return d_translation; }
+
     /*!
     \brief
         Set the rotations to be applied to the geometry in the buffer when it is

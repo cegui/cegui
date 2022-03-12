@@ -90,11 +90,8 @@ void RenderingSurface::clearGeometry()
 void RenderingSurface::draw(std::uint32_t drawMode)
 {
     d_target->activate();
-    Renderer& owner = d_target->getOwner();
-    owner.uploadBuffers(*this);
-
+    d_target->getOwner().uploadBuffers(*this);
     drawContent(drawMode);
-
     d_target->deactivate();
 }
 
