@@ -1213,7 +1213,9 @@ void Window::invalidate(const bool recursive)
 void Window::invalidate_impl(const bool recursive)
 {
     d_needsRedraw = true;
-    invalidateRenderingSurface();
+
+    if (auto rs = getTargetRenderingSurface())
+        rs->invalidate();
 
     WindowEventArgs args(this);
     onInvalidated(args);
@@ -1827,16 +1829,15 @@ void Window::onMoved(ElementEventArgs& e)
 {
     Element::onMoved(e);
 
-    // handle invalidation of surfaces and trigger needed redraws
+    // Handle invalidation of surfaces and trigger needed redraws
     if (d_parent)
     {
-        getParent()->invalidateRenderingSurface();
-
-        // need to redraw some geometry if parent uses a caching surface
-        if (d_guiContext)
+        if (auto rs = getParent()->getTargetRenderingSurface())
         {
-            auto rs = getParent()->getTargetRenderingSurface();
-            if (rs && rs->isRenderingWindow())
+            rs->invalidate();
+
+            // Need to redraw some geometry if parent uses a caching surface
+            if (d_guiContext && rs->isRenderingWindow())
                 d_guiContext->markAsDirty();
         }
     }
@@ -1909,7 +1910,8 @@ void Window::onAlphaChanged(WindowEventArgs& e)
     }
 
     updateGeometryAlpha();
-    invalidateRenderingSurface();
+    if (auto rs = getTargetRenderingSurface())
+        rs->invalidate();
     if (d_guiContext)
         d_guiContext->markAsDirty();
 
@@ -2757,25 +2759,6 @@ void Window::setRenderingSurface(RenderingSurface* surface)
         transferChildSurfaces();
         notifyScreenAreaChanged(); //???or only update geometry if size not changed?
     }
-}
-
-//----------------------------------------------------------------------------//
-void Window::invalidateRenderingSurface()
-{
-    const Window* curr = this;
-    do
-    {
-        // invalidate our surface chain if we have one
-        if (curr->d_surface)
-        {
-            curr->d_surface->invalidate();
-            break;;
-        }
-
-        // else look through the hierarchy for a surface chain to invalidate.
-        curr = curr->getParent();
-    }
-    while (curr);
 }
 
 //----------------------------------------------------------------------------//

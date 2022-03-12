@@ -2326,14 +2326,6 @@ public:
 
     /*!
     \brief
-        Invalidate the chain of rendering surfaces from this window backwards to
-        ensure they get properly redrawn - but doing the minimum amount of work
-        possibe - next render.
-    */
-    void invalidateRenderingSurface();
-
-    /*!
-    \brief
         Sets whether \e automatic use of an imagery caching RenderingSurface
         (i.e. a RenderingWindow) is enabled for this window.  The reason we
         emphasise 'atutomatic' is because the client may manually set a

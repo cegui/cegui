@@ -44,7 +44,7 @@ private:
     CEGUI::Window*      d_root;
     CEGUI::Window*      d_logWidget1;
     CEGUI::Window*      d_logWidget2;
-    CEGUI::ListWidget*  d_classesList;;
+    CEGUI::ListWidget*  d_classesList;
 
     MatrixNavigator*    d_matrixWindowNavigator;
     LinearNavigator*    d_linearWindowNavigator;
