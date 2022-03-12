@@ -47,8 +47,6 @@ public:
 
     // Overrides of virtual and abstract methods from GeometryBuffer
     void draw(std::uint32_t drawModeMask = DrawModeMaskAll) const override;
-    void appendGeometry(const float* vertex_data, std::size_t array_size) override;
-    void reset() override;
 
     // Implementation/overrides of member functions inherited from OpenGLGeometryBufferBase
     void finaliseVertexAttributes() const override;
@@ -56,10 +54,11 @@ public:
     std::size_t d_verticesVBOPosition = 0;
 
 protected:
+
     void initialiseVertexBuffers();
     void deinitialiseOpenGLBuffers();
     //! Update the OpenGL buffer objects containing the vertex data.
-    void updateOpenGLBuffers();
+    void onGeometryChanged() override;
     //! Draws the vertex data depending on the fill rule that was set for this object.
     void drawDependingOnFillRule() const;
 

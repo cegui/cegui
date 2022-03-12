@@ -35,8 +35,6 @@
 
 namespace CEGUI
 {
-constexpr size_t COLORED_VERTEX_FLOAT_COUNT = sizeof(ColouredVertex) / sizeof(float);
-constexpr size_t TEXTURED_VERTEX_FLOAT_COUNT = sizeof(TexturedColouredVertex) / sizeof(float);
 
 //---------------------------------------------------------------------------//
 GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial):
@@ -58,7 +56,6 @@ void GeometryBuffer::clear()
 {
     reset();
 
-    d_vertexData.clear();
     d_vertexCount = 0;
     d_postStencilVertexCount = 0;
 
@@ -82,38 +79,11 @@ void GeometryBuffer::clear()
 }
 
 //---------------------------------------------------------------------------//
-void GeometryBuffer::appendGeometry(const std::vector<ColouredVertex>& coloured_vertices)
+void GeometryBuffer::appendGeometry(const float* vertexArray, size_t arraySize)
 {
-    if (!coloured_vertices.empty())
-        appendGeometry(coloured_vertices.data(), coloured_vertices.size());
-}
+    if (!vertexArray || !arraySize)
+        return;
 
-//---------------------------------------------------------------------------//
-void GeometryBuffer::appendGeometry(const ColouredVertex* vertexArray,
-                                    std::size_t vertexCount)
-{
-    const size_t addedFloatCount = COLORED_VERTEX_FLOAT_COUNT * vertexCount;
-    appendGeometry(reinterpret_cast<const float*>(vertexArray), addedFloatCount);
-}
-
-//---------------------------------------------------------------------------//
-void GeometryBuffer::appendGeometry(const std::vector<TexturedColouredVertex>& textured_vertices)
-{
-    if (!textured_vertices.empty())
-        appendGeometry(textured_vertices.data(), textured_vertices.size());
-}
-
-//---------------------------------------------------------------------------//
-void GeometryBuffer::appendGeometry(const TexturedColouredVertex* vertexArray,
-                                    std::size_t vertexCount)
-{
-    const size_t addedFloatCount = TEXTURED_VERTEX_FLOAT_COUNT * vertexCount;
-    appendGeometry(reinterpret_cast<const float*>(vertexArray), addedFloatCount);
-}
-
-//---------------------------------------------------------------------------//
-void GeometryBuffer::appendGeometry(const float* vertexArray, std::size_t arraySize)
-{
     const size_t prevFloatCount = d_vertexData.size();
     d_vertexData.resize(prevFloatCount + arraySize);
 
@@ -121,6 +91,8 @@ void GeometryBuffer::appendGeometry(const float* vertexArray, std::size_t arrayS
     std::memcpy(dest, vertexArray, arraySize * sizeof(float));
 
     d_vertexCount = d_vertexData.size() / static_cast<size_t>(getVertexAttributeElementCount());
+
+    onGeometryChanged();
 }
 
 //---------------------------------------------------------------------------//
@@ -144,44 +116,6 @@ void GeometryBuffer::appendSolidRect(const Rectf& rect, const ColourRect& colour
     v[5].d_position = glm::vec3(rect.right(), rect.bottom(), 0.0f);
 
     appendGeometry(v, 6);
-}
-
-//---------------------------------------------------------------------------//
-void GeometryBuffer::appendVertex(const TexturedColouredVertex& vertex)
-{
-    // Add the vertex data in their default order into an array
-    float vertexData[TEXTURED_VERTEX_FLOAT_COUNT];
-
-    // Copy the vertex attributes into the array
-    vertexData[0] = vertex.d_position.x;
-    vertexData[1] = vertex.d_position.y;
-    vertexData[2] = vertex.d_position.z;
-    vertexData[3] = vertex.d_colour.x;
-    vertexData[4] = vertex.d_colour.y;
-    vertexData[5] = vertex.d_colour.z;
-    vertexData[6] = vertex.d_colour.w;
-    vertexData[7] = vertex.d_texCoords.x;
-    vertexData[8] = vertex.d_texCoords.y;
-
-    appendGeometry(vertexData, TEXTURED_VERTEX_FLOAT_COUNT);
-}
-
-//---------------------------------------------------------------------------//
-void GeometryBuffer::appendVertex(const ColouredVertex& vertex)
-{
-    // Add the vertex data in their default order into an array
-    float vertexData[COLORED_VERTEX_FLOAT_COUNT];
-
-    // Copy the vertex attributes into the array
-    vertexData[0] = vertex.d_position.x;
-    vertexData[1] = vertex.d_position.y;
-    vertexData[2] = vertex.d_position.z;
-    vertexData[3] = vertex.d_colour.x;
-    vertexData[4] = vertex.d_colour.y;
-    vertexData[5] = vertex.d_colour.z;
-    vertexData[6] = vertex.d_colour.w;
-
-    appendGeometry(vertexData, COLORED_VERTEX_FLOAT_COUNT);
 }
 
 //---------------------------------------------------------------------------//
@@ -305,7 +239,11 @@ void GeometryBuffer::setClippingRegion(const Rectf& region)
 //----------------------------------------------------------------------------//
 void GeometryBuffer::reset()
 {
-    d_vertexData.clear();
+    if (!d_vertexData.empty())
+    {
+        d_vertexData.clear();
+        onGeometryChanged();
+    }
     d_clippingActive = true;
 }
 
@@ -346,6 +284,8 @@ void GeometryBuffer::updateTextureCoordinates(const Texture* texture, float scal
         d_vertexData[i * TEXTURED_VERTEX_FLOAT_COUNT + 7] *= scaleFactor;
         d_vertexData[i * TEXTURED_VERTEX_FLOAT_COUNT + 8] *= scaleFactor;
     }
+
+    onGeometryChanged();
 }
 
 //---------------------------------------------------------------------------//

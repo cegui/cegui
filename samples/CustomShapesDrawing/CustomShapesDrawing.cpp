@@ -306,7 +306,7 @@ void CustomShapesDrawingSample::updateCustomGeometryGraph(std::vector<glm::vec2>
     d_FPSGraphGeometryBuffer->reset();
 
     // Add the background vertices
-    d_FPSGraphGeometryBuffer->appendGeometry(d_customGeometryGraphBackgroundVertices);
+    d_FPSGraphGeometryBuffer->appendGeometry(d_customGeometryGraphBackgroundVertices.data(), d_customGeometryGraphBackgroundVertices.size());
 
     //Precalculate y and y coordinate of first point
     linePositions.at(0).x = 0.0f;

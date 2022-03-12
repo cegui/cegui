@@ -167,38 +167,37 @@ void FreeTypeFont::resizeAndUpdateTexture(Texture* texture, uint32_t newSize)
         throw InvalidRequestException("Must supply a larger than previous size when "
             "resizing the glyph atlas");
 
-    const uint32_t oldTextureSize = d_lastTextureSize;
+    const uint32_t oldTexSize = d_lastTextureSize;
     std::vector<argb_t> oldTextureData;
     std::swap(oldTextureData, d_lastTextureBuffer);
 
-    const Sizef newTextureSize(static_cast<float>(newSize), static_cast<float>(newSize));
+    const float newTexSize = static_cast<float>(newSize);
     d_lastTextureSize = newSize;
 
     d_lastTextureBuffer.resize(newSize * newSize);
     std::fill(d_lastTextureBuffer.begin(), d_lastTextureBuffer.end(), 0);
 
     // Copy our memory buffer into the texture and free it
-    updateTextureBufferSubImage(d_lastTextureBuffer.data(),
-        oldTextureSize, oldTextureSize, oldTextureData);
+    updateTextureBufferSubImage(d_lastTextureBuffer.data(), oldTexSize, oldTexSize, oldTextureData);
 
-    //TODO: use single channel 8-bit format! Blit/clear with GPU instead of loading from memory?
-    texture->loadFromMemory(d_lastTextureBuffer.data(), newTextureSize, Texture::PixelFormat::Rgba);
+    // TODO: use single channel 8-bit format! Blit/clear with GPU instead of loading from memory?
+    texture->loadFromMemory(d_lastTextureBuffer.data(), Sizef(newTexSize, newTexSize), Texture::PixelFormat::Rgba);
 
-    System::getSingleton().getRenderer()->updateGeometryBufferTexCoords(texture,
-        oldTextureSize / static_cast<float>(newSize));
+    // Fix glyph texcoords in existing text geometry buffers
+    System::getSingleton().getRenderer()->updateGeometryBufferTexCoords(texture, oldTexSize / newTexSize);
 }
 
 //----------------------------------------------------------------------------//
 void FreeTypeFont::createTextureSpaceForGlyphRasterisation(Texture* texture, uint32_t glyphWidth, uint32_t glyphHeight)
 {
     const auto maxTextureSize = static_cast<uint32_t>(System::getSingleton().getRenderer()->getMaxTextureSize());
-    const uint32_t scaleFactor = 2;
 
     if (glyphWidth > maxTextureSize || glyphHeight > maxTextureSize)
         throw InvalidRequestException("Can not rasterise a glyph that is larger "
             "than the maximum supported texture size.");
         
-    uint32_t newSize = d_lastTextureSize * scaleFactor;
+    constexpr uint32_t TEXTURE_SIZE_GROW_FACTOR = 2;
+    const uint32_t newSize = d_lastTextureSize * TEXTURE_SIZE_GROW_FACTOR;
     if (newSize > maxTextureSize)
         createGlyphAtlasTexture();
     else

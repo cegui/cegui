@@ -74,14 +74,13 @@ public:
     virtual ~OgreGeometryBuffer();
 
     virtual void draw(std::uint32_t drawModeMask = DrawModeMaskAll) const override;
-    virtual void appendGeometry(const float* vertex_data,
-        std::size_t array_size) override;
-    virtual void reset() override;
     virtual int getVertexAttributeElementCount() const override;
 
     void finaliseVertexAttributes(MANUALOBJECT_TYPE type);
 
 protected:
+
+    virtual void onGeometryChanged() override { d_dataAppended = true; }
 
     //! Updates the cached matrix. This should only be called after the RenderTarget was set.
     void updateMatrix() const;

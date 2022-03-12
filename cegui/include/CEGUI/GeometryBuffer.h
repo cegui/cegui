@@ -30,6 +30,7 @@
 
 #include "CEGUI/Rectf.h"
 #include "CEGUI/RefCounted.h"
+#include "CEGUI/Vertex.h"
 #include <glm/gtc/quaternion.hpp>
 #include <vector>
 
@@ -91,6 +92,9 @@ class CEGUIEXPORT GeometryBuffer
 {
 public:
 
+    static constexpr size_t COLORED_VERTEX_FLOAT_COUNT = sizeof(ColouredVertex) / sizeof(float);
+    static constexpr size_t TEXTURED_VERTEX_FLOAT_COUNT = sizeof(TexturedColouredVertex) / sizeof(float);
+
     virtual ~GeometryBuffer();
 
     void clear();
@@ -99,7 +103,7 @@ public:
     \brief
         Draw the geometry buffered within this GeometryBuffer object.
     */
-    virtual void draw(std::uint32_t drawModeMask = DrawModeMaskAll) const = 0;
+    virtual void draw(uint32_t drawModeMask = DrawModeMaskAll) const = 0;
 
     /*!
     \brief
@@ -207,7 +211,19 @@ public:
     \param array_size
         The number of elements in the passed array.
     */
-    virtual void appendGeometry(const float* vertex_data, std::size_t array_size);
+    void appendGeometry(const float* vertex_data, size_t array_size);
+
+    /*!
+    \brief
+        Append the geometry for the solid colored rectangle to the existing data
+
+    \param rect
+        A rectangle to generate vertices for.
+
+    \param colours
+        A colour rect applied to the rectangle vertices.
+    */
+    void appendSolidRect(const Rectf& rect, const ColourRect& colours);
 
     /*!
     \brief
@@ -216,7 +232,7 @@ public:
     \param vertex
         Vertex object describing the vertex to be added to the GeometryBuffer.
     */
-    virtual void appendVertex(const TexturedColouredVertex& vertex);
+    void appendVertex(const TexturedColouredVertex& vertex) { appendGeometry(&vertex, 1); }
 
     /*!
     \brief
@@ -225,15 +241,7 @@ public:
     \param vertex
         Vertex object describing the vertex to be added to the GeometryBuffer.
     */
-    virtual void appendVertex(const ColouredVertex& vertex);
-
-    /*!
-    \brief
-        Appends vertices with colour attributes from an std::vector to the GeometryBuffer.
-    \param coloured_vertices
-        The vector of ColouredVertices.
-    */
-    void appendGeometry(const std::vector<ColouredVertex>& coloured_vertices);
+    void appendVertex(const ColouredVertex& vertex) { appendGeometry(&vertex, 1); }
 
     /*!
     \brief
@@ -247,16 +255,11 @@ public:
         The number of Vertex objects from the array \a vertex_array that are to be
         added to the GeometryBuffer.
     */
-    virtual void appendGeometry(const ColouredVertex* vertexArray, std::size_t vertexCount);
-
-    /*!
-    \brief
-        Appends vertices with texture coordinate and colour attributes from an std::vector to 
-        the GeometryBuffer.
-    \param textured_vertices
-        The vector of TexturedColouredVertices.
-    */
-    void appendGeometry(const std::vector<TexturedColouredVertex>& textured_vertices);
+    void appendGeometry(const ColouredVertex* vertexArray, size_t vertexCount)
+    {
+        const size_t addedFloatCount = COLORED_VERTEX_FLOAT_COUNT * vertexCount;
+        appendGeometry(reinterpret_cast<const float*>(vertexArray), addedFloatCount);
+    }
 
     /*!
     \brief
@@ -271,9 +274,11 @@ public:
         The number of Vertex objects from the array \a vertex_array that are to be
         added to the GeometryBuffer.
     */
-    virtual void appendGeometry(const TexturedColouredVertex* vertex_array, std::size_t vertex_count);
-
-    void appendSolidRect(const Rectf& rect, const ColourRect& colours);
+    void appendGeometry(const TexturedColouredVertex* vertexArray, size_t vertexCount)
+    {
+        const size_t addedFloatCount = TEXTURED_VERTEX_FLOAT_COUNT * vertexCount;
+        appendGeometry(reinterpret_cast<const float*>(vertexArray), addedFloatCount);
+    }
 
     /*!
     \brief
@@ -322,7 +327,7 @@ public:
         Clear all buffered data and reset the GeometryBuffer to the default
         state. This excludes resettings the vertex attributes.
     */
-    virtual void reset();
+    void reset();
 
     /*!
     \brief
@@ -332,7 +337,7 @@ public:
     \return
         The number of vertices that have been appended to this GeometryBuffer.
     */
-    virtual std::size_t getVertexCount() const { return d_vertexCount; }
+    size_t getVertexCount() const { return d_vertexCount; }
 
     /*!
     \brief
@@ -344,7 +349,6 @@ public:
         layout.
     */
     virtual int getVertexAttributeElementCount() const;
-
 
     /*!
     \brief
@@ -505,6 +509,8 @@ public:
 protected:
 
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
+
+    virtual void onGeometryChanged() {}
 
     //! Reference to the RenderMaterial used for this GeometryBuffer
     RefCounted<RenderMaterial>  d_renderMaterial;

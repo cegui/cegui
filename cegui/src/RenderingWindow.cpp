@@ -180,7 +180,7 @@ void RenderingWindow::realiseGeometry()
 //----------------------------------------------------------------------------//
 void RenderingWindow::realiseGeometry_impl()
 {
-    Texture& tex = d_textarget.getTexture();
+    const Texture& tex = d_textarget.getTexture();
     
     const Rectf tex_rect = getTextureRect();
     const Rectf area(0, 0, d_size.d_width, d_size.d_height);

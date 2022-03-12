@@ -25,21 +25,14 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RendererModules/Null/GeometryBuffer.h"
-#include "CEGUI/RendererModules/Null/Texture.h"
-#include "CEGUI/Vertex.h"
 #include "CEGUI/RenderEffect.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+
 //----------------------------------------------------------------------------//
 NullGeometryBuffer::NullGeometryBuffer(CEGUI::RefCounted<RenderMaterial> renderMaterial)
     : GeometryBuffer(renderMaterial)
-{
-}
-
-//----------------------------------------------------------------------------//
-NullGeometryBuffer::~NullGeometryBuffer()
 {
 }
 
@@ -61,14 +54,4 @@ void NullGeometryBuffer::draw(std::uint32_t drawModeMask) const
         d_effect->performPostRenderFunctions();
 }
 
-//----------------------------------------------------------------------------//
-void NullGeometryBuffer::appendGeometry(const std::vector<float>& vertex_data)
-{
-    d_vertexData.insert(d_vertexData.end(), vertex_data.begin(), vertex_data.end());
-    // Update size of geometry buffer
-    d_vertexCount = d_vertexData.size();
 }
-
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section

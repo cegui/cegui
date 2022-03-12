@@ -54,7 +54,6 @@ public:
 
     // Implement GeometryBuffer interface.
     virtual void draw(std::uint32_t drawModeMask = DrawModeMaskAll) const override;
-    virtual void appendGeometry(const float* vertex_data, std::size_t array_size) override;
 
     /*
     \brief
@@ -66,6 +65,9 @@ public:
     void finaliseVertexAttributes();
 
 protected:
+
+    virtual void onGeometryChanged() override { d_geometryDirty = true; }
+
     //! Update the cached matrices
     void updateMatrix() const;
     //! Synchronise data in the hardware buffer with what's been added
@@ -86,6 +88,7 @@ protected:
     mutable glm::mat4 d_matrix;
     //! D3D11 input layout describing the vertex format we use.
     ID3D11InputLayout* d_inputLayout = nullptr;
+    mutable bool d_geometryDirty = true;
 };
 
 }

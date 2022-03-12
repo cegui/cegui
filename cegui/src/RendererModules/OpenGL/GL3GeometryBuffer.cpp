@@ -99,14 +99,10 @@ void OpenGL3GeometryBuffer::draw(std::uint32_t drawModeMask) const
     if (OpenGLInfo::getSingleton().isVaoSupported())
     {
 #ifdef CEGUI_OPENGL_BIG_BUFFER
-        if(getVertexAttributeElementCount() == 9) // todo: d_renderMaterial->d_type?
-        {
+        if (getVertexAttributeElementCount() == 9) // TODO: store vertex type / decl?
             d_glStateChanger->bindVertexArray(static_cast<OpenGL3Renderer&>(d_owner).d_verticesTexturedVAO);
-        }
         else
-        {
             d_glStateChanger->bindVertexArray(static_cast<OpenGL3Renderer&>(d_owner).d_verticesSolidVAO);
-        }
 #else
         // Bind our vao
         d_glStateChanger->bindVertexArray(d_verticesVAO);
@@ -136,13 +132,6 @@ void OpenGL3GeometryBuffer::draw(std::uint32_t drawModeMask) const
         d_effect->performPostRenderFunctions();
 
     updateRenderTargetData(d_owner.getActiveRenderTarget());
-}
-
-//----------------------------------------------------------------------------//
-void OpenGL3GeometryBuffer::reset()
-{
-    OpenGLGeometryBufferBase::reset();
-    updateOpenGLBuffers();
 }
 
 //----------------------------------------------------------------------------//
@@ -245,13 +234,13 @@ void OpenGL3GeometryBuffer::deinitialiseOpenGLBuffers()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3GeometryBuffer::updateOpenGLBuffers()
+void OpenGL3GeometryBuffer::onGeometryChanged()
 {
 #ifndef CEGUI_OPENGL_BIG_BUFFER
-    bool needNewBuffer = false;
-    size_t vertexCount = d_vertexData.size();
+    const size_t vertexCount = d_vertexData.size();
 
-    if(d_bufferSize < vertexCount)
+    bool needNewBuffer = false;
+    if (d_bufferSize < vertexCount)
     {
         needNewBuffer = true;
         d_bufferSize = vertexCount;
@@ -259,31 +248,11 @@ void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
-    float* vertexData;
-    if(d_vertexData.empty())
-        vertexData = nullptr;
+    if (needNewBuffer)
+        glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(float), d_vertexData.data(), GL_STATIC_DRAW);
     else
-        vertexData = &d_vertexData[0];
-
-    GLsizei dataSize = vertexCount * sizeof(float);
-
-    if(needNewBuffer)
-    {
-        glBufferData(GL_ARRAY_BUFFER, dataSize, vertexData, GL_STATIC_DRAW);
-    }
-    else
-    {
-        glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, vertexData);
-    }
+        glBufferSubData(GL_ARRAY_BUFFER, 0, vertexCount * sizeof(float), d_vertexData.data());
 #endif
-}
-
-//----------------------------------------------------------------------------//
-void OpenGL3GeometryBuffer::appendGeometry(const float* vertex_data, std::size_t array_size)
-{
-    OpenGLGeometryBufferBase::appendGeometry(vertex_data, array_size);
-
-    updateOpenGLBuffers();
 }
 
 //----------------------------------------------------------------------------//
@@ -291,14 +260,14 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
 {
     const auto vboPos = static_cast<GLint>(d_verticesVBOPosition);
     const auto vertexCount = static_cast<GLsizei>(d_vertexCount);
-    if(d_polygonFillRule == PolygonFillRule::NoFilling)
+    if (d_polygonFillRule == PolygonFillRule::NoFilling)
     {
         d_glStateChanger->disable(GL_CULL_FACE);
         d_glStateChanger->disable(GL_STENCIL_TEST);
 
         glDrawArrays(GL_TRIANGLES, vboPos, vertexCount);
     }
-    else if(d_polygonFillRule == PolygonFillRule::EvenOdd)
+    else if (d_polygonFillRule == PolygonFillRule::EvenOdd)
     {
         //We use a stencil buffer to determine the insideness
         //of a fragment. Every draw inverts the previous value
@@ -319,7 +288,7 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
         glStencilFunc(GL_EQUAL, 0xFF, 0xFF);
         glDrawArrays(GL_TRIANGLES, vboPos + postStencilStart, d_postStencilVertexCount);
     }
-    else if(d_polygonFillRule == PolygonFillRule::NonZero)
+    else if (d_polygonFillRule == PolygonFillRule::NonZero)
     {
         //We use a stencil buffer to determine the insideness
         //of a fragment. We draw the front sides while increasing
@@ -361,8 +330,4 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
     }
 }
 
-
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section
-
+}

@@ -29,40 +29,31 @@
 
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/RendererModules/Null/Renderer.h"
-#include "CEGUI/Rectf.h"
-#include "CEGUI/Colour.h"
-#include "CEGUI/Vertex.h"
-
-#include <utility>
-#include <vector>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+
 //! Implementation of CEGUI::GeometryBuffer for the Null engine
 class NULL_GUIRENDERER_API NullGeometryBuffer : public GeometryBuffer
 {
 public:
-    //! Constructor
+
     NullGeometryBuffer(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    //! Destructor
-    virtual ~NullGeometryBuffer();
 
     // Implementation/overrides of member functions inherited from GeometryBuffer
-    void draw(std::uint32_t drawModeMask = DrawModeMaskAll) const override;
-    void appendGeometry(const std::vector<float>& vertex_data);
+    void draw(uint32_t drawModeMask = DrawModeMaskAll) const override;
 };
 
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUINullGeometryBuffer_h_
+#endif

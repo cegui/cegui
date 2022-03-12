@@ -189,14 +189,6 @@ void OgreGeometryBuffer::draw(std::uint32_t drawModeMask) const
     updateRenderTargetData(d_owner.getActiveRenderTarget());
 }
 
-//----------------------------------------------------------------------------//
-void OgreGeometryBuffer::appendGeometry(const float* vertex_data, std::size_t array_size)
-{
-    GeometryBuffer::appendGeometry(vertex_data, array_size);
-
-    d_dataAppended = true;
-}
-
 void OgreGeometryBuffer::syncVertexData() const
 {
     if (!d_dataAppended)
@@ -395,13 +387,6 @@ void OgreGeometryBuffer::setScissorRects() const
         static_cast<size_t>(d_preparedClippingRegion.bottom()));
 }
 #endif //CEGUI_USE_OGRE_HLMS
-
-// ------------------------------------ //
-void OgreGeometryBuffer::reset()
-{
-    d_vertexData.clear();
-    d_clippingActive = true;
-}
 
 // ------------------------------------ //
 int OgreGeometryBuffer::getVertexAttributeElementCount() const

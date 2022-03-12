@@ -64,6 +64,9 @@ void Direct3D11GeometryBuffer::draw(std::uint32_t drawModeMask) const
     if (d_vertexData.empty())
         return;
 
+    if (d_geometryDirty)
+        updateVertexBuffer();
+
     auto d3dCtx = d_owner.getDirect3DDeviceContext();
 
     // setup clip region
@@ -122,14 +125,6 @@ void Direct3D11GeometryBuffer::draw(std::uint32_t drawModeMask) const
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::appendGeometry(const float* vertex_data, std::size_t array_size)
-{
-    GeometryBuffer::appendGeometry(vertex_data, array_size);
-
-    updateVertexBuffer();
-}
-
-//----------------------------------------------------------------------------//
 void Direct3D11GeometryBuffer::updateMatrix() const
 {
     if (!d_matrixValid || !isRenderTargetDataValid(d_owner.getActiveRenderTarget()))
@@ -142,27 +137,18 @@ void Direct3D11GeometryBuffer::updateMatrix() const
 //----------------------------------------------------------------------------//
 void Direct3D11GeometryBuffer::updateVertexBuffer() const
 {
-    bool needNewBuffer = false;
-    size_t vertexCount = d_vertexData.size();
-    UINT dataSize = static_cast<UINT>(vertexCount * sizeof(float));
+    d_geometryDirty = false;
 
-    if(d_bufferSize < dataSize)
-    {
-        needNewBuffer = true;
-        d_bufferSize = dataSize;
-    }
+    if (d_vertexData.empty())
+        return;
 
-    const float* vertexData;
-    if(d_vertexData.empty())
-        vertexData = 0;
-    else
-        vertexData = &d_vertexData[0];
+    const UINT dataSize = static_cast<UINT>(d_vertexData.size() * sizeof(float));
 
-
-    if(needNewBuffer)
+    if (d_bufferSize < dataSize)
     {
         cleanupVertexBuffer();
         allocateVertexBuffer(dataSize);
+        d_bufferSize = dataSize;
     }
 
     D3D11_BOX box;
@@ -173,7 +159,7 @@ void Direct3D11GeometryBuffer::updateVertexBuffer() const
     box.front = 0;
     box.back  = 1;
 
-    d_owner.getDirect3DDeviceContext()->UpdateSubresource( d_vertexBuffer, 0, &box, vertexData, 0, 0 );
+    d_owner.getDirect3DDeviceContext()->UpdateSubresource(d_vertexBuffer, 0, &box, d_vertexData.data(), 0, 0);
 }
 
 //----------------------------------------------------------------------------//
