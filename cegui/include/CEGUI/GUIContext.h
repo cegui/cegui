@@ -140,8 +140,11 @@ public:
         - true if this Window should be activated and set as the modal target.
         - false if the modal target should be cleared if this Window is
           currently the modal target.
+
+    \return
+        true if the \a window became modal for this context
     */
-    void setModalWindow(Window* window);
+    bool setModalWindow(Window* window);
 
     //! Return a pointer to the Window that is currently set as modal.
     Window* getModalWindow() const { return d_modalWindow; }

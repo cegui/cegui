@@ -173,15 +173,17 @@ bool GUIContext::isWindowActive(const Window* window) const
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::setModalWindow(Window* window)
+bool GUIContext::setModalWindow(Window* window)
 {
     // TODO: need stack to show one modal dialog inside of another?
     if (!d_modalWindow)
     {
-        setActiveWindow(d_modalWindow, true);
+        setActiveWindow(window, true);
         if (d_activeWindow == window)
             d_modalWindow = window;
     }
+
+    return d_modalWindow == window;
 }
 
 //----------------------------------------------------------------------------//
