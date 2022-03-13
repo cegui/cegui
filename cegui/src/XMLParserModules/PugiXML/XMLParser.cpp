@@ -84,8 +84,8 @@ void PugiXMLParser::parseXML(XMLHandler& handler,
         throw FileIOException("PugiXMLParser: an error occurred while "
             "parsing the XML document: " + String(result.description()));
 
-    if (doc.root())
-        processNode(handler, doc.root());
+    if (doc.document_element())
+        processNode(handler, doc.document_element());
 }
 
 //----------------------------------------------------------------------------//
