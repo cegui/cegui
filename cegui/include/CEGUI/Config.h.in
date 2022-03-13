@@ -139,19 +139,14 @@ setting CMake options and regenerating, rather than editing directly.
 // compiled in (default).  If you want to build CEGUI /without/ freetype
 // support, comment the following line.
 //////////////////////////////////////////////////////////////////////////
-#cmakedefine CEGUI_HAS_FREETYPE
+#cmakedefine CEGUI_USE_FREETYPE
 
 //////////////////////////////////////////////////////////////////////////
-// PCRE library
-// CEGUI uses the pcre library for it's regular expression based string
-// validation as used in the Editbox (and derived classes, such as Spinner).
-// To disable the use of PCRE (and therefore the validation factilities),
-// comment the following line.  (Attempts to set validation string will throw).
+// The following controls what regular expression matcher will be used
+// for editbox string validation.
 //////////////////////////////////////////////////////////////////////////
-#cmakedefine CEGUI_HAS_PCRE_REGEX
-
-// Uncomment this to use C++11 Regular expressions library.
-#cmakedefine CEGUI_HAS_STD11_REGEX
+#cmakedefine CEGUI_REGEX_MATCHER_PCRE
+#cmakedefine CEGUI_REGEX_MATCHER_STD
 
 //////////////////////////////////////////////////////////////////////////
 // The following controls whether the default logger be (possibly) used.
@@ -162,7 +157,7 @@ setting CMake options and regenerating, rather than editing directly.
 // CEGUI::Logger based class and instantiate it before creating the main
 // CEGUI::System object.
 //////////////////////////////////////////////////////////////////////////
-#cmakedefine CEGUI_HAS_DEFAULT_LOGGER
+#cmakedefine CEGUI_USE_DEFAULT_LOGGER
 
 //////////////////////////////////////////////////////////////////////////
 // The following defines control bidirectional text support.
@@ -205,7 +200,7 @@ setting CMake options and regenerating, rather than editing directly.
 // The MinizipResourceProvider provides the ability to load resource files
 // from locations within .zip files.
 //////////////////////////////////////////////////////////////////////////
-#cmakedefine CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER
+#cmakedefine CEGUI_BUILD_RESOURCE_PROVIDER_MINIZIP
 
 // Define the default place where cegui will look for loadable modules
 // this can be changed at runtime via the CEGUI_MODULE_DIR environment var.

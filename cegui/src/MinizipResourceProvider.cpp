@@ -32,7 +32,7 @@
 #include "CEGUI/Exceptions.h"
 
 // exclude code on apple unless feature macro is defined.
-#if !defined(__APPLE__) || defined(CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
+#if !defined(__APPLE__) || defined(CEGUI_BUILD_RESOURCE_PROVIDER_MINIZIP)
 
 #include "minizip/unzip.h"
 

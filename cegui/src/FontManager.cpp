@@ -38,7 +38,7 @@
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/SharedStringStream.h"
 
-#ifdef CEGUI_HAS_FREETYPE
+#ifdef CEGUI_USE_FREETYPE
 #   include "CEGUI/text/FreeTypeFont.h"
 #endif
 
@@ -132,7 +132,7 @@ Font& FontManager::createFreeTypeFont(
     float specificLineSpacing,
     XmlResourceExistsAction resourceExistsAction)
 {
-#ifdef CEGUI_HAS_FREETYPE
+#ifdef CEGUI_USE_FREETYPE
     CEGUI_LOGINSANE("Attempting to create FreeType font '" +
         font_name + "' using font file '" + font_filename + "'.");
 

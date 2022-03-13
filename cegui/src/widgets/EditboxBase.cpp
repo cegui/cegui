@@ -33,9 +33,9 @@
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/UndoHandler.h"
 #include "CEGUI/CoordConverter.h"
-#if defined(CEGUI_HAS_PCRE_REGEX)
+#if defined(CEGUI_REGEX_MATCHER_PCRE)
 #   include "CEGUI/PCRERegexMatcher.h"
-#elif defined(CEGUI_HAS_STD11_REGEX)
+#elif defined(CEGUI_REGEX_MATCHER_STD)
 #   include "CEGUI/StdRegexMatcher.h"
 #endif
 #include <string.h>
@@ -58,9 +58,9 @@ const String EditboxBase::EventTextValidityChanged("TextValidityChanged");
 //----------------------------------------------------------------------------//
 static RegexMatcher* createRegexMatcher()
 {
-#if defined(CEGUI_HAS_PCRE_REGEX)
+#if defined(CEGUI_REGEX_MATCHER_PCRE)
     return new PCRERegexMatcher();
-#elif defined(CEGUI_HAS_STD11_REGEX)
+#elif defined(CEGUI_REGEX_MATCHER_STD)
     return new StdRegexMatcher();
 #else
     return nullptr;

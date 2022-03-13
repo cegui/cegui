@@ -11,13 +11,13 @@ dependencies required for the choices you made regarding what functionality
 you intend to use and then let cmake configure things based on those.
 
 @section build_options_general General Options
-@subsection build_options_has_freetype CEGUI_HAS_FREETYPE
+@subsection build_options_has_freetype CEGUI_USE_FREETYPE
 Specifies whether to include Freetype2 font support
-@subsection build_options_has_pcre CEGUI_HAS_PCRE_REGEX
-Specifies whether to include PCRE regexp matching for editbox string validation
-@subsection build_options_has_minizip CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER
+@subsection build_options_has_pcre CEGUI_REGEX_MATCHER
+Specifies what regular expression matcher will be used for editbox string validation
+@subsection build_options_has_minizip CEGUI_BUILD_RESOURCE_PROVIDER_MINIZIP
 Specifies whether to build the minizip based resource provider
-@subsection build_options_has_logger CEGUI_HAS_DEFAULT_LOGGER
+@subsection build_options_has_logger CEGUI_USE_DEFAULT_LOGGER
 Specifies whether to build the DefaultLogger implementation
 @subsection build_options_use_fribidi CEGUI_USE_FRIBIDI
 Specifies whether bi-directional text will be supported via the fribidi

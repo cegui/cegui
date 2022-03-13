@@ -29,23 +29,23 @@ set (ALL_HEADER_FILES ${CORE_HEADER_FILES} ${TEXT_HEADER_FILES} ${VIEW_HEADER_FI
 # never compile this directly, it's included in another file
 list (REMOVE_ITEM CORE_SOURCE_FILES text/minibidi.cpp)
 
-if (NOT CEGUI_HAS_DEFAULT_LOGGER)
+if (NOT CEGUI_USE_DEFAULT_LOGGER)
     list (REMOVE_ITEM CORE_SOURCE_FILES DefaultLogger.cpp)
 endif()
 
-if (NOT CEGUI_HAS_FREETYPE)
+if (NOT CEGUI_USE_FREETYPE)
     list (REMOVE_ITEM CORE_SOURCE_FILES text/FreeTypeFont.cpp)
 endif()
 
-if (NOT CEGUI_HAS_PCRE_REGEX)
+if (NOT CEGUI_REGEX_MATCHER_PCRE)
     list (REMOVE_ITEM CORE_SOURCE_FILES PCRERegexMatcher.cpp)
 endif()
 
-if (NOT CEGUI_HAS_STD11_REGEX)
+if (NOT CEGUI_REGEX_MATCHER_STD)
     list (REMOVE_ITEM CORE_SOURCE_FILES StdRegexMatcher.cpp)
 endif()
 
-if (NOT CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
+if (NOT CEGUI_BUILD_RESOURCE_PROVIDER_MINIZIP)
     list (REMOVE_ITEM CORE_SOURCE_FILES MinizipResourceProvider.cpp)
 endif()
 
@@ -87,9 +87,9 @@ if (NOT WIN32 AND NOT ANDROID)
     cegui_add_dependency(${CEGUI_TARGET_NAME} ICONV)
 endif()
 
-if (CEGUI_HAS_PCRE_REGEX)
+if (CEGUI_REGEX_MATCHER_PCRE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} PCRE)
-endif ()
+endif()
 
 if (CEGUI_USE_RAQM)
     cegui_add_dependency(${CEGUI_TARGET_NAME} FREETYPE)
@@ -97,7 +97,7 @@ if (CEGUI_USE_RAQM)
     cegui_add_dependency(${CEGUI_TARGET_NAME} HARFBUZZ)
     cegui_add_dependency(${CEGUI_TARGET_NAME} RAQM)
 else()
-    if (CEGUI_HAS_FREETYPE)
+    if (CEGUI_USE_FREETYPE)
         cegui_add_dependency(${CEGUI_TARGET_NAME} FREETYPE)
 
         include(CheckSymbolExists)
@@ -114,7 +114,7 @@ else()
     endif ()
 endif ()
 
-if (CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
+if (CEGUI_BUILD_RESOURCE_PROVIDER_MINIZIP)
     cegui_add_dependency(${CEGUI_TARGET_NAME} MINIZIP)
     if (MINGW)
         target_link_libraries(${CEGUI_TARGET_NAME} shlwapi)

@@ -138,7 +138,7 @@ System::System(Renderer& renderer,
     // constructor, we mark it as so and leave the logger untouched. This allows
     // the user to fully customize the logger as he sees fit without fear of
     // seeing its configuration overwritten by this.
-#ifdef CEGUI_HAS_DEFAULT_LOGGER
+#ifdef CEGUI_USE_DEFAULT_LOGGER
     if (d_ourLogger)
         new DefaultLogger();
 #endif
@@ -297,7 +297,7 @@ System::~System(void)
     Logger::getSingleton().logEvent("CEGUI::System singleton destroyed. " + addressStr);
     Logger::getSingleton().logEvent("---- CEGUI System destruction completed ----");
 
-#ifdef CEGUI_HAS_DEFAULT_LOGGER
+#ifdef CEGUI_USE_DEFAULT_LOGGER
     // delete the Logger object only if we created it.
     if (d_ourLogger)
         delete Logger::getSingletonPtr();

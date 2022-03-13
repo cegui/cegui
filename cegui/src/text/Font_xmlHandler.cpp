@@ -35,11 +35,9 @@
 #include "CEGUI/SharedStringStream.h"
 #include "CEGUI/FontManager.h"
 
-#ifdef CEGUI_HAS_FREETYPE
+#ifdef CEGUI_USE_FREETYPE
 #   include "CEGUI/text/FreeTypeFont.h"
 #endif
-
-//#include <sstream>
 
 namespace CEGUI
 {
@@ -245,7 +243,7 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
     const String resource_group(attributes.getValueAsString(FontResourceGroupAttribute));
 
  
-#ifdef CEGUI_HAS_FREETYPE
+#ifdef CEGUI_USE_FREETYPE
     if (d_font != nullptr)
     {
         throw InvalidRequestException(

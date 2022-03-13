@@ -198,27 +198,31 @@ dependency libs over the shared/dynamic ones.  NOTE: On Windows you also need to
 be mindful of which C/C++ runtime setting has been used to compile the various
 components - they must all match or you will get crashes, heap corruption and/or
 other issues." FALSE "WIN32 OR APPLE" FALSE)
-option( CEGUI_BUILD_STATIC_CONFIGURATION "Specifies whether the static configs will be built.  (NB: Shared configs are always built)" FALSE)
-option( CEGUI_BUILD_DYNAMIC_CONFIGURATION "Dynamic libs to be built.  Always true except for Android" TRUE)
+option( CEGUI_BUILD_STATIC_CONFIGURATION "Specifies whether the static configs will be built. (NB: Shared configs are always built)" FALSE)
+option( CEGUI_BUILD_DYNAMIC_CONFIGURATION "Dynamic libs to be built. Always true except for Android" TRUE)
 option( CEGUI_BUILD_STATIC_FACTORY_MODULE "For static CEGUI builds, specifies whether to include the getWindowFactoryModule method.  When false, the developer must provide a custom implementation of the method" FALSE)
 # sanity check on static build option for factory method
 if (CEGUI_BUILD_STATIC_FACTORY_MODULE AND NOT CEGUI_BUILD_STATIC_CONFIGURATION)
-    message(SEND_ERROR "You may not enable CEGUI_BUILD_STATIC_FACTORY_MODULE without CEGUI_BUILD_STATIC_CONFIGURATION enabled.  CEGUI needs to be built statically if building the static factory method.")
-endif()
-if (NOT CEGUI_BUILD_DYNAMIC_CONFIGURATION AND NOT ANDROID)
-    message(SEND_ERROR "You may not disable CEGUI_BUILD_DYNAMIC_CONFIGURATION in any scenario except android builds.")
+    message(WARNING "CEGUI needs to be built statically (CEGUI_BUILD_STATIC_CONFIGURATION) if building the static factory method. CEGUI_BUILD_STATIC_FACTORY_MODULE is disabled.")
+    set(CEGUI_BUILD_STATIC_FACTORY_MODULE FALSE)
 endif()
 
 if (PCRE_FOUND)
-    set (CEGUI_NEED_STD11_REGEX FALSE)
+    set(CEGUI_REGEX_MATCHER "PCRE" CACHE STRING "Specifies a regular expression matcher used for editbox string validation")
+    set_property(CACHE CEGUI_REGEX_MATCHER PROPERTY STRINGS "PCRE" "std" "None")
 else ()
-    set (CEGUI_NEED_STD11_REGEX TRUE)
+    set(CEGUI_REGEX_MATCHER "std" CACHE STRING "Specifies a regular expression matcher used for editbox string validation")
+    set_property(CACHE CEGUI_REGEX_MATCHER PROPERTY STRINGS "std" "None")
 endif ()
 
-option( CEGUI_HAS_PCRE_REGEX "Specifies whether to include PCRE regexp matching for editbox string validation" ${PCRE_FOUND} )
-option( CEGUI_HAS_STD11_REGEX "Specifies whether to include C++11 Regular expressions library for editbox string validation" ${CEGUI_NEED_STD11_REGEX} )
-option( CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER "Specifies whether to build the minizip based resource provider" ${MINIZIP_FOUND} )
-option( CEGUI_HAS_DEFAULT_LOGGER "Specifies whether to build the DefaultLogger implementation" TRUE)
+if (CEGUI_REGEX_MATCHER STREQUAL "PCRE")
+    set(CEGUI_REGEX_MATCHER_PCRE TRUE)
+elseif (CEGUI_REGEX_MATCHER STREQUAL "std")
+    set(CEGUI_REGEX_MATCHER_STD TRUE)
+endif()
+
+option( CEGUI_BUILD_RESOURCE_PROVIDER_MINIZIP "Specifies whether to build the minizip based resource provider" ${MINIZIP_FOUND} )
+option( CEGUI_USE_DEFAULT_LOGGER "Specifies whether to build and use the DefaultLogger implementation" TRUE)
 
 option( CEGUI_BUILD_COMMON_DIALOGS "Specifies whether to build the CommonDialogs library, which contains the code for the ColourPicker and other dialogs" TRUE)
 
@@ -274,7 +278,7 @@ endif()
 
 # Text rendering, BIDI
 
-option( CEGUI_HAS_FREETYPE "Specifies whether to include Freetype font support" ${FREETYPE_FOUND} )
+option( CEGUI_USE_FREETYPE "Specifies whether to include Freetype font support" ${FREETYPE_FOUND} )
 option( CEGUI_USE_FRIBIDI "Specifies whether bi-directional text will be supported via the fribidi library." OFF )
 option( CEGUI_USE_MINIBIDI "Specifies whether bi-directional text will be supported via the embedded minibidi." OFF )
 cegui_dependent_option( CEGUI_USE_RAQM "Specifies whether to include support for kerning and for complex text layout using in CEGUI. This requires libraqm, harfbuzz, freetype and fribidi" "RAQM_FOUND;HARFBUZZ_FOUND;FREETYPE_FOUND;FRIBIDI_FOUND" )
@@ -778,8 +782,8 @@ endif()
 ################################################################################
 # Copy dependency binaries to the target bin folder
 ################################################################################
-if (CEGUI_BUILD_SAMPLES OR CEGUI_BUILD_APPLICATION_TEMPLATES)
-    set(DEPS_BIN_PATH "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/bin/${CEGUI_ARCH_SUFFIX}")
+if ((WIN32 OR APPLE) AND (CEGUI_BUILD_SAMPLES OR CEGUI_BUILD_APPLICATION_TEMPLATES))
+    set(DEPS_BIN_PATH "${CEGUI_DEPENDENCIES_DIR}/bin/${CEGUI_ARCH_SUFFIX}")
     file(GLOB DEPS_BIN_FILES LIST_DIRECTORIES false RELATIVE "${DEPS_BIN_PATH}" "${DEPS_BIN_PATH}/*")
     foreach(_FILE_NAME ${DEPS_BIN_FILES})
         configure_file("${DEPS_BIN_PATH}/${_FILE_NAME}" "${CMAKE_BINARY_DIR}/bin/${_FILE_NAME}" COPYONLY)
