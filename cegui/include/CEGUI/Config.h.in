@@ -35,19 +35,13 @@ setting CMake options and regenerating, rather than editing directly.
 #ifndef _CEGUIConfig_h_
 #define _CEGUIConfig_h_
 
-// CMake defines NDEBUG on all platforms, but not always DEBUG :-/
-#if !defined(NDEBUG) && !defined(DEBUG)
-#   define DEBUG 1
-#endif
-
 #cmakedefine CEGUI_HAS_BUILD_SUFFIX
-#ifdef CEGUI_HAS_BUILD_SUFFIX
-#   ifndef CEGUI_BUILD_SUFFIX
-#       if defined(DEBUG) || defined(_DEBUG)
-#           define CEGUI_BUILD_SUFFIX "${CEGUI_BUILD_SUFFIX}"
-#       else
-#           define CEGUI_BUILD_SUFFIX ""
-#       endif
+
+#if defined(CEGUI_HAS_BUILD_SUFFIX) && !defined(CEGUI_BUILD_SUFFIX)
+#   if defined(DEBUG) || defined(_DEBUG)
+#       define CEGUI_BUILD_SUFFIX "${CEGUI_BUILD_SUFFIX}"
+#   else
+#       define CEGUI_BUILD_SUFFIX ""
 #   endif
 #endif
 
