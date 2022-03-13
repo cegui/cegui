@@ -52,7 +52,6 @@ include(FindPkgMacros)
 include(PreprocessorUtils)
 findpkg_begin(OGRE)
 
-
 # Get path, convert backslashes as ${ENV_${var}}
 getenv_path(OGRE_HOME)
 getenv_path(OGRE_SDK)

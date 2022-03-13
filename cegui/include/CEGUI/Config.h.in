@@ -212,7 +212,7 @@ setting CMake options and regenerating, rather than editing directly.
 #if defined(_WIN32) || defined(__WIN32__)
 #   define CEGUI_MODULE_DIR "${CMAKE_BINARY_DIR}/bin/"
 #elif !defined(__ANDROID__)
-#   define CEGUI_MODULE_DIR "${CMAKE_INSTALL_PREFIX}/${CEGUI_MODULE_INSTALL_DIR}/"
+#   define CEGUI_MODULE_DIR "${CMAKE_INSTALL_PREFIX}/${CEGUI_INSTALL_MODULE_DIR}/"
 #endif
 
 // This is defined when iconv is expecting a const char** and not a char**

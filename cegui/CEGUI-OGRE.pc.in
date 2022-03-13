@@ -1,9 +1,9 @@
 prefix=@CMAKE_INSTALL_PREFIX@
 exec_prefix=${prefix}
-libdir=${prefix}/@CEGUI_LIB_INSTALL_DIR@
-includedir=${prefix}/@CEGUI_INCLUDE_INSTALL_DIR@
-moduledir=${prefix}/@CEGUI_MODULE_INSTALL_DIR@
-datafiles=${prefix}/@CEGUI_DATA_INSTALL_DIR@
+libdir=${prefix}/@CEGUI_INSTALL_LIB_DIR@
+includedir=${prefix}/@CEGUI_INSTALL_INCLUDE_DIR@
+moduledir=${prefix}/@CEGUI_INSTALL_MODULE_DIR@
+datafiles=${prefix}/@CEGUI_INSTALL_DATA_DIR@
 
 Name: CEGUI-@CEGUI_VERSION_MAJOR@ Ogre Renderer
 Description: Ogre based renderer module for CEGUI.

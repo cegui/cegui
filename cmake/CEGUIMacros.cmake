@@ -214,7 +214,8 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
             C_STANDARD 11
             C_STANDARD_REQUIRED ON
             CXX_STANDARD 11
-            CXX_STANDARD_REQUIRED ON)
+            CXX_STANDARD_REQUIRED ON
+            CXX_EXTENSIONS OFF)
     endif()
 
     ###########################################################################
@@ -227,7 +228,8 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
             C_STANDARD 11
             C_STANDARD_REQUIRED ON
             CXX_STANDARD 11
-            CXX_STANDARD_REQUIRED ON)
+            CXX_STANDARD_REQUIRED ON
+            CXX_EXTENSIONS OFF)
 
         if (NOT CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
             set_target_properties(${_LIB_NAME} PROPERTIES INTERFACE_LINK_LIBRARIES "")
@@ -247,7 +249,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
 
         elseif(CEGUI_INSTALL_WITH_RPATH)
             set_target_properties(${_LIB_NAME} PROPERTIES
-                INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
+                INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_INSTALL_LIB_DIR}"
                 )
         endif()
 
@@ -269,31 +271,31 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
     ###########################################################################
     if (${_INSTALL_BIN})
         if (${_IS_MODULE})
-            set(_CEGUI_LIB_DEST ${CEGUI_MODULE_INSTALL_DIR})
+            set(_CEGUI_LIB_DEST ${CEGUI_INSTALL_MODULE_DIR})
         else()
-            set(_CEGUI_LIB_DEST ${CEGUI_LIB_INSTALL_DIR})
+            set(_CEGUI_LIB_DEST ${CEGUI_INSTALL_LIB_DIR})
         endif()
 
         if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
             install(TARGETS ${_LIB_NAME}
                 RUNTIME DESTINATION bin COMPONENT cegui_bin
                 LIBRARY DESTINATION ${_CEGUI_LIB_DEST} COMPONENT cegui_lib
-                ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
+                ARCHIVE DESTINATION ${CEGUI_INSTALL_LIB_DIR} COMPONENT cegui_devel
                 )
         endif()
 
         if (CEGUI_BUILD_STATIC_CONFIGURATION)
             install(TARGETS ${_LIB_NAME}_Static
               RUNTIME DESTINATION bin COMPONENT cegui_bin
-              LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib
-              ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
+              LIBRARY DESTINATION ${CEGUI_INSTALL_LIB_DIR} COMPONENT cegui_lib
+              ARCHIVE DESTINATION ${CEGUI_INSTALL_LIB_DIR} COMPONENT cegui_devel
             )
         endif()
     endif()
 
     if (${_INSTALL_HEADERS})
         string (REPLACE "cegui/src/" "" _REL_HEADER_DIR ${_REL_SRC_DIR})
-        install(FILES ${${_HEADER_FILES_VAR}} DESTINATION "${CEGUI_INCLUDE_INSTALL_DIR}/CEGUI/${_REL_HEADER_DIR}" COMPONENT cegui_devel)
+        install(FILES ${${_HEADER_FILES_VAR}} DESTINATION "${CEGUI_INSTALL_INCLUDE_DIR}/CEGUI/${_REL_HEADER_DIR}" COMPONENT cegui_devel)
     endif()
 endmacro()
 
@@ -352,7 +354,7 @@ macro (cegui_apple_app_setup _TARGET_NAME _STATIC)
     if (NOT ${_STATIC})
         if (NOT CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
             add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
-                COMMAND if test x${_CEGUI_BUILD_CONFIG} == xDebug \; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; ce_libglob=\"*${CEGUI_BUILD_SUFFIX}.dylib\"\; else ce_ext=\"\"\; shopt -s extglob\; ce_libglob=\"!\(*${CEGUI_BUILD_SUFFIX}\).dylib\"\; fi\; ${_ACTIONCMD} ${CMAKE_PREFIX_PATH}/lib/dynamic/$$ce_libglob \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Frameworks/\"
+                COMMAND if test x${_CEGUI_BUILD_CONFIG} == xDebug \; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; ce_libglob=\"*${CEGUI_BUILD_SUFFIX}.dylib\"\; else ce_ext=\"\"\; shopt -s extglob\; ce_libglob=\"!\(*${CEGUI_BUILD_SUFFIX}\).dylib\"\; fi\; ${_ACTIONCMD} ${CEGUI_DEPENDENCIES_DIR}/lib/dynamic/$$ce_libglob \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Frameworks/\"
                 COMMENT "Creating ${_ACTIONMSG} dependency libraries in ${_TARGET_NAME}.app")
         endif()
 
@@ -397,16 +399,16 @@ macro (cegui_add_sample_with_extra_files _NAME _EXTRA_HEADER_FILES _EXTRA_SOURCE
     if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
         install(TARGETS ${CEGUI_TARGET_NAME}
             RUNTIME DESTINATION bin COMPONENT cegui_samples
-            LIBRARY DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR} COMPONENT cegui_samples
-            ARCHIVE DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR} COMPONENT cegui_samples
+            LIBRARY DESTINATION ${CEGUI_INSTALL_SAMPLE_DIR} COMPONENT cegui_samples
+            ARCHIVE DESTINATION ${CEGUI_INSTALL_SAMPLE_DIR} COMPONENT cegui_samples
             )
     endif()
 
     if (CEGUI_BUILD_STATIC_CONFIGURATION)
         install(TARGETS ${CEGUI_TARGET_NAME}_Static
           RUNTIME DESTINATION bin COMPONENT cegui_samples
-          LIBRARY DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR} COMPONENT cegui_samples
-          ARCHIVE DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR} COMPONENT cegui_samples
+          LIBRARY DESTINATION ${CEGUI_INSTALL_SAMPLE_DIR} COMPONENT cegui_samples
+          ARCHIVE DESTINATION ${CEGUI_INSTALL_SAMPLE_DIR} COMPONENT cegui_samples
         )
     endif()
 
@@ -448,7 +450,7 @@ macro( cegui_add_python_module PYTHON_MODULE_NAME SOURCE_DIR EXTRA_LIBS )
 
     if (NOT APPLE AND CEGUI_INSTALL_WITH_RPATH)
         set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES
-            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
+            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_INSTALL_LIB_DIR}"
         )
     endif()
 
@@ -456,7 +458,7 @@ macro( cegui_add_python_module PYTHON_MODULE_NAME SOURCE_DIR EXTRA_LIBS )
         set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
     endif()
 
-    install(TARGETS ${PYTHON_MODULE_NAME} LIBRARY DESTINATION "${CEGUI_PYTHON_INSTALL_DIR}" COMPONENT cegui_python)
+    install(TARGETS ${PYTHON_MODULE_NAME} LIBRARY DESTINATION "${CEGUI_INSTALL_PYTHON_DIR}" COMPONENT cegui_python)
 endmacro()
 
 #
@@ -517,7 +519,7 @@ macro (cegui_add_test_executable_with_extra_files _NAME _EXTRA_HEADER_FILES _EXT
 
         if (NOT APPLE AND CEGUI_INSTALL_WITH_RPATH)
             set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
-                INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
+                INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_INSTALL_LIB_DIR}"
                 )
         endif()
     endif()
@@ -555,16 +557,16 @@ macro (cegui_add_test_executable_with_extra_files _NAME _EXTRA_HEADER_FILES _EXT
     if (CEGUI_BUILD_DYNAMIC_CONFIGURATION)
         install(TARGETS ${CEGUI_TARGET_NAME}
             RUNTIME DESTINATION bin COMPONENT cegui_bin
-            LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib
-            ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
+            LIBRARY DESTINATION ${CEGUI_INSTALL_LIB_DIR} COMPONENT cegui_lib
+            ARCHIVE DESTINATION ${CEGUI_INSTALL_LIB_DIR} COMPONENT cegui_devel
             )
     endif()
 
     if (CEGUI_BUILD_STATIC_CONFIGURATION)
         install(TARGETS ${CEGUI_TARGET_NAME}_Static
           RUNTIME DESTINATION bin COMPONENT cegui_bin
-          LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_lib 
-          ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR} COMPONENT cegui_devel
+          LIBRARY DESTINATION ${CEGUI_INSTALL_LIB_DIR} COMPONENT cegui_lib 
+          ARCHIVE DESTINATION ${CEGUI_INSTALL_LIB_DIR} COMPONENT cegui_devel
     )
     endif()
 

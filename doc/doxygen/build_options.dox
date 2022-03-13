@@ -167,7 +167,7 @@ Specifies whether to build the Python extension module(s) with SWIG
 Specifies whether to build the Python extension module(s) with Boost and Py++
 
 @section build_options_samples Sample Framework and Samples
-@subsection build_options_samples_enabled CEGUI_SAMPLES_ENABLED
+@subsection build_options_samples_enabled CEGUI_BUILD_SAMPLES
 @subsection build_options_samples_use_gtk2 CEGUI_SAMPLES_USE_GTK2
 Specifies whether the sample applications will make use of the GTK2 UI for
 renderer selection.

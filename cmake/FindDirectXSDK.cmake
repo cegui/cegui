@@ -53,7 +53,7 @@ else ()
 
     find_package_handle_standard_args(DirectXSDK DEFAULT_MSG DIRECTXSDK_LIB_PATH DIRECTXSDK_H_PATH DIRECTXSDK_MAX_D3D)
 
-    mark_as_advanced(DIRECTXSDK_H_PATH DIRECTXSDK_LIB_PATH)
+    mark_as_advanced(DIRECTXSDK_H_PATH DIRECTXSDK_LIB_PATH WIN_SDK_ROOT WIN_SDK_ROOT_32)
 
     # set up output vars
     if (DIRECTXSDK_FOUND)
