@@ -275,6 +275,11 @@ myIrrlichtSceneManager->drawAll();
 myIrrlichtDriver->endScene();
 @endcode
 
+@subsection rendering_tutorial_draw_note Note on GPU resource bindings
+Please remember that CEGUI binds its own GPU resources during the rendering,
+so you should not expect your previous bindings to be actual after call to
+renderAllGUIContexts. You should update them explicitly if necessary.
+
 <br>
 @section rendering_tutorial_conclusion Conclusion
 This is the <em>most basic</em> introduction to setting up CEGUI to render.
