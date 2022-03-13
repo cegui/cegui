@@ -30,12 +30,6 @@
 
 namespace CEGUI
 {
-    XMLAttributes::XMLAttributes(void)
-    {}
-
-    XMLAttributes::~XMLAttributes(void)
-    {}
-
     void XMLAttributes::add(const String& attrName, const String& attrValue)
     {
         d_attrs[attrName] = attrValue;
@@ -43,7 +37,7 @@ namespace CEGUI
 
     void XMLAttributes::remove(const String& attrName)
     {
-        AttributeMap::iterator pos = d_attrs.find(attrName);
+        auto pos = d_attrs.find(attrName);
 
         if (pos != d_attrs.end())
             d_attrs.erase(pos);
@@ -67,7 +61,7 @@ namespace CEGUI
                 "The specified index is out of range for this XMLAttributes block.");
         }
 
-        AttributeMap::const_iterator iter = d_attrs.begin();
+        auto iter = d_attrs.begin();
         std::advance(iter, index);
 
         return (*iter).first;
@@ -81,7 +75,7 @@ namespace CEGUI
                 "The specified index is out of range for this XMLAttributes block.");
         }
 
-        AttributeMap::const_iterator iter = d_attrs.begin();
+        auto iter = d_attrs.begin();
         std::advance(iter, index);
 
         return (*iter).second;
@@ -89,7 +83,7 @@ namespace CEGUI
 
     const String& XMLAttributes::getValue(const String& attrName) const
     {
-        AttributeMap::const_iterator pos = d_attrs.find(attrName);
+        auto pos = d_attrs.find(attrName);
 
         if (pos != d_attrs.end())
         {

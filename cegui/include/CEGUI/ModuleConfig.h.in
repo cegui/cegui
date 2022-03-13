@@ -74,8 +74,8 @@ setting CMake options and regenerating, rather than editing directly.
 #cmakedefine CEGUI_BUILD_XMLPARSER_EXPAT
 #cmakedefine CEGUI_BUILD_XMLPARSER_XERCES
 #cmakedefine CEGUI_BUILD_XMLPARSER_LIBXML2
-#cmakedefine CEGUI_BUILD_XMLPARSER_RAPIDXML
-#cmakedefine CEGUI_BUILD_XMLPARSER_TINYXML
+#cmakedefine CEGUI_BUILD_XMLPARSER_PUGIXML
+#cmakedefine CEGUI_BUILD_XMLPARSER_TINYXML2
 
 //////////////////////////////////////////////////////////////////////////
 // The following define what scripting modules /should/ be available

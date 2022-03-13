@@ -24,24 +24,40 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIRapidXMLParserModule_h_
-#define _CEGUIRapidXMLParserModule_h_
+#ifndef _CEGUIPugiXMLParser_h_
+#define _CEGUIPugiXMLParser_h_
 
-#include "CEGUI/XMLParserModules/RapidXML/XMLParser.h"
+#include "../../XMLParser.h"
 
-/*!
-\brief
-    exported function that creates an XMLParser based object and returns
-    a pointer to that object.
-*/
-extern "C" CEGUIRAPIDXMLPARSER_API CEGUI::XMLParser* createParser(void);
+#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
+#   ifdef CEGUIPUGIXMLPARSER_EXPORTS
+#       define CEGUIPUGIXMLPARSER_API __declspec(dllexport)
+#   else
+#       define CEGUIPUGIXMLPARSER_API __declspec(dllimport)
+#   endif
+#else
+#   define CEGUIPUGIXMLPARSER_API
+#endif
 
-/*!
-\brief
-    exported function that deletes an XMLParser based object previously
-    created by this module.
-*/
-extern "C" CEGUIRAPIDXMLPARSER_API void destroyParser(CEGUI::XMLParser* parser);
+namespace CEGUI
+{
 
-#endif // end of guard _CEGUIRapidXMLParserModule_h_
+//! Implementation of XMLParser using PugiXML
+class CEGUIPUGIXMLPARSER_API PugiXMLParser : public XMLParser
+{
+public:
 
+    PugiXMLParser();
+
+    void parseXML(XMLHandler& handler, const RawDataContainer& source,
+                  const String& schemaName, bool /*allowXmlValidation*/);
+
+protected:
+
+    bool initialiseImpl();
+    void cleanupImpl();
+};
+
+}
+
+#endif

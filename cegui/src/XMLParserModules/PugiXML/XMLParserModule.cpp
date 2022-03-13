@@ -24,13 +24,13 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/XMLParserModules/RapidXML/XMLParserModule.h"
-#include "CEGUI/XMLParserModules/RapidXML/XMLParser.h"
+#include "CEGUI/XMLParserModules/PugiXML/XMLParserModule.h"
+#include "CEGUI/XMLParserModules/PugiXML/XMLParser.h"
 
 //----------------------------------------------------------------------------//
 CEGUI::XMLParser* createParser(void)
 {
-    return new CEGUI::RapidXMLParser();
+    return new CEGUI::PugiXMLParser();
 }
 
 //----------------------------------------------------------------------------//

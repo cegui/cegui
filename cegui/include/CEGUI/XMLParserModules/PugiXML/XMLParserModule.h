@@ -24,43 +24,24 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIRapidXMLParser_h_
-#define _CEGUIRapidXMLParser_h_
+#ifndef _CEGUIPugiXMLParserModule_h_
+#define _CEGUIPugiXMLParserModule_h_
 
-#include "../../XMLParser.h"
+#include "CEGUI/XMLParserModules/PugiXML/XMLParser.h"
 
-#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef CEGUIRAPIDXMLPARSER_EXPORTS
-#       define CEGUIRAPIDXMLPARSER_API __declspec(dllexport)
-#   else
-#       define CEGUIRAPIDXMLPARSER_API __declspec(dllimport)
-#   endif
-#else
-#   define CEGUIRAPIDXMLPARSER_API
-#endif
+/*!
+\brief
+    exported function that creates an XMLParser based object and returns
+    a pointer to that object.
+*/
+extern "C" CEGUIPUGIXMLPARSER_API CEGUI::XMLParser* createParser(void);
 
-// Start of CEGUI namespace section
-namespace CEGUI
-{
-//! Implementation of XMLParser using RapidXML
-class CEGUIRAPIDXMLPARSER_API RapidXMLParser : public XMLParser
-{
-public:
-    RapidXMLParser(void);
-    ~RapidXMLParser(void);
+/*!
+\brief
+    exported function that deletes an XMLParser based object previously
+    created by this module.
+*/
+extern "C" CEGUIPUGIXMLPARSER_API void destroyParser(CEGUI::XMLParser* parser);
 
-    // Implementation of public abstract interface
-    void parseXML(XMLHandler& handler, const RawDataContainer& source,
-                  const String& schemaName, bool /*allowXmlValidation*/);
-
-protected:
-    // Implementation of abstract interface.
-    bool initialiseImpl(void);
-    void cleanupImpl(void);
-};
-
-} // End of  CEGUI namespace section
-
-
-#endif  // end of guard _CEGUIRapidXMLParser_h_
+#endif // end of guard _CEGUIPugiXMLParserModule_h_
 

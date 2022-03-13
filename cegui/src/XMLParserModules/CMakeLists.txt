@@ -14,7 +14,7 @@ if (CEGUI_BUILD_XMLPARSER_TINYXML2)
     add_subdirectory(TinyXML2)
 endif()
 
-if (CEGUI_BUILD_XMLPARSER_RAPIDXML)
-    add_subdirectory(RapidXML)
+if (CEGUI_BUILD_XMLPARSER_PUGIXML)
+    add_subdirectory(PugiXML)
 endif()
 

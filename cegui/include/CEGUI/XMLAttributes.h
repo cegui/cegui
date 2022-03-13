@@ -41,20 +41,9 @@ namespace CEGUI
     \brief
         Class representing a block of attributes associated with an XML element.
      */
-    class CEGUIEXPORT XMLAttributes
+    class CEGUIEXPORT XMLAttributes final
     {
     public:
-        /*!
-        \brief
-            XMLAttributes constructor.
-         */
-        XMLAttributes(void);
-
-        /*!
-        \brief
-            XMLAttributes Destructor
-         */
-        virtual ~XMLAttributes(void);
 
         /*!
         \brief
@@ -231,8 +220,8 @@ namespace CEGUI
         float getValueAsFloat(const String& attrName, float def = 0.0f) const;
 
     protected:
-        typedef std::unordered_map<String, String> AttributeMap;
-        AttributeMap    d_attrs;
+
+        std::unordered_map<String, String> d_attrs;
     };
 
 } // End of  CEGUI namespace section
