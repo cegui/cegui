@@ -276,14 +276,13 @@ void Window::destroy()
     if (d_parent)
         d_parent->removeChild(this);
     else if (d_guiContext)
-        d_guiContext->onWindowDetached(this);
+        attachToGUIContext(nullptr);
 
     // clean up looknfeel related things
     if (!d_lookName.empty())
     {
         d_windowRenderer->onLookNFeelUnassigned();
-        WidgetLookManager::getSingleton().getWidgetLook(d_lookName).
-            cleanUpWidget(*this);
+        WidgetLookManager::getSingleton().getWidgetLook(d_lookName).cleanUpWidget(*this);
     }
 
     // free any assigned WindowRenderer
