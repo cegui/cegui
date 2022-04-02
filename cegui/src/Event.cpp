@@ -41,13 +41,7 @@ Event::Event(const String& name) :
 //----------------------------------------------------------------------------//
 Event::~Event()
 {
-    for (std::pair<const Group, Connection>& groupAndSlot : d_slots)
-    {
-        groupAndSlot.second->d_event = nullptr;
-        groupAndSlot.second->d_subscriber->cleanup();
-    }
-
-    d_slots.clear();
+    unsubscribeAll();
 }
 
 //----------------------------------------------------------------------------//
@@ -63,6 +57,18 @@ Event::Connection Event::subscribe(Event::Group group,
     Event::Connection c(new BoundSlot(group, slot, *this));
     d_slots.insert(std::pair<Group, Connection>(group, c));
     return c;
+}
+
+//----------------------------------------------------------------------------//
+void Event::unsubscribeAll()
+{
+    for (auto& groupAndSlot : d_slots)
+    {
+        groupAndSlot.second->d_event = nullptr;
+        groupAndSlot.second->d_subscriber->cleanup();
+    }
+
+    d_slots.clear();
 }
 
 //----------------------------------------------------------------------------//

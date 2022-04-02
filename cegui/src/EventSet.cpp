@@ -100,6 +100,20 @@ Event::Connection EventSet::subscribeEvent(const String& name,
 }
 
 //----------------------------------------------------------------------------//
+void EventSet::unsubscribeAll(const String& eventName)
+{
+    if (Event* ev = getEventObject(eventName))
+        ev->unsubscribeAll();
+}
+
+//----------------------------------------------------------------------------//
+void EventSet::unsubscribeAll()
+{
+    for (auto& pair : d_events)
+        pair.second->unsubscribeAll();
+}
+
+//----------------------------------------------------------------------------//
 void EventSet::fireEvent(const String& name,
                          EventArgs& args,
                          const String& eventNamespace)

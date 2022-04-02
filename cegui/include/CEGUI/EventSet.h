@@ -350,6 +350,12 @@ public:
                                                      Event::Group group,
                                                      const String& subscriber_name);
 
+    //! \brief Unsubscribes all listeners from an event with given \a eventName
+    void unsubscribeAll(const String& eventName);
+
+    //! \brief Unsubscribes all listeners from all events
+    void unsubscribeAll();
+
     /*!
     \brief
         Fires the named event passing the given EventArgs object.

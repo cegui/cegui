@@ -218,6 +218,9 @@ public:
     */
     Connection subscribe(Group group, const Subscriber& slot);
 
+    //! \brief Unsubscribes all listeners from this event
+    void unsubscribeAll();
+
     /*!
     \brief
         Fires the event.  All event subscribers get called in the appropriate

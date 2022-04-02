@@ -57,5 +57,4 @@ void BoundSlot::disconnect()
     }
 }
 
-} // End of  CEGUI namespace section
-
+}
