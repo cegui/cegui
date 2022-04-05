@@ -311,6 +311,8 @@ protected:
     */
     void doDragging(const glm::vec2& local_cursor);
 
+    void endDragging(bool restorePosition);
+
     void updateActiveCursorImage() const;
 
     void updateDropTarget();
@@ -324,7 +326,6 @@ protected:
     void onCaptureLost(WindowEventArgs& e) override;
     void onAlphaChanged(WindowEventArgs& e) override;
     void onClippingChanged(WindowEventArgs& e) override;
-    void onMoved(ElementEventArgs& e) override;
 
     /*************************************************************************
         New Event handler methods
@@ -421,7 +422,6 @@ protected:
     bool         d_leftPointerHeld : 1;      //!< True when left cursor source is held.
     bool         d_dragging : 1;             //!< true when being dragged.
     bool         d_storedClipState : 1;      //!< Parent clip state to re-set.
-    bool         d_moved : 1;                //!< To detect external positioning when drop
     bool         d_stickyMode : 1;           //!< true when we're in 'sticky' mode.
     bool         d_pickedUp : 1;             //!< true after been picked-up / dragged via sticky mode
     bool         d_usingFixedDragOffset : 1; //!< true if fixed cursor offset is used for dragging position.

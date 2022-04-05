@@ -47,6 +47,7 @@
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/SharedStringStream.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/widgets/DragContainer.h"
 
 #include <deque>
 
@@ -576,7 +577,8 @@ Window* Window::getChildAtPosition(const glm::vec2& position,
     const auto end = d_drawList.crend();
     for (auto child = d_drawList.rbegin(); child != end; ++child)
     {
-        if ((*child) != exclude && (*child)->isEffectiveVisible())
+        // NB: d_destructionStarted is checked for the case of calling this from EventDestructionStarted handler
+        if ((*child) != exclude && (*child)->isEffectiveVisible() && !(*child)->d_destructionStarted)
         {
             // recursively scan for hit on children of this child window...
             if (Window* const wnd = (*child)->getChildAtPosition(p, hittestfunc, allow_disabled, exclude))
@@ -2269,7 +2271,7 @@ void Window::onDragDropItemDropped(DragDropEventArgs& e)
     {
         Event* ev = getEventObject(EventDragDropItemDropped);
         if (!ev || !ev->getConnectionCount())
-            ++e.handled;
+            e.dragDropItem->cancelDragging();
     }
 }
 

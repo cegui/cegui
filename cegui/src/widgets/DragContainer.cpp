@@ -194,6 +194,34 @@ void DragContainer::doDragging(const glm::vec2& local_cursor)
 }
 
 //----------------------------------------------------------------------------//
+void DragContainer::endDragging(bool restorePosition)
+{
+    d_leftPointerHeld = false;
+    d_pickedUp = false;
+    d_targetDestroyConnection.disconnect();
+
+    if (d_dragging)
+    {
+        // restore normal state of the window
+        d_dragging = false;
+
+        if (restorePosition)
+            setPosition(d_startPosition);
+
+        setClippedByParent(d_storedClipState);
+        setAlpha(d_storedAlpha);
+
+        WindowEventArgs args(this);
+        onDragEnded(args);
+
+        // restore normal cursor
+        updateActiveCursorImage();
+    }
+
+    d_dropTarget = nullptr;
+}
+
+//----------------------------------------------------------------------------//
 void DragContainer::cancelDragging()
 {
     if (d_dragging)
@@ -249,6 +277,7 @@ void DragContainer::onCursorActivate(CursorInputEventArgs& e)
         }
         else
         {
+            // Handle dropping
             if (d_dragging)
             {
                 // Target could change even if we didn't move. Ensure we drop correctly.
@@ -256,15 +285,14 @@ void DragContainer::onCursorActivate(CursorInputEventArgs& e)
 
                 if (d_dropTarget)
                 {
-                    // We need to detect if the position changed in a DragDropItemDropped
-                    d_moved = false;
+                    // Keep position changes made in a DragDropItemDropped
+                    const UVector2 prevPos = getPosition();
 
                     // Try dropping. Continue sticky dragging if it is not accepted by the target.
                     if (!d_dropTarget->notifyDragDropItemDropped(this) && d_pickedUp)
                         return;
 
-                    if (d_moved)
-                        d_startPosition = getPosition();
+                    endDragging(prevPos == getPosition());
                 }
             }
 
@@ -296,29 +324,8 @@ void DragContainer::onCursorMove(CursorInputEventArgs& e)
 void DragContainer::onCaptureLost(WindowEventArgs& e)
 {
     Window::onCaptureLost(e);
-
-    d_pickedUp = false;
-
-    if (d_dragging)
-    {
-        // restore normal state of the window
-        d_dragging = false;
-
-        WindowEventArgs args(this);
-        onDragEnded(args);
-
-        setClippedByParent(d_storedClipState);
-        setPosition(d_startPosition);
-        setAlpha(d_storedAlpha);
-
-        // restore normal cursor
-        updateActiveCursorImage();
-    }
-
-    d_leftPointerHeld = false;
-    d_targetDestroyConnection.disconnect();
     d_dropTarget = nullptr;
-
+    endDragging(true);
     ++e.handled;
 }
 
@@ -346,13 +353,6 @@ void DragContainer::onClippingChanged(WindowEventArgs& e)
     }
 
     Window::onClippingChanged(e);
-}
-
-//----------------------------------------------------------------------------//
-void DragContainer::onMoved(ElementEventArgs& e)
-{
-    Window::onMoved(e);
-    d_moved = true;
 }
 
 //----------------------------------------------------------------------------//
