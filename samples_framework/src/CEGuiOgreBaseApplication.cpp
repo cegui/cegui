@@ -82,12 +82,23 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
         // Create the scene manager
         SceneManager* sm = d_ogreRoot->
+#if (OGRE_VERSION >= ((13 << 16)))
+            createSceneManager(DefaultSceneManagerFactory::FACTORY_TYPE_NAME, "SampleSceneMgr");
+
+        SceneNode* camNode = sm->getRootSceneNode()->createChildSceneNode();
+        d_camera = sm->createCamera("SampleCam");
+        camNode->setPosition(0,0,500);
+        camNode->lookAt(Vector3(0,0,-300), Node::TransformSpace::TS_WORLD);
+        d_camera->setNearClipDistance(5);
+        camNode->attachObject(d_camera);
+#else
             createSceneManager(ST_GENERIC, "SampleSceneMgr");
         // Create and initialise the camera
         d_camera = sm->createCamera("SampleCam");
         d_camera->setPosition(Vector3(0,0,500));
         d_camera->lookAt(Vector3(0,0,-300));
         d_camera->setNearClipDistance(5);
+#endif
 
         // Create a viewport covering whole window
         Viewport* vp = d_window->addViewport(d_camera);
@@ -451,8 +462,11 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp
 
         unsigned int width, height, depth;
         int left, top;
-
+#if (OGRE_VERSION >= (13 << 16))
+        window->getMetrics(width, height, left, top);
+#else
         window->getMetrics(width, height, depth, left, top);
+#endif
         const OIS::MouseState& mouseState = d_mouse->getMouseState();
         mouseState.width = width;
         mouseState.height = height;
