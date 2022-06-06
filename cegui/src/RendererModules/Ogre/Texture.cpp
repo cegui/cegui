@@ -39,6 +39,7 @@
 #include <OgrePixelFormatGpuUtils.h>
 #include <OgreStagingTexture.h>
 #else
+#include "CEGUI/ResourceProvider.h"
 #include <OgreTextureManager.h>
 #include <OgreHardwarePixelBuffer.h>
 #endif // CEGUI_USE_OGRE_TEXTURE_GPU
