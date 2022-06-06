@@ -178,7 +178,7 @@ protected:
     //! Destination area for this component.
     ComponentArea d_area;
     //! base colours to be applied when rendering the image component.
-    ColourRect d_colours = 0xFFFFFFFF;
+    ColourRect d_colours = ColourRect(0xFFFFFFFF);
     //! name of property to fetch colours from.
     String d_colourPropertyName;
 };
