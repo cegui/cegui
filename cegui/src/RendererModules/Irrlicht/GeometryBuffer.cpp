@@ -177,13 +177,13 @@ void IrrlichtGeometryBuffer::setPivot(const glm::vec3& p)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::appendVertex(const Vertex& vertex)
+void IrrlichtGeometryBuffer::appendVertex(const ColouredVertex& vertex)
 {
     appendGeometry(&vertex, 1);
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::appendGeometry(const Vertex* const vbuff,
+void IrrlichtGeometryBuffer::appendGeometry(const ColouredVertex* const vbuff,
                                             unsigned int vertex_count)
 {
     // see if we should start a new batch
@@ -203,7 +203,7 @@ void IrrlichtGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     irr::video::S3DVertex v;
     for (unsigned int i = 0; i < vertex_count; ++i)
     {
-        const Vertex& vs = vbuff[i];
+        const ColouredVertex& vs = vbuff[i];
         v.Pos.X     = vs.position.d_x + d_texelOffset;
         v.Pos.Y     = vs.position.d_y + d_texelOffset;
         v.Pos.Z     = vs.position.d_z;

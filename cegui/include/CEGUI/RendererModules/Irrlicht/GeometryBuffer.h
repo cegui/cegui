@@ -65,8 +65,8 @@ public:
     void setTranslation(const glm::vec3& v);
     void setRotation(const glm::quat& r);
     void setPivot(const glm::vec3& p);
-    void appendVertex(const Vertex& vertex);
-    void appendGeometry(const Vertex* const vbuff, unsigned int vertex_count);
+    void appendVertex(const ColouredVertex& vertex);
+    void appendGeometry(const ColouredVertex* const vbuff, unsigned int vertex_count);
     void setActiveTexture(Texture* texture);
     void reset();
     Texture* getActiveTexture() const;
