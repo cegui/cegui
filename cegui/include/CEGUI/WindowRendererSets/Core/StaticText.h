@@ -512,7 +512,7 @@ protected:
 
     mutable RenderedText d_renderedText;
     std::vector<Event::ScopedConnection> d_connections;
-    ColourRect d_textCols = 0xFFFFFFFF;       //!< Colours used when rendering the text.
+    ColourRect d_textCols = ColourRect(0xFFFFFFFF);       //!< Colours used when rendering the text.
 
     /*
     \brief

@@ -177,7 +177,7 @@ struct ImageRenderSettings
     //! The colour rectangle set for this Image. The colours of the rectangle will be multiplied with
     //! the Image's colours when rendered, i.e. if the colours are all '0xFFFFFFFF' no effect will be seen.
     //! If this will be used depends on the underlying image.
-    ColourRect d_multiplyColours = 0xFFFFFFFF;
+    ColourRect d_multiplyColours = ColourRect(0xFFFFFFFF);
     //! The alpha value for this image, should be set as the GeometryBuffer's alpha by the image class
     float d_alpha = 1.f;
     //! True to round drawn image portion to whole pixels

@@ -60,7 +60,7 @@ public:
 protected:
 
     const Image* d_image = nullptr;
-    ColourRect d_colours = 0xFFFFFFFF;   
+    ColourRect d_colours = ColourRect(0xFFFFFFFF);
     Sizef d_size; //<! target size to render the image at (0.f means natural size at the dimension)
     Sizef d_effectiveSize; //!< An effective size after the last updateMetrics(const Window* hostWindow) call
 };
