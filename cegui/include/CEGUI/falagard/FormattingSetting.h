@@ -30,6 +30,7 @@
 #include "CEGUI/Window.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/falagard/XMLHandler.h"
+#include "CEGUI/XMLSerializer.h"
 
 namespace CEGUI
 {
