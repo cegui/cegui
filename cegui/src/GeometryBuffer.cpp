@@ -32,6 +32,7 @@
 #include "CEGUI/RenderMaterial.h"
 #include "CEGUI/ColourRect.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <cstring>
 
 namespace CEGUI
 {

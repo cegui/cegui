@@ -31,6 +31,7 @@
 #if defined (CEGUI_USE_FRIBIDI)
 #include <fribidi.h>
 #include <memory>
+#include <cstring>
 #elif defined (CEGUI_USE_MINIBIDI)
 // https://gitlab.com/arabeyes-dev/adawat/-/blob/master/minibidi/minibidi.c
 // TODO: check for modifications against our copy
