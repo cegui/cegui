@@ -33,6 +33,7 @@
 #include "CEGUI/RenderMaterial.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ShaderParameterBindings.h"
+#include "CEGUI/RenderMaterial.h"
 
 #include <OgreRenderSystem.h>
 #include <OgreHardwareBufferManager.h>

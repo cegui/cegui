@@ -43,6 +43,7 @@
 #include "CEGUI/BitmapImage.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Window.h"
+#include "CEGUI/RenderMaterial.h"
 
 #include <OgreRoot.h>
 #include <OgreRenderSystem.h>
