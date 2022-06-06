@@ -30,6 +30,7 @@
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/Rectf.h"
 #include <vector>
+#include <memory>
 
 // NB: these are internal classes, please use RenderedText in the client code
 

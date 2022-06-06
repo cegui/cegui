@@ -29,6 +29,7 @@
 #include "CEGUI/falagard/Enums.h"
 #include "CEGUI/ColourRect.h"
 #include <vector>
+#include <memory>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
