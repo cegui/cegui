@@ -83,7 +83,7 @@
 #endif
 
 #ifndef CEGUI_USE_OGRE_HLMS
-#if OGRE_VERSION >= 0x10800
+#if OGRE_VERSION >= 0x10800 && OGRE_VERSION < 0x10900
 #   include "OgreRTShaderConfig.h"
 #endif
 #endif

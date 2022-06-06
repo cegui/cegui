@@ -89,33 +89,49 @@ std::uint32_t OgreTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 OgreTexture::OgreTexture(const String& name, bool notNullTexture) :
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
     d_texture(0),
+#endif
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),
     d_name(name)
 {
+#ifndef CEGUI_USE_OGRE_TEXTURE_GPU
+    OGRE_RESET(d_texture);
+#endif
     if (notNullTexture)
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
         createOgreTexture();
+#else
+        createEmptyOgreTexture();
+#endif
 }
 
 //----------------------------------------------------------------------------//
 OgreTexture::OgreTexture(const String& name, const String& filename,
                          const String& resourceGroup) :
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
     d_texture(0),
+#endif
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),
     d_name(name)
 {
+#ifndef CEGUI_USE_OGRE_TEXTURE_GPU
+    OGRE_RESET(d_texture);
+#endif
     loadFromFile(filename, resourceGroup);
 }
 
 //----------------------------------------------------------------------------//
 OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
     d_texture(0),
+#endif
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
@@ -173,17 +189,20 @@ OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
 #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
 OgreTexture::OgreTexture(const String& name, Ogre::TextureGpu* tex,
                          bool take_ownership) :
+    d_texture(0),
 #else
 OgreTexture::OgreTexture(const String& name, Ogre::TexturePtr& tex,
                          bool take_ownership) :
 #endif // CEGUI_USE_OGRE_TEXTURE_GPU
-    d_texture(0),
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),
     d_name(name)
 {
+#ifndef CEGUI_USE_OGRE_TEXTURE_GPU
+    OGRE_RESET(d_texture);
+#endif
     setOgreTexture(tex, take_ownership);
 }
 

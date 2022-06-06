@@ -67,6 +67,10 @@
 #define CEGUI_USE_OGRE_TEXTURE_GPU
 #endif
 
+#if (CEGUI_OGRE_VERSION < ((1 << 16) | (10 << 8) | 0))
+#include <OgrePrerequisites.h>
+#include <OgreHardwareBufferManager.h>
+#else //OGRE < 1.10.0
 namespace Ogre
 {
 class Root;
@@ -86,14 +90,16 @@ namespace v1
 {
 class HardwareVertexBufferSharedPtr;
 }
-#else
+#else //CEGUI_USE_OGRE_HLMS
+#if (CEGUI_OGRE_VERSION > ((1 << 16) | (10 << 8) | 0))
 class HardwareVertexBuffer;
 typedef SharedPtr<HardwareVertexBuffer> HardwareVertexBufferSharedPtr;
+#endif //CEGUI_OGRE_VERSION > 1.10.0
 #endif //CEGUI_USE_OGRE_HLMS
-#endif
+#endif //OGRE < 1.9.0
 class Matrix4;
 }
-
+#endif //OGRE < 1.10.0
 
 
 // Start of CEGUI namespace section
