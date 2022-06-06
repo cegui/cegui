@@ -30,7 +30,7 @@
 #include "CEGUI/DataContainer.h"
 #include "CEGUI/XMLHandler.h"
 #include "CEGUI/XMLAttributes.h"
-#include <tinyxml2/tinyxml2.h>
+#include <tinyxml2.h>
 
 namespace CEGUI
 {
