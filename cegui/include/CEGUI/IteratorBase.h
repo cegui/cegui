@@ -210,7 +210,7 @@ public:
     \brief
         Return the key for the item at the current iterator position.
     */
-    typename const T::key_type& getCurrentKey() const
+    const typename T::key_type& getCurrentKey() const
     {
         return this->d_currIter->first;
     }
