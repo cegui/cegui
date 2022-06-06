@@ -29,6 +29,7 @@
 #include "CEGUI/widgets/Editbox.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/text/TextUtils.h"
+#include <algorithm>
 
 namespace CEGUI
 {
