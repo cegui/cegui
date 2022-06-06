@@ -244,7 +244,7 @@ cegui_dependent_option( CEGUI_BUILD_IMAGECODEC_SDL2 "Specifies whether to build 
 cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the old OpenGL 1.2 (fixed pipeline) renderer module." "OPENGL_gl_LIBRARY;GLM_FOUND;GLEW_FOUND" )
 cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL3 "Specifies whether to build the renderer module that supports OpenGL 3.2 (core profile) and OpenGL ES 2.0." "OPENGL_gl_LIBRARY;GLM_FOUND;OPENGL_LOADER_FOUND")
 option( CEGUI_BUILD_RENDERER_OGRE "Specifies whether to build the Ogre renderer module" ${OGRE_FOUND} )
-option( CEGUI_BUILD_RENDERER_IRRLICHT "Specifies whether to build the Irrlicht renderer module" ${IRRLICHT_FOUND} )
+option( CEGUI_BUILD_RENDERER_IRRLICHT "Specifies whether to build the Irrlicht renderer module (not supported!)" FALSE )
 option( CEGUI_BUILD_RENDERER_DIRECTFB "Specifies whether to build the DirectFB renderer module (not supported!)" FALSE )
 cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D11 "Specifies whether to build the Direct3D 11 renderer module" "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 11" )
 option( CEGUI_BUILD_RENDERER_NULL "Specifies whether to build the null renderer module" FALSE )
