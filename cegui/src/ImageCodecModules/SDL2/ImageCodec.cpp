@@ -35,6 +35,7 @@
 #include "CEGUI/Texture.h"
 #include "CEGUI/Singleton.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/Sizef.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
