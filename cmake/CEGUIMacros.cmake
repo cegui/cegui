@@ -211,9 +211,9 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
             CEGUI_STATIC
             $<$<BOOL:${CEGUI_BUILD_STATIC_FACTORY_MODULE}>:CEGUI_BUILD_STATIC_FACTORY_MODULE>)
         set_target_properties(${_LIB_NAME}_Static PROPERTIES
-            C_STANDARD 11
+            C_STANDARD 14
             C_STANDARD_REQUIRED ON
-            CXX_STANDARD 11
+            CXX_STANDARD 14
             CXX_STANDARD_REQUIRED ON
             CXX_EXTENSIONS OFF)
     endif()
@@ -225,9 +225,9 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
         add_library(${_LIB_NAME} ${_LIB_TYPE} ${${_SOURCE_FILES_VAR}} ${${_HEADER_FILES_VAR}})
         set_target_properties(${_LIB_NAME} PROPERTIES DEFINE_SYMBOL ${_CEGUI_EXPORT_DEFINE})
         set_target_properties(${_LIB_NAME} PROPERTIES
-            C_STANDARD 11
+            C_STANDARD 14
             C_STANDARD_REQUIRED ON
-            CXX_STANDARD 11
+            CXX_STANDARD 14
             CXX_STANDARD_REQUIRED ON
             CXX_EXTENSIONS OFF)
 
