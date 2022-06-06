@@ -34,6 +34,8 @@
 #include "CEGUI/System.h" // this being here is a bit nasty IMO
 #include "CEGUI/CoordConverter.h"
 
+#include <algorithm>
+
 namespace CEGUI
 {
 const String ImageTypeAttribute( "type" );
