@@ -462,7 +462,7 @@ endif()
 
 # Option wether to build application templates; default off
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/application_templates")
-    option(CEGUI_BUILD_APPLICATION_TEMPLATES "Specifies whether to build the application templates." TRUE)
+    option(CEGUI_BUILD_APPLICATION_TEMPLATES "Specifies whether to build the application templates." FALSE)
 else()
     unset(CEGUI_BUILD_APPLICATION_TEMPLATES CACHE)
 endif()
