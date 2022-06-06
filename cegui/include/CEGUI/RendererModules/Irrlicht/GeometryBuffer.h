@@ -49,7 +49,7 @@ class IRR_GUIRENDERER_API IrrlichtGeometryBuffer : public GeometryBuffer
 {
 public:
     //! constructor
-    IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver);
+    IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver, RefCounted<RenderMaterial> renderMaterial);
 
     //! return the transformation matrix used for this buffer.
     const irr::core::matrix4& getMatrix() const;

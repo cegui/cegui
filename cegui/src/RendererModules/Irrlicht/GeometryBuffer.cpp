@@ -37,7 +37,8 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-IrrlichtGeometryBuffer::IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver):
+IrrlichtGeometryBuffer::IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver, RefCounted<RenderMaterial> renderMaterial):
+    GeometryBuffer(renderMaterial),
     d_driver(driver),
     d_activeTexture(0),
     d_clippingActive(true),
