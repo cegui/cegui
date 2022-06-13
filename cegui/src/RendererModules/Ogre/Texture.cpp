@@ -24,6 +24,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include <sstream>
 #include "CEGUI/RendererModules/Ogre/Texture.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
