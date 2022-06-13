@@ -48,7 +48,7 @@
 #   pragma warning(disable : 4251)
 #endif
 
-#if (CEGUI_OGRE_VERSION >= (2 << 16))
+#if (CEGUI_OGRE_VERSION == (2 << 16))
 // The new Ogre Compositor2 system has to be used since ViewPorts
 // no longer have the required functionality
 #define CEGUI_USE_OGRE_COMPOSITOR2
@@ -56,7 +56,7 @@
 
 // These HLMS Ogre 2.1 fixes are based on Jeremy Richert's patch to CEGUI
 // 0.8
-#if (CEGUI_OGRE_VERSION >= ((2 << 16) | (1 << 8) | 0))
+#if ((CEGUI_OGRE_VERSION == (2 << 16)) && (CEGUI_OGRE_VERSION >= ((1 << 8) | 0)))
 // The HLMS has to be used since fixed pipeline is disabled
 #define CEGUI_USE_OGRE_HLMS
 #include <OgreRenderOperation.h>
@@ -67,8 +67,8 @@
 #define CEGUI_USE_OGRE_TEXTURE_GPU
 #endif
 
-#if (CEGUI_OGRE_VERSION < ((1 << 16) | (10 << 8) | 0))
 #include <OgrePrerequisites.h>
+#if (CEGUI_OGRE_VERSION < ((1 << 16) | (10 << 8) | 0))
 #include <OgreHardwareBufferManager.h>
 #else //OGRE < 1.10.0
 namespace Ogre

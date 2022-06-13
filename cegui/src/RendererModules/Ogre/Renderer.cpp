@@ -88,7 +88,7 @@
 #endif
 #endif
 
-#if OGRE_VERSION >= 0x020100
+#if ((CEGUI_OGRE_VERSION == (2 << 16)) && (OGRE_VERSION >= 0x020100))
 #include <CommandBuffer/OgreCbDrawCall.h>
 #endif
 
