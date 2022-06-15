@@ -64,13 +64,13 @@ typedef SharedPtr<Texture> TexturePtr;
 class Matrix4;
 }
 
-#if (CEGUI_OGRE_VERSION >= (2 << 16))
+#if (CEGUI_OGRE_VERSION >= (2 << 16)) && (CEGUI_OGRE_VERSION < (13 << 16))
 // The new Ogre Compositor2 system has to be used since ViewPorts 
 // no longer have the required functionality
 #define CEGUI_USE_OGRE_COMPOSITOR2
 #endif
 
-#if (CEGUI_OGRE_VERSION >= ((2 << 16) | (1 << 8) | 0))
+#if (CEGUI_OGRE_VERSION >= ((2 << 16) | (1 << 8) | 0))  && (CEGUI_OGRE_VERSION < (13 << 16))
 // The HLMS has to be used since fixed pipeline is disabled
 #define CEGUI_USE_OGRE_HLMS
 #include <OgreRenderOperation.h>

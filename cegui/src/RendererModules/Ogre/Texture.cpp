@@ -32,6 +32,9 @@
 #include <OgreTextureManager.h>
 #include <OgreHardwarePixelBuffer.h>
 
+// Fixing https://github.com/OGRECave/ogre/issues/2424
+#include <sstream>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
