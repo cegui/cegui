@@ -29,10 +29,21 @@
 #include "CEGUI/System.h"
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
 #include "CEGUI/RendererModules/Ogre/OgreMacros.h"
+#include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
+#include "CEGUI/DataContainer.h"
+#include "CEGUI/Rectf.h"
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+#include <OgreRoot.h>
+#include <OgreTextureGpuManager.h>
+#include <OgrePixelFormatGpuUtils.h>
+#include <OgreStagingTexture.h>
+#else
 #include <OgreTextureManager.h>
 #include <OgreHardwarePixelBuffer.h>
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
 #include <cstdint>
+#include <sstream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -75,19 +86,22 @@ static size_t calculateDataSize(const Sizef size, Texture::PixelFormat fmt)
 std::uint32_t OgreTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(const String& name) :
+OgreTexture::OgreTexture(const String& name, bool notNullTexture) :
+    d_texture(0),
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),
     d_name(name)
 {
-    createEmptyOgreTexture(Texture::PixelFormat::Rgba);
+    if (notNullTexture)
+        createOgreTexture();
 }
 
 //----------------------------------------------------------------------------//
 OgreTexture::OgreTexture(const String& name, const String& filename,
                          const String& resourceGroup) :
+    d_texture(0),
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
@@ -99,16 +113,48 @@ OgreTexture::OgreTexture(const String& name, const String& filename,
 
 //----------------------------------------------------------------------------//
 OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
+    d_texture(0),
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),
     d_name(name)
 {
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    const Ogre::uint32 width = static_cast<Ogre::uint32>(sz.d_width);
+    const Ogre::uint32 height = static_cast<Ogre::uint32>(sz.d_height);
+
+    createOgreTexture(Ogre::PFG_RGBA8_UNORM, width, height);
+
+    #if 0
+    size_t bytesPerRow = Ogre::PixelFormatGpuUtils::getBytesPerPixel( d_texture->getPixelFormat() ) * width;
+    void* data = OGRE_MALLOC_SIMD( bytesPerRow * height, Ogre::MEMCATEGORY_RENDERSYS );
+    memset( data, 0, bytesPerRow * height );
+
+    Ogre::TextureGpuManager *textureMgr = Ogre::Root::getSingletonPtr()->getRenderSystem()->getTextureGpuManager();
+
+    Ogre::StagingTexture *stagingTexture = textureMgr->getStagingTexture(
+            width, height, 1u, 1u, d_texture->getPixelFormat() );
+
+    stagingTexture->startMapRegion();
+    Ogre::TextureBox box = stagingTexture->mapRegion( width, height, 1u, 1u, d_texture->getPixelFormat() );
+    box.copyFrom( data, width, height, bytesPerRow );
+    stagingTexture->stopMapRegion();
+
+    stagingTexture->upload( box, d_texture, 0, nullptr, nullptr, true );
+
+    textureMgr->removeStagingTexture( stagingTexture );
+    OGRE_FREE_SIMD(data, Ogre::MEMCATEGORY_RENDERSYS);
+    #if OGRE_VERSION_MINOR == 2
+    d_texture->notifyDataIsReady();
+    #endif
+    #endif
+#else
     d_texture = Ogre::TextureManager::getSingleton().createManual(
         getUniqueName(), "General", Ogre::TEX_TYPE_2D,
         sz.d_width, sz.d_height, 0,
         Ogre::PF_A8B8G8R8);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     // throw exception if no texture was able to be created
     if (OGRE_ISNULL(d_texture))
@@ -122,8 +168,14 @@ OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
 }
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+OgreTexture::OgreTexture(const String& name, Ogre::TextureGpu* tex,
+                         bool take_ownership) :
+#else
 OgreTexture::OgreTexture(const String& name, Ogre::TexturePtr& tex,
                          bool take_ownership) :
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
+    d_texture(0),
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
@@ -212,6 +264,64 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
         throw InvalidRequestException(
             "Data was supplied in an unsupported pixel format.");
 
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    Ogre::PixelFormatGpu ogrePixelFormat = toOgrePixelFormat(pixel_format);
+
+    const std::uint32_t width = static_cast<std::uint32_t>(buffer_size.d_width);
+    const std::uint32_t height = static_cast<std::uint32_t>(buffer_size.d_height);
+
+    size_t bytesPerPixel = Ogre::PixelFormatGpuUtils::getBytesPerPixel(ogrePixelFormat);
+    size_t bytesPerRow = bytesPerPixel * width;
+    Ogre::TextureBox srcBox( width, height, 1u, 1u, bytesPerPixel, bytesPerRow, bytesPerRow * height );
+    srcBox.data = const_cast<void*>( buffer );
+    Ogre::TextureBox dstBox( width, height, 1u, 1u, 0, 0, 0 );
+
+    if ( pixel_format == CEGUI::Texture::PixelFormat::Rgb )
+    {
+        // We need to expand the 24bpp RGB texture to 32bpp RGBA.
+        // This is because OGRE 2.2 no longer supports RGB
+        PixelFormatGpu ogrePixelFormatDst = toOgrePixelFormat(CEGUI::Texture::PixelFormat::Rgba);
+
+        dstBox.bytesPerPixel = Ogre::PixelFormatGpuUtils::getBytesPerPixel(ogrePixelFormatDst);
+        dstBox.bytesPerRow   = dstBox.bytesPerPixel * width;
+        dstBox.bytesPerImage = dstBox.bytesPerRow * height;
+        dstBox.data = new char[dstBox.bytesPerImage];
+
+        Ogre::PixelFormatGpuUtils::bulkPixelConversion(
+            srcBox, ogrePixelFormat,
+            dstBox, ogrePixelFormatDst
+        );
+        ogrePixelFormat = ogrePixelFormatDst;
+    }
+
+    createOgreTexture(ogrePixelFormat, width, height);
+
+    // build a staging texture that we'll use to upload into.
+    Ogre::TextureGpuManager *textureMgr = Ogre::Root::getSingletonPtr()->getRenderSystem()->getTextureGpuManager();
+    StagingTexture* stagingTexture = textureMgr->getStagingTexture(width, height, 1u, 1u, ogrePixelFormat);
+
+    // map a region and copy data into it
+    stagingTexture->startMapRegion();
+    TextureBox box = stagingTexture->mapRegion(width, height, 1u, 1u, ogrePixelFormat);
+    if ( pixel_format == CEGUI::Texture::PixelFormat::Rgb )
+        box.copyFrom(dstBox);
+    else
+        box.copyFrom(srcBox);
+    stagingTexture->stopMapRegion();
+
+    // trigger upload to the gpu in the defined texture.
+    stagingTexture->upload(box, d_texture, 0, nullptr, nullptr, true);
+
+    if (dstBox.data)
+        delete static_cast<char*>(dstBox.data);
+
+    // remove the staging texture and notify that the texture is finished
+    textureMgr->removeStagingTexture(stagingTexture);
+
+    #if OGRE_VERSION_MINOR == 2
+    d_texture->notifyDataIsReady();
+    #endif
+#else
     const size_t byte_size = calculateDataSize(buffer_size, pixel_format);
 
     char* bufferCopy = new char[byte_size];
@@ -226,6 +336,7 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
     d_texture->setDepth(1);
     d_texture->createInternalResources();
     d_texture->getBuffer(0,0).get()->blitFromMemory(*pixelBox);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     // throw exception if no texture was able to be created
     if (OGRE_ISNULL(d_texture))
@@ -260,6 +371,38 @@ void OgreTexture::blitFromMemory(const void* sourceData, const Rectf& area)
     }
 
 
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    Ogre::uint32 width = static_cast<Ogre::uint32>(area.getWidth());
+    Ogre::uint32 height = static_cast<Ogre::uint32>(area.getHeight());
+
+    size_t bytesPerPixel = Ogre::PixelFormatGpuUtils::getBytesPerPixel(d_texture->getPixelFormat());
+    size_t bytesPerRow = bytesPerPixel * width;
+
+    // acquire a staging texture
+    Ogre::TextureGpuManager *textureMgr = Ogre::Root::getSingletonPtr()->getRenderSystem()->getTextureGpuManager();
+    Ogre::StagingTexture *stagingTexture = textureMgr->getStagingTexture(
+            width, height, 1u, 1u, d_texture->getPixelFormat());
+
+    // setup the map region that we'll copy to
+    stagingTexture->startMapRegion();
+    Ogre::TextureBox box = stagingTexture->mapRegion( width, height, 1u, 1u, d_texture->getPixelFormat());
+    box.copyFrom(const_cast<void*>( sourceData ), width, height, bytesPerRow);
+    stagingTexture->stopMapRegion();
+
+    // upload the data to the gpu
+    // We specify a destination area based on the area rect provided as we may
+    // only want to upload a portion to the GPU texture area and not the entire thing.
+
+    Ogre::TextureBox dst;
+    dst.x = static_cast<Ogre::uint32>( area.left() );
+    dst.y = static_cast<Ogre::uint32>( area.top() );
+    dst.width = width;
+    dst.height = height;
+    stagingTexture->upload( box, d_texture, 0, nullptr, &dst );
+
+    // remove the staging texture and notify texture is prepared
+    textureMgr->removeStagingTexture( stagingTexture );
+#else
     // NOTE: const_cast because Ogre takes pointer to non-const here. Rather
     // than allow that to dictate poor choices in our own APIs, we choose to
     // address the issue as close to the source of the problem as possible.
@@ -273,6 +416,7 @@ void OgreTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 			      static_cast<Ogre::uint32>(area.right()),
 			      static_cast<Ogre::uint32>(area.bottom()) );
     d_texture->getBuffer()->blitFromMemory(pb, box);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 }
 
 //----------------------------------------------------------------------------//
@@ -281,18 +425,31 @@ void OgreTexture::blitToMemory(void* targetData)
     if (OGRE_ISNULL(d_texture)) // TODO: exception?
         return;
 
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    throw RendererException("Unimplemented: blitToMemory for Ogre >= 2.2");
+#else
     Ogre::PixelBox pb(static_cast<std::uint32_t>(d_size.d_width), static_cast<std::uint32_t>(d_size.d_height),
                       1, d_texture->getFormat(), targetData);
     d_texture->getBuffer()->blitToMemory(pb);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 }
 
 //----------------------------------------------------------------------------//
 void OgreTexture::freeOgreTexture()
 {
-    if (!OGRE_ISNULL(d_texture) && !d_isLinked)
+    if (!OGRE_ISNULL(d_texture) && !d_isLinked) {
+        #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+        Ogre::Root::getSingletonPtr()->getRenderSystem()->getTextureGpuManager()->destroyTexture(d_texture);
+        #else
         Ogre::TextureManager::getSingleton().remove(d_texture->getHandle());
+        #endif // CEGUI_USE_OGRE_TEXTURE_GPU
+    }
 
+    #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    d_texture = 0;
+    #else
     OGRE_RESET(d_texture);
+    #endif // CEGUI_USE_OGRE_TEXTURE_GPU
 }
 
 //----------------------------------------------------------------------------//
@@ -341,8 +498,13 @@ void OgreTexture::updateCachedScaleValues()
 }
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+void OgreTexture::setOgreTexture(Ogre::TextureGpu* texture, bool take_ownership)
+#else
 void OgreTexture::setOgreTexture(Ogre::TexturePtr texture, bool take_ownership)
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 {
+
     freeOgreTexture();
 
     d_texture = texture;
@@ -361,9 +523,22 @@ void OgreTexture::setOgreTexture(Ogre::TexturePtr texture, bool take_ownership)
 }
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+Ogre::TextureGpu* OgreTexture::getOgreTexture() const
+{
+    return d_texture;
+}
+#else
 Ogre::TexturePtr OgreTexture::getOgreTexture() const
 {
     return d_texture;
+}
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
+
+//----------------------------------------------------------------------------//
+bool OgreTexture::textureIsLinked() const
+{
+    return d_isLinked;
 }
 
 //----------------------------------------------------------------------------//
@@ -371,10 +546,15 @@ bool OgreTexture::isPixelFormatSupported(const PixelFormat fmt) const
 {
     try
     {
+    #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+        OgreTexture::toOgrePixelFormat(fmt);
+        return true;
+    #else
         return Ogre::TextureManager::getSingleton().
             isEquivalentFormatSupported(Ogre::TEX_TYPE_2D,
                                         toOgrePixelFormat(fmt),
                                         Ogre::TU_DEFAULT);
+    #endif // CEGUI_USE_OGRE_TEXTURE_GPU
     }
     catch (InvalidRequestException&)
     {
@@ -383,6 +563,58 @@ bool OgreTexture::isPixelFormatSupported(const PixelFormat fmt) const
 }
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+Ogre::PixelFormatGpu OgreTexture::toOgrePixelFormat(const Texture::PixelFormat fmt)
+{
+    switch (fmt)
+    {
+        case Texture::PixelFormat::Rgba:      return Ogre::PFG_RGBA8_UNORM;
+        case Texture::PixelFormat::Rgb:       return Ogre::PFG_RGB8_UNORM;
+        case Texture::PixelFormat::Rgb565:    return Ogre::PFG_B5G6R5_UNORM;
+        case Texture::PixelFormat::Rgba4444:  return Ogre::PFG_B4G4R4A4_UNORM;
+        case Texture::PixelFormat::Pvrtc2:    return Ogre::PFG_PVRTC_RGBA2;
+        case Texture::PixelFormat::Pvrtc4:    return Ogre::PFG_PVRTC_RGBA4;
+        case Texture::PixelFormat::RgbaDxt1:  return Ogre::PFG_BC1_UNORM;
+        case Texture::PixelFormat::RgbaDxt3:  return Ogre::PFG_BC2_UNORM;
+        case Texture::PixelFormat::RgbaDxt5:  return Ogre::PFG_BC3_UNORM;
+
+        default:
+            throw InvalidRequestException(
+                "Invalid pixel format translation.");
+    }
+}
+
+//----------------------------------------------------------------------------//
+Texture::PixelFormat OgreTexture::fromOgrePixelFormat(
+                                            const Ogre::PixelFormatGpu fmt)
+{
+    switch (fmt)
+    {
+        case Ogre::PFG_RGBA8_UNORM:       return Texture::PixelFormat::Rgba;
+        case Ogre::PFG_RGBA8_UNORM_SRGB:  return Texture::PixelFormat::Rgba;
+        case Ogre::PFG_BGRA8_UNORM:       return Texture::PixelFormat::Rgba;
+        case Ogre::PFG_BGRA8_UNORM_SRGB:  return Texture::PixelFormat::Rgba;
+        case Ogre::PFG_RGB8_UNORM:        return Texture::PixelFormat::Rgb;
+        case Ogre::PFG_RGB8_UNORM_SRGB:   return Texture::PixelFormat::Rgb;
+        case Ogre::PFG_BGR8_UNORM:        return Texture::PixelFormat::Rgb;
+        case Ogre::PFG_BGR8_UNORM_SRGB:   return Texture::PixelFormat::Rgb;
+        case Ogre::PFG_B5G6R5_UNORM:      return Texture::PixelFormat::Rgb565;
+        case Ogre::PFG_B4G4R4A4_UNORM:    return Texture::PixelFormat::Rgba4444;
+        case Ogre::PFG_PVRTC_RGBA2:       return Texture::PixelFormat::Pvrtc2;
+        case Ogre::PFG_PVRTC_RGBA4:       return Texture::PixelFormat::Pvrtc4;
+        case Ogre::PFG_BC1_UNORM:         return Texture::PixelFormat::RgbaDxt1;
+        case Ogre::PFG_BC1_UNORM_SRGB:    return Texture::PixelFormat::RgbaDxt1;
+        case Ogre::PFG_BC2_UNORM:         return Texture::PixelFormat::RgbaDxt3;
+        case Ogre::PFG_BC2_UNORM_SRGB:    return Texture::PixelFormat::RgbaDxt3;
+        case Ogre::PFG_BC3_UNORM:         return Texture::PixelFormat::RgbaDxt5;
+        case Ogre::PFG_BC3_UNORM_SRGB:    return Texture::PixelFormat::RgbaDxt5;
+
+        default:
+            throw InvalidRequestException(
+                "Invalid pixel format translation.");
+    }
+}
+#else
 Ogre::PixelFormat OgreTexture::toOgrePixelFormat(const Texture::PixelFormat fmt)
 {
     switch (fmt)
@@ -426,8 +658,32 @@ Texture::PixelFormat OgreTexture::fromOgrePixelFormat(
                 "Invalid pixel format translation.");
     }
 }
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+void OgreTexture::createOgreTexture(
+    Ogre::PixelFormatGpu pixel_format,
+    std::uint32_t width, std::uint32_t height,
+    Ogre::GpuPageOutStrategy::GpuPageOutStrategy pageOutStrategy
+) {
+    Ogre::TextureGpuManager *textureMgr = Ogre::Root::getSingletonPtr()->getRenderSystem()->getTextureGpuManager();
+    d_texture = textureMgr->createOrRetrieveTexture(
+                                    getUniqueName(),
+                                    pageOutStrategy,
+                                    Ogre::TextureFlags::ManualTexture,
+                                    Ogre::TextureTypes::Type2D,
+                                    Ogre::BLANKSTRING,
+                                    0u );
+    d_texture->setPixelFormat(pixel_format);
+    d_texture->setNumMipmaps(1u);
+    d_texture->setResolution(width, height);
+
+    // schedule texture to be transitioned to the gpu
+    d_texture->_transitionTo( Ogre::GpuResidency::Resident, nullptr );
+    d_texture->_setNextResidencyStatus( Ogre::GpuResidency::Resident );
+}
+#else
 void OgreTexture::createEmptyOgreTexture(PixelFormat pixel_format)
 {
     // try to create a Ogre::Texture with given dimensions
@@ -436,6 +692,7 @@ void OgreTexture::createEmptyOgreTexture(PixelFormat pixel_format)
         1, 1, 0,
         toOgrePixelFormat(pixel_format));
 }
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
 
 //----------------------------------------------------------------------------//

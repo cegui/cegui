@@ -30,6 +30,7 @@
 #include "CEGUI/RendererModules/Ogre/ShaderWrapper.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/RenderEffect.h"
+#include "CEGUI/RenderMaterial.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ShaderParameterBindings.h"
 
@@ -42,7 +43,6 @@
 
 #ifdef CEGUI_USE_OGRE_HLMS
 #include <OgreHlmsSamplerblock.h>
-#include <OgreRenderTarget.h>
 #include <OgreViewport.h>
 #endif
 
@@ -91,6 +91,7 @@ void OgreGeometryBuffer::draw(std::uint32_t drawModeMask) const
         return;
 
 #ifdef CEGUI_USE_OGRE_HLMS
+    #ifndef CEGUI_USE_OGRE_TEXTURE_GPU
     //Ogre::Viewport* previousViewport = d_renderSystem._getViewport();
     //Ogre::Viewport* currentViewport = d_owner.getOgreRenderTarget()->getViewport(0);
     
@@ -103,21 +104,29 @@ void OgreGeometryBuffer::draw(std::uint32_t drawModeMask) const
     previousClipRect.top(currentViewport->getScissorTop());
     previousClipRect.right(currentViewport->getScissorWidth());
     previousClipRect.bottom(currentViewport->getScissorHeight());
+    #endif // CEGUI_USE_OGRE_TEXTURE_GPU
 #endif //CEGUI_USE_OGRE_HLMS
     
     // setup clip region
     if (d_clippingActive)
     {
     #ifdef CEGUI_USE_OGRE_HLMS
+        #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+        d_owner.startWithClippingRegion(d_preparedClippingRegion);
+        #else
         setScissorRects(currentViewport);
-		
 		// clear and re-set viewport to have ogre apply the actual scissor settings
 		d_renderSystem._setViewport(NULL);
 		d_renderSystem._setViewport(currentViewport);
+        #endif // CEGUI_USE_OGRE_TEXTURE_GPU
     #else
         setScissorRects();
     #endif //CEGUI_USE_OGRE_HLMS
     }
+    #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    else
+	    d_owner.startWithoutClippingRegion();
+    #endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     // Update the matrix
     updateMatrix();
@@ -174,6 +183,7 @@ void OgreGeometryBuffer::draw(std::uint32_t drawModeMask) const
     if (d_clippingActive)
     {
     #ifdef CEGUI_USE_OGRE_HLMS
+        #ifndef CEGUI_USE_OGRE_TEXTURE_GPU
         currentViewport->setScissors(previousClipRect.left(), previousClipRect.top(),
             previousClipRect.right(), previousClipRect.bottom());
         // Restore viewport? d_renderSystem._setViewport(previousViewport);
@@ -181,6 +191,7 @@ void OgreGeometryBuffer::draw(std::uint32_t drawModeMask) const
 		// clear and re-set viewport to have ogre apply the previous scissor settings
 		d_renderSystem._setViewport(NULL);
 		d_renderSystem._setViewport(currentViewport);
+        #endif // CEGUI_USE_OGRE_TEXTURE_GPU
     #else
         d_renderSystem.setScissorTest(false);
     #endif //CEGUI_USE_OGRE_HLMS
@@ -265,7 +276,7 @@ void OgreGeometryBuffer::finaliseVertexAttributes(MANUALOBJECT_TYPE type)
     
 #ifdef CEGUI_USE_OGRE_HLMS
     // basic initialisation of render op
-    d_renderOp.vertexData = OGRE_NEW Ogre::v1::VertexData();
+    d_renderOp.vertexData = OGRE_NEW Ogre::v1::VertexData(0);
     d_renderOp.operationType = Ogre::OT_TRIANGLE_LIST;
     d_renderOp.useIndexes = false;
 

@@ -63,6 +63,10 @@
 #include <OgreHlmsSamplerblock.h>
 #endif
 
+#if (CEGUI_OGRE_VERSION >= ((2 << 16) | (1 << 9) | 0))
+#define CEGUI_USE_OGRE_TEXTURE_GPU
+#endif
+
 namespace Ogre
 {
 class Root;
@@ -100,12 +104,16 @@ class OgreTexture;
 class OgreResourceProvider;
 class OgreImageCodec;
 class OgreWindowTarget;
+class OgreRenderTextureTarget;
 struct OgreRenderer_impl;
 
 //! CEGUI::Renderer implementation for the Ogre engine.
 class OGRE_GUIRENDERER_API OgreRenderer : public Renderer
 {
 public:
+    //!	Convenience function that configures a CEGUI::Window to display an Ogre RenderToTexture (RTT) 
+    void configureCeguiWindowForRTT(CEGUI::Window* window, const std::string& ogreTextureName, float textureWidth, float textureHeight);
+
     /*!
     \brief
         Convenience function that creates all the Ogre specific objects and
@@ -157,8 +165,13 @@ public:
     \return
         Reference to the CEGUI::OgreRenderer object that was created.
     */
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    static OgreRenderer& bootstrapSystem(Ogre::Window* target,
+                                         const int abi = CEGUI_VERSION_ABI);
+#else
     static OgreRenderer& bootstrapSystem(Ogre::RenderTarget& target,
                                          const int abi = CEGUI_VERSION_ABI);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     /*!
     \brief
@@ -195,15 +208,25 @@ public:
         Create an OgreRenderer object that uses the specified Ogre::RenderTarget
         as the default output surface.
     */
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    static OgreRenderer& create(Ogre::Window* target,
+                                const int abi = CEGUI_VERSION_ABI);
+#else
     static OgreRenderer& create(Ogre::RenderTarget& target,
                                 const int abi = CEGUI_VERSION_ABI);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     /*!
       \brief
       Creates a new renderer that can be used to create a context on a new Ogre window
     */
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    static OgreRenderer& registerWindow(OgreRenderer& main_window,
+        Ogre::Window* new_window);
+#else
     static OgreRenderer& registerWindow(OgreRenderer& main_window,
         Ogre::RenderTarget &new_window);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     //! destroy an OgreRenderer object.
     static void destroy(OgreRenderer& renderer);
@@ -230,8 +253,11 @@ public:
     //! Function to initialize required Ogre::Compositor2 workspaces
     static void createOgreCompositorResources();
 
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+#else
     //! Function to update the workspace render target
     void updateWorkspaceRenderTarget(Ogre::RenderTarget& target);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
@@ -258,8 +284,13 @@ public:
         - false if ownership of \a tex remains with the client app, and so
         no attempt will be made to destroy \a tex when the Texture is destroyed.
     */
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    Texture& createTexture(const String& name, Ogre::TextureGpu* tex,
+                           bool take_ownership = false);
+#else
     Texture& createTexture(const String& name, Ogre::TexturePtr& tex,
                            bool take_ownership = false);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     //! set the render states for the specified BlendMode.
     void setupRenderingBlendMode(const BlendMode mode,
@@ -342,7 +373,13 @@ public:
 
     \param target Sets the target for rendering required by PSO Cache
     */
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    void initialiseRenderStateSettings(OgreRenderTextureTarget* target);
+    void startWithClippingRegion(const Rectf& clippingRegion);
+    void startWithoutClippingRegion();
+#else
     void initialiseRenderStateSettings(Ogre::RenderTarget* target);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 #else
     /*!
         \brief
@@ -364,7 +401,11 @@ public:
         Reference to the Ogre::RenderTarget object that is to be used as the
         target for output from the default GUIContext.
     */
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    void setDefaultRootRenderTarget(Ogre::Window* target);
+#else
     void setDefaultRootRenderTarget(Ogre::RenderTarget& target);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     //! \brief Sets the correct BlendMode for rendering a GeometryBuffer
     void bindBlendMode(BlendMode blend);
@@ -418,6 +459,7 @@ public:
     virtual bool isTexCoordSystemFlipped() const;
 
     virtual Texture& createTexture(const String& name);
+    virtual Texture& createTexture(const String& name, bool notNullTexture);
     virtual Texture& createTexture(const String& name, const String& filename,
         const String& resourceGroup);
     virtual Texture& createTexture(const String& name, const Sizef& size);
@@ -457,11 +499,50 @@ public:
     */
     bool usesDirect3D();
 
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+    enum class RenderingModes
+    {
+        Disabled,	//All rendering disabled
+        RenderAllCeguiGUIContexts,	//Will automatically render all CEGUI::GUIContext every frame. 
+        ConfigureManual	//User can configure which CEGUI::GUIContext will be rendered every frame and also trigger an update of a CEGUI::GUIContext manually
+    };
+
+    /*!
+      \brief
+      sets the RenderingMode to use
+      default is RenderingMode_RenderAllCeguiGUIContexts
+
+      \note
+        Following modes are availiable:
+        RenderingMode_Disabled: All rendering disabled
+        RenderingMode_RenderAllCeguiGUIContexts: Will automatically render all CEGUI::GUIContext every frame.
+        RenderingMode_ConfigureManual:	User can configure which CEGUI::GUIContext will be rendered every frame and also trigger an update of a CEGUI::GUIContext manually*/
+    void setRenderingMode(RenderingModes renderingMode);
+
+    //! return current RenderingMode
+    RenderingModes getRenderingMode() const;
+
+    //! Updates the given GUIContext and draws it now. This can be used to update a GUIContext that targets a specific Ogre::TextureGpu (only used for RenderingMode_ConfigureManual)
+    void renderGuiContext(CEGUI::GUIContext* guiContext);
+    //! Adds a GUIContext to be rendered every frame. Used i.e. for the main GUI Windows drawn on top of everthing else (only used for RenderingMode_ConfigureManual)
+    void addGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext);
+    //! Removes a GUIContext from to be rendered every frame. (only used for RenderingMode_ConfigureManual)
+    void removeGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext);
+    //! returns true if the given GUIContext is rendered every frame. (only used for RenderingMode_ConfigureManual)
+    bool hasGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext) const;
+    //! Similar to drawManualGuiContext, but it is not rendered right now, but next time when Ogre renderes one frame. (only used for RenderingMode_ConfigureManual)
+    void addGuiContextToRenderQueuedOnce(CEGUI::GUIContext* guiContext);
+#endif  
+
 protected:
     //! default constructor.
     OgreRenderer();
     //! constructor takin the Ogre::RenderTarget to use as the default root.
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    OgreRenderer(Ogre::Window* target);
+#else
     OgreRenderer(Ogre::RenderTarget& target);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
     //! destructor.
     virtual ~OgreRenderer();
 
@@ -475,9 +556,12 @@ protected:
     static void logTextureDestruction(const String& name);
 
     //! common parts of constructor
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    void constructor_impl(Ogre::Window* target);
+#else
     void constructor_impl(Ogre::RenderTarget& target);
-    //! Helper that switches off shader-usage
-    void switchShaderUsageOff();
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
+    
     //! helper that creates and sets up shaders
     void initialiseShaders();
     //! helper to clean up shaders

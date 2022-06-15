@@ -34,7 +34,6 @@
 
 #include <OgreColourValue.h>
 #include <OgreRenderOperation.h>
-#include <OgreTexture.h>
 #include <OgreMatrix4.h>
 
 #ifdef CEGUI_USE_OGRE_HLMS

@@ -26,19 +26,33 @@
  ***************************************************************************/
 #include "CEGUI/RendererModules/Ogre/Renderer.h"
 #include "CEGUI/RendererModules/Ogre/GeometryBuffer.h"
-#include "CEGUI/RendererModules/Ogre/TextureTarget.h"
 #include "CEGUI/RendererModules/Ogre/Texture.h"
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+#include "CEGUI/RendererModules/Ogre/RenderTarget2.h"
+#else
+#include "CEGUI/RendererModules/Ogre/TextureTarget.h"
 #include "CEGUI/RendererModules/Ogre/WindowTarget.h"
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
+#include "CEGUI/RenderMaterial.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/BitmapImage.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/Window.h"
 
 #include <OgreRoot.h>
 #include <OgreRenderSystem.h>
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+#include <OgreWindow.h>
+#include <OgreTextureGpuManager.h>
+#else
 #include <OgreRenderWindow.h>
+#include <OgreTextureManager.h>
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 #include <OgreHighLevelGpuProgramManager.h>
 #include <OgreHighLevelGpuProgram.h>
 #include <OgreGpuProgramManager.h>
@@ -49,6 +63,8 @@
 #include <OgreHardwareVertexBuffer.h>
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
+#include "CEGUI/WindowManager.h"
+
 #include <Compositor/OgreCompositorManager2.h>
 #include <Compositor/OgreCompositorCommon.h>
 #include <Compositor/OgreCompositorWorkspaceDef.h>
@@ -82,6 +98,7 @@
 #include "glm/gtc/type_ptr.hpp"
 
 #include <unordered_map>
+#include <sstream>
 
 #define VERTEXBUFFER_POOL_SIZE_STARTCLEAR           60
 
@@ -96,19 +113,13 @@ namespace CEGUI
 class OgreGUIRenderQueueListener : public Ogre::CompositorWorkspaceListener
 {
 public:
-    OgreGUIRenderQueueListener(OgreRenderer* owner);
-
-    virtual ~OgreGUIRenderQueueListener(){}
-
-    void setCEGUIRenderEnabled(bool enabled);
-    bool isCEGUIRenderEnabled() const;
-
+    OgreGUIRenderQueueListener(OgreRenderer* owner, OgreRenderer_impl* owner_impl);
+    virtual ~OgreGUIRenderQueueListener(){}    
     virtual void passPreExecute(Ogre::CompositorPass *pass);
 
 private:
-    bool d_enabled;
     OgreRenderer* d_owner;
-
+    OgreRenderer_impl* d_owner_impl;
 };
 
 #else // Use the old method
@@ -159,6 +170,7 @@ struct OgreRenderer_impl
         d_dummyScene(0),
         d_dummyCamera(0),
         d_workspace(0),
+        d_RenderingMode(OgreRenderer::RenderingModes::RenderAllCeguiGUIContexts),
 #endif
 #ifdef CEGUI_USE_OGRE_HLMS
         //d_renderTarget(nullptr),
@@ -182,7 +194,11 @@ struct OgreRenderer_impl
     //! What the renderer considers to be the current display size.
     Sizef d_displaySize;
     //! The default RenderTarget
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    OgreRenderTextureTarget* d_defaultTarget;
+#else
     OgreWindowTarget* d_defaultTarget;
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
     //! Container used to track texture targets.
     TextureTargetList d_textureTargets;
     //! Container used to track geometry buffers.
@@ -259,6 +275,13 @@ struct OgreRenderer_impl
 
     OgreShaderWrapper* d_texturedShaderWrapper;
     OgreShaderWrapper* d_colouredShaderWrapper;
+
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+    OgreRenderer::RenderingModes d_RenderingMode;
+    std::vector<CEGUI::GUIContext*> d_ManualRenderingEveryFrame;
+    std::vector<CEGUI::GUIContext*> d_ManualRenderingOnce;
+    CEGUI::GUIContext* mGUIContextToRenderManually; //If set, only this GUIContext is rendered, used by void OgreRenderer::renderGuiContext(CEGUI::GUIContext* guiContext)
+#endif
 };
 
 //----------------------------------------------------------------------------//
@@ -274,6 +297,48 @@ int OgreRenderer_impl::s_createdSceneNumber = 0;
 bool OgreRenderer_impl::s_compositorResourcesInitialized = false;
 #endif
 
+//----------------------------------------------------------------------------//
+void OgreRenderer::configureCeguiWindowForRTT(CEGUI::Window* window, const std::string& ogreTextureName, float textureWidth, float textureHeight)
+{
+    // We create a CEGUI Texture using the renderer you use:
+    CEGUI::Texture* texture;
+    if(isTextureDefined(ogreTextureName + "_CEGUI"))
+        texture = &getTexture(ogreTextureName + "_CEGUI");
+    else
+        texture = &createTexture(ogreTextureName + "_CEGUI");
+
+    // Now we need to cast it to the CEGUI::Texture superclass which matches your Renderer. This can be CEGUI::OgreTexture or CEGUI::OpenGLTexture, depending on the renderer you use in your application
+    CEGUI::OgreTexture& rendererTexture = static_cast<CEGUI::OgreTexture&>(*texture);
+
+    // Now we can set the appropriate Ogre::Texture for our CEGUI Texture
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    Ogre::TextureGpu* ogreTexture = Ogre::Root::getSingleton().getRenderSystem()->getTextureGpuManager()->findTextureNoThrow(ogreTextureName);
+    if(!ogreTexture)
+        throw std::runtime_error("could not find RTT-texture (OgreRenderer::configureCeguiWindowForRTT)");
+#else
+    Ogre::TexturePtr ogreTexture = Ogre::TextureManager::getSingletonPtr()->getByName(ogreTextureName);
+    if(ogreTexture.isNull())
+        throw std::runtime_error("could not find RTT-texture (OgreRenderer::configureCeguiWindowForRTT)");
+#endif
+
+    rendererTexture.setOgreTexture(ogreTexture, false);
+
+    // We create a BasicImage and set the Texture
+    CEGUI::BitmapImage* image;
+    if(CEGUI::ImageManager::getSingleton().isDefined(ogreTextureName))
+        image = static_cast<CEGUI::BitmapImage*>(&CEGUI::ImageManager::getSingleton().get(ogreTextureName));
+    else
+        image = static_cast<CEGUI::BitmapImage*>(&CEGUI::ImageManager::getSingleton().create("BitmapImage", ogreTextureName));
+
+    image->setTexture(&rendererTexture);
+
+    //Flipping is necessary due to differences between renderers regarding top or bottom being the origin
+    CEGUI::Rectf imageArea = CEGUI::Rectf(0.0f, 0.0f, textureWidth, textureHeight);
+    image->setImageArea(imageArea);
+    image->setAutoScaled(CEGUI::AutoScaledMode::Disabled);
+
+    window->setProperty("Image", ogreTextureName);
+}
 //----------------------------------------------------------------------------//
 OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
 {
@@ -296,8 +361,13 @@ OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
 }
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::Window* target,
+                                            const int abi)
+#else
 OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target,
                                             const int abi)
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
@@ -346,8 +416,13 @@ OgreRenderer& OgreRenderer::create(const int abi)
 }
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+OgreRenderer& OgreRenderer::create(Ogre::Window* target,
+                                   const int abi)
+#else
 OgreRenderer& OgreRenderer::create(Ogre::RenderTarget& target,
                                    const int abi)
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
@@ -367,8 +442,13 @@ OgreResourceProvider& OgreRenderer::createOgreResourceProvider()
 }
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+OgreRenderer& OgreRenderer::registerWindow(OgreRenderer& /*main_window*/,
+    Ogre::Window* new_window)
+#else
 OgreRenderer& OgreRenderer::registerWindow(OgreRenderer& /*main_window*/,
     Ogre::RenderTarget &new_window)
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 {
     // Link the second renderer to the first for them to share some resources
 
@@ -416,7 +496,11 @@ void OgreRenderer::createOgreCompositorResources()
 
     // Only clear depth and stencil since we are rendering on top
     // of an existing image
+    #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    clearpass->setBuffersToClear(Ogre::RenderPassDescriptor::Depth | Ogre::RenderPassDescriptor::Stencil);
+    #else
     clearpass->mClearBufferFlags = Ogre::FBT_DEPTH | Ogre::FBT_STENCIL;
+    #endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
     // Now the render scene pass during which the render queue listener
     // should render the GUI
@@ -486,8 +570,8 @@ Ogre::Matrix4 OgreRenderer::glmToOgreMatrix(const glm::mat4& matrix)
 void OgreRenderer::setRenderingEnabled(const bool enabled)
 {
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-    d_pimpl->d_frameListener->setCEGUIRenderEnabled(enabled);
-    d_pimpl->d_workspace->setEnabled(false);
+    d_pimpl->d_RenderingMode = enabled ? OgreRenderer::RenderingModes::RenderAllCeguiGUIContexts : OgreRenderer::RenderingModes::Disabled;
+    d_pimpl->d_workspace->setEnabled(enabled);
 #else
     S_frameListener.setCEGUIRenderEnabled(enabled);
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
@@ -497,7 +581,7 @@ void OgreRenderer::setRenderingEnabled(const bool enabled)
 bool OgreRenderer::isRenderingEnabled() const
 {
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-    return d_pimpl->d_frameListener->isCEGUIRenderEnabled();
+    return (d_pimpl->d_RenderingMode != OgreRenderer::RenderingModes::Disabled);
 #else
     return S_frameListener.isCEGUIRenderEnabled();
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
@@ -512,7 +596,11 @@ RenderTarget& OgreRenderer::getDefaultRenderTarget()
 //----------------------------------------------------------------------------//
 TextureTarget* OgreRenderer::createTextureTarget(bool addStencilBuffer)
 {
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    TextureTarget* tt = new OgreRenderTextureTarget(*this, d_pimpl->d_renderSystem, NULL, addStencilBuffer);
+#else
     TextureTarget* tt = new OgreTextureTarget(*this, *d_pimpl->d_renderSystem, addStencilBuffer);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
     d_pimpl->d_textureTargets.push_back(tt);
     return tt;
 }
@@ -541,9 +629,14 @@ void OgreRenderer::destroyAllTextureTargets()
 //----------------------------------------------------------------------------//
 Texture& OgreRenderer::createTexture(const String& name)
 {
+    return createTexture(name, true);
+}
+
+Texture& OgreRenderer::createTexture(const String& name, bool notNullTexture)
+{
     throwIfNameExists(name);
 
-    OgreTexture* t = new OgreTexture(name);
+    OgreTexture* t = new OgreTexture(name, notNullTexture);
     d_pimpl->d_textures[name] = t;
 
     logTextureCreation(name);
@@ -579,8 +672,13 @@ Texture& OgreRenderer::createTexture(const String& name, const Sizef& size)
 }
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+Texture& OgreRenderer::createTexture(const String& name, Ogre::TextureGpu* tex,
+                                     bool take_ownership)
+#else
 Texture& OgreRenderer::createTexture(const String& name, Ogre::TexturePtr& tex,
                                      bool take_ownership)
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 {
     throwIfNameExists(name);
 
@@ -724,19 +822,33 @@ OgreRenderer::OgreRenderer() :
     checkOgreInitialised();
 
     // get auto created window
+    #ifndef CEGUI_USE_OGRE_TEXTURE_GPU
     Ogre::RenderWindow* rwnd = d_pimpl->d_ogreRoot->getAutoCreatedWindow();
+    #else
+    Ogre::Window* rwnd = d_pimpl->d_ogreRoot->getAutoCreatedWindow();
+    #endif // CEGUI_USE_OGRE_TEXTURE_GPU
+
     if (!rwnd)
         throw RendererException(
             "Ogre was not initialised to automatically create a window, you "
             "should therefore be explicitly specifying a Ogre::RenderTarget in "
             "the OgreRenderer::create function.");
 
+    #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    constructor_impl(rwnd);
+    #else
     constructor_impl(*rwnd);
+    #endif // CEGUI_USE_OGRE_TEXTURE_GPU
 }
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+OgreRenderer::OgreRenderer(Ogre::Window* target) :
+    d_pimpl(new OgreRenderer_impl())
+#else
 OgreRenderer::OgreRenderer(Ogre::RenderTarget& target) :
     d_pimpl(new OgreRenderer_impl())
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 {
     checkOgreInitialised();
 
@@ -748,7 +860,11 @@ OgreRenderer::~OgreRenderer()
 {
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
     // Remove the listener and then delete the scene
-    d_pimpl->d_workspace->setListener(0);
+    #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    d_pimpl->d_workspace->addListener(d_pimpl->d_frameListener);
+    #else
+    d_pimpl->d_workspace->removeListener(d_pimpl->d_frameListener);
+    #endif
 
     d_pimpl->d_ogreRoot->destroySceneManager(d_pimpl->d_dummyScene);
 
@@ -771,12 +887,13 @@ OgreRenderer::~OgreRenderer()
     delete d_pimpl->d_frameListener;
 #endif
 
+    delete d_pimpl->d_defaultTarget;
+
     destroyAllGeometryBuffers();
     destroyAllTextureTargets();
     destroyAllTextures();
     clearVertexBufferPool();
 
-    delete d_pimpl->d_defaultTarget;
     delete d_pimpl;
 }
 
@@ -793,22 +910,35 @@ void OgreRenderer::checkOgreInitialised()
 }
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+void OgreRenderer::constructor_impl(Ogre::Window* target)
+#else
 void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 {
     d_pimpl->d_renderSystem = d_pimpl->d_ogreRoot->getRenderSystem();
 
+    // set size and create default target & rendering root (surface) that uses it
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    d_pimpl->d_displaySize.d_width  = static_cast<float>(target->getWidth());
+    d_pimpl->d_displaySize.d_height = static_cast<float>(target->getHeight());
+    d_pimpl->d_defaultTarget = new OgreRenderTextureTarget(
+        *this, d_pimpl->d_renderSystem, target->getTexture(),
+        false, false, false
+    );
+#else
     d_pimpl->d_displaySize.d_width  = static_cast<float>(target.getWidth());
     d_pimpl->d_displaySize.d_height = static_cast<float>(target.getHeight());
+    d_pimpl->d_defaultTarget =
+        new OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
-    //! Checking if OpenGL > 3.2 supported
+
+    // Checking if OpenGL > 3.2 supported
     if (d_pimpl->d_renderSystem->getName().find("OpenGL 3+") != Ogre::String::npos)
     {
         d_pimpl->d_useGLSLCore = true;
     }
-
-    // create default target & rendering root (surface) that uses it
-    d_pimpl->d_defaultTarget =
-        new OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
 
 #ifndef CEGUI_USE_OGRE_HLMS
 #if OGRE_VERSION >= 0x10800
@@ -833,16 +963,18 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
         OgreRenderer_impl::s_createdSceneNumber++;
 
     d_pimpl->d_dummyScene = d_pimpl->d_ogreRoot->createSceneManager(
-        Ogre::ST_INTERIOR, 1, Ogre::INSTANCING_CULLING_SINGLETHREAD,
+        Ogre::ST_INTERIOR, 1,
+        #ifndef CEGUI_USE_OGRE_TEXTURE_GPU
+        Ogre::INSTANCING_CULLING_SINGLETHREAD,
+        #endif
         scene_name.str());
 
     // Unused camera for the scene
     d_pimpl->d_dummyCamera = d_pimpl->d_dummyScene->createCamera(
         "CEGUI_dummy_camera");
 
-
     // We will get notified when the workspace is drawn
-    d_pimpl->d_frameListener = new OgreGUIRenderQueueListener(this);
+    d_pimpl->d_frameListener = new OgreGUIRenderQueueListener(this, d_pimpl);
 
     // Create the workspace for rendering
     Ogre::CompositorManager2* manager = d_pimpl->d_ogreRoot->
@@ -850,9 +982,19 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 
     // The -1 should guarantee this to be rendered last on top of everything
     d_pimpl->d_workspace = manager->addWorkspace(d_pimpl->d_dummyScene,
-        &target, d_pimpl->d_dummyCamera, "CEGUI_workspace", true, -1);
+        #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+        target->getTexture(),
+        #else
+        &target,
+        #endif
+        d_pimpl->d_dummyCamera, "CEGUI_workspace", true, -1
+    );
 
+    #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    d_pimpl->d_workspace->addListener(d_pimpl->d_frameListener);
+    #else
     d_pimpl->d_workspace->setListener(d_pimpl->d_frameListener);
+    #endif
 
 #else
     d_pimpl->d_ogreRoot->addFrameListener(&S_frameListener);
@@ -1269,6 +1411,66 @@ static const Ogre::TextureUnitState::UVWAddressingMode S_textureAddressMode =
 #endif //CEGUI_USE_OGRE_HLMS
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+void OgreRenderer::initialiseRenderStateSettings(OgreRenderTextureTarget* target) {
+    setViewProjectionMatrix(target->d_matrix);
+
+    if (target->d_texture->getOgreTexture()->requiresTextureFlipping())
+    {
+        d_viewProjectionMatrix[0][1] = -d_viewProjectionMatrix[0][1];
+        d_viewProjectionMatrix[1][1] = -d_viewProjectionMatrix[1][1];
+        d_viewProjectionMatrix[2][1] = -d_viewProjectionMatrix[2][1];
+        d_viewProjectionMatrix[3][1] = -d_viewProjectionMatrix[3][1];
+    }
+
+    d_pimpl->d_hlmsCache->setRenderTarget( target->d_renderPassDescriptor );
+
+    d_activeRenderTarget = target;
+}
+void OgreRenderer::startWithClippingRegion(const Rectf& clippingRegion) {
+    OgreRenderTextureTarget* target = dynamic_cast<OgreRenderTextureTarget*>(d_activeRenderTarget);
+    Ogre::TextureGpu* targetTexture = target->d_texture->getOgreTexture();
+
+    int actualWidth = targetTexture->getWidth();
+    int actualHeight = targetTexture->getHeight();
+
+    Ogre::Vector4 scissors(
+        clippingRegion.left() / actualWidth,
+        clippingRegion.top() / actualHeight,
+        (clippingRegion.right() - clippingRegion.left()) / actualWidth,
+        (clippingRegion.bottom() - clippingRegion.top()) / actualHeight
+    );
+
+    target->manageClear();
+
+    d_pimpl->d_renderSystem->beginRenderPassDescriptor(
+        target->d_renderPassDescriptor,
+        targetTexture,
+        0,
+        &target->d_viewportSize,
+        &scissors,
+        1,
+        false,
+        false
+    );
+}
+void OgreRenderer::startWithoutClippingRegion() {
+    OgreRenderTextureTarget* target = dynamic_cast<OgreRenderTextureTarget*>(d_activeRenderTarget);
+    Ogre::TextureGpu* targetTexture = target->d_texture->getOgreTexture();
+
+    Ogre::Vector4 scissors(0, 0, 1, 1);
+    d_pimpl->d_renderSystem->beginRenderPassDescriptor(
+        target->d_renderPassDescriptor,
+        targetTexture,
+        0,
+        &target->d_viewportSize,
+        &scissors,
+        1,
+        false,
+        false
+    );
+}
+#else
 #ifdef CEGUI_USE_OGRE_HLMS
 void OgreRenderer::initialiseRenderStateSettings(Ogre::RenderTarget* target)
 #else
@@ -1286,7 +1488,6 @@ void OgreRenderer::initialiseRenderStateSettings()
     // This is in the Ogre example usage but doesn't seem to be needed.
     // d_pimpl->d_hlmsCache->clearState();
     d_pimpl->d_hlmsCache->setRenderTarget(target);
-
 #else
     // initialise render settings
     d_pimpl->d_renderSystem->setLightingEnabled(false);
@@ -1302,16 +1503,24 @@ void OgreRenderer::initialiseRenderStateSettings()
     // set alpha blending to known state
     setupRenderingBlendMode(BlendMode::Normal, true);
 #endif //CEGUI_USE_OGRE_HLMS
-
 }
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+void OgreRenderer::setDefaultRootRenderTarget(Ogre::Window* target)
+{
+    d_pimpl->d_defaultTarget->setOgreTexture(target->getTexture());
+}
+#else
 void OgreRenderer::setDefaultRootRenderTarget(Ogre::RenderTarget& target)
 {
     d_pimpl->d_defaultTarget->setOgreRenderTarget(target);
 }
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
+#ifndef CEGUI_USE_OGRE_TEXTURE_GPU
 void OgreRenderer::updateWorkspaceRenderTarget(Ogre::RenderTarget& target)
 {
     // There seems to be no way to change the target, so we need to recreate it
@@ -1325,6 +1534,7 @@ void OgreRenderer::updateWorkspaceRenderTarget(Ogre::RenderTarget& target)
     d_pimpl->d_workspace = manager->addWorkspace(d_pimpl->d_dummyScene,
         &target, d_pimpl->d_dummyCamera, "CEGUI_workspace", true, -1);
 }
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
 //----------------------------------------------------------------------------//
@@ -1334,6 +1544,9 @@ void OgreRenderer::setViewProjectionMatrix(const glm::mat4& viewProjMatrix)
 
     d_viewProjectionMatrix = viewProjMatrix;
 
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    // for Ogre >= 2.2 moved to initialiseRenderStateSettings()
+#else
     if (d_pimpl->d_renderSystem->_getViewport()->getTarget()->requiresTextureFlipping())
     {
         d_viewProjectionMatrix[0][1] = -d_viewProjectionMatrix[0][1];
@@ -1341,6 +1554,7 @@ void OgreRenderer::setViewProjectionMatrix(const glm::mat4& viewProjMatrix)
         d_viewProjectionMatrix[2][1] = -d_viewProjectionMatrix[2][1];
         d_viewProjectionMatrix[3][1] = -d_viewProjectionMatrix[3][1];
     }
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 }
 
 //----------------------------------------------------------------------------//
@@ -1546,8 +1760,10 @@ void OgreRenderer::initialiseTextureStates()
     d_pimpl->d_renderSystem->_setHlmsSamplerblock(0, d_pimpl->d_hlmsSamplerblock);
 #endif //CEGUI_USE_OGRE_HLMS
 
+#ifndef CEGUI_USE_OGRE_TEXTURE_GPU
     // This might be a good setting in Ogre 2.1, too
     d_pimpl->d_renderSystem->_disableTextureUnitsFrom(1);
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 }
 
 //----------------------------------------------------------------------------//
@@ -1567,65 +1783,145 @@ bool OgreRenderer::isTexCoordSystemFlipped() const
 {
     return false;
 }
-
 //----------------------------------------------------------------------------//
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-OgreGUIRenderQueueListener::OgreGUIRenderQueueListener(OgreRenderer* owner) :
-    d_enabled(true), d_owner(owner)
+OgreRenderer::RenderingModes OgreRenderer::getRenderingMode() const
 {
-
+    return d_pimpl->d_RenderingMode;
 }
-
 //----------------------------------------------------------------------------//
-void OgreGUIRenderQueueListener::setCEGUIRenderEnabled(bool enabled)
+void OgreRenderer::setRenderingMode(OgreRenderer::RenderingModes renderingMode)
 {
-    d_enabled = enabled;
+    d_pimpl->d_RenderingMode = renderingMode;
+    d_pimpl->d_workspace->setEnabled(renderingMode != OgreRenderer::RenderingModes::Disabled);
 }
-
 //----------------------------------------------------------------------------//
-bool OgreGUIRenderQueueListener::isCEGUIRenderEnabled() const
+void OgreRenderer::renderGuiContext(CEGUI::GUIContext* guiContext)
 {
-    return d_enabled;
-}
+    //render given guiContext, probalby to render a Cegui-RTT used on an Ogre::Material or Ogre::HLMS
+    if(!guiContext || d_pimpl->d_RenderingMode != RenderingModes::ConfigureManual)
+        return;
 
+    //configure the RenderQueueListener:
+    d_pimpl->mGUIContextToRenderManually = guiContext;	//configure to render just that one guiContext
+
+    //Manual Render workspace:
+    d_pimpl->d_dummyScene->updateSceneGraph();
+    d_pimpl->d_workspace->_beginUpdate(true);
+    d_pimpl->d_workspace->_update();
+    d_pimpl->d_workspace->_endUpdate(true);
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+    Ogre::vector<Ogre::TextureGpu*>::type swappedTargets;
+#else
+    Ogre::vector<Ogre::RenderTarget*>::type swappedTargets;
+#endif
+    d_pimpl->d_workspace->_swapFinalTarget(swappedTargets);
+    d_pimpl->d_dummyScene->clearFrameData();
+
+    d_pimpl->mGUIContextToRenderManually = 0;
+}
+//----------------------------------------------------------------------------//
+void OgreRenderer::addGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext)
+{
+    if(!guiContext || hasGuiContextToRenderEveryFrame(guiContext))
+        return;	//nothing to do 
+
+    d_pimpl->d_ManualRenderingEveryFrame.push_back(guiContext);
+}
+//----------------------------------------------------------------------------//
+void OgreRenderer::removeGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext)
+{
+    if(!guiContext)
+        return;
+
+    std::vector<CEGUI::GUIContext*>::iterator iter = std::find(d_pimpl->d_ManualRenderingEveryFrame.begin(), d_pimpl->d_ManualRenderingEveryFrame.end(), guiContext);
+    if(iter != d_pimpl->d_ManualRenderingEveryFrame.end())
+        d_pimpl->d_ManualRenderingEveryFrame.erase(iter);
+}
+//----------------------------------------------------------------------------//
+bool OgreRenderer::hasGuiContextToRenderEveryFrame(CEGUI::GUIContext* guiContext) const
+{
+    return (std::find(d_pimpl->d_ManualRenderingEveryFrame.begin(), d_pimpl->d_ManualRenderingEveryFrame.end(), guiContext) != d_pimpl->d_ManualRenderingEveryFrame.end());
+}
+//----------------------------------------------------------------------------//
+void OgreRenderer::addGuiContextToRenderQueuedOnce(CEGUI::GUIContext* guiContext)
+{
+    if(!guiContext)
+        return;
+
+    //allow no duplicates, as rendering twice per frame does not help anyone
+    if(std::find(d_pimpl->d_ManualRenderingOnce.begin(), d_pimpl->d_ManualRenderingOnce.end(), guiContext) != d_pimpl->d_ManualRenderingOnce.end())
+        return;
+
+    d_pimpl->d_ManualRenderingOnce.push_back(guiContext);
+}
+#endif
+//----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+OgreGUIRenderQueueListener::OgreGUIRenderQueueListener(OgreRenderer* owner, OgreRenderer_impl* owner_impl) :
+    d_owner(owner),
+    d_owner_impl(owner_impl)
+{
+}
+//----------------------------------------------------------------------------//
 void OgreGUIRenderQueueListener::passPreExecute(Ogre::CompositorPass *pass)
 {
-
-    if (d_enabled && pass->getType() == Ogre::PASS_SCENE)
+    if(pass->getType() == Ogre::PASS_SCENE)
     {
-        // We should only render contexts that are on this render target
-        System::getSingleton().renderAllGUIContextsOnTarget(d_owner);
+        if(d_owner_impl->d_RenderingMode == OgreRenderer::RenderingModes::ConfigureManual && d_owner_impl->mGUIContextToRenderManually)
+        {
+            //render manually only the one GUIContext that is set
+            d_owner->beginRendering();
+            d_owner_impl->mGUIContextToRenderManually->draw();
+            d_owner->endRendering();
+            // do final destruction on dead-pool windows
+            WindowManager::getSingleton().cleanDeadPool();
+        }
+        else if(d_owner_impl->d_RenderingMode == OgreRenderer::RenderingModes::ConfigureManual)
+        {
+            if(d_owner_impl->d_ManualRenderingEveryFrame.size() > 0 || d_owner_impl->d_ManualRenderingOnce.size() > 0)
+            {
+                //render what is configured when running automatically
+                d_owner->beginRendering();
+                for(std::vector<CEGUI::GUIContext*>::const_iterator iter = d_owner_impl->d_ManualRenderingEveryFrame.begin(); iter != d_owner_impl->d_ManualRenderingEveryFrame.end(); ++iter)
+                    (*iter)->draw();
+                for(std::vector<CEGUI::GUIContext*>::const_iterator iter = d_owner_impl->d_ManualRenderingOnce.begin(); iter != d_owner_impl->d_ManualRenderingOnce.end(); ++iter)
+                    (*iter)->draw();
+                d_owner->endRendering();
+                // do final destruction on dead-pool windows
+                WindowManager::getSingleton().cleanDeadPool();
+            }
+            d_owner_impl->d_ManualRenderingOnce.clear();
+        }
+        else if(d_owner->getRenderingMode() == OgreRenderer::RenderingModes::RenderAllCeguiGUIContexts)
+        {
+            // We should only render contexts that are on this render target
+            System::getSingleton().renderAllGUIContextsOnTarget(d_owner);
+        }
     }
 }
-
 //----------------------------------------------------------------------------//
-
 #else
 OgreGUIFrameListener::OgreGUIFrameListener() :
     d_enabled(true)
 {
 }
-
 //----------------------------------------------------------------------------//
 void OgreGUIFrameListener::setCEGUIRenderEnabled(bool enabled)
 {
     d_enabled = enabled;
 }
-
 //----------------------------------------------------------------------------//
 bool OgreGUIFrameListener::isCEGUIRenderEnabled() const
 {
     return d_enabled;
 }
-
 //----------------------------------------------------------------------------//
 bool OgreGUIFrameListener::frameRenderingQueued(const Ogre::FrameEvent&)
 {
-    if (d_enabled)
-        System::getSingleton().renderAllGUIContexts();
-
+    if (d_enabled){
+    }
     return true;
 }
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
-
 } // End of  CEGUI namespace section

@@ -146,8 +146,15 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
             const CEGUI::OgreTexture* texture = static_cast<const
                 CEGUI::OgreTexture*>(parameterTexture->d_parameterValue);
 
-            Ogre::TexturePtr actual_texture = texture->getOgreTexture();
+            auto actual_texture = texture->getOgreTexture();
+#ifdef CEGUI_USE_OGRE_TEXTURE_GPU
+            if (!actual_texture)
+            {
+                throw RendererException("Ogre texture is null");
+            }
 
+            d_renderSystem._setTexture(0, actual_texture, false);
+#else
             if (OGRE_ISNULL(actual_texture))
             {
                 throw RendererException("Ogre texture ptr is empty");
@@ -158,6 +165,7 @@ void OgreShaderWrapper::prepareForRendering(const ShaderParameterBindings*
         #else
             d_renderSystem._setTexture(0, true, actual_texture);
         #endif //CEGUI_USE_OGRE_HLMS
+#endif // CEGUI_USE_OGRE_TEXTURE_GPU
 
             d_owner.initialiseTextureStates();
 
