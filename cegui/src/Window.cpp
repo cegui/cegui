@@ -2500,6 +2500,23 @@ uint8_t Window::handleAreaChanges(bool movedOnScreen, bool movedInParent, bool s
 {
     // NB: we don't call Element::handleAreaChanges because we completely override its behaviour
 
+    // !!!FIXME: HACK!!!
+    // The problem: movedOnScreen detects visual movement of windows inside a context. When the window
+    // is cached into a surface, it may be shifted inside it and at the same time the surface is shifted
+    // oppositely in the context. So screen position of a Window doesn't change but its position on the
+    // imagery cache surface does. But update is skipped and cache becomes wrong.
+    // Hack solution: roughly detect possible shift in imagery cache here and patch an argument.
+    // Good solution: rework an algorithm to consider this case out of the box.
+    {
+        RenderingContext ctx;
+        getRenderingContext(ctx);
+        if (ctx.surface && ctx.surface->isRenderingWindow() &&
+            (d_geometryBuffers.empty() || glm::vec3(getUnclippedOuterRect().get().getPosition() - ctx.offset, 0.f) != d_geometryBuffers.front()->getTranslation()))
+        {
+            movedOnScreen = true;
+        }
+    }
+
     if (movedOnScreen || sized)
         d_unclippedInnerRect.invalidateCache();
 
