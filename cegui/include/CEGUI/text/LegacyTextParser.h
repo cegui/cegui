@@ -60,8 +60,9 @@ namespace CEGUI
     - 'image-size' value is a CEGUI size property value.
     - 'image-width' value is a float.
     - 'image-height' value is a float.
-    - 'aspect-lock' value is a boolean (NB: this currently has no effect).
-    - 'colour-modulate' value is a boolean (manual enable/disable color modulating with color from TextColour property of widget)
+    - 'aspect-lock' value is a boolean.
+    - 'reset' value is "full", "colour", "image" or "font" (reset color, font, image size, etc to default values).
+    - 'colour-modulate' value is a boolean (manual enable/disable color modulating with color from TextColour property of widget).
 */
 class CEGUIEXPORT LegacyTextParser : public TextParser
 {
@@ -92,6 +93,8 @@ public:
     static const String ImageSizeTagName;
     static const String ImageWidthTagName;
     static const String ImageHeightTagName;
+    static const String ImageAspectLockTagName;
+    static const String ResetTagName;
 
     LegacyTextParser();
 
@@ -123,6 +126,8 @@ protected:
     void handleImageSize(const String& value);
     void handleImageWidth(const String& value);
     void handleImageHeight(const String& value);
+    void handleImageAspectLockTagName(const String& value);
+    void handleReset(const String& value);
 
     //! Collection to map tag names to their handler functions.
     std::unordered_map<String, TagHandler> d_tagHandlers;
@@ -144,6 +149,7 @@ protected:
     bool d_strikeout = false;
     bool d_styleChanged = false;
     bool d_useModColour = true;
+    bool d_imageAspectLock = false;
 };
 
 }

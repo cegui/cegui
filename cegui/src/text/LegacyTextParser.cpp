@@ -31,6 +31,7 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/FontManager.h"
+#include "CEGUI/ImageManager.h"
 #include "CEGUI/text/Font.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
@@ -62,6 +63,8 @@ const String LegacyTextParser::RightPaddingTagName("right-padding");
 const String LegacyTextParser::ImageSizeTagName("image-size");
 const String LegacyTextParser::ImageWidthTagName("image-width");
 const String LegacyTextParser::ImageHeightTagName("image-height");
+const String LegacyTextParser::ImageAspectLockTagName("aspect-lock");
+const String LegacyTextParser::ResetTagName("reset");
 
 //----------------------------------------------------------------------------//
 LegacyTextParser::LegacyTextParser()
@@ -91,6 +94,8 @@ LegacyTextParser::LegacyTextParser()
     d_tagHandlers[ImageSizeTagName] = &LegacyTextParser::handleImageSize;
     d_tagHandlers[ImageWidthTagName] = &LegacyTextParser::handleImageWidth;
     d_tagHandlers[ImageHeightTagName] = &LegacyTextParser::handleImageHeight;
+    d_tagHandlers[ImageAspectLockTagName] = &LegacyTextParser::handleImageAspectLockTagName;
+    d_tagHandlers[ResetTagName] = &LegacyTextParser::handleReset;
 }
 
 //----------------------------------------------------------------------------//
@@ -108,17 +113,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     //???TODO: use stack struct for tag params to make the parser itself stateless?
 
     // Initialize formatting parameters with default values
-    d_colours = Colour(0xFFFFFFFF);
-    d_bgColours = Colour(0x00000000);
-    d_font = nullptr;
-    d_padding = Rectf(0.f, 0.f, 0.f, 0.f);
-    d_imageSize = Sizef(0.f, 0.f);
-    d_vertFormatting = VerticalImageFormatting::BottomAligned;
-    d_outlineSize = 0.f;
-    d_underline = false;
-    d_strikeout = false;
-    d_styleChanged = true;
-    d_useModColour = true;
+    handleReset("full");
 
     outText.reserve(inText.size());
     outOriginalIndices.reserve(inText.size());
@@ -225,6 +220,21 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     return true;
 }
 
+Sizef getRespectRatioSize(Sizef reqSize, const Sizef& orgSize) {
+	float orgRatio = orgSize.d_width / orgSize.d_height;
+	float reqRatio = reqSize.d_width / reqSize.d_height;
+
+	if (reqSize.d_width == 0) {
+		reqSize.d_width  = reqSize.d_height * orgRatio;
+	} else if (reqSize.d_height == 0 || orgRatio > reqRatio) {
+		reqSize.d_height = reqSize.d_width  / orgRatio;
+	} else /*if (orgRatio < reqRatio)*/ {
+		reqSize.d_width  = reqSize.d_height * orgRatio;
+	}
+
+	return reqSize;
+}
+
 //----------------------------------------------------------------------------//
 void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::u32string& outText,
     std::vector<uint16_t>& outElementIndices, std::vector<RenderedTextElementPtr>& outElements)
@@ -266,14 +276,25 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
 
     if (valueValid && key == ImageTagName)
     {
+        const String val = ctrlStr.substr(valueStart, valueEnd - valueStart);
+        if (!ImageManager::getSingleton().isDefined( val )) {
+            ImageManager::getSingleton().addBitmapImageFromFile( val, val );
+        }
+
         //!!!TODO TEXT: try to find the same image first!
 
-        auto element = std::make_unique<RenderedTextImage>(
-            PropertyHelper<Image*>::fromString(ctrlStr.substr(valueStart, valueEnd - valueStart)));
+        auto element = std::make_unique<RenderedTextImage>( PropertyHelper<Image*>::fromString(val) );
         element->setColour(d_colours);
         element->setBackgroundColour(d_bgColours);
         element->setUseModulateColour(d_useModColour);
-        element->setSize(d_imageSize);
+        if (d_imageAspectLock) {
+            element->setSize(getRespectRatioSize(
+                d_imageSize,
+                ImageManager::getSingleton().get( val ).getRenderedSize()
+            ));
+        } else {
+            element->setSize(d_imageSize);
+        }
         element->setFont(d_font);
         element->setPadding(d_padding);
         element->setVerticalFormatting(d_vertFormatting);
@@ -410,6 +431,37 @@ void LegacyTextParser::handleImageWidth(const String& value)
 void LegacyTextParser::handleImageHeight(const String& value)
 {
     d_imageSize.d_height = PropertyHelper<float>::fromString(value);
+}
+
+//----------------------------------------------------------------------------//
+void LegacyTextParser::handleImageAspectLockTagName(const String& value)
+{
+    d_imageAspectLock = PropertyHelper<bool>::fromString(value);
+}
+
+//----------------------------------------------------------------------------//
+void LegacyTextParser::handleReset(const String& value)
+{
+    if (value == "full" || value == "colour") {
+        d_colours = Colour(0xFFFFFFFF);
+        d_bgColours = Colour(0x00000000);
+        d_useModColour = true;
+    }
+    if (value == "full" || value == "font") {
+        d_font = nullptr;
+        d_underline = false;
+        d_strikeout = false;
+    }
+    if (value == "full" || value == "image") {
+        d_imageSize = Sizef(0.f, 0.f);
+        d_imageAspectLock = false;
+    }
+    if (value == "full") {
+        d_padding = Rectf(0.f, 0.f, 0.f, 0.f);
+        d_vertFormatting = VerticalImageFormatting::BottomAligned;
+        d_outlineSize = 0.f;
+    }
+    d_styleChanged = true;
 }
 
 }
