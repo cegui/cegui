@@ -61,18 +61,20 @@ public:
     void setTextColour(const ColourRect& colours) { d_colours = colours; }
     void setOutlineColour(const ColourRect& colours) { d_outlineColours = colours; }
     void setOutlineSize(float size) { d_outlineSize = size; }
+    void setUseModulateColour(bool value) { d_useModColour = value; }
 
 protected:
 
     void drawEffects(GeometryBuffer* effectBuffer, float left, float right, float y, const glm::vec2& scale,
         const ColourRect& colours, const Rectf* clipRect, bool outline) const;
 
-    ColourRect d_colours = 0xFFFFFFFF;
-    ColourRect d_outlineColours = 0xFF000000;
+    ColourRect d_colours = ColourRect(0xFFFFFFFF);
+    ColourRect d_outlineColours = ColourRect(0xFF000000);
     float d_outlineSize = 0.f;
     bool d_underline = false;
     bool d_strikeout = false;
     bool d_drawBackground = false;
+    bool d_useModColour = true;
 };
 
 }

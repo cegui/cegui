@@ -42,6 +42,7 @@ const String LegacyTextParser::ColourTagName("colour");
 const String LegacyTextParser::ColorTagName("color");
 const String LegacyTextParser::BgColourTagName("bg-colour");
 const String LegacyTextParser::BgColorTagName("bg-color");
+const String LegacyTextParser::ModulateColourTagName("colour-modulate");
 const String LegacyTextParser::FontTagName("font");
 const String LegacyTextParser::UnderlineTagName("underline");
 const String LegacyTextParser::StrikeoutTagName("strikeout");
@@ -69,6 +70,7 @@ LegacyTextParser::LegacyTextParser()
     d_tagHandlers[ColorTagName] = &LegacyTextParser::handleColour;
     d_tagHandlers[BgColourTagName] = &LegacyTextParser::handleBgColour;
     d_tagHandlers[BgColorTagName] = &LegacyTextParser::handleBgColour;
+    d_tagHandlers[ModulateColourTagName] = &LegacyTextParser::handleModulateColour;
     d_tagHandlers[FontTagName] = &LegacyTextParser::handleFont;
     d_tagHandlers[UnderlineTagName] = &LegacyTextParser::handleUnderline;
     d_tagHandlers[StrikeoutTagName] = &LegacyTextParser::handleStrikeout;
@@ -116,6 +118,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     d_underline = false;
     d_strikeout = false;
     d_styleChanged = true;
+    d_useModColour = true;
 
     outText.reserve(inText.size());
     outOriginalIndices.reserve(inText.size());
@@ -135,7 +138,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     {
         outOriginalIndices.push_back(itIn.getCodeUnitIndexFromStart());
 #endif
-        const char32_t codePoint = *itIn;
+        char32_t codePoint = *itIn;
 
         if (tagString.empty())
         {
@@ -152,6 +155,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
                     auto style = std::make_unique<RenderedTextStyle>(d_font, d_underline, d_strikeout);
                     style->setTextColour(d_colours);
                     style->setBackgroundColour(d_bgColours);
+                    style->setUseModulateColour(d_useModColour);
                     style->setPadding(d_padding);
                     style->setVerticalFormatting(d_vertFormatting);
                     style->setOutlineColour(d_outlineColours);
@@ -163,9 +167,14 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
 
                 if (escaped)
                 {
-                    // If it is not actually escaped, print the slash itself too.
+                    // We got \n, so make line break
+                    if (codePoint == 'n')
+                    {
+                        codePoint = '\n';
+                    }
+                    // If it is not actually escaped or \n, print the slash itself too.
                     // Only slash and opening square bracket support escaping now.
-                    if (codePoint != '\\')
+                    else if (codePoint != '\\' && codePoint != '[')
                     {
                         outText.push_back('\\');
                         outElementIndices.push_back(elementIndex);
@@ -263,6 +272,7 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
             PropertyHelper<Image*>::fromString(ctrlStr.substr(valueStart, valueEnd - valueStart)));
         element->setColour(d_colours);
         element->setBackgroundColour(d_bgColours);
+        element->setUseModulateColour(d_useModColour);
         element->setSize(d_imageSize);
         element->setFont(d_font);
         element->setPadding(d_padding);
@@ -303,6 +313,7 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
 void LegacyTextParser::handleColour(const String& value)
 {
     d_colours.setColours(PropertyHelper<Colour>::fromString(value));
+    d_useModColour = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -315,6 +326,12 @@ void LegacyTextParser::handleBgColour(const String& value)
 void LegacyTextParser::handleOutlineColour(const String& value)
 {
     d_outlineColours.setColours(PropertyHelper<Colour>::fromString(value));
+}
+
+//----------------------------------------------------------------------------//
+void LegacyTextParser::handleModulateColour(const String& value)
+{
+    d_useModColour = PropertyHelper<bool>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//

@@ -86,7 +86,7 @@ void RenderedTextImage::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
     const Sizef imgSize(imgWidth, imgHeight * heightScale);
 
     ImageRenderSettings settings(Rectf(), clipRect, d_colours);
-    if (modColours)
+    if (d_useModColour && modColours)
         settings.d_multiplyColours *= *modColours;
 
     const RenderedGlyph* end = begin + count;
