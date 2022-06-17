@@ -110,9 +110,9 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
 
     // Render main images of glyphs
 
-    const auto normalColour = modColours ? d_colours * (*modColours) : d_colours;
+    const auto normalColour = (modColours && d_useModColour) ? d_colours * (*modColours) : d_colours;
     const auto selectedColour = (!selection) ? normalColour :
-        modColours ? selection->textColours * (*modColours) : selection->textColours;
+        (modColours && d_useModColour) ? selection->textColours * (*modColours) : selection->textColours;
 
     bool selected = false;
     ImageRenderSettings settings(Rectf(), clipRect, normalColour, 1.f, true);

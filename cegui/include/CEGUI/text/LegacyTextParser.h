@@ -61,6 +61,7 @@ namespace CEGUI
     - 'image-width' value is a float.
     - 'image-height' value is a float.
     - 'aspect-lock' value is a boolean (NB: this currently has no effect).
+    - 'colour-modulate' value is a boolean (manual enable/disable color modulating with color from TextColour property of widget)
 */
 class CEGUIEXPORT LegacyTextParser : public TextParser
 {
@@ -71,6 +72,7 @@ public:
     static const String ColorTagName;
     static const String BgColourTagName;
     static const String BgColorTagName;
+    static const String ModulateColourTagName;
     static const String FontTagName;
     static const String UnderlineTagName;
     static const String StrikeoutTagName;
@@ -106,6 +108,7 @@ protected:
     //! handlers for the various tags supported
     void handleColour(const String& value);
     void handleBgColour(const String& value);
+    void handleModulateColour(const String& value);
     void handleFont(const String& value);
     void handleUnderline(const String& value);
     void handleStrikeout(const String& value);
@@ -140,6 +143,7 @@ protected:
     bool d_underline = false;
     bool d_strikeout = false;
     bool d_styleChanged = false;
+    bool d_useModColour = true;
 };
 
 }

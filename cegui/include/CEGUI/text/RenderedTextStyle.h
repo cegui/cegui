@@ -61,6 +61,7 @@ public:
     void setTextColour(const ColourRect& colours) { d_colours = colours; }
     void setOutlineColour(const ColourRect& colours) { d_outlineColours = colours; }
     void setOutlineSize(float size) { d_outlineSize = size; }
+    void setUseModulateColour(bool value) { d_useModColour = value; }
 
 protected:
 
@@ -73,6 +74,7 @@ protected:
     bool d_underline = false;
     bool d_strikeout = false;
     bool d_drawBackground = false;
+    bool d_useModColour = true;
 };
 
 }
