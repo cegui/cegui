@@ -478,16 +478,12 @@ Ogre::String OgreTexture::getUniqueName()
 {
     #if OGRE_VERSION < 0x10A00
         Ogre::StringUtil::StrStreamType strstream;
-        strstream << "_cegui_ogre_" << d_textureNumber++;
-
-        return strstream.str();
-    #endif
-    #if OGRE_VERSION >= 0x10A00
+    #else
         Ogre::StringStream strstream;
+    #endif
         strstream << "_cegui_ogre_" << d_textureNumber++;
 
         return strstream.str();
-    #endif
 }
 
 //----------------------------------------------------------------------------//
