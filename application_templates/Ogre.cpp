@@ -34,6 +34,8 @@ author:     Petskull
 * CEGUIOgreRenderer-0
 ***************************************************************************/
 
+#include <OgrePlatform.h>
+
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
@@ -52,6 +54,8 @@ typedef struct{	/* For moving data between App and AppListener */
 	Ogre::RenderWindow *ogre_win;
 	OIS::ParamList *ois_pl;
 	CEGUI::OgreRenderer *cegui_renderer;
+	CEGUI::InputAggregator* inputAggregator;
+	CEGUI::GUIContext* context;
 } AppPak;
 
 /* This AppListener class will house all callback from Ogre's rendering and window events, as well as OIS's Keyboard and Mouse events. */
@@ -80,7 +84,7 @@ public:
 
 		// For some reason, injectTimePulse(delta_time) currently must be done both
 		// on the GUIContext and also on CEGUI::System itself everytime.
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectTimePulse((float)evt.timeSinceLastFrame);
+		app_pak->context->injectTimePulse((float)evt.timeSinceLastFrame);
 		CEGUI::System::getSingleton().injectTimePulse((float)evt.timeSinceLastFrame);
 
 		// If our OIS::Keyboard or our OIS::Mouse has been destroyed (say, by closing the window), end the rendering
@@ -98,32 +102,32 @@ public:
 
 	// --- OIS::KeyListener and OIS::MouseListener Callbacks -------//
 	bool keyPressed(const OIS::KeyEvent &arg){
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown((CEGUI::Key::Scan)arg.key);
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectChar((CEGUI::Key::Scan)arg.text);
+		app_pak->inputAggregator->injectKeyDown((CEGUI::Key::Scan)arg.key);
+		app_pak->inputAggregator->injectChar(arg.text);
 
 		if (arg.key == OIS::KC_ESCAPE){ keep_running = false; }
 		return true;
 	}
 	bool keyReleased(const OIS::KeyEvent &arg){
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp((CEGUI::Key::Scan)arg.key);
+		app_pak->inputAggregator->injectKeyUp((CEGUI::Key::Scan)arg.key);
 		return true;
 	}
 	bool mouseMoved(const OIS::MouseEvent &arg){
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseMove((float)arg.state.X.rel, (float)arg.state.Y.rel);
-		//CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(200.f, 200.f);	// Another way to control the mouse cursor
+		app_pak->inputAggregator->injectMouseMove((float)arg.state.X.rel, (float)arg.state.Y.rel);
+		//app_pak->inputAggregator->injectMousePosition(200.f, 200.f);	// Another way to control the mouse cursor
 		return true;
 	}
 	bool mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id){
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(convertButton(id));
+		app_pak->inputAggregator->injectMouseButtonDown(convertButton(id));
 		return true;
 	}
 	bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id){
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(convertButton(id));
+		app_pak->inputAggregator->injectMouseButtonUp(convertButton(id));
 		return true;
 	}
 
 	// --- Ogre::WindowEventListener Callbacks ---------------------//
-	void windowResized(Ogre::RenderWindow* rw){
+	void windowResized(Ogre::RenderWindow* /*rw*/){
 		unsigned int width, height, depth;
 		int left, top;
 		app_pak->ogre_win->getMetrics(width, height, depth, left, top);
@@ -152,13 +156,13 @@ public:
 	CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID) {
 		switch (buttonID) {
 		case OIS::MB_Left:
-			return CEGUI::LeftButton;
+			return CEGUI::MouseButton::Left;
 		case OIS::MB_Right:
-			return CEGUI::RightButton;
+			return CEGUI::MouseButton::Right;
 		case OIS::MB_Middle:
-			return CEGUI::MiddleButton;
+			return CEGUI::MouseButton::Middle;
 		default:
-			return CEGUI::LeftButton;
+			return CEGUI::MouseButton::Left;
 		}
 	}
 
@@ -187,13 +191,13 @@ private:
 	void Setup(){	/* Here we set up the basic libs of Ogre, OIS, and CEGUI */
 		// --- Init Ogre --- //
 		app_pak.ogre_root = new Ogre::Root("", "", "Ogre.log");
-		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("./media", "FileSystem", "General");
-		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("./media/CEGUI/imagesets/", "FileSystem", "imagesets");
-		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("./media/CEGUI/schemes/", "FileSystem", "schemes");
-		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("./media/CEGUI/fonts/", "FileSystem", "fonts");
-		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("./media/CEGUI/looknfeel/", "FileSystem", "looknfeel");
-		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("./media/CEGUI/layouts/", "FileSystem", "layouts");
-		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("./media/CEGUI/lua_scripts/", "FileSystem", "lua_scripts");
+		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("./datafiles/schemes/", "FileSystem", "schemes");
+		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("./datafiles/imagesets/", "FileSystem", "imagesets");
+		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("./datafiles/fonts/", "FileSystem", "fonts");
+		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("./datafiles/layouts/", "FileSystem", "layouts");
+		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("./datafiles/looknfeel/", "FileSystem", "looknfeel");
+		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("./datafiles/lua_scripts/", "FileSystem", "lua_scripts");
+		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("./datafiles/schemas/", "FileSystem", "schemas");
 
 #ifdef _DEBUG
 		app_pak.ogre_root->loadPlugin(Ogre::String("RenderSystem_GL_d"));
@@ -201,7 +205,7 @@ private:
 #else
 		app_pak.ogre_root->loadPlugin("RenderSystem_GL");
 		app_pak.ogre_root->loadPlugin("Plugin_OctreeSceneManager");
-#endif;
+#endif
 
 		Ogre::RenderSystem* rs = app_pak.ogre_root->getRenderSystemByName("OpenGL Rendering Subsystem");
 		if (!(rs->getName() == "OpenGL Rendering Subsystem")){ return; }
@@ -244,12 +248,12 @@ private:
 		Ogre::LogManager::getSingletonPtr()->logMessage("*** Initializing CEGUI ***");
 		app_pak.cegui_renderer = &CEGUI::OgreRenderer::bootstrapSystem();
 		CEGUI::System::getSingleton().notifyDisplaySizeChanged(CEGUI::Sizef(1024.f, 768.f));
-		CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Informative);
+		CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::LoggingLevel::Informative);
 
 		// setup CEGUI default resource groups
 		CEGUI::ImageManager::setImagesetDefaultResourceGroup("imagesets");
-		CEGUI::Scheme::setDefaultResourceGroup("schemes");
 		CEGUI::Font::setDefaultResourceGroup("fonts");
+		CEGUI::Scheme::setDefaultResourceGroup("schemes");
 		CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeel");
 		CEGUI::WindowManager::setDefaultResourceGroup("layouts");
 		CEGUI::ScriptModule::setDefaultResourceGroup("lua_scripts");
@@ -268,24 +272,30 @@ private:
 		app_pak.ogre_root->removeFrameListener( app_listener );
 		delete app_listener;
 
+		delete app_pak.inputAggregator;
+		delete app_pak.context;
 		delete app_pak.ogre_root;
 		delete app_pak.ois_pl;
 	}
 	void CreateGUIContext(){
 		// --- Create resources we need --- //
+		CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
 		CEGUI::SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
 		CEGUI::SchemeManager::getSingleton().createFromFile("AlfiskoSkin.scheme");
 		CEGUI::FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
 
 		// --- Create our GUIContext and set its defaults --- //
-		CEGUI::System::getSingleton().createGUIContext(app_pak.cegui_renderer->getDefaultRenderTarget());
-		CEGUI::System::getSingleton().getDefaultGUIContext().setDefaultFont("DejaVuSans-12");
-		CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
-		//CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().show();		// Only important to bring cursor back from hide()
+		app_pak.context = &CEGUI::System::getSingleton().createGUIContext(app_pak.cegui_renderer->getDefaultRenderTarget());
+		app_pak.context->setDefaultFont("DejaVuSans-12");
+		app_pak.context->getCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+		//app_pak.context->getCursor().show();		// Only important to bring cursor back from hide()
+
+		app_pak.inputAggregator = new CEGUI::InputAggregator(app_pak.context);
+		app_pak.inputAggregator->initialise();
 	}
 	void CreateGUIRootWindow(){
 		ui_root_win = CEGUI::WindowManager::getSingleton().loadLayoutFromFile("application_templates.layout");
-		CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(ui_root_win);
+		app_pak.context->setRootWindow(ui_root_win);
 	}
 	void DestroyGUIRootWindow(){
 		CEGUI::WindowManager::getSingleton().destroyWindow(ui_root_win);
@@ -298,6 +308,7 @@ private:
 };
 
 //-------------------------------------------------------------------[ Init ]---//
+#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 std::wstring s2ws(const std::string& s){
 	int len;
 	int slength = (int)s.length() + 1;
@@ -308,11 +319,12 @@ std::wstring s2ws(const std::string& s){
 	delete[] buf;
 	return r;
 }
+#endif
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT){
 #else
-int main(int argc, char *argv[]){
+int main(int /*argc*/, char* /*argv*/[]){
 #endif
 	App my_app;
 
