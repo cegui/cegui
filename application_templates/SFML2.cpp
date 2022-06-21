@@ -48,6 +48,7 @@
 #include "sfml_keycodes_to_cegui_mappings.h"
 
 static CEGUI::InputAggregator* G_inputAggregator;
+static CEGUI::GUIContext* G_context;
 const int WIDTH = 800;
 const int HEIGHT = 600;
 
@@ -67,22 +68,22 @@ CEGUI::MouseButton toCEGUIButton(const sf::Mouse::Button& button)
     switch (button)
     {
     case sf::Mouse::Left:
-        return LeftButton;
+        return CEGUI::MouseButton::Left;
 
     case sf::Mouse::Middle:
-        return MiddleButton;
+        return CEGUI::MouseButton::Middle;
 
     case sf::Mouse::Right:
-        return RightButton;
+        return CEGUI::MouseButton::Right;
 
     case sf::Mouse::XButton1:
-        return X1Button;
+        return CEGUI::MouseButton::X1;
 
     case sf::Mouse::XButton2:
-        return X2Button;
+        return CEGUI::MouseButton::X2;
 
     default:
-        return NoButton;
+        return CEGUI::MouseButton::Invalid;
     }
 }
 
@@ -97,7 +98,8 @@ void initCEGUI()
     // create CEGUI system object
     CEGUI::System::create(cegui_renderer);
 
-    G_inputAggregator = new InputAggregator(&System::getSingletonPtr()->getDefaultGUIContext());
+    G_context = &System::getSingleton().createGUIContext(cegui_renderer.getDefaultRenderTarget());
+    G_inputAggregator = new CEGUI::InputAggregator(G_context);
     G_inputAggregator->initialise();
 
     // setup resource directories
@@ -129,9 +131,9 @@ void initCEGUI()
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // set default font and cursor image and tooltip type
-    System::getSingleton().getDefaultGUIContext().setDefaultFont("DejaVuSans-10");
-    System::getSingleton().getDefaultGUIContext().getCursor().setDefaultImage("TaharezLook/MouseArrow");
-    System::getSingleton().getDefaultGUIContext().setDefaultTooltipType("TaharezLook/Tooltip");
+    G_context->setDefaultFont("DejaVuSans-10");
+    G_context->getCursor().setDefaultImage("TaharezLook/MouseArrow");
+    G_context->setDefaultTooltipType("TaharezLook/Tooltip");
 }
 
 
@@ -149,7 +151,7 @@ void initWindows()
 
     // load layout
     Window* root = WindowManager::getSingleton().loadLayoutFromFile("application_templates.layout");
-    System::getSingleton().getDefaultGUIContext().setRootWindow(root);
+    G_context->setRootWindow(root);
 }
 
 
@@ -247,7 +249,7 @@ int main()
         // Inject time pulses
         const float time_elapsed = clock.restart().asSeconds();
         CEGUI::System::getSingleton().injectTimePulse(time_elapsed);
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectTimePulse(time_elapsed);
+        G_context->injectTimePulse(time_elapsed);
 
         // Draw...
 
@@ -260,6 +262,8 @@ int main()
 
     delete G_inputAggregator;
     G_inputAggregator = 0;
+    delete G_context;
+    G_context = 0;
     CEGUI::System::destroy();
     CEGUI::OpenGL3Renderer::destroy(*renderer);
     renderer = 0;
