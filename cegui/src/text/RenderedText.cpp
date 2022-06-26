@@ -303,7 +303,7 @@ bool RenderedText::renderText(const String& text, TextParser* parser,
     if (elementIndices.size() < utf32TextLength)
         d_elements.emplace_back(new RenderedTextStyle());
 
-    // Characters without an explicit font ust use a default font
+    // Characters without an explicit font must use a default font
     for (auto& element : d_elements)
     {
         if (element->getFont())
