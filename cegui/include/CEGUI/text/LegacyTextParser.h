@@ -62,7 +62,7 @@ namespace CEGUI
     - 'image-height' value is a float.
     - 'aspect-lock' value is a boolean.
     - 'reset' value is "full", "colour", "image" or "font" (reset color, font, image size, etc to default values).
-    - 'colour-modulate' value is a boolean (manual enable/disable color modulating with color from TextColour property of widget).
+    - 'br' without value.
 */
 class CEGUIEXPORT LegacyTextParser : public TextParser
 {
@@ -73,7 +73,6 @@ public:
     static const String ColorTagName;
     static const String BgColourTagName;
     static const String BgColorTagName;
-    static const String ModulateColourTagName;
     static const String FontTagName;
     static const String UnderlineTagName;
     static const String StrikeoutTagName;
@@ -95,6 +94,7 @@ public:
     static const String ImageHeightTagName;
     static const String ImageAspectLockTagName;
     static const String ResetTagName;
+    static const String NewLineTagName;
 
     LegacyTextParser();
 
@@ -107,6 +107,8 @@ protected:
 
     void processControlString(const std::u32string& ctrlStr, std::u32string& outText,
         std::vector<uint16_t>& outElementIndices, std::vector<RenderedTextElementPtr>& outElements);
+
+    void resetStyle(bool color, bool font, bool image, bool others);
 
     //! handlers for the various tags supported
     void handleColour(const String& value);
@@ -126,7 +128,7 @@ protected:
     void handleImageSize(const String& value);
     void handleImageWidth(const String& value);
     void handleImageHeight(const String& value);
-    void handleImageAspectLockTagName(const String& value);
+    void handleImageAspectLock(const String& value);
     void handleReset(const String& value);
 
     //! Collection to map tag names to their handler functions.

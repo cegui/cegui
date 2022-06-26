@@ -55,7 +55,7 @@ public:
     virtual RenderedTextElementPtr clone() const override;
 
     void setColour(const ColourRect& colours) { d_colours = colours; }
-    void setSize(const Sizef& size) { d_size = size; }
+    void setSize(const Sizef& size, bool aspectLock = false);
     void setUseModulateColour(bool value) { d_useModColour = value; }
 
 protected:
