@@ -43,7 +43,6 @@ const String LegacyTextParser::ColourTagName("colour");
 const String LegacyTextParser::ColorTagName("color");
 const String LegacyTextParser::BgColourTagName("bg-colour");
 const String LegacyTextParser::BgColorTagName("bg-color");
-const String LegacyTextParser::ModulateColourTagName("colour-modulate");
 const String LegacyTextParser::FontTagName("font");
 const String LegacyTextParser::UnderlineTagName("underline");
 const String LegacyTextParser::StrikeoutTagName("strikeout");
@@ -65,6 +64,7 @@ const String LegacyTextParser::ImageWidthTagName("image-width");
 const String LegacyTextParser::ImageHeightTagName("image-height");
 const String LegacyTextParser::ImageAspectLockTagName("aspect-lock");
 const String LegacyTextParser::ResetTagName("reset");
+const String LegacyTextParser::NewLineTagName("br");
 
 //----------------------------------------------------------------------------//
 LegacyTextParser::LegacyTextParser()
@@ -73,7 +73,6 @@ LegacyTextParser::LegacyTextParser()
     d_tagHandlers[ColorTagName] = &LegacyTextParser::handleColour;
     d_tagHandlers[BgColourTagName] = &LegacyTextParser::handleBgColour;
     d_tagHandlers[BgColorTagName] = &LegacyTextParser::handleBgColour;
-    d_tagHandlers[ModulateColourTagName] = &LegacyTextParser::handleModulateColour;
     d_tagHandlers[FontTagName] = &LegacyTextParser::handleFont;
     d_tagHandlers[UnderlineTagName] = &LegacyTextParser::handleUnderline;
     d_tagHandlers[StrikeoutTagName] = &LegacyTextParser::handleStrikeout;
@@ -94,7 +93,7 @@ LegacyTextParser::LegacyTextParser()
     d_tagHandlers[ImageSizeTagName] = &LegacyTextParser::handleImageSize;
     d_tagHandlers[ImageWidthTagName] = &LegacyTextParser::handleImageWidth;
     d_tagHandlers[ImageHeightTagName] = &LegacyTextParser::handleImageHeight;
-    d_tagHandlers[ImageAspectLockTagName] = &LegacyTextParser::handleImageAspectLockTagName;
+    d_tagHandlers[ImageAspectLockTagName] = &LegacyTextParser::handleImageAspectLock;
     d_tagHandlers[ResetTagName] = &LegacyTextParser::handleReset;
 }
 
@@ -113,7 +112,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     //???TODO: use stack struct for tag params to make the parser itself stateless?
 
     // Initialize formatting parameters with default values
-    handleReset("full");
+    resetStyle(true, true, true, true);
 
     outText.reserve(inText.size());
     outOriginalIndices.reserve(inText.size());
@@ -162,14 +161,9 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
 
                 if (escaped)
                 {
-                    // We got \n, so make line break
-                    if (codePoint == 'n')
-                    {
-                        codePoint = '\n';
-                    }
-                    // If it is not actually escaped or \n, print the slash itself too.
+                    // If it is not actually escaped, print the slash itself too.
                     // Only slash and opening square bracket support escaping now.
-                    else if (codePoint != '\\' && codePoint != '[')
+                    if (codePoint != '\\' && codePoint != '[')
                     {
                         outText.push_back('\\');
                         outElementIndices.push_back(elementIndex);
@@ -220,25 +214,17 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     return true;
 }
 
-Sizef getRespectRatioSize(Sizef reqSize, const Sizef& orgSize) {
-	float orgRatio = orgSize.d_width / orgSize.d_height;
-	float reqRatio = reqSize.d_width / reqSize.d_height;
-
-	if (reqSize.d_width == 0) {
-		reqSize.d_width  = reqSize.d_height * orgRatio;
-	} else if (reqSize.d_height == 0 || orgRatio > reqRatio) {
-		reqSize.d_height = reqSize.d_width  / orgRatio;
-	} else /*if (orgRatio < reqRatio)*/ {
-		reqSize.d_width  = reqSize.d_height * orgRatio;
-	}
-
-	return reqSize;
-}
-
 //----------------------------------------------------------------------------//
 void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::u32string& outText,
     std::vector<uint16_t>& outElementIndices, std::vector<RenderedTextElementPtr>& outElements)
 {
+    if (NewLineTagName.compare(0, String::npos, ctrlStr, 1, String::npos) == 0)
+    {
+        outText.push_back('\n');
+        outElementIndices.push_back(static_cast<uint16_t>(outElements.size()));
+        return;
+    }
+
     // All our default strings are of the form <var>='<val>'
     // so let's get the variables using '=' as delimiter:
     const size_t findPos = ctrlStr.find_first_of('=');
@@ -277,8 +263,9 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
     if (valueValid && key == ImageTagName)
     {
         const String val = ctrlStr.substr(valueStart, valueEnd - valueStart);
-        if (!ImageManager::getSingleton().isDefined( val )) {
-            ImageManager::getSingleton().addBitmapImageFromFile( val, val );
+        if (!ImageManager::getSingleton().isDefined(val))
+        {
+            ImageManager::getSingleton().addBitmapImageFromFile(val, val);
         }
 
         //!!!TODO TEXT: try to find the same image first!
@@ -286,15 +273,8 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
         auto element = std::make_unique<RenderedTextImage>( PropertyHelper<Image*>::fromString(val) );
         element->setColour(d_colours);
         element->setBackgroundColour(d_bgColours);
-        element->setUseModulateColour(d_useModColour);
-        if (d_imageAspectLock) {
-            element->setSize(getRespectRatioSize(
-                d_imageSize,
-                ImageManager::getSingleton().get( val ).getRenderedSize()
-            ));
-        } else {
-            element->setSize(d_imageSize);
-        }
+        element->setUseModulateColour(false);
+        element->setSize(d_imageSize, d_imageAspectLock);
         element->setFont(d_font);
         element->setPadding(d_padding);
         element->setVerticalFormatting(d_vertFormatting);
@@ -347,12 +327,6 @@ void LegacyTextParser::handleBgColour(const String& value)
 void LegacyTextParser::handleOutlineColour(const String& value)
 {
     d_outlineColours.setColours(PropertyHelper<Colour>::fromString(value));
-}
-
-//----------------------------------------------------------------------------//
-void LegacyTextParser::handleModulateColour(const String& value)
-{
-    d_useModColour = PropertyHelper<bool>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
@@ -434,34 +408,44 @@ void LegacyTextParser::handleImageHeight(const String& value)
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handleImageAspectLockTagName(const String& value)
+void LegacyTextParser::handleImageAspectLock(const String& value)
 {
     d_imageAspectLock = PropertyHelper<bool>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void LegacyTextParser::handleReset(const String& value)
+void LegacyTextParser::resetStyle(bool color, bool font, bool image, bool others)
 {
-    if (value == "full" || value == "colour") {
+    if (color) {
         d_colours = Colour(0xFFFFFFFF);
         d_bgColours = Colour(0x00000000);
         d_useModColour = true;
     }
-    if (value == "full" || value == "font") {
+    if (font) {
         d_font = nullptr;
         d_underline = false;
         d_strikeout = false;
     }
-    if (value == "full" || value == "image") {
+    if (image) {
         d_imageSize = Sizef(0.f, 0.f);
         d_imageAspectLock = false;
     }
-    if (value == "full") {
+    if (others) {
         d_padding = Rectf(0.f, 0.f, 0.f, 0.f);
         d_vertFormatting = VerticalImageFormatting::BottomAligned;
         d_outlineSize = 0.f;
     }
     d_styleChanged = true;
+}
+
+void LegacyTextParser::handleReset(const String& value)
+{
+   resetStyle(
+       value == "full" || value == "colour",
+       value == "full" || value == "font",
+       value == "full" || value == "image",
+       value == "full"
+   );
 }
 
 }
