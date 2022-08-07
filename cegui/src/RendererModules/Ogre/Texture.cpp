@@ -101,7 +101,7 @@ OgreTexture::OgreTexture(const String& name, bool notNullTexture) :
     if (notNullTexture)
         createOgreTexture();
     #else
-    createEmptyOgreTexture()
+    createEmptyOgreTexture();
     #endif
 }
 
