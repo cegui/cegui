@@ -895,6 +895,7 @@ OgreRenderer::~OgreRenderer()
     clearVertexBufferPool();
 
     delete d_pimpl;
+    d_pimpl = NULL;
 }
 
 //----------------------------------------------------------------------------//
@@ -1707,7 +1708,12 @@ UsedOgreHWBuffer OgreRenderer::getVertexBuffer(size_t
 void OgreRenderer::returnVertexBuffer(UsedOgreHWBuffer
     buffer)
 {
-    d_pimpl->d_vbPool.push_back(buffer);
+    //If d_pimpl is null this has been called via the destructor so
+    //no need to cache 
+    if (d_pimpl)
+        d_pimpl->d_vbPool.push_back(buffer);
+    else
+        buffer.reset();
 }
 
 void OgreRenderer::clearVertexBufferPool()
