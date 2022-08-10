@@ -861,9 +861,9 @@ OgreRenderer::~OgreRenderer()
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
     // Remove the listener and then delete the scene
     #ifdef CEGUI_USE_OGRE_TEXTURE_GPU
-    d_pimpl->d_workspace->addListener(d_pimpl->d_frameListener);
-    #else
     d_pimpl->d_workspace->removeListener(d_pimpl->d_frameListener);
+    #else
+    d_pimpl->d_workspace->setListener(0);
     #endif
 
     d_pimpl->d_ogreRoot->destroySceneManager(d_pimpl->d_dummyScene);
