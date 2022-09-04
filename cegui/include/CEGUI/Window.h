@@ -431,8 +431,16 @@ public:
      * valid.
      */
     static const String EventCursorActivate;
+    /** Event fired when the Window receives a key down (pressed or auto-repeat) input event.
+     * Handlers are passed a const KeyEventArgs reference.
+     */
+    static const String EventKeyDown;
+    /** Event fired when the Window receives a key up input event.
+     * Handlers are passed a const KeyEventArgs reference.
+     */
+    static const String EventKeyUp;
     /** Event fired when the Window receives a character key input event.
-     * Handlers are passed a const CursorInputEventArgs reference.
+     * Handlers are passed a const TextEventArgs reference.
      */
     static const String EventCharacterKey;
     /** Event fired when the Window receives a semantic input event.

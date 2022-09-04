@@ -1917,7 +1917,7 @@ void MultiColumnList::onCursorPressHold(CursorInputEventArgs& e)
     // base class processing
     Window::onCursorPressHold(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
     {
         const glm::vec2 local_point = CoordConverter::screenToWindow(*this, e.position);
         handleSelection(local_point, false, false);

@@ -214,7 +214,7 @@ void Slider::onCursorPressHold(CursorInputEventArgs& e)
 {
     Window::onCursorPressHold(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
 	{
         // adjust slider position in whichever direction as required.
         const float adj = getAdjustDirectionFromPoint(e.position);

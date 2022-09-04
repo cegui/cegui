@@ -47,8 +47,6 @@ public:
     virtual void update(float /*timeSinceLastUpdate*/) {}
 
     const CEGUI::String& getUsedFilesString() {return d_usedFiles;}
-    //! Get an explicit instance of input aggregator to be used with this sample
-    CEGUI::InputAggregator* getInputAggregator() { return d_inputAggregator; }
 
     //! Get the name of the sample
     CEGUI::String getName() const { return d_name; }
@@ -70,7 +68,6 @@ protected:
     CEGUI::GUIContext*          d_guiContext = nullptr;
 
     CEGUI::String               d_usedFiles;
-    CEGUI::InputAggregator*     d_inputAggregator = nullptr;
 
     //! The name of the sample
     CEGUI::String               d_name;

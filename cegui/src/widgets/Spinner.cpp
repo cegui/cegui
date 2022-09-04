@@ -390,7 +390,7 @@ void Spinner::updateEditboxText()
 //----------------------------------------------------------------------------//
 bool Spinner::handleIncreaseButton(const EventArgs& e)
 {
-    if (static_cast<const CursorInputEventArgs&>(e).source == CursorInputSource::Left)
+    if (static_cast<const CursorInputEventArgs&>(e).button == MouseButton::Left)
     {
         setCurrentValue(d_currentValue + d_stepSize);
         return true;
@@ -402,7 +402,7 @@ bool Spinner::handleIncreaseButton(const EventArgs& e)
 //----------------------------------------------------------------------------//
 bool Spinner::handleDecreaseButton(const EventArgs& e)
 {
-    if (static_cast<const CursorInputEventArgs&>(e).source == CursorInputSource::Left)
+    if (static_cast<const CursorInputEventArgs&>(e).button == MouseButton::Left)
     {
         setCurrentValue(d_currentValue - d_stepSize);
         return true;

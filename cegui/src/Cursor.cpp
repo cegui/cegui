@@ -55,7 +55,7 @@ const String Cursor::EventDefaultImageChanged("DefaultImageChanged");
 /*************************************************************************
 	constructor
 *************************************************************************/
-Cursor::Cursor(const GUIContext& context) :
+Cursor::Cursor(GUIContext& context) :
     d_context(context),
     d_indicatorImage(nullptr),
     d_defaultIndicatorImage(nullptr),
@@ -74,7 +74,7 @@ Cursor::Cursor(const GUIContext& context) :
 /*************************************************************************
 	Destructor
 *************************************************************************/
-Cursor::~Cursor(void)
+Cursor::~Cursor()
 {
     destroyGeometryBuffers();
 }
@@ -114,7 +114,7 @@ void Cursor::setDefaultImage(const Image* image)
     // update the current image if it is the default image
     if (d_indicatorImage == d_defaultIndicatorImage)
     {
-        auto* window = d_context.getTargetWindow(d_position, true);
+        auto* window = d_context.getWindowContainingCursor();
         if (!window || !window->getCursor())
         {
             setImage(image);

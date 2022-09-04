@@ -240,7 +240,7 @@ void DragContainer::onCursorPressHold(CursorInputEventArgs& e)
 {
     Window::onCursorPressHold(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
     {
         // ensure all inputs come to us for now
         if (captureInput())
@@ -263,7 +263,7 @@ void DragContainer::onCursorActivate(CursorInputEventArgs& e)
 {
     Window::onCursorActivate(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
     {
         ++e.handled;
 

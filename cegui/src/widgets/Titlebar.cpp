@@ -128,7 +128,7 @@ void Titlebar::onCursorPressHold(CursorInputEventArgs& e)
 {
     Window::onCursorPressHold(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
     {
         // Sizing border events are propagated to the owning FrameWindow
         auto frameWnd = dynamic_cast<FrameWindow*>(d_parent);
@@ -179,7 +179,7 @@ void Titlebar::onCursorActivate(CursorInputEventArgs& e)
 {
     Window::onCursorActivate(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
     {
         releaseInput();
         ++e.handled;
@@ -194,7 +194,7 @@ void Titlebar::onSemanticInputEvent(SemanticEventArgs& e)
     if (isDisabled())
         return;
 
-    if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == CursorInputSource::Left)
+    if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == MouseButton::Left)
     {
         // Our parent must be a FrameWindow or subclass for rolling up to work
         if (auto frameWnd = dynamic_cast<FrameWindow*>(d_parent))

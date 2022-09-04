@@ -149,7 +149,7 @@ void ItemEntry::onSemanticInputEvent(SemanticEventArgs& e)
 
     if (d_selectable &&
         (e.d_semanticValue == SemanticValue::CursorActivate || range_selection || cumulative_selection) &&
-         e.d_payload.source == CursorInputSource::Left)
+         e.d_payload.source == MouseButton::Left)
     {
         if (d_ownerList)
             d_ownerList->notifyItemActivated(this, cumulative_selection, range_selection);

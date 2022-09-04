@@ -35,7 +35,6 @@
 
 #include "CEGUI/System.h"
 #include "CEGUI/Renderer.h"
-#include "CEGUI/Cursor.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
@@ -1166,7 +1165,7 @@ bool ColourPickerControls::handleColourPickerStaticImagePointerActivate(
 {
     const CursorInputEventArgs& cursor_args = static_cast<const CursorInputEventArgs&>(args);
 
-    if (cursor_args.source == CursorInputSource::Left)
+    if (cursor_args.button == MouseButton::Left)
         d_draggingColourPickerIndicator = false;
 
     return true;
@@ -1178,7 +1177,7 @@ bool ColourPickerControls::handleColourPickerStaticImagePointerPressHold(
 {
     const CursorInputEventArgs& cursor_args = static_cast<const CursorInputEventArgs&>(args);
 
-    if (cursor_args.source == CursorInputSource::Left)
+    if (cursor_args.button == MouseButton::Left)
     {
         d_draggingColourPickerIndicator = true;
 

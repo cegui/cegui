@@ -108,7 +108,7 @@ void ButtonBase::onCursorPressHold(CursorInputEventArgs& e)
 	// default processing
     Window::onCursorPressHold(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
 	{
         if (captureInput())
         {
@@ -143,7 +143,7 @@ void ButtonBase::onCursorActivate(CursorInputEventArgs& e)
 {
     Window::onCursorActivate(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
 	{
 		releaseInput();
 		++e.handled;

@@ -480,7 +480,7 @@ void ListHeaderSegment::onCursorPressHold(CursorInputEventArgs& e)
 	// base class processing
     Window::onCursorPressHold(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
 	{
 		// ensure all inputs come to us for now
 		if (captureInput())
@@ -518,7 +518,7 @@ void ListHeaderSegment::onCursorActivate(CursorInputEventArgs& e)
 	// base class processing
     Window::onCursorActivate(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
 	{
 		// if we were pushed and cursor was released (activated) within our segment area
 		if (d_segmentPushed && d_segmentHover)
@@ -562,7 +562,7 @@ void ListHeaderSegment::onSemanticInputEvent(SemanticEventArgs& e)
     if (isDisabled())
         return;
 
-    if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == CursorInputSource::Left &&
+    if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == MouseButton::Left &&
         d_splitterHover)
     {
         WindowEventArgs args(this);

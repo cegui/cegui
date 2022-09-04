@@ -29,7 +29,7 @@
 #ifndef _CEGUIWindowNavigator_h_
 #define _CEGUIWindowNavigator_h_
 
-#include "CEGUI/SemanticInputEvent.h"
+#include "CEGUI/InputEvent.h"
 
 namespace CEGUI
 {

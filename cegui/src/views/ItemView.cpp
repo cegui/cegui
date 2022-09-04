@@ -409,11 +409,12 @@ bool ItemView::onScrollPositionChanged(const EventArgs&)
 void ItemView::onCursorPressHold(CursorInputEventArgs& e)
 {
     Window::onCursorPressHold(e);
-    if (e.source != CursorInputSource::Left)
-        return;
 
-    handleSelection(e.position, true, false, false);
-    ++e.handled;
+    if (e.button == MouseButton::Left)
+    {
+        handleSelection(e.position, true, false, false);
+        ++e.handled;
+    }
 }
 
 //----------------------------------------------------------------------------//

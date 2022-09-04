@@ -126,6 +126,8 @@ const String Window::EventCursorPressHold("CursorPressHold");
 const String Window::EventSelectWord("SelectWord");
 const String Window::EventSelectAll("SelectAll");
 const String Window::EventCursorActivate("CursorActivate");
+const String Window::EventKeyDown("KeyDown");
+const String Window::EventKeyUp("KeyUp");
 const String Window::EventCharacterKey("CharacterKey");
 const String Window::EventScroll("Scroll");
 const String Window::EventSemanticEvent("SemanticEvent");

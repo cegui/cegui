@@ -590,7 +590,7 @@ void FrameWindow::onCursorPressHold(CursorInputEventArgs& e)
     // default processing (this is now essential as it controls event firing).
     Window::onCursorPressHold(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
     {
         if (isSizingEnabled())
         {
@@ -626,7 +626,7 @@ void FrameWindow::onCursorActivate(CursorInputEventArgs& e)
 {
     Window::onCursorActivate(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
     {
         releaseInput();
         ++e.handled;

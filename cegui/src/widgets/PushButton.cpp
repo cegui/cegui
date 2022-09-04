@@ -73,7 +73,7 @@ void PushButton::onClicked(WindowEventArgs& e)
 *************************************************************************/
 void PushButton::onCursorActivate(CursorInputEventArgs& e)
 {
-    if ((e.source == CursorInputSource::Left) && isPushed())
+    if ((e.button == MouseButton::Left) && isPushed())
 	{
 		Window* sheet = getGUIContext().getRootWindow();
 

@@ -26,12 +26,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIInputEvent_h_
-#define _CEGUIInputEvent_h_
+#pragma once
 
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/Sizef.h"
-#include "CEGUI/SemanticInputEvent.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -40,6 +38,59 @@
 
 namespace CEGUI
 {
+/*!
+\brief
+    Helper class for modern C++ enum flags.
+    Use needShift if your enum values are zero-based indices (0, 1, 2, 3, 4 ...).
+    Leave needShift disabled if your enum values are ready bit values (0x0, 0x1, 0x2, 0x4, 0x8 ...).
+*/
+template<typename T, bool needShift = false, class = typename std::enable_if_t<std::is_enum_v<T>>>
+struct Flags
+{
+    static inline constexpr std::underlying_type_t<T> bit(T flag)
+    {
+        // TODO: C++17
+        if /*constexpr*/ (needShift)
+            return (1 << static_cast<std::underlying_type_t<T>>(flag));
+        else
+            return static_cast<std::underlying_type_t<T>>(flag);
+    }
+
+    Flags() = default;
+    Flags(T flag) : d_mask(bit(flag)) {}
+    Flags(std::underlying_type_t<T> mask) : d_mask(mask) {}
+    Flags(std::initializer_list<T> list)
+    {
+        d_mask = 0;
+        for (T flag : list)
+            d_mask |= bit(flag);
+    }
+
+    // TODO: C++17, and need to require all Args to be of type T!
+    //template<typename... Args>
+    //Flags(Args&&... args) : d_mask((args | ...)) {}
+
+    void reset() { d_mask = 0; }
+    bool has(T flag) const { return d_mask & bit(flag); }
+
+    operator bool() const { return d_mask != 0; }
+    operator std::underlying_type_t<T>() const { return d_mask; }
+
+    bool operator ==(Flags other) { return d_mask == other.d_mask; }
+    bool operator !=(Flags other) { return !(*this == other); }
+    bool operator &(T flag) const { return has(flag); }
+    Flags operator +(T flag) const { return Flags(d_mask | bit(flag)); }
+    Flags& operator +=(T flag) { d_mask |= bit(flag); return *this; }
+    Flags operator -(T flag) const { return Flags(d_mask & ~bit(flag)); }
+    Flags& operator -=(T flag) { d_mask &= ~bit(flag); return *this; }
+    Flags operator +(Flags other) const { return Flags(d_mask | other.d_mask); }
+    Flags& operator +=(Flags other) { d_mask |= other.d_mask; return *this; }
+    Flags operator -(Flags other) const { return Flags(d_mask & ~other.d_mask); }
+    Flags& operator -=(Flags other) { d_mask &= ~other.d_mask; return *this; }
+
+    std::underlying_type_t<T> d_mask = 0;
+};
+
 /*!
 \brief
 	struct to give scope to scan code enumeration.
@@ -204,21 +255,47 @@ struct CEGUIEXPORT Key
 */
 enum class MouseButton : int
 {
+    //! Value set for no mouse button.
+    Invalid = 0x00,
     //! The left mouse button.
-    Left,
+    Left = 0x01,
     //! The right mouse button.
-    Right,
+    Right = 0x02,
     //! The middle mouse button.
-    Middle,
+    Middle = 0x04,
     //! The first 'extra' mouse button.
-    X1,
+    X1 = 0x08,
     //! The second 'extra' mouse button.
-    X2,
-    //! Value that equals the number of mouse buttons supported by CEGUI.
-    Count,
-    //! Value set for no mouse button.  NB: This is not 0, do not assume!
-    Invalid
+    X2 = 0x10
 };
+using MouseButtons = Flags<MouseButton>;
+
+/*!
+\brief
+    Enumeration of keyboard modifier keys
+*/
+enum class ModifierKey : int
+{
+    None  = 0x00,
+    Shift = 0x01,
+    Ctrl  = 0x02,
+    Alt   = 0x04
+};
+using ModifierKeys = Flags<ModifierKey>;
+
+static ModifierKey ModifierFromScanCode(Key::Scan scanCode)
+{
+    switch (scanCode)
+    {
+        case Key::Scan::LeftShift: return ModifierKey::Shift;
+        case Key::Scan::RightShift: return ModifierKey::Shift;
+        case Key::Scan::LeftAlt: return ModifierKey::Alt;
+        case Key::Scan::RightAlt: return ModifierKey::Alt;
+        case Key::Scan::LeftControl: return ModifierKey::Ctrl;
+        case Key::Scan::RightControl: return ModifierKey::Ctrl;
+        default: return ModifierKey::None;
+    }
+}
 
 /*!
 \brief
@@ -231,23 +308,6 @@ public:
 	WindowEventArgs(Window* wnd) : window(wnd) {}
 
 	Window*	window;		//!< pointer to a Window object of relevance to the event.
-};
-
-/*!
-\brief
-    Event arguments used by semantic input event handlers
-*/
-class CEGUIEXPORT SemanticEventArgs : public WindowEventArgs
-{
-public:
-    SemanticEventArgs(Window* wnd)
-        : WindowEventArgs(wnd)
-        , d_semanticValue(SemanticValue::NoValue)
-        , d_payload()
-    {}
-
-    SemanticValue d_semanticValue;  //!< The type of the semantic value
-    SemanticPayload d_payload;      //!< The payload of the event
 };
 
 /*!
@@ -275,31 +335,34 @@ class CEGUIEXPORT CursorInputEventArgs : public WindowEventArgs
 public:
     CursorInputEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
 
-    //!< holds current cursor position.
+    //! Current cursor position
     glm::vec2 position;
-    //!< holds variation of cursor position from last cursor input
+    //! Variation of cursor position from last cursor input
     glm::vec2 moveDelta = glm::vec2(0.f, 0.f);
-    // one of the CursorInputSource enumerated values describing the source causing the event
-    CursorInputSource source = CursorInputSource::NotSpecified;
-    // holds the amount of the scroll
+    //! Amount of the scroll
     float scroll = 0.f;
-
-    // current state (hold: true/false) of cursors sources. Addressable by members of \ref CursorInputSource
-    CursorsState state;
+    //! Mouse button that triggered this event
+    MouseButton button = MouseButton::Invalid;
+    //! State of mouse buttons at the moment of sending the event. See MouseButton.
+    MouseButtons buttons;
+    //! State of modifier keys at the moment of sending the event. See ModifierKey.
+    ModifierKeys d_modifiers;
 };
 
 /*!
 \brief
     EventArgs based class that is used for objects passed to input event handlers
-    concerning cursor events.
+    concerning text input.
 */
-class CEGUIEXPORT CursorEventArgs : public EventArgs
+class CEGUIEXPORT KeyEventArgs : public WindowEventArgs
 {
 public:
-    CursorEventArgs(Cursor* cursor) : d_cursor(cursor), d_image(nullptr) {}
+    KeyEventArgs(Window* wnd, Key::Scan key, ModifierKeys modifiers = {}) : WindowEventArgs(wnd), d_key(key), d_modifiers(modifiers) {}
 
-    Cursor* d_cursor;  //!< pointer to a Cursor object of relevance to the event.
-    const Image* d_image; //!< pointer to an Image object of relevance to the event.
+    //! CEGUI code of the key that triggered this event
+    Key::Scan d_key = Key::Scan::Unknown;
+    //! State of modifier keys at the moment of sending the event. See ModifierKey.
+    ModifierKeys d_modifiers;
 };
 
 /*!
@@ -383,10 +446,101 @@ public:
     Font* font;
 };
 
+/*!
+\brief
+    Represents the value of a semantic input event, generated from a specific
+    operation or sequence of operations.
+*/
+enum class SemanticValue : int
+{
+    NoValue = 0x0000,
+    CursorActivate,
+    PointerDeactivate,
+    CursorPressHold,
+    CursorSelectWord,
+    CursorSelectAll,
+    CursorMove,
+    PointerLeave,
+
+    GoToPreviousCharacter,
+    GoToNextCharacter,
+    GoToPreviousWord,
+    GoToNextWord,
+    GoToStartOfLine,
+    GoToEndOfLine,
+    GoToStartOfDocument,
+    GoToEndOfDocument,
+    GoToNextPage,
+    GoToPreviousPage,
+    GoUp,
+    GoDown,
+
+    SelectRange,
+    SelectCumulative,
+    SelectWord,
+    SelectAll,
+    SelectPreviousCharacter,
+    SelectNextCharacter,
+    SelectPreviousWord,
+    SelectNextWord,
+    SelectToStartOfLine,
+    SelectToEndOfLine,
+    SelectToStartOfDocument,
+    SelectToEndOfDocument,
+    SelectToNextPage,
+    SelectToPreviousPage,
+    SelectNextPage,
+    SelectPreviousPage,
+    SelectUp,
+    SelectDown,
+
+    DeleteNextCharacter,
+    DeletePreviousCharacter,
+    Confirm,
+    Back,
+    Undo,
+    Redo,
+    Cut,
+    Copy,
+    Paste,
+    HorizontalScroll,
+    VerticalScroll,
+    NavigateToNext,
+    NavigateToPrevious,
+
+    UserDefinedSemanticValue = 0x5000,   //!< This marks the beginning of user-defined semantic values.
+};
+
+/*!
+\brief
+    The type of the payload used in the semantic input events
+*/
+union SemanticPayload
+{
+    float array[2];
+    float single;
+    MouseButton source;
+};
+
+/*!
+\brief
+    Event arguments used by semantic input event handlers
+*/
+class CEGUIEXPORT SemanticEventArgs : public WindowEventArgs
+{
+public:
+    SemanticEventArgs(Window* wnd)
+        : WindowEventArgs(wnd)
+        , d_semanticValue(SemanticValue::NoValue)
+        , d_payload()
+    {}
+
+    SemanticValue d_semanticValue;  //!< The type of the semantic value
+    SemanticPayload d_payload;      //!< The payload of the event
+};
+
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)
 #endif
-
-#endif	// end of guard _CEGUIInputEvent_h_

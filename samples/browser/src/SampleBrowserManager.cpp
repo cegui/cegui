@@ -147,7 +147,7 @@ bool SampleBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs&
         const float absPosX = relPosX * contextSize.d_width;
         const float absPosY = relPosY * contextSize.d_height;
 
-        sampleData->getInputAggregator()->injectMousePosition(absPosX, absPosY);
+        sampleData->getGuiContext()->injectMousePosition(absPosX, absPosY);
         sampleData->getGuiContext()->markAsDirty();
 
         wnd->setCursor("SampleBrowserSkin/MouseArrowHover");

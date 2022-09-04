@@ -45,6 +45,20 @@ namespace CEGUI
 {
 class GUIContext;
 
+/*!
+\brief
+    EventArgs based class that is used for objects passed to input event handlers
+    concerning cursor events.
+*/
+class CEGUIEXPORT CursorEventArgs : public EventArgs
+{
+public:
+    CursorEventArgs(Cursor* cursor) : d_cursor(cursor), d_image(nullptr) {}
+
+    Cursor* d_cursor;  //!< pointer to a Cursor object of relevance to the event.
+    const Image* d_image; //!< pointer to an Image object of relevance to the event.
+};
+
 //!	Class that provides cursor support.
 class CEGUIEXPORT Cursor : public EventSet
 {
@@ -73,14 +87,14 @@ public:
 	\brief
         Constructor for Cursor objects
 	*/
-	Cursor(const GUIContext& context);
+	Cursor(GUIContext& context);
 
 
 	/*!
 	\brief
         Destructor for Cursor objects
 	*/
-	~Cursor(void);
+	~Cursor();
 
 	/*!
 	\brief
@@ -300,7 +314,7 @@ public:
 
 	\return
         Point object describing the current cursor position as
-        resolution independent values that anges from 0.0f to 1.0f, where 0.0f
+        resolution independent values that ranges from 0.0f to 1.0f, where 0.0f
         represents the left-most and top-most positions, and 1.0f represents
         the right-most and bottom-most positions.
 	*/
@@ -417,7 +431,7 @@ private:
 		Implementation Data
 	*************************************************************************/
     //! Owning context
-    const GUIContext& d_context;
+    GUIContext& d_context;
     //! Image that is currently set as the cursor.
 	const Image* d_indicatorImage;
     //! Image that will be used as the default image for this cursor.

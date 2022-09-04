@@ -219,10 +219,6 @@ public:
     bool injectMouseButtonDoubleClick(const MouseButton button) override;
     bool injectMouseButtonTripleClick(const MouseButton button) override;
 
-    bool injectCopyRequest() override;
-    bool injectCutRequest() override;
-    bool injectPasteRequest() override;
-
     virtual bool isControlPressed() const;
     virtual bool isAltPressed() const;
     virtual bool isShiftPressed() const;

@@ -530,7 +530,7 @@ void EditboxBase::onCursorPressHold(CursorInputEventArgs& e)
 {
     Window::onCursorPressHold(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
     {
         if (captureInput())
         {
@@ -542,7 +542,7 @@ void EditboxBase::onCursorPressHold(CursorInputEventArgs& e)
             ++e.handled;
         }
     }
-    else if (e.source == CursorInputSource::Middle)
+    else if (e.button == MouseButton::Middle)
     {
         if (d_dragPanningEnabled)
         {
@@ -561,7 +561,7 @@ void EditboxBase::onCursorActivate(CursorInputEventArgs& e)
 {
     Window::onCursorActivate(e);
 
-    if (e.source == CursorInputSource::Left || e.source == CursorInputSource::Middle)
+    if (e.button == MouseButton::Left || e.button == MouseButton::Middle)
     {
         // Actual handling happens in onCaptureLost
         releaseInput();
@@ -602,7 +602,7 @@ void EditboxBase::onCaptureLost(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void EditboxBase::onSelectWord(CursorInputEventArgs& e)
 {
-    const bool byLMB = e.source == CursorInputSource::Left;
+    const bool byLMB = e.button == MouseButton::Left;
     if (byLMB || !isReadOnly())
     {
         const auto& text = getText();
@@ -629,7 +629,7 @@ void EditboxBase::onSelectWord(CursorInputEventArgs& e)
 //----------------------------------------------------------------------------//
 void EditboxBase::onSelectAll(CursorInputEventArgs& e)
 {
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
     {
         // LMB selects only the current paragraph
         const auto& text = getText();

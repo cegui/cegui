@@ -727,7 +727,7 @@ void ScrollablePane::onCursorPressHold(CursorInputEventArgs& e)
 {
     Window::onCursorPressHold(e);
 
-    if (d_swipeScrollingEnabled && e.source == CursorInputSource::Left)
+    if (d_swipeScrollingEnabled && e.button == MouseButton::Left)
     {
         // we want all cursor inputs from now on
         if (captureInput())
@@ -763,7 +763,7 @@ void ScrollablePane::onCursorActivate(CursorInputEventArgs& e)
 {
     Window::onCursorActivate(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
     {
         releaseInput();
         ++e.handled;

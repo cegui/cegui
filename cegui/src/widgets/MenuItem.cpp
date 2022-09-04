@@ -521,7 +521,7 @@ void MenuItem::onCursorPressHold(CursorInputEventArgs& e)
     // default processing
     ItemEntry::onCursorPressHold(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
     {
         d_popupWasClosed = false;
 
@@ -547,7 +547,7 @@ void MenuItem::onCursorActivate(CursorInputEventArgs& e)
     // default processing
     ItemEntry::onCursorActivate(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.button == MouseButton::Left)
     {
         releaseInput();
 
