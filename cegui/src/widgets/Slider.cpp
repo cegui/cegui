@@ -210,14 +210,14 @@ void Slider::onThumbTrackEnded(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Slider::onMouseButtonDown(CursorInputEventArgs& e)
+void Slider::onMouseButtonDown(MouseButtonEventArgs& e)
 {
     Window::onMouseButtonDown(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
 	{
         // adjust slider position in whichever direction as required.
-        const float adj = getAdjustDirectionFromPoint(e.position);
+        const float adj = getAdjustDirectionFromPoint(e.d_position);
 		if (adj != 0.f)
 			setCurrentValue(d_currentValue + adj * d_stepSize);
 
@@ -226,11 +226,11 @@ void Slider::onMouseButtonDown(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Slider::onScroll(CursorInputEventArgs& e)
+void Slider::onScroll(ScrollEventArgs& e)
 {
     Window::onScroll(e);
     value_type prevValue = d_currentValue;
-    setCurrentValue(d_currentValue + d_stepSize * e.scroll);
+    setCurrentValue(d_currentValue + d_stepSize * e.d_delta);
     if (prevValue != d_currentValue)
         ++e.handled;
 }

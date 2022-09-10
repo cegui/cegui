@@ -90,13 +90,13 @@ void Scrollbar::initialiseComponents()
 
     // set up Increase button
     getIncreaseButton()->
-    subscribeEvent(PushButton::EventCursorPressHold,
+    subscribeEvent(PushButton::EventMouseButtonDown,
                    Event::Subscriber(&CEGUI::Scrollbar::handleIncreaseClicked,
                                      this));
 
     // set up Decrease button
     getDecreaseButton()->
-    subscribeEvent(PushButton::EventCursorPressHold,
+    subscribeEvent(PushButton::EventMouseButtonDown,
                    Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked,
                                      this));
 
@@ -210,15 +210,15 @@ void Scrollbar::onScrollConfigChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Scrollbar::onMouseButtonDown(CursorInputEventArgs& e)
+void Scrollbar::onMouseButtonDown(MouseButtonEventArgs& e)
 {
     // base class processing
     Window::onMouseButtonDown(e);
 
-    if (e.button != MouseButton::Left)
+    if (e.d_button != MouseButton::Left)
         return;
 
-    const float adj = getAdjustDirectionFromPoint(e.position);
+    const float adj = getAdjustDirectionFromPoint(e.d_position);
 
     if (adj > 0)
         scrollForwardsByPage();
@@ -229,13 +229,13 @@ void Scrollbar::onMouseButtonDown(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Scrollbar::onScroll(CursorInputEventArgs& e)
+void Scrollbar::onScroll(ScrollEventArgs& e)
 {
     // base class processing
     Window::onScroll(e);
 
     // scroll by vertical scroll * stepSize
-    setScrollPosition(d_position + d_stepSize * -e.scroll);
+    setScrollPosition(d_position + d_stepSize * -e.d_delta);
 
     // ensure the message does not go to our parent.
     ++e.handled;
@@ -253,7 +253,7 @@ bool Scrollbar::handleThumbMoved(const EventArgs&)
 //----------------------------------------------------------------------------//
 bool Scrollbar::handleIncreaseClicked(const EventArgs& e)
 {
-    if (static_cast<const CursorInputEventArgs&>(e).button != MouseButton::Left)
+    if (static_cast<const MouseButtonEventArgs&>(e).d_button != MouseButton::Left)
         return false;
 
     scrollForwardsByStep();
@@ -263,7 +263,7 @@ bool Scrollbar::handleIncreaseClicked(const EventArgs& e)
 //----------------------------------------------------------------------------//
 bool Scrollbar::handleDecreaseClicked(const EventArgs& e)
 {
-    if (static_cast<const CursorInputEventArgs&>(e).button != MouseButton::Left)
+    if (static_cast<const MouseButtonEventArgs&>(e).d_button != MouseButton::Left)
         return false;
 
     scrollBackwardsByStep();

@@ -595,11 +595,11 @@ void ColourPickerControls::initialiseComponents()
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImagePointerLeaves, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventCursorActivate,
+        Window::EventClick,
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImagePointerActivate, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventCursorPressHold,
+        Window::EventMouseButtonDown,
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImagePointerPressHold, this));
 
     getColourPickerStaticImage()->subscribeEvent(
@@ -1163,9 +1163,9 @@ bool ColourPickerControls::handleAlphaSliderValueChanged(const EventArgs& args)
 bool ColourPickerControls::handleColourPickerStaticImagePointerActivate(
     const EventArgs& args)
 {
-    const CursorInputEventArgs& cursor_args = static_cast<const CursorInputEventArgs&>(args);
+    const MouseButtonEventArgs& cursor_args = static_cast<const MouseButtonEventArgs&>(args);
 
-    if (cursor_args.button == MouseButton::Left)
+    if (cursor_args.d_button == MouseButton::Left)
         d_draggingColourPickerIndicator = false;
 
     return true;
@@ -1175,9 +1175,9 @@ bool ColourPickerControls::handleColourPickerStaticImagePointerActivate(
 bool ColourPickerControls::handleColourPickerStaticImagePointerPressHold(
     const EventArgs& args)
 {
-    const CursorInputEventArgs& cursor_args = static_cast<const CursorInputEventArgs&>(args);
+    const MouseButtonEventArgs& cursor_args = static_cast<const MouseButtonEventArgs&>(args);
 
-    if (cursor_args.button == MouseButton::Left)
+    if (cursor_args.d_button == MouseButton::Left)
     {
         d_draggingColourPickerIndicator = true;
 
@@ -1433,7 +1433,7 @@ void ColourPickerControls::refreshColourPickerIndicatorPosition(
     const CursorInputEventArgs& pointerEventArgs)
 {
     const glm::vec2 localPos = CoordConverter::screenToWindow(
-                  *pointerEventArgs.window, pointerEventArgs.position);
+                  *pointerEventArgs.window, pointerEventArgs.d_position);
     positionColourPickerIndicatorAbsolute(localPos.x, localPos.y);
 
     if (d_sliderMode &

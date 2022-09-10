@@ -291,6 +291,7 @@ protected:
 
     Window* getInputTargetWindow() const;
     void updateInputAutoRepeating(float timeElapsed);
+    bool sendScrollEvent(float delta, Window* window);
 
     void drawWindowContentToTarget(std::uint32_t drawModeMask);
 

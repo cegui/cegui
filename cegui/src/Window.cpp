@@ -122,10 +122,11 @@ const String Window::EventCursorLeavesArea("CursorLeavesArea");
 const String Window::EventCursorEntersSurface("CursorEntersSurface");
 const String Window::EventCursorLeavesSurface("CursorLeavesSurface");
 const String Window::EventCursorMove("CursorMove");
-const String Window::EventCursorPressHold("CursorPressHold");
-const String Window::EventSelectWord("SelectWord");
-const String Window::EventSelectAll("SelectAll");
-const String Window::EventCursorActivate("CursorActivate");
+const String Window::EventMouseButtonDown("MouseButtonDown");
+const String Window::EventMouseButtonUp("MouseButtonUp");
+const String Window::EventClick("Click");
+const String Window::EventDoubleClick("DoubleClick");
+const String Window::EventTripleClick("TripleClick");
 const String Window::EventKeyDown("KeyDown");
 const String Window::EventKeyUp("KeyUp");
 const String Window::EventCharacterKey("CharacterKey");
@@ -2107,7 +2108,7 @@ void Window::onCursorLeaves(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onCursorMove(CursorInputEventArgs& e)
+void Window::onCursorMove(CursorMoveEventArgs& e)
 {
     fireEvent(EventCursorMove, e, EventNamespace);
 
@@ -2126,85 +2127,39 @@ void Window::onCursorMove(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onMouseButtonDown(CursorInputEventArgs& e)
+void Window::onMouseButtonDown(MouseButtonEventArgs& e)
 {
-    fireEvent(EventCursorPressHold, e, EventNamespace);
+    fireEvent(EventMouseButtonDown, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onCursorActivate(CursorInputEventArgs& e)
+void Window::onMouseButtonUp(MouseButtonEventArgs& e)
 {
-    fireEvent(EventCursorActivate, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagatePointerInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onCursorActivate(e);
-        //return;
-    }
-
-    // by default we now mark cursor events as handled
-    //if (!d_cursorPassThroughEnabled)
-    //    ++e.handled;
+    fireEvent(EventMouseButtonUp, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onSelectWord(CursorInputEventArgs& e)
+void Window::onClick(MouseButtonEventArgs& e)
 {
-    fireEvent(EventSelectWord, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagatePointerInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onSelectWord(e);
-        return;
-    }
-
-    // by default we now mark cursor events as handled
-    if (!d_cursorPassThroughEnabled)
-        ++e.handled;
+    fireEvent(EventClick, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onSelectAll(CursorInputEventArgs& e)
+void Window::onDoubleClick(MouseButtonEventArgs& e)
 {
-    fireEvent(EventSelectAll, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagatePointerInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onSelectAll(e);
-        return;
-    }
-
-    // by default we now mark cursor events as handled
-    if (!d_cursorPassThroughEnabled)
-        ++e.handled;
+    fireEvent(EventDoubleClick, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onScroll(CursorInputEventArgs& e)
+void Window::onTripleClick(MouseButtonEventArgs& e)
+{
+    fireEvent(EventTripleClick, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onScroll(ScrollEventArgs& e)
 {
     fireEvent(EventScroll, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagatePointerInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onScroll(e);
-        return;
-    }
-
-    // by default we now mark cursor events as handled
-    if (!d_cursorPassThroughEnabled)
-        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//

@@ -408,13 +408,13 @@ bool ListHeaderSegment::isDragMoveThresholdExceeded(const glm::vec2& local_curso
 /*************************************************************************
     Handler for when cursor position changes in widget area (or captured)
 *************************************************************************/
-void ListHeaderSegment::onCursorMove(CursorInputEventArgs& e)
+void ListHeaderSegment::onCursorMove(CursorMoveEventArgs& e)
 {
 	// base class processing
 	Window::onCursorMove(e);
 
     // convert cursor position to something local
-    const glm::vec2 local_cursor_pos(CoordConverter::screenToWindow(*this, e.position));
+    const glm::vec2 local_cursor_pos(CoordConverter::screenToWindow(*this, e.d_position));
 
 	// handle drag sizing
 	if (d_dragSizing)
@@ -427,7 +427,7 @@ void ListHeaderSegment::onCursorMove(CursorInputEventArgs& e)
         doDragMoving(local_cursor_pos);
     }
     // not sizing, is cursor in the widget area?
-    else if (isHit(e.position))
+    else if (isHit(e.d_position))
     {
         // cursor in sizing area & sizing is enabled
         if ((local_cursor_pos.x > (d_pixelSize.d_width - d_splitterSize)) && d_sizingEnabled)
@@ -475,18 +475,18 @@ void ListHeaderSegment::onCursorMove(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for when cursor is pressed
 *************************************************************************/
-void ListHeaderSegment::onMouseButtonDown(CursorInputEventArgs& e)
+void ListHeaderSegment::onMouseButtonDown(MouseButtonEventArgs& e)
 {
 	// base class processing
     Window::onMouseButtonDown(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
 	{
 		// ensure all inputs come to us for now
 		if (captureInput())
 		{
             // get position of cursor as co-ordinates local to this window.
-            const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.position));
+            const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.d_position));
 
 			// store drag point for possible sizing or moving operation.
 			d_dragPoint = localPos;
@@ -513,12 +513,12 @@ void ListHeaderSegment::onMouseButtonDown(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for when the cursor is activated
 *************************************************************************/
-void ListHeaderSegment::onCursorActivate(CursorInputEventArgs& e)
+void ListHeaderSegment::onClick(MouseButtonEventArgs& e)
 {
 	// base class processing
-    Window::onCursorActivate(e);
+    Window::onClick(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
 	{
 		// if we were pushed and cursor was released (activated) within our segment area
 		if (d_segmentPushed && d_segmentHover)

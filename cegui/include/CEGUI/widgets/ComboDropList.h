@@ -168,9 +168,9 @@ protected:
 	/*************************************************************************
 		Overridden Event handling
 	*************************************************************************/
-    void    onCursorMove(CursorInputEventArgs& e) override;
-    void    onMouseButtonDown(CursorInputEventArgs& e) override;
-    void    onCursorActivate(CursorInputEventArgs& e) override;
+    void    onCursorMove(CursorMoveEventArgs& e) override;
+    void    onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void    onClick(MouseButtonEventArgs& e) override;
     void	onCaptureLost(WindowEventArgs& e) override;
     void    onViewContentsChanged(WindowEventArgs& e) override;
     void    onSelectionChanged(ItemViewEventArgs& e) override;

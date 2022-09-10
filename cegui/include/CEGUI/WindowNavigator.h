@@ -58,7 +58,7 @@ public:
     \param event
         A semantic event type to process
     */
-    virtual Window* getWindow(Window* neighbour, const SemanticValue& event) = 0;
+    virtual Window* getWindow(Window* neighbour, Key::Scan key, bool down, ModifierKeys modifiers) = 0;
 };
 
 }

@@ -541,7 +541,7 @@ void ScrollablePane::onSized(ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onScroll(CursorInputEventArgs& e)
+void ScrollablePane::onScroll(ScrollEventArgs& e)
 {
     // base class processing.
     Window::onScroll(e);
@@ -555,12 +555,12 @@ void ScrollablePane::onScroll(CursorInputEventArgs& e)
     if (vertScrollbar->isEffectiveVisible() &&
         (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
     {
-        dy = vertScrollbar->getStepSize() * -e.scroll;
+        dy = vertScrollbar->getStepSize() * -e.d_delta;
     }
     else if (horzScrollbar->isEffectiveVisible() &&
              (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
     {
-        dx = horzScrollbar->getStepSize() * -e.scroll;
+        dx = horzScrollbar->getStepSize() * -e.d_delta;
     }
     
     scrollContentPane(dx, dy, ScrollSource::Wheel);
@@ -723,17 +723,17 @@ int ScrollablePane::writeChildWindowsXML(XMLSerializer& xml_stream) const
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onMouseButtonDown(CursorInputEventArgs& e)
+void ScrollablePane::onMouseButtonDown(MouseButtonEventArgs& e)
 {
     Window::onMouseButtonDown(e);
 
-    if (d_swipeScrollingEnabled && e.button == MouseButton::Left)
+    if (d_swipeScrollingEnabled && e.d_button == MouseButton::Left)
     {
         // we want all cursor inputs from now on
         if (captureInput())
         {
             d_swiping = true;
-            d_swipeStartPoint = CoordConverter::screenToWindow(*this, e.position);
+            d_swipeStartPoint = CoordConverter::screenToWindow(*this, e.d_position);
         }
 
         ++e.handled;
@@ -741,13 +741,13 @@ void ScrollablePane::onMouseButtonDown(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onCursorMove(CursorInputEventArgs& e)
+void ScrollablePane::onCursorMove(CursorMoveEventArgs& e)
 {
     Window::onCursorMove(e);
 
     if (d_swiping)
     {
-        auto newPos = CoordConverter::screenToWindow(*this, e.position);
+        auto newPos = CoordConverter::screenToWindow(*this, e.d_position);
         const glm::vec2 delta(newPos - d_swipeStartPoint);
 
         scrollContentPane(-delta.x, -delta.y, ScrollSource::Swipe);
@@ -759,11 +759,11 @@ void ScrollablePane::onCursorMove(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onCursorActivate(CursorInputEventArgs& e)
+void ScrollablePane::onClick(MouseButtonEventArgs& e)
 {
-    Window::onCursorActivate(e);
+    Window::onClick(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
     {
         releaseInput();
         ++e.handled;

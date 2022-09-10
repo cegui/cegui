@@ -257,7 +257,7 @@ protected:
     void onFontChanged(WindowEventArgs& e) override;
     void onTextChanged(WindowEventArgs& e) override;
     void onActivated(ActivationEventArgs& e) override;
-    void onScroll(CursorInputEventArgs& e) override;
+    void onScroll(ScrollEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;
 
     /*************************************************************************

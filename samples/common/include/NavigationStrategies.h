@@ -39,7 +39,7 @@ public:
 
     CEGUI::Window* d_targetWindow = nullptr;
 
-    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::SemanticValue& event) override;
+    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, CEGUI::Key::Scan key, bool down, CEGUI::ModifierKeys modifiers) override;
 };
 
 //! \brief A linear strategy that navigates in the windows vector
@@ -49,7 +49,7 @@ public:
 
     std::vector<CEGUI::Window*> d_windows;
 
-    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::SemanticValue& event) override;
+    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, CEGUI::Key::Scan key, bool down, CEGUI::ModifierKeys modifiers) override;
 };
 
 //! \brief A matrix navigation strategy which navigates in the windows matrix.
@@ -59,7 +59,7 @@ public:
 
     std::vector<std::vector<CEGUI::Window*>> d_windows;
 
-    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::SemanticValue& event) override;
+    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, CEGUI::Key::Scan key, bool down, CEGUI::ModifierKeys modifiers) override;
 };
 
 #endif

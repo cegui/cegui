@@ -108,14 +108,14 @@ void ComboDropList::onSelectionChanged(ItemViewEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ComboDropList::onCursorMove(CursorInputEventArgs& e)
+void ComboDropList::onCursorMove(CursorMoveEventArgs& e)
 {
     ListWidget::onCursorMove(e);
 
     // if cursor is within our area (but not our children)
-	if (isHit(e.position))
+	if (isHit(e.d_position))
 	{
-		if (!getChildAtPosition(e.position))
+		if (!getChildAtPosition(e.d_position))
 		{
 			// handle auto-arm
 			if (d_autoArm)
@@ -126,7 +126,7 @@ void ComboDropList::onCursorMove(CursorInputEventArgs& e)
 			if (d_armed)
 			{
                 // check for an item under the cursor
-                StandardItem* item = d_itemModel.getItemForIndex(indexAt(e.position));
+                StandardItem* item = d_itemModel.getItemForIndex(indexAt(e.d_position));
 
                 // if an item is under cursor, select it
                 if (item != nullptr)
@@ -146,7 +146,7 @@ void ComboDropList::onCursorMove(CursorInputEventArgs& e)
 	else
 	{
 		// if left cursor is held, clear any selection
-		if (e.buttons.has(MouseButton::Left))
+		if (e.d_buttons.has(MouseButton::Left))
 		{
             clearSelections();
 		}
@@ -155,13 +155,13 @@ void ComboDropList::onCursorMove(CursorInputEventArgs& e)
 
 
 //----------------------------------------------------------------------------//
-void ComboDropList::onMouseButtonDown(CursorInputEventArgs& e)
+void ComboDropList::onMouseButtonDown(MouseButtonEventArgs& e)
 {
     ListWidget::onMouseButtonDown(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
 	{
-		if (!isHit(e.position))
+		if (!isHit(e.d_position))
 		{
             clearSelections();
 			releaseInput();
@@ -176,13 +176,13 @@ void ComboDropList::onMouseButtonDown(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ComboDropList::onCursorActivate(CursorInputEventArgs& e)
+void ComboDropList::onClick(MouseButtonEventArgs& e)
 {
-    ListWidget::onCursorActivate(e);
+    ListWidget::onClick(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
 	{
-		if (d_armed && !getChildAtPosition(e.position))
+		if (d_armed && !getChildAtPosition(e.d_position))
 		{
             // if something was selected, confirm that selection.
             if (getIndexSelectionStates().size() > 0)

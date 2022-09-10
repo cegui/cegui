@@ -353,7 +353,7 @@ bool MultiLineEditbox::processSemanticInputEvent(const SemanticEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void MultiLineEditbox::onScroll(CursorInputEventArgs& e)
+void MultiLineEditbox::onScroll(ScrollEventArgs& e)
 {
     Window::onScroll(e);
 
@@ -361,9 +361,9 @@ void MultiLineEditbox::onScroll(CursorInputEventArgs& e)
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
     if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
-        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.scroll);
+        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.d_delta);
     else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
-        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
+        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.d_delta);
 
     ++e.handled;
 }

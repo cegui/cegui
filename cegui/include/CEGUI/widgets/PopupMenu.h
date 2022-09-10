@@ -185,8 +185,8 @@ protected:
     void onDestructionStarted(WindowEventArgs& e) override;
     void onShown(WindowEventArgs& e) override;
     void onHidden(WindowEventArgs& e) override;
-    void onMouseButtonDown(CursorInputEventArgs& e) override;
-    void onCursorActivate(CursorInputEventArgs& e) override;
+    void onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void onClick(MouseButtonEventArgs& e) override;
 
 
     /*************************************************************************

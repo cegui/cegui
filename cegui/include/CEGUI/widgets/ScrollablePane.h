@@ -553,7 +553,7 @@ protected:
     void removeChild_impl(Element* element) override;
     
     void onSized(ElementEventArgs& e) override;
-    void onScroll(CursorInputEventArgs& e) override;
+    void onScroll(ScrollEventArgs& e) override;
     void onIsSizeAdjustedToContentChanged(ElementEventArgs& e) override;
     void adjustSizeToContent() override {}
 
@@ -561,9 +561,9 @@ protected:
     Window* findChildByNamePath_impl(const String& name_path) const override;
 
     // Swipe scroll support
-    void onMouseButtonDown(CursorInputEventArgs& e) override;
-    void onCursorMove(CursorInputEventArgs& e) override;
-    void onCursorActivate(CursorInputEventArgs& e) override;
+    void onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void onCursorMove(CursorMoveEventArgs& e) override;
+    void onClick(MouseButtonEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;
 
     //! true if vertical scrollbar should always be displayed

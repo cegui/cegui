@@ -402,35 +402,33 @@ public:
      */
     static const String EventCursorLeavesSurface;
     /** Event fired when the cursor moves within the area of the Window.
-     * Handlers are passed a const CursorInputEventArgs reference with all fields
-     * valid.
+     * Handlers are passed a const CursorInputEventArgs& with all fields valid.
      */
     static const String EventCursorMove;
     /** Event fired when there is a scroll event within the Window's area.
-     * Handlers are passed a const CursorInputEventArgs reference with all fields
-     * valid.
+     * Handlers are passed a const CursorInputEventArgs& with all fields valid.
      */
     static const String EventScroll;
     /** Event fired when a cursor is pressed and held down within the Window.
-     * Handlers are passed a const CursorInputEventArgs reference with all fields
-     * valid.
+     * Handlers are passed a const CursorInputEventArgs& with all fields valid.
      */
-    static const String EventCursorPressHold;
-    /** Event fired when the cursor is activated twice within the Window.
-     * Handlers are passed a const CursorInputEventArgs reference with all fields
-     * valid.
+    static const String EventMouseButtonDown;
+    /** Event fired when a cursor is released within the Window.
+     * Handlers are passed a const CursorInputEventArgs& with all fields valid.
      */
-    static const String EventSelectWord;
-    /** Event fired when the cursor is activated three times within the Window.
-     * Handlers are passed a const CursorInputEventArgs reference with all fields
-     * valid.
-     */
-    static const String EventSelectAll;
+    static const String EventMouseButtonUp;
     /** Event fired when the cursor is activated within the Window.
-     * Handlers are passed a const CursorInputEventArgs reference with all fields
-     * valid.
+     * Handlers are passed a const CursorInputEventArgs& with all fields valid.
      */
-    static const String EventCursorActivate;
+    static const String EventClick;
+    /** Event fired when the cursor is activated twice within the Window.
+     * Handlers are passed a const CursorInputEventArgs& with all fields valid.
+     */
+    static const String EventDoubleClick;
+    /** Event fired when the cursor is activated three times within the Window.
+     * Handlers are passed a const CursorInputEventArgs& with all fields valid.
+     */
+    static const String EventTripleClick;
     /** Event fired when the Window receives a key down (pressed or auto-repeat) input event.
      * Handlers are passed a const KeyEventArgs reference.
      */
@@ -2976,7 +2974,7 @@ protected:
     \param e
         CursorInputEventArgs object.  All fields are valid.
     */
-    virtual void onCursorMove(CursorInputEventArgs& e);
+    virtual void onCursorMove(CursorMoveEventArgs& e);
 
     /*!
     \brief
@@ -2986,40 +2984,22 @@ protected:
     \param e
         CursorInputEventArgs object.  All fields are valid.
     */
-    virtual void onScroll(CursorInputEventArgs& e);
+    virtual void onScroll(ScrollEventArgs& e);
 
-    /*!
-    \brief
-        Handler called when a cursor is held pressed within this window's area.
+    //! \brief Handler called when a mouse button is pressed within this window's area.
+    virtual void onMouseButtonDown(MouseButtonEventArgs& e);
 
-    \param e
-        CursorInputEventArgs object.  All fields are valid.
-    */
-    virtual void onMouseButtonDown(CursorInputEventArgs& e);
-    
-    /*!
-    \brief
-        Handler called when a cursor is activated twice within this window's area.
-
-    \param e
-        CursorInputEventArgs object.  All fields are valid.
-    */
-    virtual void onSelectWord(CursorInputEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a cursor is activated three times within this window's area.
-
-    \param e
-        CursorInputEventArgs object.  All fields are valid.
-    */
-    virtual void onSelectAll(CursorInputEventArgs& e);
+    //! \brief Handler called when a mouse button is released within this window's area.
+    virtual void onMouseButtonUp(MouseButtonEventArgs& e);
 
     //! \brief Handler called when a cursor is activated within this window's area.
-    virtual void onCursorActivate(CursorInputEventArgs& e);
+    virtual void onClick(MouseButtonEventArgs& e);
 
-    //! \brief Handler called when a mouse button is released above this window.
-    virtual void onMouseButtonUp(CursorInputEventArgs& e);
+    //! \brief Handler called when a cursor is activated twice within this window's area.
+    virtual void onDoubleClick(MouseButtonEventArgs& e);
+
+    //! \brief Handler called when a cursor is activated three times within this window's area.
+    virtual void onTripleClick(MouseButtonEventArgs& e);
 
     //! \brief Handler called when a key is down or auto-repeated while this window has input focus.
     virtual void onKeyDown(KeyEventArgs& e);

@@ -404,9 +404,9 @@ protected:
     virtual void onSortModeChanged(WindowEventArgs& args);
     virtual void onViewContentsChanged(WindowEventArgs& args);
 
-    void onScroll(CursorInputEventArgs& e) override;
-    void onMouseButtonDown(CursorInputEventArgs& e) override;
-    void onCursorMove(CursorInputEventArgs& e) override;
+    void onScroll(ScrollEventArgs& e) override;
+    void onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void onCursorMove(CursorMoveEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;
 
     virtual void onSized(ElementEventArgs& e) override;

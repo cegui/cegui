@@ -82,6 +82,8 @@ struct Flags
     bool operator ==(Flags other) { return d_mask == other.d_mask; }
     bool operator !=(Flags other) { return !(*this == other); }
     bool operator &(T flag) const { return has(flag); }
+    Flags operator |(T flag) const { return Flags(d_mask | bit(flag)); }
+    Flags operator |(Flags other) const { return Flags(d_mask | other.d_mask); }
     Flags operator +(T flag) const { return Flags(d_mask | bit(flag)); }
     Flags& operator +=(T flag) { d_mask |= bit(flag); return *this; }
     Flags operator -(T flag) const { return Flags(d_mask & ~bit(flag)); }
@@ -349,34 +351,38 @@ struct MouseClickTracker
 */
 enum class ModifierKey : int
 {
-    None  = 0x00,
-    Shift = 0x01,
-    Ctrl  = 0x02,
-    Alt   = 0x04
+    None       = 0x00,
+    LeftShift  = 0x01,
+    LeftCtrl   = 0x02,
+    LeftAlt    = 0x04,
+    RightShift = 0x08,
+    RightCtrl  = 0x10,
+    RightAlt   = 0x20
 };
 
 struct ModifierKeys : public Flags<ModifierKey>
 {
     // TODO: C++17
     //static inline constexpr ModifierKeys Shift{ModifierKey::LeftShift | ModifierKey::RightShift}; etc
-
-    static const ModifierKeys Shift; //!< Any Shift key, use with hasAny()
-    static const ModifierKeys Ctrl; //!< Any Ctrl key, use with hasAny()
-    static const ModifierKeys Alt; //!< Any Alt key, use with hasAny()
+    // return hasAny(ModifierKeys::Shift);
 
     using Flags<ModifierKey>::Flags; // Inherit all constructors
+
+    bool hasShift() const { return hasAny({ ModifierKey::LeftShift, ModifierKey::RightShift }); }
+    bool hasCtrl() const { return hasAny({ ModifierKey::LeftCtrl, ModifierKey::RightCtrl }); }
+    bool hasAlt() const { return hasAny({ ModifierKey::LeftAlt, ModifierKey::RightAlt }); }
 };
 
 static ModifierKey ModifierFromScanCode(Key::Scan scanCode)
 {
     switch (scanCode)
     {
-        case Key::Scan::LeftShift: return ModifierKey::Shift;
-        case Key::Scan::RightShift: return ModifierKey::Shift;
-        case Key::Scan::LeftAlt: return ModifierKey::Alt;
-        case Key::Scan::RightAlt: return ModifierKey::Alt;
-        case Key::Scan::LeftControl: return ModifierKey::Ctrl;
-        case Key::Scan::RightControl: return ModifierKey::Ctrl;
+        case Key::Scan::LeftShift: return ModifierKey::LeftShift;
+        case Key::Scan::RightShift: return ModifierKey::RightShift;
+        case Key::Scan::LeftAlt: return ModifierKey::LeftAlt;
+        case Key::Scan::RightAlt: return ModifierKey::RightAlt;
+        case Key::Scan::LeftControl: return ModifierKey::LeftCtrl;
+        case Key::Scan::RightControl: return ModifierKey::RightCtrl;
         default: return ModifierKey::None;
     }
 }
@@ -411,31 +417,72 @@ public:
 
 /*!
 \brief
-    EventArgs based class that is used for objects passed to input event handlers
-    concerning cursor input.
+    Base class for objects passed to input event handlers concerning cursor input.
 */
 class CEGUIEXPORT CursorInputEventArgs : public WindowEventArgs
 {
 public:
-    CursorInputEventArgs(Window* wnd, const glm::vec2& position_ = {}, MouseButton button_ = MouseButton::Invalid)
-        : WindowEventArgs(wnd), position(position_), button(button_)
+
+    CursorInputEventArgs(Window* wnd, const glm::vec2& position, MouseButtons buttons = {}, ModifierKeys modifiers = {})
+        : WindowEventArgs(wnd), d_position(position), d_buttons(buttons), d_modifiers(modifiers)
     {}
 
     //! Current cursor position
-    glm::vec2 position;
-    //! Variation of cursor position from last cursor input
-    glm::vec2 moveDelta = glm::vec2(0.f, 0.f);
-    //! Amount of the scroll
-    float scroll = 0.f;
-    //! Mouse button that triggered this event
-    MouseButton button = MouseButton::Invalid;
+    glm::vec2 d_position;
     //! State of mouse buttons at the moment of sending the event. See MouseButton.
-    MouseButtons buttons;
+    MouseButtons d_buttons;
     //! State of modifier keys at the moment of sending the event. See ModifierKey.
     ModifierKeys d_modifiers;
+};
 
-    //!!!TODO INPUT:
-    //bool d_generatedMultiClick = false;
+/*!
+\brief
+    Cursor input event args used for cursor move events.
+*/
+class CEGUIEXPORT CursorMoveEventArgs : public CursorInputEventArgs
+{
+public:
+
+    CursorMoveEventArgs(Window* wnd, const glm::vec2& position, MouseButtons buttons, ModifierKeys modifiers, const glm::vec2& moveDelta)
+        : CursorInputEventArgs(wnd, position, buttons, modifiers), d_moveDelta(moveDelta)
+    {}
+
+    //! Variation of cursor position from last cursor input
+    glm::vec2 d_moveDelta;
+};
+
+/*!
+\brief
+    Cursor input event args used for mouse button state change events.
+*/
+class CEGUIEXPORT MouseButtonEventArgs : public CursorInputEventArgs
+{
+public:
+
+    MouseButtonEventArgs(Window* wnd, const glm::vec2& position, MouseButtons buttons, ModifierKeys modifiers, MouseButton button, int clickEventOrder = 0)
+        : CursorInputEventArgs(wnd, position, buttons, modifiers), d_button(button), d_generatedClickEventOrder(clickEventOrder)
+    {}
+
+    //! Mouse button that triggered this event
+    MouseButton d_button = MouseButton::Invalid;
+    //! For click and mouse up events, this is an order of click generated (typically 1 to 3, or 0 for no click event)
+    int d_generatedClickEventOrder = 0;
+};
+
+/*!
+\brief
+    Cursor input event args used for scroll events.
+*/
+class CEGUIEXPORT ScrollEventArgs : public CursorInputEventArgs
+{
+public:
+
+    ScrollEventArgs(Window* wnd, const glm::vec2& position, MouseButtons buttons, ModifierKeys modifiers, float delta)
+        : CursorInputEventArgs(wnd, position, buttons, modifiers), d_delta(delta)
+    {}
+
+    //! Amount of the scroll
+    float d_delta = 0.f;
 };
 
 /*!

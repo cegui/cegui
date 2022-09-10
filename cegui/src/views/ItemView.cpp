@@ -406,19 +406,19 @@ bool ItemView::onScrollPositionChanged(const EventArgs&)
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onMouseButtonDown(CursorInputEventArgs& e)
+void ItemView::onMouseButtonDown(MouseButtonEventArgs& e)
 {
     Window::onMouseButtonDown(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
     {
-        handleSelection(e.position, true, false, false);
+        handleSelection(e.d_position, true, false, false);
         ++e.handled;
     }
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onCursorMove(CursorInputEventArgs& e)
+void ItemView::onCursorMove(CursorMoveEventArgs& e)
 {
     Window::onCursorMove(e);
 
@@ -427,7 +427,7 @@ void ItemView::onCursorMove(CursorInputEventArgs& e)
     if (!d_isItemTooltipsEnabled || !d_itemModel)
         return;
 
-    ModelIndex index = indexAt(e.position);
+    ModelIndex index = indexAt(e.d_position);
     if (d_itemModel->areIndicesEqual(index, d_lastHoveredIndex))
         return;
 
@@ -682,9 +682,9 @@ void ItemView::updateScrollbarDisplayMode(ScrollbarDisplayMode& target_mode,
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onScroll(CursorInputEventArgs& e)
+void ItemView::onScroll(ScrollEventArgs& e)
 {
-    handleOnScroll(getVertScrollbar(), e.scroll);
+    handleOnScroll(getVertScrollbar(), e.d_delta);
 
     ++e.handled;
     Window::onScroll(e);

@@ -117,10 +117,10 @@ void Combobox::initialiseComponents()
     editbox->banPropertyFromXML("ReadOnly");
 
 	// internal event wiring
-	button->subscribeEvent(PushButton::EventCursorPressHold, Event::Subscriber(&CEGUI::Combobox::button_PressHandler, this));
+	button->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Combobox::button_PressHandler, this));
 	droplist->subscribeEvent(ComboDropList::EventListSelectionAccepted, Event::Subscriber(&CEGUI::Combobox::droplist_SelectionAcceptedHandler, this));
 	droplist->subscribeEvent(Window::EventHidden, Event::Subscriber(&CEGUI::Combobox::droplist_HiddenHandler, this));
-	editbox->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&CEGUI::Combobox::editbox_PointerPressHoldHandler, this));
+	editbox->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&CEGUI::Combobox::editbox_PointerPressHoldHandler, this));
 
 	// event forwarding setup
 	editbox->subscribeEvent(Editbox::EventReadOnlyModeChanged, Event::Subscriber(&CEGUI::Combobox::editbox_ReadOnlyChangedHandler, this));
@@ -805,7 +805,7 @@ bool Combobox::droplist_HiddenHandler(const EventArgs&)
 bool Combobox::editbox_PointerPressHoldHandler(const EventArgs& e)
 {
     // only interested in left source
-    if (static_cast<const CursorInputEventArgs&>(e).button == MouseButton::Left)
+    if (static_cast<const MouseButtonEventArgs&>(e).d_button == MouseButton::Left)
     {
         Editbox* editbox = getEditbox();
 

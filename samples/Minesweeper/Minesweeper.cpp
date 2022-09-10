@@ -182,7 +182,7 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
             d_buttons[i][j]->setID(0);
             // Connect event handlers
             d_buttons[i][j]->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&MinesweeperSample::handleMineButtonClicked, this));
-            d_buttons[i][j]->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&MinesweeperSample::handleMinePointerPressHold, this));
+            d_buttons[i][j]->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&MinesweeperSample::handleMinePointerPressHold, this));
         }
     }
     d_result = winMgr.createWindow("Vanilla/StaticText");
@@ -285,8 +285,8 @@ Handle click on a mine button (any cursor source)
 ************************************************************************/
 bool MinesweeperSample::handleMinePointerPressHold(const CEGUI::EventArgs& event)
 {
-    const CEGUI::CursorInputEventArgs& me = static_cast<const CEGUI::CursorInputEventArgs&>(event);
-    if (me.button == CEGUI::MouseButton::Right)
+    const CEGUI::MouseButtonEventArgs& me = static_cast<const CEGUI::MouseButtonEventArgs&>(event);
+    if (me.d_button == CEGUI::MouseButton::Right)
     {
         CEGUI::Window* button = me.window;
         if (!button->isDisabled())

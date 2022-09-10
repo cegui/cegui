@@ -236,17 +236,17 @@ void DragContainer::updateActiveCursorImage() const
 }
 
 //----------------------------------------------------------------------------//
-void DragContainer::onMouseButtonDown(CursorInputEventArgs& e)
+void DragContainer::onMouseButtonDown(MouseButtonEventArgs& e)
 {
     Window::onMouseButtonDown(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
     {
         // ensure all inputs come to us for now
         if (captureInput())
         {
             // get position of cursor as co-ordinates local to this window.
-            const glm::vec2 localPos = CoordConverter::screenToWindow(*this, e.position);
+            const glm::vec2 localPos = CoordConverter::screenToWindow(*this, e.d_position);
 
             // store drag point for possible sizing or moving operation.
             d_dragPoint.d_x = cegui_absdim(localPos.x);
@@ -259,11 +259,11 @@ void DragContainer::onMouseButtonDown(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DragContainer::onCursorActivate(CursorInputEventArgs& e)
+void DragContainer::onClick(MouseButtonEventArgs& e)
 {
-    Window::onCursorActivate(e);
+    Window::onClick(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
     {
         ++e.handled;
 
@@ -303,12 +303,12 @@ void DragContainer::onCursorActivate(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DragContainer::onCursorMove(CursorInputEventArgs& e)
+void DragContainer::onCursorMove(CursorMoveEventArgs& e)
 {
     Window::onCursorMove(e);
 
     // get position of cursor in coordinates local to this window.
-    const glm::vec2 localPointerPos = CoordConverter::screenToWindow(*this, e.position);
+    const glm::vec2 localPointerPos = CoordConverter::screenToWindow(*this, e.d_position);
     if (d_dragging)
     {
         doDragging(localPointerPos);

@@ -1654,8 +1654,8 @@ protected:
 	*************************************************************************/
     void	onFontChanged(WindowEventArgs& e) override;
     void	onSized(ElementEventArgs& e) override;
-    void    onMouseButtonDown(CursorInputEventArgs& e) override;
-    void    onScroll(CursorInputEventArgs& e) override;
+    void    onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void    onScroll(ScrollEventArgs& e) override;
     void    onSemanticInputEvent(SemanticEventArgs& e) override;
 
 	/*************************************************************************

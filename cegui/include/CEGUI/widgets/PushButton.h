@@ -90,7 +90,7 @@ protected:
 	/*************************************************************************
 		Overridden Event Handlers
 	*************************************************************************/
-    void onCursorActivate(CursorInputEventArgs& e) override;
+    void onClick(MouseButtonEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;
 };
 

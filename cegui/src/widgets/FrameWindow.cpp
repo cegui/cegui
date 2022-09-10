@@ -531,7 +531,7 @@ void FrameWindow::onCloseClicked(WindowEventArgs& e)
 /*************************************************************************
     Handler for cursor move events
 *************************************************************************/
-void FrameWindow::onCursorMove(CursorInputEventArgs& e)
+void FrameWindow::onCursorMove(CursorMoveEventArgs& e)
 {
     // default processing (this is now essential as it controls event firing).
     Window::onCursorMove(e);
@@ -544,7 +544,7 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
     if (isSizingEnabled())
     {
         SizingLocation dragEdge;
-        const glm::vec2 localCursorPos(CoordConverter::screenToWindow(*this, e.position));
+        const glm::vec2 localCursorPos(CoordConverter::screenToWindow(*this, e.d_position));
 
         if (d_beingSized)
         {
@@ -585,17 +585,17 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for cursor press events
 *************************************************************************/
-void FrameWindow::onMouseButtonDown(CursorInputEventArgs& e)
+void FrameWindow::onMouseButtonDown(MouseButtonEventArgs& e)
 {
     // default processing (this is now essential as it controls event firing).
     Window::onMouseButtonDown(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
     {
         if (isSizingEnabled())
         {
             // get position of cursor as co-ordinates local to this window.
-            const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.position));
+            const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.d_position));
 
             // if the cursor is on the sizing border
             if (getSizingBorderAtPoint(localPos) != SizingLocation::Invalid)
@@ -622,11 +622,11 @@ void FrameWindow::onMouseButtonDown(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for cursor activation events
 *************************************************************************/
-void FrameWindow::onCursorActivate(CursorInputEventArgs& e)
+void FrameWindow::onClick(MouseButtonEventArgs& e)
 {
-    Window::onCursorActivate(e);
+    Window::onClick(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
     {
         releaseInput();
         ++e.handled;

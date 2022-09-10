@@ -1912,14 +1912,14 @@ void MultiColumnList::onSized(ElementEventArgs& e)
 /*************************************************************************
     Handler for when cursor is pressed
 *************************************************************************/
-void MultiColumnList::onMouseButtonDown(CursorInputEventArgs& e)
+void MultiColumnList::onMouseButtonDown(MouseButtonEventArgs& e)
 {
     // base class processing
     Window::onMouseButtonDown(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
     {
-        const glm::vec2 local_point = CoordConverter::screenToWindow(*this, e.position);
+        const glm::vec2 local_point = CoordConverter::screenToWindow(*this, e.d_position);
         handleSelection(local_point, false, false);
 
         ++e.handled;
@@ -1946,7 +1946,7 @@ void MultiColumnList::onSemanticInputEvent(SemanticEventArgs& e)
 /*************************************************************************
     Handler for scroll actions
 *************************************************************************/
-void MultiColumnList::onScroll(CursorInputEventArgs& e)
+void MultiColumnList::onScroll(ScrollEventArgs& e)
 {
 	// base class processing.
 	Window::onScroll(e);
@@ -1956,11 +1956,11 @@ void MultiColumnList::onScroll(CursorInputEventArgs& e)
 
 	if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
 	{
-		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.scroll);
+		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.d_delta);
 	}
 	else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
 	{
-		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
+		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.d_delta);
 	}
 
 	++e.handled;

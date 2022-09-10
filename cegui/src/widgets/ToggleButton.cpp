@@ -75,9 +75,9 @@ void ToggleButton::onSelectStateChange(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ToggleButton::onCursorActivate(CursorInputEventArgs& e)
+void ToggleButton::onClick(MouseButtonEventArgs& e)
 {
-    if (e.button == MouseButton::Left && isPushed())
+    if (e.d_button == MouseButton::Left && isPushed())
     {
         if (const Window* const sheet = getGUIContext().getRootWindow())
         {
@@ -93,7 +93,7 @@ void ToggleButton::onCursorActivate(CursorInputEventArgs& e)
         ++e.handled;
     }
 
-    ButtonBase::onCursorActivate(e);
+    ButtonBase::onClick(e);
 }
 
 //----------------------------------------------------------------------------//

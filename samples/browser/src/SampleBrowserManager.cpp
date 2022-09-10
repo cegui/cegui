@@ -132,7 +132,7 @@ bool SampleBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs&
     const CEGUI::String& lookNFeel(wnd->getLookNFeel());
     CEGUI::Rectf innerRectangle = CEGUI::WidgetLookManager::getSingleton().getWidgetLook(lookNFeel).getNamedArea("InnerArea").getArea().getPixelRect(*wnd);
 
-    const glm::vec2& cursor_pos(cursor_args.position);
+    const glm::vec2& cursor_pos(cursor_args.d_position);
 
     const CEGUI::Rectf& windowDimensions(wnd->getUnclippedOuterRect().get());
 
@@ -236,7 +236,7 @@ CEGUI::FrameWindow* SampleBrowserManager::createPreviewSampleWindow(const CEGUI:
     sampleWindow->setCursorInputPropagationEnabled(true);
 
     sampleWindow->subscribeEvent(Window::EventCursorMove, Event::Subscriber(&SampleBrowserManager::handlePointerMoveSampleWindow, this));
-    sampleWindow->subscribeEvent(Window::EventCursorActivate, Event::Subscriber(&SampleBrowserManager::handlePointerActivateSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventClick, Event::Subscriber(&SampleBrowserManager::handlePointerActivateSampleWindow, this));
     sampleWindow->subscribeEvent(Window::EventCursorLeavesArea, Event::Subscriber(&SampleBrowserManager::handleLeaveSampleWindow, this));
 
     CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));

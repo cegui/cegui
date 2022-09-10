@@ -84,7 +84,7 @@ bool ButtonBase::calculateCurrentHoverState(const glm::vec2& cursor_pos)
 /*************************************************************************
 	Handler for when the cursor moves
 *************************************************************************/
-void ButtonBase::onCursorMove(CursorInputEventArgs& e)
+void ButtonBase::onCursorMove(CursorMoveEventArgs& e)
 {
     // this is needed to discover whether cursor is in the widget area or not.
 	// The same thing used to be done each frame in the rendering method,
@@ -95,7 +95,7 @@ void ButtonBase::onCursorMove(CursorInputEventArgs& e)
 	// base class processing
 	Window::onCursorMove(e);
 
-	updateInternalState(e.position);
+	updateInternalState(e.d_position);
 	++e.handled;
 }
 
@@ -103,17 +103,17 @@ void ButtonBase::onCursorMove(CursorInputEventArgs& e)
 /*************************************************************************
 	Handler for cursor press hold events
 *************************************************************************/
-void ButtonBase::onMouseButtonDown(CursorInputEventArgs& e)
+void ButtonBase::onMouseButtonDown(MouseButtonEventArgs& e)
 {
 	// default processing
     Window::onMouseButtonDown(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
 	{
         if (captureInput())
         {
 			d_pushed = true;
-			updateInternalState(e.position);
+			updateInternalState(e.d_position);
 			invalidate();
         }
 
@@ -139,11 +139,11 @@ void ButtonBase::setPushedState(const bool pushed)
 /*************************************************************************
 	Handler for cursor activation events
 *************************************************************************/
-void ButtonBase::onCursorActivate(CursorInputEventArgs& e)
+void ButtonBase::onClick(MouseButtonEventArgs& e)
 {
-    Window::onCursorActivate(e);
+    Window::onClick(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
 	{
 		releaseInput();
 		++e.handled;

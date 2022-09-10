@@ -78,9 +78,9 @@ void TabButton::onClicked(WindowEventArgs& e)
 /*************************************************************************
     Handler for cursor press events
 *************************************************************************/
-void TabButton::onMouseButtonDown(CursorInputEventArgs& e)
+void TabButton::onMouseButtonDown(MouseButtonEventArgs& e)
 {
-    if (e.button == MouseButton::Middle)
+    if (e.d_button == MouseButton::Middle)
     {
         activate();
         if (captureInput())
@@ -95,9 +95,9 @@ void TabButton::onMouseButtonDown(CursorInputEventArgs& e)
     ButtonBase::onMouseButtonDown(e);
 }
 
-void TabButton::onCursorActivate(CursorInputEventArgs& e)
+void TabButton::onClick(MouseButtonEventArgs& e)
 {
-    if ((e.button == MouseButton::Left) && isPushed())
+    if ((e.d_button == MouseButton::Left) && isPushed())
 	{
 		if (auto sheet = getGUIContext().getRootWindow())
 		{
@@ -114,7 +114,7 @@ void TabButton::onCursorActivate(CursorInputEventArgs& e)
 
 		++e.handled;
     }
-    else if (e.button == MouseButton::Middle)
+    else if (e.d_button == MouseButton::Middle)
     {
         d_dragging = false;
         releaseInput();
@@ -122,10 +122,10 @@ void TabButton::onCursorActivate(CursorInputEventArgs& e)
     }
 
 	// default handling
-    ButtonBase::onCursorActivate(e);
+    ButtonBase::onClick(e);
 }
 
-void TabButton::onCursorMove(CursorInputEventArgs& e)
+void TabButton::onCursorMove(CursorMoveEventArgs& e)
 {
     if (d_dragging)
     {
@@ -137,7 +137,7 @@ void TabButton::onCursorMove(CursorInputEventArgs& e)
 	ButtonBase::onCursorMove(e);
 }
 
-void TabButton::onScroll(CursorInputEventArgs& e)
+void TabButton::onScroll(ScrollEventArgs& e)
 {
     fireEvent(EventScrolled, e, EventNamespace);
 

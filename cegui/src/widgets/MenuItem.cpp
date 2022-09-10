@@ -497,7 +497,7 @@ void MenuItem::onClicked(WindowEventArgs& e)
 /*************************************************************************
     Handler for when the cursor moves
 *************************************************************************/
-void MenuItem::onCursorMove(CursorInputEventArgs& e)
+void MenuItem::onCursorMove(CursorMoveEventArgs& e)
 {
     // this is needed to discover whether cursor is in the widget area or not.
     // The same thing used to be done each frame in the rendering method,
@@ -508,7 +508,7 @@ void MenuItem::onCursorMove(CursorInputEventArgs& e)
     // base class processing
     ItemEntry::onCursorMove(e);
 
-    updateInternalState(e.position);
+    updateInternalState(e.d_position);
     ++e.handled;
 }
 
@@ -516,19 +516,19 @@ void MenuItem::onCursorMove(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for cursor pressed events
 *************************************************************************/
-void MenuItem::onMouseButtonDown(CursorInputEventArgs& e)
+void MenuItem::onMouseButtonDown(MouseButtonEventArgs& e)
 {
     // default processing
     ItemEntry::onMouseButtonDown(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
     {
         d_popupWasClosed = false;
 
         if (captureInput())
         {
             d_pushed = true;
-            updateInternalState(e.position);
+            updateInternalState(e.d_position);
             d_popupWasClosed = !togglePopupMenu();
             invalidate();
         }
@@ -542,12 +542,12 @@ void MenuItem::onMouseButtonDown(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for cursor activation events
 *************************************************************************/
-void MenuItem::onCursorActivate(CursorInputEventArgs& e)
+void MenuItem::onClick(MouseButtonEventArgs& e)
 {
     // default processing
-    ItemEntry::onCursorActivate(e);
+    ItemEntry::onClick(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
     {
         releaseInput();
 

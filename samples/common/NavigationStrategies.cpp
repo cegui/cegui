@@ -31,9 +31,9 @@
 using namespace CEGUI;
 
 //----------------------------------------------------------------------------//
-Window* WindowChildrenNavigator::getWindow(Window* neighbour, const SemanticValue& event)
+Window* WindowChildrenNavigator::getWindow(Window* neighbour, Key::Scan key, bool down, ModifierKeys modifiers)
 {
-    if (event != SemanticValue::GoDown && event != SemanticValue::GoUp)
+    if (!down || (key != Key::Scan::ArrowDown && key != Key::Scan::ArrowUp))
         return neighbour;
 
     if (!d_targetWindow)
@@ -58,15 +58,14 @@ Window* WindowChildrenNavigator::getWindow(Window* neighbour, const SemanticValu
 
     if (found)
     {
-        if (event == SemanticValue::GoDown)
+        if (key == Key::Scan::ArrowDown)
         {
             if (index >= child_count - 1)
                 index = 0;
             else
                 index++;
         }
-
-        if (event == SemanticValue::GoUp)
+        else if (key == Key::Scan::ArrowUp)
         {
             if (index == 0)
                 index = child_count - 1;
@@ -79,15 +78,15 @@ Window* WindowChildrenNavigator::getWindow(Window* neighbour, const SemanticValu
 
     // start a new search, prevent overflow
     if (!child->canFocus())
-        return (child != neighbour) ? getWindow(child, event) : nullptr;
+        return (child != neighbour) ? getWindow(child, key, down, modifiers) : nullptr;
 
     return child;
 }
 
 //----------------------------------------------------------------------------//
-Window* LinearNavigator::getWindow(Window* neighbour, const SemanticValue& event)
+Window* LinearNavigator::getWindow(Window* neighbour, Key::Scan key, bool down, ModifierKeys modifiers)
 {
-    if (event != SemanticValue::NavigateToPrevious && event != SemanticValue::NavigateToNext)
+    if (!down || key != Key::Scan::Tab)
         return neighbour;
 
     if (d_windows.empty())
@@ -95,9 +94,9 @@ Window* LinearNavigator::getWindow(Window* neighbour, const SemanticValue& event
 
     auto it = std::find(d_windows.begin(), d_windows.end(), neighbour);
     if (it == d_windows.end())
-        return (event == SemanticValue::NavigateToNext) ? d_windows.front() : d_windows.back();
+        return (modifiers.hasCtrl()) ? d_windows.back() : d_windows.front();
 
-    if (event == SemanticValue::NavigateToPrevious)
+    if (modifiers.hasCtrl())
     {
         do
         {
@@ -107,7 +106,7 @@ Window* LinearNavigator::getWindow(Window* neighbour, const SemanticValue& event
         }
         while ((*it) != neighbour && !(*it)->canFocus());
     }
-    else if (event == SemanticValue::NavigateToNext)
+    else
     {
         do
         {
@@ -122,12 +121,13 @@ Window* LinearNavigator::getWindow(Window* neighbour, const SemanticValue& event
 }
 
 //----------------------------------------------------------------------------//
-Window* MatrixNavigator::getWindow(Window* neighbour, const SemanticValue& event)
+Window* MatrixNavigator::getWindow(Window* neighbour, Key::Scan key, bool down, ModifierKeys)
 {
-    if (event != SemanticValue::GoToNextCharacter &&
-        event != SemanticValue::GoDown &&
-        event != SemanticValue::GoToPreviousCharacter &&
-        event != SemanticValue::GoUp)
+    if (!down ||
+        (key != Key::Scan::ArrowRight &&
+            key != Key::Scan::ArrowDown &&
+            key != Key::Scan::ArrowLeft &&
+            key != Key::Scan::ArrowUp))
     {
         return neighbour;
     }
@@ -142,18 +142,18 @@ Window* MatrixNavigator::getWindow(Window* neighbour, const SemanticValue& event
             if (neighbour == column.at(col))
             {
                 // compute the new window (wrapping)
-                if (event == SemanticValue::GoToNextCharacter)
+                if (key == Key::Scan::ArrowRight)
                     col = (col + 1) % cols;
-                else if (event == SemanticValue::GoDown)
+                else if (key == Key::Scan::ArrowDown)
                     row = (row + 1) % rows;
-                else if (event == SemanticValue::GoToPreviousCharacter)
+                else if (key == Key::Scan::ArrowLeft)
                 {
                     if (col == 0)
                         col = cols - 1;
                     else
                         --col;
                 }
-                else if (event == SemanticValue::GoUp)
+                else if (key == Key::Scan::ArrowUp)
                 {
                     if (row == 0)
                         row = rows - 1;

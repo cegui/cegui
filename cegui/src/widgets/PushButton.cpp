@@ -71,9 +71,9 @@ void PushButton::onClicked(WindowEventArgs& e)
 /*************************************************************************
 	Handler for cursor activation events
 *************************************************************************/
-void PushButton::onCursorActivate(CursorInputEventArgs& e)
+void PushButton::onClick(MouseButtonEventArgs& e)
 {
-    if ((e.button == MouseButton::Left) && isPushed())
+    if ((e.d_button == MouseButton::Left) && isPushed())
 	{
 		Window* sheet = getGUIContext().getRootWindow();
 
@@ -93,7 +93,7 @@ void PushButton::onCursorActivate(CursorInputEventArgs& e)
 	}
 
 	// default handling
-    ButtonBase::onCursorActivate(e);
+    ButtonBase::onClick(e);
 }
 
 void PushButton::onSemanticInputEvent(SemanticEventArgs& e)

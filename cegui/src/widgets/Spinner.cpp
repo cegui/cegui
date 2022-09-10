@@ -81,8 +81,8 @@ void Spinner::initialiseComponents()
     decreaseButton->setCursorAutoRepeatEnabled(true);
 
     // perform event subscriptions.
-    increaseButton->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&Spinner::handleIncreaseButton, this));
-    decreaseButton->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&Spinner::handleDecreaseButton, this));
+    increaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleIncreaseButton, this));
+    decreaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleDecreaseButton, this));
     editbox->subscribeEvent(Window::EventTextChanged, Event::Subscriber(&Spinner::handleEditTextChange, this));
 
     // final initialisation
@@ -300,11 +300,11 @@ void Spinner::onActivated(ActivationEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Spinner::onScroll(CursorInputEventArgs& e)
+void Spinner::onScroll(ScrollEventArgs& e)
 {
     Window::onScroll(e);
     value_type prevValue = d_currentValue;
-    setCurrentValue(d_currentValue + d_stepSize * e.scroll);
+    setCurrentValue(d_currentValue + d_stepSize * e.d_delta);
     if (prevValue != d_currentValue)
         ++e.handled;
 }
@@ -390,7 +390,7 @@ void Spinner::updateEditboxText()
 //----------------------------------------------------------------------------//
 bool Spinner::handleIncreaseButton(const EventArgs& e)
 {
-    if (static_cast<const CursorInputEventArgs&>(e).button == MouseButton::Left)
+    if (static_cast<const MouseButtonEventArgs&>(e).d_button == MouseButton::Left)
     {
         setCurrentValue(d_currentValue + d_stepSize);
         return true;
@@ -402,7 +402,7 @@ bool Spinner::handleIncreaseButton(const EventArgs& e)
 //----------------------------------------------------------------------------//
 bool Spinner::handleDecreaseButton(const EventArgs& e)
 {
-    if (static_cast<const CursorInputEventArgs&>(e).button == MouseButton::Left)
+    if (static_cast<const MouseButtonEventArgs&>(e).d_button == MouseButton::Left)
     {
         setCurrentValue(d_currentValue - d_stepSize);
         return true;

@@ -526,23 +526,23 @@ bool EditboxBase::performPaste(Clipboard& clipboard)
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::onMouseButtonDown(CursorInputEventArgs& e)
+void EditboxBase::onMouseButtonDown(MouseButtonEventArgs& e)
 {
     Window::onMouseButtonDown(e);
 
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
     {
         if (captureInput())
         {
             d_dragSelecting = true;
-            d_dragAnchorIdx = getTextIndexFromPosition(e.position);
+            d_dragAnchorIdx = getTextIndexFromPosition(e.d_position);
             clearSelection();
             setCaretIndex(d_dragAnchorIdx);
             ensureCaretIsVisible();
             ++e.handled;
         }
     }
-    else if (e.button == MouseButton::Middle)
+    else if (e.d_button == MouseButton::Middle)
     {
         if (d_dragPanningEnabled)
         {
@@ -557,11 +557,11 @@ void EditboxBase::onMouseButtonDown(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::onCursorActivate(CursorInputEventArgs& e)
+void EditboxBase::onClick(MouseButtonEventArgs& e)
 {
-    Window::onCursorActivate(e);
+    Window::onClick(e);
 
-    if (e.button == MouseButton::Left || e.button == MouseButton::Middle)
+    if (e.d_button == MouseButton::Left || e.d_button == MouseButton::Middle)
     {
         // Actual handling happens in onCaptureLost
         releaseInput();
@@ -570,21 +570,21 @@ void EditboxBase::onCursorActivate(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::onCursorMove(CursorInputEventArgs& e)
+void EditboxBase::onCursorMove(CursorMoveEventArgs& e)
 {
     Window::onCursorMove(e);
 
     if (d_dragSelecting)
     {
-        setCaretIndex(getTextIndexFromPosition(e.position));
+        setCaretIndex(getTextIndexFromPosition(e.d_position));
         setSelection(d_caretPos, d_dragAnchorIdx);
         ensureCaretIsVisible();
     }
 
     if (d_dragPanning)
     {
-        setTextOffsetX(getTextOffsetX() - e.moveDelta.x);
-        setTextOffsetY(getTextOffsetY() - e.moveDelta.y);
+        setTextOffsetX(getTextOffsetX() - e.d_moveDelta.x);
+        setTextOffsetY(getTextOffsetY() - e.d_moveDelta.y);
     }
 
     ++e.handled;
@@ -600,9 +600,9 @@ void EditboxBase::onCaptureLost(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::onSelectWord(CursorInputEventArgs& e)
+void EditboxBase::onDoubleClick(MouseButtonEventArgs& e)
 {
-    const bool byLMB = e.button == MouseButton::Left;
+    const bool byLMB = e.d_button == MouseButton::Left;
     if (byLMB || !isReadOnly())
     {
         const auto& text = getText();
@@ -623,13 +623,13 @@ void EditboxBase::onSelectWord(CursorInputEventArgs& e)
         ++e.handled;
     }
 
-    Window::onSelectWord(e);
+    Window::onDoubleClick(e);
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::onSelectAll(CursorInputEventArgs& e)
+void EditboxBase::onTripleClick(MouseButtonEventArgs& e)
 {
-    if (e.button == MouseButton::Left)
+    if (e.d_button == MouseButton::Left)
     {
         // LMB selects only the current paragraph
         const auto& text = getText();
@@ -654,7 +654,7 @@ void EditboxBase::onSelectAll(CursorInputEventArgs& e)
         ++e.handled;
     }
 
-    Window::onSelectAll(e);
+    Window::onTripleClick(e);
 }
 
 //----------------------------------------------------------------------------//
