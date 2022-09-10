@@ -129,6 +129,26 @@ public:
     bool injectKeyUp(Key::Scan scanCode) override;
     bool injectChar(char32_t codePoint) override;
 
+    /*!
+    \brief
+        Set automatic mouse button click event generation mode. Click is generated when the same window
+        receives down and up events for the same mouse button within time and cursor offset threshold.
+
+    \param maxClicksToGenerate
+        - 0 to disable auto-generation of clicks. Typically accompanies explicit injectMouseButtonClick calls.
+        - 1 to generate only single click events (onClick).
+        - 2 or 3 to also generate double (onDoubleClick) and triple clicks (onTripleClick).
+        - higher values trigger onClick, d_generatedClickEventOrder can be examined to know the order of the click generated.
+    */
+    void setMouseClickEventGeneration(int maxClicksToGenerate) { d_mouseClickTracker.d_clickLimit = maxClicksToGenerate; }
+    //! \brief Returns automatic mouse button click event generation mode. See setMouseClickEventGeneration.
+    int getMouseClickEventGeneration() const { return d_mouseClickTracker.d_clickLimit; }
+
+    void setMouseButtonClickTimeout(float seconds) { d_mouseClickTracker.d_clickTimeout = seconds; }
+    float getMouseButtonClickTimeout() const { return d_mouseClickTracker.d_clickTimeout; }
+    void setMouseButtonClickTolerance(float pixels) { d_mouseClickTracker.d_clickDistance = pixels; }
+    float getMouseButtonClickTolerance() const { return d_mouseClickTracker.d_clickDistance; }
+
     // public overrides
     void draw(std::uint32_t drawMode = DrawModeMaskAll) override;
 
