@@ -29,6 +29,7 @@
 #include "CEGUI/widgets/MultiLineEditbox.h"
 #include "CEGUI/widgets/Scrollbar.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/GUIContext.h"
 
 namespace CEGUI
 {
@@ -308,48 +309,33 @@ bool MultiLineEditbox::isWordWrapEnabled() const
 }
 
 //------------------------------------------------------------------------//
-bool MultiLineEditbox::processSemanticInputEvent(const SemanticEventArgs& e)
+void MultiLineEditbox::processKeyEvent(KeyEventArgs& e, bool down)
 {
-    switch (e.d_semanticValue)
+    if (d_guiContext->isInputSemantic(SemanticValue::Confirm, e, down))
+        insertString("\x0a");
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoUp, e, down))
+        handleLineUp(false);
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectUp, e, down))
+        handleLineUp(true);
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoDown, e, down))
+        handleLineDown(false);
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectDown, e, down))
+        handleLineDown(true);
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToPreviousPage, e, down))
+        handlePageUp(false);
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToPreviousPage, e, down))
+        handlePageUp(true);
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToNextPage, e, down))
+        handlePageDown(false);
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToNextPage, e, down))
+        handlePageDown(true);
+    else
     {
-        case SemanticValue::Confirm:
-            insertString("\x0a");
-            return true;
-
-        case SemanticValue::GoUp:
-            handleLineUp(false);
-            return true;
-
-        case SemanticValue::SelectUp:
-            handleLineUp(true);
-            return true;
-
-        case SemanticValue::GoDown:
-            handleLineDown(false);
-            return true;
-
-        case SemanticValue::SelectDown:
-            handleLineDown(true);
-            return true;
-
-        case SemanticValue::GoToPreviousPage:
-            handlePageUp(false);
-            return true;
-
-        case SemanticValue::SelectToPreviousPage:
-            handlePageUp(true);
-            return true;
-
-        case SemanticValue::GoToNextPage:
-            handlePageDown(false);
-            return true;
-
-        case SemanticValue::SelectToNextPage:
-            handlePageDown(true);
-            return true;
+        EditboxBase::processKeyEvent(e, down);
+        return;
     }
 
-    return EditboxBase::processSemanticInputEvent(e);
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//

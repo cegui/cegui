@@ -29,6 +29,7 @@
 #include "CEGUI/widgets/Editbox.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/text/TextUtils.h"
+#include "CEGUI/GUIContext.h"
 #include <algorithm>
 
 namespace CEGUI
@@ -142,19 +143,18 @@ void Editbox::ensureCaretIsVisible()
 }
 
 //----------------------------------------------------------------------------//
-bool Editbox::processSemanticInputEvent(const SemanticEventArgs& e)
+void Editbox::processKeyEvent(KeyEventArgs& e, bool down)
 {
-    switch (e.d_semanticValue)
+    if (d_guiContext->isInputSemantic(SemanticValue::Confirm, e, down))
     {
-        case SemanticValue::Confirm:
-        {
-            WindowEventArgs args(this);
-            onTextAcceptedEvent(args);
-            return true;
-        }
+        WindowEventArgs args(this);
+        onTextAcceptedEvent(args);
+        ++e.handled;
     }
-
-    return EditboxBase::processSemanticInputEvent(e);
+    else
+    {
+        EditboxBase::processKeyEvent(e, down);
+    }
 }
 
 //----------------------------------------------------------------------------//

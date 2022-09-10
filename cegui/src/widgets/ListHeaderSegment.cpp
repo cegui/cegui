@@ -509,10 +509,7 @@ void ListHeaderSegment::onMouseButtonDown(MouseButtonEventArgs& e)
 	}
 }
 
-
-/*************************************************************************
-    Handler for when the cursor is activated
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void ListHeaderSegment::onClick(MouseButtonEventArgs& e)
 {
 	// base class processing
@@ -540,9 +537,20 @@ void ListHeaderSegment::onClick(MouseButtonEventArgs& e)
 	}
 }
 
-/*************************************************************************
-    Handler for when cursor leaves the widget area (uncaptured)
-*************************************************************************/
+//----------------------------------------------------------------------------//
+void ListHeaderSegment::onDoubleClick(MouseButtonEventArgs& e)
+{
+    if (d_splitterHover && !isDisabled() && e.d_button == MouseButton::Left)
+    {
+        WindowEventArgs args(this);
+        onSplitterDoubleClicked(args);
+        ++e.handled;
+    }
+
+    Window::onDoubleClick(e);
+}
+
+//----------------------------------------------------------------------------//
 void ListHeaderSegment::onCursorLeaves(CursorInputEventArgs& e)
 {
 	// base class processing
@@ -554,27 +562,7 @@ void ListHeaderSegment::onCursorLeaves(CursorInputEventArgs& e)
 	invalidate();
 }
 
-void ListHeaderSegment::onSemanticInputEvent(SemanticEventArgs& e)
-{
-    // base class processing
-    Window::onSemanticInputEvent(e);
-
-    if (isDisabled())
-        return;
-
-    if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == MouseButton::Left &&
-        d_splitterHover)
-    {
-        WindowEventArgs args(this);
-        onSplitterDoubleClicked(args);
-
-        ++e.handled;
-    }
-}
-
-/*************************************************************************
-    Handler for when cursor input capture is lost
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void ListHeaderSegment::onCaptureLost(WindowEventArgs& e)
 {
 	// base class processing
@@ -588,9 +576,19 @@ void ListHeaderSegment::onCaptureLost(WindowEventArgs& e)
 	++e.handled;
 }
 
-/*************************************************************************
-	adds properties for the class
-*************************************************************************/
+//----------------------------------------------------------------------------//
+void ListHeaderSegment::setSizingCursorImage(const String& name)
+{
+    d_sizingCursor = &ImageManager::getSingleton().get(name);
+}
+
+//----------------------------------------------------------------------------//
+void ListHeaderSegment::setMovingCursorImage(const String& name)
+{
+    d_movingCursor = &ImageManager::getSingleton().get(name);
+}
+
+//----------------------------------------------------------------------------//
 void ListHeaderSegment::addHeaderSegmentProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
@@ -626,34 +624,4 @@ void ListHeaderSegment::addHeaderSegmentProperties(void)
     );
 }
 
-const Image* ListHeaderSegment::getSizingCursorImage() const
-{
-    return d_sizingCursor;
 }
-
-void ListHeaderSegment::setSizingCursorImage(const Image* image)
-{
-    d_sizingCursor = image;
-}
-
-void ListHeaderSegment::setSizingCursorImage(const String& name)
-{
-    d_sizingCursor = &ImageManager::getSingleton().get(name);
-}
-
-const Image* ListHeaderSegment::getMovingCursorImage() const
-{
-    return d_movingCursor;
-}
-
-void ListHeaderSegment::setMovingCursorImage(const Image* image)
-{
-    d_movingCursor = image;
-}
-
-void ListHeaderSegment::setMovingCursorImage(const String& name)
-{
-    d_movingCursor = &ImageManager::getSingleton().get(name);
-}
-
-} // End of  CEGUI namespace section

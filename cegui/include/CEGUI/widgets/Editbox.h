@@ -81,7 +81,7 @@ protected:
 
     bool insertString(String&& strToInsert) override;
     void updateFormatting() override;
-    bool processSemanticInputEvent(const SemanticEventArgs& e) override;
+    void processKeyEvent(KeyEventArgs& e, bool down) override;
 
     /*!
     \brief

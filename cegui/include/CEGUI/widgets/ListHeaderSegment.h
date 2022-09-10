@@ -229,8 +229,8 @@ public:
     bool    isBeingDragSized(void) const  {return d_dragSizing;}
 
 
-    const Image* getSizingCursorImage() const;
-    const Image* getMovingCursorImage() const;
+    const Image* getSizingCursorImage() const { return d_sizingCursor; }
+    const Image* getMovingCursorImage() const { return d_movingCursor; }
 
 
 	/*************************************************************************
@@ -293,9 +293,9 @@ public:
 	void setClickable(bool setting);
 
 
-    void setSizingCursorImage(const Image* image);
+    void setSizingCursorImage(const Image* image) { d_sizingCursor = image; }
     void setSizingCursorImage(const String& name);
-    void setMovingCursorImage(const Image* image);
+    void setMovingCursorImage(const Image* image) { d_movingCursor = image; }
     void setMovingCursorImage(const String& name);
 
 
@@ -460,9 +460,9 @@ protected:
     void onCursorMove(CursorMoveEventArgs& e) override;
     void onMouseButtonDown(MouseButtonEventArgs& e) override;
     void onClick(MouseButtonEventArgs& e) override;
+    void onDoubleClick(MouseButtonEventArgs& e) override;
     void onCursorLeaves(CursorInputEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;
-    void onSemanticInputEvent(SemanticEventArgs& e) override;
 
 
 	/*************************************************************************

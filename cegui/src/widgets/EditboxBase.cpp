@@ -33,6 +33,7 @@
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/UndoHandler.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/GUIContext.h"
 #if defined(CEGUI_REGEX_MATCHER_PCRE)
 #   include "CEGUI/PCRERegexMatcher.h"
 #elif defined(CEGUI_REGEX_MATCHER_STD)
@@ -570,36 +571,6 @@ void EditboxBase::onClick(MouseButtonEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::onCursorMove(CursorMoveEventArgs& e)
-{
-    Window::onCursorMove(e);
-
-    if (d_dragSelecting)
-    {
-        setCaretIndex(getTextIndexFromPosition(e.d_position));
-        setSelection(d_caretPos, d_dragAnchorIdx);
-        ensureCaretIsVisible();
-    }
-
-    if (d_dragPanning)
-    {
-        setTextOffsetX(getTextOffsetX() - e.d_moveDelta.x);
-        setTextOffsetY(getTextOffsetY() - e.d_moveDelta.y);
-    }
-
-    ++e.handled;
-}
-
-//----------------------------------------------------------------------------//
-void EditboxBase::onCaptureLost(WindowEventArgs& e)
-{
-    d_dragSelecting = false;
-    d_dragPanning = false;
-    Window::onCaptureLost(e);
-    ++e.handled;
-}
-
-//----------------------------------------------------------------------------//
 void EditboxBase::onDoubleClick(MouseButtonEventArgs& e)
 {
     const bool byLMB = e.d_button == MouseButton::Left;
@@ -646,6 +617,128 @@ void EditboxBase::onTripleClick(MouseButtonEventArgs& e)
     ++e.handled;
 
     Window::onTripleClick(e);
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::onCursorMove(CursorMoveEventArgs& e)
+{
+    Window::onCursorMove(e);
+
+    if (d_dragSelecting)
+    {
+        setCaretIndex(getTextIndexFromPosition(e.d_position));
+        setSelection(d_caretPos, d_dragAnchorIdx);
+        ensureCaretIsVisible();
+    }
+
+    if (d_dragPanning)
+    {
+        setTextOffsetX(getTextOffsetX() - e.d_moveDelta.x);
+        setTextOffsetY(getTextOffsetY() - e.d_moveDelta.y);
+    }
+
+    ++e.handled;
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::onCaptureLost(WindowEventArgs& e)
+{
+    d_dragSelecting = false;
+    d_dragPanning = false;
+    Window::onCaptureLost(e);
+    ++e.handled;
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::onKeyDown(KeyEventArgs& e)
+{
+    if (!isEffectiveDisabled() && !isReadOnly() && hasInputFocus())
+        processKeyEvent(e, true);
+
+    Window::onKeyDown(e);
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::onKeyUp(KeyEventArgs& e)
+{
+    if (!isEffectiveDisabled() && !isReadOnly() && hasInputFocus())
+        processKeyEvent(e, false);
+
+    Window::onKeyDown(e);
+}
+
+//----------------------------------------------------------------------------//
+void EditboxBase::processKeyEvent(KeyEventArgs& e, bool down)
+{
+    if (d_guiContext->isInputSemantic(SemanticValue::DeletePreviousCharacter, e, down))
+    {
+        if (getSelectionLength())
+        {
+            deleteRange(getSelectionStart(), getSelectionLength());
+        }
+        else
+        {
+            const size_t deleteStartPos = getPrevTextIndex(d_caretPos);
+            deleteRange(deleteStartPos, d_caretPos - deleteStartPos);
+        }
+    }
+    else if (d_guiContext->isInputSemantic(SemanticValue::DeleteNextCharacter, e, down))
+    {
+        if (getSelectionLength())
+            deleteRange(getSelectionStart(), getSelectionLength());
+        else
+            deleteRange(d_caretPos, getNextTextIndex(d_caretPos) - d_caretPos);
+    }
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToPreviousCharacter, e, down))
+        handleCaretMovement(getPrevTextIndex(d_caretPos), false);
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToNextCharacter, e, down))
+        handleCaretMovement(getNextTextIndex(d_caretPos), false);
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectPreviousCharacter, e, down))
+        handleCaretMovement(getPrevTextIndex(d_caretPos), true);
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectNextCharacter, e, down))
+        handleCaretMovement(getNextTextIndex(d_caretPos), true);
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToPreviousWord, e, down))
+        handleCaretMovement(TextUtils::getWordStartIndex(getText(), d_caretPos), false);
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToNextWord, e, down))
+        handleCaretMovement(TextUtils::getNextWordStartIndex(getText(), d_caretPos), false);
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectPreviousWord, e, down))
+        handleCaretMovement(TextUtils::getWordStartIndex(getText(), d_caretPos), true);
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectNextWord, e, down))
+        handleCaretMovement(TextUtils::getNextWordStartIndex(getText(), d_caretPos), true);
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToStartOfDocument, e, down))
+        handleCaretMovement(0, false);
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToEndOfDocument, e, down))
+        handleCaretMovement(getText().size(), false);
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToStartOfDocument, e, down))
+        handleCaretMovement(0, true);
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToEndOfDocument, e, down))
+        handleCaretMovement(getText().size(), true);
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToStartOfLine, e, down))
+    {
+        updateRenderedText();
+        handleCaretMovement(d_renderedText.lineStartTextIndex(d_caretPos), false);
+    }
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToEndOfLine, e, down))
+    {
+        updateRenderedText();
+        handleCaretMovement(d_renderedText.lineEndTextIndex(d_caretPos), false);
+    }
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToStartOfLine, e, down))
+    {
+        updateRenderedText();
+        handleCaretMovement(d_renderedText.lineStartTextIndex(d_caretPos), true);
+    }
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToEndOfLine, e, down))
+    {
+        updateRenderedText();
+        handleCaretMovement(d_renderedText.lineEndTextIndex(d_caretPos), true);
+    }
+    else
+    {
+        return; // Not handled
+    }
+
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -700,117 +793,6 @@ void EditboxBase::onCharacter(TextEventArgs& e)
 
     if (insertString(String(1, e.d_character)))
         ++e.handled;
-}
-
-//----------------------------------------------------------------------------//
-void EditboxBase::onSemanticInputEvent(SemanticEventArgs& e)
-{
-    if (!isEffectiveDisabled() &&
-        !isReadOnly() &&
-        hasInputFocus() &&
-        processSemanticInputEvent(e))
-    {
-        ++e.handled;
-        return;
-    }
-
-    Window::onSemanticInputEvent(e);
-}
-
-//----------------------------------------------------------------------------//
-bool EditboxBase::processSemanticInputEvent(const SemanticEventArgs& e)
-{
-    switch (e.d_semanticValue)
-    {
-        case SemanticValue::DeletePreviousCharacter:
-            if (getSelectionLength())
-            {
-                deleteRange(getSelectionStart(), getSelectionLength());
-            }
-            else
-            {
-                const size_t deleteStartPos = getPrevTextIndex(d_caretPos);
-                deleteRange(deleteStartPos, d_caretPos - deleteStartPos);
-            }
-            return true;
-
-        case SemanticValue::DeleteNextCharacter:
-            if (getSelectionLength())
-                deleteRange(getSelectionStart(), getSelectionLength());
-            else
-                deleteRange(d_caretPos, getNextTextIndex(d_caretPos) - d_caretPos);
-            return true;
-
-        case SemanticValue::GoToPreviousCharacter:
-            handleCaretMovement(getPrevTextIndex(d_caretPos), false);
-            return true;
-
-        case SemanticValue::GoToNextCharacter:
-            handleCaretMovement(getNextTextIndex(d_caretPos), false);
-            return true;
-
-        case SemanticValue::SelectPreviousCharacter:
-            handleCaretMovement(getPrevTextIndex(d_caretPos), true);
-            return true;
-
-        case SemanticValue::SelectNextCharacter:
-            handleCaretMovement(getNextTextIndex(d_caretPos), true);
-            return true;
-
-        case SemanticValue::GoToPreviousWord:
-            handleCaretMovement(TextUtils::getWordStartIndex(getText(), d_caretPos), false);
-            return true;
-
-        case SemanticValue::GoToNextWord:
-            handleCaretMovement(TextUtils::getNextWordStartIndex(getText(), d_caretPos), false);
-            return true;
-
-        case SemanticValue::SelectPreviousWord:
-            handleCaretMovement(TextUtils::getWordStartIndex(getText(), d_caretPos), true);
-            return true;
-
-        case SemanticValue::SelectNextWord:
-            handleCaretMovement(TextUtils::getNextWordStartIndex(getText(), d_caretPos), true);
-            return true;
-
-        case SemanticValue::GoToStartOfDocument:
-            handleCaretMovement(0, false);
-            return true;
-
-        case SemanticValue::GoToEndOfDocument:
-            handleCaretMovement(getText().size(), false);
-            return true;
-
-        case SemanticValue::SelectToStartOfDocument:
-            handleCaretMovement(0, true);
-            return true;
-
-        case SemanticValue::SelectToEndOfDocument:
-            handleCaretMovement(getText().size(), true);
-            return true;
-
-        case SemanticValue::GoToStartOfLine:
-            updateRenderedText();
-            handleCaretMovement(d_renderedText.lineStartTextIndex(d_caretPos), false);
-            return true;
-
-        case SemanticValue::GoToEndOfLine:
-            updateRenderedText();
-            handleCaretMovement(d_renderedText.lineEndTextIndex(d_caretPos), false);
-            return true;
-
-        case SemanticValue::SelectToStartOfLine:
-            updateRenderedText();
-            handleCaretMovement(d_renderedText.lineStartTextIndex(d_caretPos), true);
-            return true;
-
-        case SemanticValue::SelectToEndOfLine:
-            updateRenderedText();
-            handleCaretMovement(d_renderedText.lineEndTextIndex(d_caretPos), true);
-            return true;
-    }
-
-    return false;
 }
 
 //----------------------------------------------------------------------------//

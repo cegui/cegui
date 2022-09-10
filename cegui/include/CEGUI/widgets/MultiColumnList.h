@@ -1656,7 +1656,6 @@ protected:
     void	onSized(ElementEventArgs& e) override;
     void    onMouseButtonDown(MouseButtonEventArgs& e) override;
     void    onScroll(ScrollEventArgs& e) override;
-    void    onSemanticInputEvent(SemanticEventArgs& e) override;
 
 	/*************************************************************************
 		Handlers for subscribed events

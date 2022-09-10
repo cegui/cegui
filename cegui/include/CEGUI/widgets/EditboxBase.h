@@ -607,18 +607,19 @@ protected:
     // Overridden event handlers
     void onMouseButtonDown(MouseButtonEventArgs& e) override;
     void onClick(MouseButtonEventArgs& e) override;
-    void onCursorMove(CursorMoveEventArgs& e) override;
-    void onCaptureLost(WindowEventArgs& e) override;
     void onDoubleClick(MouseButtonEventArgs& e) override;
     void onTripleClick(MouseButtonEventArgs& e) override;
+    void onCursorMove(CursorMoveEventArgs& e) override;
+    void onKeyDown(KeyEventArgs& e) override;
+    void onKeyUp(KeyEventArgs& e) override;
+    void onCaptureLost(WindowEventArgs& e) override;
     void onSized(ElementEventArgs& e) override;
 
     void onFontChanged(WindowEventArgs& e) override;
     void onTextChanged(WindowEventArgs& e) override;
     void onCharacter(TextEventArgs& e) override;
-    void onSemanticInputEvent(SemanticEventArgs& e) override;
 
-    virtual bool processSemanticInputEvent(const SemanticEventArgs& e);
+    virtual void processKeyEvent(KeyEventArgs& e, bool down);
 
     RenderedText d_renderedText;
 

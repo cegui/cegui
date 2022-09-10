@@ -171,10 +171,7 @@ void Titlebar::onMouseButtonDown(MouseButtonEventArgs& e)
     }
 }
 
-
-/*************************************************************************
-    Handler for cursor activation events
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Titlebar::onClick(MouseButtonEventArgs& e)
 {
     Window::onClick(e);
@@ -186,27 +183,23 @@ void Titlebar::onClick(MouseButtonEventArgs& e)
     }
 }
 
-void Titlebar::onSemanticInputEvent(SemanticEventArgs& e)
+//----------------------------------------------------------------------------//
+void Titlebar::onDoubleClick(MouseButtonEventArgs& e)
 {
-    // Base class processing
-    Window::onSemanticInputEvent(e);
+    Window::onDoubleClick(e);
 
-    if (isDisabled())
-        return;
-
-    if (e.d_semanticValue == SemanticValue::SelectWord && e.d_payload.source == MouseButton::Left)
+    if (e.d_button == MouseButton::Left && !isDisabled())
     {
         // Our parent must be a FrameWindow or subclass for rolling up to work
         if (auto frameWnd = dynamic_cast<FrameWindow*>(d_parent))
+        {
             frameWnd->toggleRollup();
-
-        ++e.handled;
+            ++e.handled;
+        }
     }
 }
 
-/*************************************************************************
-    Handler for if the window loses capture of the cursor.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Titlebar::onCaptureLost(WindowEventArgs& e)
 {
     // Base class processing
@@ -220,10 +213,7 @@ void Titlebar::onCaptureLost(WindowEventArgs& e)
         getCursor().setConstraintArea(&d_oldCursorArea);
 }
 
-
-/*************************************************************************
-    Handler for when the font for this Window is changed
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Titlebar::onFontChanged(WindowEventArgs& e)
 {
     Window::onFontChanged(e);
@@ -234,10 +224,7 @@ void Titlebar::onFontChanged(WindowEventArgs& e)
     }
 }
 
-
-/*************************************************************************
-    Add title bar specific properties
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Titlebar::addTitlebarProperties(void)
 {
     const String& propertyOrigin = WidgetTypeName;
@@ -248,4 +235,4 @@ void Titlebar::addTitlebarProperties(void)
     );
 }
 
-} // End of  CEGUI namespace section
+}

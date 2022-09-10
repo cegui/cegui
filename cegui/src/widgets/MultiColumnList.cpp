@@ -1869,103 +1869,63 @@ void MultiColumnList::onListColumnSized(WindowEventArgs& e)
 	fireEvent(EventListColumnSized, e, EventNamespace);
 }
 
-
-/*************************************************************************
-	Handler called when a column is moved
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MultiColumnList::onListColumnMoved(WindowEventArgs& e)
 {
 	invalidate();
 	fireEvent(EventListColumnMoved, e, EventNamespace);
 }
 
-/*************************************************************************
-	Handler for when widget font is changed
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MultiColumnList::onFontChanged(WindowEventArgs& e)
 {
     // Propagate to children
     // Set the font equal to that of our list
-    for (unsigned int col = 0; col < getColumnCount(); col++)
-    {
+    for (unsigned int col = 0; col < getColumnCount(); ++col)
         getHeaderSegmentForColumn(col).setFont(d_font);
-    }
 
     // Call base class handler
     Window::onFontChanged(e);
 }
 
-/*************************************************************************
-	Handler for when we are sized
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MultiColumnList::onSized(ElementEventArgs& e)
 {
-	// base class handling
 	Window::onSized(e);
-
 	configureScrollbars();
-
 	++e.handled;
 }
 
-
-/*************************************************************************
-    Handler for when cursor is pressed
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MultiColumnList::onMouseButtonDown(MouseButtonEventArgs& e)
 {
-    // base class processing
     Window::onMouseButtonDown(e);
 
     if (e.d_button == MouseButton::Left)
     {
-        const glm::vec2 local_point = CoordConverter::screenToWindow(*this, e.d_position);
-        handleSelection(local_point, false, false);
-
+        const glm::vec2 localPoint = CoordConverter::screenToWindow(*this, e.d_position);
+        handleSelection(localPoint, e.d_modifiers.hasCtrl(), e.d_modifiers.hasShift());
         ++e.handled;
     }
 }
 
-void MultiColumnList::onSemanticInputEvent(SemanticEventArgs& e)
-{
-    bool cumulative = e.d_semanticValue == SemanticValue::SelectCumulative;
-    bool range = e.d_semanticValue == SemanticValue::SelectRange;
-
-    if (cumulative || range)
-    {
-        const glm::vec2 local_point = CoordConverter::screenToWindow(*this,
-            getGUIContext().getCursor().getPosition());
-        handleSelection(local_point, cumulative, range);
-
-        ++ e.handled;
-    }
-
-    Window::onSemanticInputEvent(e);
-}
-
-/*************************************************************************
-    Handler for scroll actions
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MultiColumnList::onScroll(ScrollEventArgs& e)
 {
-	// base class processing.
 	Window::onScroll(e);
 
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
 	if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
-	{
 		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.d_delta);
-	}
 	else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
-	{
 		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.d_delta);
-	}
 
 	++e.handled;
 }
 
+//----------------------------------------------------------------------------//
 void MultiColumnList::handleSelection(const glm::vec2& position, bool cumulative, bool range)
 {
     bool modified = false;
