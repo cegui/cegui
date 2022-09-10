@@ -2111,19 +2111,6 @@ void Window::onCursorLeaves(CursorInputEventArgs& e)
 void Window::onCursorMove(CursorMoveEventArgs& e)
 {
     fireEvent(EventCursorMove, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagatePointerInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onCursorMove(e);
-        return;
-    }
-
-    // by default we now mark cursor events as handled
-    if (!d_cursorPassThroughEnabled)
-        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//

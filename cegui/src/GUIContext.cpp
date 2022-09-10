@@ -319,10 +319,6 @@ bool GUIContext::areaChangedHandler(const EventArgs&)
     d_surfaceSize = d_target->getArea().getSize();
     d_cursor.notifyTargetSizeChanged(d_surfaceSize);
 
-    //    d_mouseButtonMultiClickAbsoluteTolerance = Sizef(
-    //        d_mouseButtonMultiClickTolerance.d_width * display_size.d_width,
-    //        d_mouseButtonMultiClickTolerance.d_height * display_size.d_height);
-
     if (d_rootWindow)
     {
         d_rootWindow->notifyScreenAreaChanged();

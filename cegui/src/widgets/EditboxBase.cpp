@@ -605,13 +605,13 @@ void EditboxBase::onDoubleClick(MouseButtonEventArgs& e)
     const bool byLMB = e.d_button == MouseButton::Left;
     if (byLMB || !isReadOnly())
     {
-        const auto& text = getText();
         if (d_textMaskingEnabled)
         {
             handleSelectAll();
         }
         else
         {
+            const auto& text = getText();
             const auto start = TextUtils::getWordStartIndex(text, d_caretPos);
             const auto end = byLMB ?
                 TextUtils::getWordEndIndex(text, d_caretPos) :
@@ -629,30 +629,21 @@ void EditboxBase::onDoubleClick(MouseButtonEventArgs& e)
 //----------------------------------------------------------------------------//
 void EditboxBase::onTripleClick(MouseButtonEventArgs& e)
 {
-    if (e.d_button == MouseButton::Left)
+    if (!d_textMaskingEnabled && e.d_button == MouseButton::Left)
     {
         // LMB selects only the current paragraph
-        const auto& text = getText();
-        if (d_textMaskingEnabled)
-        {
-            handleSelectAll();
-        }
-        else
-        {
-            updateRenderedText();
-            const auto start = d_renderedText.paragraphStartTextIndex(d_caretPos);
-            setCaretIndex(d_renderedText.paragraphEndTextIndex(d_caretPos));
-            setSelection(start, d_caretPos);
-        }
-
-        ++e.handled;
+        updateRenderedText();
+        const auto start = d_renderedText.paragraphStartTextIndex(d_caretPos);
+        setCaretIndex(d_renderedText.paragraphEndTextIndex(d_caretPos));
+        setSelection(start, d_caretPos);
     }
     else
     {
         // Regular 'select all'
         handleSelectAll();
-        ++e.handled;
     }
+
+    ++e.handled;
 
     Window::onTripleClick(e);
 }
