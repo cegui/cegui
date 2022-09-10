@@ -25,6 +25,22 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "RenderEffects.h"
+#include <CEGUI/widgets/FrameWindow.h>
+#include <CEGUI/widgets/Titlebar.h>
+#include <CEGUI/widgets/Combobox.h>
+#include <CEGUI/views/StandardItemModel.h>
+#include <CEGUI/GUIContext.h>
+#include <CEGUI/RenderingWindow.h>
+#include <CEGUI/TextureTarget.h>
+#include <CEGUI/Texture.h>
+#include <CEGUI/GeometryBuffer.h>
+#include <CEGUI/Renderer.h>
+#include <CEGUI/RenderEffectManager.h>
+#include <CEGUI/WindowFactoryManager.h>
+#include <CEGUI/WindowManager.h>
+#include <CEGUI/SchemeManager.h>
+#include <CEGUI/FontManager.h>
+#include <CEGUI/ImageManager.h>
 
 //----------------------------------------------------------------------------//
 WobblyWindowEffect::WobblyWindowEffect(CEGUI::Window* window) :

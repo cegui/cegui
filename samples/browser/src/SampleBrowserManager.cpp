@@ -35,7 +35,6 @@ author:     Lukas E Meindl
 #include "CEGUI/widgets/FrameWindow.h"
 #include "CEGUI/widgets/PushButton.h"
 #include "CEGUI/Image.h"
-#include "CEGUI/InputAggregator.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 

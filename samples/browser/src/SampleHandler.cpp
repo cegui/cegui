@@ -35,7 +35,6 @@ author:     Lukas E Meindl
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/Texture.h"
 #include "CEGUI/ImageManager.h"
-#include "CEGUI/InputAggregator.h"
 #include "CEGUI/Window.h"
 
 using namespace CEGUI;

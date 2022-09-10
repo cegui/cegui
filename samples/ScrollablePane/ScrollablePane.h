@@ -28,7 +28,6 @@ author:     Luca Ebach <lucaebach@gmail.com>
 #ifndef _ScrollablePaneSample_h_
 #define _ScrollablePaneSample_h_
 
-#include "CEGUI/InputAggregator.h"
 #include "Sample.h"
 
 // ScrollablePane sample class

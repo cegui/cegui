@@ -64,7 +64,6 @@
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/InputEvent.h"
-#include "CEGUI/InputAggregator.h"
 #include "CEGUI/Interpolator.h"
 #include "CEGUI/KeyFrame.h"
 #include "CEGUI/LinkedEvent.h"
