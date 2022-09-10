@@ -236,9 +236,9 @@ void DragContainer::updateActiveCursorImage() const
 }
 
 //----------------------------------------------------------------------------//
-void DragContainer::onCursorPressHold(CursorInputEventArgs& e)
+void DragContainer::onMouseButtonDown(CursorInputEventArgs& e)
 {
-    Window::onCursorPressHold(e);
+    Window::onMouseButtonDown(e);
 
     if (e.button == MouseButton::Left)
     {

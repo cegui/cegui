@@ -605,7 +605,7 @@ protected:
     void setReadOnlyCursorImage(const Image* image) { d_readOnlyCursorImage = image; }
 
     // Overridden event handlers
-    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onMouseButtonDown(CursorInputEventArgs& e) override;
     void onCursorActivate(CursorInputEventArgs& e) override;
     void onCursorMove(CursorInputEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;

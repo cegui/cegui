@@ -1912,10 +1912,10 @@ void MultiColumnList::onSized(ElementEventArgs& e)
 /*************************************************************************
     Handler for when cursor is pressed
 *************************************************************************/
-void MultiColumnList::onCursorPressHold(CursorInputEventArgs& e)
+void MultiColumnList::onMouseButtonDown(CursorInputEventArgs& e)
 {
     // base class processing
-    Window::onCursorPressHold(e);
+    Window::onMouseButtonDown(e);
 
     if (e.button == MouseButton::Left)
     {

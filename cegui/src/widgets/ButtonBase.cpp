@@ -103,10 +103,10 @@ void ButtonBase::onCursorMove(CursorInputEventArgs& e)
 /*************************************************************************
 	Handler for cursor press hold events
 *************************************************************************/
-void ButtonBase::onCursorPressHold(CursorInputEventArgs& e)
+void ButtonBase::onMouseButtonDown(CursorInputEventArgs& e)
 {
 	// default processing
-    Window::onCursorPressHold(e);
+    Window::onMouseButtonDown(e);
 
     if (e.button == MouseButton::Left)
 	{

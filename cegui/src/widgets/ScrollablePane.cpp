@@ -723,9 +723,9 @@ int ScrollablePane::writeChildWindowsXML(XMLSerializer& xml_stream) const
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onCursorPressHold(CursorInputEventArgs& e)
+void ScrollablePane::onMouseButtonDown(CursorInputEventArgs& e)
 {
-    Window::onCursorPressHold(e);
+    Window::onMouseButtonDown(e);
 
     if (d_swipeScrollingEnabled && e.button == MouseButton::Left)
     {

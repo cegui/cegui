@@ -43,6 +43,10 @@ const String GUIContext::EventTooltipActive("TooltipActive");
 const String GUIContext::EventTooltipInactive("TooltipInactive");
 const String GUIContext::EventTooltipTransition("TooltipTransition");
 
+const ModifierKeys ModifierKeys::Shift(ModifierKey::Shift);
+const ModifierKeys ModifierKeys::Ctrl(ModifierKey::Ctrl);
+const ModifierKeys ModifierKeys::Alt(ModifierKey::Alt);
+
 //----------------------------------------------------------------------------//
 GUIContext::GUIContext(RenderTarget& target) :
     RenderingSurface(target),
@@ -69,9 +73,6 @@ GUIContext::~GUIContext()
     for (auto record : d_tooltips)
         if (WindowManager::getSingleton().isAlive(record.second))
             WindowManager::getSingleton().destroyWindow(record.second);
-
-    for (auto it = d_semanticEventHandlers.begin(); it != d_semanticEventHandlers.end(); ++it)
-        delete it->second;
 }
 
 //----------------------------------------------------------------------------//
@@ -208,7 +209,7 @@ bool GUIContext::captureInput(Window* window)
         d_captureWindow->onCaptureLost(args);
         args.handled = 0;
 
-        d_repeatPointerSource = MouseButton::Invalid;
+        d_autoRepeatMouseButton = MouseButton::Invalid;
         d_windowContainingCursorIsUpToDate = false;
     }
 
@@ -232,7 +233,7 @@ void GUIContext::releaseInputCapture(bool allowRestoreOld, Window* exactWindow)
     WindowEventArgs args(d_captureWindow);
     d_captureWindow->onCaptureLost(args);
 
-    d_repeatPointerSource = MouseButton::Invalid;
+    d_autoRepeatMouseButton = MouseButton::Invalid;
     d_windowContainingCursorIsUpToDate = false;
 
     if (allowRestoreOld && d_oldCaptureWindow && d_captureWindow->restoresOldCapture())
@@ -321,6 +322,10 @@ bool GUIContext::areaChangedHandler(const EventArgs&)
 {
     d_surfaceSize = d_target->getArea().getSize();
     d_cursor.notifyTargetSizeChanged(d_surfaceSize);
+
+    //    d_mouseButtonMultiClickAbsoluteTolerance = Sizef(
+    //        d_mouseButtonMultiClickTolerance.d_width * display_size.d_width,
+    //        d_mouseButtonMultiClickTolerance.d_height * display_size.d_height);
 
     if (d_rootWindow)
     {
@@ -678,7 +683,7 @@ void GUIContext::updateTooltipState(float timeElapsed)
 //----------------------------------------------------------------------------//
 void GUIContext::updateInputAutoRepeating(float timeElapsed)
 {
-    if (!d_captureWindow || d_repeatPointerSource == MouseButton::Invalid)
+    if (!d_captureWindow || d_autoRepeatMouseButton == MouseButton::Invalid)
         return;
 
     const float repeatRate = d_captureWindow->getAutoRepeatRate();
@@ -686,34 +691,34 @@ void GUIContext::updateInputAutoRepeating(float timeElapsed)
     // Stop auto-repeating if the window wants it no more
     if (!d_captureWindow->isCursorAutoRepeatEnabled() || repeatRate <= 0.f)
     {
-        releaseInputCapture(true);
+        releaseInputCapture();
         return;
     }
 
-    d_repeatElapsed += timeElapsed;
+    d_autoRepeatElapsed += timeElapsed;
 
-    if (!d_repeating)
+    if (!d_autoRepeating)
     {
-        if (d_repeatElapsed < d_captureWindow->getAutoRepeatDelay())
+        if (d_autoRepeatElapsed < d_captureWindow->getAutoRepeatDelay())
             return;
 
-        d_repeating = true;
-        d_repeatElapsed = repeatRate;
+        d_autoRepeating = true;
+        d_autoRepeatElapsed = repeatRate;
     }
-    else if (d_repeatElapsed < repeatRate)
+    else if (d_autoRepeatElapsed < repeatRate)
         return;
 
     CursorInputEventArgs ciea(d_captureWindow);
     ciea.position = d_captureWindow->getUnprojectedPosition(d_cursor.getPosition());
-    ciea.button = d_repeatPointerSource;
+    ciea.button = d_autoRepeatMouseButton;
 
     do
     {
         ciea.handled = 0;
-        d_captureWindow->onCursorPressHold(ciea);
-        d_repeatElapsed -= repeatRate;
+        d_captureWindow->onMouseButtonDown(ciea);
+        d_autoRepeatElapsed -= repeatRate;
     }
-    while (d_repeatElapsed >= repeatRate);
+    while (d_autoRepeatElapsed >= repeatRate);
 }
 
 //----------------------------------------------------------------------------//
@@ -842,38 +847,53 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
 {
     d_mouseButtons += button;
 
-    auto window = getCursorTargetWindow(d_cursor.getPosition(), false);
-    if (!window)
-        return false;
-
     if (d_tooltipWindow)
         d_tooltipWindow->hide(true);
 
-    CursorInputEventArgs ciea(window);
-    ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
-    ciea.button = button;
-
-    // Activate a window. Treat as a handling action if there were changes in Z-order.
-    if (ciea.button == MouseButton::Left)
-        if (setActiveWindow(window, d_moveToFrontOnActivateAllowed && window->isRiseOnCursorActivationEnabled()))
-            ++ciea.handled;
-
-    window->onCursorPressHold(ciea);
-
-    if (window->isCursorAutoRepeatEnabled())
+    auto window = getCursorTargetWindow(d_cursor.getPosition(), false);
+    while (window)
     {
-        if (d_repeatPointerSource == MouseButton::Invalid)
-            captureInput(window);
+        CursorInputEventArgs args(window, window->getUnprojectedPosition(d_cursor.getPosition()), button);
 
-        if (d_repeatPointerSource != ciea.button && d_captureWindow == window)
+        // Activate a window with left click. Treat input as handled if the window changed its Z-order in response.
+        if (button == MouseButton::Left)
+            if (setActiveWindow(window, d_moveToFrontOnActivateAllowed && window->isRiseOnCursorActivationEnabled()))
+                ++args.handled;
+
+        window->onMouseButtonDown(args);
+
+        if (!window->isCursorPassThroughEnabled())
+            ++args.handled;
+
+        if (args.handled)
         {
-            d_repeatPointerSource = ciea.button;
-            d_repeatElapsed = 0.f;
-            d_repeating = false;
+            // Track mouse activity for click event generation
+            d_mouseClickTracker.onMouseButtonDown(button, d_cursor.getPosition(), window);
+
+            // Start mouse down event auto-repeating if needed
+            if (window->isCursorAutoRepeatEnabled())
+            {
+                if (d_autoRepeatMouseButton == MouseButton::Invalid)
+                    captureInput(window);
+
+                if (d_autoRepeatMouseButton != button && d_captureWindow == window)
+                {
+                    d_autoRepeatMouseButton = button;
+                    d_autoRepeatElapsed = 0.f;
+                    d_autoRepeating = false;
+                }
+            }
+
+            return true;
         }
+
+        if (window == d_modalWindow || !window->isCursorInputPropagationEnabled())
+            break;
+
+        window = window->getParent();
     }
 
-    return ciea.handled != 0;
+    return false;
 }
 
 //----------------------------------------------------------------------------//
@@ -881,24 +901,57 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
 {
     d_mouseButtons -= button;
 
-    auto window = getCursorTargetWindow(d_cursor.getPosition(), false);
-    if (!window)
-        return false;
-
     if (d_tooltipWindow)
     {
         d_tooltipWindow->show(true);
         d_tooltipTimer = 0.f;
     }
 
-    if (d_repeatPointerSource != MouseButton::Invalid)
-        releaseInputCapture(true, window);
+    // Stop auto-repeating and release capture caused by it
+    if (d_autoRepeatMouseButton != MouseButton::Invalid)
+        releaseInputCapture(true);
 
-    CursorInputEventArgs ciea(window);
-    ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
-    ciea.button = button;
-    window->onCursorActivate(ciea);
-    return ciea.handled != 0;
+    auto window = getCursorTargetWindow(d_cursor.getPosition(), false);
+    while (window)
+    {
+        CursorInputEventArgs args(window, window->getUnprojectedPosition(d_cursor.getPosition()), button);
+
+        // Try to generate click events for the window. Handling click also means handling mouse up, so we pass the same args.
+        if (window == d_mouseClickTracker.d_window)
+        {
+            switch (d_mouseClickTracker.onMouseButtonUp(button, d_cursor.getPosition(), window))
+            {
+                case 1: window->onCursorActivate(args); break;
+                case 2: window->onSelectWord(args); break;
+                case 3: window->onSelectAll(args); break;
+            }
+        }
+
+        // Finally send mouse up event
+        window->onMouseButtonUp(args);
+
+        if (!window->isCursorPassThroughEnabled())
+            ++args.handled;
+
+        if (args.handled)
+        {
+            // Reset clicks if mouse up event was handled by another window
+            if (window != d_mouseClickTracker.d_window)
+                d_mouseClickTracker.reset();
+
+            return true;
+        }
+
+        if (window == d_modalWindow || !window->isCursorInputPropagationEnabled())
+            break;
+
+        window = window->getParent();
+    }
+
+    // Reset clicks if mouse up event was not handled
+    d_mouseClickTracker.reset();
+
+    return false;
 }
 
 //----------------------------------------------------------------------------//
@@ -967,12 +1020,18 @@ bool GUIContext::injectKeyDown(Key::Scan scanCode)
     d_modifierKeys += ModifierFromScanCode(scanCode);
 
     auto window = getInputTargetWindow();
-    if (!window)
-        return false;
+    while (window)
+    {
+        KeyEventArgs args(window, scanCode, d_modifierKeys);
+        window->onKeyDown(args);
+        if (args.handled)
+            return true;
 
-    KeyEventArgs args(window, scanCode, d_modifierKeys);
-    //window->onCharacter(args);
-    //return args.handled != 0;
+        if (window == d_modalWindow)
+            break;
+
+        window = window->getParent();
+    }
 
     return false;
 }
@@ -983,19 +1042,18 @@ bool GUIContext::injectKeyUp(Key::Scan scanCode)
     d_modifierKeys -= ModifierFromScanCode(scanCode);
 
     auto window = getInputTargetWindow();
-    if (!window)
-        return false;
+    while (window)
+    {
+        KeyEventArgs args(window, scanCode, d_modifierKeys);
+        window->onKeyUp(args);
+        if (args.handled)
+            return true;
 
-    //!!!DON'T DELETE UNTIL TESTED!
-    ModifierKeys modifiers{ ModifierKey::Alt };
-    modifiers.has(ModifierKey::Alt);
-    modifiers.has(ModifierKey::Ctrl);
-    modifiers.has(ModifierKey::Shift);
-    modifiers += ModifierKey::Alt;
-    modifiers += ModifierKey::Ctrl;
-    modifiers -= ModifierKey::Alt;
-    modifiers -= ModifierKey::Shift;
-    modifiers -= modifiers;
+        if (window == d_modalWindow)
+            break;
+
+        window = window->getParent();
+    }
 
     return false;
 }
@@ -1004,13 +1062,20 @@ bool GUIContext::injectKeyUp(Key::Scan scanCode)
 bool GUIContext::injectChar(char32_t codePoint)
 {
     auto window = getInputTargetWindow();
-    if (!window)
-        return false;
+    while (window)
+    {
+        TextEventArgs args(window, codePoint);
+        window->onCharacter(args);
+        if (args.handled)
+            return true;
 
-    TextEventArgs args(window);
-    args.d_character = codePoint;
-    window->onCharacter(args);
-    return args.handled != 0;
+        if (window == d_modalWindow)
+            break;
+
+        window = window->getParent();
+    }
+
+    return false;
 }
 
 //----------------------------------------------------------------------------//

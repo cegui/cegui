@@ -78,7 +78,7 @@ void TabButton::onClicked(WindowEventArgs& e)
 /*************************************************************************
     Handler for cursor press events
 *************************************************************************/
-void TabButton::onCursorPressHold(CursorInputEventArgs& e)
+void TabButton::onMouseButtonDown(CursorInputEventArgs& e)
 {
     if (e.button == MouseButton::Middle)
     {
@@ -92,7 +92,7 @@ void TabButton::onCursorPressHold(CursorInputEventArgs& e)
     }
 
 	// default handling
-    ButtonBase::onCursorPressHold(e);
+    ButtonBase::onMouseButtonDown(e);
 }
 
 void TabButton::onCursorActivate(CursorInputEventArgs& e)

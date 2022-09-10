@@ -546,7 +546,7 @@ protected:
     virtual void onScrollConfigChanged(WindowEventArgs& e);
 
     // Overridden event handlers
-    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onMouseButtonDown(CursorInputEventArgs& e) override;
     void onScroll(CursorInputEventArgs& e) override;
 
     // base class overrides

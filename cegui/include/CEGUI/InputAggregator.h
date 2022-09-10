@@ -40,19 +40,6 @@
 namespace CEGUI
 {
 struct MouseClickTracker;
-class InputEventReceiver;
-
-//! EventArgs class passed to subscribers for (most) InputAggregator events.
-class CEGUIEXPORT InputAggregatorEventArgs : public EventArgs
-{
-public:
-    InputAggregatorEventArgs(InputAggregator* aggregator):
-        d_aggregator(aggregator)
-    {}
-
-    //! pointer to the InputAggregator that triggered the event.
-    InputAggregator* d_aggregator;
-};
 
 /*!
 \brief
@@ -63,48 +50,6 @@ class CEGUIEXPORT InputAggregator : public InjectedInputReceiver,
                                     public EventSet
 {
 public:
-    static const float DefaultMouseButtonClickTimeout;
-    static const float DefaultMouseButtonMultiClickTimeout;
-    static const Sizef DefaultMouseButtonMultiClickTolerance;
-
-    /** Name of Event fired when the mouse click timeout is changed.
-     * Handlers are passed a const reference to a GUIContextEventArgs struct.
-     */
-    static const String EventMouseButtonClickTimeoutChanged;
-    /** Name of Event fired when the mouse multi-click timeout is changed.
-     * Handlers are passed a const reference to a GUIContextEventArgs struct.
-     */
-    static const String EventMouseButtonMultiClickTimeoutChanged;
-    /** Name of Event fired when the mouse multi-click movement tolerance area
-     * size is changed.
-     * Handlers are passed a const reference to a GUIContextEventArgs struct.
-     */
-    static const String EventMouseButtonMultiClickToleranceChanged;
-    /** Name of Event fired when the mouse movement scaling factor is changed.
-     * Handlers are passed a const reference to a GUIContextEventArgs struct.
-     */
-    static const String EventMouseMoveScalingFactorChanged;
-
-    InputAggregator(InputEventReceiver* input_receiver);
-    virtual ~InputAggregator();
-
-    /*!
-    \brief
-        Initialises this InputAggregator with some default simple-key mappings
-    \param handle_on_keyup
-        When set to true semantic actions will be registered on key up
-        otherwise semantic actions are handled on key down. If false
-        it is recommended to call setModifierKeys before any injectKeyDown
-        calls to make sure that modifiers are properly set.
-    */
-    virtual void initialise(bool handle_on_keyup = true);
-
-    /*!
-    \brief
-        When true semantic actions will be registered on key up
-        otherwise semantic actions are handled on key down.
-    */
-    bool getHandleOnKeyUp() const     { return d_handleInKeyUp; }
 
     /*!
     \brief
@@ -136,9 +81,6 @@ public:
     */
     bool isMouseClickEventGenerationEnabled() const;
 
-    void setMouseButtonClickTimeout(float seconds);
-    float getMouseButtonClickTimeout() const;
-
     void setMouseButtonMultiClickTimeout(float seconds);
     float getMouseButtonMultiClickTimeout() const;
 
@@ -160,25 +102,6 @@ public:
         display's size
     */
     const Sizef& getMouseButtonMultiClickTolerance() const;
-
-    void setMouseMoveScalingFactor(float factor);
-    float getMouseMoveScalingFactor() const;
-
-    /*!
-    \brief
-        Returns a semantic action matching the scan_code
-    */
-    SemanticValue getSemanticAction(Key::Scan scan_code, bool shift_down, bool alt_down,
-        bool ctrl_down) const;
-
-    /*!
-    \brief
-        Gets semantic action for scan_code and sends the event
-    \return
-        True if the semantic action was handled
-    */
-    bool handleScanCode(Key::Scan scan_code, bool shift_down, bool alt_down,
-        bool ctrl_down);
     
     /*!
     \brief
@@ -188,56 +111,9 @@ public:
         actions on keydown.
      */
     void setModifierKeys(bool shift_down, bool alt_down, bool ctrl_down);
-    
-    /************************************************************************/
-    /* InjectedInputReceiver interface implementation                       */
-    /************************************************************************/
-    bool injectMouseMove(float delta_x, float delta_y) override;
-    bool injectMouseLeaves() override;
-
-    bool injectMouseButtonDown(MouseButton button) override;
-    bool injectMouseButtonUp(MouseButton button) override;
-
-    /*!
-    \return
-        True if set to handle keys on key down and the input was consumed.
-        When not to set handle actions on key down will always return true.
-    */
-    bool injectKeyDown(Key::Scan scan_code) override;
-    /*!
-    \return
-        True if set to handle keys on key up and the input was consumed.
-        When not to set handle actions on key up will always return true.
-    */
-    bool injectKeyUp(Key::Scan scan_code) override;
-
-    bool injectChar(char32_t code_point) override;
-    bool injectMouseWheelChange(float delta) override;
-    bool injectMousePosition(float x_pos, float y_pos) override;
-
-    bool injectMouseButtonClick(const MouseButton button) override;
-    bool injectMouseButtonDoubleClick(const MouseButton button) override;
-    bool injectMouseButtonTripleClick(const MouseButton button) override;
-
-    virtual bool isControlPressed() const;
-    virtual bool isAltPressed() const;
-    virtual bool isShiftPressed() const;
 
 protected:
-    virtual void onMouseButtonClickTimeoutChanged(InputAggregatorEventArgs& args);
-    virtual void onMouseButtonMultiClickTimeoutChanged(InputAggregatorEventArgs& args);
-    virtual void onMouseButtonMultiClickToleranceChanged(InputAggregatorEventArgs& args);
-    virtual void onMouseMoveScalingFactorChanged(InputAggregatorEventArgs& args);
 
-    void recomputeMultiClickAbsoluteTolerance();
-    virtual bool onDisplaySizeChanged(const EventArgs& args);
-
-    Event::Connection d_displaySizeChangedConnection;
-
-    InputEventReceiver* d_inputReceiver;
-
-    //! Timeout used to when detecting a single-click.
-    float d_mouseButtonClickTimeout;
     //! Timeout used when detecting multi-click events.
     float d_mouseButtonMultiClickTimeout;
     //! Movement tolerance (percent) used when detecting multi-click events.
@@ -246,18 +122,10 @@ protected:
     Sizef d_mouseButtonMultiClickAbsoluteTolerance;
     //! should mouse click/multi-click events be automatically generated.
     bool d_generateMouseClickEvents;
-    MouseClickTracker* d_mouseClickTrackers;
-
-    //! When set to true will handle semantic actions on key up
-    bool d_handleInKeyUp;
-    
-    //! Scaling factor applied to injected cursor move deltas.
-    float d_mouseMovementScalingFactor;
 
     glm::vec2 d_pointerPosition;
     //! Mapping from a key to its semantic value
     SemanticValue d_keyValuesMappings[UCHAR_MAX]; 
-    bool d_keysPressed[UCHAR_MAX];
 };
 
 } // End of  CEGUI namespace section

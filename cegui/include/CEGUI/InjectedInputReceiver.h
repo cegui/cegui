@@ -36,7 +36,8 @@ namespace CEGUI
 class CEGUIEXPORT InjectedInputReceiver
 {
 public:
-    virtual ~InjectedInputReceiver() {}
+
+    virtual ~InjectedInputReceiver() = default;
 
     /*!
     \brief

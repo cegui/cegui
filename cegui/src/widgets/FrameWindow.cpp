@@ -585,10 +585,10 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for cursor press events
 *************************************************************************/
-void FrameWindow::onCursorPressHold(CursorInputEventArgs& e)
+void FrameWindow::onMouseButtonDown(CursorInputEventArgs& e)
 {
     // default processing (this is now essential as it controls event firing).
-    Window::onCursorPressHold(e);
+    Window::onMouseButtonDown(e);
 
     if (e.button == MouseButton::Left)
     {

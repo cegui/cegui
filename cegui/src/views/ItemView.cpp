@@ -406,9 +406,9 @@ bool ItemView::onScrollPositionChanged(const EventArgs&)
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onCursorPressHold(CursorInputEventArgs& e)
+void ItemView::onMouseButtonDown(CursorInputEventArgs& e)
 {
-    Window::onCursorPressHold(e);
+    Window::onMouseButtonDown(e);
 
     if (e.button == MouseButton::Left)
     {

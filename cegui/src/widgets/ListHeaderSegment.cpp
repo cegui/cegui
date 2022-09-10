@@ -475,10 +475,10 @@ void ListHeaderSegment::onCursorMove(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for when cursor is pressed
 *************************************************************************/
-void ListHeaderSegment::onCursorPressHold(CursorInputEventArgs& e)
+void ListHeaderSegment::onMouseButtonDown(CursorInputEventArgs& e)
 {
 	// base class processing
-    Window::onCursorPressHold(e);
+    Window::onMouseButtonDown(e);
 
     if (e.button == MouseButton::Left)
 	{

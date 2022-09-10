@@ -210,9 +210,9 @@ void Slider::onThumbTrackEnded(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Slider::onCursorPressHold(CursorInputEventArgs& e)
+void Slider::onMouseButtonDown(CursorInputEventArgs& e)
 {
-    Window::onCursorPressHold(e);
+    Window::onMouseButtonDown(e);
 
     if (e.button == MouseButton::Left)
 	{

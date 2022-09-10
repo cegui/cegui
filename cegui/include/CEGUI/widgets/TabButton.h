@@ -133,7 +133,7 @@ protected:
 		Overridden Event Handlers
 	*************************************************************************/
     void onCursorActivate(CursorInputEventArgs& e) override;
-    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onMouseButtonDown(CursorInputEventArgs& e) override;
     void onScroll(CursorInputEventArgs& e) override;
     void onCursorMove(CursorInputEventArgs& e) override;
 };

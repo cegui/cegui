@@ -405,7 +405,7 @@ protected:
     virtual void onViewContentsChanged(WindowEventArgs& args);
 
     void onScroll(CursorInputEventArgs& e) override;
-    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onMouseButtonDown(CursorInputEventArgs& e) override;
     void onCursorMove(CursorInputEventArgs& e) override;
     void onSemanticInputEvent(SemanticEventArgs& e) override;
 

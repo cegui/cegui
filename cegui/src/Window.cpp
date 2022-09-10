@@ -2126,22 +2126,9 @@ void Window::onCursorMove(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onCursorPressHold(CursorInputEventArgs& e)
+void Window::onMouseButtonDown(CursorInputEventArgs& e)
 {
     fireEvent(EventCursorPressHold, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagatePointerInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onCursorPressHold(e);
-        return;
-    }
-
-    // by default we now mark cursor events as handled
-    if (!d_cursorPassThroughEnabled)
-        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -2221,19 +2208,21 @@ void Window::onScroll(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+void Window::onKeyDown(KeyEventArgs& e)
+{
+    fireEvent(EventKeyDown, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onKeyUp(KeyEventArgs& e)
+{
+    fireEvent(EventKeyUp, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
 void Window::onCharacter(TextEventArgs& e)
 {
     fireEvent(EventCharacterKey, e, EventNamespace);
-
-    // As of 0.7.0 CEGUI::System no longer does input event propogation, so by
-    // default we now do that here. Generally speaking key handling widgets
-    // may need to override this behaviour to halt further propagation.
-    if (!e.handled && d_parent &&
-        this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onCharacter(e);
-    }
 }
 
 //----------------------------------------------------------------------------//

@@ -155,9 +155,9 @@ void ComboDropList::onCursorMove(CursorInputEventArgs& e)
 
 
 //----------------------------------------------------------------------------//
-void ComboDropList::onCursorPressHold(CursorInputEventArgs& e)
+void ComboDropList::onMouseButtonDown(CursorInputEventArgs& e)
 {
-    ListWidget::onCursorPressHold(e);
+    ListWidget::onMouseButtonDown(e);
 
     if (e.button == MouseButton::Left)
 	{

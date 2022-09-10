@@ -92,7 +92,7 @@ protected:
 	*************************************************************************/
     void    onCursorMove(CursorInputEventArgs& e) override;
     void    onCursorLeaves(CursorInputEventArgs& e) override;
-    void    onCursorPressHold(CursorInputEventArgs& e) override;
+    void    onMouseButtonDown(CursorInputEventArgs& e) override;
     void    onCursorActivate(CursorInputEventArgs& e) override;
     void    onCaptureLost(WindowEventArgs& e) override;
 

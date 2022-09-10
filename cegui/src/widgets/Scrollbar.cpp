@@ -210,10 +210,10 @@ void Scrollbar::onScrollConfigChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Scrollbar::onCursorPressHold(CursorInputEventArgs& e)
+void Scrollbar::onMouseButtonDown(CursorInputEventArgs& e)
 {
     // base class processing
-    Window::onCursorPressHold(e);
+    Window::onMouseButtonDown(e);
 
     if (e.button != MouseButton::Left)
         return;

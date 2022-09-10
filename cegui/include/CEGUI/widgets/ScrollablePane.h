@@ -561,7 +561,7 @@ protected:
     Window* findChildByNamePath_impl(const String& name_path) const override;
 
     // Swipe scroll support
-    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onMouseButtonDown(CursorInputEventArgs& e) override;
     void onCursorMove(CursorInputEventArgs& e) override;
     void onCursorActivate(CursorInputEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;

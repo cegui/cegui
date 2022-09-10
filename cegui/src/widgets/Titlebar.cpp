@@ -124,9 +124,9 @@ void Titlebar::onCursorMove(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for cursor press events
 *************************************************************************/
-void Titlebar::onCursorPressHold(CursorInputEventArgs& e)
+void Titlebar::onMouseButtonDown(CursorInputEventArgs& e)
 {
-    Window::onCursorPressHold(e);
+    Window::onMouseButtonDown(e);
 
     if (e.button == MouseButton::Left)
     {

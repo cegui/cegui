@@ -30,6 +30,7 @@
 
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/Sizef.h"
+#include <chrono>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -42,7 +43,7 @@ namespace CEGUI
 \brief
     Helper class for modern C++ enum flags.
     Use needShift if your enum values are zero-based indices (0, 1, 2, 3, 4 ...).
-    Leave needShift disabled if your enum values are ready bit values (0x0, 0x1, 0x2, 0x4, 0x8 ...).
+    Leave needShift disabled if your enum values are already single bit masks (0x0, 0x1, 0x2, 0x4, 0x8 ...).
 */
 template<typename T, bool needShift = false, class = typename std::enable_if_t<std::is_enum_v<T>>>
 struct Flags
@@ -56,10 +57,10 @@ struct Flags
             return static_cast<std::underlying_type_t<T>>(flag);
     }
 
-    Flags() = default;
-    Flags(T flag) : d_mask(bit(flag)) {}
-    Flags(std::underlying_type_t<T> mask) : d_mask(mask) {}
-    Flags(std::initializer_list<T> list)
+    constexpr Flags() = default;
+    constexpr Flags(T flag) : d_mask(bit(flag)) {}
+    constexpr Flags(std::underlying_type_t<T> mask) : d_mask(mask) {}
+    constexpr Flags(std::initializer_list<T> list)
     {
         d_mask = 0;
         for (T flag : list)
@@ -72,6 +73,8 @@ struct Flags
 
     void reset() { d_mask = 0; }
     bool has(T flag) const { return d_mask & bit(flag); }
+    bool hasAny(Flags mask) const { return d_mask & mask.d_mask; }
+    bool hasAll(Flags mask) const { return (d_mask & mask.d_mask) == mask.d_mask; }
 
     operator bool() const { return d_mask != 0; }
     operator std::underlying_type_t<T>() const { return d_mask; }
@@ -255,20 +258,90 @@ struct CEGUIEXPORT Key
 */
 enum class MouseButton : int
 {
-    //! Value set for no mouse button.
-    Invalid = 0x00,
     //! The left mouse button.
-    Left = 0x01,
+    Left = 0,
     //! The right mouse button.
-    Right = 0x02,
+    Right,
     //! The middle mouse button.
-    Middle = 0x04,
+    Middle,
     //! The first 'extra' mouse button.
-    X1 = 0x08,
+    X1,
     //! The second 'extra' mouse button.
-    X2 = 0x10
+    X2,
+    //! Value that equals the number of mouse buttons supported by CEGUI.
+    Count,
+    //! Value set for no mouse button.  NB: This is not 0, do not assume!
+    Invalid
 };
-using MouseButtons = Flags<MouseButton>;
+using MouseButtons = Flags<MouseButton, true>;
+
+/*!
+\brief
+    Helper class for generating click and multi-click events
+*/
+struct MouseClickTracker
+{
+    using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
+
+    static constexpr float DEFAULT_CLICK_DISTANCE = 5.f;
+    static constexpr float DEFAULT_CLICK_TIMEOUT = 0.3333f;
+
+    float d_clickDistance = DEFAULT_CLICK_DISTANCE;
+    float d_clickTimeout = DEFAULT_CLICK_TIMEOUT;
+    int d_clickLimit = 3;                            //!< Use 0 to disable click events, 1 to enable only single clicks
+
+    Window* d_window = nullptr;
+    MouseButton d_button = MouseButton::Invalid;
+    int d_clickCount = 0;
+    glm::vec2 d_downPos;
+    TimePoint d_downTime;
+
+    void reset()
+    {
+        d_window = nullptr;
+        d_button = MouseButton::Invalid;
+    }
+
+    void onMouseButtonDown(MouseButton button, const glm::vec2& position, Window* window)
+    {
+        if (!d_clickCount)
+            return;
+
+        if (d_button != button || d_window != window)
+        {
+            d_window = window;
+            d_button = button;
+            d_clickCount = 1;
+            d_downPos = position;
+        }
+        else
+        {
+            ++d_clickCount;
+            if (d_clickCount > d_clickLimit)
+                d_clickCount = 1;
+        }
+
+        d_downTime = std::chrono::steady_clock::now();
+    }
+
+    //! \return Multiclick order to generate (1, 2 or 3) ot 0 if no click event needs to be generated
+    int onMouseButtonUp(MouseButton button, const glm::vec2& position, Window* window)
+    {
+        // Any violation of click requirements resets the state
+        if (!d_clickLimit ||
+            d_window != window ||
+            d_button != button ||
+            std::abs(d_downPos.x - position.x) > d_clickDistance ||
+            std::abs(d_downPos.y - position.y) > d_clickDistance ||
+            (std::chrono::steady_clock::now() - d_downTime).count() > d_clickTimeout)
+        {
+            reset();
+            return 0;
+        }
+
+        return d_clickCount;
+    }
+};
 
 /*!
 \brief
@@ -281,7 +354,18 @@ enum class ModifierKey : int
     Ctrl  = 0x02,
     Alt   = 0x04
 };
-using ModifierKeys = Flags<ModifierKey>;
+
+struct ModifierKeys : public Flags<ModifierKey>
+{
+    // TODO: C++17
+    //static inline constexpr ModifierKeys Shift{ModifierKey::LeftShift | ModifierKey::RightShift}; etc
+
+    static const ModifierKeys Shift; //!< Any Shift key, use with hasAny()
+    static const ModifierKeys Ctrl; //!< Any Ctrl key, use with hasAny()
+    static const ModifierKeys Alt; //!< Any Alt key, use with hasAny()
+
+    using Flags<ModifierKey>::Flags; // Inherit all constructors
+};
 
 static ModifierKey ModifierFromScanCode(Key::Scan scanCode)
 {
@@ -333,7 +417,9 @@ public:
 class CEGUIEXPORT CursorInputEventArgs : public WindowEventArgs
 {
 public:
-    CursorInputEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+    CursorInputEventArgs(Window* wnd, const glm::vec2& position_ = {}, MouseButton button_ = MouseButton::Invalid)
+        : WindowEventArgs(wnd), position(position_), button(button_)
+    {}
 
     //! Current cursor position
     glm::vec2 position;
@@ -347,6 +433,9 @@ public:
     MouseButtons buttons;
     //! State of modifier keys at the moment of sending the event. See ModifierKey.
     ModifierKeys d_modifiers;
+
+    //!!!TODO INPUT:
+    //bool d_generatedMultiClick = false;
 };
 
 /*!
@@ -373,7 +462,7 @@ public:
 class CEGUIEXPORT TextEventArgs : public WindowEventArgs
 {
 public:
-	TextEventArgs(Window* wnd) : WindowEventArgs(wnd), d_character(0) {}
+	TextEventArgs(Window* wnd, char32_t character = 0) : WindowEventArgs(wnd), d_character(character) {}
 
     //! char32_t codepoint representing the character of the text event.
 	char32_t d_character; 

@@ -301,7 +301,7 @@ protected:
 		Overridden event handling routines
 	*************************************************************************/
     void    onCursorMove(CursorInputEventArgs& e) override;
-    void    onCursorPressHold(CursorInputEventArgs& e) override;
+    void    onMouseButtonDown(CursorInputEventArgs& e) override;
     void	onCaptureLost(WindowEventArgs& e) override;
 
 

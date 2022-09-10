@@ -320,7 +320,7 @@ protected:
     /*************************************************************************
         Overrides for Event handler methods
     *************************************************************************/
-    void onCursorPressHold(CursorInputEventArgs& e) override;
+    void onMouseButtonDown(CursorInputEventArgs& e) override;
     void onCursorActivate(CursorInputEventArgs& e) override;
     void onCursorMove(CursorInputEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;

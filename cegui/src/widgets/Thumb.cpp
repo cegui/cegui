@@ -241,10 +241,10 @@ void Thumb::onCursorMove(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for cursor press events
 *************************************************************************/
-void Thumb::onCursorPressHold(CursorInputEventArgs& e)
+void Thumb::onMouseButtonDown(CursorInputEventArgs& e)
 {
 	// default processing
-    PushButton::onCursorPressHold(e);
+    PushButton::onMouseButtonDown(e);
 
     if (e.button == MouseButton::Left)
 	{

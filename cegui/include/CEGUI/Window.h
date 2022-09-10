@@ -2995,7 +2995,7 @@ protected:
     \param e
         CursorInputEventArgs object.  All fields are valid.
     */
-    virtual void onCursorPressHold(CursorInputEventArgs& e);
+    virtual void onMouseButtonDown(CursorInputEventArgs& e);
     
     /*!
     \brief
@@ -3015,14 +3015,17 @@ protected:
     */
     virtual void onSelectAll(CursorInputEventArgs& e);
 
-    /*!
-    \brief
-        Handler called when a cursor is activated within this window's area.
-
-    \param e
-        CursorInputEventArgs object.  All fields are valid.
-    */
+    //! \brief Handler called when a cursor is activated within this window's area.
     virtual void onCursorActivate(CursorInputEventArgs& e);
+
+    //! \brief Handler called when a mouse button is released above this window.
+    virtual void onMouseButtonUp(CursorInputEventArgs& e);
+
+    //! \brief Handler called when a key is down or auto-repeated while this window has input focus.
+    virtual void onKeyDown(KeyEventArgs& e);
+
+    //! \brief Handler called when a key is up while this window has input focus.
+    virtual void onKeyUp(KeyEventArgs& e);
 
     /*!
     \brief

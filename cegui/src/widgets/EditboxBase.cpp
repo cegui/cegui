@@ -526,9 +526,9 @@ bool EditboxBase::performPaste(Clipboard& clipboard)
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::onCursorPressHold(CursorInputEventArgs& e)
+void EditboxBase::onMouseButtonDown(CursorInputEventArgs& e)
 {
-    Window::onCursorPressHold(e);
+    Window::onMouseButtonDown(e);
 
     if (e.button == MouseButton::Left)
     {

@@ -516,10 +516,10 @@ void MenuItem::onCursorMove(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for cursor pressed events
 *************************************************************************/
-void MenuItem::onCursorPressHold(CursorInputEventArgs& e)
+void MenuItem::onMouseButtonDown(CursorInputEventArgs& e)
 {
     // default processing
-    ItemEntry::onCursorPressHold(e);
+    ItemEntry::onMouseButtonDown(e);
 
     if (e.button == MouseButton::Left)
     {

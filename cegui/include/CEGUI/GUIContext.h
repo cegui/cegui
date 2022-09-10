@@ -289,16 +289,8 @@ public:
 
 protected:
 
-    // TODO INPUT
-    void updateInputAutoRepeating(float timeElapsed);
-
     Window* getInputTargetWindow() const;
-
-    std::map<SemanticValue, SlotFunctorBase<InputEvent>*> d_semanticEventHandlers;
-    float d_repeatElapsed = 0.f;
-    MouseButton d_repeatPointerSource = MouseButton::Invalid;
-    bool d_repeating = false;
-    // TODO INPUT
+    void updateInputAutoRepeating(float timeElapsed);
 
     void drawWindowContentToTarget(std::uint32_t drawModeMask);
 
@@ -337,11 +329,11 @@ protected:
 
     MouseButtons d_mouseButtons;
     ModifierKeys d_modifierKeys;
+    MouseClickTracker d_mouseClickTracker;
 
     Sizef d_surfaceSize; //!< a cache of the target surface size, allows returning by ref.
 
-    //! The mask of draw modes that must be redrawn
-    std::uint32_t d_dirtyDrawModeMask = 0;
+    std::uint32_t d_dirtyDrawModeMask = 0; //!< the mask of draw modes that must be redrawn
 
     float d_tooltipTimer = 0.f;
     float d_tooltipHoverTime = 0.4f;   //!< seconds cursor must stay stationary before tip shows
@@ -350,6 +342,10 @@ protected:
     Event::ScopedConnection d_areaChangedEventConnection;
     Event::ScopedConnection d_fontRenderSizeChangeConnection;
     std::vector<Event::ScopedConnection> d_tooltipEventConnections;
+
+    float d_autoRepeatElapsed = 0.f;
+    MouseButton d_autoRepeatMouseButton = MouseButton::Invalid;
+    bool d_autoRepeating = false;
 
     bool d_windowContainingCursorIsUpToDate = true;
     bool d_tooltipFollowsCursor = false;
