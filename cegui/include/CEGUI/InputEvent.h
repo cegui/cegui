@@ -79,8 +79,8 @@ struct Flags
     operator bool() const { return d_mask != 0; }
     operator std::underlying_type_t<T>() const { return d_mask; }
 
-    bool operator ==(Flags other) { return d_mask == other.d_mask; }
-    bool operator !=(Flags other) { return !(*this == other); }
+    bool operator ==(Flags other) const { return d_mask == other.d_mask; }
+    bool operator !=(Flags other) const { return !(*this == other); }
     bool operator &(T flag) const { return has(flag); }
     Flags operator |(T flag) const { return Flags(d_mask | bit(flag)); }
     Flags operator |(Flags other) const { return Flags(d_mask | other.d_mask); }
@@ -365,12 +365,15 @@ struct ModifierKeys : public Flags<ModifierKey>
     // TODO: C++17
     //static inline constexpr ModifierKeys Shift{ModifierKey::LeftShift | ModifierKey::RightShift}; etc
     // return hasAny(ModifierKeys::Shift);
+    static ModifierKeys Shift() { return { ModifierKey::LeftShift, ModifierKey::RightShift }; }
+    static ModifierKeys Ctrl() { return { ModifierKey::LeftCtrl, ModifierKey::RightCtrl }; }
+    static ModifierKeys Alt() { return { ModifierKey::LeftAlt, ModifierKey::RightAlt }; }
 
     using Flags<ModifierKey>::Flags; // Inherit all constructors
 
-    bool hasShift() const { return hasAny({ ModifierKey::LeftShift, ModifierKey::RightShift }); }
-    bool hasCtrl() const { return hasAny({ ModifierKey::LeftCtrl, ModifierKey::RightCtrl }); }
-    bool hasAlt() const { return hasAny({ ModifierKey::LeftAlt, ModifierKey::RightAlt }); }
+    bool hasShift() const { return hasAny(Shift()); }
+    bool hasCtrl() const { return hasAny(Ctrl()); }
+    bool hasAlt() const { return hasAny(Alt()); }
 };
 
 static ModifierKey ModifierFromScanCode(Key::Scan scanCode)
@@ -465,7 +468,7 @@ public:
 
     //! Mouse button that triggered this event
     MouseButton d_button = MouseButton::Invalid;
-    //! For click and mouse up events, this is an order of click generated (typically 1 to 3, or 0 for no click event)
+    //! An order of click generated (typically 1 to 3, or 0 for no click event)
     int d_generatedClickEventOrder = 0;
 };
 
@@ -582,97 +585,93 @@ public:
     Font* font;
 };
 
-/*!
-\brief
-    Represents the value of a semantic input event, generated from a specific
-    operation or sequence of operations.
-*/
-enum class SemanticValue : int
+struct KeySemanticMapping
 {
-    NoValue = 0x0000,
-    CursorActivate,
-    PointerDeactivate,
-    CursorPressHold,
-    CursorSelectWord,
-    CursorSelectAll,
-    CursorMove,
-    PointerLeave,
+    // TODO StringAtom!
+    String value;
+    Key::Scan scanCode = Key::Scan::Unknown;
+    ModifierKeys modifiers;
+    bool down = true;
 
-    GoToPreviousCharacter,
-    GoToNextCharacter,
-    GoToPreviousWord,
-    GoToNextWord,
-    GoToStartOfLine,
-    GoToEndOfLine,
-    GoToStartOfDocument,
-    GoToEndOfDocument,
-    GoToNextPage,
-    GoToPreviousPage,
-    GoUp,
-    GoDown,
-
-    SelectRange,
-    SelectCumulative,
-    SelectWord,
-    SelectAll,
-    SelectPreviousCharacter,
-    SelectNextCharacter,
-    SelectPreviousWord,
-    SelectNextWord,
-    SelectToStartOfLine,
-    SelectToEndOfLine,
-    SelectToStartOfDocument,
-    SelectToEndOfDocument,
-    SelectToNextPage,
-    SelectToPreviousPage,
-    SelectNextPage,
-    SelectPreviousPage,
-    SelectUp,
-    SelectDown,
-
-    DeleteNextCharacter,
-    DeletePreviousCharacter,
-    Confirm,
-    Back,
-    Undo,
-    Redo,
-    Cut,
-    Copy,
-    Paste,
-    HorizontalScroll,
-    VerticalScroll,
-    NavigateToNext,
-    NavigateToPrevious,
-
-    UserDefinedSemanticValue = 0x5000,   //!< This marks the beginning of user-defined semantic values.
+    bool operator <(const KeySemanticMapping& other) const { return value < other.value; }
 };
 
-/*!
-\brief
-    The type of the payload used in the semantic input events
-*/
-union SemanticPayload
+// TODO StringAtom!
+struct KeySemanticMappingComp
 {
-    float array[2];
-    float single;
-    MouseButton source;
+    bool operator() (const KeySemanticMapping& s, const String& value) const { return s.value < value; }
+    bool operator() (const String& value, const KeySemanticMapping& s) const { return value < s.value; }
 };
 
-/*!
-\brief
-    Event arguments used by semantic input event handlers
-*/
-class CEGUIEXPORT SemanticEventArgs : public WindowEventArgs
+struct MouseButtonSemanticMapping
 {
-public:
-    SemanticEventArgs(Window* wnd)
-        : WindowEventArgs(wnd)
-        , d_semanticValue(SemanticValue::NoValue)
-        , d_payload()
-    {}
+    // TODO StringAtom!
+    String value;
+    MouseButton button = MouseButton::Invalid;
+    ModifierKeys modifiers;
+    MouseButtons buttons;
+    int clickOrder = 0;
+    bool down = true;
 
-    SemanticValue d_semanticValue;  //!< The type of the semantic value
-    SemanticPayload d_payload;      //!< The payload of the event
+    bool operator <(const KeySemanticMapping& other) const { return value < other.value; }
+};
+
+// TODO StringAtom!
+struct MouseButtonSemanticMappingComp
+{
+    bool operator() (const MouseButtonSemanticMapping& s, const String& value) const { return s.value < value; }
+    bool operator() (const String& value, const MouseButtonSemanticMapping& s) const { return value < s.value; }
+};
+
+//! \brief Predefined semantics that can be associated with specific input operations.
+namespace SemanticValue
+{
+    // TODO StringAtom!
+    static const String GoToPreviousCharacter;
+    static const String GoToNextCharacter;
+    static const String GoToPreviousWord;
+    static const String GoToNextWord;
+    static const String GoToStartOfLine;
+    static const String GoToEndOfLine;
+    static const String GoToStartOfDocument;
+    static const String GoToEndOfDocument;
+    static const String GoToNextPage;
+    static const String GoToPreviousPage;
+    static const String GoDown;
+    static const String GoUp;
+
+    static const String SelectRange;
+    static const String SelectCumulative;
+    static const String SelectWord;
+    static const String SelectAll;
+    static const String SelectPreviousCharacter;
+    static const String SelectNextCharacter;
+    static const String SelectPreviousWord;
+    static const String SelectNextWord;
+    static const String SelectToStartOfLine;
+    static const String SelectToEndOfLine;
+    static const String SelectToStartOfDocument;
+    static const String SelectToEndOfDocument;
+    static const String SelectToNextPage;
+    static const String SelectToPreviousPage;
+    static const String SelectNextPage;
+    static const String SelectPreviousPage;
+    static const String SelectUp;
+    static const String SelectDown;
+
+    static const String DeleteNextCharacter;
+    static const String DeletePreviousCharacter;
+    static const String Confirm;
+    static const String Back;
+    static const String Undo;
+    static const String Redo;
+    static const String Cut;
+    static const String Copy;
+    static const String Paste;
+    static const String HorizontalScroll;
+    static const String VerticalScroll;
+    static const String NavigateToNext;
+    static const String NavigateToPrevious;
 };
 
 } // End of  CEGUI namespace section

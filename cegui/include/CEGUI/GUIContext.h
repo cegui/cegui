@@ -48,23 +48,10 @@ public:
     GUIContextEventArgs(GUIContext* context) : context(context) {}
 
     //! pointer to the GUIContext that triggered the event.
-    GUIContext* context;
+    GUIContext* context = nullptr;
 };
 
-//! EventArgs class passed for GUIContext RenderTarget related events.
-class CEGUIEXPORT GUIContextRenderTargetEventArgs : public GUIContextEventArgs
-{
-public:
-    GUIContextRenderTargetEventArgs(GUIContext* context, RenderTarget* target) :
-        GUIContextEventArgs(context),
-        renderTarget(target)
-    {}
-
-    RenderTarget* renderTarget;
-};
-
-class CEGUIEXPORT GUIContext : public RenderingSurface,
-                               public InjectedInputReceiver
+class CEGUIEXPORT GUIContext : public RenderingSurface, public InjectedInputReceiver
 {
 public:
     /** Name of Event fired when the root window is changed to a different
@@ -74,11 +61,6 @@ public:
      * obtained by calling GUIContext::getRootWindow).
      */
     static const String EventRootWindowChanged;
-    /** Name of Event fired when the RenderTarget for the GUIContext is changed.
-     * Handlers are passed a const GUIContextRenderTargetEventArgs struct, with
-     * the renderTarget member set to the old RenderTarget.
-     */
-    static const String EventRenderTargetChanged;
     /** Event fired when the default font changes.
      * Handlers are passed a const reference to a generic EventArgs struct.
      */
@@ -102,6 +84,15 @@ public:
 
     GUIContext(RenderTarget& target);
     virtual ~GUIContext() override;
+
+    void draw(std::uint32_t drawMode = DrawModeMaskAll) override;
+
+    void setRenderTarget(RenderTarget& target);
+
+    //! call to indicate that some redrawing is required.
+    void markAsDirty(std::uint32_t drawModeMask = DrawModeMaskAll) { d_dirtyDrawModeMask |= drawModeMask; }
+    bool isDirty() const { return d_dirtyDrawModeMask != 0; }
+    std::uint32_t getDirtyDrawModeMask() const { return d_dirtyDrawModeMask; }
 
     /*!
     \brief
@@ -149,15 +140,14 @@ public:
     void setMouseButtonClickTolerance(float pixels) { d_mouseClickTracker.d_clickDistance = pixels; }
     float getMouseButtonClickTolerance() const { return d_mouseClickTracker.d_clickDistance; }
 
-    // public overrides
-    void draw(std::uint32_t drawMode = DrawModeMaskAll) override;
-
-    void setRenderTarget(RenderTarget& target);
-
-    //! call to indicate that some redrawing is required.
-    void markAsDirty(std::uint32_t drawModeMask = DrawModeMaskAll) { d_dirtyDrawModeMask |= drawModeMask; }
-    bool isDirty() const { return d_dirtyDrawModeMask != 0; }
-    std::uint32_t getDirtyDrawModeMask() const { return d_dirtyDrawModeMask; }
+    // TODO StringAtom!
+    void initDefaultInputSemantics();
+    void registerInputSemantic(const String& value, Key::Scan scanCode, bool down = true, ModifierKeys modifiers = {});
+    void registerInputSemantic(const String& value, MouseButton button, bool down = true, ModifierKeys modifiers = {}, int clickOrder = 0, MouseButtons buttons = {});
+    void unregisterInputSemantic(const String& value);
+    void unregisterAllInputSemantics();
+    bool isInputSemantic(const String& value, const KeyEventArgs& args, bool down) const;
+    bool isInputSemantic(const String& value, const MouseButtonEventArgs& args, bool down) const;
 
     Window* getRootWindow() const { return d_rootWindow; }
     void setRootWindow(Window* new_root);
@@ -314,8 +304,6 @@ protected:
     bool sendScrollEvent(float delta, Window* window);
 
     void drawWindowContentToTarget(std::uint32_t drawModeMask);
-
-    // protected overrides
     void drawContent(std::uint32_t drawModeMask = DrawModeMaskAll) override;
 
     //! call some function for a chain of windows: (top, bottom]
@@ -351,6 +339,8 @@ protected:
     MouseButtons d_mouseButtons;
     ModifierKeys d_modifierKeys;
     MouseClickTracker d_mouseClickTracker;
+    std::vector<KeySemanticMapping> d_keySemantics;
+    std::vector<MouseButtonSemanticMapping> d_mouseSemantics;
 
     Sizef d_surfaceSize; //!< a cache of the target surface size, allows returning by ref.
 

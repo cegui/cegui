@@ -96,7 +96,6 @@ class SchemeManager;
 class ScriptFunctor;
 class ScriptModule;
 class Sizef;
-class SimpleTimer;
 class SVGImage;
 class String;
 class StringTranscoder;

@@ -412,7 +412,12 @@ void ItemView::onMouseButtonDown(MouseButtonEventArgs& e)
 
     if (e.d_button == MouseButton::Left)
     {
-        handleSelection(e.d_position, true, false, false);
+        if (e.d_modifiers.hasCtrl())
+            handleSelection(e.d_position, true, d_isMultiSelectEnabled, false);
+        else if (e.d_modifiers.hasShift())
+            handleSelection(e.d_position, true, d_isMultiSelectEnabled, true);
+        else
+            handleSelection(e.d_position, true, false, false);
         ++e.handled;
     }
 }
@@ -437,6 +442,39 @@ void ItemView::onCursorMove(CursorMoveEventArgs& e)
 
     if (d_guiContext)
         d_guiContext->positionTooltip();
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::onKeyDown(KeyEventArgs& e)
+{
+    Window::onKeyDown(e);
+
+    const auto semantic = d_guiContext->findInputSemantic(e, true);
+    if (semantic != SemanticValue::GoDown && semantic != SemanticValue::GoUp)
+        return;
+
+    ModelIndex parent_index = d_itemModel->getRootIndex();
+    ptrdiff_t last_selected_child_id = -1;
+    if (!d_indexSelectionStates.empty())
+    {
+        ModelIndexSelectionState last_selection = d_indexSelectionStates.back();
+        last_selected_child_id = last_selection.d_childId;
+        parent_index = last_selection.d_parentIndex;
+    }
+
+    size_t children_count = d_itemModel->getChildCount(parent_index);
+    if (children_count == 0)
+        return;
+
+    auto next_selected_child_id = (semantic == SemanticValue::GoDown) ?
+        std::min(last_selected_child_id + 1, static_cast<ptrdiff_t>(children_count) - 1) :
+        std::max<ptrdiff_t>(0, last_selected_child_id - 1);
+
+    if (next_selected_child_id != -1 && next_selected_child_id != last_selected_child_id)
+    {
+        setSelectedIndex(d_itemModel->makeIndex(static_cast<size_t>(next_selected_child_id), parent_index));
+        ++e.handled;
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -746,22 +784,6 @@ void ItemView::onMultiselectModeChanged(WindowEventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
-{
-    if (e.d_semanticValue == SemanticValue::SelectRange ||
-        e.d_semanticValue == SemanticValue::SelectCumulative)
-    {
-        handleSelection(getGUIContext().getCursor().getPosition(),
-            true, d_isMultiSelectEnabled, e.d_semanticValue == SemanticValue::SelectRange);
-        ++e.handled;
-    }
-
-    handleSelectionNavigation(e);
-
-    Window::onSemanticInputEvent(e);
-}
-
-//----------------------------------------------------------------------------//
 void ItemView::onSized(ElementEventArgs& e)
 {
     Window::onSized(e);
@@ -892,44 +914,6 @@ void ItemView::onViewContentsChanged(WindowEventArgs& args)
 void ItemView::clearSelections()
 {
     d_indexSelectionStates.clear();
-}
-
-//----------------------------------------------------------------------------//
-void ItemView::handleSelectionNavigation(SemanticEventArgs& e)
-{
-    ModelIndex parent_index = d_itemModel->getRootIndex();
-    ptrdiff_t last_selected_child_id = -1;
-    if (!d_indexSelectionStates.empty())
-    {
-        ModelIndexSelectionState last_selection = d_indexSelectionStates.back();
-        last_selected_child_id = last_selection.d_childId;
-        parent_index = last_selection.d_parentIndex;
-    }
-
-    size_t children_count = d_itemModel->getChildCount(parent_index);
-    if (children_count == 0)
-        return;
-
-    auto next_selected_child_id = last_selected_child_id;
-    if (e.d_semanticValue == SemanticValue::GoDown)
-    {
-        next_selected_child_id = std::min(
-            next_selected_child_id + 1,
-            static_cast<ptrdiff_t>(children_count)-1
-            );
-    }
-    else if (e.d_semanticValue == SemanticValue::GoUp)
-    {
-        next_selected_child_id = std::max<ptrdiff_t>(0, next_selected_child_id - 1);
-    }
-
-    if (next_selected_child_id == -1 ||
-        next_selected_child_id == last_selected_child_id)
-        return;
-
-    setSelectedIndex(d_itemModel->makeIndex(
-        static_cast<size_t>(next_selected_child_id), parent_index));
-    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//

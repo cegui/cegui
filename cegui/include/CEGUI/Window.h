@@ -3020,15 +3020,6 @@ protected:
 
     /*!
     \brief
-        Handler called when a semantic input event occurred
-
-    \param e
-        The semantic input event
-    */
-    virtual void onSemanticInputEvent(SemanticEventArgs& e);
-
-    /*!
-    \brief
         Handler called when a DragContainer is started being dragged over this window.
 
     \param e

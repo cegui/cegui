@@ -407,7 +407,7 @@ protected:
     void onScroll(ScrollEventArgs& e) override;
     void onMouseButtonDown(MouseButtonEventArgs& e) override;
     void onCursorMove(CursorMoveEventArgs& e) override;
-    void onSemanticInputEvent(SemanticEventArgs& e) override;
+    void onKeyDown(KeyEventArgs& e) override;
 
     virtual void onSized(ElementEventArgs& e) override;
     virtual void onFontChanged(WindowEventArgs& e) override;
@@ -430,7 +430,6 @@ protected:
         bool is_cumulative, bool is_range);
 
     virtual void resortView() = 0;
-    void handleSelectionNavigation(SemanticEventArgs& e);
 
     //! Returns the Rectf that contains the specified \a index.
     virtual Rectf getIndexRect(const ModelIndex& index) = 0;

@@ -87,7 +87,6 @@
 #include "CEGUI/Scheme.h"
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/ScriptModule.h"
-#include "CEGUI/SimpleTimer.h"
 #include "CEGUI/Sizef.h"
 #include "CEGUI/USize.h"
 #include "CEGUI/String.h"

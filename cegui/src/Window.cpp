@@ -2168,19 +2168,6 @@ void Window::onCharacter(TextEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onSemanticInputEvent(SemanticEventArgs& e)
-{
-    fireEvent(EventSemanticEvent, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onSemanticInputEvent(e);
-    }
-}
-
-//----------------------------------------------------------------------------//
 void Window::onDragDropItemEnters(DragDropEventArgs& e)
 {
     fireEvent(EventDragDropItemEnters, e, EventNamespace);
