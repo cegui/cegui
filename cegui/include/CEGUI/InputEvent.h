@@ -538,8 +538,8 @@ public:
 class CEGUIEXPORT DragDropEventArgs : public WindowEventArgs
 {
 public:
-	DragDropEventArgs(Window* wnd) : WindowEventArgs(wnd), dragDropItem(nullptr) {}
-	DragContainer*	dragDropItem; //!< pointer to the DragContainer window being dragged / dropped.
+	DragDropEventArgs(Window* wnd, DragContainer* dragDropItem = nullptr) : WindowEventArgs(wnd), d_dragDropItem(dragDropItem) {}
+	DragContainer* d_dragDropItem = nullptr; //!< pointer to the DragContainer window being dragged / dropped.
 };
 
 /*!
@@ -550,9 +550,7 @@ public:
 class CEGUIEXPORT DisplayEventArgs : public EventArgs
 {
 public:
-    DisplayEventArgs(const Sizef& sz):
-        size(sz)
-    {}
+    DisplayEventArgs(const Sizef& sz): size(sz) {}
 
     //! current / new size of the display.
     Sizef size;
@@ -577,9 +575,7 @@ public:
 class CEGUIEXPORT FontEventArgs : public EventArgs
 {
 public:
-    FontEventArgs(Font* font) :
-       font(font)
-    {}
+    FontEventArgs(Font* font) : font(font) {}
 
     //! Pointer to the font object related to the event notification.
     Font* font;
@@ -591,7 +587,6 @@ struct KeySemanticMapping
     String value;
     Key::Scan scanCode = Key::Scan::Unknown;
     ModifierKeys modifiers;
-    bool down = true;
 
     bool operator <(const KeySemanticMapping& other) const { return value < other.value; }
 };
@@ -611,9 +606,8 @@ struct MouseButtonSemanticMapping
     ModifierKeys modifiers;
     MouseButtons buttons;
     int clickOrder = 0;
-    bool down = true;
 
-    bool operator <(const KeySemanticMapping& other) const { return value < other.value; }
+    bool operator <(const MouseButtonSemanticMapping& other) const { return value < other.value; }
 };
 
 // TODO StringAtom!

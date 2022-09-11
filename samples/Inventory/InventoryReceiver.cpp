@@ -171,7 +171,7 @@ bool InventoryReceiver::itemWillFitAtLocation(const InventoryItem& item,
 //------------------------------------------------------------------------------//
 void InventoryReceiver::onDragDropItemDropped(DragDropEventArgs &e)
 {
-    InventoryItem* item = dynamic_cast<InventoryItem*>(e.dragDropItem);
+    InventoryItem* item = dynamic_cast<InventoryItem*>(e.d_dragDropItem);
 
     if (!item)
         return;

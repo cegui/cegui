@@ -2152,60 +2152,6 @@ public:
 
     /*!
     \brief
-        Asks the widget to perform a clipboard copy to the provided clipboard
-
-    \param clipboard
-        Target clipboard class
-
-    \return
-        true if the copy was successful and allowed, false otherwise
-    */
-    virtual bool performCopy(Clipboard& /*clipboard*/) { return false; }
-
-    /*!
-    \brief
-        Asks the widget to perform a clipboard cut to the provided clipboard
-
-    \param clipboard
-        Target clipboard class
-
-    \return
-        true if the cut was successful and allowed, false otherwise
-    */
-    virtual bool performCut(Clipboard& /*clipboard*/) { return false; }
-
-    /*!
-    \brief
-        Asks the widget to perform a clipboard paste from the provided clipboard
-
-    \param clipboard
-        Source clipboard class
-
-    \return
-        true if the paste was successful and allowed, false otherwise
-     */
-    virtual bool performPaste(Clipboard& /*clipboard*/) { return false; }
-
-    /*!
-    \brief
-        Asks the widget to perform a undo operation
-
-    \return
-        true if the undo was successful and allowed, false otherwise
-     */
-    virtual bool performUndo() { return false; }
-
-    /*!
-    \brief
-        Asks the widget to perform a redo operation
-
-    \return
-        true if the redo was successful and allowed, false otherwise
-     */
-    virtual bool performRedo() { return false; }
-
-    /*!
-    \brief
         Writes an xml representation of this window object to \a out_stream.
 
     \param xml_stream

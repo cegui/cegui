@@ -249,7 +249,7 @@ protected:
 	*************************************************************************/
     void onMouseButtonDown(MouseButtonEventArgs& e) override;
     void onScroll(ScrollEventArgs& e) override;
-    void onSemanticInputEvent(SemanticEventArgs& e) override;
+    void onKeyDown(KeyEventArgs& e) override;
 
 	/*************************************************************************
 		Implementation Data

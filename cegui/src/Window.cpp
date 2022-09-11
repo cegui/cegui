@@ -1462,8 +1462,7 @@ void Window::notifyDragDropItemEnters(DragContainer* item)
     if (!item)
         return;
 
-    DragDropEventArgs args(this);
-    args.dragDropItem = item;
+    DragDropEventArgs args(this, item);
     onDragDropItemEnters(args);
 }
 
@@ -1473,8 +1472,7 @@ void Window::notifyDragDropItemLeaves(DragContainer* item)
     if (!item)
         return;
 
-    DragDropEventArgs args(this);
-    args.dragDropItem = item;
+    DragDropEventArgs args(this, item);
     onDragDropItemLeaves(args);
 }
 
@@ -1484,8 +1482,7 @@ bool Window::notifyDragDropItemDropped(DragContainer* item)
     if (!item)
         return false;
 
-    DragDropEventArgs args(this);
-    args.dragDropItem = item;
+    DragDropEventArgs args(this, item);
     onDragDropItemDropped(args);
 
     return args.handled;
@@ -2191,7 +2188,7 @@ void Window::onDragDropItemDropped(DragDropEventArgs& e)
     {
         Event* ev = getEventObject(EventDragDropItemDropped);
         if (!ev || !ev->getConnectionCount())
-            e.dragDropItem->cancelDragging();
+            e.d_dragDropItem->cancelDragging();
     }
 }
 

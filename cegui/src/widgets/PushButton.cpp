@@ -65,7 +65,7 @@ void PushButton::onClick(MouseButtonEventArgs& e)
 //----------------------------------------------------------------------------//
 void PushButton::onKeyDown(KeyEventArgs& e)
 {
-    if (!isDisabled() && d_guiContext->isInputSemantic(SemanticValue::Confirm, e, true))
+    if (!isDisabled() && d_guiContext->isInputSemantic(SemanticValue::Confirm, e))
     {
         onClicked(e);
         ++e.handled;

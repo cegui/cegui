@@ -81,7 +81,7 @@ protected:
 
     bool insertString(String&& strToInsert) override;
     void updateFormatting() override;
-    void processKeyEvent(KeyEventArgs& e, bool down) override;
+    void processKeyDownEvent(KeyEventArgs& e) override;
 
     /*!
     \brief

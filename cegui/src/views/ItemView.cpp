@@ -449,30 +449,29 @@ void ItemView::onKeyDown(KeyEventArgs& e)
 {
     Window::onKeyDown(e);
 
-    const auto semantic = d_guiContext->findInputSemantic(e, true);
-    if (semantic != SemanticValue::GoDown && semantic != SemanticValue::GoUp)
+    if (e.d_key != Key::Scan::ArrowDown && e.d_key != Key::Scan::ArrowUp)
         return;
 
-    ModelIndex parent_index = d_itemModel->getRootIndex();
-    ptrdiff_t last_selected_child_id = -1;
+    ModelIndex parentIndex = d_itemModel->getRootIndex();
+    ptrdiff_t lastSelectedChildId = -1;
     if (!d_indexSelectionStates.empty())
     {
-        ModelIndexSelectionState last_selection = d_indexSelectionStates.back();
-        last_selected_child_id = last_selection.d_childId;
-        parent_index = last_selection.d_parentIndex;
+        ModelIndexSelectionState lastSelection = d_indexSelectionStates.back();
+        lastSelectedChildId = lastSelection.d_childId;
+        parentIndex = lastSelection.d_parentIndex;
     }
 
-    size_t children_count = d_itemModel->getChildCount(parent_index);
-    if (children_count == 0)
+    const size_t childrenCount = d_itemModel->getChildCount(parentIndex);
+    if (childrenCount == 0)
         return;
 
-    auto next_selected_child_id = (semantic == SemanticValue::GoDown) ?
-        std::min(last_selected_child_id + 1, static_cast<ptrdiff_t>(children_count) - 1) :
-        std::max<ptrdiff_t>(0, last_selected_child_id - 1);
+    auto nextSelectedChildId = (e.d_key == Key::Scan::ArrowDown) ?
+        std::min(lastSelectedChildId + 1, static_cast<ptrdiff_t>(childrenCount) - 1) :
+        std::max<ptrdiff_t>(0, lastSelectedChildId - 1);
 
-    if (next_selected_child_id != -1 && next_selected_child_id != last_selected_child_id)
+    if (nextSelectedChildId != -1 && nextSelectedChildId != lastSelectedChildId)
     {
-        setSelectedIndex(d_itemModel->makeIndex(static_cast<size_t>(next_selected_child_id), parent_index));
+        setSelectedIndex(d_itemModel->makeIndex(static_cast<size_t>(nextSelectedChildId), parentIndex));
         ++e.handled;
     }
 }

@@ -309,29 +309,29 @@ bool MultiLineEditbox::isWordWrapEnabled() const
 }
 
 //------------------------------------------------------------------------//
-void MultiLineEditbox::processKeyEvent(KeyEventArgs& e, bool down)
+void MultiLineEditbox::processKeyDownEvent(KeyEventArgs& e)
 {
-    if (d_guiContext->isInputSemantic(SemanticValue::Confirm, e, down))
+    if (d_guiContext->isInputSemantic(SemanticValue::Confirm, e))
         insertString("\x0a");
-    else if (d_guiContext->isInputSemantic(SemanticValue::GoUp, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoUp, e))
         handleLineUp(false);
-    else if (d_guiContext->isInputSemantic(SemanticValue::SelectUp, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectUp, e))
         handleLineUp(true);
-    else if (d_guiContext->isInputSemantic(SemanticValue::GoDown, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoDown, e))
         handleLineDown(false);
-    else if (d_guiContext->isInputSemantic(SemanticValue::SelectDown, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectDown, e))
         handleLineDown(true);
-    else if (d_guiContext->isInputSemantic(SemanticValue::GoToPreviousPage, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToPreviousPage, e))
         handlePageUp(false);
-    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToPreviousPage, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToPreviousPage, e))
         handlePageUp(true);
-    else if (d_guiContext->isInputSemantic(SemanticValue::GoToNextPage, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToNextPage, e))
         handlePageDown(false);
-    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToNextPage, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToNextPage, e))
         handlePageDown(true);
     else
     {
-        EditboxBase::processKeyEvent(e, down);
+        EditboxBase::processKeyDownEvent(e);
         return;
     }
 

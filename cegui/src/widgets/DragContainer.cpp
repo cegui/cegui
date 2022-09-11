@@ -417,8 +417,7 @@ void DragContainer::updateDropTarget()
     // if the window with the cursor is different to current drop target
     if (target != d_dropTarget)
     {
-        DragDropEventArgs args(target);
-        args.dragDropItem = this;
+        DragDropEventArgs args(target, this);
         onDragDropTargetChanged(args);
     }
 }

@@ -1144,9 +1144,9 @@ void GUIContext::initDefaultInputSemantics()
     d_keySemantics.push_back({ SemanticValue::Undo, Key::Scan::Backspace, ModifierKeys::Alt() });
     d_keySemantics.push_back({ SemanticValue::Undo, Key::Scan::Z, ModifierKeys::Ctrl() });
     d_keySemantics.push_back({ SemanticValue::Redo, Key::Scan::Y, ModifierKeys::Ctrl() });
-    d_keySemantics.push_back({ SemanticValue::Copy, Key::Scan::C, ModifierKeys::Ctrl(), false });
-    d_keySemantics.push_back({ SemanticValue::Paste, Key::Scan::V, ModifierKeys::Ctrl(), false });
-    d_keySemantics.push_back({ SemanticValue::Cut, Key::Scan::X, ModifierKeys::Ctrl(), false });
+    d_keySemantics.push_back({ SemanticValue::Copy, Key::Scan::C, ModifierKeys::Ctrl() });
+    d_keySemantics.push_back({ SemanticValue::Paste, Key::Scan::V, ModifierKeys::Ctrl() });
+    d_keySemantics.push_back({ SemanticValue::Cut, Key::Scan::X, ModifierKeys::Ctrl() });
     d_keySemantics.push_back({ SemanticValue::SelectPreviousCharacter, Key::Scan::ArrowLeft, ModifierKeys::Shift() });
     d_keySemantics.push_back({ SemanticValue::SelectNextCharacter, Key::Scan::ArrowRight, ModifierKeys::Shift() });
     d_keySemantics.push_back({ SemanticValue::SelectUp, Key::Scan::ArrowUp, ModifierKeys::Shift() });
@@ -1170,16 +1170,16 @@ void GUIContext::initDefaultInputSemantics()
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::registerInputSemantic(const String& value, Key::Scan scanCode, bool down, ModifierKeys modifiers)
+void GUIContext::registerInputSemantic(const String& value, Key::Scan scanCode, ModifierKeys modifiers)
 {
-    KeySemanticMapping rec{ value, scanCode, modifiers, down };
+    KeySemanticMapping rec{ value, scanCode, modifiers };
     d_keySemantics.insert(std::upper_bound(d_keySemantics.begin(), d_keySemantics.end(), rec), std::move(rec));
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::registerInputSemantic(const String& value, MouseButton button, bool down, ModifierKeys modifiers, int clickOrder, MouseButtons buttons)
+void GUIContext::registerInputSemantic(const String& value, MouseButton button, ModifierKeys modifiers, int clickOrder, MouseButtons buttons)
 {
-    MouseButtonSemanticMapping rec{ value, button, modifiers, buttons, clickOrder, down };
+    MouseButtonSemanticMapping rec{ value, button, modifiers, buttons, clickOrder };
     d_mouseSemantics.insert(std::upper_bound(d_mouseSemantics.begin(), d_mouseSemantics.end(), rec), std::move(rec));
 }
 
@@ -1200,29 +1200,28 @@ void GUIContext::unregisterAllInputSemantics()
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::isInputSemantic(const String& value, const KeyEventArgs& args, bool down) const
+bool GUIContext::isInputSemantic(const String& value, const KeyEventArgs& args) const
 {
-    auto pair = std::equal_range(d_keySemantics.begin(), d_keySemantics.end(), value, KeySemanticMappingComp{});
+    auto pair = std::equal_range(d_keySemantics.cbegin(), d_keySemantics.cend(), value, KeySemanticMappingComp{});
     for (auto it = pair.first; it != pair.second; ++it)
     {
         const auto& rule = *it;
-        if (rule.down == down && rule.scanCode == args.d_key && args.d_modifiers.hasAny(rule.modifiers)) //!!!FIXME: wrong modifier key matching logic!
+        if (rule.scanCode == args.d_key && args.d_modifiers.hasAny(rule.modifiers)) //!!!FIXME: wrong modifier key matching logic!
             return true;
     }
     return false;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::isInputSemantic(const String& value, const MouseButtonEventArgs& args, bool down) const
+bool GUIContext::isInputSemantic(const String& value, const MouseButtonEventArgs& args) const
 {
-    auto pair = std::equal_range(d_mouseSemantics.begin(), d_mouseSemantics.end(), value, MouseButtonSemanticMappingComp{});
+    auto pair = std::equal_range(d_mouseSemantics.cbegin(), d_mouseSemantics.cend(), value, MouseButtonSemanticMappingComp{});
     for (auto it = pair.first; it != pair.second; ++it)
     {
         const auto& rule = *it;
-        if (rule.down == down &&
-            rule.clickOrder == args.d_generatedClickEventOrder &&
-            rule.button == args.d_button &&
+        if (rule.button == args.d_button &&
             rule.buttons == args.d_buttons &&
+            rule.clickOrder == args.d_generatedClickEventOrder &&
             args.d_modifiers.hasAny(rule.modifiers)) //!!!FIXME: wrong modifier key matching logic!
         {
             return true;

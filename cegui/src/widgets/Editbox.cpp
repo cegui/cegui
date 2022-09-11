@@ -143,9 +143,9 @@ void Editbox::ensureCaretIsVisible()
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::processKeyEvent(KeyEventArgs& e, bool down)
+void Editbox::processKeyDownEvent(KeyEventArgs& e)
 {
-    if (d_guiContext->isInputSemantic(SemanticValue::Confirm, e, down))
+    if (d_guiContext->isInputSemantic(SemanticValue::Confirm, e))
     {
         WindowEventArgs args(this);
         onTextAcceptedEvent(args);
@@ -153,7 +153,7 @@ void Editbox::processKeyEvent(KeyEventArgs& e, bool down)
     }
     else
     {
-        EditboxBase::processKeyEvent(e, down);
+        EditboxBase::processKeyDownEvent(e);
     }
 }
 

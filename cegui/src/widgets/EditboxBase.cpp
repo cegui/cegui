@@ -34,6 +34,7 @@
 #include "CEGUI/UndoHandler.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/GUIContext.h"
+#include "CEGUI/System.h"
 #if defined(CEGUI_REGEX_MATCHER_PCRE)
 #   include "CEGUI/PCRERegexMatcher.h"
 #elif defined(CEGUI_REGEX_MATCHER_STD)
@@ -498,7 +499,7 @@ void EditboxBase::handleCaretMovement(size_t newIndex, bool select)
 }
 
 //----------------------------------------------------------------------------//
-bool EditboxBase::performCopy(Clipboard& clipboard)
+bool EditboxBase::performCopy(Clipboard& clipboard) const
 {
     if (!getSelectionLength())
         return false;
@@ -653,7 +654,7 @@ void EditboxBase::onCaptureLost(WindowEventArgs& e)
 void EditboxBase::onKeyDown(KeyEventArgs& e)
 {
     if (!isEffectiveDisabled() && !isReadOnly() && hasInputFocus())
-        processKeyEvent(e, true);
+        processKeyDownEvent(e);
 
     Window::onKeyDown(e);
 }
@@ -662,15 +663,30 @@ void EditboxBase::onKeyDown(KeyEventArgs& e)
 void EditboxBase::onKeyUp(KeyEventArgs& e)
 {
     if (!isEffectiveDisabled() && !isReadOnly() && hasInputFocus())
-        processKeyEvent(e, false);
+    {
+        bool handled = false;
+        if (d_guiContext->isInputSemantic(SemanticValue::Cut, e))
+            handled = performCut(*System::getSingleton().getClipboard());
+        else if (d_guiContext->isInputSemantic(SemanticValue::Copy, e))
+            handled = performCopy(*System::getSingleton().getClipboard());
+        else if (d_guiContext->isInputSemantic(SemanticValue::Paste, e))
+            handled = performPaste(*System::getSingleton().getClipboard());
+        else if (d_guiContext->isInputSemantic(SemanticValue::Undo, e))
+            handled = performUndo();
+        else if (d_guiContext->isInputSemantic(SemanticValue::Redo, e))
+            handled = performRedo();
+
+        if (handled)
+            ++e.handled;
+    }
 
     Window::onKeyDown(e);
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::processKeyEvent(KeyEventArgs& e, bool down)
+void EditboxBase::processKeyDownEvent(KeyEventArgs& e)
 {
-    if (d_guiContext->isInputSemantic(SemanticValue::DeletePreviousCharacter, e, down))
+    if (d_guiContext->isInputSemantic(SemanticValue::DeletePreviousCharacter, e))
     {
         if (getSelectionLength())
         {
@@ -682,53 +698,53 @@ void EditboxBase::processKeyEvent(KeyEventArgs& e, bool down)
             deleteRange(deleteStartPos, d_caretPos - deleteStartPos);
         }
     }
-    else if (d_guiContext->isInputSemantic(SemanticValue::DeleteNextCharacter, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::DeleteNextCharacter, e))
     {
         if (getSelectionLength())
             deleteRange(getSelectionStart(), getSelectionLength());
         else
             deleteRange(d_caretPos, getNextTextIndex(d_caretPos) - d_caretPos);
     }
-    else if (d_guiContext->isInputSemantic(SemanticValue::GoToPreviousCharacter, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToPreviousCharacter, e))
         handleCaretMovement(getPrevTextIndex(d_caretPos), false);
-    else if (d_guiContext->isInputSemantic(SemanticValue::GoToNextCharacter, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToNextCharacter, e))
         handleCaretMovement(getNextTextIndex(d_caretPos), false);
-    else if (d_guiContext->isInputSemantic(SemanticValue::SelectPreviousCharacter, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectPreviousCharacter, e))
         handleCaretMovement(getPrevTextIndex(d_caretPos), true);
-    else if (d_guiContext->isInputSemantic(SemanticValue::SelectNextCharacter, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectNextCharacter, e))
         handleCaretMovement(getNextTextIndex(d_caretPos), true);
-    else if (d_guiContext->isInputSemantic(SemanticValue::GoToPreviousWord, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToPreviousWord, e))
         handleCaretMovement(TextUtils::getWordStartIndex(getText(), d_caretPos), false);
-    else if (d_guiContext->isInputSemantic(SemanticValue::GoToNextWord, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToNextWord, e))
         handleCaretMovement(TextUtils::getNextWordStartIndex(getText(), d_caretPos), false);
-    else if (d_guiContext->isInputSemantic(SemanticValue::SelectPreviousWord, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectPreviousWord, e))
         handleCaretMovement(TextUtils::getWordStartIndex(getText(), d_caretPos), true);
-    else if (d_guiContext->isInputSemantic(SemanticValue::SelectNextWord, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectNextWord, e))
         handleCaretMovement(TextUtils::getNextWordStartIndex(getText(), d_caretPos), true);
-    else if (d_guiContext->isInputSemantic(SemanticValue::GoToStartOfDocument, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToStartOfDocument, e))
         handleCaretMovement(0, false);
-    else if (d_guiContext->isInputSemantic(SemanticValue::GoToEndOfDocument, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToEndOfDocument, e))
         handleCaretMovement(getText().size(), false);
-    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToStartOfDocument, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToStartOfDocument, e))
         handleCaretMovement(0, true);
-    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToEndOfDocument, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToEndOfDocument, e))
         handleCaretMovement(getText().size(), true);
-    else if (d_guiContext->isInputSemantic(SemanticValue::GoToStartOfLine, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToStartOfLine, e))
     {
         updateRenderedText();
         handleCaretMovement(d_renderedText.lineStartTextIndex(d_caretPos), false);
     }
-    else if (d_guiContext->isInputSemantic(SemanticValue::GoToEndOfLine, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToEndOfLine, e))
     {
         updateRenderedText();
         handleCaretMovement(d_renderedText.lineEndTextIndex(d_caretPos), false);
     }
-    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToStartOfLine, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToStartOfLine, e))
     {
         updateRenderedText();
         handleCaretMovement(d_renderedText.lineStartTextIndex(d_caretPos), true);
     }
-    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToEndOfLine, e, down))
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToEndOfLine, e))
     {
         updateRenderedText();
         handleCaretMovement(d_renderedText.lineEndTextIndex(d_caretPos), true);

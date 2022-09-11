@@ -61,7 +61,7 @@ protected:
 
     // base class overriddes
     void onClick(MouseButtonEventArgs& e) override;
-    void onSemanticInputEvent(SemanticEventArgs& e) override;
+    void onKeyDown(KeyEventArgs& e) override;
 
     bool d_selected;
 };

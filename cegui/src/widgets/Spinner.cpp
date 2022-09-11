@@ -310,24 +310,34 @@ void Spinner::onScroll(ScrollEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Spinner::onSemanticInputEvent(SemanticEventArgs& e)
+void Spinner::onKeyDown(KeyEventArgs& e)
 {
-    switch (e.d_semanticValue)
+    float multiplier = 1.f;
+    if (e.d_modifiers.hasCtrl())
+        multiplier *= 10.f;
+    if (e.d_modifiers.hasShift())
+        multiplier *= 100.f;
+    if (e.d_modifiers.hasAlt())
+        multiplier *= 0.1f;
+
+    const value_type step = static_cast<value_type>(d_stepSize * multiplier);
+
+    switch (e.d_key)
     {
-        case SemanticValue::GoUp:
-            setCurrentValue(d_currentValue + d_stepSize);
+        case Key::Scan::ArrowUp:
+            setCurrentValue(d_currentValue + step);
             getEditbox()->setCaretIndex(0);
             ++e.handled;
             return;
 
-        case SemanticValue::GoDown:
-            setCurrentValue(d_currentValue - d_stepSize);
+        case Key::Scan::ArrowDown:
+            setCurrentValue(d_currentValue - step);
             getEditbox()->setCaretIndex(0);
             ++e.handled;
             return;
     }
 
-    Window::onSemanticInputEvent(e);
+    Window::onKeyDown(e);
 }
 
 //----------------------------------------------------------------------------//

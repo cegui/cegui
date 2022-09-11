@@ -99,24 +99,20 @@ void ToggleButton::onClick(MouseButtonEventArgs& e)
 //----------------------------------------------------------------------------//
 bool ToggleButton::getPostClickSelectState() const
 {
-    return d_selected ^ true;
+    return !d_selected;
 }
 
 //----------------------------------------------------------------------------//
-void ToggleButton::onSemanticInputEvent(SemanticEventArgs& e)
+void ToggleButton::onKeyDown(KeyEventArgs& e)
 {
-    if (isDisabled())
-        return;
-
-    if (e.d_semanticValue == SemanticValue::Confirm)
+    if (!isDisabled() && d_guiContext->isInputSemantic(SemanticValue::Confirm, e))
     {
         setSelected(getPostClickSelectState());
-
         ++e.handled;
     }
-}
 
-//----------------------------------------------------------------------------//
+    ToggleButton::onKeyDown(e);
+}
 
 }
 

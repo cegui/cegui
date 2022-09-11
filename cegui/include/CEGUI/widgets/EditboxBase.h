@@ -473,11 +473,11 @@ public:
 
     void setEnabled(bool enabled) override;
 
-    bool performCopy(Clipboard& clipboard) override;
-    bool performCut(Clipboard& clipboard) override;
-    bool performPaste(Clipboard& clipboard) override;
-    bool performUndo() override;
-    bool performRedo() override;
+    bool performCopy(Clipboard& clipboard) const;
+    bool performCut(Clipboard& clipboard);
+    bool performPaste(Clipboard& clipboard);
+    bool performUndo();
+    bool performRedo();
 
 protected:
 
@@ -619,7 +619,7 @@ protected:
     void onTextChanged(WindowEventArgs& e) override;
     void onCharacter(TextEventArgs& e) override;
 
-    virtual void processKeyEvent(KeyEventArgs& e, bool down);
+    virtual void processKeyDownEvent(KeyEventArgs& e);
 
     RenderedText d_renderedText;
 

@@ -54,8 +54,7 @@ public:
 class CEGUIEXPORT GUIContext : public RenderingSurface, public InjectedInputReceiver
 {
 public:
-    /** Name of Event fired when the root window is changed to a different
-     * Window.
+    /** Name of Event fired when the root window is changed to a different Window.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the @e old root window (the new one is
      * obtained by calling GUIContext::getRootWindow).
@@ -142,12 +141,12 @@ public:
 
     // TODO StringAtom!
     void initDefaultInputSemantics();
-    void registerInputSemantic(const String& value, Key::Scan scanCode, bool down = true, ModifierKeys modifiers = {});
-    void registerInputSemantic(const String& value, MouseButton button, bool down = true, ModifierKeys modifiers = {}, int clickOrder = 0, MouseButtons buttons = {});
+    void registerInputSemantic(const String& value, Key::Scan scanCode, ModifierKeys modifiers = {});
+    void registerInputSemantic(const String& value, MouseButton button, ModifierKeys modifiers = {}, int clickOrder = 0, MouseButtons buttons = {});
     void unregisterInputSemantic(const String& value);
     void unregisterAllInputSemantics();
-    bool isInputSemantic(const String& value, const KeyEventArgs& args, bool down) const;
-    bool isInputSemantic(const String& value, const MouseButtonEventArgs& args, bool down) const;
+    bool isInputSemantic(const String& value, const KeyEventArgs& args) const;
+    bool isInputSemantic(const String& value, const MouseButtonEventArgs& args) const;
 
     Window* getRootWindow() const { return d_rootWindow; }
     void setRootWindow(Window* new_root);

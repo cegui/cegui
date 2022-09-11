@@ -229,51 +229,62 @@ void Slider::onMouseButtonDown(MouseButtonEventArgs& e)
 void Slider::onScroll(ScrollEventArgs& e)
 {
     Window::onScroll(e);
-    value_type prevValue = d_currentValue;
+
+    const value_type prevValue = d_currentValue;
     setCurrentValue(d_currentValue + d_stepSize * e.d_delta);
     if (prevValue != d_currentValue)
         ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
-void Slider::onSemanticInputEvent(SemanticEventArgs& e)
+void Slider::onKeyDown(KeyEventArgs& e)
 {
-    switch (e.d_semanticValue)
+    float multiplier = 1.f;
+    if (e.d_modifiers.hasCtrl())
+        multiplier *= 10.f;
+    if (e.d_modifiers.hasShift())
+        multiplier *= 100.f;
+    if (e.d_modifiers.hasAlt())
+        multiplier *= 0.1f;
+
+    const value_type step = static_cast<value_type>(d_stepSize * multiplier);
+
+    switch (e.d_key)
     {
-        case SemanticValue::GoUp:
+        case Key::Scan::ArrowUp:
             if (isVertical())
             {
-                setCurrentValue(d_currentValue + d_stepSize);
+                setCurrentValue(d_currentValue + step);
                 ++e.handled;
             }
             break;
 
-        case SemanticValue::GoDown:
+        case Key::Scan::ArrowDown:
             if (isVertical())
             {
-                setCurrentValue(d_currentValue - d_stepSize);
+                setCurrentValue(d_currentValue - step);
                 ++e.handled;
             }
             break;
 
-        case SemanticValue::GoToPreviousCharacter:
+        case Key::Scan::ArrowLeft:
             if (!isVertical())
             {
-                setCurrentValue(d_currentValue - d_stepSize);
+                setCurrentValue(d_currentValue - step);
                 ++e.handled;
             }
             break;
 
-        case SemanticValue::GoToNextCharacter:
+        case Key::Scan::ArrowRight:
             if (!isVertical())
             {
-                setCurrentValue(d_currentValue + d_stepSize);
+                setCurrentValue(d_currentValue + step);
                 ++e.handled;
             }
             break;
     }
 
-    Window::onSemanticInputEvent(e);
+    Window::onKeyDown(e);
 }
 
 //----------------------------------------------------------------------------//
