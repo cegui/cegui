@@ -559,9 +559,9 @@ void EditboxBase::onMouseButtonDown(MouseButtonEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void EditboxBase::onClick(MouseButtonEventArgs& e)
+void EditboxBase::onMouseButtonUp(MouseButtonEventArgs& e)
 {
-    Window::onClick(e);
+    Window::onMouseButtonUp(e);
 
     if (e.d_button == MouseButton::Left || e.d_button == MouseButton::Middle)
     {
@@ -664,20 +664,10 @@ void EditboxBase::onKeyUp(KeyEventArgs& e)
 {
     if (!isEffectiveDisabled() && !isReadOnly() && hasInputFocus())
     {
-        bool handled = false;
-        if (d_guiContext->isInputSemantic(SemanticValue::Cut, e))
-            handled = performCut(*System::getSingleton().getClipboard());
-        else if (d_guiContext->isInputSemantic(SemanticValue::Copy, e))
-            handled = performCopy(*System::getSingleton().getClipboard());
-        else if (d_guiContext->isInputSemantic(SemanticValue::Paste, e))
-            handled = performPaste(*System::getSingleton().getClipboard());
-        else if (d_guiContext->isInputSemantic(SemanticValue::Undo, e))
-            handled = performUndo();
-        else if (d_guiContext->isInputSemantic(SemanticValue::Redo, e))
-            handled = performRedo();
-
-        if (handled)
-            ++e.handled;
+        // Copy auto-repeating makes no sense, handle once on key up
+        if (d_guiContext->isInputSemantic(SemanticValue::Copy, e))
+            if (performCopy(*System::getSingleton().getClipboard()))
+                ++e.handled;
     }
 
     Window::onKeyDown(e);
@@ -704,6 +694,26 @@ void EditboxBase::processKeyDownEvent(KeyEventArgs& e)
             deleteRange(getSelectionStart(), getSelectionLength());
         else
             deleteRange(d_caretPos, getNextTextIndex(d_caretPos) - d_caretPos);
+    }
+    else if (d_guiContext->isInputSemantic(SemanticValue::Cut, e))
+    {
+        if (!performCut(*System::getSingleton().getClipboard()))
+            return;
+    }
+    else if (d_guiContext->isInputSemantic(SemanticValue::Paste, e))
+    {
+        if (!performPaste(*System::getSingleton().getClipboard()))
+            return;
+    }
+    else if (d_guiContext->isInputSemantic(SemanticValue::Undo, e))
+    {
+        if (!performUndo())
+            return;
+    }
+    else if (d_guiContext->isInputSemantic(SemanticValue::Redo, e))
+    {
+        if (!performRedo())
+            return;
     }
     else if (d_guiContext->isInputSemantic(SemanticValue::GoToPreviousCharacter, e))
         handleCaretMovement(getPrevTextIndex(d_caretPos), false);

@@ -134,15 +134,15 @@ public:
     //! \brief Returns automatic mouse button click event generation mode. See setMouseClickEventGeneration.
     int getMouseClickEventGeneration() const { return d_mouseClickTracker.d_clickLimit; }
 
-    void setMouseButtonClickTimeout(float seconds) { d_mouseClickTracker.d_clickTimeout = seconds; }
-    float getMouseButtonClickTimeout() const { return d_mouseClickTracker.d_clickTimeout; }
-    void setMouseButtonClickTolerance(float pixels) { d_mouseClickTracker.d_clickDistance = pixels; }
-    float getMouseButtonClickTolerance() const { return d_mouseClickTracker.d_clickDistance; }
+    void setMouseButtonMultiClickTimeout(float seconds) { d_mouseClickTracker.d_multiClickTimeout = seconds; }
+    float getMouseButtonMultiClickTimeout() const { return d_mouseClickTracker.d_multiClickTimeout; }
+    void setMouseButtonMultiClickTolerance(float pixels) { d_mouseClickTracker.d_multiClickDistance = pixels; }
+    float getMouseButtonMultiClickTolerance() const { return d_mouseClickTracker.d_multiClickDistance; }
 
     // TODO StringAtom!
     void initDefaultInputSemantics();
-    void registerInputSemantic(const String& value, Key::Scan scanCode, ModifierKeys modifiers = {});
-    void registerInputSemantic(const String& value, MouseButton button, ModifierKeys modifiers = {}, int clickOrder = 0, MouseButtons buttons = {});
+    void registerInputSemantic(const String& value, Key::Scan scanCode, ModifierKeyRule modifiers = {});
+    void registerInputSemantic(const String& value, MouseButton button, ModifierKeyRule modifiers = {}, int clickOrder = 0, MouseButtons buttons = {});
     void unregisterInputSemantic(const String& value);
     void unregisterAllInputSemantics();
     bool isInputSemantic(const String& value, const KeyEventArgs& args) const;

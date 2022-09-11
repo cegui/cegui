@@ -563,7 +563,7 @@ protected:
     // Swipe scroll support
     void onMouseButtonDown(MouseButtonEventArgs& e) override;
     void onCursorMove(CursorMoveEventArgs& e) override;
-    void onClick(MouseButtonEventArgs& e) override;
+    void onMouseButtonUp(MouseButtonEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;
 
     //! true if vertical scrollbar should always be displayed

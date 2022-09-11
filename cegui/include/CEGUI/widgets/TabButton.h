@@ -132,8 +132,9 @@ protected:
 	/*************************************************************************
 		Overridden Event Handlers
 	*************************************************************************/
-    void onClick(MouseButtonEventArgs& e) override;
     void onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void onMouseButtonUp(MouseButtonEventArgs& e) override;
+    void onClick(MouseButtonEventArgs& e) override;
     void onScroll(ScrollEventArgs& e) override;
     void onCursorMove(CursorMoveEventArgs& e) override;
 };

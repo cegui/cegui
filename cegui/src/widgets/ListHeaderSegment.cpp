@@ -510,10 +510,9 @@ void ListHeaderSegment::onMouseButtonDown(MouseButtonEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ListHeaderSegment::onClick(MouseButtonEventArgs& e)
+void ListHeaderSegment::onMouseButtonUp(MouseButtonEventArgs& e)
 {
-	// base class processing
-    Window::onClick(e);
+    Window::onMouseButtonUp(e);
 
     if (e.d_button == MouseButton::Left)
 	{

@@ -622,9 +622,9 @@ void FrameWindow::onMouseButtonDown(MouseButtonEventArgs& e)
 /*************************************************************************
     Handler for cursor activation events
 *************************************************************************/
-void FrameWindow::onClick(MouseButtonEventArgs& e)
+void FrameWindow::onMouseButtonUp(MouseButtonEventArgs& e)
 {
-    Window::onClick(e);
+    Window::onMouseButtonUp(e);
 
     if (e.d_button == MouseButton::Left)
     {

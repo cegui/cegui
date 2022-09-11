@@ -759,9 +759,9 @@ void ScrollablePane::onCursorMove(CursorMoveEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onClick(MouseButtonEventArgs& e)
+void ScrollablePane::onMouseButtonUp(MouseButtonEventArgs& e)
 {
-    Window::onClick(e);
+    Window::onMouseButtonUp(e);
 
     if (e.d_button == MouseButton::Left)
     {

@@ -73,7 +73,7 @@ public:
         true if the user is hovering or if the button is pushed and the cursor
         is not over the button. Otherwise return false.
     */
-    bool    isHovering(void) const
+    bool    isHovering() const
     {
         return d_hovering;
     }
@@ -87,7 +87,7 @@ public:
         true if the button-type widget is pushed, false if the widget is not
         pushed.
     */
-    bool    isPushed(void) const
+    bool    isPushed() const
     {
         return d_pushed;
     }
@@ -97,7 +97,7 @@ public:
     \brief
         Returns true if the popup menu attached to the menu item is open.
     */
-    bool    isOpened(void) const
+    bool    isOpened() const
     {
         return d_opened;
     }
@@ -106,7 +106,7 @@ public:
     \brief
         Returns true if the menu item popup is closing or not.
     */
-    bool    isPopupClosing(void) const
+    bool    isPopupClosing() const
     {
         return d_popupClosing;
     }
@@ -116,7 +116,7 @@ public:
         Returns true if the menu item popup is closed or opened automatically
         if hovering with the cursor.
     */
-    bool    hasAutoPopup(void) const
+    bool    hasAutoPopup() const
     {
         return d_autoPopupTimeout > 0.0f;
     }
@@ -126,7 +126,7 @@ public:
         Returns the time, which has to elapse before the popup window is
         opened/closed if the hovering state changes.
     */
-    float    getAutoPopupTimeout(void) const
+    float    getAutoPopupTimeout() const
     {
         return d_autoPopupTimeout;
     }
@@ -149,7 +149,7 @@ public:
         A pointer to the currently attached PopupMenu.
         Null is there is no PopupMenu attached.
     */
-    PopupMenu*  getPopupMenu(void) const
+    PopupMenu*  getPopupMenu() const
     {
         return d_popup;
     }
@@ -200,19 +200,19 @@ public:
     \return
         true if the popup was opened. false if it was closed.
     */
-    bool    togglePopupMenu(void);
+    bool    togglePopupMenu();
 
     /*!
     \brief
         starts the closing timer for the popup, which will close it if the timer is enabled.
     */
-    void    startPopupClosing(void);
+    void    startPopupClosing();
 
     /*!
     \brief
         starts the opening timer for the popup, which will open it if the timer is enabled.
     */
-    void    startPopupOpening(void);
+    void    startPopupOpening();
 
     /*!
     \brief
@@ -253,13 +253,6 @@ public:
     MenuItem(const String& type, const String& name);
 
 
-    /*!
-    \brief
-        Destructor for MenuItem objects
-    */
-    virtual ~MenuItem(void);
-
-
 protected:
     /*************************************************************************
         New Event Handlers
@@ -268,19 +261,20 @@ protected:
     \brief
         handler invoked internally when the MenuItem is clicked.
     */
-    virtual void    onClicked(WindowEventArgs& e);
+    virtual void onClicked(WindowEventArgs& e);
 
 
     /*************************************************************************
         Overridden event handlers
     *************************************************************************/
-    void    onCursorMove(CursorMoveEventArgs& e) override;
-    void    onMouseButtonDown(MouseButtonEventArgs& e) override;
-    void    onClick(MouseButtonEventArgs& e) override;
-    void    onCaptureLost(WindowEventArgs& e) override;
-    void    onCursorLeaves(CursorInputEventArgs& e) override;
-    void    onTextChanged(WindowEventArgs& e) override;
-    void    updateSelf(float elapsed) override;
+    void onCursorMove(CursorMoveEventArgs& e) override;
+    void onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void onMouseButtonUp(MouseButtonEventArgs& e) override;
+    void onClick(MouseButtonEventArgs& e) override;
+    void onCaptureLost(WindowEventArgs& e) override;
+    void onCursorLeaves(CursorInputEventArgs& e) override;
+    void onTextChanged(WindowEventArgs& e) override;
+    void updateSelf(float elapsed) override;
 
 
     /*************************************************************************
@@ -341,7 +335,7 @@ private:
     /*************************************************************************
         Private methods
     *************************************************************************/
-    void addMenuItemProperties(void);
+    void addMenuItemProperties();
 
     /*!
     \copydoc Window::addChild_impl

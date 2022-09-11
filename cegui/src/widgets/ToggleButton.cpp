@@ -111,7 +111,7 @@ void ToggleButton::onKeyDown(KeyEventArgs& e)
         ++e.handled;
     }
 
-    ToggleButton::onKeyDown(e);
+    ButtonBase::onKeyDown(e);
 }
 
 }

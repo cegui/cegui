@@ -344,12 +344,6 @@ void SampleBrowser::stopDisplaySample()
 {
     GUIContext* sampleGUIContext = d_selectedSampleData->getGuiContext();
 
-    // Since we switch our contexts, the mouse release won't be injected if we
-    // don't do it manually
-    if (auto ctx = d_selectedSampleData ? d_selectedSampleData->getGuiContext() : d_baseApp->getMainWindowGUIContext())
-        ctx->injectMouseButtonUp(MouseButton::Left);
-    sampleGUIContext->injectTimePulse(0.0f);
-
     sampleGUIContext->getRootWindow()->removeChild(d_sampleExitButton);
     d_selectedSampleData->setGUIContextRTT();
 

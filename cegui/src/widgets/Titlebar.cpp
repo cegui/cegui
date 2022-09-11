@@ -172,9 +172,9 @@ void Titlebar::onMouseButtonDown(MouseButtonEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Titlebar::onClick(MouseButtonEventArgs& e)
+void Titlebar::onMouseButtonUp(MouseButtonEventArgs& e)
 {
-    Window::onClick(e);
+    Window::onMouseButtonUp(e);
 
     if (e.d_button == MouseButton::Left)
     {

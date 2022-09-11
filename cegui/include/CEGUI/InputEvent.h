@@ -31,6 +31,7 @@
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/Sizef.h"
 #include <chrono>
+#include <iostream>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -45,21 +46,21 @@ namespace CEGUI
     Use needShift if your enum values are zero-based indices (0, 1, 2, 3, 4 ...).
     Leave needShift disabled if your enum values are already single bit masks (0x0, 0x1, 0x2, 0x4, 0x8 ...).
 */
-template<typename T, bool needShift = false, class = typename std::enable_if_t<std::is_enum_v<T>>>
+template<typename T, bool needShift = false, typename mask_t = std::underlying_type_t<T>, class = typename std::enable_if_t<std::is_enum_v<T>>>
 struct Flags
 {
-    static inline constexpr std::underlying_type_t<T> bit(T flag)
+    static inline constexpr mask_t bit(T flag)
     {
         // TODO: C++17
         if /*constexpr*/ (needShift)
-            return (1 << static_cast<std::underlying_type_t<T>>(flag));
+            return (1 << static_cast<mask_t>(flag));
         else
-            return static_cast<std::underlying_type_t<T>>(flag);
+            return static_cast<mask_t>(flag);
     }
 
     constexpr Flags() = default;
     constexpr Flags(T flag) : d_mask(bit(flag)) {}
-    constexpr Flags(std::underlying_type_t<T> mask) : d_mask(mask) {}
+    constexpr Flags(mask_t mask) : d_mask(mask) {}
     constexpr Flags(std::initializer_list<T> list)
     {
         d_mask = 0;
@@ -72,16 +73,18 @@ struct Flags
     //Flags(Args&&... args) : d_mask((args | ...)) {}
 
     void reset() { d_mask = 0; }
+    mask_t getMask() const { return d_mask; }
     bool has(T flag) const { return d_mask & bit(flag); }
     bool hasAny(Flags mask) const { return d_mask & mask.d_mask; }
     bool hasAll(Flags mask) const { return (d_mask & mask.d_mask) == mask.d_mask; }
 
     operator bool() const { return d_mask != 0; }
-    operator std::underlying_type_t<T>() const { return d_mask; }
+    operator mask_t() const { return d_mask; }
 
     bool operator ==(Flags other) const { return d_mask == other.d_mask; }
     bool operator !=(Flags other) const { return !(*this == other); }
     bool operator &(T flag) const { return has(flag); }
+    Flags operator &(Flags other) const { return Flags(d_mask & other.d_mask); }
     Flags operator |(T flag) const { return Flags(d_mask | bit(flag)); }
     Flags operator |(Flags other) const { return Flags(d_mask | other.d_mask); }
     Flags operator +(T flag) const { return Flags(d_mask | bit(flag)); }
@@ -93,7 +96,7 @@ struct Flags
     Flags operator -(Flags other) const { return Flags(d_mask & ~other.d_mask); }
     Flags& operator -=(Flags other) { d_mask &= ~other.d_mask; return *this; }
 
-    std::underlying_type_t<T> d_mask = 0;
+    mask_t d_mask = 0;
 };
 
 /*!
@@ -286,11 +289,11 @@ struct MouseClickTracker
     using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
 
     static constexpr float DEFAULT_CLICK_DISTANCE = 5.f;
-    static constexpr float DEFAULT_CLICK_TIMEOUT = 0.3333f;
+    static constexpr float DEFAULT_CLICK_TIMEOUT = 0.25f;
 
-    float d_clickDistance = DEFAULT_CLICK_DISTANCE;
-    float d_clickTimeout = DEFAULT_CLICK_TIMEOUT;
-    int d_clickLimit = 3;                            //!< Use 0 to disable click events, 1 to enable only single clicks
+    float d_multiClickDistance = DEFAULT_CLICK_DISTANCE;
+    float d_multiClickTimeout = DEFAULT_CLICK_TIMEOUT;   //!< Zero means no timeout
+    int d_clickLimit = 3;                                //!< Use 0 to disable click events, 1 to enable only single clicks
 
     Window* d_window = nullptr;
     MouseButton d_button = MouseButton::Invalid;
@@ -302,53 +305,75 @@ struct MouseClickTracker
     {
         d_window = nullptr;
         d_button = MouseButton::Invalid;
+        d_clickCount = 0;
+    }
+
+    bool needReset(MouseButton button, const glm::vec2& position, Window* window) const
+    {
+        if (!d_clickLimit || d_button != button || d_window != window)
+        {
+            std::cout << "Cancelled by disable or window or button: " << (size_t)window << ", " << d_clickCount << std::endl;
+            return true;
+        }
+
+        // Single clicks are not cancelled by timeout and by offset for better UX
+        if (d_clickCount > 1)
+        {
+            if (std::abs(d_downPos.x - position.x) > d_multiClickDistance || std::abs(d_downPos.y - position.y) > d_multiClickDistance)
+            {
+                std::cout << "Cancelled by offset: " << (size_t)window << ", " << d_clickCount << std::endl;
+                return true;
+            }
+
+            if (d_multiClickTimeout > 0.f)
+            {
+                const auto secElapsed = std::chrono::duration<float>(std::chrono::steady_clock::now() - d_downTime).count();
+                if (secElapsed > d_clickCount * d_multiClickTimeout)
+                {
+                    std::cout << "Cancelled by timeout: " << (size_t)window << ", " << d_clickCount << std::endl;
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     void onMouseButtonDown(MouseButton button, const glm::vec2& position, Window* window)
     {
-        if (!d_clickCount)
-            return;
+        std::cout << "onMouseButtonDown: " << (size_t)window << ", " << d_clickCount << std::endl;
 
-        if (d_button != button || d_window != window)
+        ++d_clickCount;
+        if (d_clickCount > d_clickLimit)
+            d_clickCount = 1;
+
+        if (needReset(button, position, window))
         {
             d_window = window;
             d_button = button;
             d_clickCount = 1;
-            d_downPos = position;
-        }
-        else
-        {
-            ++d_clickCount;
-            if (d_clickCount > d_clickLimit)
-                d_clickCount = 1;
         }
 
-        d_downTime = std::chrono::steady_clock::now();
+        if (d_clickCount == 1)
+        {
+            d_downPos = position;
+            d_downTime = std::chrono::steady_clock::now();
+        }
     }
 
-    //! \return Multiclick order to generate (1, 2 or 3) ot 0 if no click event needs to be generated
+    //! \return Multiclick order to generate (typically 1, 2 or 3) ot 0 if no click event needs to be generated
     int onMouseButtonUp(MouseButton button, const glm::vec2& position, Window* window)
     {
-        // Any violation of click requirements resets the state
-        if (!d_clickLimit ||
-            d_window != window ||
-            d_button != button ||
-            std::abs(d_downPos.x - position.x) > d_clickDistance ||
-            std::abs(d_downPos.y - position.y) > d_clickDistance ||
-            (std::chrono::steady_clock::now() - d_downTime).count() > d_clickTimeout)
-        {
+        std::cout << "onMouseButtonUp: " << (size_t)window << ", " << d_clickCount << std::endl;
+        if (needReset(button, position, window))
             reset();
-            return 0;
-        }
 
+        if (d_clickCount) std::cout << "Click generated: " << (size_t)window << ", " << d_clickCount << std::endl;
         return d_clickCount;
     }
 };
 
-/*!
-\brief
-    Enumeration of keyboard modifier keys
-*/
+//! \brief Enumeration of keyboard modifier keys
 enum class ModifierKey : int
 {
     None       = 0x00,
@@ -360,6 +385,7 @@ enum class ModifierKey : int
     RightAlt   = 0x20
 };
 
+//! \brief Helper class for holding and checking modifier key pressed state
 struct ModifierKeys : public Flags<ModifierKey>
 {
     // TODO: C++17
@@ -374,6 +400,68 @@ struct ModifierKeys : public Flags<ModifierKey>
     bool hasShift() const { return hasAny(Shift()); }
     bool hasCtrl() const { return hasAny(Ctrl()); }
     bool hasAlt() const { return hasAny(Alt()); }
+};
+
+//! \brief A flexible rule that can be matched with ModifierKeys state to check for a certain combination
+class ModifierKeyRule
+{
+public:
+
+    static ModifierKeyRule OnlyShift() { return ModifierKeyRule().shift().noCtrl().noAlt(); }
+    static ModifierKeyRule OnlyCtrl() { return ModifierKeyRule().noShift().ctrl().noAlt(); }
+    static ModifierKeyRule OnlyAlt() { return ModifierKeyRule().noShift().noCtrl().alt(); }
+    static ModifierKeyRule OnlyCtrlShift() { return ModifierKeyRule().shift().ctrl().noAlt(); }
+
+    ModifierKeyRule& leftShift() { set(ModifierKey::LeftShift, false); return *this; }
+    ModifierKeyRule& rightShift() { set(ModifierKey::RightShift, false); return *this; }
+    ModifierKeyRule& shift() { set(ModifierKey::LeftShift, false); set(ModifierKey::RightShift, false); return *this; }
+    ModifierKeyRule& noLeftShift() { set(ModifierKey::LeftShift, true); return *this; }
+    ModifierKeyRule& noRightShift() { set(ModifierKey::RightShift, true); return *this; }
+    ModifierKeyRule& noShift() { set(ModifierKey::LeftShift, true); set(ModifierKey::RightShift, true); return *this; }
+
+    ModifierKeyRule& leftCtrl() { set(ModifierKey::LeftCtrl, false); return *this; }
+    ModifierKeyRule& rightCtrl() { set(ModifierKey::RightCtrl, false); return *this; }
+    ModifierKeyRule& ctrl() { set(ModifierKey::LeftCtrl, false); set(ModifierKey::RightCtrl, false); return *this; }
+    ModifierKeyRule& noLeftCtrl() { set(ModifierKey::LeftCtrl, true); return *this; }
+    ModifierKeyRule& noRightCtrl() { set(ModifierKey::RightCtrl, true); return *this; }
+    ModifierKeyRule& noCtrl() { set(ModifierKey::LeftCtrl, true); set(ModifierKey::RightCtrl, true); return *this; }
+
+    ModifierKeyRule& leftAlt() { set(ModifierKey::LeftAlt, false); return *this; }
+    ModifierKeyRule& rightAlt() { set(ModifierKey::RightAlt, false); return *this; }
+    ModifierKeyRule& alt() { set(ModifierKey::LeftAlt, false); set(ModifierKey::RightAlt, false); return *this; }
+    ModifierKeyRule& noLeftAlt() { set(ModifierKey::LeftAlt, true); return *this; }
+    ModifierKeyRule& noRightAlt() { set(ModifierKey::RightAlt, true); return *this; }
+    ModifierKeyRule& noAlt() { set(ModifierKey::LeftAlt, true); set(ModifierKey::RightAlt, true); return *this; }
+
+    bool match(ModifierKeys keys) const
+    {
+        // Set 1 to every bit where the rule was violated - xor to find differences and mask out insignificant ones
+        ModifierKeys violations((keys.getMask() ^ d_set.getMask()) & d_map.getMask());
+
+        // Handle the fact that 'key' rule without specifying left or right means 'any', not 'all' like 'noKey' does
+        if (d_set.hasAll(ModifierKeys::Shift()) && !violations.hasAll(ModifierKeys::Shift()))
+            violations -= ModifierKeys::Shift();
+        if (d_set.hasAll(ModifierKeys::Ctrl()) && !violations.hasAll(ModifierKeys::Ctrl()))
+            violations -= ModifierKeys::Ctrl();
+        if (d_set.hasAll(ModifierKeys::Alt()) && !violations.hasAll(ModifierKeys::Alt()))
+            violations -= ModifierKeys::Alt();
+
+        return !violations;
+    }
+
+protected:
+
+    void set(ModifierKey key, bool not)
+    {
+        d_map += key;
+        if (not)
+            d_set -= key;
+        else
+            d_set += key;
+    }
+
+    ModifierKeys d_map = 0; // ModifierKey bits that need to be checked
+    ModifierKeys d_set = 0; // Whether the corresponding key should be pressed or not
 };
 
 static ModifierKey ModifierFromScanCode(Key::Scan scanCode)
@@ -586,7 +674,7 @@ struct KeySemanticMapping
     // TODO StringAtom!
     String value;
     Key::Scan scanCode = Key::Scan::Unknown;
-    ModifierKeys modifiers;
+    ModifierKeyRule modifiers;
 
     bool operator <(const KeySemanticMapping& other) const { return value < other.value; }
 };
@@ -603,7 +691,7 @@ struct MouseButtonSemanticMapping
     // TODO StringAtom!
     String value;
     MouseButton button = MouseButton::Invalid;
-    ModifierKeys modifiers;
+    ModifierKeyRule modifiers;
     MouseButtons buttons;
     int clickOrder = 0;
 
@@ -621,52 +709,52 @@ struct MouseButtonSemanticMappingComp
 namespace SemanticValue
 {
     // TODO StringAtom!
-    static const String GoToPreviousCharacter;
-    static const String GoToNextCharacter;
-    static const String GoToPreviousWord;
-    static const String GoToNextWord;
-    static const String GoToStartOfLine;
-    static const String GoToEndOfLine;
-    static const String GoToStartOfDocument;
-    static const String GoToEndOfDocument;
-    static const String GoToNextPage;
-    static const String GoToPreviousPage;
-    static const String GoDown;
-    static const String GoUp;
+    extern const String GoToPreviousCharacter;
+    extern const String GoToNextCharacter;
+    extern const String GoToPreviousWord;
+    extern const String GoToNextWord;
+    extern const String GoToStartOfLine;
+    extern const String GoToEndOfLine;
+    extern const String GoToStartOfDocument;
+    extern const String GoToEndOfDocument;
+    extern const String GoToNextPage;
+    extern const String GoToPreviousPage;
+    extern const String GoDown;
+    extern const String GoUp;
 
-    static const String SelectRange;
-    static const String SelectCumulative;
-    static const String SelectWord;
-    static const String SelectAll;
-    static const String SelectPreviousCharacter;
-    static const String SelectNextCharacter;
-    static const String SelectPreviousWord;
-    static const String SelectNextWord;
-    static const String SelectToStartOfLine;
-    static const String SelectToEndOfLine;
-    static const String SelectToStartOfDocument;
-    static const String SelectToEndOfDocument;
-    static const String SelectToNextPage;
-    static const String SelectToPreviousPage;
-    static const String SelectNextPage;
-    static const String SelectPreviousPage;
-    static const String SelectUp;
-    static const String SelectDown;
+    extern const String SelectRange;
+    extern const String SelectCumulative;
+    extern const String SelectWord;
+    extern const String SelectAll;
+    extern const String SelectPreviousCharacter;
+    extern const String SelectNextCharacter;
+    extern const String SelectPreviousWord;
+    extern const String SelectNextWord;
+    extern const String SelectToStartOfLine;
+    extern const String SelectToEndOfLine;
+    extern const String SelectToStartOfDocument;
+    extern const String SelectToEndOfDocument;
+    extern const String SelectToNextPage;
+    extern const String SelectToPreviousPage;
+    extern const String SelectNextPage;
+    extern const String SelectPreviousPage;
+    extern const String SelectUp;
+    extern const String SelectDown;
 
-    static const String DeleteNextCharacter;
-    static const String DeletePreviousCharacter;
-    static const String Confirm;
-    static const String Back;
-    static const String Undo;
-    static const String Redo;
-    static const String Cut;
-    static const String Copy;
-    static const String Paste;
-    static const String HorizontalScroll;
-    static const String VerticalScroll;
-    static const String NavigateToNext;
-    static const String NavigateToPrevious;
-};
+    extern const String DeleteNextCharacter;
+    extern const String DeletePreviousCharacter;
+    extern const String Confirm;
+    extern const String Back;
+    extern const String Undo;
+    extern const String Redo;
+    extern const String Cut;
+    extern const String Copy;
+    extern const String Paste;
+    extern const String HorizontalScroll;
+    extern const String VerticalScroll;
+    extern const String NavigateToNext;
+    extern const String NavigateToPrevious;
+}
 
 } // End of  CEGUI namespace section
 

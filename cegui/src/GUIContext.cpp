@@ -935,7 +935,11 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
         // Try to generate click events for the window
         if (window == d_mouseClickTracker.d_window)
         {
-            args.d_generatedClickEventOrder = d_mouseClickTracker.onMouseButtonUp(button, d_cursor.getPosition(), window);
+            // Clicks are generated only for mouse up happening over the window
+            // FIXME/TODO INPUT: d_windowContainingCursor could be used but then it must not be affected by capture and modal!
+            auto windowUnderCursor = d_rootWindow->getTargetChildAtPosition(d_cursor.getPosition());
+
+            args.d_generatedClickEventOrder = d_mouseClickTracker.onMouseButtonUp(button, d_cursor.getPosition(), windowUnderCursor);
 
             // First process multi-clicks that have dedicated event handlers
             switch (args.d_generatedClickEventOrder)
@@ -1127,7 +1131,7 @@ void GUIContext::initDefaultInputSemantics()
     d_keySemantics.push_back({ SemanticValue::GoToPreviousCharacter, Key::Scan::ArrowLeft });
     d_keySemantics.push_back({ SemanticValue::GoToNextCharacter, Key::Scan::ArrowRight });
     d_keySemantics.push_back({ SemanticValue::NavigateToNext, Key::Scan::Tab });
-    d_keySemantics.push_back({ SemanticValue::NavigateToPrevious, Key::Scan::Tab, ModifierKeys::Ctrl() });
+    d_keySemantics.push_back({ SemanticValue::NavigateToPrevious, Key::Scan::Tab, ModifierKeyRule().ctrl() });
     d_keySemantics.push_back({ SemanticValue::DeletePreviousCharacter, Key::Scan::Backspace });
     d_keySemantics.push_back({ SemanticValue::DeleteNextCharacter, Key::Scan::DeleteKey });
     d_keySemantics.push_back({ SemanticValue::Confirm, Key::Scan::NumpadEnter });
@@ -1136,48 +1140,48 @@ void GUIContext::initDefaultInputSemantics()
     d_keySemantics.push_back({ SemanticValue::GoToStartOfLine, Key::Scan::Home });
     d_keySemantics.push_back({ SemanticValue::GoToNextPage, Key::Scan::PageDown });
     d_keySemantics.push_back({ SemanticValue::GoToPreviousPage, Key::Scan::PageUp });
-    d_keySemantics.push_back({ SemanticValue::GoToPreviousWord, Key::Scan::ArrowLeft, ModifierKeys::Ctrl() });
-    d_keySemantics.push_back({ SemanticValue::GoToNextWord, Key::Scan::ArrowRight, ModifierKeys::Ctrl() });
-    d_keySemantics.push_back({ SemanticValue::GoToEndOfDocument, Key::Scan::Home, ModifierKeys::Ctrl() });
-    d_keySemantics.push_back({ SemanticValue::GoToStartOfDocument, Key::Scan::ArrowLeft, ModifierKeys::Ctrl() });
-    d_keySemantics.push_back({ SemanticValue::SelectAll, Key::Scan::A, ModifierKeys::Ctrl() });
-    d_keySemantics.push_back({ SemanticValue::Undo, Key::Scan::Backspace, ModifierKeys::Alt() });
-    d_keySemantics.push_back({ SemanticValue::Undo, Key::Scan::Z, ModifierKeys::Ctrl() });
-    d_keySemantics.push_back({ SemanticValue::Redo, Key::Scan::Y, ModifierKeys::Ctrl() });
-    d_keySemantics.push_back({ SemanticValue::Copy, Key::Scan::C, ModifierKeys::Ctrl() });
-    d_keySemantics.push_back({ SemanticValue::Paste, Key::Scan::V, ModifierKeys::Ctrl() });
-    d_keySemantics.push_back({ SemanticValue::Cut, Key::Scan::X, ModifierKeys::Ctrl() });
-    d_keySemantics.push_back({ SemanticValue::SelectPreviousCharacter, Key::Scan::ArrowLeft, ModifierKeys::Shift() });
-    d_keySemantics.push_back({ SemanticValue::SelectNextCharacter, Key::Scan::ArrowRight, ModifierKeys::Shift() });
-    d_keySemantics.push_back({ SemanticValue::SelectUp, Key::Scan::ArrowUp, ModifierKeys::Shift() });
-    d_keySemantics.push_back({ SemanticValue::SelectDown, Key::Scan::ArrowDown, ModifierKeys::Shift() });
-    d_keySemantics.push_back({ SemanticValue::SelectToEndOfLine, Key::Scan::End, ModifierKeys::Shift() });
-    d_keySemantics.push_back({ SemanticValue::SelectToStartOfLine, Key::Scan::Home, ModifierKeys::Shift() });
-    d_keySemantics.push_back({ SemanticValue::SelectToPreviousPage, Key::Scan::PageUp, ModifierKeys::Shift() });
-    d_keySemantics.push_back({ SemanticValue::SelectToNextPage, Key::Scan::PageDown, ModifierKeys::Shift() });
-    d_keySemantics.push_back({ SemanticValue::SelectPreviousWord, Key::Scan::ArrowLeft, ModifierKeys::Ctrl() | ModifierKeys::Shift() });
-    d_keySemantics.push_back({ SemanticValue::SelectNextWord, Key::Scan::ArrowRight, ModifierKeys::Ctrl() | ModifierKeys::Shift() });
-    d_keySemantics.push_back({ SemanticValue::SelectToEndOfDocument, Key::Scan::End, ModifierKeys::Ctrl() | ModifierKeys::Shift() });
-    d_keySemantics.push_back({ SemanticValue::SelectToStartOfDocument, Key::Scan::Home, ModifierKeys::Ctrl() | ModifierKeys::Shift() });
+    d_keySemantics.push_back({ SemanticValue::GoToPreviousWord, Key::Scan::ArrowLeft, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::GoToNextWord, Key::Scan::ArrowRight, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::GoToEndOfDocument, Key::Scan::Home, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::GoToStartOfDocument, Key::Scan::ArrowLeft, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::SelectAll, Key::Scan::A, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::Undo, Key::Scan::Backspace, ModifierKeyRule::OnlyAlt() });
+    d_keySemantics.push_back({ SemanticValue::Undo, Key::Scan::Z, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::Redo, Key::Scan::Y, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::Copy, Key::Scan::C, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::Paste, Key::Scan::V, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::Cut, Key::Scan::X, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::SelectPreviousCharacter, Key::Scan::ArrowLeft, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectNextCharacter, Key::Scan::ArrowRight, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectUp, Key::Scan::ArrowUp, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectDown, Key::Scan::ArrowDown, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectToEndOfLine, Key::Scan::End, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectToStartOfLine, Key::Scan::Home, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectToPreviousPage, Key::Scan::PageUp, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectToNextPage, Key::Scan::PageDown, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectPreviousWord, Key::Scan::ArrowLeft, ModifierKeyRule::OnlyCtrlShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectNextWord, Key::Scan::ArrowRight, ModifierKeyRule::OnlyCtrlShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectToEndOfDocument, Key::Scan::End, ModifierKeyRule::OnlyCtrlShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectToStartOfDocument, Key::Scan::Home, ModifierKeyRule::OnlyCtrlShift() });
     std::sort(d_keySemantics.begin(), d_keySemantics.end());
 
     d_mouseSemantics.clear();
-    d_mouseSemantics.push_back({ SemanticValue::SelectCumulative, MouseButton::Left, ModifierKeys::Ctrl() });
-    d_mouseSemantics.push_back({ SemanticValue::SelectRange, MouseButton::Left, ModifierKeys::Shift() });
-    d_mouseSemantics.push_back({ SemanticValue::SelectWord, MouseButton::Left, ModifierKeys::Shift(), {}, 2 });
-    d_mouseSemantics.push_back({ SemanticValue::SelectAll, MouseButton::Left, ModifierKeys::Shift(), {}, 3 });
+    d_mouseSemantics.push_back({ SemanticValue::SelectCumulative, MouseButton::Left, ModifierKeyRule::OnlyCtrl() });
+    d_mouseSemantics.push_back({ SemanticValue::SelectRange, MouseButton::Left, ModifierKeyRule::OnlyShift() });
+    d_mouseSemantics.push_back({ SemanticValue::SelectWord, MouseButton::Left, ModifierKeyRule::OnlyShift(), {}, 2 });
+    d_mouseSemantics.push_back({ SemanticValue::SelectAll, MouseButton::Left, ModifierKeyRule::OnlyShift(), {}, 3 });
     std::sort(d_mouseSemantics.begin(), d_mouseSemantics.end());
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::registerInputSemantic(const String& value, Key::Scan scanCode, ModifierKeys modifiers)
+void GUIContext::registerInputSemantic(const String& value, Key::Scan scanCode, ModifierKeyRule modifiers)
 {
     KeySemanticMapping rec{ value, scanCode, modifiers };
     d_keySemantics.insert(std::upper_bound(d_keySemantics.begin(), d_keySemantics.end(), rec), std::move(rec));
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::registerInputSemantic(const String& value, MouseButton button, ModifierKeys modifiers, int clickOrder, MouseButtons buttons)
+void GUIContext::registerInputSemantic(const String& value, MouseButton button, ModifierKeyRule modifiers, int clickOrder, MouseButtons buttons)
 {
     MouseButtonSemanticMapping rec{ value, button, modifiers, buttons, clickOrder };
     d_mouseSemantics.insert(std::upper_bound(d_mouseSemantics.begin(), d_mouseSemantics.end(), rec), std::move(rec));
@@ -1206,7 +1210,7 @@ bool GUIContext::isInputSemantic(const String& value, const KeyEventArgs& args) 
     for (auto it = pair.first; it != pair.second; ++it)
     {
         const auto& rule = *it;
-        if (rule.scanCode == args.d_key && args.d_modifiers.hasAny(rule.modifiers)) //!!!FIXME: wrong modifier key matching logic!
+        if (rule.scanCode == args.d_key && rule.modifiers.match(args.d_modifiers))
             return true;
     }
     return false;
@@ -1222,7 +1226,7 @@ bool GUIContext::isInputSemantic(const String& value, const MouseButtonEventArgs
         if (rule.button == args.d_button &&
             rule.buttons == args.d_buttons &&
             rule.clickOrder == args.d_generatedClickEventOrder &&
-            args.d_modifiers.hasAny(rule.modifiers)) //!!!FIXME: wrong modifier key matching logic!
+            rule.modifiers.match(args.d_modifiers))
         {
             return true;
         }

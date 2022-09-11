@@ -259,6 +259,39 @@ void DragContainer::onMouseButtonDown(MouseButtonEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+void DragContainer::onMouseButtonUp(MouseButtonEventArgs& e)
+{
+    Window::onMouseButtonUp(e);
+
+    if (e.d_button == MouseButton::Left)
+    {
+        // Handle dropping
+        if (d_dragging)
+        {
+            // Target could change even if we didn't move. Ensure we drop correctly.
+            updateDropTarget();
+
+            if (d_dropTarget)
+            {
+                // Keep position changes made in a DragDropItemDropped
+                const UVector2 prevPos = getPosition();
+
+                // Try dropping. Continue sticky dragging if it is not accepted by the target.
+                if (!d_dropTarget->notifyDragDropItemDropped(this) && d_pickedUp)
+                    return;
+
+                endDragging(prevPos == getPosition());
+            }
+        }
+
+        // Release input capture anyway
+        releaseInput();
+
+        ++e.handled;
+    }
+}
+
+//----------------------------------------------------------------------------//
 void DragContainer::onClick(MouseButtonEventArgs& e)
 {
     Window::onClick(e);
@@ -267,37 +300,13 @@ void DragContainer::onClick(MouseButtonEventArgs& e)
     {
         ++e.handled;
 
+        // Perform picking up in a sticky mode
         if (!d_dragging && d_stickyMode && !d_pickedUp)
         {
-            // Perform picking up in a sticky mode
             WindowEventArgs args(this);
             onDragStarted(args);
             if (d_dragging)
                 d_pickedUp = true;
-        }
-        else
-        {
-            // Handle dropping
-            if (d_dragging)
-            {
-                // Target could change even if we didn't move. Ensure we drop correctly.
-                updateDropTarget();
-
-                if (d_dropTarget)
-                {
-                    // Keep position changes made in a DragDropItemDropped
-                    const UVector2 prevPos = getPosition();
-
-                    // Try dropping. Continue sticky dragging if it is not accepted by the target.
-                    if (!d_dropTarget->notifyDragDropItemDropped(this) && d_pickedUp)
-                        return;
-
-                    endDragging(prevPos == getPosition());
-                }
-            }
-
-            // Release input capture anyway
-            releaseInput();
         }
     }
 }

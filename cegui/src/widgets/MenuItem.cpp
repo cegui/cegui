@@ -62,18 +62,7 @@ MenuItem::MenuItem(const String& type, const String& name)
     addMenuItemProperties();
 }
 
-
-/*************************************************************************
-    Destructor for MenuItem base class.
-*************************************************************************/
-MenuItem::~MenuItem(void)
-{
-}
-
-
-/*************************************************************************
-    Update the internal state of the Widget
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MenuItem::updateInternalState(const glm::vec2& cursor_pos)
 {
     if (!d_guiContext)
@@ -132,19 +121,13 @@ void MenuItem::updateInternalState(const glm::vec2& cursor_pos)
     }
 }
 
-
-/*************************************************************************
-    Set the popup menu for this item.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MenuItem::setPopupMenu(PopupMenu* popup)
 {
     setPopupMenu_impl(popup);
 }
 
-
-/*************************************************************************
-    Set the popup menu for this item.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MenuItem::setPopupMenu_impl(PopupMenu* popup, bool add_as_child)
 {
     // is it the one we have already ?
@@ -234,9 +217,7 @@ Rectf offset_rect(Rectf result, const glm::vec2 & v)
 
 } // end anonymous namespace
 
-/*************************************************************************
-    Computes the offset at which a popup menu will appear.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 bool MenuItem::computePopupOffset(UVector2 & output) const
 {
     Window* p = d_ownerList;
@@ -304,19 +285,13 @@ bool MenuItem::computePopupOffset(UVector2 & output) const
     return false;  
 }
 
-
-/*************************************************************************
-    Compute bounding box (assumed clipping rectangle) of our popup menu
-*************************************************************************/
+//----------------------------------------------------------------------------//
 Rectf MenuItem::popupBoundingBox() const
 {
     return Rectf(glm::vec2(0, 0), getRootContainerSize());
 }
 
-
-/*************************************************************************
-    Open the PopupMenu attached to this item.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MenuItem::openPopupMenu(bool notify)
 {
     // no popup? or already open...
@@ -357,10 +332,7 @@ void MenuItem::openPopupMenu(bool notify)
     invalidate();
 }
 
-
-/*************************************************************************
-    Close the PopupMenu attached to this item.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MenuItem::closePopupMenu(bool notify)
 {
     // no popup? or not open...
@@ -394,11 +366,8 @@ void MenuItem::closePopupMenu(bool notify)
     invalidate();
 }
 
-
-/*************************************************************************
-    Toggles the PopupMenu.
-*************************************************************************/
-bool MenuItem::togglePopupMenu(void)
+//----------------------------------------------------------------------------//
+bool MenuItem::togglePopupMenu()
 {
     if (d_opened)
     {
@@ -410,7 +379,8 @@ bool MenuItem::togglePopupMenu(void)
     return true;
 }
 
-void MenuItem::startPopupClosing(void)
+//----------------------------------------------------------------------------//
+void MenuItem::startPopupClosing()
 {
     d_popupOpening = false;
 
@@ -426,7 +396,8 @@ void MenuItem::startPopupClosing(void)
     }
 }
 
-void MenuItem::startPopupOpening(void)
+//----------------------------------------------------------------------------//
+void MenuItem::startPopupOpening()
 {
     d_popupClosing = false;
 
@@ -441,10 +412,7 @@ void MenuItem::startPopupOpening(void)
     }
 }
 
-/*************************************************************************
-    Recursive function that closes all popups down the hierarchy starting
-    with this one.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MenuItem::closeAllMenuItemPopups()
 {
     // are we attached to a PopupMenu?
@@ -477,10 +445,7 @@ void MenuItem::closeAllMenuItemPopups()
     }
 }
 
-
-/*************************************************************************
-    handler invoked internally when the menuitem is clicked.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MenuItem::onClicked(WindowEventArgs& e)
 {
     // close the popup if we did'nt spawn a child
@@ -493,10 +458,7 @@ void MenuItem::onClicked(WindowEventArgs& e)
     fireEvent(EventClicked, e, EventNamespace);
 }
 
-
-/*************************************************************************
-    Handler for when the cursor moves
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MenuItem::onCursorMove(CursorMoveEventArgs& e)
 {
     // this is needed to discover whether cursor is in the widget area or not.
@@ -505,20 +467,15 @@ void MenuItem::onCursorMove(CursorMoveEventArgs& e)
     // so we must discover the internal widget state here - which is actually
     // more efficient anyway.
 
-    // base class processing
     ItemEntry::onCursorMove(e);
 
     updateInternalState(e.d_position);
     ++e.handled;
 }
 
-
-/*************************************************************************
-    Handler for cursor pressed events
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MenuItem::onMouseButtonDown(MouseButtonEventArgs& e)
 {
-    // default processing
     ItemEntry::onMouseButtonDown(e);
 
     if (e.d_button == MouseButton::Left)
@@ -533,45 +490,44 @@ void MenuItem::onMouseButtonDown(MouseButtonEventArgs& e)
             invalidate();
         }
 
-        // event was handled by us.
         ++e.handled;
     }
 }
 
-
-/*************************************************************************
-    Handler for cursor activation events
-*************************************************************************/
-void MenuItem::onClick(MouseButtonEventArgs& e)
+//----------------------------------------------------------------------------//
+void MenuItem::onMouseButtonUp(MouseButtonEventArgs& e)
 {
-    // default processing
-    ItemEntry::onClick(e);
+    ItemEntry::onMouseButtonUp(e);
 
     if (e.d_button == MouseButton::Left)
     {
         releaseInput();
+        ++e.handled;
+    }
+}
 
-        // was the button released over this window?
-        // (use cursor position, as e.position in args has been unprojected)
+//----------------------------------------------------------------------------//
+void MenuItem::onClick(MouseButtonEventArgs& e)
+{
+    ItemEntry::onClick(e);
+
+    if (e.d_button == MouseButton::Left)
+    {
+        // was the button released over this window? (use cursor position, as e.position in args has been unprojected)
         if (!d_popupWasClosed &&
-                getGUIContext().getRootWindow()->getTargetChildAtPosition(
-                    getGUIContext().getCursor().getPosition()) == this)
+            getGUIContext().getRootWindow()->getTargetChildAtPosition(getGUIContext().getCursor().getPosition()) == this)
         {
             WindowEventArgs we(this);
             onClicked(we);
         }
 
-        // event was handled by us.
         ++e.handled;
     }
 }
 
-/*************************************************************************
-    Handler for when cursor capture is lost
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MenuItem::onCaptureLost(WindowEventArgs& e)
 {
-    // Default processing
     ItemEntry::onCaptureLost(e);
 
     d_pushed = false;
@@ -579,29 +535,20 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
         getGUIContext().getCursor().getPosition()));
     invalidate();
 
-    // event was handled by us.
     ++e.handled;
 }
 
-
-/*************************************************************************
-    Handler for when cursor leaves the widget
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MenuItem::onCursorLeaves(CursorInputEventArgs& e)
 {
-    // default processing
     ItemEntry::onCursorLeaves(e);
 
     d_hovering = false;
     invalidate();
-
     ++e.handled;
 }
 
-
-/*************************************************************************
-    Handler called when text is changed.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MenuItem::onTextChanged(WindowEventArgs& e)
 {
     ItemEntry::onTextChanged(e);
@@ -618,9 +565,7 @@ void MenuItem::onTextChanged(WindowEventArgs& e)
     ++e.handled;
 }
 
-/*************************************************************************
-Perform actual update processing for this Window.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MenuItem::updateSelf(float elapsed)
 {
     ItemEntry::updateSelf(elapsed);
@@ -657,9 +602,7 @@ void MenuItem::updateSelf(float elapsed)
     }
 }
 
-/*************************************************************************
-    Internal version of adding a child window.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MenuItem::addChild_impl(Element* element)
 {
     Window* wnd = dynamic_cast<Window*>(element);
@@ -676,10 +619,8 @@ void MenuItem::addChild_impl(Element* element)
         setPopupMenu_impl(pop, false);
 }
 
-/*************************************************************************
-Add MenuItem specific properties
-*************************************************************************/
-void MenuItem::addMenuItemProperties(void)
+//----------------------------------------------------------------------------//
+void MenuItem::addMenuItemProperties()
 {
     const String& propertyOrigin = WidgetTypeName;
 
@@ -689,4 +630,4 @@ void MenuItem::addMenuItemProperties(void)
     );
 }
 
-} // End of  CEGUI namespace section
+}
