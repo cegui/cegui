@@ -31,7 +31,6 @@
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/Sizef.h"
 #include <chrono>
-#include <iostream>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -47,7 +46,7 @@ namespace CEGUI
     Leave needShift disabled if your enum values are already single bit masks (0x0, 0x1, 0x2, 0x4, 0x8 ...).
 */
 template<typename T, bool needShift = false, typename mask_t = std::underlying_type_t<T>, class = typename std::enable_if_t<std::is_enum_v<T>>>
-struct Flags
+struct CEGUIEXPORT Flags
 {
     static inline constexpr mask_t bit(T flag)
     {
@@ -284,7 +283,7 @@ using MouseButtons = Flags<MouseButton, true>;
 \brief
     Helper class for generating click and multi-click events
 */
-struct MouseClickTracker
+struct CEGUIEXPORT MouseClickTracker
 {
     using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
 
@@ -311,28 +310,19 @@ struct MouseClickTracker
     bool needReset(MouseButton button, const glm::vec2& position, Window* window) const
     {
         if (!d_clickLimit || d_button != button || d_window != window)
-        {
-            std::cout << "Cancelled by disable or window or button: " << (size_t)window << ", " << d_clickCount << std::endl;
             return true;
-        }
 
         // Single clicks are not cancelled by timeout and by offset for better UX
         if (d_clickCount > 1)
         {
             if (std::abs(d_downPos.x - position.x) > d_multiClickDistance || std::abs(d_downPos.y - position.y) > d_multiClickDistance)
-            {
-                std::cout << "Cancelled by offset: " << (size_t)window << ", " << d_clickCount << std::endl;
                 return true;
-            }
 
             if (d_multiClickTimeout > 0.f)
             {
                 const auto secElapsed = std::chrono::duration<float>(std::chrono::steady_clock::now() - d_downTime).count();
                 if (secElapsed > d_clickCount * d_multiClickTimeout)
-                {
-                    std::cout << "Cancelled by timeout: " << (size_t)window << ", " << d_clickCount << std::endl;
                     return true;
-                }
             }
         }
 
@@ -341,8 +331,6 @@ struct MouseClickTracker
 
     void onMouseButtonDown(MouseButton button, const glm::vec2& position, Window* window)
     {
-        std::cout << "onMouseButtonDown: " << (size_t)window << ", " << d_clickCount << std::endl;
-
         ++d_clickCount;
         if (d_clickCount > d_clickLimit)
             d_clickCount = 1;
@@ -364,11 +352,9 @@ struct MouseClickTracker
     //! \return Multiclick order to generate (typically 1, 2 or 3) ot 0 if no click event needs to be generated
     int onMouseButtonUp(MouseButton button, const glm::vec2& position, Window* window)
     {
-        std::cout << "onMouseButtonUp: " << (size_t)window << ", " << d_clickCount << std::endl;
         if (needReset(button, position, window))
             reset();
 
-        if (d_clickCount) std::cout << "Click generated: " << (size_t)window << ", " << d_clickCount << std::endl;
         return d_clickCount;
     }
 };
@@ -386,7 +372,7 @@ enum class ModifierKey : int
 };
 
 //! \brief Helper class for holding and checking modifier key pressed state
-struct ModifierKeys : public Flags<ModifierKey>
+struct CEGUIEXPORT ModifierKeys : public Flags<ModifierKey>
 {
     // TODO: C++17
     //static inline constexpr ModifierKeys Shift{ModifierKey::LeftShift | ModifierKey::RightShift}; etc
@@ -403,7 +389,7 @@ struct ModifierKeys : public Flags<ModifierKey>
 };
 
 //! \brief A flexible rule that can be matched with ModifierKeys state to check for a certain combination
-class ModifierKeyRule
+class CEGUIEXPORT ModifierKeyRule
 {
 public:
 
@@ -439,12 +425,15 @@ public:
         ModifierKeys violations((keys.getMask() ^ d_set.getMask()) & d_map.getMask());
 
         // Handle the fact that 'key' rule without specifying left or right means 'any', not 'all' like 'noKey' does
-        if (d_set.hasAll(ModifierKeys::Shift()) && !violations.hasAll(ModifierKeys::Shift()))
-            violations -= ModifierKeys::Shift();
-        if (d_set.hasAll(ModifierKeys::Ctrl()) && !violations.hasAll(ModifierKeys::Ctrl()))
-            violations -= ModifierKeys::Ctrl();
-        if (d_set.hasAll(ModifierKeys::Alt()) && !violations.hasAll(ModifierKeys::Alt()))
-            violations -= ModifierKeys::Alt();
+        if (violations)
+        {
+            if (d_set.hasAll(ModifierKeys::Shift()) && !violations.hasAll(ModifierKeys::Shift()))
+                violations -= ModifierKeys::Shift();
+            if (d_set.hasAll(ModifierKeys::Ctrl()) && !violations.hasAll(ModifierKeys::Ctrl()))
+                violations -= ModifierKeys::Ctrl();
+            if (d_set.hasAll(ModifierKeys::Alt()) && !violations.hasAll(ModifierKeys::Alt()))
+                violations -= ModifierKeys::Alt();
+        }
 
         return !violations;
     }
@@ -464,7 +453,7 @@ protected:
     ModifierKeys d_set = 0; // Whether the corresponding key should be pressed or not
 };
 
-static ModifierKey ModifierFromScanCode(Key::Scan scanCode)
+static inline ModifierKey ModifierFromScanCode(Key::Scan scanCode)
 {
     switch (scanCode)
     {
@@ -669,7 +658,7 @@ public:
     Font* font;
 };
 
-struct KeySemanticMapping
+struct CEGUIEXPORT KeySemanticMapping
 {
     // TODO StringAtom!
     String value;
@@ -680,13 +669,13 @@ struct KeySemanticMapping
 };
 
 // TODO StringAtom!
-struct KeySemanticMappingComp
+struct CEGUIEXPORT KeySemanticMappingComp
 {
     bool operator() (const KeySemanticMapping& s, const String& value) const { return s.value < value; }
     bool operator() (const String& value, const KeySemanticMapping& s) const { return value < s.value; }
 };
 
-struct MouseButtonSemanticMapping
+struct CEGUIEXPORT MouseButtonSemanticMapping
 {
     // TODO StringAtom!
     String value;
@@ -699,7 +688,7 @@ struct MouseButtonSemanticMapping
 };
 
 // TODO StringAtom!
-struct MouseButtonSemanticMappingComp
+struct CEGUIEXPORT MouseButtonSemanticMappingComp
 {
     bool operator() (const MouseButtonSemanticMapping& s, const String& value) const { return s.value < value; }
     bool operator() (const String& value, const MouseButtonSemanticMapping& s) const { return value < s.value; }
@@ -709,51 +698,51 @@ struct MouseButtonSemanticMappingComp
 namespace SemanticValue
 {
     // TODO StringAtom!
-    extern const String GoToPreviousCharacter;
-    extern const String GoToNextCharacter;
-    extern const String GoToPreviousWord;
-    extern const String GoToNextWord;
-    extern const String GoToStartOfLine;
-    extern const String GoToEndOfLine;
-    extern const String GoToStartOfDocument;
-    extern const String GoToEndOfDocument;
-    extern const String GoToNextPage;
-    extern const String GoToPreviousPage;
-    extern const String GoDown;
-    extern const String GoUp;
+    extern const String CEGUIEXPORT GoToPreviousCharacter;
+    extern const String CEGUIEXPORT GoToNextCharacter;
+    extern const String CEGUIEXPORT GoToPreviousWord;
+    extern const String CEGUIEXPORT GoToNextWord;
+    extern const String CEGUIEXPORT GoToStartOfLine;
+    extern const String CEGUIEXPORT GoToEndOfLine;
+    extern const String CEGUIEXPORT GoToStartOfDocument;
+    extern const String CEGUIEXPORT GoToEndOfDocument;
+    extern const String CEGUIEXPORT GoToNextPage;
+    extern const String CEGUIEXPORT GoToPreviousPage;
+    extern const String CEGUIEXPORT GoDown;
+    extern const String CEGUIEXPORT GoUp;
 
-    extern const String SelectRange;
-    extern const String SelectCumulative;
-    extern const String SelectWord;
-    extern const String SelectAll;
-    extern const String SelectPreviousCharacter;
-    extern const String SelectNextCharacter;
-    extern const String SelectPreviousWord;
-    extern const String SelectNextWord;
-    extern const String SelectToStartOfLine;
-    extern const String SelectToEndOfLine;
-    extern const String SelectToStartOfDocument;
-    extern const String SelectToEndOfDocument;
-    extern const String SelectToNextPage;
-    extern const String SelectToPreviousPage;
-    extern const String SelectNextPage;
-    extern const String SelectPreviousPage;
-    extern const String SelectUp;
-    extern const String SelectDown;
+    extern const String CEGUIEXPORT SelectRange;
+    extern const String CEGUIEXPORT SelectCumulative;
+    extern const String CEGUIEXPORT SelectWord;
+    extern const String CEGUIEXPORT SelectAll;
+    extern const String CEGUIEXPORT SelectPreviousCharacter;
+    extern const String CEGUIEXPORT SelectNextCharacter;
+    extern const String CEGUIEXPORT SelectPreviousWord;
+    extern const String CEGUIEXPORT SelectNextWord;
+    extern const String CEGUIEXPORT SelectToStartOfLine;
+    extern const String CEGUIEXPORT SelectToEndOfLine;
+    extern const String CEGUIEXPORT SelectToStartOfDocument;
+    extern const String CEGUIEXPORT SelectToEndOfDocument;
+    extern const String CEGUIEXPORT SelectToNextPage;
+    extern const String CEGUIEXPORT SelectToPreviousPage;
+    extern const String CEGUIEXPORT SelectNextPage;
+    extern const String CEGUIEXPORT SelectPreviousPage;
+    extern const String CEGUIEXPORT SelectUp;
+    extern const String CEGUIEXPORT SelectDown;
 
-    extern const String DeleteNextCharacter;
-    extern const String DeletePreviousCharacter;
-    extern const String Confirm;
-    extern const String Back;
-    extern const String Undo;
-    extern const String Redo;
-    extern const String Cut;
-    extern const String Copy;
-    extern const String Paste;
-    extern const String HorizontalScroll;
-    extern const String VerticalScroll;
-    extern const String NavigateToNext;
-    extern const String NavigateToPrevious;
+    extern const String CEGUIEXPORT DeleteNextCharacter;
+    extern const String CEGUIEXPORT DeletePreviousCharacter;
+    extern const String CEGUIEXPORT Confirm;
+    extern const String CEGUIEXPORT Back;
+    extern const String CEGUIEXPORT Undo;
+    extern const String CEGUIEXPORT Redo;
+    extern const String CEGUIEXPORT Cut;
+    extern const String CEGUIEXPORT Copy;
+    extern const String CEGUIEXPORT Paste;
+    extern const String CEGUIEXPORT HorizontalScroll;
+    extern const String CEGUIEXPORT VerticalScroll;
+    extern const String CEGUIEXPORT NavigateToNext;
+    extern const String CEGUIEXPORT NavigateToPrevious;
 }
 
 } // End of  CEGUI namespace section
