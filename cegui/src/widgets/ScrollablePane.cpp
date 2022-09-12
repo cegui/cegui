@@ -733,7 +733,7 @@ void ScrollablePane::onMouseButtonDown(MouseButtonEventArgs& e)
         if (captureInput())
         {
             d_swiping = true;
-            d_swipeStartPoint = CoordConverter::screenToWindow(*this, e.d_position);
+            d_swipeStartPoint = CoordConverter::screenToWindow(*this, e.d_localPos);
         }
 
         ++e.handled;
@@ -747,7 +747,7 @@ void ScrollablePane::onCursorMove(CursorMoveEventArgs& e)
 
     if (d_swiping)
     {
-        auto newPos = CoordConverter::screenToWindow(*this, e.d_position);
+        auto newPos = CoordConverter::screenToWindow(*this, e.d_localPos);
         const glm::vec2 delta(newPos - d_swipeStartPoint);
 
         scrollContentPane(-delta.x, -delta.y, ScrollSource::Swipe);

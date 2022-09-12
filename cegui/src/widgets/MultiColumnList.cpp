@@ -1903,7 +1903,7 @@ void MultiColumnList::onMouseButtonDown(MouseButtonEventArgs& e)
 
     if (e.d_button == MouseButton::Left)
     {
-        const glm::vec2 localPoint = CoordConverter::screenToWindow(*this, e.d_position);
+        const glm::vec2 localPoint = CoordConverter::screenToWindow(*this, e.d_localPos);
         handleSelection(localPoint, e.d_modifiers.hasCtrl(), e.d_modifiers.hasShift());
         ++e.handled;
     }

@@ -414,7 +414,7 @@ void GUIContext::updateWindowContainingCursorInternal(Window* windowWithCursor)
     if (oldWindow)
     {
         // Inform the previous window that the cursor has left it
-        CursorInputEventArgs args(oldWindow, oldWindow->getUnprojectedPosition(d_cursor.getPosition()));
+        CursorInputEventArgs args(oldWindow, d_cursor.getPosition());
         oldWindow->onCursorLeaves(args);
         notifyCursorTransition(root, oldWindow, &Window::onCursorLeavesArea, args);
     }
@@ -427,7 +427,7 @@ void GUIContext::updateWindowContainingCursorInternal(Window* windowWithCursor)
     if (windowWithCursor)
     {
         // Inform window containing cursor that cursor has entered it
-        CursorInputEventArgs args(windowWithCursor, windowWithCursor->getUnprojectedPosition(d_cursor.getPosition()));
+        CursorInputEventArgs args(windowWithCursor, d_cursor.getPosition());
         windowWithCursor->onCursorEnters(args);
         notifyCursorTransition(root, windowWithCursor, &Window::onCursorEntersArea, args);
     }
@@ -700,7 +700,7 @@ void GUIContext::updateInputAutoRepeating(float timeElapsed)
         return;
 
     // Send events according to elapsed time
-    MouseButtonEventArgs args(d_captureWindow, d_captureWindow->getUnprojectedPosition(d_cursor.getPosition()),
+    MouseButtonEventArgs args(d_captureWindow, d_cursor.getPosition(),
         d_mouseButtons, d_modifierKeys, d_autoRepeatMouseButton);
     if (d_captureWindow == d_mouseClickTracker.d_window)
         args.d_generatedClickEventOrder = d_mouseClickTracker.d_clickCount;
@@ -803,7 +803,7 @@ bool GUIContext::injectMouseMove(float dx, float dy)
     auto window = getWindowContainingCursor();
     while (window)
     {
-        CursorMoveEventArgs args(window, window->getUnprojectedPosition(d_cursor.getPosition()), d_mouseButtons, d_modifierKeys, glm::vec2{ dx, dy });
+        CursorMoveEventArgs args(window, d_cursor.getPosition(), d_mouseButtons, d_modifierKeys, glm::vec2{ dx, dy });
         window->onCursorMove(args);
         if (args.handled)
             return true;
@@ -829,7 +829,7 @@ bool GUIContext::sendScrollEvent(float delta, Window* window)
 {
     while (window)
     {
-        ScrollEventArgs args(window, window->getUnprojectedPosition(d_cursor.getPosition()), d_mouseButtons, d_modifierKeys, delta);
+        ScrollEventArgs args(window, d_cursor.getPosition(), d_mouseButtons, d_modifierKeys, delta);
         window->onScroll(args);
         if (args.handled)
             return true;
@@ -867,7 +867,7 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
     auto window = getCursorTargetWindow(d_cursor.getPosition(), false);
     while (window)
     {
-        MouseButtonEventArgs args(window, window->getUnprojectedPosition(d_cursor.getPosition()), d_mouseButtons, d_modifierKeys, button);
+        MouseButtonEventArgs args(window, d_cursor.getPosition(), d_mouseButtons, d_modifierKeys, button);
         if (window == d_mouseClickTracker.d_window)
             args.d_generatedClickEventOrder = d_mouseClickTracker.d_clickCount;
 
@@ -930,7 +930,7 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
     auto window = getCursorTargetWindow(d_cursor.getPosition(), false);
     while (window)
     {
-        MouseButtonEventArgs args(window, window->getUnprojectedPosition(d_cursor.getPosition()), d_mouseButtons, d_modifierKeys, button);
+        MouseButtonEventArgs args(window, d_cursor.getPosition(), d_mouseButtons, d_modifierKeys, button);
 
         // Try to generate click events for the window
         if (window == d_mouseClickTracker.d_window)
@@ -986,7 +986,7 @@ bool GUIContext::injectMouseButtonClick(MouseButton button)
     auto window = getCursorTargetWindow(d_cursor.getPosition(), false);
     while (window)
     {
-        MouseButtonEventArgs args(window, window->getUnprojectedPosition(d_cursor.getPosition()), d_mouseButtons, d_modifierKeys, button);
+        MouseButtonEventArgs args(window, d_cursor.getPosition(), d_mouseButtons, d_modifierKeys, button);
         window->onClick(args);
         if (args.handled)
             return true;
@@ -1006,7 +1006,7 @@ bool GUIContext::injectMouseButtonDoubleClick(MouseButton button)
     auto window = getCursorTargetWindow(d_cursor.getPosition(), false);
     while (window)
     {
-        MouseButtonEventArgs args(window, window->getUnprojectedPosition(d_cursor.getPosition()), d_mouseButtons, d_modifierKeys, button);
+        MouseButtonEventArgs args(window, d_cursor.getPosition(), d_mouseButtons, d_modifierKeys, button);
         window->onDoubleClick(args);
         if (args.handled)
             return true;
@@ -1026,7 +1026,7 @@ bool GUIContext::injectMouseButtonTripleClick(MouseButton button)
     auto window = getCursorTargetWindow(d_cursor.getPosition(), false);
     while (window)
     {
-        MouseButtonEventArgs args(window, window->getUnprojectedPosition(d_cursor.getPosition()), d_mouseButtons, d_modifierKeys, button);
+        MouseButtonEventArgs args(window, d_cursor.getPosition(), d_mouseButtons, d_modifierKeys, button);
         window->onTripleClick(args);
         if (args.handled)
             return true;

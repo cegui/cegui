@@ -192,7 +192,7 @@ void Thumb::onCursorMove(CursorMoveEventArgs& e)
         const float vmin = d_vertMin;
         const float vmax = d_vertMax;
 
-        glm::vec2 delta = CoordConverter::screenToWindow(*this, e.d_position);
+        glm::vec2 delta = CoordConverter::screenToWindow(*this, e.d_localPos);
 
         // calculate amount of movement
 		delta -= d_dragPoint;
@@ -250,7 +250,7 @@ void Thumb::onMouseButtonDown(MouseButtonEventArgs& e)
 	{
 		// initialise the dragging state
 		d_beingDragged = true;
-		d_dragPoint = CoordConverter::screenToWindow(*this, e.d_position);
+		d_dragPoint = CoordConverter::screenToWindow(*this, e.d_localPos);
 
 		// trigger tracking started event
 		WindowEventArgs args(this);

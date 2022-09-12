@@ -107,18 +107,10 @@ void TabButton::onMouseButtonUp(MouseButtonEventArgs& e)
 //----------------------------------------------------------------------------//
 void TabButton::onClick(MouseButtonEventArgs& e)
 {
-    if ((e.d_button == MouseButton::Left) && isPushed())
+    if (e.d_button == MouseButton::Left && isPushed())
 	{
-		if (auto sheet = getGUIContext().getRootWindow())
-		{
-            // if cursor was released over this widget (use cursor position, as e.position has been unprojected)
-			if (this == sheet->getTargetChildAtPosition(getGUIContext().getCursor().getPosition()))
-			{
-				WindowEventArgs args(this);
-				onClicked(args);
-			}
-		}
-
+		WindowEventArgs args(this);
+		onClicked(args);
 		++e.handled;
     }
 

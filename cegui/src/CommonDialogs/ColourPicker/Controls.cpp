@@ -1433,7 +1433,7 @@ void ColourPickerControls::refreshColourPickerIndicatorPosition(
     const CursorInputEventArgs& pointerEventArgs)
 {
     const glm::vec2 localPos = CoordConverter::screenToWindow(
-                  *pointerEventArgs.window, pointerEventArgs.d_position);
+                  *pointerEventArgs.window, pointerEventArgs.d_localPos);
     positionColourPickerIndicatorAbsolute(localPos.x, localPos.y);
 
     if (d_sliderMode &

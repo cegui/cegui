@@ -131,7 +131,7 @@ bool SampleBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs&
     const CEGUI::String& lookNFeel(wnd->getLookNFeel());
     CEGUI::Rectf innerRectangle = CEGUI::WidgetLookManager::getSingleton().getWidgetLook(lookNFeel).getNamedArea("InnerArea").getArea().getPixelRect(*wnd);
 
-    const glm::vec2& cursor_pos(cursor_args.d_position);
+    const glm::vec2& cursor_pos(cursor_args.d_localPos);
 
     const CEGUI::Rectf& windowDimensions(wnd->getUnclippedOuterRect().get());
 

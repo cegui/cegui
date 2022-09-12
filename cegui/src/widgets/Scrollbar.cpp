@@ -218,7 +218,7 @@ void Scrollbar::onMouseButtonDown(MouseButtonEventArgs& e)
     if (e.d_button != MouseButton::Left)
         return;
 
-    const float adj = getAdjustDirectionFromPoint(e.d_position);
+    const float adj = getAdjustDirectionFromPoint(e.d_localPos);
 
     if (adj > 0)
         scrollForwardsByPage();

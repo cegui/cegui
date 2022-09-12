@@ -1,7 +1,15 @@
 #include "CEGUI/InputEvent.h"
+#include "CEGUI/Window.h"
 
 namespace CEGUI
 {
+
+//----------------------------------------------------------------------------//
+CursorInputEventArgs::CursorInputEventArgs(Window* wnd, const glm::vec2& globalPos, MouseButtons buttons, ModifierKeys modifiers)
+    : WindowEventArgs(wnd), d_globalPos(globalPos), d_buttons(buttons), d_modifiers(modifiers)
+{
+    d_localPos = wnd ? wnd->getUnprojectedPosition(globalPos) : globalPos;
+}
 
 //! \brief Predefined semantics that can be associated with specific input operations.
 namespace SemanticValue
@@ -48,8 +56,6 @@ namespace SemanticValue
     const String Cut("Cut");
     const String Copy("Copy");
     const String Paste("Paste");
-    const String HorizontalScroll("HorizontalScroll");
-    const String VerticalScroll("VerticalScroll");
     const String NavigateToNext("NavigateToNext");
     const String NavigateToPrevious("NavigateToPrevious");
 }

@@ -450,9 +450,7 @@ void MenuItem::onClicked(WindowEventArgs& e)
 {
     // close the popup if we did'nt spawn a child
     if (!d_opened && !d_popupWasClosed)
-    {
         closeAllMenuItemPopups();
-    }
 
     d_popupWasClosed = false;
     fireEvent(EventClicked, e, EventNamespace);
@@ -469,7 +467,7 @@ void MenuItem::onCursorMove(CursorMoveEventArgs& e)
 
     ItemEntry::onCursorMove(e);
 
-    updateInternalState(e.d_position);
+    updateInternalState(e.d_localPos);
     ++e.handled;
 }
 
@@ -485,7 +483,7 @@ void MenuItem::onMouseButtonDown(MouseButtonEventArgs& e)
         if (captureInput())
         {
             d_pushed = true;
-            updateInternalState(e.d_position);
+            updateInternalState(e.d_localPos);
             d_popupWasClosed = !togglePopupMenu();
             invalidate();
         }
@@ -513,14 +511,8 @@ void MenuItem::onClick(MouseButtonEventArgs& e)
 
     if (e.d_button == MouseButton::Left)
     {
-        // was the button released over this window? (use cursor position, as e.position in args has been unprojected)
-        if (!d_popupWasClosed &&
-            getGUIContext().getRootWindow()->getTargetChildAtPosition(getGUIContext().getCursor().getPosition()) == this)
-        {
-            WindowEventArgs we(this);
-            onClicked(we);
-        }
-
+        WindowEventArgs we(this);
+        onClicked(we);
         ++e.handled;
     }
 }

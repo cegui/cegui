@@ -74,7 +74,7 @@ void ButtonBase::onCursorMove(CursorMoveEventArgs& e)
 
 	Window::onCursorMove(e);
 
-	updateInternalState(e.d_position);
+	updateInternalState(e.d_localPos);
 	++e.handled;
 }
 
@@ -88,7 +88,7 @@ void ButtonBase::onMouseButtonDown(MouseButtonEventArgs& e)
         if (captureInput())
         {
 			d_pushed = true;
-			updateInternalState(e.d_position);
+			updateInternalState(e.d_localPos);
 			invalidate();
         }
 

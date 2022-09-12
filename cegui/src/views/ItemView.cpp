@@ -413,11 +413,11 @@ void ItemView::onMouseButtonDown(MouseButtonEventArgs& e)
     if (e.d_button == MouseButton::Left)
     {
         if (e.d_modifiers.hasCtrl())
-            handleSelection(e.d_position, true, d_isMultiSelectEnabled, false);
+            handleSelection(e.d_localPos, true, d_isMultiSelectEnabled, false);
         else if (e.d_modifiers.hasShift())
-            handleSelection(e.d_position, true, d_isMultiSelectEnabled, true);
+            handleSelection(e.d_localPos, true, d_isMultiSelectEnabled, true);
         else
-            handleSelection(e.d_position, true, false, false);
+            handleSelection(e.d_localPos, true, false, false);
         ++e.handled;
     }
 }
@@ -432,7 +432,7 @@ void ItemView::onCursorMove(CursorMoveEventArgs& e)
     if (!d_isItemTooltipsEnabled || !d_itemModel)
         return;
 
-    ModelIndex index = indexAt(e.d_position);
+    ModelIndex index = indexAt(e.d_localPos);
     if (d_itemModel->areIndicesEqual(index, d_lastHoveredIndex))
         return;
 

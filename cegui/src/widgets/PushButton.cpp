@@ -45,17 +45,10 @@ void PushButton::onClicked(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void PushButton::onClick(MouseButtonEventArgs& e)
 {
-    if ((e.d_button == MouseButton::Left) && isPushed())
+    if (e.d_button == MouseButton::Left && isPushed())
 	{
-		if (auto root = getGUIContext().getRootWindow())
-		{
-            // if cursor was released over this widget (use position from cursor, as e.position has been unprojected)
-            if (this == root->getTargetChildAtPosition(getGUIContext().getCursor().getPosition()))
-			{
-				WindowEventArgs args(this);
-				onClicked(args);
-			}
-		}
+		WindowEventArgs args(this);
+		onClicked(args);
 		++e.handled;
 	}
 

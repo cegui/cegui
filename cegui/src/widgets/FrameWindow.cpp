@@ -544,7 +544,7 @@ void FrameWindow::onCursorMove(CursorMoveEventArgs& e)
     if (isSizingEnabled())
     {
         SizingLocation dragEdge;
-        const glm::vec2 localCursorPos(CoordConverter::screenToWindow(*this, e.d_position));
+        const glm::vec2 localCursorPos(CoordConverter::screenToWindow(*this, e.d_localPos));
 
         if (d_beingSized)
         {
@@ -595,7 +595,7 @@ void FrameWindow::onMouseButtonDown(MouseButtonEventArgs& e)
         if (isSizingEnabled())
         {
             // get position of cursor as co-ordinates local to this window.
-            const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.d_position));
+            const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.d_localPos));
 
             // if the cursor is on the sizing border
             if (getSizingBorderAtPoint(localPos) != SizingLocation::Invalid)

@@ -504,12 +504,12 @@ class CEGUIEXPORT CursorInputEventArgs : public WindowEventArgs
 {
 public:
 
-    CursorInputEventArgs(Window* wnd, const glm::vec2& position, MouseButtons buttons = {}, ModifierKeys modifiers = {})
-        : WindowEventArgs(wnd), d_position(position), d_buttons(buttons), d_modifiers(modifiers)
-    {}
+    CursorInputEventArgs(Window* wnd, const glm::vec2& globalPos, MouseButtons buttons = {}, ModifierKeys modifiers = {});
 
     //! Current cursor position
-    glm::vec2 d_position;
+    glm::vec2 d_globalPos;
+    //! Current cursor position
+    glm::vec2 d_localPos;
     //! State of mouse buttons at the moment of sending the event. See MouseButton.
     MouseButtons d_buttons;
     //! State of modifier keys at the moment of sending the event. See ModifierKey.
@@ -524,8 +524,8 @@ class CEGUIEXPORT CursorMoveEventArgs : public CursorInputEventArgs
 {
 public:
 
-    CursorMoveEventArgs(Window* wnd, const glm::vec2& position, MouseButtons buttons, ModifierKeys modifiers, const glm::vec2& moveDelta)
-        : CursorInputEventArgs(wnd, position, buttons, modifiers), d_moveDelta(moveDelta)
+    CursorMoveEventArgs(Window* wnd, const glm::vec2& globalPos, MouseButtons buttons, ModifierKeys modifiers, const glm::vec2& moveDelta)
+        : CursorInputEventArgs(wnd, globalPos, buttons, modifiers), d_moveDelta(moveDelta)
     {}
 
     //! Variation of cursor position from last cursor input
@@ -540,8 +540,8 @@ class CEGUIEXPORT MouseButtonEventArgs : public CursorInputEventArgs
 {
 public:
 
-    MouseButtonEventArgs(Window* wnd, const glm::vec2& position, MouseButtons buttons, ModifierKeys modifiers, MouseButton button, int clickEventOrder = 0)
-        : CursorInputEventArgs(wnd, position, buttons, modifiers), d_button(button), d_generatedClickEventOrder(clickEventOrder)
+    MouseButtonEventArgs(Window* wnd, const glm::vec2& globalPos, MouseButtons buttons, ModifierKeys modifiers, MouseButton button, int clickEventOrder = 0)
+        : CursorInputEventArgs(wnd, globalPos, buttons, modifiers), d_button(button), d_generatedClickEventOrder(clickEventOrder)
     {}
 
     //! Mouse button that triggered this event
@@ -558,8 +558,8 @@ class CEGUIEXPORT ScrollEventArgs : public CursorInputEventArgs
 {
 public:
 
-    ScrollEventArgs(Window* wnd, const glm::vec2& position, MouseButtons buttons, ModifierKeys modifiers, float delta)
-        : CursorInputEventArgs(wnd, position, buttons, modifiers), d_delta(delta)
+    ScrollEventArgs(Window* wnd, const glm::vec2& globalPos, MouseButtons buttons, ModifierKeys modifiers, float delta)
+        : CursorInputEventArgs(wnd, globalPos, buttons, modifiers), d_delta(delta)
     {}
 
     //! Amount of the scroll
@@ -740,8 +740,6 @@ namespace SemanticValue
     extern const String CEGUIEXPORT Cut;
     extern const String CEGUIEXPORT Copy;
     extern const String CEGUIEXPORT Paste;
-    extern const String CEGUIEXPORT HorizontalScroll;
-    extern const String CEGUIEXPORT VerticalScroll;
     extern const String CEGUIEXPORT NavigateToNext;
     extern const String CEGUIEXPORT NavigateToPrevious;
 }

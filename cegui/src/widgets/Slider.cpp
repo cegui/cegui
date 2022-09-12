@@ -217,7 +217,7 @@ void Slider::onMouseButtonDown(MouseButtonEventArgs& e)
     if (e.d_button == MouseButton::Left)
 	{
         // adjust slider position in whichever direction as required.
-        const float adj = getAdjustDirectionFromPoint(e.d_position);
+        const float adj = getAdjustDirectionFromPoint(e.d_localPos);
 		if (adj != 0.f)
 			setCurrentValue(d_currentValue + adj * d_stepSize);
 
