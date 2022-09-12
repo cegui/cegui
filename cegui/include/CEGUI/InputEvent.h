@@ -393,6 +393,7 @@ class CEGUIEXPORT ModifierKeyRule
 {
 public:
 
+    static ModifierKeyRule None() { return ModifierKeyRule().noShift().noCtrl().noAlt(); }
     static ModifierKeyRule OnlyShift() { return ModifierKeyRule().shift().noCtrl().noAlt(); }
     static ModifierKeyRule OnlyCtrl() { return ModifierKeyRule().noShift().ctrl().noAlt(); }
     static ModifierKeyRule OnlyAlt() { return ModifierKeyRule().noShift().noCtrl().alt(); }

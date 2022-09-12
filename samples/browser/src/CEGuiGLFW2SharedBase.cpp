@@ -200,14 +200,10 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwKeyCallback(int key, int action)
 {
     CEGUI::Key::Scan ceguiKey = GlfwToCeguiKey(key);
 
-    if(action == GLFW_PRESS)
-    {
+    if (action == GLFW_PRESS)
         d_sampleApp->injectKeyDown(ceguiKey);
-    }
     else if (action == GLFW_RELEASE)
-    {
         d_sampleApp->injectKeyUp(ceguiKey);
-    }
 }
 
 //----------------------------------------------------------------------------//
