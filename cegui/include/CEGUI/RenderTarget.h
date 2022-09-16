@@ -178,8 +178,7 @@ public:
         Take point \a p_in unproject it and put the result in \a p_out.
         Resulting point is local to GeometryBuffer \a buff.
     */
-    virtual void unprojectPoint(const GeometryBuffer& buff,
-                                const glm::vec2& p_in, glm::vec2& p_out) const = 0;
+    void unprojectPoint(const GeometryBuffer& buff, const glm::vec2& p_in, glm::vec2& p_out) const;
 
     /*!
     \brief
@@ -219,12 +218,12 @@ public:
     */
     glm::mat4 createViewProjMatrixForDirect3D() const;
 
-    /*!
-    \brief
-        Updates the view projection matrix of this Rendertarget.
-    */
+    //! \brief Updates the view projection matrix of this RenderTarget.
     void updateMatrix(const glm::mat4& matrix) const;
-    
+
+    //! \brief Updates the view projection matrix of this RenderTarget with a default matrix for this renderer.
+    virtual void updateMatrix() const = 0;
+
     /*!
     \brief
         Returns the vertical FOV angle of the perspective projection.

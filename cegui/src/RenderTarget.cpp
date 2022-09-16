@@ -81,6 +81,46 @@ void RenderTarget::deactivate()
 }
 
 //----------------------------------------------------------------------------//
+void RenderTarget::unprojectPoint(const GeometryBuffer& buff, const glm::vec2& p_in, glm::vec2& p_out) const
+{
+    if (!d_matrixValid)
+        updateMatrix();
+
+    const glm::mat4 modelMatrix = buff.getModelMatrix();
+    const glm::ivec4 viewPort = glm::ivec4(
+        static_cast<int>(d_area.left()),
+        static_cast<int>(d_area.top()),
+        static_cast<int>(d_area.getWidth()),
+        static_cast<int>(d_area.getHeight()));
+
+    // unproject the ends of the ray
+    const glm::vec3 unprojected1 = glm::unProject(glm::vec3(d_area.getWidth() * 0.5f, d_area.getHeight() * 0.5f, -d_viewDistance), modelMatrix, d_matrix, viewPort);
+    const glm::vec3 unprojected2 = glm::unProject(glm::vec3(p_in.x, d_area.getHeight() - p_in.y, 0.f), modelMatrix, d_matrix, viewPort);
+
+    // project points to orientate them with GeometryBuffer plane
+    const glm::vec3 projected1 = glm::project(glm::vec3(0.f, 0.f, 0.f), modelMatrix, d_matrix, viewPort);
+    const glm::vec3 projected2 = glm::project(glm::vec3(1.f, 0.f, 0.f), modelMatrix, d_matrix, viewPort);
+    const glm::vec3 projected3 = glm::project(glm::vec3(0.f, 1.f, 0.f), modelMatrix, d_matrix, viewPort);
+
+    // calculate vectors for generating the plane
+    const glm::vec3 pv1 = projected2 - projected1;
+    const glm::vec3 pv2 = projected3 - projected1;
+    // given the vectors, calculate the plane normal
+    const glm::vec3 planeNormal = glm::cross(pv1, pv2);
+    // calculate plane
+    const auto pl_d = -glm::dot(projected1, glm::normalize(planeNormal));
+    // calculate vector of picking ray
+    const glm::vec3 rv = unprojected1 - unprojected2;
+    // calculate intersection of ray and plane
+    const auto pn_dot_r1 = glm::dot(unprojected1, planeNormal);
+    const auto pn_dot_rv = glm::dot(rv, planeNormal);
+    const auto tmp1 = (pn_dot_rv != 0.f) ? (pn_dot_r1 + pl_d) / pn_dot_rv : 0.f;
+
+    p_out.x = static_cast<float>(unprojected1.x - rv.x * tmp1);
+    p_out.y = static_cast<float>(unprojected1.y - rv.y * tmp1);
+}
+
+//----------------------------------------------------------------------------//
 void RenderTarget::draw(const GeometryBuffer& buffer,
     std::uint32_t drawModeMask)
 {

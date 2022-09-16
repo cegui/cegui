@@ -51,14 +51,11 @@ public:
 
     // implement parts of RenderTarget interface
     void activate() override;
-    void unprojectPoint(const GeometryBuffer& buff,
-                        const glm::vec2& p_in, glm::vec2& p_out) const override;
+    void updateMatrix() const override;
     // implementing the virtual function with a covariant return type
     OpenGLRendererBase& getOwner() override;
 
 protected:
-    //! helper that initialises the matrix
-    virtual void updateMatrix() const;
 
     //! OpenGLRendererBase that created this object
     OpenGLRendererBase& d_owner;

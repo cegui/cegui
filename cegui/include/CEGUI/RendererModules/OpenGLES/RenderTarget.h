@@ -52,12 +52,9 @@ public:
     const Rectf& getArea() const;
     void activate();
     void deactivate();
-    void unprojectPoint(const GeometryBuffer& buff,
-                        const glm::vec2& p_in, glm::vec2& p_out) const;
+    void updateMatrix() const override;
 
 protected:
-    //! helper that initialises the cached matrix
-    virtual void updateMatrix() const;
 
     //! OpenGLESRenderer that created this object
     OpenGLESRenderer& d_owner;

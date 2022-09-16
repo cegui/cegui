@@ -49,15 +49,11 @@ public:
 
     // implement parts of RenderTarget interface
     void activate();
-    void unprojectPoint(const GeometryBuffer& buff,
-                        const glm::vec2& p_in,
-                        glm::vec2& p_out) const;
+    void updateMatrix() const override;
     // implementing the virtual function with a covariant return type
     virtual Direct3D11Renderer& getOwner();
 
 protected:
-    //! helper that initialises the cached matrix
-    void updateMatrix() const;
     //! helper to initialise the viewport \a vp for this target.
     void setupViewport(D3D11_VIEWPORT& vp) const;
 

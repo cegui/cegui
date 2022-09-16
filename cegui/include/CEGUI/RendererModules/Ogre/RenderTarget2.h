@@ -56,7 +56,7 @@ public:
     void setArea(const Rectf& area);
     bool isImageryCache() const;
 
-    void unprojectPoint(const GeometryBuffer& buff, const glm::vec2& p_in, glm::vec2& p_out) const;
+    void updateMatrix() const override;
 
     OgreRenderer& getOwner();
 
@@ -89,7 +89,6 @@ protected:
     void setArea(float width, float height);
 
     void createRenderPassDescriptor();
-    void updateMatrix() const;
     void manageClear();
     String generateTextureName();
 };

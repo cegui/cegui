@@ -65,15 +65,13 @@ public:
     void draw(const RenderQueue& queue, std::uint32_t drawModeMask = DrawModeMaskAll);
 
     void activate();
-    void unprojectPoint(const GeometryBuffer& buff, const glm::vec2& p_in, glm::vec2& p_out) const;
+    void updateMatrix() const override;
 
     virtual void setArea(const Rectf& area);
     // implementing the virtual function with a covariant return type
     virtual OgreRenderer& getOwner();
 
 protected:
-    //! helper that initialises the cached matrix
-    void updateMatrix() const;
     //! helper that initialises the viewport
     void updateViewport();
     //! helper to update the actual Ogre viewport dimensions
