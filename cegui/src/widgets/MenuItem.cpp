@@ -467,7 +467,7 @@ void MenuItem::onCursorMove(CursorMoveEventArgs& e)
 
     ItemEntry::onCursorMove(e);
 
-    updateInternalState(e.d_localPos);
+    updateInternalState(e.d_surfacePos);
     ++e.handled;
 }
 
@@ -483,7 +483,7 @@ void MenuItem::onMouseButtonDown(MouseButtonEventArgs& e)
         if (captureInput())
         {
             d_pushed = true;
-            updateInternalState(e.d_localPos);
+            updateInternalState(e.d_surfacePos);
             d_popupWasClosed = !togglePopupMenu();
             invalidate();
         }

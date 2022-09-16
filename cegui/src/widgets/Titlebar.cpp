@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "CEGUI/widgets/Titlebar.h"
 #include "CEGUI/widgets/FrameWindow.h"
-#include "CEGUI/CoordConverter.h"
 #include "CEGUI/GUIContext.h"
 
 // Start of CEGUI namespace section
@@ -112,7 +111,7 @@ void Titlebar::onCursorMove(CursorMoveEventArgs& e)
         // move the window.  *** Again: Titlebar objects should only be attached to FrameWindow derived classes. ***
         if (auto frameWnd = dynamic_cast<FrameWindow*>(d_parent))
         {
-            const glm::vec2 delta(CoordConverter::screenToWindow(*this, e.d_localPos) - d_dragPoint);
+            const glm::vec2 delta = e.d_localPos - d_dragPoint;
             frameWnd->setPosition(frameWnd->getPosition() + UVector2(cegui_absdim(delta.x), cegui_absdim(delta.y)));
         }
 
@@ -134,8 +133,7 @@ void Titlebar::onMouseButtonDown(MouseButtonEventArgs& e)
         auto frameWnd = dynamic_cast<FrameWindow*>(d_parent);
         if (frameWnd && frameWnd->isSizingEnabled())
         {
-            const glm::vec2 localCursorPos(CoordConverter::screenToWindow(*frameWnd, e.d_localPos));
-            if (frameWnd->getSizingBorderAtPoint(localCursorPos) != FrameWindow::SizingLocation::Invalid)
+            if (frameWnd->getSizingBorderAtPoint(e.d_localPos) != FrameWindow::SizingLocation::Invalid)
                 return;
         }
 
@@ -146,7 +144,7 @@ void Titlebar::onMouseButtonDown(MouseButtonEventArgs& e)
             {
                 // initialise the dragging state
                 d_dragging = true;
-                d_dragPoint = CoordConverter::screenToWindow(*this, e.d_localPos);
+                d_dragPoint = e.d_localPos;
 
                 // store old constraint area
                 d_oldCursorArea = getGUIContext().getCursor().getConstraintArea();

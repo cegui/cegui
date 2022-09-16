@@ -30,6 +30,7 @@
 #include "CEGUI/System.h" // FIXME: needed for duplicated code from TextComponent, remove when fixed!
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/GUIContext.h"
+#include "CEGUI/CoordConverter.h"
 #include "CEGUI/widgets/Scrollbar.h"
 
 namespace CEGUI
@@ -432,7 +433,7 @@ void ItemView::onCursorMove(CursorMoveEventArgs& e)
     if (!d_isItemTooltipsEnabled || !d_itemModel)
         return;
 
-    ModelIndex index = indexAt(e.d_localPos);
+    ModelIndex index = indexAtLocal(e.d_localPos);
     if (d_itemModel->areIndicesEqual(index, d_lastHoveredIndex))
         return;
 
@@ -550,6 +551,12 @@ void ItemView::setSelectionColourRect(const ColourRect& colour_rect)
 const std::vector<ModelIndexSelectionState>& ItemView::getIndexSelectionStates() const
 {
     return d_indexSelectionStates;
+}
+
+//----------------------------------------------------------------------------//
+ModelIndex ItemView::indexAt(const glm::vec2& position)
+{
+    return indexAtLocal(CoordConverter::screenToWindow(*this, position));
 }
 
 //----------------------------------------------------------------------------//
@@ -810,10 +817,10 @@ void ItemView::onTargetSurfaceChanged(RenderingSurface* newSurface)
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::handleSelection(const glm::vec2& position, bool should_select,
+bool ItemView::handleSelection(const glm::vec2& localPos, bool should_select,
     bool is_cumulative, bool is_range)
 {
-    return handleSelection(indexAt(position), should_select, is_cumulative, is_range);
+    return handleSelection(indexAtLocal(localPos), should_select, is_cumulative, is_range);
 }
 
 //----------------------------------------------------------------------------//

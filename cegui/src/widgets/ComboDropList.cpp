@@ -113,9 +113,9 @@ void ComboDropList::onCursorMove(CursorMoveEventArgs& e)
     ListWidget::onCursorMove(e);
 
     // if cursor is within our area (but not our children)
-	if (isHit(e.d_localPos))
+	if (isHit(e.d_surfacePos))
 	{
-		if (!getChildAtPosition(e.d_localPos))
+		if (!getChildAtPosition(e.d_surfacePos))
 		{
 			// handle auto-arm
 			if (d_autoArm)
@@ -126,7 +126,7 @@ void ComboDropList::onCursorMove(CursorMoveEventArgs& e)
 			if (d_armed)
 			{
                 // check for an item under the cursor
-                StandardItem* item = d_itemModel.getItemForIndex(indexAt(e.d_localPos));
+                StandardItem* item = d_itemModel.getItemForIndex(indexAtLocal(e.d_localPos));
 
                 // if an item is under cursor, select it
                 if (item != nullptr)
@@ -161,7 +161,7 @@ void ComboDropList::onMouseButtonDown(MouseButtonEventArgs& e)
 
     if (e.d_button == MouseButton::Left)
 	{
-		if (!isHit(e.d_localPos))
+		if (!isHit(e.d_surfacePos))
 		{
             clearSelections();
 			releaseInput();
@@ -182,7 +182,7 @@ void ComboDropList::onClick(MouseButtonEventArgs& e)
 
     if (e.d_button == MouseButton::Left)
 	{
-		if (d_armed && !getChildAtPosition(e.d_localPos))
+		if (d_armed && !getChildAtPosition(e.d_surfacePos))
 		{
             // if something was selected, confirm that selection.
             if (getIndexSelectionStates().size() > 0)

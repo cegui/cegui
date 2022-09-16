@@ -258,7 +258,8 @@ public:
         if nothing was found at that position or if the position is outside
         the view's rendering area.
     */
-    virtual ModelIndex indexAt(const glm::vec2& position) = 0;
+    ModelIndex indexAt(const glm::vec2& position);
+    virtual ModelIndex indexAtLocal(const glm::vec2& localPos) = 0;
 
     /*!
     \brief
@@ -424,7 +425,7 @@ protected:
 
     void handleOnScroll(Scrollbar* scrollbar, float scroll);
     int getSelectedIndexPosition(const ModelIndex& index) const;
-    virtual bool handleSelection(const glm::vec2& position, bool should_select,
+    virtual bool handleSelection(const glm::vec2& localPos, bool should_select,
         bool is_cumulative, bool is_range);
     virtual bool handleSelection(const ModelIndex& index, bool should_select,
         bool is_cumulative, bool is_range);

@@ -1,5 +1,6 @@
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/Window.h"
+#include "CEGUI/CoordConverter.h"
 
 namespace CEGUI
 {
@@ -8,7 +9,8 @@ namespace CEGUI
 CursorInputEventArgs::CursorInputEventArgs(Window* wnd, const glm::vec2& globalPos, MouseButtons buttons, ModifierKeys modifiers)
     : WindowEventArgs(wnd), d_globalPos(globalPos), d_buttons(buttons), d_modifiers(modifiers)
 {
-    d_localPos = wnd ? wnd->getUnprojectedPosition(globalPos) : globalPos;
+    d_surfacePos = wnd ? wnd->getUnprojectedPosition(globalPos) : globalPos;
+    d_localPos = wnd ? CoordConverter::screenToWindow(*wnd, d_surfacePos) : d_surfacePos;
 }
 
 //! \brief Predefined semantics that can be associated with specific input operations.

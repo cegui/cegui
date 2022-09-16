@@ -27,11 +27,10 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 #include "CEGUI/views/TreeView.h"
-#include "CEGUI/CoordConverter.h"
 #include "CEGUI/widgets/Scrollbar.h"
 #include <algorithm> // sort
 
-//TODO: handle semantic event for up/down and left/right (open/close subtree)
+//TODO: handle event for up/down and left/right keys (open/close subtree)
 
 namespace CEGUI
 {
@@ -195,19 +194,12 @@ void TreeView::prepareForRender()
 }
 
 //----------------------------------------------------------------------------//
-bool TreeView::handleSelection(const glm::vec2& position, bool should_select,
+bool TreeView::handleSelection(const glm::vec2& localPos, bool should_select,
     bool is_cumulative, bool is_range)
 {
     return handleSelection(
-        indexAtWithAction(position, &TreeView::handleSelectionAction),
+        indexAtWithAction(localPos, &TreeView::handleSelectionAction),
         should_select, is_cumulative, is_range);
-}
-
-//----------------------------------------------------------------------------//
-bool TreeView::handleSelection(const ModelIndex& index, bool should_select,
-    bool is_cumulative, bool is_range)
-{
-    return ItemView::handleSelection(index, should_select, is_cumulative, is_range);
 }
 
 //----------------------------------------------------------------------------//
@@ -294,30 +286,27 @@ void TreeView::fillRenderingState(TreeViewItemRenderingState& item,
 }
 
 //----------------------------------------------------------------------------//
-ModelIndex TreeView::indexAt(const glm::vec2& position)
+ModelIndex TreeView::indexAtLocal(const glm::vec2& localPos)
 {
-    return indexAtWithAction(position, &TreeView::noopAction);
+    return indexAtWithAction(localPos, &TreeView::noopAction);
 }
 
 //----------------------------------------------------------------------------//
-ModelIndex TreeView::indexAtWithAction(const glm::vec2& position,
-    TreeViewItemAction action)
+ModelIndex TreeView::indexAtWithAction(const glm::vec2& localPos, TreeViewItemAction action)
 {
-    if (d_itemModel == nullptr)
+    if (!d_itemModel)
         return ModelIndex();
 
     //TODO: add prepareForLayout() as a cheaper operation alternative?
     prepareForRender();
 
-    glm::vec2 window_position = CoordConverter::screenToWindow(*this, position);
     Rectf render_area(getViewRenderer()->getViewRenderArea());
-    if (!render_area.isPointInRectf(window_position))
+    if (!render_area.isPointInRectf(localPos))
         return ModelIndex();
 
     float cur_height = render_area.d_min.y - getVertScrollbar()->getScrollPosition();
     bool handled = false;
-    return indexAtRecursive(d_rootItemState, cur_height, window_position,
-        handled, action);
+    return indexAtRecursive(d_rootItemState, cur_height, localPos, handled, action);
 }
 
 //----------------------------------------------------------------------------//

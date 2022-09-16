@@ -380,7 +380,7 @@ bool RestaurantGameSample::handlePlateWindowActivated(const CEGUI::EventArgs& ar
             }
 
             gamePlate->d_isDestroyed = true;
-            createScorePopup(cursor_args.d_localPos, points);
+            createScorePopup(cursor_args.d_globalPos, points);
         }
     }
 

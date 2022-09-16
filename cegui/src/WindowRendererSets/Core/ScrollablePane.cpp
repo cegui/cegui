@@ -29,9 +29,7 @@
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/widgets/Scrollbar.h"
-#include "CEGUI/CoordConverter.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
     const String FalagardScrollablePane::TypeName("Core/ScrollablePane");

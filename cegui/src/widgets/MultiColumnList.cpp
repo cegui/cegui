@@ -1584,7 +1584,7 @@ bool MultiColumnList::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given window local pixel co-ordinate.
 *************************************************************************/
-ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
+ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& localPos) const
 {
     const ListHeader* header = getListHeader();
     const Rectf listArea(getListRenderArea());
@@ -1592,7 +1592,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
     float y = listArea.d_min.y - getVertScrollbar()->getScrollPosition();
     float x = listArea.d_min.x - getHorzScrollbar()->getScrollPosition();
     
-    if(y > pt.y)
+    if(y > localPos.y)
         return nullptr;
 
     for (unsigned int i = 0; i < getRowCount(); ++i)
@@ -1600,7 +1600,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
         y += getHighestRowItemHeight(i);
 
         // have we located the row?
-        if (pt.y < y)
+        if (localPos.y < y)
         {
             // scan across to find column that was clicked
             for (unsigned int j = 0; j < getColumnCount(); ++j)
@@ -1609,7 +1609,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
                 x += CoordConverter::asAbsolute(seg.getWidth(), header->getPixelSize().d_width);
 
                 // was this the column?
-                if (pt.x < x)
+                if (localPos.x < x)
                 {
                     // return contents of grid element that was clicked.
                     return d_grid[i][j];
@@ -1903,8 +1903,7 @@ void MultiColumnList::onMouseButtonDown(MouseButtonEventArgs& e)
 
     if (e.d_button == MouseButton::Left)
     {
-        const glm::vec2 localPoint = CoordConverter::screenToWindow(*this, e.d_localPos);
-        handleSelection(localPoint, e.d_modifiers.hasCtrl(), e.d_modifiers.hasShift());
+        handleSelection(e.d_localPos, e.d_modifiers.hasCtrl(), e.d_modifiers.hasShift());
         ++e.handled;
     }
 }
@@ -1926,11 +1925,11 @@ void MultiColumnList::onScroll(ScrollEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void MultiColumnList::handleSelection(const glm::vec2& position, bool cumulative, bool range)
+void MultiColumnList::handleSelection(const glm::vec2& localPos, bool cumulative, bool range)
 {
     bool modified = false;
 
-    ListboxItem* item = getItemAtPoint(position);
+    ListboxItem* item = getItemAtPoint(localPos);
 
     if (item)
     {

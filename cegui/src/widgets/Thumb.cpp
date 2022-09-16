@@ -192,16 +192,12 @@ void Thumb::onCursorMove(CursorMoveEventArgs& e)
         const float vmin = d_vertMin;
         const float vmax = d_vertMax;
 
-        glm::vec2 delta = CoordConverter::screenToWindow(*this, e.d_localPos);
-
         // calculate amount of movement
-		delta -= d_dragPoint;
+		auto delta = e.d_localPos - d_dragPoint;
         delta.x /= parentSize.d_width;
         delta.y /= parentSize.d_height;
 
-		//
 		// Calculate new (pixel) position for thumb
-		//
 		UVector2 newPos(getPosition());
 
 		if (d_horzFree)
@@ -250,7 +246,7 @@ void Thumb::onMouseButtonDown(MouseButtonEventArgs& e)
 	{
 		// initialise the dragging state
 		d_beingDragged = true;
-		d_dragPoint = CoordConverter::screenToWindow(*this, e.d_localPos);
+		d_dragPoint = e.d_localPos;
 
 		// trigger tracking started event
 		WindowEventArgs args(this);

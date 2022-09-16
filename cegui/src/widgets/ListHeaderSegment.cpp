@@ -413,24 +413,21 @@ void ListHeaderSegment::onCursorMove(CursorMoveEventArgs& e)
 	// base class processing
 	Window::onCursorMove(e);
 
-    // convert cursor position to something local
-    const glm::vec2 local_cursor_pos(CoordConverter::screenToWindow(*this, e.d_localPos));
-
 	// handle drag sizing
 	if (d_dragSizing)
 	{
-        doDragSizing(local_cursor_pos);
+        doDragSizing(e.d_localPos);
 	}
 	// handle drag moving
 	else if (d_dragMoving)
 	{
-        doDragMoving(local_cursor_pos);
+        doDragMoving(e.d_localPos);
     }
     // not sizing, is cursor in the widget area?
-    else if (isHit(e.d_localPos))
+    else if (isHit(e.d_surfacePos))
     {
         // cursor in sizing area & sizing is enabled
-        if ((local_cursor_pos.x > (d_pixelSize.d_width - d_splitterSize)) && d_sizingEnabled)
+        if ((e.d_localPos.x > (d_pixelSize.d_width - d_splitterSize)) && d_sizingEnabled)
 		{
 			initSizingHoverState();
 		}
@@ -442,7 +439,7 @@ void ListHeaderSegment::onCursorMove(CursorMoveEventArgs& e)
 			// if we are pushed but not yet drag moving
 			if (d_segmentPushed && !d_dragMoving)
 			{
-                if (isDragMoveThresholdExceeded(local_cursor_pos))
+                if (isDragMoveThresholdExceeded(e.d_localPos))
                 {
                     initDragMoving();
                 }
@@ -485,11 +482,8 @@ void ListHeaderSegment::onMouseButtonDown(MouseButtonEventArgs& e)
 		// ensure all inputs come to us for now
 		if (captureInput())
 		{
-            // get position of cursor as co-ordinates local to this window.
-            const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.d_localPos));
-
 			// store drag point for possible sizing or moving operation.
-			d_dragPoint = localPos;
+			d_dragPoint = e.d_localPos;
 
             // if the cursor is in the sizing area
 			if (d_splitterHover)

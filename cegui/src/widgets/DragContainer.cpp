@@ -245,12 +245,9 @@ void DragContainer::onMouseButtonDown(MouseButtonEventArgs& e)
         // ensure all inputs come to us for now
         if (captureInput())
         {
-            // get position of cursor as co-ordinates local to this window.
-            const glm::vec2 localPos = CoordConverter::screenToWindow(*this, e.d_localPos);
-
             // store drag point for possible sizing or moving operation.
-            d_dragPoint.d_x = cegui_absdim(localPos.x);
-            d_dragPoint.d_y = cegui_absdim(localPos.y);
+            d_dragPoint.d_x = cegui_absdim(e.d_localPos.x);
+            d_dragPoint.d_y = cegui_absdim(e.d_localPos.y);
             d_leftPointerHeld = true;
         }
 
@@ -316,13 +313,11 @@ void DragContainer::onCursorMove(CursorMoveEventArgs& e)
 {
     Window::onCursorMove(e);
 
-    // get position of cursor in coordinates local to this window.
-    const glm::vec2 localPointerPos = CoordConverter::screenToWindow(*this, e.d_localPos);
     if (d_dragging)
     {
-        doDragging(localPointerPos);
+        doDragging(e.d_localPos);
     }
-    else if (d_leftPointerHeld && isDraggingThresholdExceeded(localPointerPos))
+    else if (d_leftPointerHeld && isDraggingThresholdExceeded(e.d_localPos))
     {
         WindowEventArgs args(this);
         onDragStarted(args);

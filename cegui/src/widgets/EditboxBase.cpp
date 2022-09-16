@@ -537,7 +537,7 @@ void EditboxBase::onMouseButtonDown(MouseButtonEventArgs& e)
         if (captureInput())
         {
             d_dragSelecting = true;
-            d_dragAnchorIdx = getTextIndexFromPosition(e.d_localPos);
+            d_dragAnchorIdx = getTextIndexFromPosition(e.d_surfacePos);
             clearSelection();
             setCaretIndex(d_dragAnchorIdx);
             ensureCaretIsVisible();
@@ -627,7 +627,7 @@ void EditboxBase::onCursorMove(CursorMoveEventArgs& e)
 
     if (d_dragSelecting)
     {
-        setCaretIndex(getTextIndexFromPosition(e.d_localPos));
+        setCaretIndex(getTextIndexFromPosition(e.d_surfacePos));
         setSelection(d_caretPos, d_dragAnchorIdx);
         ensureCaretIsVisible();
     }

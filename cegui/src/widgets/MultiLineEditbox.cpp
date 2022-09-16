@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "CEGUI/widgets/MultiLineEditbox.h"
 #include "CEGUI/widgets/Scrollbar.h"
-#include "CEGUI/CoordConverter.h"
 #include "CEGUI/GUIContext.h"
 
 namespace CEGUI

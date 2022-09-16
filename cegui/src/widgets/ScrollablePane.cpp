@@ -28,7 +28,6 @@
 #include "CEGUI/widgets/ScrolledContainer.h"
 #include "CEGUI/widgets/Scrollbar.h"
 #include "CEGUI/WindowManager.h"
-#include "CEGUI/CoordConverter.h"
 
 namespace CEGUI
 {
@@ -733,7 +732,7 @@ void ScrollablePane::onMouseButtonDown(MouseButtonEventArgs& e)
         if (captureInput())
         {
             d_swiping = true;
-            d_swipeStartPoint = CoordConverter::screenToWindow(*this, e.d_localPos);
+            d_swipeStartPoint = e.d_localPos;
         }
 
         ++e.handled;
@@ -747,13 +746,9 @@ void ScrollablePane::onCursorMove(CursorMoveEventArgs& e)
 
     if (d_swiping)
     {
-        auto newPos = CoordConverter::screenToWindow(*this, e.d_localPos);
-        const glm::vec2 delta(newPos - d_swipeStartPoint);
-
+        const glm::vec2 delta(e.d_localPos - d_swipeStartPoint);
         scrollContentPane(-delta.x, -delta.y, ScrollSource::Swipe);
-
-        d_swipeStartPoint = newPos;
-
+        d_swipeStartPoint = e.d_localPos;
         ++e.handled;
     }
 }

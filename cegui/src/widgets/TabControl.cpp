@@ -753,7 +753,7 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
     {
         // This is the middle cursor source activate event, remember initial drag position
         Window *but_pane = getTabButtonPane();
-        d_btGrabPos = (pe.d_localPos.x -
+        d_btGrabPos = (pe.d_surfacePos.x -
             but_pane->getOuterRectClipper().d_min.x) -
             d_firstTabOffset;
     }
@@ -761,7 +761,7 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
     {
         // Regular cursor move event
         Window *but_pane = getTabButtonPane();
-        float new_to = (pe.d_localPos.x -
+        float new_to = (pe.d_surfacePos.x -
             but_pane->getOuterRectClipper().d_min.x) -
             d_btGrabPos;
         if ((new_to < d_firstTabOffset - 0.9) ||

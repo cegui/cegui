@@ -26,16 +26,12 @@
  ***************************************************************************/
 #include "CEGUI/svg/SVGImage.h"
 #include "CEGUI/GeometryBuffer.h"
-#include "CEGUI/CoordConverter.h"
 #include "CEGUI/svg/SVGTesselator.h"
 #include "CEGUI/svg/SVGData.h"
 #include "CEGUI/svg/SVGBasicShape.h"
 #include "CEGUI/svg/SVGDataManager.h"
 #include "CEGUI/XMLAttributes.h"
 
-
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 const String ImageTypeAttribute( "type" );

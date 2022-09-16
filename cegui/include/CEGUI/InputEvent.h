@@ -506,9 +506,11 @@ public:
 
     CursorInputEventArgs(Window* wnd, const glm::vec2& globalPos, MouseButtons buttons = {}, ModifierKeys modifiers = {});
 
-    //! Current cursor position
+    //! Current cursor position in screen coordinates
     glm::vec2 d_globalPos;
-    //! Current cursor position
+    //! Current cursor position in a rendering surface coordinates
+    glm::vec2 d_surfacePos;
+    //! Current cursor position in local coordinates of the window
     glm::vec2 d_localPos;
     //! State of mouse buttons at the moment of sending the event. See MouseButton.
     MouseButtons d_buttons;

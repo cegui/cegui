@@ -39,7 +39,6 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/BitmapImage.h"
-#include "CEGUI/CoordConverter.h"
 #include "CEGUI/Logger.h"
 
 #include "CEGUI/CommonDialogs/ColourPicker/ColourPicker.h"
@@ -1429,23 +1428,20 @@ void ColourPickerControls::refreshColourPickerIndicatorPosition()
 }
 
 //----------------------------------------------------------------------------//
-void ColourPickerControls::refreshColourPickerIndicatorPosition(
-    const CursorInputEventArgs& pointerEventArgs)
+void ColourPickerControls::refreshColourPickerIndicatorPosition(const CursorInputEventArgs& e)
 {
-    const glm::vec2 localPos = CoordConverter::screenToWindow(
-                  *pointerEventArgs.window, pointerEventArgs.d_localPos);
-    positionColourPickerIndicatorAbsolute(localPos.x, localPos.y);
+    positionColourPickerIndicatorAbsolute(e.d_localPos.x, e.d_localPos.y);
 
     if (d_sliderMode &
         (LAB_L | LAB_A | SliderMode::LAB_B))
     {
-        Lab_Colour col = getColourPickingPositionColourLAB(localPos.x, localPos.y);
+        Lab_Colour col = getColourPickingPositionColourLAB(e.d_localPos.x, e.d_localPos.y);
         setColours(col);
     }
     else if (d_sliderMode &
              (SliderMode::HSV_H | SliderMode::HSV_S | SliderMode::HSV_V))
     {
-        HSV_Colour col = getColourPickingPositionColourHSV(localPos.x, localPos.y);
+        HSV_Colour col = getColourPickingPositionColourHSV(e.d_localPos.x, e.d_localPos.y);
         setColours(col);
     }
 

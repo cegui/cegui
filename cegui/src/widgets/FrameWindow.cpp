@@ -544,8 +544,6 @@ void FrameWindow::onCursorMove(CursorMoveEventArgs& e)
     if (isSizingEnabled())
     {
         SizingLocation dragEdge;
-        const glm::vec2 localCursorPos(CoordConverter::screenToWindow(*this, e.d_localPos));
-
         if (d_beingSized)
         {
             dragEdge = getSizingBorderAtPoint(d_dragPoint);
@@ -553,14 +551,14 @@ void FrameWindow::onCursorMove(CursorMoveEventArgs& e)
             URect newArea(d_area);
 
             // size left or right edges
-            const float deltaX = localCursorPos.x - d_dragPoint.x;
+            const float deltaX = e.d_localPos.x - d_dragPoint.x;
             if (isLeftSizingLocation(dragEdge))
                 moveLeftEdge(deltaX, newArea);
             else if (isRightSizingLocation(dragEdge))
                 moveRightEdge(deltaX, newArea);
 
             // size top or bottom edges
-            const float deltaY = localCursorPos.y - d_dragPoint.y;
+            const float deltaY = e.d_localPos.y - d_dragPoint.y;
             if (isTopSizingLocation(dragEdge))
                 moveTopEdge(deltaY, newArea);
             else if (isBottomSizingLocation(dragEdge))
@@ -570,7 +568,7 @@ void FrameWindow::onCursorMove(CursorMoveEventArgs& e)
         }
         else
         {
-            dragEdge = getSizingBorderAtPoint(localCursorPos);
+            dragEdge = getSizingBorderAtPoint(e.d_localPos);
         }
 
         // Update cursor every time because titlebar might reset it
@@ -594,18 +592,15 @@ void FrameWindow::onMouseButtonDown(MouseButtonEventArgs& e)
     {
         if (isSizingEnabled())
         {
-            // get position of cursor as co-ordinates local to this window.
-            const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.d_localPos));
-
             // if the cursor is on the sizing border
-            if (getSizingBorderAtPoint(localPos) != SizingLocation::Invalid)
+            if (getSizingBorderAtPoint(e.d_localPos) != SizingLocation::Invalid)
             {
                 // ensure all inputs come to us for now
                 if (captureInput())
                 {
                     // setup the 'dragging' state variables
                     d_beingSized = true;
-                    d_dragPoint = localPos;
+                    d_dragPoint = e.d_localPos;
 
                     // do drag-sizing started notification
                     WindowEventArgs args(this);
