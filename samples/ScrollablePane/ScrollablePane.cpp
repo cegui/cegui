@@ -68,7 +68,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setDefaultFont(font);
 
     // set the cursor
-    guiContext->getCursor().setDefaultImage("WindowsLook/MouseArrow");
+    guiContext->setDefaultCursorImage("WindowsLook/MouseArrow");
 
     // set the default tooltip type
     guiContext->setDefaultTooltipType("WindowsLook/Tooltip");

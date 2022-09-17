@@ -128,7 +128,7 @@ bool TreeSample::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile(SCHEME_FILE_NAME);
 
     // set default cursor image
-    guiContext->getCursor().setDefaultImage(IMAGES_FILE_NAME "/MouseArrow");
+    guiContext->setDefaultCursorImage(IMAGES_FILE_NAME "/MouseArrow");
 
     // load an image to use as a background
     if (!ImageManager::getSingleton().isDefined("SpaceBackgroundImage"))

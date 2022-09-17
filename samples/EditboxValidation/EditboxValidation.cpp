@@ -55,7 +55,7 @@ bool EditboxValidationSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setDefaultFont(defaultFont);
 
     SchemeManager::getSingleton().createFromFile("AlfiskoSkin.scheme");
-    guiContext->getCursor().setDefaultImage("AlfiskoSkin/MouseArrow");
+    guiContext->setDefaultCursorImage("AlfiskoSkin/MouseArrow");
     WindowManager& winMgr = WindowManager::getSingleton();
 
     Window* root = winMgr.createWindow("DefaultWindow");

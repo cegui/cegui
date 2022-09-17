@@ -247,7 +247,7 @@ void RestaurantGameSample::setupCursor()
 
 void RestaurantGameSample::updateCursor()
 {
-    glm::vec2 position = d_guiContext->getCursor().getPosition();
+    glm::vec2 position = d_guiContext->getCursorPosition();
 
     // We want to position the image-window right top of the actual
     // cursor point so we add its height

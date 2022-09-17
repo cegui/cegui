@@ -29,7 +29,7 @@
 
 #include "CEGUI/RenderingSurface.h"
 #include "CEGUI/InjectedInputReceiver.h"
-#include "CEGUI/Cursor.h"
+#include "CEGUI/URect.h"
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -60,8 +60,16 @@ public:
      * obtained by calling GUIContext::getRootWindow).
      */
     static const String EventRootWindowChanged;
+    /** Name of Event fired when the cursor image is changed.
+     * Handlers are passed a const GUIContextEventArgs reference
+     */
+    static const String EventCursorImageChanged;
+    /** Name of Event fired when the default cursor image is changed.
+     * Handlers are passed a const GUIContextEventArgs reference
+     */
+    static const String EventDefaultCursorImageChanged;
     /** Event fired when the default font changes.
-     * Handlers are passed a const reference to a generic EventArgs struct.
+     * Handlers are passed a const GUIContextEventArgs reference
      */
     static const String EventDefaultFontChanged;
     /** Event fired when the tooltip is about to get activated.
@@ -80,6 +88,9 @@ public:
         * WindowEventArgs::window set to the Tooltip that has transitioned.
         */
     static const String EventTooltipTransition;
+
+    //! A rect that is used to unset cursor constraints
+    static const URect NoCursorConstraint;
 
     GUIContext(RenderTarget& target);
     virtual ~GUIContext() override;
@@ -201,18 +212,56 @@ public:
     //! Tell the context to reconsider which window it thinks the cursor is in.
     void updateWindowContainingCursor() { d_windowContainingCursorIsUpToDate = false; }
 
+    void setCursorImage(const Image* image);
+    const Image* getCursorImage() const { return d_cursorImage; }
+
     /*!
     \brief
-        Retrieves Cursor used in this GUIContext
+        Set the image to be used as the default cursor.
 
-    \note
-        Please note that each GUIContext has exactly one Cursor. The Cursor
-        class holds position, as well as other properties. If you want to modify
-        the Cursor (for example change its default image), you can retrieve
-        a reference via this method and call a method on the reference.
+    \param image
+        Pointer to an image object that is to be used as the default cursor
+        indicator. To have no indicator rendered by default, you can specify nullptr here.
     */
-    Cursor& getCursor() { return d_cursor; }
-    const Cursor& getCursor() const { return d_cursor; }
+    void setDefaultCursorImage(const Image* image);
+    void setDefaultCursorImage(const String& name);
+    const Image* getDefaultCursorImage() const { return d_defaultCursorImage; }
+
+    void setCursorVisible(bool visible) { d_cursorVisible = visible; }
+    bool isCursorVisible() const { return d_cursorVisible; }
+
+    /*!
+    \brief
+        Set an explicit size for the cursor image to be drawn at.
+        Set any dimension to 0 to use an original image size for it.
+    */
+    void setCursorSize(float w, float h);
+    const Sizef& getCursorSize() const { return d_cursorSize; }
+
+    /*!
+    \brief
+        Set the current cursor position
+
+    \param position
+        Point object describing the new location for the cursor. This will
+        be clipped to within the renderer screen area.
+    */
+    void setCursorPosition(const glm::vec2& position);
+    const glm::vec2& getCursorPosition() const { return d_cursorPosition; }
+
+    /*!
+    \brief
+        Set the area that the cursor is constrained to.
+
+    \param area
+        Pointer to a URect object that describes the area of the display that
+        the cursor is allowed to occupy. The given area will be clipped to the
+        current Renderer screen area - it is never possible for the cursor to
+        leave this area. If this parameter is NULL, the constraint is set to
+        the size of the current Renderer screen area.
+    */
+    void setCursorConstraintArea(const URect& area = NoCursorConstraint);
+    const URect& getCursorConstraintArea() const { return d_cursorConstraints; }
 
     /*!
     \brief
@@ -330,7 +379,9 @@ protected:
     WindowNavigator* d_windowNavigator = nullptr;
 
     Font* d_defaultFont = nullptr;
-    Cursor d_cursor;
+    const Image* d_cursorImage = nullptr;
+    const Image* d_defaultCursorImage = nullptr;
+    std::vector<GeometryBuffer*> d_cursorGeometry;
 
     String d_defaultTooltipType;
     std::map<String, Window*> d_tooltips;
@@ -342,6 +393,9 @@ protected:
     std::vector<MouseButtonSemanticMapping> d_mouseSemantics;
 
     Sizef d_surfaceSize; //!< a cache of the target surface size, allows returning by ref.
+    Sizef d_cursorSize;
+    glm::vec2 d_cursorPosition;
+    URect d_cursorConstraints;
 
     std::uint32_t d_dirtyDrawModeMask = 0; //!< the mask of draw modes that must be redrawn
 
@@ -357,6 +411,8 @@ protected:
     MouseButton d_autoRepeatMouseButton = MouseButton::Invalid;
     bool d_autoRepeating = false;
 
+    bool d_cursorVisible = true;
+    bool d_cursorDirty = false;
     bool d_windowContainingCursorIsUpToDate = true;
     bool d_tooltipFollowsCursor = false;
     bool d_moveToFrontOnActivateAllowed = true;

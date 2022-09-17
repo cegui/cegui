@@ -323,7 +323,7 @@ void ListHeaderSegment::initDragMoving(void)
         d_dragPosition = glm::vec2(0, 0);
 
         // setup new indicator
-        getGUIContext().getCursor().setImage(d_movingCursor);
+        getGUIContext().setCursorImage(d_movingCursor);
 
 		// Trigger the event
 		WindowEventArgs args(this);
@@ -344,7 +344,7 @@ void ListHeaderSegment::initSizingHoverState(void)
 		d_splitterHover = true;
 
         // change the cursor.
-        getGUIContext().getCursor().setImage(d_sizingCursor);
+        getGUIContext().setCursorImage(d_sizingCursor);
 
 		// trigger redraw so 'sizing' area can be highlighted if needed.
 		invalidate();
@@ -369,7 +369,7 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	if (d_splitterHover)
 	{
 		d_splitterHover = false;
-        getGUIContext().getCursor().setImage(getEffectiveCursor());
+        getGUIContext().setCursorImage(getEffectiveCursor());
 		invalidate();
 	}
 
@@ -453,7 +453,7 @@ void ListHeaderSegment::onCursorMove(CursorMoveEventArgs& e)
 		if (d_splitterHover)
 		{
 			d_splitterHover = false;
-            getGUIContext().getCursor().setImage(getEffectiveCursor());
+            getGUIContext().setCursorImage(getEffectiveCursor());
 			invalidate();
 		}
 
@@ -518,7 +518,7 @@ void ListHeaderSegment::onMouseButtonUp(MouseButtonEventArgs& e)
 		}
 		else if (d_dragMoving)
 		{
-            getGUIContext().getCursor().setImage(getEffectiveCursor());
+            getGUIContext().setCursorImage(getEffectiveCursor());
 
 			WindowEventArgs args(this);
 			onSegmentDragStop(args);

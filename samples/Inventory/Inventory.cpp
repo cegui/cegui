@@ -66,7 +66,7 @@ bool InventorySample::initialise(CEGUI::GUIContext* guiContext)
     // basic system init using TaharezLook.
     WindowManager& winMgr = WindowManager::getSingleton();
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    guiContext->getCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->setDefaultCursorImage("TaharezLook/MouseArrow");
     Window* root = winMgr.createWindow("DefaultWindow", "root");
     guiContext->setRootWindow(root);
 

@@ -54,7 +54,7 @@ bool FormNavigationSample::initialise(CEGUI::GUIContext* gui_context)
     d_usedFiles = CEGUI::String(__FILE__);
 
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    gui_context->getCursor().setDefaultImage("TaharezLook/MouseArrow");
+    gui_context->setDefaultCursorImage("TaharezLook/MouseArrow");
 
     WindowManager& win_mgr = WindowManager::getSingleton();
     d_root = static_cast<DefaultWindow*>(win_mgr.createWindow("DefaultWindow", "Root"));

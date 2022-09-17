@@ -25,29 +25,39 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/GUIContext.h"
+#include "CEGUI/Renderer.h"
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/RenderingWindow.h"
+#include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/WindowManager.h"
+#include "CEGUI/ImageManager.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/WindowNavigator.h"
+#include "CEGUI/System.h"
 #include "CEGUI/GlobalEventSet.h"
+#include "CEGUI/CoordConverter.h"
 #include <algorithm>
 
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const String GUIContext::EventRootWindowChanged("RootWindowChanged");
+const String GUIContext::EventCursorImageChanged("CursorImageChanged");
+const String GUIContext::EventDefaultCursorImageChanged("DefaultCursorImageChanged");
 const String GUIContext::EventDefaultFontChanged("DefaultFontChanged");
 const String GUIContext::EventTooltipActive("TooltipActive");
 const String GUIContext::EventTooltipInactive("TooltipInactive");
 const String GUIContext::EventTooltipTransition("TooltipTransition");
+const URect GUIContext::NoCursorConstraint(cegui_reldim(0.f), cegui_reldim(0.f), cegui_reldim(1.f), cegui_reldim(1.f));
 
 //----------------------------------------------------------------------------//
 GUIContext::GUIContext(RenderTarget& target) :
     RenderingSurface(target),
-    d_cursor(*this),
     d_surfaceSize(target.getArea().getSize()),
+    d_cursorSize(0.f, 0.f),
+    d_cursorPosition(0.f, 0.f),
+    d_cursorConstraints(NoCursorConstraint),
     d_areaChangedEventConnection(
         target.subscribeEvent(
             RenderTarget::EventAreaChanged,
@@ -57,7 +67,6 @@ GUIContext::GUIContext(RenderTarget& target) :
             "Font/RenderSizeChanged",
             Event::Subscriber(&GUIContext::fontRenderSizeChangedHandler, this)))
 {
-    d_cursor.resetPositionToDefault();
 }
 
 //----------------------------------------------------------------------------//
@@ -69,6 +78,9 @@ GUIContext::~GUIContext()
     for (auto record : d_tooltips)
         if (WindowManager::getSingleton().isAlive(record.second))
             WindowManager::getSingleton().destroyWindow(record.second);
+
+    for (auto currentBuffer : d_cursorGeometry)
+        System::getSingleton().getRenderer()->destroyGeometryBuffer(*currentBuffer);
 }
 
 //----------------------------------------------------------------------------//
@@ -252,7 +264,7 @@ void GUIContext::releaseInputCapture(bool allowRestoreOld, Window* exactWindow)
 Window* GUIContext::getWindowContainingCursor()
 {
     if (!d_windowContainingCursorIsUpToDate)
-        updateWindowContainingCursorInternal(getCursorTargetWindow(d_cursor.getPosition(), true));
+        updateWindowContainingCursorInternal(getCursorTargetWindow(d_cursorPosition, true));
 
     return d_windowContainingCursor;
 }
@@ -281,8 +293,42 @@ void GUIContext::drawContent(std::uint32_t drawModeMask)
 
     RenderingSurface::drawContent(drawModeMask);
 
-    if (drawModeMask & DrawModeFlagMouseCursor)
-        d_cursor.draw(DrawModeFlagMouseCursor);
+    if ((drawModeMask & DrawModeFlagMouseCursor) && d_cursorVisible && d_cursorImage)
+    {
+        // Update cursor geometry
+        if (d_cursorDirty)
+        {
+            d_cursorDirty = false;
+            for (auto currentBuffer : d_cursorGeometry)
+                System::getSingleton().getRenderer()->destroyGeometryBuffer(*currentBuffer);
+            d_cursorGeometry.clear();
+
+            const auto imgOffset = d_cursorImage->getRenderedOffset();
+            const auto imgSize = d_cursorImage->getRenderedSize();
+
+            const Sizef cursorSize(
+                (d_cursorSize.d_width > 0.0f) ? d_cursorSize.d_width : imgSize.d_width,
+                (d_cursorSize.d_height > 0.0f) ? d_cursorSize.d_height : imgSize.d_height);
+
+            const glm::vec2 cursorOffset(
+                cursorSize.d_width / imgSize.d_width * imgOffset.x - imgOffset.x,
+                cursorSize.d_height / imgSize.d_height * imgOffset.y - imgOffset.y);
+
+            ImageRenderSettings imgRenderSettings(Rectf(cursorOffset, cursorSize));
+            d_cursorImage->createRenderGeometry(d_cursorGeometry, imgRenderSettings);
+
+            const Rectf clippingArea(glm::vec2(0, 0), d_surfaceSize);
+            for (auto currentBuffer : d_cursorGeometry)
+            {
+                currentBuffer->setClippingRegion(clippingArea);
+                currentBuffer->setTranslation(glm::vec3(d_cursorPosition, 0));
+            }
+        }
+
+        System::getSingleton().getRenderer()->uploadBuffers(d_cursorGeometry);
+        for (auto currentBuffer : d_cursorGeometry)
+            currentBuffer->draw(drawModeMask);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -317,7 +363,7 @@ void GUIContext::drawWindowContentToTarget(std::uint32_t drawModeMask)
 bool GUIContext::areaChangedHandler(const EventArgs&)
 {
     d_surfaceSize = d_target->getArea().getSize();
-    d_cursor.notifyTargetSizeChanged(d_surfaceSize);
+    d_cursorDirty = true;
 
     if (d_rootWindow)
     {
@@ -414,20 +460,20 @@ void GUIContext::updateWindowContainingCursorInternal(Window* windowWithCursor)
     if (oldWindow)
     {
         // Inform the previous window that the cursor has left it
-        CursorInputEventArgs args(oldWindow, d_cursor.getPosition());
+        CursorInputEventArgs args(oldWindow, d_cursorPosition);
         oldWindow->onCursorLeaves(args);
         notifyCursorTransition(root, oldWindow, &Window::onCursorLeavesArea, args);
     }
 
     // Set the new cursor
-    d_cursor.setImage((windowWithCursor && windowWithCursor->getCursor()) ?
+    setCursorImage((windowWithCursor && windowWithCursor->getCursor()) ?
         windowWithCursor->getCursor() :
-        d_cursor.getDefaultImage());
+        d_defaultCursorImage);
 
     if (windowWithCursor)
     {
         // Inform window containing cursor that cursor has entered it
-        CursorInputEventArgs args(windowWithCursor, d_cursor.getPosition());
+        CursorInputEventArgs args(windowWithCursor, d_cursorPosition);
         windowWithCursor->onCursorEnters(args);
         notifyCursorTransition(root, windowWithCursor, &Window::onCursorEntersArea, args);
     }
@@ -533,12 +579,6 @@ void GUIContext::showTooltip(bool force)
         positionTooltip();
     }));
 
-    d_tooltipEventConnections.push_back(d_cursor.subscribeEvent(
-        Cursor::EventImageChanged, [this](const EventArgs& args)
-    {
-        positionTooltip();
-    }));
-
     WindowEventArgs args(d_tooltipWindow);
     if (wasShown)
     {
@@ -593,11 +633,11 @@ void GUIContext::positionTooltip()
     if (!d_tooltipWindow)
         return;
 
-    glm::vec2 pos = d_cursor.getPosition();
-    if (auto cursorImage = d_cursor.getImage())
+    glm::vec2 pos = d_cursorPosition;
+    if (d_cursorImage)
     {
-        pos.x += cursorImage->getRenderedSize().d_width;
-        pos.y += cursorImage->getRenderedSize().d_height;
+        pos.x += d_cursorImage->getRenderedSize().d_width;
+        pos.y += d_cursorImage->getRenderedSize().d_height;
     }
 
     const Rectf tipRect(pos, d_tooltipWindow->getUnclippedOuterRect().get().getSize());
@@ -605,12 +645,12 @@ void GUIContext::positionTooltip()
     // if the tooltip would be off more at the right side of the screen,
     // reposition to the other side of the cursor.
     if (d_surfaceSize.d_width - tipRect.right() < tipRect.left() - tipRect.getWidth())
-        pos.x = d_cursor.getPosition().x - tipRect.getWidth() - 5;
+        pos.x = d_cursorPosition.x - tipRect.getWidth() - 5;
 
     // if the tooltip would be off more at the bottom side of the screen,
     // reposition to the other side of the cursor.
     if (d_surfaceSize.d_height - tipRect.bottom() < tipRect.top() - tipRect.getHeight())
-        pos.y = d_cursor.getPosition().y - tipRect.getHeight() - 5;
+        pos.y = d_cursorPosition.y - tipRect.getHeight() - 5;
 
     // prevent being cut off at edges
     pos.x = std::max(0.0f, std::min(pos.x, d_surfaceSize.d_width - tipRect.getWidth()));
@@ -700,7 +740,7 @@ void GUIContext::updateInputAutoRepeating(float timeElapsed)
         return;
 
     // Send events according to elapsed time
-    MouseButtonEventArgs args(d_captureWindow, d_cursor.getPosition(),
+    MouseButtonEventArgs args(d_captureWindow, d_cursorPosition,
         d_mouseButtons, d_modifierKeys, d_autoRepeatMouseButton);
     if (d_captureWindow == d_mouseClickTracker.d_window)
         args.d_generatedClickEventOrder = d_mouseClickTracker.d_clickCount;
@@ -779,7 +819,7 @@ bool GUIContext::injectTimePulse(float timeElapsed)
 //----------------------------------------------------------------------------//
 bool GUIContext::injectMousePosition(float x, float y)
 {
-    return injectMouseMove(x - d_cursor.getPosition().x, y - d_cursor.getPosition().y);
+    return injectMouseMove(x - d_cursorPosition.x, y - d_cursorPosition.y);
 }
 
 //----------------------------------------------------------------------------//
@@ -790,7 +830,7 @@ bool GUIContext::injectMouseMove(float dx, float dy)
         return false;
 
     // Move cursor to new position. Constraining is possible inside.
-    d_cursor.setPosition(d_cursor.getPosition() + glm::vec2(dx, dy));
+    setCursorPosition(d_cursorPosition + glm::vec2(dx, dy));
 
     // Delay tooltip appearance, follow the cursor if already shown
     if (!d_tooltipWindow)
@@ -803,7 +843,7 @@ bool GUIContext::injectMouseMove(float dx, float dy)
     auto window = getWindowContainingCursor();
     while (window)
     {
-        CursorMoveEventArgs args(window, d_cursor.getPosition(), d_mouseButtons, d_modifierKeys, glm::vec2{ dx, dy });
+        CursorMoveEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, glm::vec2{ dx, dy });
         window->onCursorMove(args);
         if (args.handled)
             return true;
@@ -829,7 +869,7 @@ bool GUIContext::sendScrollEvent(float delta, Window* window)
 {
     while (window)
     {
-        ScrollEventArgs args(window, d_cursor.getPosition(), d_mouseButtons, d_modifierKeys, delta);
+        ScrollEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, delta);
         window->onScroll(args);
         if (args.handled)
             return true;
@@ -848,7 +888,7 @@ bool GUIContext::injectMouseWheelChange(float delta)
 {
     // Wheel events are sent to the widget under the mouse cursor, but if that
     // widget does not handle the event they are sent to the focus widget
-    auto cursorTargetWnd = getCursorTargetWindow(d_cursor.getPosition(), false);
+    auto cursorTargetWnd = getCursorTargetWindow(d_cursorPosition, false);
     if (sendScrollEvent(delta, cursorTargetWnd))
         return true;
 
@@ -864,10 +904,10 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
     if (d_tooltipWindow)
         d_tooltipWindow->hide(true);
 
-    auto window = getCursorTargetWindow(d_cursor.getPosition(), false);
+    auto window = getCursorTargetWindow(d_cursorPosition, false);
     while (window)
     {
-        MouseButtonEventArgs args(window, d_cursor.getPosition(), d_mouseButtons, d_modifierKeys, button);
+        MouseButtonEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, button);
         if (window == d_mouseClickTracker.d_window)
             args.d_generatedClickEventOrder = d_mouseClickTracker.d_clickCount;
 
@@ -884,7 +924,7 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
         if (args.handled)
         {
             // Track mouse activity for click event generation
-            d_mouseClickTracker.onMouseButtonDown(button, d_cursor.getPosition(), window);
+            d_mouseClickTracker.onMouseButtonDown(button, d_cursorPosition, window);
 
             // Start mouse down event auto-repeating if needed
             if (window->isCursorAutoRepeatEnabled())
@@ -927,19 +967,19 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
     if (d_autoRepeatMouseButton != MouseButton::Invalid)
         releaseInputCapture();
 
-    auto window = getCursorTargetWindow(d_cursor.getPosition(), false);
+    auto window = getCursorTargetWindow(d_cursorPosition, false);
     while (window)
     {
-        MouseButtonEventArgs args(window, d_cursor.getPosition(), d_mouseButtons, d_modifierKeys, button);
+        MouseButtonEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, button);
 
         // Try to generate click events for the window
         if (window == d_mouseClickTracker.d_window)
         {
             // Clicks are generated only for mouse up happening over the window
             // FIXME/TODO INPUT: d_windowContainingCursor could be used but then it must not be affected by capture and modal!
-            auto windowUnderCursor = d_rootWindow->getTargetChildAtPosition(d_cursor.getPosition());
+            auto windowUnderCursor = d_rootWindow->getTargetChildAtPosition(d_cursorPosition);
 
-            args.d_generatedClickEventOrder = d_mouseClickTracker.onMouseButtonUp(button, d_cursor.getPosition(), windowUnderCursor);
+            args.d_generatedClickEventOrder = d_mouseClickTracker.onMouseButtonUp(button, d_cursorPosition, windowUnderCursor);
 
             // First process multi-clicks that have dedicated event handlers
             switch (args.d_generatedClickEventOrder)
@@ -983,10 +1023,10 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
 //----------------------------------------------------------------------------//
 bool GUIContext::injectMouseButtonClick(MouseButton button)
 {
-    auto window = getCursorTargetWindow(d_cursor.getPosition(), false);
+    auto window = getCursorTargetWindow(d_cursorPosition, false);
     while (window)
     {
-        MouseButtonEventArgs args(window, d_cursor.getPosition(), d_mouseButtons, d_modifierKeys, button);
+        MouseButtonEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, button);
         window->onClick(args);
         if (args.handled)
             return true;
@@ -1003,10 +1043,10 @@ bool GUIContext::injectMouseButtonClick(MouseButton button)
 //----------------------------------------------------------------------------//
 bool GUIContext::injectMouseButtonDoubleClick(MouseButton button)
 {
-    auto window = getCursorTargetWindow(d_cursor.getPosition(), false);
+    auto window = getCursorTargetWindow(d_cursorPosition, false);
     while (window)
     {
-        MouseButtonEventArgs args(window, d_cursor.getPosition(), d_mouseButtons, d_modifierKeys, button);
+        MouseButtonEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, button);
         window->onDoubleClick(args);
         if (args.handled)
             return true;
@@ -1023,10 +1063,10 @@ bool GUIContext::injectMouseButtonDoubleClick(MouseButton button)
 //----------------------------------------------------------------------------//
 bool GUIContext::injectMouseButtonTripleClick(MouseButton button)
 {
-    auto window = getCursorTargetWindow(d_cursor.getPosition(), false);
+    auto window = getCursorTargetWindow(d_cursorPosition, false);
     while (window)
     {
-        MouseButtonEventArgs args(window, d_cursor.getPosition(), d_mouseButtons, d_modifierKeys, button);
+        MouseButtonEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, button);
         window->onTripleClick(args);
         if (args.handled)
             return true;
@@ -1252,6 +1292,75 @@ void GUIContext::setRenderTarget(RenderTarget& target)
 }
 
 //----------------------------------------------------------------------------//
+void GUIContext::setCursorImage(const Image* image)
+{
+    if (image == d_cursorImage)
+        return;
+
+    d_cursorImage = image;
+    d_cursorDirty = true;
+
+    // Tooltip tries not to occlude the cursor
+    positionTooltip();
+
+    GUIContextEventArgs args(this);
+    fireEvent(EventCursorImageChanged, args, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setDefaultCursorImage(const Image* image)
+{
+    if (image == d_defaultCursorImage)
+        return;
+
+    // update the current image if it is the default image
+    if (d_cursorImage == d_defaultCursorImage)
+    {
+        auto window = getWindowContainingCursor();
+        if (!window || !window->getCursor())
+        {
+            setCursorImage(image);
+        }
+    }
+
+    d_defaultCursorImage = image;
+    d_cursorDirty = true;
+
+    GUIContextEventArgs args(this);
+    fireEvent(EventDefaultCursorImageChanged, args, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setDefaultCursorImage(const String& name)
+{
+    // TODO: remove this method to reduce dependencies, use ImageManager in the calling code!
+    setDefaultCursorImage(&ImageManager::getSingleton().get(name));
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setCursorSize(float w, float h)
+{
+    d_cursorSize.d_width = w;
+    d_cursorSize.d_height = h;
+    d_cursorDirty = true;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setCursorPosition(const glm::vec2& position)
+{
+    d_cursorPosition = CoordConverter::asAbsolute(d_cursorConstraints, d_surfaceSize).clampPointToRect(position);
+    for (auto currentBuffer : d_cursorGeometry)
+        currentBuffer->setTranslation(glm::vec3(d_cursorPosition, 0));
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setCursorConstraintArea(const URect& area)
+{
+    d_cursorConstraints = area;
+    d_cursorPosition = CoordConverter::asAbsolute(d_cursorConstraints, d_surfaceSize).clampPointToRect(d_cursorPosition);
+}
+
+//----------------------------------------------------------------------------//
 void GUIContext::setDefaultFont(const String& name)
 {
     setDefaultFont(name.empty() ? nullptr  : &FontManager::getSingleton().get(name));
@@ -1268,7 +1377,7 @@ void GUIContext::setDefaultFont(Font* font)
     if (d_rootWindow)
         d_rootWindow->notifyDefaultFontChanged();
 
-    EventArgs args;
+    GUIContextEventArgs args(this);
     fireEvent(EventDefaultFontChanged, args, EventNamespace);
 }
 

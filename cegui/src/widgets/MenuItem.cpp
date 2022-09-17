@@ -523,8 +523,7 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
     ItemEntry::onCaptureLost(e);
 
     d_pushed = false;
-    updateInternalState(getUnprojectedPosition(
-        getGUIContext().getCursor().getPosition()));
+    updateInternalState(getUnprojectedPosition(getGUIContext().getCursorPosition()));
     invalidate();
 
     ++e.handled;

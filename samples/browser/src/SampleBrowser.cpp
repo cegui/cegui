@@ -331,8 +331,8 @@ void SampleBrowser::handleStartDisplaySample(CEGUI::Window* sampleWindow)
     sampleContext->getRootWindow()->addChild(d_sampleExitButton);
 
     //! We manually set the cursor to where it was in the overview
-    sampleContext->getCursor().setPosition(
-        d_baseApp->getMainWindowGUIContext()->getCursor().getPosition());
+    sampleContext->setCursorPosition(
+        d_baseApp->getMainWindowGUIContext()->getCursorPosition());
 
     d_selectedSampleData = correspondingSampleData;
 
@@ -347,8 +347,8 @@ void SampleBrowser::stopDisplaySample()
     sampleGUIContext->getRootWindow()->removeChild(d_sampleExitButton);
     d_selectedSampleData->setGUIContextRTT();
 
-    d_baseApp->getMainWindowGUIContext()->getCursor().
-        setPosition(sampleGUIContext->getCursor().getPosition());
+    d_baseApp->getMainWindowGUIContext()->
+        setCursorPosition(sampleGUIContext->getCursorPosition());
 
     d_selectedSampleData = nullptr;
     d_quittingSampleView = false;
@@ -497,7 +497,7 @@ void SampleBrowser::initialisationFinalisation()
     GUIContext* ctx = d_baseApp->getMainWindowGUIContext();
     if (!ctx) return;
 
-    ctx->getCursor().setDefaultImage("SampleBrowserSkin/MouseArrow");
+    ctx->setDefaultCursorImage(&ImageManager::getSingleton().get("SampleBrowserSkin/MouseArrow"));
     ctx->setRootWindow(d_root);
 
     const Sizef& targetSize = ctx->getSurfaceSize();

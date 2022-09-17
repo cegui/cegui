@@ -479,26 +479,26 @@ void FrameWindow::setCursorForSizingLocation(SizingLocation location) const
     {
         case SizingLocation::Top:
         case SizingLocation::Bottom:
-            getGUIContext().getCursor().setImage(d_nsSizingCursor);
+            getGUIContext().setCursorImage(d_nsSizingCursor);
             break;
 
         case SizingLocation::Left:
         case SizingLocation::Right:
-            getGUIContext().getCursor().setImage(d_ewSizingCursor);
+            getGUIContext().setCursorImage(d_ewSizingCursor);
             break;
 
         case SizingLocation::TopLeft:
         case SizingLocation::BottomRight:
-            getGUIContext().getCursor().setImage(d_nwseSizingCursor);
+            getGUIContext().setCursorImage(d_nwseSizingCursor);
             break;
 
         case SizingLocation::TopRight:
         case SizingLocation::BottomLeft:
-            getGUIContext().getCursor().setImage(d_neswSizingCursor);
+            getGUIContext().setCursorImage(d_neswSizingCursor);
             break;
 
         default:
-            getGUIContext().getCursor().setImage(getEffectiveCursor());
+            getGUIContext().setCursorImage(getEffectiveCursor());
             break;
     }
 }

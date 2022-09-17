@@ -102,7 +102,7 @@ void DragContainer::setDragAlpha(float alpha)
 const Image* DragContainer::getDragIndicatorImage() const
 {
     return d_dragIndicatorImage ? d_dragIndicatorImage :
-        d_guiContext ? d_guiContext->getCursor().getDefaultImage() :
+        d_guiContext ? d_guiContext->getDefaultCursorImage() :
         nullptr;
 }
 
@@ -232,7 +232,7 @@ void DragContainer::cancelDragging()
 void DragContainer::updateActiveCursorImage() const
 {
     if (d_guiContext)
-        d_guiContext->getCursor().setImage(d_dragging ? getDragIndicatorImage() : getEffectiveCursor());
+        d_guiContext->setCursorImage(d_dragging ? getDragIndicatorImage() : getEffectiveCursor());
 }
 
 //----------------------------------------------------------------------------//
@@ -386,7 +386,7 @@ void DragContainer::onDragStarted(WindowEventArgs& e)
 
     // Immediately update position relative to the cursor
     const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this,
-        d_guiContext->getCursor().getPosition()));
+        d_guiContext->getCursorPosition()));
     doDragging(localPointerPos);
 }
 
@@ -412,7 +412,7 @@ void DragContainer::updateDropTarget()
 
     // find out which child of root window has the cursor in it
     Window* target = d_guiContext->getRootWindow()->getTargetChildAtPosition(
-        d_guiContext->getCursor().getPosition(), false, this);
+        d_guiContext->getCursorPosition(), false, this);
 
     // use root itself if no child was hit
     if (!target)

@@ -135,7 +135,7 @@ protected:
     glm::vec2 d_dragPoint;        //!< Point at which we are being dragged.
     bool d_dragEnabled;        //!< true when dragging for the widget is enabled.
 
-    Rectf d_oldCursorArea;    //!< Used to backup cursor restraint area.
+    URect d_oldCursorArea;    //!< Used to backup cursor restraint area.
 
 private:
     /*************************************************************************

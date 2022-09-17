@@ -114,7 +114,7 @@ void ButtonBase::setPushedState(bool pushed)
     d_pushed = pushed;
 
     if (!pushed)
-	    updateInternalState(getUnprojectedPosition(getGUIContext().getCursor().getPosition()));
+	    updateInternalState(getUnprojectedPosition(d_guiContext->getCursorPosition()));
     else
         d_hovering = true;
 
@@ -127,7 +127,7 @@ void ButtonBase::onCaptureLost(WindowEventArgs& e)
 	Window::onCaptureLost(e);
 
 	d_pushed = false;
-    getGUIContext().updateWindowContainingCursor();
+    d_guiContext->updateWindowContainingCursor();
 	invalidate();
 	++e.handled;
 }

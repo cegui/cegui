@@ -1391,7 +1391,7 @@ void Window::onZChange_impl()
 const Image* Window::getEffectiveCursor() const
 {
     return d_cursor ? d_cursor :
-        d_guiContext ? d_guiContext->getCursor().getDefaultImage() :
+        d_guiContext ? d_guiContext->getDefaultCursorImage() :
         nullptr;
 }
 
@@ -1407,7 +1407,7 @@ void Window::setCursor(const Image* image)
     d_cursor = image;
 
     if (d_guiContext && d_guiContext->getWindowContainingCursor() == this)
-        d_guiContext->getCursor().setImage(image);
+        d_guiContext->setCursorImage(image);
 }
 
 //----------------------------------------------------------------------------//

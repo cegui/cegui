@@ -187,7 +187,6 @@ class GUIContextEventArgs;
 class HeaderSequenceEventArgs;
 class ItemViewEventArgs;
 class ModelEventArgs;
-class CursorEventArgs;
 class RegexMatchStateArgs;
 class RenderQueueEventArgs;
 class RenderTargetEventArgs;

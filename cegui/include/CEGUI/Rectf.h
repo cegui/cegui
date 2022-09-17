@@ -284,17 +284,19 @@ public:
     \return
         true if position \a pt is within this Rectf's area, else false
     */
-    inline bool isPointInRectf(const glm::vec2& v) const
+    inline bool isPointInRectf(const glm::vec2& pt) const
     {
-        if ((d_min.x >  v.x) ||
-            (d_max.x <= v.x) ||
-            (d_min.y >  v.y) ||
-            (d_max.y <= v.y))
-        {
-            return false;
-        }
+        return (d_min.x <= pt.x) &&
+            (d_max.x > pt.x) &&
+            (d_min.y <= pt.y) &&
+            (d_max.y > pt.y);
+    }
 
-        return true;
+    glm::vec2 clampPointToRect(const glm::vec2& pt) const
+    {
+        return glm::vec2(
+            glm::clamp(pt.x, d_min.x, d_max.x),
+            glm::clamp(pt.y, d_min.y, d_max.y));
     }
 
     /*!

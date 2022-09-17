@@ -68,7 +68,6 @@
 #include "CEGUI/KeyFrame.h"
 #include "CEGUI/LinkedEvent.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/Cursor.h"
 #include "CEGUI/Property.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/PropertySet.h"

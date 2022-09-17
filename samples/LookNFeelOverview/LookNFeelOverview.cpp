@@ -80,7 +80,7 @@ bool LookNFeelOverviewSample::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     SchemeManager::getSingleton().createFromFile("OgreTray.scheme");
-    guiContext->getCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    guiContext->setDefaultCursorImage("Vanilla-Images/MouseArrow");
 
     // load the font we are going to use and which is not loaded via scheme
     FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("Jura-10.font");

@@ -29,8 +29,8 @@
 #include "CEGUI/widgets/Titlebar.h"
 #include "CEGUI/widgets/FrameWindow.h"
 #include "CEGUI/GUIContext.h"
+#include "CEGUI/CoordConverter.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 const String Titlebar::EventNamespace("Titlebar");
@@ -147,21 +147,24 @@ void Titlebar::onMouseButtonDown(MouseButtonEventArgs& e)
                 d_dragPoint = e.d_localPos;
 
                 // store old constraint area
-                d_oldCursorArea = getGUIContext().getCursor().getConstraintArea();
+                d_oldCursorArea = d_guiContext->getCursorConstraintArea();
 
                 // setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
+                const Rectf oldAreaAbs = CoordConverter::asAbsolute(d_oldCursorArea, d_guiContext->getSurfaceSize());
                 Rectf constrainArea;
                 if (auto grandParent = static_cast<Window*>(d_parent->getParentElement()))
                 {
-                    constrainArea = grandParent->getInnerRectClipper().getIntersection(d_oldCursorArea);
+                    constrainArea = grandParent->getInnerRectClipper().getIntersection(oldAreaAbs);
                 }
                 else
                 {
-                    const Rectf screen(glm::vec2(0, 0), getRootContainerSize());
-                    constrainArea = screen.getIntersection(d_oldCursorArea);
+                    const Rectf screen(glm::vec2(0.f, 0.f), getRootContainerSize());
+                    constrainArea = screen.getIntersection(oldAreaAbs);
                 }
 
-                getGUIContext().getCursor().setConstraintArea(&constrainArea);
+                d_guiContext->setCursorConstraintArea(URect(
+                    UDim(0.f, constrainArea.d_min.x), UDim(0.f, constrainArea.d_min.y),
+                    UDim(0.f, constrainArea.d_max.x), UDim(0.f, constrainArea.d_max.y)));
             }
         }
 
@@ -207,8 +210,7 @@ void Titlebar::onCaptureLost(WindowEventArgs& e)
     d_dragging = false;
 
     // restore old constraint area
-    getGUIContext().
-        getCursor().setConstraintArea(&d_oldCursorArea);
+    getGUIContext().setCursorConstraintArea(d_oldCursorArea);
 }
 
 //----------------------------------------------------------------------------//
