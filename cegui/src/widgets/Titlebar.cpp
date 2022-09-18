@@ -36,79 +36,39 @@ namespace CEGUI
 const String Titlebar::EventNamespace("Titlebar");
 const String Titlebar::WidgetTypeName("CEGUI/Titlebar");
 
-/*************************************************************************
-    Constructor
-*************************************************************************/
-Titlebar::Titlebar(const String& type, const String& name) :
-    Window(type, name)
+//----------------------------------------------------------------------------//
+Titlebar::Titlebar(const String& type, const String& name)
+    : Window(type, name)
 {
     addTitlebarProperties();
     setAlwaysOnTop(true);
     setCursorInputPropagationEnabled(true);
-
-    // basic initialisation
-    d_dragging = false;
-    d_dragEnabled = true;
 }
 
-/*************************************************************************
-    Destructor
-*************************************************************************/
-Titlebar::~Titlebar(void)
-{
-}
-
-
-/*************************************************************************
-    Return whether this title bar will respond to dragging.
-*************************************************************************/
-bool Titlebar::isDraggingEnabled(void) const
-{
-    return d_dragEnabled;
-}
-
-
-/*************************************************************************
-    Set whether this title bar widget will respond to dragging.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Titlebar::setDraggingEnabled(bool setting)
 {
-    if (d_dragEnabled != setting)
-    {
-        d_dragEnabled = setting;
+    if (d_dragEnabled == setting)
+        return;
 
-        // stop dragging now if the setting has been disabled.
-        if (!d_dragEnabled && d_dragging)
-            releaseInput();
+    d_dragEnabled = setting;
 
-        // call event handler.
-        WindowEventArgs args(this);
-        onDraggingModeChanged(args);
-    }
+    // stop dragging now if the setting has been disabled.
+    if (!d_dragEnabled && d_dragging)
+        releaseInput();
 
+    WindowEventArgs args(this);
+    onDraggingEnabledChanged(args);
 }
 
-bool Titlebar::isDragged() const
-{
-    return d_dragging;
-}
-
-const glm::vec2& Titlebar::getDragPoint() const
-{
-    return d_dragPoint;
-}
-
-/*************************************************************************
-    Handler for cursor movement events
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Titlebar::onCursorMove(CursorMoveEventArgs& e)
 {
-    // Base class processing.
     Window::onCursorMove(e);
 
-    if (d_dragging && (d_parent != nullptr))
+    if (d_dragging && d_parent)
     {
-        // move the window.  *** Again: Titlebar objects should only be attached to FrameWindow derived classes. ***
+        // Move the window. Titlebar objects should only be attached to FrameWindow derived classes.
         if (auto frameWnd = dynamic_cast<FrameWindow*>(d_parent))
         {
             const glm::vec2 delta = e.d_localPos - d_dragPoint;
@@ -119,10 +79,7 @@ void Titlebar::onCursorMove(CursorMoveEventArgs& e)
     }
 }
 
-
-/*************************************************************************
-    Handler for cursor press events
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Titlebar::onMouseButtonDown(MouseButtonEventArgs& e)
 {
     Window::onMouseButtonDown(e);
@@ -168,6 +125,7 @@ void Titlebar::onMouseButtonDown(MouseButtonEventArgs& e)
             }
         }
 
+        // Consume click anyway, preventing unwanted pass-through
         ++e.handled;
     }
 }
@@ -219,13 +177,11 @@ void Titlebar::onFontChanged(WindowEventArgs& e)
     Window::onFontChanged(e);
 
     if (d_parent && !getParent()->isInitializing())
-    {
         getParent()->performChildLayout(false, false);
-    }
 }
 
 //----------------------------------------------------------------------------//
-void Titlebar::addTitlebarProperties(void)
+void Titlebar::addTitlebarProperties()
 {
     const String& propertyOrigin = WidgetTypeName;
 

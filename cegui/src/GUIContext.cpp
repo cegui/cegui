@@ -918,7 +918,7 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
 
         window->onMouseButtonDown(args);
 
-        if (!window->isCursorPassThroughEnabled())
+        if (!window->isCursorPassThroughEnabled() && !window->isCursorInputPropagationEnabled())
             ++args.handled;
 
         if (args.handled)
@@ -996,7 +996,7 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
         // Finally send mouse up event. Handling click also means handling mouse up, so we pass the same args.
         window->onMouseButtonUp(args);
 
-        if (!window->isCursorPassThroughEnabled())
+        if (!window->isCursorPassThroughEnabled() && !window->isCursorInputPropagationEnabled())
             ++args.handled;
 
         if (args.handled)

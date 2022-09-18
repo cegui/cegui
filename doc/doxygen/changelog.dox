@@ -53,6 +53,7 @@ Breaking changes:
 - RenderTarget::unprojectPoint made non-virtual, updateMatrix() made virtual instead as the only real difference between renderers.
 - Cursor logic is moved into GUIContext
 - Events ImageChanged, DefaultImageChanged of cursor changed to CursorImageChanged, DefaultCursorImageChanged of GUIContext
+- Titlebar::onDraggingModeChanged renamed to Titlebar::onDraggingEnabledChanged
 
 Added:
 - Window::getFactoryType to get the initial window type without an applied look-n-feel
