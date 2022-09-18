@@ -357,6 +357,13 @@ struct CEGUIEXPORT MouseClickTracker
 
         return d_clickCount;
     }
+
+    //! Reset our state to generate double-click next time, thus preserving behaviour expected by users
+    void onMultiClickProcessedAsSingle()
+    {
+        d_clickCount = 1;
+        d_downTime = std::chrono::steady_clock::now() - std::chrono::duration_cast<std::chrono::seconds>(std::chrono::duration<float>(d_multiClickTimeout));
+    }
 };
 
 //! \brief Enumeration of keyboard modifier keys

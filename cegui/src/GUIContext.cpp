@@ -990,7 +990,13 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
 
             // Then process single clicks. Windows that do not handle multi-clicks are taken a chance to process them as single clicks too.
             if (args.d_generatedClickEventOrder > 0 && !args.handled)
+            {
                 window->onClick(args);
+
+                // If a multi-click was processed as single, reset tracker to generate subsequent multi-clicks accordingly
+                if (args.d_generatedClickEventOrder > 1)
+                    d_mouseClickTracker.onMultiClickProcessedAsSingle();
+            }
         }
 
         // Finally send mouse up event. Handling click also means handling mouse up, so we pass the same args.

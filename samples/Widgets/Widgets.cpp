@@ -72,8 +72,6 @@ bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
 
     if (auto textArgs = dynamic_cast<const CEGUI::TextEventArgs*>(&args))
         logMessage += "TextEvent: '" + CEGUI::String(1, textArgs->d_character) + "'";
-    else if (dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
-        logMessage += "WindowEvent";
     else if (dynamic_cast<const CEGUI::ActivationEventArgs*>(&args))
         logMessage += "ActivationEvent";
     else if (dynamic_cast<const CEGUI::DragDropEventArgs*>(&args))
@@ -86,6 +84,8 @@ bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
         logMessage += "CursorMoveEvent";
     else if (dynamic_cast<const CEGUI::CursorInputEventArgs*>(&args))
         logMessage += "CursorInputEvent";
+    else if (dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
+        logMessage += "WindowEvent";
 
     logMessage += CEGUI::String(")\n");
 
