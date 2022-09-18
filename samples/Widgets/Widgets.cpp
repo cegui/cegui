@@ -357,13 +357,8 @@ void WidgetsSample::initialiseSkinCombobox(CEGUI::Window* container)
 
     d_skinSelectionCombobox->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, Event::Subscriber(&WidgetsSample::handleSkinSelectionAccepted, this));
 
-    std::map<CEGUI::String, WidgetListType>::iterator iter = d_skinListItemsMap.begin();
-    while (iter != d_skinListItemsMap.end())
-    {
-        d_skinSelectionCombobox->addItem(new StandardItem(iter->first));
-
-        ++iter;
-    }
+    for (const auto& pair : d_skinListItemsMap)
+        d_skinSelectionCombobox->addItem(new StandardItem(pair.first));
 
     container->addChild(d_skinSelectionCombobox);
     container->addChild(skinSelectionComboboxLabel);
@@ -637,35 +632,30 @@ CEGUI::Window* WidgetsSample::initialiseSpecialWidgets(CEGUI::Window* widgetWind
         widgetWindow->setProperty("Image", "SpaceBackgroundImage");
     }
 
-    ListView* list_view = dynamic_cast<ListView*>(widgetWindow);
-    if (list_view)
+    if (auto list_view = dynamic_cast<ListView*>(widgetWindow))
     {
         initListView(list_view);
     }
-
-    CEGUI::ComboDropList* combodroplist = dynamic_cast<CEGUI::ComboDropList*>(widgetWindow);
-    if (combodroplist)
+    else if (auto combodroplist = dynamic_cast<CEGUI::ComboDropList*>(widgetWindow))
     {
         initListWidget(combodroplist);
     }
-
-    CEGUI::Combobox* combobox = dynamic_cast<CEGUI::Combobox*>(widgetWindow);
-    if (combobox)
+    else if (auto combobox = dynamic_cast<CEGUI::Combobox*>(widgetWindow))
     {
         initCombobox(combobox);
     }
-
-    CEGUI::MultiColumnList* multilineColumnList = dynamic_cast<CEGUI::MultiColumnList*>(widgetWindow);
-    if (multilineColumnList)
+    else if (auto multilineColumnList = dynamic_cast<CEGUI::MultiColumnList*>(widgetWindow))
     {
         initMultiColumnList(multilineColumnList);
     }
-
-    CEGUI::Menubar* menuBar = dynamic_cast<CEGUI::Menubar*>(widgetWindow);
-    if (menuBar)
+    else if (auto menuBar = dynamic_cast<CEGUI::Menubar*>(widgetWindow))
     {
         initMenubar(menuBar);
-
+    }
+    else if (auto scrollBar = dynamic_cast<CEGUI::Scrollbar*>(widgetWindow))
+    {
+        scrollBar->setDocumentSize(10.f);
+        scrollBar->setPageSize(5.f);
     }
 
     return widgetWindow;

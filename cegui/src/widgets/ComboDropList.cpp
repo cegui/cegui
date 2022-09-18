@@ -33,26 +33,15 @@ namespace CEGUI
 {
 const String ComboDropList::EventNamespace("ComboDropList");
 const String ComboDropList::WidgetTypeName("CEGUI/ComboDropList");
-const String ComboDropList::EventListSelectionAccepted( "ListSelectionAccepted" );
+const String ComboDropList::EventListSelectionAccepted("ListSelectionAccepted");
 
 //----------------------------------------------------------------------------//
-ComboDropList::ComboDropList(const String& type, const String& name) :
-    ListWidget(type, name)
+ComboDropList::ComboDropList(const String& type, const String& name)
+    : ListWidget(type, name)
 {
-	d_autoArm = false;
-	d_armed = false;
-    d_lastItemSelected = nullptr;
-
-	hide();
-
     // pass captured inputs to children to enable scrollbars
     setDistributesCapturedInputs(true);
     banPropertyFromXML("DistributeCapturedInputs");
-}
-
-//----------------------------------------------------------------------------//
-ComboDropList::~ComboDropList(void)
-{
 }
 
 //----------------------------------------------------------------------------//
@@ -73,17 +62,14 @@ void ComboDropList::initialiseComponents()
 void ComboDropList::resizeToContent(bool fit_width, bool fit_height)
 {
     if (!d_windowRenderer)
-        throw InvalidRequestException(
-            "Function requires a valid WindowRenderer object to be set.");
+        throw InvalidRequestException("Function requires a valid WindowRenderer object to be set.");
 
-    static_cast<ItemViewWindowRenderer*>(d_windowRenderer)->
-        resizeViewToContent(fit_width, fit_height);
+    static_cast<ItemViewWindowRenderer*>(d_windowRenderer)->resizeViewToContent(fit_width, fit_height);
 }
 
 //----------------------------------------------------------------------------//
 void ComboDropList::onListSelectionAccepted(WindowEventArgs& e)
 {
-    d_lastItemSelected = getFirstSelectedItem();
 	fireEvent(EventListSelectionAccepted, e, EventNamespace);
 }
 
@@ -91,10 +77,9 @@ void ComboDropList::onListSelectionAccepted(WindowEventArgs& e)
 void ComboDropList::onViewContentsChanged(WindowEventArgs& e)
 {
     // basically see if our 'sticky' selection was removed
-    if ((d_lastItemSelected) && !isItemInList(d_lastItemSelected))
+    if (d_lastItemSelected && !isItemInList(d_lastItemSelected))
         d_lastItemSelected = nullptr;
 
-    // base class processing
     ListWidget::onViewContentsChanged(e);
 }
 
@@ -112,44 +97,30 @@ void ComboDropList::onCursorMove(CursorMoveEventArgs& e)
 {
     ListWidget::onCursorMove(e);
 
-    // if cursor is within our area (but not our children)
+    // check if cursor is within our area (but not our children)
 	if (isHit(e.d_surfacePos))
 	{
 		if (!getChildAtPosition(e.d_surfacePos))
 		{
-			// handle auto-arm
 			if (d_autoArm)
-			{
 				d_armed = true;
-			}
 
 			if (d_armed)
 			{
-                // check for an item under the cursor
-                StandardItem* item = d_itemModel.getItemForIndex(indexAtLocal(e.d_localPos));
-
-                // if an item is under cursor, select it
-                if (item != nullptr)
-                {
+                if (auto item = d_itemModel.getItemForIndex(indexAtLocal(e.d_localPos)))
                     setIndexSelectionState(item, true);
-                }
                 else
-                {
                     clearSelections();
-                }
 			}
 		}
 
 		++e.handled;
 	}
-	// not within the list area
 	else
 	{
 		// if left cursor is held, clear any selection
 		if (e.d_buttons.has(MouseButton::Left))
-		{
             clearSelections();
-		}
 	}
 }
 
@@ -187,6 +158,8 @@ void ComboDropList::onClick(MouseButtonEventArgs& e)
             // if something was selected, confirm that selection.
             if (getIndexSelectionStates().size() > 0)
             {
+                d_lastItemSelected = getFirstSelectedItem();
+
                 WindowEventArgs args(this);
                 onListSelectionAccepted(args);
             }
@@ -208,12 +181,13 @@ void ComboDropList::onClick(MouseButtonEventArgs& e)
 void ComboDropList::onCaptureLost(WindowEventArgs& e)
 {
     ListWidget::onCaptureLost(e);
+
 	d_armed = false;
 	hide();
 	++e.handled;
 
     // ensure 'sticky' selection remains.
-    if (d_lastItemSelected != nullptr && isItemSelected(d_lastItemSelected))
+    if (d_lastItemSelected && isItemSelected(d_lastItemSelected))
     {
         clearSelections();
         setIndexSelectionState(d_lastItemSelected, true);
