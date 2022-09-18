@@ -394,7 +394,7 @@ public:
     \exception UnknownObjectException
         Thrown if the vertical Scrollbar component does not exist.
     */
-    Scrollbar* getVerticalScrollbar() const;
+    Scrollbar* getVertScrollbar() const;
 
     /*!
     \brief
@@ -407,7 +407,7 @@ public:
     \exception UnknownObjectException
         Thrown if the horizontal Scrollbar component does not exist.
     */
-    Scrollbar* getHorizontalScrollbar() const;
+    Scrollbar* getHorzScrollbar() const;
 
     // Overridden from Window
     void initialiseComponents() override;

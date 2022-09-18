@@ -728,21 +728,10 @@ void ItemView::updateScrollbarDisplayMode(ScrollbarDisplayMode& target_mode,
 //----------------------------------------------------------------------------//
 void ItemView::onScroll(ScrollEventArgs& e)
 {
-    handleOnScroll(getVertScrollbar(), e.d_delta);
-
-    ++e.handled;
     Window::onScroll(e);
-}
 
-//----------------------------------------------------------------------------//
-void ItemView::handleOnScroll(Scrollbar* scrollbar, float scroll)
-{
-    if (scrollbar->isEffectiveVisible() &&
-        scrollbar->getDocumentSize() > scrollbar->getPageSize())
-    {
-        scrollbar->setScrollPosition(
-            scrollbar->getScrollPosition() + scrollbar->getStepSize() * -scroll);
-    }
+    if (Scrollbar::standardProcessing(getVertScrollbar(), getHorzScrollbar(), -e.d_delta, e.d_modifiers.hasAlt()))
+        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//

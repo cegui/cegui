@@ -310,7 +310,7 @@ void TabControl::addButtonForTabContent(Window* wnd)
         Event::Subscriber(&TabControl::handleTabButtonClicked, this));
     tb->subscribeEvent(TabButton::EventDragged,
         Event::Subscriber(&TabControl::handleDraggedPane, this));
-    tb->subscribeEvent(TabButton::EventScrolled,
+    tb->subscribeEvent(TabButton::EventScroll,
         Event::Subscriber(&TabControl::handleWheeledPane, this));
 }
 

@@ -129,12 +129,4 @@ void TabButton::onCursorMove(CursorMoveEventArgs& e)
 	ButtonBase::onCursorMove(e);
 }
 
-//----------------------------------------------------------------------------//
-void TabButton::onScroll(ScrollEventArgs& e)
-{
-    fireEvent(EventScrolled, e, EventNamespace);
-
-	ButtonBase::onScroll(e);
-}
-
 }

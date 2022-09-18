@@ -187,13 +187,13 @@ void ScrollablePane::setHorizontalOverlapSize(float overlap)
 //----------------------------------------------------------------------------//
 float ScrollablePane::getHorizontalScrollPosition(void) const
 {
-    return getHorizontalScrollbar()->getUnitIntervalScrollPosition();
+    return getHorzScrollbar()->getUnitIntervalScrollPosition();
 }
 
 //----------------------------------------------------------------------------//
 void ScrollablePane::setHorizontalScrollPosition(float position)
 {
-    getHorizontalScrollbar()->setUnitIntervalScrollPosition(position);
+    getHorzScrollbar()->setUnitIntervalScrollPosition(position);
 }
 
 //----------------------------------------------------------------------------//
@@ -225,23 +225,23 @@ void ScrollablePane::setVerticalOverlapSize(float overlap)
 //----------------------------------------------------------------------------//
 float ScrollablePane::getVerticalScrollPosition(void) const
 {
-    return getVerticalScrollbar()->getUnitIntervalScrollPosition();
+    return getVertScrollbar()->getUnitIntervalScrollPosition();
 }
 
 //----------------------------------------------------------------------------//
 void ScrollablePane::setVerticalScrollPosition(float position)
 {
-    getVerticalScrollbar()->setUnitIntervalScrollPosition(position);
+    getVertScrollbar()->setUnitIntervalScrollPosition(position);
 }
 
 //----------------------------------------------------------------------------//
 void ScrollablePane::initialiseComponents()
 {
     // get horizontal scrollbar
-    Scrollbar* horzScrollbar = getHorizontalScrollbar();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
     
     // get vertical scrollbar
-    Scrollbar* vertScrollbar = getVerticalScrollbar();
+    Scrollbar* vertScrollbar = getVertScrollbar();
     
     // get scrolled container widget
     ScrolledContainer* container = getScrolledContainer();
@@ -285,8 +285,8 @@ void ScrollablePane::initialiseComponents()
 void ScrollablePane::configureScrollbars()
 {
     // controls should all be valid by this stage
-    Scrollbar* const vertScrollbar = getVerticalScrollbar();
-    Scrollbar* const horzScrollbar = getHorizontalScrollbar();
+    Scrollbar* const vertScrollbar = getVertScrollbar();
+    Scrollbar* const horzScrollbar = getHorzScrollbar();
 
     // update vertical scrollbar state
     {
@@ -349,8 +349,8 @@ void ScrollablePane::configureScrollbars()
 //----------------------------------------------------------------------------//
 void ScrollablePane::scrollContentPane(float dx, float dy, ScrollablePane::ScrollSource /*source*/)
 {
-    Scrollbar* vertScrollbar = getVerticalScrollbar();
-    Scrollbar* horzScrollbar = getHorizontalScrollbar();
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
 
     if (dy != 0.f && vertScrollbar->isEffectiveVisible() &&
         (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
@@ -370,8 +370,8 @@ void ScrollablePane::updateContainerPosition(void)
 {
     // basePos is the position represented by the scrollbars
     // (these are negated so pane is scrolled in the correct directions)
-    UVector2 basePos(cegui_absdim(-getHorizontalScrollbar()->getScrollPosition()),
-                     cegui_absdim(-getVerticalScrollbar()->getScrollPosition()));
+    UVector2 basePos(cegui_absdim(-getHorzScrollbar()->getScrollPosition()),
+                     cegui_absdim(-getVertScrollbar()->getScrollPosition()));
     
     // this bias is the absolute position that 0 on the scrollbars represent.
     // Allows the pane to function correctly with negatively positioned content.
@@ -445,9 +445,9 @@ bool ScrollablePane::handleContentAreaChange(const EventArgs&)
     d_contentRect = contentRect;
 
     // update scrollbar positions (which causes container pane to be moved as needed).
-    Scrollbar* const horzScrollbar = getHorizontalScrollbar();
+    Scrollbar* const horzScrollbar = getHorzScrollbar();
     horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() - xChange);
-    Scrollbar* const vertScrollbar = getVerticalScrollbar();
+    Scrollbar* const vertScrollbar = getVertScrollbar();
     vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() - yChange);
     
     // this call may already have been made if the scroll positions changed. The call
@@ -542,29 +542,10 @@ void ScrollablePane::onSized(ElementEventArgs& e)
 //----------------------------------------------------------------------------//
 void ScrollablePane::onScroll(ScrollEventArgs& e)
 {
-    // base class processing.
     Window::onScroll(e);
 
-    float dx = 0.f;
-    float dy = 0.f;
-
-    Scrollbar* vertScrollbar = getVerticalScrollbar();
-    Scrollbar* horzScrollbar = getHorizontalScrollbar();
-    
-    if (vertScrollbar->isEffectiveVisible() &&
-        (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
-    {
-        dy = vertScrollbar->getStepSize() * -e.d_delta;
-    }
-    else if (horzScrollbar->isEffectiveVisible() &&
-             (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
-    {
-        dx = horzScrollbar->getStepSize() * -e.d_delta;
-    }
-    
-    scrollContentPane(dx, dy, ScrollSource::Wheel);
-
-    ++e.handled;
+    if (Scrollbar::standardProcessing(getVertScrollbar(), getHorzScrollbar(), -e.d_delta, e.d_modifiers.hasAlt()))
+        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -641,13 +622,13 @@ void ScrollablePane::addScrollablePaneProperties(void)
 }
 
 //----------------------------------------------------------------------------//
-Scrollbar* ScrollablePane::getVerticalScrollbar() const
+Scrollbar* ScrollablePane::getVertScrollbar() const
 {
     return static_cast<Scrollbar*>(getChild(VertScrollbarName));
 }
 
 //----------------------------------------------------------------------------//
-Scrollbar* ScrollablePane::getHorizontalScrollbar() const
+Scrollbar* ScrollablePane::getHorzScrollbar() const
 {
     return static_cast<Scrollbar*>(getChild(HorzScrollbarName));
 }

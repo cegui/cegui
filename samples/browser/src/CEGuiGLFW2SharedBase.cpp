@@ -228,8 +228,11 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwMouseButtonCallback(int key, int action)
 void GLFWCALL CEGuiGLFWSharedBase::glfwMouseWheelCallback(int position)
 {
     static int lastPosition = 0;
-    d_sampleApp->injectMouseWheelChange(static_cast<float>(position - lastPosition));
-    lastPosition = position;
+    if (lastPosition != position)
+    {
+        d_sampleApp->injectMouseWheelChange(static_cast<float>(position - lastPosition));
+        lastPosition = position;
+    }
 }
 
 //----------------------------------------------------------------------------//

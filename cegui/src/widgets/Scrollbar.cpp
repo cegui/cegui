@@ -48,6 +48,24 @@ const String Scrollbar::IncreaseButtonName("__auto_incbtn__");
 const String Scrollbar::DecreaseButtonName("__auto_decbtn__");
 
 //----------------------------------------------------------------------------//
+bool Scrollbar::standardProcessing(Scrollbar* vert, Scrollbar* horz, float delta, bool horzOnly)
+{
+    if (!horzOnly && vert && vert->isEffectiveVisible() && vert->getDocumentSize() > vert->getPageSize())
+    {
+        vert->setScrollPosition(vert->getScrollPosition() + vert->getStepSize() * delta);
+        return true;
+    }
+
+    if (horz && horz->isEffectiveVisible() && horz->getDocumentSize() > horz->getPageSize())
+    {
+        horz->setScrollPosition(horz->getScrollPosition() + horz->getStepSize() * delta);
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 ScrollbarWindowRenderer::ScrollbarWindowRenderer(const String& name) :
     WindowRenderer(name, Scrollbar::EventNamespace)
 {

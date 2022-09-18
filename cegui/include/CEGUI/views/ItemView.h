@@ -423,7 +423,6 @@ protected:
     void connectToModelEvents(ItemModel* d_itemModel);
     void disconnectModelEvents();
 
-    void handleOnScroll(Scrollbar* scrollbar, float scroll);
     int getSelectedIndexPosition(const ModelIndex& index) const;
     virtual bool handleSelection(const glm::vec2& localPos, bool should_select,
         bool is_cumulative, bool is_range);

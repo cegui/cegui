@@ -68,33 +68,27 @@ EventHandlerObject::EventHandlerObject(CEGUI::String eventName, WidgetsSample* o
 
 bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
 {
-    CEGUI::String logMessage = "[colour='FFFFBBBB']" + d_eventName + "[colour='FFFFFFFF']";
-    logMessage += CEGUI::String(" (");
+    CEGUI::String logMessage = "[colour='FFFFBBBB']" + d_eventName + "[colour='FFFFFFFF'] (";
 
-    if(dynamic_cast<const CEGUI::CursorInputEventArgs*>(&args))
-    {
-        logMessage += "CursorInputEvent";
-    }
-    else if(const CEGUI::TextEventArgs* textArgs = dynamic_cast<const CEGUI::TextEventArgs*>(&args))
-    {
+    if (auto textArgs = dynamic_cast<const CEGUI::TextEventArgs*>(&args))
         logMessage += "TextEvent: '" + CEGUI::String(1, textArgs->d_character) + "'";
-    }
-    else if(dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
-    {
+    else if (dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
         logMessage += "WindowEvent";
-    }
-    else if(dynamic_cast<const CEGUI::ActivationEventArgs*>(&args))
-    {
+    else if (dynamic_cast<const CEGUI::ActivationEventArgs*>(&args))
         logMessage += "ActivationEvent";
-    }
-    else if(dynamic_cast<const CEGUI::DragDropEventArgs*>(&args))
-    {
+    else if (dynamic_cast<const CEGUI::DragDropEventArgs*>(&args))
         logMessage += "DragDropEvent";
-    }
+    else if (dynamic_cast<const CEGUI::MouseButtonEventArgs*>(&args))
+        logMessage += "MouseButtonEvent";
+    else if (dynamic_cast<const CEGUI::ScrollEventArgs*>(&args))
+        logMessage += "ScrollEvent";
+    else if (dynamic_cast<const CEGUI::CursorMoveEventArgs*>(&args))
+        logMessage += "CursorMoveEvent";
+    else if (dynamic_cast<const CEGUI::CursorInputEventArgs*>(&args))
+        logMessage += "CursorInputEvent";
 
-    logMessage += CEGUI::String(")");
+    logMessage += CEGUI::String(")\n");
 
-    logMessage += "\n";
     d_owner->handleWidgetEventFired(d_eventName, logMessage);
 
     return false;
