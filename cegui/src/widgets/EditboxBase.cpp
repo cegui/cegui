@@ -537,7 +537,7 @@ void EditboxBase::onMouseButtonDown(MouseButtonEventArgs& e)
         if (captureInput())
         {
             d_dragSelecting = true;
-            d_dragAnchorIdx = getTextIndexFromPosition(e.d_surfacePos);
+            d_dragAnchorIdx = getTextIndexFromPosition(e.d_localPos);
             clearSelection();
             setCaretIndex(d_dragAnchorIdx);
             ensureCaretIsVisible();
@@ -627,7 +627,7 @@ void EditboxBase::onCursorMove(CursorMoveEventArgs& e)
 
     if (d_dragSelecting)
     {
-        setCaretIndex(getTextIndexFromPosition(e.d_surfacePos));
+        setCaretIndex(getTextIndexFromPosition(e.d_localPos));
         setSelection(d_caretPos, d_dragAnchorIdx);
         ensureCaretIsVisible();
     }
@@ -909,7 +909,7 @@ bool EditboxBase::performRedo()
 }
 
 //----------------------------------------------------------------------------//
-size_t EditboxBase::getTextIndexFromPosition(const glm::vec2& pt)
+size_t EditboxBase::getTextIndexFromPosition(const glm::vec2& localPos)
 {
     if (getText().empty())
         return 0;
@@ -920,7 +920,7 @@ size_t EditboxBase::getTextIndexFromPosition(const glm::vec2& pt)
 
     updateRenderedText();
 
-    const auto localPt = CoordConverter::screenToWindow(*this, pt) - wr->getTextRenderArea().d_min + getTextOffset();
+    const auto localPt = localPos - wr->getTextRenderArea().d_min + getTextOffset();
 
     float relPos;
     const auto idx = d_renderedText.getTextIndexAtPoint(localPt, &relPos);

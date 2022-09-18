@@ -496,7 +496,7 @@ protected:
         Code point index into the text that is rendered closest to screen
         position \a pt.
     */
-    size_t getTextIndexFromPosition(const glm::vec2& pt);
+    size_t getTextIndexFromPosition(const glm::vec2& localPos);
 
     virtual bool validateWindowRenderer(const WindowRenderer* renderer) const override;
     virtual bool handleFontRenderSizeChange(const Font& font) override;

@@ -177,18 +177,21 @@ bool DragContainer::isDraggingThresholdExceeded(const glm::vec2& local_cursor)
 }
 
 //----------------------------------------------------------------------------//
-void DragContainer::doDragging(const glm::vec2& local_cursor)
+void DragContainer::doDragging(const CursorInputEventArgs& e)
 {
     // calculate amount to move
-    UVector2 offset(cegui_absdim(local_cursor.x), cegui_absdim(local_cursor.y));
-    offset -= (d_usingFixedDragOffset) ? d_fixedDragOffset : d_dragPoint;
+    UVector2 offset(cegui_absdim(e.d_localPos.x), cegui_absdim(e.d_localPos.y));
+    offset -= d_usingFixedDragOffset ? d_fixedDragOffset : d_dragPoint;
     if (offset != UVector2::zero())
     {
         // set new position
         setPosition(getPosition() + offset);
 
+        updateDropTarget();
+
         // Perform event notification
-        WindowEventArgs args(this);
+        TODO;
+        CursorMoveEventArgs args(this, e.d_globalPos, e.d_buttons, e.d_modifiers, CoordConverter::asAbsolute(offset, d_pixelSize));
         onDragPositionChanged(args);
     }
 }
@@ -300,7 +303,7 @@ void DragContainer::onClick(MouseButtonEventArgs& e)
         // Perform picking up in a sticky mode
         if (!d_dragging && d_stickyMode && !d_pickedUp)
         {
-            WindowEventArgs args(this);
+            CursorInputEventArgs args(this, e.d_globalPos, e.d_buttons, e.d_modifiers);
             onDragStarted(args);
             if (d_dragging)
                 d_pickedUp = true;
@@ -315,11 +318,11 @@ void DragContainer::onCursorMove(CursorMoveEventArgs& e)
 
     if (d_dragging)
     {
-        doDragging(e.d_localPos);
+        doDragging(e);
     }
     else if (d_leftPointerHeld && isDraggingThresholdExceeded(e.d_localPos))
     {
-        WindowEventArgs args(this);
+        CursorInputEventArgs args(this, e.d_globalPos, e.d_buttons, e.d_modifiers);
         onDragStarted(args);
     }
 }
@@ -360,10 +363,9 @@ void DragContainer::onClippingChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DragContainer::onDragStarted(WindowEventArgs& e)
+void DragContainer::onDragStarted(CursorInputEventArgs& e)
 {
-    // only proceed if dragging is actually enabled
-    if (!d_draggingEnabled)
+    if (!d_draggingEnabled || d_dragging)
         return;
 
     // initialise drag moving state
@@ -375,19 +377,17 @@ void DragContainer::onDragStarted(WindowEventArgs& e)
 
     d_dragging = true;
 
-    // Now drag mode is set, change cursor as required
-    updateActiveCursorImage();
-
     fireEvent(EventDragStarted, e, EventNamespace);
 
-    // Handle cancel from event handlers
+    // Handle possible endDragging() caused by event handlers
     if (!d_dragging)
         return;
 
+    // Now drag mode is set, change cursor as required
+    updateActiveCursorImage();
+
     // Immediately update position relative to the cursor
-    const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this,
-        d_guiContext->getCursorPosition()));
-    doDragging(localPointerPos);
+    doDragging(e);
 }
 
 //----------------------------------------------------------------------------//
@@ -400,8 +400,6 @@ void DragContainer::onDragEnded(WindowEventArgs& e)
 void DragContainer::onDragPositionChanged(WindowEventArgs& e)
 {
     fireEvent(EventDragPositionChanged, e, EventNamespace);
-
-    updateDropTarget();
 }
 
 //----------------------------------------------------------------------------//
@@ -411,19 +409,45 @@ void DragContainer::updateDropTarget()
         return;
 
     // find out which child of root window has the cursor in it
-    Window* target = d_guiContext->getRootWindow()->getTargetChildAtPosition(
+    Window* newTarget = d_guiContext->getRootWindow()->getTargetChildAtPosition(
         d_guiContext->getCursorPosition(), false, this);
 
     // use root itself if no child was hit
-    if (!target)
-        target = d_guiContext->getRootWindow();
+    if (!newTarget)
+        newTarget = d_guiContext->getRootWindow();
 
-    // if the window with the cursor is different to current drop target
-    if (target != d_dropTarget)
+    while (newTarget && !newTarget->isDragDropTarget())
+        newTarget = newTarget->getParent();
+
+    if (newTarget == d_dropTarget)
+        return;
+
+    // Notify old target that drop item has left
+    if (d_dropTarget)
+        d_dropTarget->notifyDragDropItemLeaves(this);
+
+    // update to new target
+    d_dropTarget = newTarget;
+
+    // Notify new target window that someone has dragged a DragContainer over it
+    if (d_dropTarget)
     {
-        DragDropEventArgs args(target, this);
-        onDragDropTargetChanged(args);
+        d_targetDestroyConnection = d_dropTarget->subscribeEvent(EventDestructionStarted, [this]()
+        {
+            d_targetDestroyConnection.disconnect();
+            d_dropTarget = nullptr;
+            updateDropTarget();
+        });
+
+        d_dropTarget->notifyDragDropItemEnters(this);
     }
+    else
+    {
+        d_targetDestroyConnection.disconnect();
+    }
+
+    DragDropEventArgs args(d_dropTarget, this);
+    onDragDropTargetChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -465,33 +489,6 @@ void DragContainer::onDragThresholdChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void DragContainer::onDragDropTargetChanged(DragDropEventArgs& e)
 {
-    // Notify old target that drop item has left
-    if (d_dropTarget)
-        d_dropTarget->notifyDragDropItemLeaves(this);
-
-    // update to new target
-    d_dropTarget = e.window;
-    while (d_dropTarget && !d_dropTarget->isDragDropTarget())
-        d_dropTarget = d_dropTarget->getParent();
-
-    // Notify new target window that someone has dragged a DragContainer over it
-    if (d_dropTarget)
-    {
-        d_targetDestroyConnection = d_dropTarget->subscribeEvent(EventDestructionStarted, [this]()
-        {
-            d_targetDestroyConnection.disconnect();
-            d_dropTarget = nullptr;
-            updateDropTarget();
-        });
-
-        d_dropTarget->notifyDragDropItemEnters(this);
-    }
-    else
-    {
-        d_targetDestroyConnection.disconnect();
-    }
-
-    e.window = d_dropTarget;
     fireEvent(EventDragDropTargetChanged, e, EventNamespace);
 }
 
@@ -544,7 +541,7 @@ bool DragContainer::pickUp(bool force_sticky /*= false*/)
         d_dragPoint.d_y = cegui_absdim(d_pixelSize.d_height / 2.f);
 
         // initialise the dragging state
-        WindowEventArgs args(this);
+        CursorInputEventArgs args(this, d_guiContext->getCursorPosition(), d_guiContext->getMouseButtons(), d_guiContext->getModifierKeys());
         onDragStarted(args);
         if (d_dragging)
             d_pickedUp = true;
@@ -553,4 +550,4 @@ bool DragContainer::pickUp(bool force_sticky /*= false*/)
     return d_pickedUp;
 }
 
-} // End of  CEGUI namespace section
+}

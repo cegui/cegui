@@ -302,14 +302,7 @@ protected:
     */
     bool isDraggingThresholdExceeded(const glm::vec2& local_cursor);
 
-    /*!
-    \brief
-        Update state for window dragging.
-
-    \param local_cursor
-        Cursor position as a pixel offset from the top-left corner of this window.
-    */
-    void doDragging(const glm::vec2& local_cursor);
+    void doDragging(const CursorInputEventArgs& e);
 
     void endDragging(bool restorePosition);
 
@@ -338,7 +331,7 @@ protected:
     \param e
         WindowEventArgs object containing any relevant data.
     */
-    virtual void onDragStarted(WindowEventArgs& e);
+    virtual void onDragStarted(CursorInputEventArgs& e);
 
     /*!
     \brief

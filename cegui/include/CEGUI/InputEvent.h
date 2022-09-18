@@ -577,6 +577,17 @@ public:
 
 /*!
 \brief
+    EventArgs based class used for certain drag/drop notifications
+*/
+class CEGUIEXPORT DragDropEventArgs : public WindowEventArgs
+{
+public:
+    DragDropEventArgs(Window* wnd, DragContainer* dragDropItem = nullptr) : WindowEventArgs(wnd), d_dragDropItem(dragDropItem) {}
+    DragContainer* d_dragDropItem = nullptr; //!< pointer to the DragContainer window being dragged / dropped.
+};
+
+/*!
+\brief
     EventArgs based class that is used for objects passed to input event handlers
     concerning text input.
 */
@@ -616,17 +627,6 @@ public:
 	ActivationEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
 
 	Window*	otherWindow = nullptr; //!< Pointer to the other window involved in the activation change.
-};
-
-/*!
-\brief
-	EventArgs based class used for certain drag/drop notifications
-*/
-class CEGUIEXPORT DragDropEventArgs : public WindowEventArgs
-{
-public:
-	DragDropEventArgs(Window* wnd, DragContainer* dragDropItem = nullptr) : WindowEventArgs(wnd), d_dragDropItem(dragDropItem) {}
-	DragContainer* d_dragDropItem = nullptr; //!< pointer to the DragContainer window being dragged / dropped.
 };
 
 /*!

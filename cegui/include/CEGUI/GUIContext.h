@@ -212,6 +212,11 @@ public:
     //! Tell the context to reconsider which window it thinks the cursor is in.
     void updateWindowContainingCursor() { d_windowContainingCursorIsUpToDate = false; }
 
+    //! Return currently pressed modifier keys
+    ModifierKeys getModifierKeys() const { return d_modifierKeys; }
+    //! Return currently pressed mouse buttons
+    MouseButtons getMouseButtons() const { return d_mouseButtons; }
+
     void setCursorImage(const Image* image);
     const Image* getCursorImage() const { return d_cursorImage; }
 
