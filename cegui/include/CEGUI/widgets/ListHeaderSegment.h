@@ -322,36 +322,9 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Update state for drag sizing.
-
-    \param local_cursor
-        Cursor position as a pixel offset from the top-left corner of this window.
-
-	\return
-		Nothing.
-	*/
-    void    doDragSizing(const glm::vec2& local_cursor);
-
-
-	/*!
-	\brief
-		Update state for drag moving.
-
-    \param local_cursor
-        Cursor position as a pixel offset from the top-left corner of this window.
-
-	\return
-		Nothing.
-	*/
-    void    doDragMoving(const glm::vec2& local_cursor);
-
-
-	/*!
-	\brief
 		Initialise the required states to put the widget into drag-moving mode.
 	*/
 	void	initDragMoving(void);
-
 
 	/*!
 	\brief
@@ -359,13 +332,11 @@ protected:
 	*/
 	void	initSizingHoverState(void);
 
-
 	/*!
 	\brief
 		Initialise the required states when we are hovering over the main segment area.
 	*/
 	void	initSegmentHoverState(void);
-
 
 	/*!
 	\brief

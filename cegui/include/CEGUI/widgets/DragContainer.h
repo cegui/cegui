@@ -63,9 +63,8 @@ public:
         */
     static const String EventDragEnded;
     /** Event fired when the drag position has changed.
-        * Handlers are passed a const WindowEventArgs reference with
-        * WindowEventArgs::window set to the DragContainer whose position has
-        * changed due to the user dragging it.
+        * Handlers are passed a const CursorMoveEventArgs reference with
+        * window set to the DragContainer and moveDelta set to movement amount.
         */
     static const String EventDragPositionChanged;
     /** Event fired when dragging is enabled or disabled.
@@ -270,7 +269,7 @@ public:
         - true to enabled the use of the fixed offset.
         - false to use the regular logic.
     */
-    void setUsingFixedDragOffset(const bool enable) { d_usingFixedDragOffset = enable; }
+    void setUsingFixedDragOffset(bool enable) { d_usingFixedDragOffset = enable; }
 
     /*!
     \brief
@@ -349,7 +348,7 @@ protected:
     \param e
         WindowEventArgs object containing any relevant data.
     */
-    virtual void onDragPositionChanged(WindowEventArgs& e);
+    virtual void onDragPositionChanged(CursorMoveEventArgs& e);
 
     /*!
     \brief

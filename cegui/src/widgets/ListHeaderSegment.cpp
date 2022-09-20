@@ -249,66 +249,6 @@ void ListHeaderSegment::onClickableSettingChanged(WindowEventArgs& e)
 	fireEvent(EventClickableSettingChanged, e, EventNamespace);
 }
 
-
-/*************************************************************************
-	Processing for drag-sizing the segment
-*************************************************************************/
-void ListHeaderSegment::doDragSizing(const glm::vec2& local_cursor)
-{
-    float delta = local_cursor.x - d_dragPoint.x;
-
-    // store this so we can work out how much size actually changed
-    const float orgWidth = d_pixelSize.d_width;
-
-    // ensure that we only size to the set constraints.
-    //
-    // NB: We are required to do this here due to our virtually unique sizing nature; the
-    // normal system for limiting the window size is unable to supply the information we
-    // require for updating our internal state used to manage the dragging, etc.
-    const float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, getRootContainerSize().d_width));
-    const float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, getRootContainerSize().d_width));
-    const float newWidth = orgWidth + delta;
-
-    if (maxWidth != 0.0f && newWidth > maxWidth)
-        delta = maxWidth - orgWidth;
-    else if (newWidth < minWidth)
-        delta = minWidth - orgWidth;
-
-    // update segment area rect
-    // URGENT FIXME: The pixel alignment will be done automatically again, right? Why is it done here? setArea will do it!
-    URect area(d_area.d_min.d_x, d_area.d_min.d_y, d_area.d_max.d_x + UDim(0,/*PixelAligned(*/delta/*)*/), d_area.d_max.d_y);
-    setArea(area.d_min, area.getSize(), true);
-
-    // move the dragging point so cursor remains 'attached' to edge of segment
-    d_dragPoint.x += d_pixelSize.d_width - orgWidth;
-
-    WindowEventArgs args(this);
-    onSegmentSized(args);
-}
-
-
-/*************************************************************************
-    Processing for drag-moving the segment
-*************************************************************************/
-void ListHeaderSegment::doDragMoving(const glm::vec2& local_cursor)
-{
-    // calculate movement deltas.
-    const float deltaX = local_cursor.x - d_dragPoint.x;
-    const float deltaY = local_cursor.y - d_dragPoint.y;
-
-	// update 'ghost' position
-    d_dragPosition.x += deltaX;
-    d_dragPosition.y += deltaY;
-
-	// update drag point.
-    d_dragPoint.x += deltaX;
-    d_dragPoint.y += deltaY;
-
-	WindowEventArgs args(this);
-	onSegmentDragPositionChanged(args);
-}
-
-
 /*************************************************************************
 	Initialise and enter the drag moving state.
 *************************************************************************/
@@ -416,12 +356,43 @@ void ListHeaderSegment::onCursorMove(CursorMoveEventArgs& e)
 	// handle drag sizing
 	if (d_dragSizing)
 	{
-        doDragSizing(e.d_localPos);
-	}
+        float delta = e.d_localPos.x - d_dragPoint.x;
+
+        // store this so we can work out how much size actually changed
+        const float orgWidth = d_pixelSize.d_width;
+
+        // ensure that we only size to the set constraints.
+        // NB: We are required to do this here due to our virtually unique sizing nature; the
+        // normal system for limiting the window size is unable to supply the information we
+        // require for updating our internal state used to manage the dragging, etc.
+        const float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, getRootContainerSize().d_width));
+        const float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, getRootContainerSize().d_width));
+        const float newWidth = orgWidth + delta;
+
+        if (maxWidth != 0.0f && newWidth > maxWidth)
+            delta = maxWidth - orgWidth;
+        else if (newWidth < minWidth)
+            delta = minWidth - orgWidth;
+
+        // update segment area rect
+        const URect area(d_area.d_min.d_x, d_area.d_min.d_y, d_area.d_max.d_x + UDim(0, delta), d_area.d_max.d_y);
+        setArea(area.d_min, area.getSize(), true);
+
+        // move the dragging point so cursor remains 'attached' to edge of segment
+        d_dragPoint.x += (d_pixelSize.d_width - orgWidth);
+
+        WindowEventArgs args(this);
+        onSegmentSized(args);
+    }
 	// handle drag moving
 	else if (d_dragMoving)
 	{
-        doDragMoving(e.d_localPos);
+        const auto delta = e.d_localPos - d_dragPoint;
+        d_dragPosition += delta;
+        d_dragPoint = e.d_localPos;
+
+        WindowEventArgs args(this);
+        onSegmentDragPositionChanged(args);
     }
     // not sizing, is cursor in the widget area?
     else if (isHit(e.d_surfacePos))
@@ -437,13 +408,8 @@ void ListHeaderSegment::onCursorMove(CursorMoveEventArgs& e)
 			initSegmentHoverState();
 
 			// if we are pushed but not yet drag moving
-			if (d_segmentPushed && !d_dragMoving)
-			{
-                if (isDragMoveThresholdExceeded(e.d_localPos))
-                {
-                    initDragMoving();
-                }
-			}
+			if (d_segmentPushed && !d_dragMoving && isDragMoveThresholdExceeded(e.d_localPos))
+                initDragMoving();
 		}
 	}
     // cursor is no longer within the widget area...

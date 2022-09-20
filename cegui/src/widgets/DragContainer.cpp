@@ -179,21 +179,19 @@ bool DragContainer::isDraggingThresholdExceeded(const glm::vec2& local_cursor)
 //----------------------------------------------------------------------------//
 void DragContainer::doDragging(const CursorInputEventArgs& e)
 {
-    // calculate amount to move
-    UVector2 offset(cegui_absdim(e.d_localPos.x), cegui_absdim(e.d_localPos.y));
-    offset -= d_usingFixedDragOffset ? d_fixedDragOffset : d_dragPoint;
-    if (offset != UVector2::zero())
-    {
-        // set new position
-        setPosition(getPosition() + offset);
+    const auto offset = e.d_localPos - CoordConverter::asAbsolute(d_usingFixedDragOffset ? d_fixedDragOffset : d_dragPoint, d_pixelSize);
+    if (offset.x == 0.f && offset.y == 0.f)
+        return;
 
-        updateDropTarget();
+    auto pos = getPosition();
+    pos.d_x.d_offset += offset.x;
+    pos.d_y.d_offset += offset.y;
+    setPosition(pos);
 
-        // Perform event notification
-        TODO;
-        CursorMoveEventArgs args(this, e.d_globalPos, e.d_buttons, e.d_modifiers, CoordConverter::asAbsolute(offset, d_pixelSize));
-        onDragPositionChanged(args);
-    }
+    updateDropTarget();
+
+    CursorMoveEventArgs args(e, offset);
+    onDragPositionChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -397,7 +395,7 @@ void DragContainer::onDragEnded(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DragContainer::onDragPositionChanged(WindowEventArgs& e)
+void DragContainer::onDragPositionChanged(CursorMoveEventArgs& e)
 {
     fireEvent(EventDragPositionChanged, e, EventNamespace);
 }

@@ -533,6 +533,10 @@ class CEGUIEXPORT CursorMoveEventArgs : public CursorInputEventArgs
 {
 public:
 
+    CursorMoveEventArgs(const CursorInputEventArgs& e, const glm::vec2& moveDelta)
+        : CursorInputEventArgs(e), d_moveDelta(moveDelta)
+    {}
+
     CursorMoveEventArgs(Window* wnd, const glm::vec2& globalPos, MouseButtons buttons, ModifierKeys modifiers, const glm::vec2& moveDelta)
         : CursorInputEventArgs(wnd, globalPos, buttons, modifiers), d_moveDelta(moveDelta)
     {}
