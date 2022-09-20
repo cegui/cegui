@@ -3190,11 +3190,11 @@ protected:
                                #endif
                                ,
                                bool allow_disabled = false,
-                               const Window* const exclude = nullptr) const;
+                               const Window* exclude = nullptr) const;
 
     bool isHitTargetWindow(const glm::vec2& position, bool allow_disabled) const
     {
-        return !isCursorPassThroughEnabled() && isHit(position, allow_disabled);
+        return !d_cursorPassThroughEnabled && isHit(position, allow_disabled);
     }
 
     /*************************************************************************

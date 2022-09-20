@@ -801,8 +801,7 @@ Window* GUIContext::getInputTargetWindow() const
 //----------------------------------------------------------------------------//
 bool GUIContext::injectTimePulse(float timeElapsed)
 {
-    // If no visible active sheet, input can't be handled
-    if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
+    if (!d_rootWindow)
         return false;
 
     // Ensure window containing cursor is now valid
@@ -825,12 +824,14 @@ bool GUIContext::injectMousePosition(float x, float y)
 //----------------------------------------------------------------------------//
 bool GUIContext::injectMouseMove(float dx, float dy)
 {
-    // No movement means no event
-    if (dx == 0.f && dy == 0.f)
-        return false;
-
     // Move cursor to new position. Constraining is possible inside.
+    const auto oldPos = d_cursorPosition;
     setCursorPosition(d_cursorPosition + glm::vec2(dx, dy));
+    const auto delta = d_cursorPosition - oldPos;
+
+    // No movement means no event
+    if (delta.x == 0.f && delta.y == 0.f)
+        return false;
 
     // Delay tooltip appearance, follow the cursor if already shown
     if (!d_tooltipWindow)
@@ -843,7 +844,7 @@ bool GUIContext::injectMouseMove(float dx, float dy)
     auto window = getWindowContainingCursor();
     while (window)
     {
-        CursorMoveEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, glm::vec2{ dx, dy });
+        CursorMoveEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, delta);
         window->onCursorMove(args);
         if (args.handled)
             return true;
@@ -976,7 +977,6 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
         if (window == d_mouseClickTracker.d_window)
         {
             // Clicks are generated only for mouse up happening over the window
-            // FIXME/TODO INPUT: d_windowContainingCursor could be used but then it must not be affected by capture and modal!
             auto windowUnderCursor = d_rootWindow->getTargetChildAtPosition(d_cursorPosition);
 
             args.d_generatedClickEventOrder = d_mouseClickTracker.onMouseButtonUp(button, d_cursorPosition, windowUnderCursor);

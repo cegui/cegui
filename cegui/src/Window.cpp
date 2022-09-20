@@ -569,7 +569,7 @@ Window* Window::getChildAtPosition(const glm::vec2& position) const
 Window* Window::getChildAtPosition(const glm::vec2& position,
                     bool (Window::*hittestfunc)(const glm::vec2&, bool) const,
                     bool allow_disabled,
-                    const Window* const exclude) const
+                    const Window* exclude) const
 {
     glm::vec2 p;
     if (d_surface && d_surface->isRenderingWindow())
