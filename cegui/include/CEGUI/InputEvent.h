@@ -30,7 +30,6 @@
 
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/Sizef.h"
-#include <chrono>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -278,93 +277,6 @@ enum class MouseButton : int
     Invalid
 };
 using MouseButtons = Flags<MouseButton, true>;
-
-/*!
-\brief
-    Helper class for generating click and multi-click events
-*/
-struct CEGUIEXPORT MouseClickTracker
-{
-    using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
-
-    static constexpr float DEFAULT_CLICK_DISTANCE = 5.f;
-    static constexpr float DEFAULT_CLICK_TIMEOUT = 0.25f;
-
-    float d_multiClickDistance = DEFAULT_CLICK_DISTANCE;
-    float d_multiClickTimeout = DEFAULT_CLICK_TIMEOUT;   //!< Zero means no timeout
-    int d_clickLimit = 3;                                //!< Use 0 to disable click events, 1 to enable only single clicks
-
-    Window* d_window = nullptr;
-    MouseButton d_button = MouseButton::Invalid;
-    int d_clickCount = 0;
-    glm::vec2 d_downPos;
-    TimePoint d_downTime;
-
-    void reset()
-    {
-        d_window = nullptr;
-        d_button = MouseButton::Invalid;
-        d_clickCount = 0;
-    }
-
-    bool needReset(MouseButton button, const glm::vec2& position, Window* window) const
-    {
-        if (!d_clickLimit || d_button != button || d_window != window)
-            return true;
-
-        // Single clicks are not cancelled by timeout and by offset for better UX
-        if (d_clickCount > 1)
-        {
-            if (std::abs(d_downPos.x - position.x) > d_multiClickDistance || std::abs(d_downPos.y - position.y) > d_multiClickDistance)
-                return true;
-
-            if (d_multiClickTimeout > 0.f)
-            {
-                const auto secElapsed = std::chrono::duration<float>(std::chrono::steady_clock::now() - d_downTime).count();
-                if (secElapsed > d_clickCount * d_multiClickTimeout)
-                    return true;
-            }
-        }
-
-        return false;
-    }
-
-    void onMouseButtonDown(MouseButton button, const glm::vec2& position, Window* window)
-    {
-        ++d_clickCount;
-        if (d_clickCount > d_clickLimit)
-            d_clickCount = 1;
-
-        if (needReset(button, position, window))
-        {
-            d_window = window;
-            d_button = button;
-            d_clickCount = 1;
-        }
-
-        if (d_clickCount == 1)
-        {
-            d_downPos = position;
-            d_downTime = std::chrono::steady_clock::now();
-        }
-    }
-
-    //! \return Multiclick order to generate (typically 1, 2 or 3) ot 0 if no click event needs to be generated
-    int onMouseButtonUp(MouseButton button, const glm::vec2& position, Window* window)
-    {
-        if (needReset(button, position, window))
-            reset();
-
-        return d_clickCount;
-    }
-
-    //! Reset our state to generate double-click next time, thus preserving behaviour expected by users
-    void onMultiClickProcessedAsSingle()
-    {
-        d_clickCount = 1;
-        d_downTime = std::chrono::steady_clock::now() - std::chrono::duration_cast<std::chrono::seconds>(std::chrono::duration<float>(d_multiClickTimeout));
-    }
-};
 
 //! \brief Enumeration of keyboard modifier keys
 enum class ModifierKey : int

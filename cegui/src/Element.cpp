@@ -852,6 +852,21 @@ bool Element::isDescendantOf(const Element* element) const
 }
 
 //----------------------------------------------------------------------------//
+bool Element::isInChain(const Element* mostNested, const Element* leastNested) const
+{
+    const Element* current = mostNested;
+    while (current && current != leastNested)
+    {
+        if (current == this)
+            return true;
+
+        current = current->d_parent;
+    }
+
+    return (this == leastNested);
+}
+
+//----------------------------------------------------------------------------//
 void Element::setNonClient(const bool setting)
 {
     if (setting == d_nonClient)

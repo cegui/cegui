@@ -740,10 +740,8 @@ void GUIContext::updateInputAutoRepeating(float timeElapsed)
         return;
 
     // Send events according to elapsed time
-    MouseButtonEventArgs args(d_captureWindow, d_cursorPosition,
-        d_mouseButtons, d_modifierKeys, d_autoRepeatMouseButton);
-    if (d_captureWindow == d_mouseClickTracker.d_window)
-        args.d_generatedClickEventOrder = d_mouseClickTracker.d_clickCount;
+    MouseButtonEventArgs args(d_captureWindow, d_cursorPosition, d_mouseButtons, d_modifierKeys, d_autoRepeatMouseButton);
+    args.d_generatedClickEventOrder = d_clickTracker.clickCount;
     do
     {
         args.handled = 0;
@@ -898,6 +896,39 @@ bool GUIContext::injectMouseWheelChange(float delta)
 }
 
 //----------------------------------------------------------------------------//
+// Check spatial and temporal locality of mouse button events. Used for click event generation.
+bool GUIContext::checkClickLocality() const
+{
+    // Single clicks are not cancelled by timeout and by offset for better UX
+    if (d_clickTracker.clickCount < 2)
+        return true;
+
+    if (std::abs(d_clickTracker.downPos.x - d_cursorPosition.x) > d_multiClickDistance ||
+        std::abs(d_clickTracker.downPos.y - d_cursorPosition.y) > d_multiClickDistance)
+    {
+        return false;
+    }
+
+    if (d_multiClickTimeout > 0.f)
+    {
+        const auto secElapsed = std::chrono::duration<float>(std::chrono::steady_clock::now() - d_clickTracker.downTime).count();
+        if (secElapsed > d_clickTracker.clickCount * d_multiClickTimeout)
+            return false;
+    }
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::resetClickTracker()
+{
+    d_clickTracker.firstWindow = nullptr;
+    d_clickTracker.lastWindow = nullptr;
+    d_clickTracker.button = MouseButton::Invalid;
+    d_clickTracker.clickCount = 0;
+}
+
+//----------------------------------------------------------------------------//
 bool GUIContext::injectMouseButtonDown(MouseButton button)
 {
     d_mouseButtons += button;
@@ -905,43 +936,92 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
     if (d_tooltipWindow)
         d_tooltipWindow->hide(true);
 
+    bool consumed = false;
     auto window = getCursorTargetWindow(d_cursorPosition, false);
     while (window)
     {
-        MouseButtonEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, button);
-        if (window == d_mouseClickTracker.d_window)
-            args.d_generatedClickEventOrder = d_mouseClickTracker.d_clickCount;
-
-        // Activate a window with left click. Treat input as handled if the window changed its Z-order in response.
-        if (button == MouseButton::Left)
-            if (setActiveWindow(window, d_moveToFrontOnActivateAllowed && window->isRiseOnCursorActivationEnabled()))
-                ++args.handled;
-
-        window->onMouseButtonDown(args);
-
-        if (!window->isCursorPassThroughEnabled() && !window->isCursorInputPropagationEnabled())
-            ++args.handled;
-
-        if (args.handled)
+        if (!window->isCursorPassThroughEnabled())
         {
             // Track mouse activity for click event generation
-            d_mouseClickTracker.onMouseButtonDown(button, d_cursorPosition, window);
-
-            // Start mouse down event auto-repeating if needed
-            if (window->isCursorAutoRepeatEnabled())
+            if (d_clickLimit)
             {
-                if (d_autoRepeatMouseButton == MouseButton::Invalid)
-                    captureInput(window);
-
-                if (d_autoRepeatMouseButton != button && d_captureWindow == window)
+                if (!consumed)
                 {
-                    d_autoRepeatMouseButton = button;
-                    d_autoRepeatElapsed = 0.f;
-                    d_autoRepeating = false;
+                    // A click must be generated when mouse down and up events visually happen
+                    // within the same window. But these events are not necessarily handled by
+                    // the same window. One of our parents might have handled a down event, but
+                    // an up event is handled by ourselves. This can confuse the click generator.
+                    // To generate clicks as user expects, we must track a chain of windows
+                    // who received mouse down event, no matter if they handled it or not.
+                    auto clickWnd = d_clickTracker.firstWindow;
+                    while (clickWnd)
+                    {
+                        if (clickWnd == window)
+                        {
+                            d_clickTracker.firstWindow = window;
+                            break;
+                        }
+
+                        if (clickWnd == d_clickTracker.lastWindow)
+                            break;
+
+                        clickWnd = clickWnd->getParent();
+                    }
+
+                    // Do this before checkClickLocality() because it depends on the current click count
+                    ++d_clickTracker.clickCount;
+                    if (d_clickTracker.clickCount > d_clickLimit)
+                        d_clickTracker.clickCount = 1;
+
+                    // Detect breaking of the multi-click sequence
+                    if (d_clickTracker.button != button || d_clickTracker.firstWindow != window || !checkClickLocality())
+                    {
+                        d_clickTracker.firstWindow = window;
+                        d_clickTracker.button = button;
+                        d_clickTracker.clickCount = 1;
+                    }
+
+                    if (d_clickTracker.clickCount == 1)
+                    {
+                        d_clickTracker.downPos = d_cursorPosition;
+                        d_clickTracker.downTime = std::chrono::steady_clock::now();
+                    }
                 }
+
+                d_clickTracker.lastWindow = window;
             }
 
-            return true;
+            MouseButtonEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, button);
+            args.d_generatedClickEventOrder = d_clickTracker.clickCount;
+
+            // Activate a window with left click. Treat input as handled if the window changed its Z-order in response.
+            if (button == MouseButton::Left)
+                if (setActiveWindow(window, d_moveToFrontOnActivateAllowed && window->isRiseOnCursorActivationEnabled()))
+                    ++args.handled;
+
+            window->onMouseButtonDown(args);
+
+            if (args.handled)
+            {
+                // Start mouse down event auto-repeating if needed
+                if (window->isCursorAutoRepeatEnabled())
+                {
+                    if (d_autoRepeatMouseButton == MouseButton::Invalid)
+                        captureInput(window);
+
+                    if (d_autoRepeatMouseButton != button && d_captureWindow == window)
+                    {
+                        d_autoRepeatMouseButton = button;
+                        d_autoRepeatElapsed = 0.f;
+                        d_autoRepeating = false;
+                    }
+                }
+
+                return true;
+            }
+
+            // Consume input within non-input-transparent CEGUI geometry even when the window doesn't handle the event
+            consumed = true;
         }
 
         if (window == d_modalWindow || !window->isCursorInputPropagationEnabled())
@@ -950,7 +1030,7 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
         window = window->getParent();
     }
 
-    return false;
+    return consumed;
 }
 
 //----------------------------------------------------------------------------//
@@ -968,50 +1048,77 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
     if (d_autoRepeatMouseButton != MouseButton::Invalid)
         releaseInputCapture();
 
+    bool consumed = false;
+    bool clickSent = false;
+    Window* windowUnderCursor = nullptr;
     auto window = getCursorTargetWindow(d_cursorPosition, false);
     while (window)
     {
-        MouseButtonEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, button);
-
-        // Try to generate click events for the window
-        if (window == d_mouseClickTracker.d_window)
+        if (!window->isCursorPassThroughEnabled())
         {
-            // Clicks are generated only for mouse up happening over the window
-            auto windowUnderCursor = d_rootWindow->getTargetChildAtPosition(d_cursorPosition);
-
-            args.d_generatedClickEventOrder = d_mouseClickTracker.onMouseButtonUp(button, d_cursorPosition, windowUnderCursor);
-
-            // First process multi-clicks that have dedicated event handlers
-            switch (args.d_generatedClickEventOrder)
+            // Check most of click generation conditions once
+            if (!consumed)
             {
-                case 2: window->onDoubleClick(args); break;
-                case 3: window->onTripleClick(args); break;
+                if (!d_clickLimit || d_clickTracker.button != button || !checkClickLocality())
+                {
+                    resetClickTracker();
+                }
+                else
+                {
+                    
+                    windowUnderCursor = d_rootWindow->getTargetChildAtPosition(d_cursorPosition);
+                    if (!windowUnderCursor)
+                        resetClickTracker();
+                }
             }
 
-            // Then process single clicks. Windows that do not handle multi-clicks are taken a chance to process them as single clicks too.
-            if (args.d_generatedClickEventOrder > 0 && !args.handled)
+            MouseButtonEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, button);
+
+            // Send click events
+            // NB: clicks are generated only for mouse up happening over the same window
+            if (d_clickTracker.clickCount &&
+                !clickSent &&
+                windowUnderCursor && windowUnderCursor->isInHierarchyOf(window) &&
+                window->isInChain(d_clickTracker.firstWindow, d_clickTracker.lastWindow))
             {
-                window->onClick(args);
+                clickSent = true;
+                args.d_generatedClickEventOrder = d_clickTracker.clickCount;
 
-                // If a multi-click was processed as single, reset tracker to generate subsequent multi-clicks accordingly
-                if (args.d_generatedClickEventOrder > 1)
-                    d_mouseClickTracker.onMultiClickProcessedAsSingle();
+                // First process multi-clicks that have dedicated event handlers
+                switch (d_clickTracker.clickCount)
+                {
+                    case 2: window->onDoubleClick(args); break;
+                    case 3: window->onTripleClick(args); break;
+                }
+
+                // Then process single clicks. Windows that do not handle multi-clicks are taken a chance to process them as single clicks too.
+                if (!args.handled)
+                {
+                    window->onClick(args);
+
+                    // If a multi-click was processed as single, reset tracker to generate subsequent multi-clicks accordingly
+                    if (d_clickTracker.clickCount > 1)
+                    {
+                        d_clickTracker.clickCount = 1;
+                        d_clickTracker.downTime = std::chrono::steady_clock::now() - std::chrono::duration_cast<std::chrono::seconds>(std::chrono::duration<float>(d_multiClickTimeout));
+                    }
+                }
             }
-        }
 
-        // Finally send mouse up event. Handling click also means handling mouse up, so we pass the same args.
-        window->onMouseButtonUp(args);
+            // Finally send mouse up event. Handling click also means handling mouse up, so we pass the same args.
+            window->onMouseButtonUp(args);
 
-        if (!window->isCursorPassThroughEnabled() && !window->isCursorInputPropagationEnabled())
-            ++args.handled;
+            if (args.handled)
+            {
+                // Reset clicks if mouse up event was handled by another window
+                if (!clickSent)
+                    resetClickTracker();
 
-        if (args.handled)
-        {
-            // Reset clicks if mouse up event was handled by another window
-            if (window != d_mouseClickTracker.d_window)
-                d_mouseClickTracker.reset();
+                return true;
+            }
 
-            return true;
+            // Consume input within non-input-transparent CEGUI geometry even when the window doesn't handle the event
+            consumed = true;
         }
 
         if (window == d_modalWindow || !window->isCursorInputPropagationEnabled())
@@ -1021,9 +1128,9 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
     }
 
     // Reset clicks if mouse up event was not handled
-    d_mouseClickTracker.reset();
+    resetClickTracker();
 
-    return false;
+    return consumed;
 }
 
 //----------------------------------------------------------------------------//
@@ -1037,7 +1144,7 @@ bool GUIContext::injectMouseButtonClick(MouseButton button)
         if (args.handled)
             return true;
 
-        if (window == d_modalWindow)
+        if (window == d_modalWindow || !window->isCursorInputPropagationEnabled())
             break;
 
         window = window->getParent();
@@ -1057,7 +1164,7 @@ bool GUIContext::injectMouseButtonDoubleClick(MouseButton button)
         if (args.handled)
             return true;
 
-        if (window == d_modalWindow)
+        if (window == d_modalWindow || !window->isCursorInputPropagationEnabled())
             break;
 
         window = window->getParent();
@@ -1077,7 +1184,7 @@ bool GUIContext::injectMouseButtonTripleClick(MouseButton button)
         if (args.handled)
             return true;
 
-        if (window == d_modalWindow)
+        if (window == d_modalWindow || !window->isCursorInputPropagationEnabled())
             break;
 
         window = window->getParent();

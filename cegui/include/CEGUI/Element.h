@@ -851,6 +851,9 @@ public:
     //! \brief Checks whether the element is in a subtree starting at the given root
     bool isInHierarchyOf(const Element* root) const { return root && (root == this || isDescendantOf(root)); }
 
+    //! \brief Checks whether the element is in the parent-child chain between two windows, inclusive
+    bool isInChain(const Element* mostNested, const Element* leastNested) const;
+
     /*!
     \brief Set whether the Element is non-client.
 

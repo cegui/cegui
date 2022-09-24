@@ -1641,8 +1641,7 @@ public:
           sibling Windows, and the process repeated for all ancestors.
 
     \return
-        true if there were changes in Z-order, false otherwise. Windows with
-        d_cursorPassThroughEnabled are intentionally ignored.
+        true if there were changes in Z-order, false otherwise.
     */
     bool moveToFront();
 

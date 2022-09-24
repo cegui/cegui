@@ -975,7 +975,7 @@ bool Window::moveToFront()
     // notify relevant windows about the z-order change.
     onZChange_impl();
 
-    return !d_cursorPassThroughEnabled;
+    return true;
 }
 
 //----------------------------------------------------------------------------//

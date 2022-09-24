@@ -30,6 +30,7 @@
 #include "CEGUI/RenderingSurface.h"
 #include "CEGUI/InjectedInputReceiver.h"
 #include "CEGUI/URect.h"
+#include <chrono>
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -92,6 +93,9 @@ public:
     //! A rect that is used to unset cursor constraints
     static const URect NoCursorConstraint;
 
+    static constexpr float DEFAULT_CLICK_DISTANCE = 5.f;
+    static constexpr float DEFAULT_CLICK_TIMEOUT = 0.25f;
+
     GUIContext(RenderTarget& target);
     virtual ~GUIContext() override;
 
@@ -141,14 +145,14 @@ public:
         - 2 or 3 to also generate double (onDoubleClick) and triple clicks (onTripleClick).
         - higher values trigger onClick, d_generatedClickEventOrder can be examined to know the order of the click generated.
     */
-    void setMouseClickEventGeneration(int maxClicksToGenerate) { d_mouseClickTracker.d_clickLimit = maxClicksToGenerate; }
+    void setMouseClickEventGeneration(int maxClicksToGenerate) { d_clickLimit = maxClicksToGenerate; }
     //! \brief Returns automatic mouse button click event generation mode. See setMouseClickEventGeneration.
-    int getMouseClickEventGeneration() const { return d_mouseClickTracker.d_clickLimit; }
+    int getMouseClickEventGeneration() const { return d_clickLimit; }
 
-    void setMouseButtonMultiClickTimeout(float seconds) { d_mouseClickTracker.d_multiClickTimeout = seconds; }
-    float getMouseButtonMultiClickTimeout() const { return d_mouseClickTracker.d_multiClickTimeout; }
-    void setMouseButtonMultiClickTolerance(float pixels) { d_mouseClickTracker.d_multiClickDistance = pixels; }
-    float getMouseButtonMultiClickTolerance() const { return d_mouseClickTracker.d_multiClickDistance; }
+    void setMouseButtonMultiClickTimeout(float seconds) { d_multiClickTimeout = seconds; }
+    float getMouseButtonMultiClickTimeout() const { return d_multiClickTimeout; }
+    void setMouseButtonMultiClickTolerance(float pixels) { d_multiClickDistance = pixels; }
+    float getMouseButtonMultiClickTolerance() const { return d_multiClickDistance; }
 
     // TODO StringAtom!
     void initDefaultInputSemantics();
@@ -361,6 +365,8 @@ protected:
 
     //! call some function for a chain of windows: (top, bottom]
     void notifyCursorTransition(Window* top, Window* bottom, void (Window::* func)(CursorInputEventArgs&), CursorInputEventArgs& args) const;
+    bool checkClickLocality() const;
+    void resetClickTracker();
 
     void showTooltip(bool force);
     void hideTooltip(bool force);
@@ -393,9 +399,23 @@ protected:
 
     MouseButtons d_mouseButtons;
     ModifierKeys d_modifierKeys;
-    MouseClickTracker d_mouseClickTracker;
     std::vector<KeySemanticMapping> d_keySemantics;
     std::vector<MouseButtonSemanticMapping> d_mouseSemantics;
+
+    float d_multiClickDistance = DEFAULT_CLICK_DISTANCE;
+    float d_multiClickTimeout = DEFAULT_CLICK_TIMEOUT;   //!< Zero means no timeout
+    int d_clickLimit = 3;                                //!< Use 0 to disable click events, 1 to enable only single clicks
+
+    struct ClickTracker
+    {
+        Window* firstWindow = nullptr;
+        Window* lastWindow = nullptr;
+        glm::vec2 downPos;
+        std::chrono::time_point<std::chrono::steady_clock> downTime;
+        int clickCount = 0;
+        MouseButton button = MouseButton::Invalid;
+    };
+    ClickTracker d_clickTracker;
 
     Sizef d_surfaceSize; //!< a cache of the target surface size, allows returning by ref.
     Sizef d_cursorSize;
