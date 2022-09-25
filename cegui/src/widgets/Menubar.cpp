@@ -78,16 +78,12 @@ Sizef Menubar::getContentSize() const
 		i++;
 	}
 
-	const float count = float(i);
-
 	// horz item spacing
-	if (count >= 2)
-	{
-	    total_width += (count-1)*d_itemSpacing;
-	}
+    if (i > 1)
+        total_width += (i - 1) * d_itemSpacing;
 
 	// return the content size
 	return Sizef(total_width, tallest);
 }
 
-} // End of  CEGUI namespace section
+}

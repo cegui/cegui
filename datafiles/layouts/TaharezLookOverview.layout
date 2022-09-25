@@ -255,47 +255,48 @@
         </Window>
         <Window type="TaharezLook/Menubar" name="Menubar" >
             <Property name="Area" value="{{0.492188,0},{0.416667,0},{0.648438,0},{0.444445,0}}" />
-            <Window type="TaharezLook/MenuItem" >
+            <Window type="TaharezLook/MenuItem" name="Menu_FileItem" >
                 <Property name="Area" value="{{0,7},{0,0},{0,36},{0,19}}" />
                 <Property name="Text" value="File" />
                 <Property name="VerticalAlignment" value="Centre" />
-                <Window type="TaharezLook/PopupMenu" >
+                <Window type="TaharezLook/PopupMenu" name="Menu_FilePopup" >
                     <Property name="Area" value="{{0,0},{0,0},{0,37},{0,24.6796}}" />
                     <Property name="Visible" value="false" />
                     <Property name="ItemSpacing" value="2" />
                     <Property name="ClippedByParent" value="false" />
                     <Property name="AutoResizeEnabled" value="true" />
-                    <Window type="TaharezLook/MenuItem" >
+                    <Window type="TaharezLook/MenuItem" name="Menu_FilePopup_QuitItem" >
                         <Property name="Area" value="{{0,2},{0,2},{0,33},{0,21}}" />
                         <Property name="Text" value="Quit" />
                     </Window>
                 </Window>
             </Window>
-            <Window type="TaharezLook/MenuItem" >
+            <Window type="TaharezLook/MenuItem" name="Menu_DemoItem" >
                 <Property name="Area" value="{{0,46},{0,0},{0,89},{0,19}}" />
                 <Property name="Text" value="Demo" />
                 <Property name="VerticalAlignment" value="Centre" />
-                <Window type="TaharezLook/PopupMenu" >
+                <Window type="TaharezLook/PopupMenu" name="Menu_DemoPopup" >
                     <Property name="Area" value="{{0,0},{0,0},{0,108},{0,45.3591}}" />
                     <Property name="Visible" value="false" />
                     <Property name="ItemSpacing" value="2" />
                     <Property name="ClippedByParent" value="false" />
                     <Property name="AutoResizeEnabled" value="true" />
-                    <Window type="TaharezLook/MenuItem" >
+                    <Window type="TaharezLook/MenuItem" name="Menu_DemoPopup_NewDialogItem" >
                         <Property name="Area" value="{{0,2},{0,2},{0,104},{0,21}}" />
                         <Property name="Text" value="New dialog" />
                         <Property name="TooltipText" value="Hotkey: Space" />
                     </Window>
-                    <Window type="TaharezLook/MenuItem" >
+                    <Window type="TaharezLook/MenuItem" name="Menu_DemoPopup_NumberTwoItem" >
                         <Property name="Area" value="{{0,2},{0,23},{0,104},{0,42}}" />
                         <Property name="Text" value="Number Two" />
-                        <Window type="TaharezLook/PopupMenu" >
+                        <Property name="AutoPopupTimeout" value="0.25" />
+                        <Window type="TaharezLook/PopupMenu" name="Menu_DemoPopup_NumberTwoPopup" >
                             <Property name="Area" value="{{0,0},{0,0},{0,76},{0,24.6796}}" />
                             <Property name="Visible" value="false" />
                             <Property name="ItemSpacing" value="2" />
                             <Property name="ClippedByParent" value="false" />
                             <Property name="AutoResizeEnabled" value="true" />
-                            <Window type="TaharezLook/MenuItem" >
+                            <Window type="TaharezLook/MenuItem" name="Menu_DemoPopup_NumberTwoPopup_ExtendedItem" >
                                 <Property name="Area" value="{{0,2},{0,2},{0,72},{0,21}}" />
                                 <Property name="Text" value="Extended" />
                             </Window>
