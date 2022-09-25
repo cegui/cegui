@@ -201,10 +201,8 @@ Font& FontManager::createPixmapFont(const String& font_name,
 void FontManager::notifyDisplaySizeChanged(const Sizef& size)
 {
     // notify all attached Font objects of the change in resolution
-    FontRegistry::iterator pos = d_registeredFonts.begin(), end = d_registeredFonts.end();
-
-    for (; pos != end; ++pos)
-        pos->second->notifyDisplaySizeChanged(size);
+    for (const auto& pair : d_registeredFonts)
+        pair.second->notifyDisplaySizeChanged(size);
 }
 void FontManager::writeFontToStream(const String& name,
                                     OutStream& out_stream) const

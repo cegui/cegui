@@ -154,7 +154,13 @@ void ListboxTextItem::setCustomTextParser(CEGUI::TextParser* parser)
 //----------------------------------------------------------------------------//
 bool ListboxTextItem::handleFontRenderSizeChange(const Font* const font)
 {
-    return getFont() == font;
+    if (font == getFont())
+    {
+        d_renderedTextValid = false;
+        return true;
+    }
+
+    return false;
 }
 
 }

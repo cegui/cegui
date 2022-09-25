@@ -1652,6 +1652,7 @@ protected:
 	/*************************************************************************
 		Overridden Event handlers
 	*************************************************************************/
+    bool handleFontRenderSizeChange(const Font& font) override;
     void	onFontChanged(WindowEventArgs& e) override;
     void	onSized(ElementEventArgs& e) override;
     void    onMouseButtonDown(MouseButtonEventArgs& e) override;

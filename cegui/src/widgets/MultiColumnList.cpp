@@ -1877,6 +1877,31 @@ void MultiColumnList::onListColumnMoved(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+bool MultiColumnList::handleFontRenderSizeChange(const Font& font)
+{
+    bool handled = false;
+
+    for (unsigned int i = 0; i < getRowCount(); ++i)
+        for (unsigned int j = 0; j < getColumnCount(); ++j)
+            if (auto item = d_grid[i][j])
+                handled |= item->handleFontRenderSizeChange(&font);
+
+    for (unsigned int col = 0; col < getColumnCount(); ++col)
+    {
+        if (getHeaderSegmentForColumn(col).getFont() == &font)
+        {
+            invalidate();
+            break;
+        }
+    }
+
+    // Always call just in case
+    handled |= Window::handleFontRenderSizeChange(font);
+
+    return handled;
+}
+
+//----------------------------------------------------------------------------//
 void MultiColumnList::onFontChanged(WindowEventArgs& e)
 {
     // Propagate to children
