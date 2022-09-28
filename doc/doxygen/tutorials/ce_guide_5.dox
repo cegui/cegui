@@ -271,22 +271,98 @@ This enables handling 4-clicks and higher order clicks given the click
 generation order limit is high enough. But windows have no special
 callbacks for these multi-clicks. You need to use onClick.
 
+@subsection input_tutorial_multiclick Mouse button event order
+A order of mouse button events will be as follows:
+- onMouseButtonDown
+- onClick
+- onMouseButtonUp
+- onMouseButtonDown
+- onDoubleClick
+- onMouseButtonUp
+- onMouseButtonDown
+- onTripleClick
+- onMouseButtonUp
+and so on in a loop. Handling multi-click event as a single click
+resets the counter so that the next click will be treated as double.
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 <br>
-@section input_tutorial_clickgen Click event generation
+@section input_tutorial_targets Input targets (receivers)
+Input events are intended to be processed by some Window and, under some
+circumstances, its parents.
 
-There are a bunch of values defined by default in the SemanticValue
-enumeration. You can create your own semantic values.
-There is also no more knowledge of a mouse. Instead the generic
-term Cursor is used, because this can represent also a touch pointer.
-@ref input_tutorial_clickgen
+Keyboard events go to the window that has input focus. In CEGUI it is also
+called an "active window". An active window may have a distinctive look to
+indicate that keyboard input will go there. GUIContext::getInputTargetWindow()
+is responsible for determining this kind of target.
 
-event args for mouse, dragging etc
-modifier keys, mouse buttons
-mouse target window
-input target window
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Most of mouse events target the window under cursor, no matter if it is enabled
+or not. GUIContext::getCursorTargetWindow() is responsible for determining this
+kind of target. Invisible window can't be a mouse target.
+
+Wheel events are special in this. First, an attempt is made to handle the
+wheel event in the cursor target. And if it is not handled there, it is
+dispatched to the focused (active) window. This behaviour was inspired by
+how Qt handles mouse wheel messages.
+
+Window can <b>capture input</b>, in this case it and its children will intercept
+input messages from both mouse and keyboard. Mouse inputs are distributed
+to children if Window::distributesCapturedInputs() is true. Keyboard
+inputs are sent to the active window if it or its parent holds the capture.
+In other cases a capture window itself receives all input events.
+
+One window at a time in each context can be made <b>modal</b> by the call to
+GUIContext::setModalWindow(). Setting nullptr makes no window being modal
+in the given context. A modal window works much like a capturing window,
+restricting input handling to it and its children.
+NB: for cursor target, the modal window overrules the capturing window,
+but for keyboard input the opposite is true. This may be changed later.
+
+<br>
+@section input_tutorial_eventargs Event arguments
+KeyEventArgs are sent to keyboard down and up events and besides the key
+scan code they bear an information about modifier keys currently pressed.
+Modifier keys are Alt, Shift, Ctrl / Cmd. Others may be added in the future.
+
+TextEventArgs are sent to character input handlers, with UTF-32 character code.
+
+Mouse related events accept CursorInputEventArgs and its various subclasses.
+CursorInputEventArgs provides a cursor position in pixels in different
+coordinate systems:
+- screen (or GUI context rendering surface) coordinates
+- coordinates on the immediate rendering surface of the window
+- local coordinates relative to the window origin
+Besides this, pressed modifier keys and pressed mouse buttons are provided.
+
+CursorMoveEventArgs are extended with movement delta in pixels and is sent to
+mouse movement and dragging handlers.
+
+MouseButtonEventArgs are extended with the button that caused the event,
+and the order of an automatically generated click, if it was generated.
+These args are passed to down, up and click events.
+
+ScrollEventArgs are extended with the wheel scroll amount.
+
+<br>
+@section input_tutorial_semantic Semantics
+Semantics are input events or actions abstracted from exact keys / buttons and
+even from exact input device types. They are useful for defining consistent
+mapping for typical GUI application operations. For example, well known
+Cut, Copy, Paste, Undo or Redo actions can be represented as CEGUI semantics,
+removing the need to hardcode keys like Ctrl+C etc.
+
+CEGUI defines a wide set of predefined semantics in CEGUI::SemanticValue.
+Each value is a string, so your application can define additional semantics
+easily without altering CEGUI code. GUIContext::initDefaultInputSemantics()
+initializes a default mapping for predefined semantics. These rules must be
+enough for most of users, but you are not required to use them. You may
+override it partially or even define your own complete set of rules from
+scratch, again without altering the library code.
+
+Currently semantic rules are specific to input devices, with most useful ones
+being for keyboard. This means that your exotic input devices must be injected
+as keyboard or mouse input. This may be improved in the future based on user
+requests. E.g. we can relatively easily add semantic rules for raw text input,
+but this requires adding a support for raw text input first :)
 
 <br>
 @section input_tutorial_conclusion Conclusion

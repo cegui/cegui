@@ -784,7 +784,7 @@ Window* GUIContext::getCursorTargetWindow(const glm::vec2& pt, bool allow_disabl
 Window* GUIContext::getInputTargetWindow() const
 {
     // if no active sheet, there is no target window.
-    if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
+    if (!d_rootWindow)
         return nullptr;
 
     if (d_captureWindow)
