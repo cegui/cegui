@@ -168,7 +168,7 @@ public:
     Combobox(const String& type, const String& name);
 
     void initialiseComponents() override;
-    bool isHit(const glm::vec2& position, bool allow_disabled = false) const override { return false; }
+    bool isHit(const glm::vec2& /*position*/, bool /*allow_disabled*/) const override { return false; }
 
     /*!
     \brief
