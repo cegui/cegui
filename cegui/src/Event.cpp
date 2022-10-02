@@ -51,8 +51,7 @@ Event::Connection Event::subscribe(const Event::Subscriber& slot)
 }
 
 //----------------------------------------------------------------------------//
-Event::Connection Event::subscribe(Event::Group group,
-                                   const Event::Subscriber& slot)
+Event::Connection Event::subscribe(Event::Group group, const Event::Subscriber& slot)
 {
     Event::Connection c(new BoundSlot(group, slot, *this));
     d_slots.insert(std::pair<Group, Connection>(group, c));
@@ -64,11 +63,16 @@ void Event::unsubscribeAll()
 {
     for (auto& groupAndSlot : d_slots)
     {
+        // Make all subscribed slots invalid because we can't control their lifetime
         groupAndSlot.second->d_event = nullptr;
         groupAndSlot.second->d_subscriber->cleanup();
+
+        if (d_isBeingInvoked)
+            groupAndSlot.second = nullptr;
     }
 
-    d_slots.clear();
+    if (!d_isBeingInvoked)
+        d_slots.clear();
 }
 
 //----------------------------------------------------------------------------//

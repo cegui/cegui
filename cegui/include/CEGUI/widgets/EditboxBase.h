@@ -668,8 +668,6 @@ protected:
 
     //! specifies whether validator was created by us, or supplied by user.
     bool d_weOwnValidator = true;
-    //! Previous match state change response
-    bool d_previousValidityChangeResponse = true;
 
 private:
 

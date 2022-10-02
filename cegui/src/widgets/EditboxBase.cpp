@@ -715,6 +715,8 @@ void EditboxBase::processKeyDownEvent(KeyEventArgs& e)
         if (!performRedo())
             return;
     }
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectAll, e))
+        handleSelectAll();
     else if (d_guiContext->isInputSemantic(SemanticValue::GoToPreviousCharacter, e))
         handleCaretMovement(getPrevTextIndex(d_caretPos), false);
     else if (d_guiContext->isInputSemantic(SemanticValue::GoToNextCharacter, e))
@@ -951,18 +953,15 @@ bool EditboxBase::handleFontRenderSizeChange(const Font& font)
 //----------------------------------------------------------------------------//
 bool EditboxBase::handleValidityChangeForString(const String& str)
 {
-    const RegexMatchState newState = getStringMatchState(str);
+    d_validatorMatchState = getStringMatchState(str);
 
-    if (newState == d_validatorMatchState)
-        return d_previousValidityChangeResponse;
-
-    RegexMatchStateEventArgs args(this, newState);
+    // Send an event even if validity didn't actually change. Handler logic
+    // may read other variables and alter its response.
+    RegexMatchStateEventArgs args(this, d_validatorMatchState);
     onTextValidityChanged(args);
 
-    d_previousValidityChangeResponse = !!args.handled;
-    d_validatorMatchState = newState;
-
-    return d_previousValidityChangeResponse;
+    // Accept changes if they pass regex or if a user accepted them through an event handler
+    return (args.handled > 0 || d_validatorMatchState == RegexMatchState::Valid);
 }
 
 //----------------------------------------------------------------------------//

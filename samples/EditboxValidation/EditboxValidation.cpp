@@ -25,7 +25,11 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "EditboxValidation.h"
-#include "CEGUI/CEGUI.h"
+#include <CEGUI/SchemeManager.h>
+#include <CEGUI/FontManager.h>
+#include <CEGUI/WindowManager.h>
+#include <CEGUI/widgets/Editbox.h>
+#include <CEGUI/GUIContext.h>
 
 //----------------------------------------------------------------------------//
 EditboxValidationSample::EditboxValidationSample()
@@ -48,11 +52,8 @@ bool EditboxValidationSample::initialise(CEGUI::GUIContext* guiContext)
 
     d_usedFiles = CEGUI::String(__FILE__);
 
-    // load font and setup default if not loaded via scheme
     FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
-    Font* defaultFont = loadedFonts.empty() ? 0 : loadedFonts.front();
-    // Set default font for the gui context
-    guiContext->setDefaultFont(defaultFont);
+    guiContext->setDefaultFont(loadedFonts.empty() ? nullptr : loadedFonts.front());
 
     SchemeManager::getSingleton().createFromFile("AlfiskoSkin.scheme");
     guiContext->setDefaultCursorImage("AlfiskoSkin/MouseArrow");
@@ -76,10 +77,7 @@ bool EditboxValidationSample::initialise(CEGUI::GUIContext* guiContext)
 
     Editbox* eb = static_cast<Editbox*>(wnd->createChild("AlfiskoSkin/Editbox"));
     eb->setArea(UVector2(cegui_reldim(0.1f), cegui_reldim(0.25f)), USize(cegui_reldim(0.8f), cegui_reldim(0.15f)));
-    eb->subscribeEvent(
-        Editbox::EventTextValidityChanged,
-        Event::Subscriber(&EditboxValidationSample::validationChangeHandler, this));
-
+    eb->subscribeEvent(Editbox::EventTextValidityChanged, Event::Subscriber(&EditboxValidationSample::validationChangeHandler, this));
     eb->setValidationString("[0-9]{4}");
     eb->activate();
 
@@ -89,26 +87,21 @@ bool EditboxValidationSample::initialise(CEGUI::GUIContext* guiContext)
 //----------------------------------------------------------------------------//
 bool EditboxValidationSample::validationChangeHandler(const CEGUI::EventArgs& args)
 {
-    using namespace CEGUI;
-    const RegexMatchStateEventArgs& ra(
-        static_cast<const RegexMatchStateEventArgs&>(args));
-    Editbox* eb = static_cast<Editbox*>(ra.window);
-
-    switch(ra.matchState)
+    const auto& ra = static_cast<const CEGUI::RegexMatchStateEventArgs&>(args);
+    switch (ra.matchState)
     {
-    case RegexMatchState::Invalid:
-        eb->setProperty("NormalTextColour", "FFFF0000");
-        break;
-
-    case RegexMatchState::Partial:
-        eb->setProperty("NormalTextColour", "FFFFBB11");
-        break;
-
-    case RegexMatchState::Valid:
-        eb->setProperty("NormalTextColour", "FF00FF00");
-        break;
+        case CEGUI::RegexMatchState::Invalid:
+            ra.window->setProperty("NormalTextColour", "FFFF0000");
+            break;
+        case CEGUI::RegexMatchState::Partial:
+            ra.window->setProperty("NormalTextColour", "FFFFBB11");
+            break;
+        case CEGUI::RegexMatchState::Valid:
+            ra.window->setProperty("NormalTextColour", "FF00FF00");
+            break;
     }
 
+    // Accept an invalid input too, only change the color
     return true;
 }
 
