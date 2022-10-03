@@ -1339,12 +1339,16 @@ void Window::addChild_impl(Element* element)
 
     Element::addChild_impl(element);
 
+    // Register the new child for drawing
     addWindowToDrawList(*wnd);
-
     wnd->onZChange_impl();
 
     if (d_guiContext)
         wnd->attachToGUIContext(d_guiContext);
+    // TODO: improve this logic! If wnd size is relative and 'this' size is absolute, wnd
+    // will not be resized on attach to context otherwise, because 'this' size isn't changed.
+    else
+        wnd->notifyScreenAreaChanged();
 
     wnd->invalidate(true);
 }
