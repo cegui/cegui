@@ -360,10 +360,10 @@ public:
 
 protected:
 
-    void set(ModifierKey key, bool not)
+    void set(ModifierKey key, bool deny)
     {
         d_map += key;
-        if (not)
+        if (deny)
             d_set -= key;
         else
             d_set += key;
