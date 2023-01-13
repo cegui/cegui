@@ -634,6 +634,10 @@ void GUIContext::positionTooltip()
         return;
 
     glm::vec2 pos = d_cursorPosition;
+    if (auto parent = d_tooltipWindow->getParent())
+    {
+        pos -= parent->getUnclippedInnerRect().get().d_min;
+    }
     if (d_cursorImage)
     {
         pos.x += d_cursorImage->getRenderedSize().d_width;
