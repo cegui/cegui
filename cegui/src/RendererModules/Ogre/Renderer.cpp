@@ -47,6 +47,8 @@
 #include <OgreFrameListener.h>
 #include <OgreViewport.h>
 #include <OgreCamera.h>
+#include <OgreMaterialManager.h>
+#include <OgreTechnique.h>
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 #include <Compositor/OgreCompositorManager2.h>
@@ -303,6 +305,8 @@ struct OgreRenderer_impl :
     Ogre::Viewport* d_previousVP;
     //! Previous projection matrix set on render system.
     Ogre::Matrix4 d_previousProjMatrix;
+    //! Material to use for rendering
+    Ogre::MaterialPtr d_material;
 #endif
 #ifdef CEGUI_USE_OGRE_HLMS
     //! OGRE render target
@@ -795,6 +799,23 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
             bool isFixedFunctionEnabled = true;
         #endif
 
+        d_pimpl->d_material = Ogre::MaterialManager::getSingleton().create(
+            "__cegui_internal_material__",
+            Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+        
+        Ogre::Pass* pass = d_pimpl->d_material->getTechnique(0)->getPass(0);
+        pass->setLightingEnabled(false);
+        pass->setDepthCheckEnabled(false);
+        pass->setDepthWriteEnabled(false);
+        pass->setCullingMode(Ogre::CULL_NONE);
+        pass->setFog(true, Ogre::FOG_NONE);
+        pass->setVertexColourTracking(Ogre::TVC_DIFFUSE);
+        Ogre::TextureUnitState* tus = pass->createTextureUnitState();
+        tus->setTextureFiltering(Ogre::TFO_BILINEAR);
+        tus->setTextureAddressingMode(Ogre::TextureUnitState::TAM_CLAMP);
+        tus->setColourOperationEx(Ogre::LBX_MODULATE, Ogre::LBS_TEXTURE, Ogre::LBS_DIFFUSE);
+        tus->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_TEXTURE, Ogre::LBS_DIFFUSE);
+
         #ifndef RTSHADER_SYSTEM_BUILD_CORE_SHADERS
             if (d_pimpl->d_useGLSLCore)
                 CEGUI_THROW(RendererException("RT Shader System not available but trying to render using OpenGL 3.X+ Core."
@@ -1269,6 +1290,12 @@ Ogre::RenderTarget* OgreRenderer::getOgreRenderTarget()
 const Ogre::HlmsSamplerblock* OgreRenderer::getHlmsSamplerblock()
 {
     return d_pimpl->d_hlmsSamplerblock;
+}
+#else
+Ogre::Pass* OgreRenderer::getOgrePass() const
+{
+    d_pimpl->d_material->touch();
+    return d_pimpl->d_material->getBestTechnique()->getPass(0);
 }
 #endif
 

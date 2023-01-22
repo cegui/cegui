@@ -54,6 +54,7 @@ namespace Ogre
 class Root;
 class RenderSystem;
 class RenderTarget;
+class Pass;
 #if (CEGUI_OGRE_VERSION < ((1 << 16) | (9 << 8) | 0))
 class TexturePtr;
 #else
@@ -386,6 +387,8 @@ public:
 #ifdef CEGUI_USE_OGRE_HLMS
     Ogre::RenderTarget* getOgreRenderTarget();
     const Ogre::HlmsSamplerblock* getHlmsSamplerblock();
+#else
+    Ogre::Pass* getOgrePass() const;
 #endif
 
     // implement CEGUI::Renderer interface
