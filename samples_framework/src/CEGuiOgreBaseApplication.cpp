@@ -159,13 +159,28 @@ void CEGuiOgreBaseApplication::setup()
     OgreBites::ApplicationContext::setup();
     OgreBites::ApplicationContext::addInputListener(this);
 
+    ResourceGroupManager& rgm = ResourceGroupManager::getSingleton();
+
+    const Ogre::String& mediaDir = getDefaultMediaDir();
+    // add default locations
+    rgm.addResourceLocation(mediaDir + "/Main", "FileSystem", ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
+    rgm.addResourceLocation(mediaDir + "/RTShaderLib/GLSL", "FileSystem", ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
+    rgm.addResourceLocation(mediaDir + "/RTShaderLib/HLSL_Cg", "FileSystem", ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
+
     // Create the scene manager
     SceneManager* sm = getRoot()->createSceneManager();
+
+    Ogre::RTShader::ShaderGenerator::initialize();
+    Ogre::RTShader::ShaderGenerator::getSingleton().addSceneManager(sm);
+    Ogre::MaterialManager::getSingleton().setActiveScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+
     // Create and initialise the camera
     d_camera = sm->createCamera("SampleCam");
-    d_camera->setPosition(Vector3(0,0,500));
-    d_camera->lookAt(Vector3(0,0,-300));
+    SceneNode* camNode = sm->getRootSceneNode()->createChildSceneNode();
+    camNode->setPosition(0,0,500);
+    camNode->lookAt(Vector3(0,0,-300), Node::TransformSpace::TS_WORLD);
     d_camera->setNearClipDistance(5);
+    camNode->attachObject(d_camera);
 
     // Create a viewport covering whole window
     Viewport* vp = getRenderWindow()->addViewport(d_camera);
