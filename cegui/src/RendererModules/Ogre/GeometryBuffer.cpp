@@ -33,6 +33,7 @@
 #include <OgreRenderSystem.h>
 #include <OgreQuaternion.h>
 #include <OgreHardwareBufferManager.h>
+#include <OgrePass.h>
 
 #ifdef CEGUI_USE_OGRE_HLMS
 #include <OgreHlmsSamplerblock.h>
@@ -45,6 +46,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+#ifdef CEGUI_USE_OGRE_HLMS
 //----------------------------------------------------------------------------//
 static const Ogre::LayerBlendModeEx S_colourBlendMode =
 {
@@ -68,17 +70,7 @@ static const Ogre::LayerBlendModeEx S_alphaBlendMode =
     Ogre::ColourValue(0, 0, 0, 0),
     0, 0, 0
 };
-
-//----------------------------------------------------------------------------//
-#ifndef CEGUI_USE_OGRE_HLMS
-static const Ogre::TextureUnitState::UVWAddressingMode S_textureAddressMode =
-{
-    Ogre::TextureUnitState::TAM_CLAMP,
-    Ogre::TextureUnitState::TAM_CLAMP,
-    Ogre::TextureUnitState::TAM_CLAMP
-};
 #endif
-
 //----------------------------------------------------------------------------//
 // Helper to allocate a vertex buffer and initialse a Ogre::RenderOperation
 static void initialiseRenderOp(
@@ -227,10 +219,14 @@ void OgreGeometryBuffer::draw(uint32 drawModeMask) const
             d_renderOp.vertexData->vertexCount = i->vertexCount;
 #ifdef CEGUI_USE_OGRE_HLMS
             d_renderSystem._setTexture(0, true, i->texture.get());
-#else
-            d_renderSystem._setTexture(0, true, i->texture);
-#endif
             initialiseTextureStates();
+#else
+            Ogre::TextureUnitState* tus = d_owner.getOgrePass()->getTextureUnitState(0);
+            tus->setTexture(i->texture);
+            d_renderSystem._setTextureUnitSettings(0, *tus);
+            d_renderSystem._disableTextureUnitsFrom(1);
+#endif
+
             d_renderSystem._render(d_renderOp);
             pos += i->vertexCount;
         }
@@ -450,24 +446,14 @@ const Ogre::Matrix4& OgreGeometryBuffer::getMatrix() const
 //----------------------------------------------------------------------------//
 void OgreGeometryBuffer::initialiseTextureStates() const
 {
-    using namespace Ogre;
-    d_renderSystem._setTextureCoordCalculation(0, TEXCALC_NONE);
-    d_renderSystem._setTextureCoordSet(0, 0);
 #ifdef CEGUI_USE_OGRE_HLMS
+    using namespace Ogre;
     d_renderSystem._setTextureMatrix(0, Matrix4::IDENTITY);
     d_renderSystem._setTextureBlendMode(0, S_colourBlendMode);
     d_renderSystem._setTextureBlendMode(0, S_alphaBlendMode);
     d_renderSystem._disableTextureUnitsFrom(1);
 
     d_renderSystem._setHlmsSamplerblock(0, d_owner.getHlmsSamplerblock());
-#else
-    d_renderSystem._setTextureUnitFiltering(0, FO_LINEAR, FO_LINEAR, FO_POINT);
-    d_renderSystem._setTextureAddressingMode(0, S_textureAddressMode);
-    d_renderSystem._setTextureMatrix(0, Matrix4::IDENTITY);
-    d_renderSystem._setAlphaRejectSettings(CMPF_ALWAYS_PASS, 0, false);
-    d_renderSystem._setTextureBlendMode(0, S_colourBlendMode);
-    d_renderSystem._setTextureBlendMode(0, S_alphaBlendMode);
-    d_renderSystem._disableTextureUnitsFrom(1);
 #endif
 }
 
