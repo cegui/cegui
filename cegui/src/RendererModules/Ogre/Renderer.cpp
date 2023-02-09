@@ -612,7 +612,7 @@ void OgreRenderer::beginRendering()
             d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
             if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
                 d_pimpl->d_previousProjMatrix =
-                    d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
+                    d_pimpl->d_previousVP->getCamera()->getProjectionMatrixWithRSDepth();
         }
     #endif
 
