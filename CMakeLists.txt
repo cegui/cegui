@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.1)
 
 if (APPLE AND NOT CMAKE_OSX_ARCHITECTURES)
-    set( CMAKE_OSX_ARCHITECTURES x86_64 CACHE STRING "Build architectures for Mac OS X")
+    set( CMAKE_OSX_ARCHITECTURES ${CMAKE_HOST_SYSTEM_PROCESSOR} CACHE STRING "Build architectures for Mac OS X")
 endif()
 
 # default to Release build (it's what most people will use, except cegui devs)
