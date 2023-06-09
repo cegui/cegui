@@ -588,7 +588,7 @@ bool Combobox::editbox_PointerPressHoldHandler(const EventArgs& e)
         return false;
 
     Editbox* editbox = getEditbox();
-    if (editbox->isReadOnly())
+    if (!editbox->isReadOnly())
         return false;
 
     ComboDropList* droplist = getDropList();
