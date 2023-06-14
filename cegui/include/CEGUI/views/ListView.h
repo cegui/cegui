@@ -99,7 +99,7 @@ public:
 
     void prepareForRender() override;
 
-    ModelIndex indexAt(const glm::vec2& position) override;
+    ModelIndex indexAtLocal(const glm::vec2& localPos) override;
 
     HorizontalTextFormatting getHorizontalFormatting() const { return d_horzFormatting; }
     void setHorizontalFormatting(HorizontalTextFormatting h_fmt);

@@ -28,9 +28,9 @@
 #define _CEGUIGUIContext_h_
 
 #include "CEGUI/RenderingSurface.h"
-#include "CEGUI/InputEventReceiver.h"
-#include "CEGUI/Cursor.h"
-#include "CEGUI/InputEvent.h"
+#include "CEGUI/InjectedInputReceiver.h"
+#include "CEGUI/URect.h"
+#include <chrono>
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -49,39 +49,28 @@ public:
     GUIContextEventArgs(GUIContext* context) : context(context) {}
 
     //! pointer to the GUIContext that triggered the event.
-    GUIContext* context;
+    GUIContext* context = nullptr;
 };
 
-//! EventArgs class passed for GUIContext RenderTarget related events.
-class CEGUIEXPORT GUIContextRenderTargetEventArgs : public GUIContextEventArgs
+class CEGUIEXPORT GUIContext : public RenderingSurface, public InjectedInputReceiver
 {
 public:
-    GUIContextRenderTargetEventArgs(GUIContext* context, RenderTarget* target) :
-        GUIContextEventArgs(context),
-        renderTarget(target)
-    {}
-
-    RenderTarget* renderTarget;
-};
-
-class CEGUIEXPORT GUIContext : public RenderingSurface,
-                               public InputEventReceiver
-{
-public:
-    /** Name of Event fired when the root window is changed to a different
-     * Window.
+    /** Name of Event fired when the root window is changed to a different Window.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the @e old root window (the new one is
      * obtained by calling GUIContext::getRootWindow).
      */
     static const String EventRootWindowChanged;
-    /** Name of Event fired when the RenderTarget for the GUIContext is changed.
-     * Handlers are passed a const GUIContextRenderTargetEventArgs struct, with
-     * the renderTarget member set to the old RenderTarget.
+    /** Name of Event fired when the cursor image is changed.
+     * Handlers are passed a const GUIContextEventArgs reference
      */
-    static const String EventRenderTargetChanged;
+    static const String EventCursorImageChanged;
+    /** Name of Event fired when the default cursor image is changed.
+     * Handlers are passed a const GUIContextEventArgs reference
+     */
+    static const String EventDefaultCursorImageChanged;
     /** Event fired when the default font changes.
-     * Handlers are passed a const reference to a generic EventArgs struct.
+     * Handlers are passed a const GUIContextEventArgs reference
      */
     static const String EventDefaultFontChanged;
     /** Event fired when the tooltip is about to get activated.
@@ -101,8 +90,78 @@ public:
         */
     static const String EventTooltipTransition;
 
+    //! A rect that is used to unset cursor constraints
+    static const URect NoCursorConstraint;
+
+    static constexpr float DEFAULT_CLICK_DISTANCE = 5.f;
+    static constexpr float DEFAULT_CLICK_TIMEOUT = 0.25f;
+
     GUIContext(RenderTarget& target);
     virtual ~GUIContext() override;
+
+    void draw(std::uint32_t drawMode = DrawModeMaskAll) override;
+
+    void setRenderTarget(RenderTarget& target);
+
+    //! call to indicate that some redrawing is required.
+    void markAsDirty(std::uint32_t drawModeMask = DrawModeMaskAll) { d_dirtyDrawModeMask |= drawModeMask; }
+    bool isDirty() const { return d_dirtyDrawModeMask != 0; }
+    std::uint32_t getDirtyDrawModeMask() const { return d_dirtyDrawModeMask; }
+
+    /*!
+    \brief
+        Function to inject time pulses into the context.
+
+    \param timeElapsed
+        float value indicating the amount of time passed, in seconds, since the last time this method was called.
+
+    \return
+        Currently, this method always returns true unless there is no root window or it is not visible
+    */
+    bool injectTimePulse(float timeElapsed);
+
+    // Implementation of InjectedInputReceiver interface
+    bool injectMousePosition(float x, float y) override;
+    bool injectMouseMove(float dx, float dy) override;
+    bool injectMouseLeaves() override;
+    bool injectMouseWheelChange(float delta) override;
+    bool injectMouseButtonDown(MouseButton button) override;
+    bool injectMouseButtonUp(MouseButton button) override;
+    bool injectMouseButtonClick(MouseButton button) override;
+    bool injectMouseButtonDoubleClick(MouseButton button) override;
+    bool injectMouseButtonTripleClick(MouseButton button) override;
+    bool injectKeyDown(Key::Scan scanCode) override;
+    bool injectKeyUp(Key::Scan scanCode) override;
+    bool injectChar(char32_t codePoint) override;
+
+    /*!
+    \brief
+        Set automatic mouse button click event generation mode. Click is generated when the same window
+        receives down and up events for the same mouse button within time and cursor offset threshold.
+
+    \param maxClicksToGenerate
+        - 0 to disable auto-generation of clicks. Typically accompanies explicit injectMouseButtonClick calls.
+        - 1 to generate only single click events (onClick).
+        - 2 or 3 to also generate double (onDoubleClick) and triple clicks (onTripleClick).
+        - higher values trigger onClick, d_generatedClickEventOrder can be examined to know the order of the click generated.
+    */
+    void setMouseClickEventGeneration(int maxClicksToGenerate) { d_clickLimit = maxClicksToGenerate; }
+    //! \brief Returns automatic mouse button click event generation mode. See setMouseClickEventGeneration.
+    int getMouseClickEventGeneration() const { return d_clickLimit; }
+
+    void setMouseButtonMultiClickTimeout(float seconds) { d_multiClickTimeout = seconds; }
+    float getMouseButtonMultiClickTimeout() const { return d_multiClickTimeout; }
+    void setMouseButtonMultiClickTolerance(float pixels) { d_multiClickDistance = pixels; }
+    float getMouseButtonMultiClickTolerance() const { return d_multiClickDistance; }
+
+    // TODO StringAtom!
+    void initDefaultInputSemantics();
+    void registerInputSemantic(const String& value, Key::Scan scanCode, ModifierKeyRule modifiers = {});
+    void registerInputSemantic(const String& value, MouseButton button, ModifierKeyRule modifiers = {}, int clickOrder = 0, MouseButtons buttons = {});
+    void unregisterInputSemantic(const String& value);
+    void unregisterAllInputSemantics();
+    bool isInputSemantic(const String& value, const KeyEventArgs& args) const;
+    bool isInputSemantic(const String& value, const MouseButtonEventArgs& args) const;
 
     Window* getRootWindow() const { return d_rootWindow; }
     void setRootWindow(Window* new_root);
@@ -125,7 +184,7 @@ public:
     //! Checks if a window is in an active branch of the tree
     bool isWindowActive(const Window* window) const;
 
-    //! \brief Controls whether the tooltip will follow the cursor
+    //! \brief Controls rising windows to frontmost Z-order on activation
     void setMoveToFrontOnActivateAllowed(bool value) { d_moveToFrontOnActivateAllowed = value; }
 
     /*!
@@ -153,47 +212,65 @@ public:
     bool captureInput(Window* window);
     void releaseInputCapture(bool allowRestoreOld = true, Window* exactWindow = nullptr);
 
-    Window* getTargetWindow(const glm::vec2& pt, bool allow_disabled) const;
     Window* getWindowContainingCursor();
-
-    const Sizef& getSurfaceSize() const { return d_surfaceSize; }
-
-    //! call to indicate that some redrawing is required.
-    void markAsDirty(std::uint32_t drawModeMask = DrawModeMaskAll) { d_dirtyDrawModeMask |= drawModeMask; }
-    bool isDirty() const { return d_dirtyDrawModeMask != 0; }
-    std::uint32_t getDirtyDrawModeMask() const { return d_dirtyDrawModeMask; }
-
-    /*!
-    \brief
-        Retrieves Cursor used in this GUIContext
-
-    \note
-        Please note that each GUIContext has exactly one Cursor. The Cursor
-        class holds position, as well as other properties. If you want to modify
-        the Cursor (for example change its default image), you can retrieve
-        a reference via this method and call a method on the reference
-        (in our example that's setDefaultImage).
-    */
-    Cursor& getCursor() { return d_cursor; }
-    const Cursor& getCursor() const { return d_cursor; }
-
     //! Tell the context to reconsider which window it thinks the cursor is in.
     void updateWindowContainingCursor() { d_windowContainingCursorIsUpToDate = false; }
 
+    //! Return currently pressed modifier keys
+    ModifierKeys getModifierKeys() const { return d_modifierKeys; }
+    //! Return currently pressed mouse buttons
+    MouseButtons getMouseButtons() const { return d_mouseButtons; }
+
+    void setCursorImage(const Image* image);
+    const Image* getCursorImage() const { return d_cursorImage; }
+
     /*!
     \brief
-        Set the default Tooltip to be used by specifying a Window type.
+        Set the image to be used as the default cursor.
 
-    \param tooltipType
-        String holding the name of a Tooltip based Window type.
+    \param image
+        Pointer to an image object that is to be used as the default cursor
+        indicator. To have no indicator rendered by default, you can specify nullptr here.
     */
-    void setDefaultTooltipType(const String& tooltip_type) { d_defaultTooltipType = tooltip_type; }
+    void setDefaultCursorImage(const Image* image);
+    void setDefaultCursorImage(const String& name);
+    const Image* getDefaultCursorImage() const { return d_defaultCursorImage; }
 
-    const String& getDefaultTooltipType() const { return d_defaultTooltipType; }
-    Window* getTooltipObject(const String& type) const;
-    Window* getOrCreateTooltipObject(const String& type);
+    void setCursorVisible(bool visible) { d_cursorVisible = visible; }
+    bool isCursorVisible() const { return d_cursorVisible; }
 
-    void setRenderTarget(RenderTarget& target);
+    /*!
+    \brief
+        Set an explicit size for the cursor image to be drawn at.
+        Set any dimension to 0 to use an original image size for it.
+    */
+    void setCursorSize(float w, float h);
+    const Sizef& getCursorSize() const { return d_cursorSize; }
+
+    /*!
+    \brief
+        Set the current cursor position
+
+    \param position
+        Point object describing the new location for the cursor. This will
+        be clipped to within the renderer screen area.
+    */
+    void setCursorPosition(const glm::vec2& position);
+    const glm::vec2& getCursorPosition() const { return d_cursorPosition; }
+
+    /*!
+    \brief
+        Set the area that the cursor is constrained to.
+
+    \param area
+        Pointer to a URect object that describes the area of the display that
+        the cursor is allowed to occupy. The given area will be clipped to the
+        current Renderer screen area - it is never possible for the cursor to
+        leave this area. If this parameter is NULL, the constraint is set to
+        the size of the current Renderer screen area.
+    */
+    void setCursorConstraintArea(const URect& area = NoCursorConstraint);
+    const URect& getCursorConstraintArea() const { return d_cursorConstraints; }
 
     /*!
     \brief
@@ -225,25 +302,16 @@ public:
 
     /*!
     \brief
-        Function to inject time pulses into the receiver.
+        Set the default Tooltip to be used by specifying a Window type.
 
-    \param timeElapsed
-        float value indicating the amount of time passed, in seconds, since the last time this method was called.
-
-    \return
-        Currently, this method always returns true unless there is no root
-        window or it is not effectively visible
+    \param tooltipType
+        String holding the name of a Tooltip based Window type.
     */
-    bool injectTimePulse(float timeElapsed);
+    void setDefaultTooltipType(const String& tooltip_type) { d_defaultTooltipType = tooltip_type; }
 
-    // Implementation of InputEventReceiver interface
-    bool injectInputEvent(const InputEvent& event) override;
-
-    // public overrides
-    void draw(std::uint32_t drawMode = DrawModeMaskAll) override;
-
-    //! \brief Sets a window navigator to be used for navigating in this context
-    void setWindowNavigator(WindowNavigator* navigator) { d_windowNavigator = navigator; }
+    const String& getDefaultTooltipType() const { return d_defaultTooltipType; }
+    Window* getTooltipObject(const String& type) const;
+    Window* getOrCreateTooltipObject(const String& type);
 
     /*!
     \brief
@@ -279,48 +347,37 @@ public:
     //! \brief Immediately updates a tooltip position according to the cursor
     void positionTooltip();
 
+    //! \brief Sets a window navigator to be used for navigating in this context
+    void setWindowNavigator(WindowNavigator* navigator) { d_windowNavigator = navigator; }
+
+    const Sizef& getSurfaceSize() const { return d_surfaceSize; }
+
     void onWindowDetached(Window* window);
 
 protected:
 
-    void drawWindowContentToTarget(std::uint32_t drawModeMask);
-
-    //! returns the window used as input target
     Window* getInputTargetWindow() const;
+    void updateInputAutoRepeating(float timeElapsed);
+    bool sendScrollEvent(float delta, Window* window);
+
+    void drawWindowContentToTarget(std::uint32_t drawModeMask);
+    void drawContent(std::uint32_t drawModeMask = DrawModeMaskAll) override;
+
     //! call some function for a chain of windows: (top, bottom]
-    void notifyCursorTransition(Window* top, Window* bottom,
-                               void (Window::*func)(CursorInputEventArgs&),
-                               CursorInputEventArgs& args) const;
+    void notifyCursorTransition(Window* top, Window* bottom, void (Window::* func)(CursorInputEventArgs&), CursorInputEventArgs& args) const;
+    bool checkClickLocality() const;
+    void resetClickTracker();
 
     void showTooltip(bool force);
     void hideTooltip(bool force);
     void updateTooltipState(float timeElapsed);
 
-    void updateInputAutoRepeating(float timeElapsed);
-
     bool areaChangedHandler(const EventArgs& args);
     bool fontRenderSizeChangedHandler(const EventArgs& args);
 
     //! returns whether the window containing the cursor had changed.
-    void updateWindowContainingCursor_impl(Window* windowWithCursor);
-
-    // protected overrides
-    void drawContent(std::uint32_t drawModeMask = DrawModeMaskAll) override;
-
-    // Input event handlers
-    void initializeSemanticEventHandlers();
-    bool handleCopyRequest(const SemanticInputEvent& event);
-    bool handleCutRequest(const SemanticInputEvent& event);
-    bool handlePasteRequest(const SemanticInputEvent& event);
-    bool handleScrollEvent(const SemanticInputEvent& event);
-    bool handleCursorMoveEvent(const SemanticInputEvent& event);
-    bool handleCursorLeave(const SemanticInputEvent& event);
-    bool handleCursorActivateEvent(const SemanticInputEvent& event);
-    bool handleCursorPressHoldEvent(const SemanticInputEvent& event);
-    bool handleSelectWord(const SemanticInputEvent& event);
-    bool handleSelectAll(const SemanticInputEvent& event);
-    bool handleUndoRequest(const SemanticInputEvent& event);
-    bool handleRedoRequest(const SemanticInputEvent& event);
+    void updateWindowContainingCursorInternal(Window* windowWithCursor);
+    Window* getCursorTargetWindow(const glm::vec2& pt, bool allow_disabled) const;
 
     Window* d_rootWindow = nullptr;
     Window* d_windowContainingCursor = nullptr;
@@ -333,33 +390,57 @@ protected:
     WindowNavigator* d_windowNavigator = nullptr;
 
     Font* d_defaultFont = nullptr;
-    Cursor d_cursor;
-    CursorsState d_cursorsState;
+    const Image* d_cursorImage = nullptr;
+    const Image* d_defaultCursorImage = nullptr;
+    std::vector<GeometryBuffer*> d_cursorGeometry;
 
     String d_defaultTooltipType;
     std::map<String, Window*> d_tooltips;
 
-    Sizef d_surfaceSize; //!< a cache of the target surface size, allows returning by ref.
+    MouseButtons d_mouseButtons;
+    ModifierKeys d_modifierKeys;
+    std::vector<KeySemanticMapping> d_keySemantics;
+    std::vector<MouseButtonSemanticMapping> d_mouseSemantics;
 
-    //! The mask of draw modes that must be redrawn
-    std::uint32_t d_dirtyDrawModeMask = 0;
+    float d_multiClickDistance = DEFAULT_CLICK_DISTANCE;
+    float d_multiClickTimeout = DEFAULT_CLICK_TIMEOUT;   //!< Zero means no timeout
+    int d_clickLimit = 3;                                //!< Use 0 to disable click events, 1 to enable only single clicks
+
+    struct ClickTracker
+    {
+        Window* firstWindow = nullptr;
+        Window* lastWindow = nullptr;
+        glm::vec2 downPos;
+        std::chrono::time_point<std::chrono::steady_clock> downTime;
+        int clickCount = 0;
+        MouseButton button = MouseButton::Invalid;
+    };
+    ClickTracker d_clickTracker;
+
+    Sizef d_surfaceSize; //!< a cache of the target surface size, allows returning by ref.
+    Sizef d_cursorSize;
+    glm::vec2 d_cursorPosition;
+    URect d_cursorConstraints;
+
+    std::uint32_t d_dirtyDrawModeMask = 0; //!< the mask of draw modes that must be redrawn
 
     float d_tooltipTimer = 0.f;
     float d_tooltipHoverTime = 0.4f;   //!< seconds cursor must stay stationary before tip shows
     float d_tooltipDisplayTime = 7.5f; //!< seconds that tip is shown for
 
-    float d_repeatElapsed = 0.f;
-    CursorInputSource d_repeatPointerSource = CursorInputSource::NotSpecified;
-
     Event::ScopedConnection d_areaChangedEventConnection;
     Event::ScopedConnection d_fontRenderSizeChangeConnection;
     std::vector<Event::ScopedConnection> d_tooltipEventConnections;
-    std::map<SemanticValue, SlotFunctorBase<InputEvent>*> d_semanticEventHandlers;
 
+    float d_autoRepeatElapsed = 0.f;
+    MouseButton d_autoRepeatMouseButton = MouseButton::Invalid;
+    bool d_autoRepeating = false;
+
+    bool d_cursorVisible = true;
+    bool d_cursorDirty = false;
     bool d_windowContainingCursorIsUpToDate = true;
     bool d_tooltipFollowsCursor = false;
     bool d_moveToFrontOnActivateAllowed = true;
-    bool d_repeating = false;
 };
 
 }

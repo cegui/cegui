@@ -26,32 +26,25 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUITitlebar_h_
-#define _CEGUITitlebar_h_
-
+#pragma once
 #include "../Window.h"
-
 
 #if defined(_MSC_VER)
 #    pragma warning(push)
 #    pragma warning(disable : 4251)
 #endif
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
-/*!
-\brief
-    Class representing the title bar for Frame Windows.
-
-*/
+//! \brief Class representing the title bar for FrameWindow and its subclasses.
 class CEGUIEXPORT Titlebar : public Window
 {
 public:
-    static const String EventNamespace;                //!< Namespace for global events
-    static const String WidgetTypeName;             //!< Window factory name
+    static const String EventNamespace; //!< Namespace for global events
+    static const String WidgetTypeName; //!< Window factory name
+
+    Titlebar(const String& type, const String& name);
 
     /*!
     \brief
@@ -60,8 +53,7 @@ public:
     \return
         true if the title bar will respond to dragging, false if the title bar will not respond.
     */
-    bool isDraggingEnabled(void) const;
-
+    bool isDraggingEnabled() const { return d_dragEnabled; }
 
     /*!
     \brief
@@ -69,56 +61,24 @@ public:
 
     \param setting
         true if the title bar should respond to being dragged, false if it should not respond.
-
-    \return
-        Nothing.
     */
     void setDraggingEnabled(bool setting);
 
-    /*!
-    \brief
-        Checks whether the title bar widget is being dragged at the moment
-    */
-    bool isDragged() const;
+    //! Checks whether the title bar widget is being dragged at the moment
+    bool isDragged() const { return d_dragging; }
 
-    /*!
-    \brief
-        Gets the point at which the title bar widget is/was being dragged
-    */
-    const glm::vec2& getDragPoint() const;
-
-    /*************************************************************************
-        Construction / Destruction
-    *************************************************************************/
-    /*!
-    \brief
-        Constructor for Titlebar base class.
-    */
-    Titlebar(const String& type, const String& name);
-
-
-    /*!
-    \brief
-        Destructor for Titlebar base class.
-    */
-    virtual ~Titlebar(void);
-
+    //! Gets the point at which the title bar widget is/was being dragged
+    const glm::vec2& getDragPoint() const { return d_dragPoint; }
 
 protected:
-    /*************************************************************************
-        Overridden event handler functions
-    *************************************************************************/
-    void onCursorMove(CursorInputEventArgs& e) override;
-    void onCursorPressHold(CursorInputEventArgs& e) override;
-    void onCursorActivate(CursorInputEventArgs& e) override;
+
+    void onCursorMove(CursorMoveEventArgs& e) override;
+    void onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void onMouseButtonUp(MouseButtonEventArgs& e) override;
+    void onDoubleClick(MouseButtonEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;
     void onFontChanged(WindowEventArgs &e) override;
-    void onSemanticInputEvent(SemanticEventArgs& e) override;
 
-
-    /*************************************************************************
-        New event handlers for title bar
-    *************************************************************************/
     /*!
     \brief
         Event handler called when the 'draggable' state for the title bar is changed.
@@ -126,28 +86,20 @@ protected:
         Note that this is for 'internal' use at the moment and as such does not add or
         fire a public Event that can be subscribed to.
     */
-    virtual void onDraggingModeChanged(WindowEventArgs&) {}
+    virtual void onDraggingEnabledChanged(WindowEventArgs&) {}
 
-    /*************************************************************************
-        Implementation Data
-    *************************************************************************/
-    bool d_dragging;            //!< set to true when the window is being dragged.
-    glm::vec2 d_dragPoint;        //!< Point at which we are being dragged.
-    bool d_dragEnabled;        //!< true when dragging for the widget is enabled.
-
-    Rectf d_oldCursorArea;    //!< Used to backup cursor restraint area.
+    URect d_oldCursorArea;     //!< Used to backup cursor restraint area.
+    glm::vec2 d_dragPoint;     //!< Point at which we are being dragged.
+    bool d_dragging = false;   //!< set to true when the window is being dragged.
+    bool d_dragEnabled = true; //!< true when dragging for the widget is enabled.
 
 private:
-    /*************************************************************************
-        Private methods
-    *************************************************************************/
-    void addTitlebarProperties(void);
+
+    void addTitlebarProperties();
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #    pragma warning(pop)
 #endif
-
-#endif // end of guard _CEGUITitlebar_h_

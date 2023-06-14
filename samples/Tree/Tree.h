@@ -28,7 +28,6 @@
 #define _Sample_TreeSample_h_
 
 #include "Sample.h"
-#include "CEGUI/CEGUI.h"
 
 
 class TreeSample : public Sample

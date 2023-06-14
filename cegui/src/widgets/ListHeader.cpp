@@ -910,7 +910,7 @@ bool ListHeader::segmentSizedHandler(const EventArgs& e)
 bool ListHeader::segmentMovedHandler(const EventArgs& e)
 {
     const glm::vec2 cursor_pos(getUnprojectedPosition(
-        getGUIContext().getCursor().getPosition()));
+        getGUIContext().getCursorPosition()));
 
 	// segment must be dropped within the window
     if (isHit(cursor_pos))
@@ -1016,8 +1016,7 @@ bool ListHeader::segmentDragHandler(const EventArgs&)
 
     // get cursor position as something local
     const glm::vec2 local_cursor_pos(CoordConverter::screenToWindow(*this,
-        getUnprojectedPosition(getGUIContext().
-            getCursor().getPosition())));
+        getUnprojectedPosition(getGUIContext().getCursorPosition())));
 
 	// scroll left?
     if (local_cursor_pos.x < 0.0f)

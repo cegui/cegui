@@ -26,48 +26,22 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIPopupMenu_h_
-#define _CEGUIPopupMenu_h_
+#pragma once
+#include "MenuBase.h"
 
-#include "./MenuBase.h"
-
-
-#if defined(_MSC_VER)
-#    pragma warning(push)
-#    pragma warning(disable : 4251)
-#endif
-
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
-/*!
-\brief
-    Base class for popup menus
-*/
+//! Base class for popup menus
 class CEGUIEXPORT PopupMenu : public MenuBase
 {
 public:
-    /************************************************************************
-        Constants
-    *************************************************************************/
-    static const String EventNamespace;     //!< Namespace for global events
-    static const String WidgetTypeName;             //!< Window factory name
 
-    /*************************************************************************
-        Construction and Destruction
-    *************************************************************************/
-    /*!
-    \brief
-        Constructor for PopupMenu objects
-    */
+    static const String EventNamespace; //!< Namespace for global events
+    static const String WidgetTypeName; //!< Window factory name
+
     PopupMenu(const String& type, const String& name);
 
-
-    /*************************************************************************
-        Accessor type functions
-    *************************************************************************/
     /*!
     \brief
         Get the fade in time for this popup menu.
@@ -78,6 +52,15 @@ public:
     */
     float getFadeInTime() const { return d_fadeInTime; }
 
+    /*!
+    \brief
+        Set the fade in time for this popup menu.
+
+    \param fadetime
+        The time in seconds that it takes for the popup to fade in.
+        If this parameter is zero, fading is disabled.
+    */
+    void setFadeInTime(float fadetime) { d_fadeInTime = fadetime; }
 
     /*!
     \brief
@@ -89,28 +72,6 @@ public:
     */
     float getFadeOutTime() const { return d_fadeOutTime; }
 
-
-    /*!
-    \brief
-        Find out if this popup menu is open or closed;
-    */
-    bool isPopupMenuOpen() const { return d_isOpen; }
-
-
-    /*************************************************************************
-        Manipulators
-    *************************************************************************/
-    /*!
-    \brief
-        Set the fade in time for this popup menu.
-
-    \param fadetime
-        The time in seconds that it takes for the popup to fade in.
-        If this parameter is zero, fading is disabled.
-    */
-    void setFadeInTime(float fadetime) { d_fadeInTime = fadetime; }
-
-
     /*!
     \brief
         Set the fade out time for this popup menu.
@@ -121,6 +82,8 @@ public:
     */
     void setFadeOutTime(float fadetime) { d_fadeOutTime = fadetime; }
 
+    //! Find out if this popup menu is open or closed;
+    bool isPopupMenuOpen() const { return d_isOpen; }
 
     /*!
     \brief
@@ -131,7 +94,6 @@ public:
     */
     void openPopupMenu(bool notify = true);
 
-
     /*!
     \brief
         Tells the popup menu to close.
@@ -141,78 +103,28 @@ public:
     */
     void closePopupMenu(bool notify = true);
 
-
 protected:
-    /*************************************************************************
-        Implementation Functions
-    *************************************************************************/
-    /*!
-    \brief
-    Perform actual update processing for this Window.
 
-    \param elapsed
-    float value indicating the number of seconds elapsed since the last update call.
-
-    \return
-    Nothing.
-    */
     void updateSelf(float elapsed) override;
-
-
-    /*!
-    \brief
-        Setup size and position for the item widgets attached to this Window
-
-    \return
-        Nothing.
-    */
     void layoutItemWidgets() override;
-
-
-    /*!
-    \brief
-        Resizes the popup menu to exactly fit the content that is attached to it.
-
-    \return
-        Nothing.
-    */
     Sizef getContentSize() const override;
 
-    /*************************************************************************
-        Overridden event handlers
-    *************************************************************************/
     void onAlphaChanged(WindowEventArgs& e) override;
     void onDestructionStarted(WindowEventArgs& e) override;
     void onShown(WindowEventArgs& e) override;
     void onHidden(WindowEventArgs& e) override;
-    void onCursorPressHold(CursorInputEventArgs& e) override;
-    void onCursorActivate(CursorInputEventArgs& e) override;
 
-
-    /*************************************************************************
-        Implementation Data
-    *************************************************************************/
-    float d_origAlpha;      //!< The original alpha of this window.
-    float d_fadeElapsed;    //!< The time in seconds this popup menu has been fading.
-    float d_fadeOutTime;    //!< The time in seconds it takes for this popup menu to fade out.
-    float d_fadeInTime;     //!< The time in seconds it takes for this popup menu to fade in.
-    bool d_fading;          //!< true if this popup menu is fading in/out. false if not
-    bool d_fadingOut;       //!< true if this popup menu is fading out. false if fading in.
-    bool d_isOpen;          //!< true if this popup menu is open. false if not.
-
+    float d_origAlpha = 1.f;   //!< The original alpha of this window.
+    float d_fadeElapsed = 0.f; //!< The time in seconds this popup menu has been fading.
+    float d_fadeOutTime = 0.f; //!< The time in seconds it takes for this popup menu to fade out.
+    float d_fadeInTime = 0.f;  //!< The time in seconds it takes for this popup menu to fade in.
+    bool d_fading = false;     //!< true if this popup menu is fading in/out. false if not
+    bool d_fadingOut = false;  //!< true if this popup menu is fading out. false if fading in.
+    bool d_isOpen = false;     //!< true if this popup menu is open. false if not.
 
 private:
 
-    void addPopupMenuProperties(void);
+    void addPopupMenuProperties();
 };
 
-
-} // End of  CEGUI namespace section
-
-
-#if defined(_MSC_VER)
-#    pragma warning(pop)
-#endif
-
-
-#endif    // end of guard _CEGUIPopupMenu_h_
+}

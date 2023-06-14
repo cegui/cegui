@@ -63,9 +63,8 @@ public:
         */
     static const String EventDragEnded;
     /** Event fired when the drag position has changed.
-        * Handlers are passed a const WindowEventArgs reference with
-        * WindowEventArgs::window set to the DragContainer whose position has
-        * changed due to the user dragging it.
+        * Handlers are passed a const CursorMoveEventArgs reference with
+        * window set to the DragContainer and moveDelta set to movement amount.
         */
     static const String EventDragPositionChanged;
     /** Event fired when dragging is enabled or disabled.
@@ -270,7 +269,7 @@ public:
         - true to enabled the use of the fixed offset.
         - false to use the regular logic.
     */
-    void setUsingFixedDragOffset(const bool enable) { d_usingFixedDragOffset = enable; }
+    void setUsingFixedDragOffset(bool enable) { d_usingFixedDragOffset = enable; }
 
     /*!
     \brief
@@ -302,14 +301,7 @@ protected:
     */
     bool isDraggingThresholdExceeded(const glm::vec2& local_cursor);
 
-    /*!
-    \brief
-        Update state for window dragging.
-
-    \param local_cursor
-        Cursor position as a pixel offset from the top-left corner of this window.
-    */
-    void doDragging(const glm::vec2& local_cursor);
+    void doDragging(const CursorInputEventArgs& e);
 
     void endDragging(bool restorePosition);
 
@@ -320,9 +312,10 @@ protected:
     /*************************************************************************
         Overrides for Event handler methods
     *************************************************************************/
-    void onCursorPressHold(CursorInputEventArgs& e) override;
-    void onCursorActivate(CursorInputEventArgs& e) override;
-    void onCursorMove(CursorInputEventArgs& e) override;
+    void onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void onMouseButtonUp(MouseButtonEventArgs& e) override;
+    void onClick(MouseButtonEventArgs& e) override;
+    void onCursorMove(CursorMoveEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;
     void onAlphaChanged(WindowEventArgs& e) override;
     void onClippingChanged(WindowEventArgs& e) override;
@@ -337,7 +330,7 @@ protected:
     \param e
         WindowEventArgs object containing any relevant data.
     */
-    virtual void onDragStarted(WindowEventArgs& e);
+    virtual void onDragStarted(CursorInputEventArgs& e);
 
     /*!
     \brief
@@ -355,7 +348,7 @@ protected:
     \param e
         WindowEventArgs object containing any relevant data.
     */
-    virtual void onDragPositionChanged(WindowEventArgs& e);
+    virtual void onDragPositionChanged(CursorMoveEventArgs& e);
 
     /*!
     \brief

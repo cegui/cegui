@@ -47,6 +47,14 @@ Breaking changes:
 - Window methods removed: getActiveSibling, getActiveChild, focus, unfocus
 - WindowNavigator merged with NavigationStrategy, inherit from WindowNavigator to implement any desired navigation logic
 - WordWrap* variants of HorizontalTextFormatting are deprecated, a separate WordWrap boolean is added instead
+- EventRenderTargetChanged removed. GUIContext::setRenderTarget is called by the user only, no need to notify about it.
+- Input is redesigned in a more conventional way (like e.g. Qt). Mouse click generation logic improved. Semantic values are made more flexible.
+- performCut/Copy/Paste/Undo/Redo removed from Window interface. Subclasses must handle these operations in input event handlers.
+- RenderTarget::unprojectPoint made non-virtual, updateMatrix() made virtual instead as the only real difference between renderers.
+- Cursor logic is moved into GUIContext
+- Events ImageChanged, DefaultImageChanged of cursor changed to CursorImageChanged, DefaultCursorImageChanged of GUIContext
+- Titlebar::onDraggingModeChanged renamed to Titlebar::onDraggingEnabledChanged
+- MenuItem and MenuBase UX improved - click on mouse up, auto-close popups, navigate the menu with mouse button pressed
 
 Added:
 - Window::getFactoryType to get the initial window type without an applied look-n-feel
@@ -82,6 +90,7 @@ Fixed:
 - Some OpenGL3 FBO issues solved
 - D3D11 resource leaks fixed
 - Issues #999, #1070, #1009, #1001, #876, #938
+- Keyboard auto-repeating, including non-character keys, like Backspace or Delete
 - Lots of other fixes
 
 Optimized:

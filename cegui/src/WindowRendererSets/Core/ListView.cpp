@@ -27,9 +27,7 @@
 #include "CEGUI/WindowRendererSets/Core/ListView.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
-
 #include "CEGUI/Colour.h"
-#include "CEGUI/CoordConverter.h"
 #include "CEGUI/text/Font.h"
 #include "CEGUI/ImageManager.h"
 

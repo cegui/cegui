@@ -28,7 +28,6 @@
 #define _Sample_InventorySample_h_
 
 #include "Sample.h"
-#include "CEGUI/CEGUI.h"
 
 class InventorySample : public Sample
 {

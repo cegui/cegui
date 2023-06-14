@@ -35,7 +35,6 @@ author:     Lukas E Meindl
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/Texture.h"
 #include "CEGUI/ImageManager.h"
-#include "CEGUI/InputAggregator.h"
 #include "CEGUI/Window.h"
 
 using namespace CEGUI;
@@ -43,13 +42,6 @@ using namespace CEGUI;
 
 SampleHandler::SampleHandler(Sample* sample)
     : d_sample(sample)
-    , d_usedFilesString("")
-    , d_sampleWindow(nullptr)
-    , d_guiContext(nullptr)
-    , d_inputAggregator(nullptr)
-    , d_nonDefaultInputAggregator(false)
-    , d_textureTarget(nullptr)
-    , d_textureTargetImage(nullptr)
 {
 }
 
@@ -94,14 +86,8 @@ CEGUI::Window* SampleHandler::getSampleWindow()
 
 void SampleHandler::initialise(int width, int height)
 {
-    const float widthF = static_cast<float>(width);
-    const float heightF = static_cast<float>(height);
-
-    initialiseSamplePreviewRenderTarget(widthF, heightF);
-
+    initialiseSamplePreviewRenderTarget(static_cast<float>(width), static_cast<float>(height));
     initialiseSample();
-
-    initialiseInputAggregator();
 }
 
 void SampleHandler::deinitialise()
@@ -116,12 +102,6 @@ void SampleHandler::deinitialise()
     {
         system.destroyGUIContext(*d_guiContext);
         d_guiContext = nullptr;
-    }
-
-    if (d_inputAggregator && !d_nonDefaultInputAggregator)
-    {
-        delete d_inputAggregator;
-        d_inputAggregator = nullptr;
     }
 
     if(d_textureTarget)
@@ -140,11 +120,6 @@ void SampleHandler::deinitialise()
 GUIContext* SampleHandler::getGuiContext()
 {
     return d_guiContext;
-}
-
-InputAggregator* SampleHandler::getInputAggregator()
-{
-    return d_inputAggregator;
 }
 
 void SampleHandler::handleNewWindowSize(int width, int height)
@@ -212,22 +187,6 @@ void SampleHandler::initialiseSample()
     d_usedFilesString = d_sample->getUsedFilesString();
 }
 
-void SampleHandler::initialiseInputAggregator()
-{
-    // If the sample has its own non-default InputAggregator, we will use that one, otherwise we create a default one
-    if (d_sample->getInputAggregator() != nullptr)
-    {
-        d_inputAggregator = d_sample->getInputAggregator();
-        d_nonDefaultInputAggregator = true;
-    }
-    else
-    {
-        //! Creating the an input aggregator for this sample
-        d_inputAggregator = new CEGUI::InputAggregator(d_guiContext);
-        d_inputAggregator->initialise(false);
-    }
-}
-
 void SampleHandler::initialiseSamplePreviewRenderTarget(float width, float height)
 {
     CEGUI::System& system(System::getSingleton());
@@ -237,6 +196,7 @@ void SampleHandler::initialiseSamplePreviewRenderTarget(float width, float heigh
     //! Creating a texture target to render the GUIContext onto
     d_textureTarget = system.getRenderer()->createTextureTarget(false);
     d_guiContext = &system.createGUIContext(static_cast<RenderTarget&>(*d_textureTarget));
+    d_guiContext->initDefaultInputSemantics();
     d_textureTarget->declareRenderSize(size);
 
     //! Creating an image based on the TextureTarget's texture, which allows us to use the rendered-to-texture inside CEGUI for previewing the sample

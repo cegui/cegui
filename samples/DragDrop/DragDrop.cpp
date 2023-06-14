@@ -55,7 +55,7 @@ bool DragDropSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setDefaultFont(defaultFont);
 
     // set up defaults
-    guiContext->getCursor().setDefaultImage("WindowsLook/MouseArrow");
+    guiContext->setDefaultCursorImage("WindowsLook/MouseArrow");
 
     // load the drive icons imageset
     ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
@@ -125,19 +125,15 @@ void DragDropSample::subscribeEvents()
 //----------------------------------------------------------------------------//
 bool DragDropSample::handle_ItemDropped(const CEGUI::EventArgs& args)
 {
-    using namespace CEGUI;
-
     // cast the args to the 'real' type so we can get access to extra fields
-    const DragDropEventArgs& dd_args =
-        static_cast<const DragDropEventArgs&>(args);
-
+    const auto& dd_args = static_cast<const CEGUI::DragDropEventArgs&>(args);
     if (!dd_args.window->getChildCount())
     {
         // add dragdrop item as child of target if target has no item already
-        dd_args.window->addChild(dd_args.dragDropItem);
+        dd_args.window->addChild(dd_args.d_dragDropItem);
         // Now we must reset the item position from it's 'dropped' location,
         // since we're now a child of an entirely different window
-        dd_args.dragDropItem->setPosition(UVector2(UDim(0.05f, 0),UDim(0.05f, 0)));
+        dd_args.d_dragDropItem->setPosition(CEGUI::UVector2(CEGUI::UDim(0.05f, 0), CEGUI::UDim(0.05f, 0)));
     }
 
     return true;

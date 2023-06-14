@@ -180,8 +180,8 @@ bool RestaurantGameSample::initialise(CEGUI::GUIContext* guiContext)
 
     initGame();
 
-    d_rootIngame->getChild("BotBar/WeaponBGImage/LeftArrowArea")->subscribeEvent(CEGUI::Window::EventCursorActivate, Event::Subscriber(&RestaurantGameSample::handleWeaponLeftArrowClicked, this));
-    d_rootIngame->getChild("BotBar/WeaponBGImage/RightArrowArea")->subscribeEvent(CEGUI::Window::EventCursorActivate, Event::Subscriber(&RestaurantGameSample::handleWeaponRightArrowClicked, this));
+    d_rootIngame->getChild("BotBar/WeaponBGImage/LeftArrowArea")->subscribeEvent(CEGUI::Window::EventClick, Event::Subscriber(&RestaurantGameSample::handleWeaponLeftArrowClicked, this));
+    d_rootIngame->getChild("BotBar/WeaponBGImage/RightArrowArea")->subscribeEvent(CEGUI::Window::EventClick, Event::Subscriber(&RestaurantGameSample::handleWeaponRightArrowClicked, this));
 
     d_rootGameOver->getChild("ButtonRestart")->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&RestaurantGameSample::handleRestartButtonClicked, this));
 
@@ -247,7 +247,7 @@ void RestaurantGameSample::setupCursor()
 
 void RestaurantGameSample::updateCursor()
 {
-    glm::vec2 position = d_guiContext->getCursor().getPosition();
+    glm::vec2 position = d_guiContext->getCursorPosition();
 
     // We want to position the image-window right top of the actual
     // cursor point so we add its height
@@ -271,7 +271,7 @@ CEGUI::Window* RestaurantGameSample::spawnPlate()
     plateRoot->setAspectRatio(1.0f);
     plateRoot->setRiseOnCursorActivationEnabled(false);
     plateRoot->setPixelAligned(false);
-    plateRoot->subscribeEvent(CEGUI::Window::EventCursorActivate, Event::Subscriber(&RestaurantGameSample::handlePlateWindowActivated, this));
+    plateRoot->subscribeEvent(CEGUI::Window::EventClick, Event::Subscriber(&RestaurantGameSample::handlePlateWindowActivated, this));
     d_rootIngame->addChild(plateRoot);
 
     CEGUI::Window* plateImgWnd = winMgr.createWindow("Generic/Image", "ImageWindowPlate");
@@ -380,7 +380,7 @@ bool RestaurantGameSample::handlePlateWindowActivated(const CEGUI::EventArgs& ar
             }
 
             gamePlate->d_isDestroyed = true;
-            createScorePopup(cursor_args.position, points);
+            createScorePopup(cursor_args.d_globalPos, points);
         }
     }
 

@@ -1509,7 +1509,7 @@ protected:
 		ListboxItem that is under window pixel co-ordinate \a pt, or NULL if no
 		item is under that position.
 	*/
-    ListboxItem*	getItemAtPoint(const glm::vec2& pt) const;
+    ListboxItem*	getItemAtPoint(const glm::vec2& localPos) const;
 
 
 	/*!
@@ -1652,11 +1652,11 @@ protected:
 	/*************************************************************************
 		Overridden Event handlers
 	*************************************************************************/
+    bool handleFontRenderSizeChange(const Font& font) override;
     void	onFontChanged(WindowEventArgs& e) override;
     void	onSized(ElementEventArgs& e) override;
-    void    onCursorPressHold(CursorInputEventArgs& e) override;
-    void    onScroll(CursorInputEventArgs& e) override;
-    void    onSemanticInputEvent(SemanticEventArgs& e) override;
+    void    onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void    onScroll(ScrollEventArgs& e) override;
 
 	/*************************************************************************
 		Handlers for subscribed events
@@ -1730,7 +1730,7 @@ protected:
     /*************************************************************************
         Implementation Functions
     *************************************************************************/
-    void    handleSelection(const glm::vec2& position, bool cumulative, bool range);
+    void    handleSelection(const glm::vec2& localPos, bool cumulative, bool range);
     
 private:
 	/*************************************************************************

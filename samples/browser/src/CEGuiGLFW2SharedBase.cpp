@@ -200,14 +200,10 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwKeyCallback(int key, int action)
 {
     CEGUI::Key::Scan ceguiKey = GlfwToCeguiKey(key);
 
-    if(action == GLFW_PRESS)
-    {
+    if (action == GLFW_PRESS)
         d_sampleApp->injectKeyDown(ceguiKey);
-    }
     else if (action == GLFW_RELEASE)
-    {
         d_sampleApp->injectKeyUp(ceguiKey);
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -232,8 +228,11 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwMouseButtonCallback(int key, int action)
 void GLFWCALL CEGuiGLFWSharedBase::glfwMouseWheelCallback(int position)
 {
     static int lastPosition = 0;
-    d_sampleApp->injectMouseWheelChange(static_cast<float>(position - lastPosition));
-    lastPosition = position;
+    if (lastPosition != position)
+    {
+        d_sampleApp->injectMouseWheelChange(static_cast<float>(position - lastPosition));
+        lastPosition = position;
+    }
 }
 
 //----------------------------------------------------------------------------//

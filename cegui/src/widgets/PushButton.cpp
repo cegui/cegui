@@ -29,84 +29,42 @@
 #include "CEGUI/widgets/PushButton.h"
 #include "CEGUI/GUIContext.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-
-/*************************************************************************
-	constants
-*************************************************************************/
-// event strings
+//----------------------------------------------------------------------------//
 const String PushButton::EventNamespace("PushButton");
 const String PushButton::WidgetTypeName("CEGUI/PushButton");
-const String PushButton::EventClicked( "Clicked" );
+const String PushButton::EventClicked("Clicked");
 
-
-/*************************************************************************
-	Constructor
-*************************************************************************/
-PushButton::PushButton(const String& type, const String& name) :
-	ButtonBase(type, name)
-{
-}
-
-
-/*************************************************************************
-	Destructor
-*************************************************************************/
-PushButton::~PushButton(void)
-{
-}
-
-
-/*************************************************************************
-	handler invoked internally when the button is clicked.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void PushButton::onClicked(WindowEventArgs& e)
 {
 	fireEvent(EventClicked, e, EventNamespace);
 }
 
-
-/*************************************************************************
-	Handler for cursor activation events
-*************************************************************************/
-void PushButton::onCursorActivate(CursorInputEventArgs& e)
+//----------------------------------------------------------------------------//
+void PushButton::onClick(MouseButtonEventArgs& e)
 {
-    if ((e.source == CursorInputSource::Left) && isPushed())
+    if (e.d_button == MouseButton::Left && isPushed())
 	{
-		Window* sheet = getGUIContext().getRootWindow();
-
-		if (sheet)
-		{
-            // if cursor was released over this widget
-            // (use position from cursor, as e.position has been unprojected)
-            if (this == sheet->getTargetChildAtPosition(
-                getGUIContext().getCursor().getPosition()))
-			{
-				// fire event
-				WindowEventArgs args(this);
-				onClicked(args);
-			}
-		}
+		WindowEventArgs args(this);
+		onClicked(args);
 		++e.handled;
 	}
 
-	// default handling
-    ButtonBase::onCursorActivate(e);
+    ButtonBase::onClick(e);
 }
 
-void PushButton::onSemanticInputEvent(SemanticEventArgs& e)
+//----------------------------------------------------------------------------//
+void PushButton::onKeyDown(KeyEventArgs& e)
 {
-    if (isDisabled())
-        return;
-
-    if (e.d_semanticValue == SemanticValue::Confirm)
+    if (!isDisabled() && d_guiContext->isInputSemantic(SemanticValue::Confirm, e))
     {
         onClicked(e);
-
         ++e.handled;
     }
+
+    ButtonBase::onKeyDown(e);
 }
 
-} // End of  CEGUI namespace section
+}

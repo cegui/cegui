@@ -27,8 +27,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include <windows.h>
-#include "CEGUI/CEGUI.h"
 #include "CEGUI/Win32ClipboardProvider.h"
+#include <CEGUI/System.h>
 
 namespace CEGUI
 {

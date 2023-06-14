@@ -68,37 +68,27 @@ EventHandlerObject::EventHandlerObject(CEGUI::String eventName, WidgetsSample* o
 
 bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
 {
-    CEGUI::String logMessage = "[colour='FFFFBBBB']" + d_eventName + "[colour='FFFFFFFF']";
-    logMessage += CEGUI::String(" (");
+    CEGUI::String logMessage = "[colour='FFFFBBBB']" + d_eventName + "[colour='FFFFFFFF'] (";
 
-    if(dynamic_cast<const CEGUI::CursorInputEventArgs*>(&args))
-    {
-        logMessage += "CursorInputEvent";
-    }
-    else if(dynamic_cast<const CEGUI::CursorEventArgs*>(&args))
-    {
-        logMessage += "CursorEvent";
-    }
-    else if(const CEGUI::TextEventArgs* textArgs = dynamic_cast<const CEGUI::TextEventArgs*>(&args))
-    {
+    if (auto textArgs = dynamic_cast<const CEGUI::TextEventArgs*>(&args))
         logMessage += "TextEvent: '" + CEGUI::String(1, textArgs->d_character) + "'";
-    }
-    else if(dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
-    {
-        logMessage += "WindowEvent";
-    }
-    else if(dynamic_cast<const CEGUI::ActivationEventArgs*>(&args))
-    {
+    else if (dynamic_cast<const CEGUI::ActivationEventArgs*>(&args))
         logMessage += "ActivationEvent";
-    }
-    else if(dynamic_cast<const CEGUI::DragDropEventArgs*>(&args))
-    {
+    else if (dynamic_cast<const CEGUI::DragDropEventArgs*>(&args))
         logMessage += "DragDropEvent";
-    }
+    else if (dynamic_cast<const CEGUI::MouseButtonEventArgs*>(&args))
+        logMessage += "MouseButtonEvent";
+    else if (dynamic_cast<const CEGUI::ScrollEventArgs*>(&args))
+        logMessage += "ScrollEvent";
+    else if (dynamic_cast<const CEGUI::CursorMoveEventArgs*>(&args))
+        logMessage += "CursorMoveEvent";
+    else if (dynamic_cast<const CEGUI::CursorInputEventArgs*>(&args))
+        logMessage += "CursorInputEvent";
+    else if (dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
+        logMessage += "WindowEvent";
 
-    logMessage += CEGUI::String(")");
+    logMessage += CEGUI::String(")\n");
 
-    logMessage += "\n";
     d_owner->handleWidgetEventFired(d_eventName, logMessage);
 
     return false;
@@ -152,7 +142,7 @@ bool WidgetsSample::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     SchemeManager::getSingleton().createFromFile("OgreTray.scheme");
-    d_guiContext->getCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    d_guiContext->setDefaultCursorImage("Vanilla-Images/MouseArrow");
 
     // load font and setup default if not loaded via scheme
     FontManager::FontList loadedFonts = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
@@ -367,13 +357,8 @@ void WidgetsSample::initialiseSkinCombobox(CEGUI::Window* container)
 
     d_skinSelectionCombobox->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, Event::Subscriber(&WidgetsSample::handleSkinSelectionAccepted, this));
 
-    std::map<CEGUI::String, WidgetListType>::iterator iter = d_skinListItemsMap.begin();
-    while (iter != d_skinListItemsMap.end())
-    {
-        d_skinSelectionCombobox->addItem(new StandardItem(iter->first));
-
-        ++iter;
-    }
+    for (const auto& pair : d_skinListItemsMap)
+        d_skinSelectionCombobox->addItem(new StandardItem(pair.first));
 
     container->addChild(d_skinSelectionCombobox);
     container->addChild(skinSelectionComboboxLabel);
@@ -647,35 +632,30 @@ CEGUI::Window* WidgetsSample::initialiseSpecialWidgets(CEGUI::Window* widgetWind
         widgetWindow->setProperty("Image", "SpaceBackgroundImage");
     }
 
-    ListView* list_view = dynamic_cast<ListView*>(widgetWindow);
-    if (list_view)
+    if (auto list_view = dynamic_cast<ListView*>(widgetWindow))
     {
         initListView(list_view);
     }
-
-    CEGUI::ComboDropList* combodroplist = dynamic_cast<CEGUI::ComboDropList*>(widgetWindow);
-    if (combodroplist)
+    else if (auto combodroplist = dynamic_cast<CEGUI::ComboDropList*>(widgetWindow))
     {
         initListWidget(combodroplist);
     }
-
-    CEGUI::Combobox* combobox = dynamic_cast<CEGUI::Combobox*>(widgetWindow);
-    if (combobox)
+    else if (auto combobox = dynamic_cast<CEGUI::Combobox*>(widgetWindow))
     {
         initCombobox(combobox);
     }
-
-    CEGUI::MultiColumnList* multilineColumnList = dynamic_cast<CEGUI::MultiColumnList*>(widgetWindow);
-    if (multilineColumnList)
+    else if (auto multilineColumnList = dynamic_cast<CEGUI::MultiColumnList*>(widgetWindow))
     {
         initMultiColumnList(multilineColumnList);
     }
-
-    CEGUI::Menubar* menuBar = dynamic_cast<CEGUI::Menubar*>(widgetWindow);
-    if (menuBar)
+    else if (auto menuBar = dynamic_cast<CEGUI::Menubar*>(widgetWindow))
     {
         initMenubar(menuBar);
-
+    }
+    else if (auto scrollBar = dynamic_cast<CEGUI::Scrollbar*>(widgetWindow))
+    {
+        scrollBar->setDocumentSize(10.f);
+        scrollBar->setPageSize(5.f);
     }
 
     return widgetWindow;

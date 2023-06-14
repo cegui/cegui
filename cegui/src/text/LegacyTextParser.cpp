@@ -31,6 +31,7 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/FontManager.h"
+#include "CEGUI/ImageManager.h"
 #include "CEGUI/text/Font.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
@@ -61,6 +62,9 @@ const String LegacyTextParser::RightPaddingTagName("right-padding");
 const String LegacyTextParser::ImageSizeTagName("image-size");
 const String LegacyTextParser::ImageWidthTagName("image-width");
 const String LegacyTextParser::ImageHeightTagName("image-height");
+const String LegacyTextParser::ImageAspectLockTagName("aspect-lock");
+const String LegacyTextParser::ResetTagName("reset");
+const String LegacyTextParser::NewLineTagName("br");
 
 //----------------------------------------------------------------------------//
 LegacyTextParser::LegacyTextParser()
@@ -89,6 +93,8 @@ LegacyTextParser::LegacyTextParser()
     d_tagHandlers[ImageSizeTagName] = &LegacyTextParser::handleImageSize;
     d_tagHandlers[ImageWidthTagName] = &LegacyTextParser::handleImageWidth;
     d_tagHandlers[ImageHeightTagName] = &LegacyTextParser::handleImageHeight;
+    d_tagHandlers[ImageAspectLockTagName] = &LegacyTextParser::handleImageAspectLock;
+    d_tagHandlers[ResetTagName] = &LegacyTextParser::handleReset;
 }
 
 //----------------------------------------------------------------------------//
@@ -106,16 +112,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     //???TODO: use stack struct for tag params to make the parser itself stateless?
 
     // Initialize formatting parameters with default values
-    d_colours = Colour(0xFFFFFFFF);
-    d_bgColours = Colour(0x00000000);
-    d_font = nullptr;
-    d_padding = Rectf(0.f, 0.f, 0.f, 0.f);
-    d_imageSize = Sizef(0.f, 0.f);
-    d_vertFormatting = VerticalImageFormatting::BottomAligned;
-    d_outlineSize = 0.f;
-    d_underline = false;
-    d_strikeout = false;
-    d_styleChanged = true;
+    resetStyle(true, true, true, true);
 
     outText.reserve(inText.size());
     outOriginalIndices.reserve(inText.size());
@@ -135,7 +132,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
     {
         outOriginalIndices.push_back(itIn.getCodeUnitIndexFromStart());
 #endif
-        const char32_t codePoint = *itIn;
+        char32_t codePoint = *itIn;
 
         if (tagString.empty())
         {
@@ -152,6 +149,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
                     auto style = std::make_unique<RenderedTextStyle>(d_font, d_underline, d_strikeout);
                     style->setTextColour(d_colours);
                     style->setBackgroundColour(d_bgColours);
+                    style->setUseModulateColour(d_useModColour);
                     style->setPadding(d_padding);
                     style->setVerticalFormatting(d_vertFormatting);
                     style->setOutlineColour(d_outlineColours);
@@ -165,7 +163,7 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
                 {
                     // If it is not actually escaped, print the slash itself too.
                     // Only slash and opening square bracket support escaping now.
-                    if (codePoint != '\\')
+                    if (codePoint != '\\' && codePoint != '[')
                     {
                         outText.push_back('\\');
                         outElementIndices.push_back(elementIndex);
@@ -220,6 +218,13 @@ bool LegacyTextParser::parse(const String& inText, std::u32string& outText,
 void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::u32string& outText,
     std::vector<uint16_t>& outElementIndices, std::vector<RenderedTextElementPtr>& outElements)
 {
+    if (NewLineTagName.compare(0, String::npos, ctrlStr, 1, String::npos) == 0)
+    {
+        outText.push_back('\n');
+        outElementIndices.push_back(static_cast<uint16_t>(outElements.size()));
+        return;
+    }
+
     // All our default strings are of the form <var>='<val>'
     // so let's get the variables using '=' as delimiter:
     const size_t findPos = ctrlStr.find_first_of('=');
@@ -257,13 +262,19 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
 
     if (valueValid && key == ImageTagName)
     {
+        const String val = ctrlStr.substr(valueStart, valueEnd - valueStart);
+        if (!ImageManager::getSingleton().isDefined(val))
+        {
+            ImageManager::getSingleton().addBitmapImageFromFile(val, val);
+        }
+
         //!!!TODO TEXT: try to find the same image first!
 
-        auto element = std::make_unique<RenderedTextImage>(
-            PropertyHelper<Image*>::fromString(ctrlStr.substr(valueStart, valueEnd - valueStart)));
+        auto element = std::make_unique<RenderedTextImage>( PropertyHelper<Image*>::fromString(val) );
         element->setColour(d_colours);
         element->setBackgroundColour(d_bgColours);
-        element->setSize(d_imageSize);
+        element->setUseModulateColour(false);
+        element->setSize(d_imageSize, d_imageAspectLock);
         element->setFont(d_font);
         element->setPadding(d_padding);
         element->setVerticalFormatting(d_vertFormatting);
@@ -303,6 +314,7 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
 void LegacyTextParser::handleColour(const String& value)
 {
     d_colours.setColours(PropertyHelper<Colour>::fromString(value));
+    d_useModColour = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -393,6 +405,47 @@ void LegacyTextParser::handleImageWidth(const String& value)
 void LegacyTextParser::handleImageHeight(const String& value)
 {
     d_imageSize.d_height = PropertyHelper<float>::fromString(value);
+}
+
+//----------------------------------------------------------------------------//
+void LegacyTextParser::handleImageAspectLock(const String& value)
+{
+    d_imageAspectLock = PropertyHelper<bool>::fromString(value);
+}
+
+//----------------------------------------------------------------------------//
+void LegacyTextParser::resetStyle(bool color, bool font, bool image, bool others)
+{
+    if (color) {
+        d_colours = Colour(0xFFFFFFFF);
+        d_bgColours = Colour(0x00000000);
+        d_useModColour = true;
+    }
+    if (font) {
+        d_font = nullptr;
+        d_underline = false;
+        d_strikeout = false;
+    }
+    if (image) {
+        d_imageSize = Sizef(0.f, 0.f);
+        d_imageAspectLock = false;
+    }
+    if (others) {
+        d_padding = Rectf(0.f, 0.f, 0.f, 0.f);
+        d_vertFormatting = VerticalImageFormatting::BottomAligned;
+        d_outlineSize = 0.f;
+    }
+    d_styleChanged = true;
+}
+
+void LegacyTextParser::handleReset(const String& value)
+{
+   resetStyle(
+       value == "full" || value == "colour",
+       value == "full" || value == "font",
+       value == "full" || value == "image",
+       value == "full"
+   );
 }
 
 }

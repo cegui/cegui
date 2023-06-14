@@ -997,7 +997,7 @@ GUIContext& System::createGUIContext(RenderTarget& rt)
     if (!d_defaultFontName.empty())
         c->setDefaultFont(d_defaultFontName);
     if (!d_defaultCursorName.empty())
-        c->getCursor().setDefaultImage(d_defaultCursorName);
+        c->setDefaultCursorImage(&ImageManager::getSingleton().get(d_defaultCursorName));
     if (!d_defaultTooltipType.empty())
         c->setDefaultTooltipType(d_defaultTooltipType);
 

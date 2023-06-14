@@ -96,14 +96,11 @@ using namespace CEGUI;
 %include "CEGUI/SubscriberSlot.h"
 %inline %{
 	#include "CEGUI/SubscriberSlot.h"
-
 	class PySubscriber : CEGUI::SubscriberSlot {
 			bool run_proxy(const CEGUI::EventArgs& args) { return run(args); }
 		public:
 			PySubscriber() : CEGUI::SubscriberSlot( &PySubscriber::run_proxy, this ) {}
-			
 			virtual bool run(const CEGUI::EventArgs& args) { return false; }
-			
 			virtual ~PySubscriber() {};
 	};
 %}
@@ -131,34 +128,44 @@ using namespace CEGUI;
 
 // some base classes (must be before derived classes)
 %include "CEGUI/Image.h"
-%include "CEGUI/FormattedRenderedString.h"
 %include "CEGUI/InputEventReceiver.h"
 %include "CEGUI/Logger.h"
-%include "CEGUI/RenderedStringParser.h"
 %include "CEGUI/RenderingSurface.h"
 %include "CEGUI/ResourceEventSet.h"
-%include "CEGUI/RenderedStringComponent.h"
 %include "CEGUI/ResourceProvider.h"
 %include "CEGUI/InjectedInputReceiver.h"
 
 // other clases
+%{
+#include "CEGUI/text/TextParser.h"
+#include "CEGUI/text/RenderedText.h"
+#include "CEGUI/text/LegacyTextParser.h"
+#include "CEGUI/text/FontGlyph.h"
+#include "CEGUI/text/FontSizeUnit.h"
+%}
+%include "CEGUI/text/TextParser.h"
+%include "CEGUI/text/RenderedText.h"
+%include "CEGUI/text/LegacyTextParser.h"
+%include "CEGUI/text/DefaultParagraphDirection.h"
+%include "CEGUI/text/BidiVisualMapping.h"
+%include "CEGUI/text/FontGlyph.h"
+%include "CEGUI/text/FontSizeUnit.h"
+%include "CEGUI/text/TextUtils.h"
+
 %include "CEGUI/Affector.h"
 %include "CEGUI/Animation.h"
 %include "CEGUI/AnimationInstance.h"
 %include "CEGUI/AnimationManager.h"
 %include "CEGUI/AspectMode.h"
 %include "CEGUI/BitmapImage.h"
-%include "CEGUI/BasicRenderedStringParser.h"
-%include "CEGUI/BidiVisualMapping.h"
 %include "CEGUI/BoundSlot.h"
-%include "CEGUI/CentredRenderedString.h"
 %include "CEGUI/Clipboard.h"
 %include "CEGUI/Colour.h"
 %include "CEGUI/ColourRect.h"
 %include "CEGUI/CoordConverter.h"
 %include "CEGUI/DataContainer.h"
 %include "CEGUI/DefaultLogger.h"
-%include "CEGUI/DefaultRenderedStringParser.h"
+
 %include "CEGUI/DefaultResourceProvider.h"
 %inline %{
 	CEGUI::DefaultResourceProvider* toDefaultResourceProvider(CEGUI::ResourceProvider* p) { return static_cast<CEGUI::DefaultResourceProvider*>(p); }
@@ -166,8 +173,6 @@ using namespace CEGUI;
 %include "CEGUI/DynamicModule.h"
 %include "CEGUI/FactoryModule.h"
 %include "CEGUI/FactoryRegisterer.h"
-%include "CEGUI/FontGlyph.h"
-%include "CEGUI/Font.h"
 %include "CEGUI/FontManager.h"
 %include "CEGUI/GeometryBuffer.h"
 %include "CEGUI/GlobalEventSet.h"
@@ -184,17 +189,10 @@ using namespace CEGUI;
 		$self->injectChar(static_cast<char32_t>(c));
 	}
 }
-%include "CEGUI/JustifiedRenderedString.h"
 %include "CEGUI/KeyFrame.h"
-%include "CEGUI/LeftAlignedRenderedString.h"
 %include "CEGUI/LinkedEvent.h"
 %include "CEGUI/Cursor.h"
 %include "CEGUI/RegexMatcher.h"
-%include "CEGUI/RenderedString.h"
-%include "CEGUI/RenderedStringImageComponent.h"
-%include "CEGUI/RenderedStringTextComponent.h"
-%include "CEGUI/RenderedStringWidgetComponent.h"
-%include "CEGUI/RenderedStringWordWrapper.h"
 %include "CEGUI/RenderEffect.h"
 %include "CEGUI/RenderEffectManager.h"
 %include "CEGUI/Renderer.h"
@@ -202,7 +200,6 @@ using namespace CEGUI;
 %include "CEGUI/RenderingWindow.h"
 %include "CEGUI/RenderQueue.h"
 %include "CEGUI/RenderTarget.h"
-%include "CEGUI/RightAlignedRenderedString.h"
 %include "CEGUI/Scheme.h"
 %include "CEGUI/SchemeManager.h"
 %include "CEGUI/ScriptModule.h"
@@ -212,7 +209,6 @@ using namespace CEGUI;
 %include "CEGUI/System.h"
 %include "CEGUI/Texture.h"
 %include "CEGUI/TextureTarget.h"
-%include "CEGUI/TextUtils.h"
 %include "CEGUI/Version.h"
 %include "CEGUI/Vertex.h"
 %include "CEGUI/VerticalAlignment.h"
@@ -236,6 +232,7 @@ using namespace CEGUI;
 %include "CEGUI/views/ItemView.h"
 %include "CEGUI/views/ListView.h"
 %include "CEGUI/views/StandardItemModel.h"
+%ignore CEGUI::TreeViewItemRenderingState::d_renderedText; // deleted = operator in RenderedText
 %include "CEGUI/views/TreeView.h"
 
 // falagard

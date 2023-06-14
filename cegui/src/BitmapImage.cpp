@@ -32,8 +32,6 @@
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/System.h" // this being here is a bit nasty IMO
-#include "CEGUI/CoordConverter.h"
-
 #include <algorithm>
 
 namespace CEGUI

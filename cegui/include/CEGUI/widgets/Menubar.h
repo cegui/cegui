@@ -26,64 +26,25 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIMenubar_h_
-#define _CEGUIMenubar_h_
+#pragma once
+#include "MenuBase.h"
 
-#include "./MenuBase.h"
-
-
-#if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4251)
-#endif
-
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
-/*!
-\brief
-	Base class for menu bars.
-*/
+//! Base class for menu bars.
 class CEGUIEXPORT Menubar : public MenuBase
 {
 public:
-	static const String EventNamespace;				//!< Namespace for global events
-    static const String WidgetTypeName;             //!< Window factory name
+	static const String EventNamespace; //!< Namespace for global events
+    static const String WidgetTypeName; //!< Window factory name
 
 	Menubar(const String& type, const String& name);
 
 protected:
-	/*************************************************************************
-		Implementation Functions
-	*************************************************************************/
-	/*!
-	\brief
-		Setup size and position for the item widgets attached to this Menubar
 
-	\return
-		Nothing.
-	*/
     void layoutItemWidgets() override;
-
-
-	/*!
-	\brief
-		Returns the Size in unclipped pixels of the content attached to this ItemListBase that is attached to it.
-
-	\return
-		Size object describing in unclipped pixels the size of the content ItemEntries attached to this menu.
-	*/
     Sizef getContentSize() const override;
 };
 
-
-} // End of  CEGUI namespace section
-
-
-#if defined(_MSC_VER)
-#	pragma warning(pop)
-#endif
-
-#endif	// end of guard _CEGUIMenubar_h_
+}

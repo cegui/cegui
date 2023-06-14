@@ -30,6 +30,7 @@
 #include "CEGUI/System.h" // FIXME: needed for duplicated code from TextComponent, remove when fixed!
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/GUIContext.h"
+#include "CEGUI/CoordConverter.h"
 #include "CEGUI/widgets/Scrollbar.h"
 
 namespace CEGUI
@@ -406,18 +407,24 @@ bool ItemView::onScrollPositionChanged(const EventArgs&)
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onCursorPressHold(CursorInputEventArgs& e)
+void ItemView::onMouseButtonDown(MouseButtonEventArgs& e)
 {
-    Window::onCursorPressHold(e);
-    if (e.source != CursorInputSource::Left)
-        return;
+    Window::onMouseButtonDown(e);
 
-    handleSelection(e.position, true, false, false);
-    ++e.handled;
+    if (e.d_button == MouseButton::Left)
+    {
+        if (e.d_modifiers.hasCtrl())
+            handleSelection(e.d_localPos, true, d_isMultiSelectEnabled, false);
+        else if (e.d_modifiers.hasShift())
+            handleSelection(e.d_localPos, true, d_isMultiSelectEnabled, true);
+        else
+            handleSelection(e.d_localPos, true, false, false);
+        ++e.handled;
+    }
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onCursorMove(CursorInputEventArgs& e)
+void ItemView::onCursorMove(CursorMoveEventArgs& e)
 {
     Window::onCursorMove(e);
 
@@ -426,7 +433,7 @@ void ItemView::onCursorMove(CursorInputEventArgs& e)
     if (!d_isItemTooltipsEnabled || !d_itemModel)
         return;
 
-    ModelIndex index = indexAt(e.position);
+    ModelIndex index = indexAtLocal(e.d_localPos);
     if (d_itemModel->areIndicesEqual(index, d_lastHoveredIndex))
         return;
 
@@ -436,6 +443,38 @@ void ItemView::onCursorMove(CursorInputEventArgs& e)
 
     if (d_guiContext)
         d_guiContext->positionTooltip();
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::onKeyDown(KeyEventArgs& e)
+{
+    Window::onKeyDown(e);
+
+    if (e.d_key != Key::Scan::ArrowDown && e.d_key != Key::Scan::ArrowUp)
+        return;
+
+    ModelIndex parentIndex = d_itemModel->getRootIndex();
+    ptrdiff_t lastSelectedChildId = -1;
+    if (!d_indexSelectionStates.empty())
+    {
+        ModelIndexSelectionState lastSelection = d_indexSelectionStates.back();
+        lastSelectedChildId = lastSelection.d_childId;
+        parentIndex = lastSelection.d_parentIndex;
+    }
+
+    const size_t childrenCount = d_itemModel->getChildCount(parentIndex);
+    if (childrenCount == 0)
+        return;
+
+    auto nextSelectedChildId = (e.d_key == Key::Scan::ArrowDown) ?
+        std::min(lastSelectedChildId + 1, static_cast<ptrdiff_t>(childrenCount) - 1) :
+        std::max<ptrdiff_t>(0, lastSelectedChildId - 1);
+
+    if (nextSelectedChildId != -1 && nextSelectedChildId != lastSelectedChildId)
+    {
+        setSelectedIndex(d_itemModel->makeIndex(static_cast<size_t>(nextSelectedChildId), parentIndex));
+        ++e.handled;
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -512,6 +551,12 @@ void ItemView::setSelectionColourRect(const ColourRect& colour_rect)
 const std::vector<ModelIndexSelectionState>& ItemView::getIndexSelectionStates() const
 {
     return d_indexSelectionStates;
+}
+
+//----------------------------------------------------------------------------//
+ModelIndex ItemView::indexAt(const glm::vec2& position)
+{
+    return indexAtLocal(CoordConverter::screenToWindow(*this, position));
 }
 
 //----------------------------------------------------------------------------//
@@ -681,23 +726,12 @@ void ItemView::updateScrollbarDisplayMode(ScrollbarDisplayMode& target_mode,
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onScroll(CursorInputEventArgs& e)
+void ItemView::onScroll(ScrollEventArgs& e)
 {
-    handleOnScroll(getVertScrollbar(), e.scroll);
-
-    ++e.handled;
     Window::onScroll(e);
-}
 
-//----------------------------------------------------------------------------//
-void ItemView::handleOnScroll(Scrollbar* scrollbar, float scroll)
-{
-    if (scrollbar->isEffectiveVisible() &&
-        scrollbar->getDocumentSize() > scrollbar->getPageSize())
-    {
-        scrollbar->setScrollPosition(
-            scrollbar->getScrollPosition() + scrollbar->getStepSize() * -scroll);
-    }
+    if (Scrollbar::standardProcessing(getVertScrollbar(), getHorzScrollbar(), -e.d_delta, e.d_modifiers.hasAlt()))
+        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -745,22 +779,6 @@ void ItemView::onMultiselectModeChanged(WindowEventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-void ItemView::onSemanticInputEvent(SemanticEventArgs& e)
-{
-    if (e.d_semanticValue == SemanticValue::SelectRange ||
-        e.d_semanticValue == SemanticValue::SelectCumulative)
-    {
-        handleSelection(getGUIContext().getCursor().getPosition(),
-            true, d_isMultiSelectEnabled, e.d_semanticValue == SemanticValue::SelectRange);
-        ++e.handled;
-    }
-
-    handleSelectionNavigation(e);
-
-    Window::onSemanticInputEvent(e);
-}
-
-//----------------------------------------------------------------------------//
 void ItemView::onSized(ElementEventArgs& e)
 {
     Window::onSized(e);
@@ -788,10 +806,10 @@ void ItemView::onTargetSurfaceChanged(RenderingSurface* newSurface)
 }
 
 //----------------------------------------------------------------------------//
-bool ItemView::handleSelection(const glm::vec2& position, bool should_select,
+bool ItemView::handleSelection(const glm::vec2& localPos, bool should_select,
     bool is_cumulative, bool is_range)
 {
-    return handleSelection(indexAt(position), should_select, is_cumulative, is_range);
+    return handleSelection(indexAtLocal(localPos), should_select, is_cumulative, is_range);
 }
 
 //----------------------------------------------------------------------------//
@@ -891,44 +909,6 @@ void ItemView::onViewContentsChanged(WindowEventArgs& args)
 void ItemView::clearSelections()
 {
     d_indexSelectionStates.clear();
-}
-
-//----------------------------------------------------------------------------//
-void ItemView::handleSelectionNavigation(SemanticEventArgs& e)
-{
-    ModelIndex parent_index = d_itemModel->getRootIndex();
-    ptrdiff_t last_selected_child_id = -1;
-    if (!d_indexSelectionStates.empty())
-    {
-        ModelIndexSelectionState last_selection = d_indexSelectionStates.back();
-        last_selected_child_id = last_selection.d_childId;
-        parent_index = last_selection.d_parentIndex;
-    }
-
-    size_t children_count = d_itemModel->getChildCount(parent_index);
-    if (children_count == 0)
-        return;
-
-    auto next_selected_child_id = last_selected_child_id;
-    if (e.d_semanticValue == SemanticValue::GoDown)
-    {
-        next_selected_child_id = std::min(
-            next_selected_child_id + 1,
-            static_cast<ptrdiff_t>(children_count)-1
-            );
-    }
-    else if (e.d_semanticValue == SemanticValue::GoUp)
-    {
-        next_selected_child_id = std::max<ptrdiff_t>(0, next_selected_child_id - 1);
-    }
-
-    if (next_selected_child_id == -1 ||
-        next_selected_child_id == last_selected_child_id)
-        return;
-
-    setSelectedIndex(d_itemModel->makeIndex(
-        static_cast<size_t>(next_selected_child_id), parent_index));
-    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//

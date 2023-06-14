@@ -247,9 +247,9 @@ protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-    void onCursorPressHold(CursorInputEventArgs& e) override;
-    void onScroll(CursorInputEventArgs& e) override;
-    void onSemanticInputEvent(SemanticEventArgs& e) override;
+    void onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void onScroll(ScrollEventArgs& e) override;
+    void onKeyDown(KeyEventArgs& e) override;
 
 	/*************************************************************************
 		Implementation Data

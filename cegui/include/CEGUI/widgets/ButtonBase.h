@@ -26,22 +26,20 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIButtonBase_h_
-#define _CEGUIButtonBase_h_
-
+#pragma once
 #include "../Window.h"
 
 namespace CEGUI
 {
 
-/*!
-\brief
-	Base class for all the 'button' type widgets (push button, radio button, check-box, etc)
-*/
+//! \brief Base class for all the 'button' type widgets (push button, radio button, check-box, etc)
 class CEGUIEXPORT ButtonBase : public Window
 {
 public:
-	/*************************************************************************
+
+    ButtonBase(const String& type, const String& name);
+
+    /*************************************************************************
 		Accessor type functions
 	*************************************************************************/
 	/*!
@@ -52,7 +50,7 @@ public:
         true if the user is hovering or if the button is pushed and the pointer is
         not over the button. Otherwise return false.
     */
-	bool	isHovering(void) const			{return d_hovering;}
+	bool	isHovering() const			{return d_hovering;}
 
 
 	/*!
@@ -62,38 +60,21 @@ public:
 	\return
 		true if the button-type widget is pushed, false if the widget is not pushed.
 	*/
-	bool	isPushed(void) const			{return d_pushed;}
+	bool	isPushed() const			{return d_pushed;}
 
     /** Internal function to set button's pushed state.  Normally you would
      * not call this, except perhaps when building compound widgets.
      */
-    void setPushedState(const bool pushed);
-
-	/*************************************************************************
-		Construction and Destruction
-	*************************************************************************/
-	/*!
-	\brief
-		Constructor for ButtonBase objects
-	*/
-	ButtonBase(const String& type, const String& name);
-
-
-	/*!
-	\brief
-		Destructor for ButtonBase objects
-	*/
-	virtual ~ButtonBase(void);
-
+    void setPushedState(bool pushed);
 
 protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-    void    onCursorMove(CursorInputEventArgs& e) override;
+    void    onCursorMove(CursorMoveEventArgs& e) override;
     void    onCursorLeaves(CursorInputEventArgs& e) override;
-    void    onCursorPressHold(CursorInputEventArgs& e) override;
-    void    onCursorActivate(CursorInputEventArgs& e) override;
+    void    onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void    onMouseButtonUp(MouseButtonEventArgs& e) override;
     void    onCaptureLost(WindowEventArgs& e) override;
 
 
@@ -118,10 +99,8 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	bool	d_pushed;			//!< true when widget is pushed
-	bool	d_hovering;			//!< true when the button is in 'hover' state and requires the hover rendering.
+	bool d_pushed = false;			//!< true when widget is pushed
+	bool d_hovering = false;			//!< true when the button is in 'hover' state and requires the hover rendering.
 };
 
 } // End of  CEGUI namespace section
-
-#endif	// end of guard _CEGUIButtonBase_h_

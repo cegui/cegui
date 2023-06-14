@@ -50,6 +50,7 @@ author:     Luca Ebach <bitbucket@lucebac.net>
 static SDL_Window* window;
 static SDL_GLContext context;
 static CEGUI::InputAggregator* G_inputAggregator;
+static CEGUI::GUIContext* G_context;
 
 CEGUI::Key::Scan toCEGUIKey(SDL_Scancode key)
 {
@@ -140,7 +141,8 @@ void initCEGUI()
     // create CEGUI system object
     System::create(cegui_renderer);
 
-    G_inputAggregator = new InputAggregator(&System::getSingletonPtr()->getDefaultGUIContext());
+    G_context = &System::getSingleton().createGUIContext(cegui_renderer.getDefaultRenderTarget());
+    G_inputAggregator = new InputAggregator(G_context);
     G_inputAggregator->initialise();
 
     // setup resource directories
@@ -170,9 +172,9 @@ void initCEGUI()
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // set default font and cursor image and tooltip type
-    System::getSingleton().getDefaultGUIContext().setDefaultFont("DejaVuSans-10");
-    System::getSingleton().getDefaultGUIContext().getCursor().setDefaultImage("TaharezLook/MouseArrow");
-    System::getSingleton().getDefaultGUIContext().setDefaultTooltipType("TaharezLook/Tooltip");
+    G_context->setDefaultFont("DejaVuSans-10");
+    G_context->getCursor().setDefaultImage("TaharezLook/MouseArrow");
+    G_context->setDefaultTooltipType("TaharezLook/Tooltip");
 }
 
 void initWindows()
@@ -189,7 +191,7 @@ void initWindows()
 
     // load layout
     Window* root = WindowManager::getSingleton().loadLayoutFromFile("application_templates.layout");
-    System::getSingleton().getDefaultGUIContext().setRootWindow(root);
+    G_context->setRootWindow(root);
 }
 
 // convert SDL mouse button to CEGUI mouse button
@@ -310,7 +312,7 @@ int main(int /*argc*/, char* /*argv*/[])
         const float newtime = SDL_GetTicks() / 1000.f;
         const float time_elapsed = newtime - time;
         System::getSingleton().injectTimePulse(time_elapsed);
-        System::getSingleton().getDefaultGUIContext().injectTimePulse(time_elapsed);
+        G_context->injectTimePulse(time_elapsed);
         time = newtime;
 
         // render gui
@@ -324,6 +326,8 @@ int main(int /*argc*/, char* /*argv*/[])
 
     delete G_inputAggregator;
     G_inputAggregator = 0;
+    delete G_context;
+    G_context = 0;
     System::destroy();
     OpenGLRenderer::destroy(*renderer);
     renderer = 0;

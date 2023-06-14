@@ -28,7 +28,8 @@
 #define _Effects_Sample_
 
 #include "Sample.h"
-#include "CEGUI/CEGUI.h"
+#include <CEGUI/RenderEffect.h>
+#include <CEGUI/Vertex.h>
 
 class WobblyWindowEffect : public CEGUI::RenderEffect
 {

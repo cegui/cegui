@@ -51,8 +51,7 @@ public:
     bool isImageryCache() const;
     void activate();
     void deactivate();
-    void unprojectPoint(const GeometryBuffer& buff,
-                        const glm::vec2& p_in, glm::vec2& p_out) const;
+    void updateMatrix() const override {}
 
 protected:
     //! DirectFBRenderer that created and owns this RenderTarget.

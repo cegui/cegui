@@ -79,7 +79,7 @@ bool TabControlSample::initialise(CEGUI::GUIContext* guiContext)
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile(SKIN ".scheme");
-    d_guiContext->getCursor().setDefaultImage(SKIN "/MouseArrow");
+    d_guiContext->setDefaultCursorImage(SKIN "/MouseArrow");
 
     // load an image to use as a background
     if (!ImageManager::getSingleton().isDefined("SpaceBackgroundImage"))

@@ -394,7 +394,7 @@ public:
     \exception UnknownObjectException
         Thrown if the vertical Scrollbar component does not exist.
     */
-    Scrollbar* getVerticalScrollbar() const;
+    Scrollbar* getVertScrollbar() const;
 
     /*!
     \brief
@@ -407,7 +407,7 @@ public:
     \exception UnknownObjectException
         Thrown if the horizontal Scrollbar component does not exist.
     */
-    Scrollbar* getHorizontalScrollbar() const;
+    Scrollbar* getHorzScrollbar() const;
 
     // Overridden from Window
     void initialiseComponents() override;
@@ -553,7 +553,7 @@ protected:
     void removeChild_impl(Element* element) override;
     
     void onSized(ElementEventArgs& e) override;
-    void onScroll(CursorInputEventArgs& e) override;
+    void onScroll(ScrollEventArgs& e) override;
     void onIsSizeAdjustedToContentChanged(ElementEventArgs& e) override;
     void adjustSizeToContent() override {}
 
@@ -561,9 +561,9 @@ protected:
     Window* findChildByNamePath_impl(const String& name_path) const override;
 
     // Swipe scroll support
-    void onCursorPressHold(CursorInputEventArgs& e) override;
-    void onCursorMove(CursorInputEventArgs& e) override;
-    void onCursorActivate(CursorInputEventArgs& e) override;
+    void onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void onCursorMove(CursorMoveEventArgs& e) override;
+    void onMouseButtonUp(MouseButtonEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;
 
     //! true if vertical scrollbar should always be displayed

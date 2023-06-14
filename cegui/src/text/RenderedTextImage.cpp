@@ -70,6 +70,48 @@ float RenderedTextImage::getGlyphWidth(const RenderedGlyph& glyph) const
 }
 
 //----------------------------------------------------------------------------//
+static Sizef getRespectRatioSize(const Sizef& reqSize, const Sizef& orgSize)
+{
+    const float orgRatio = orgSize.d_width / orgSize.d_height;
+    const float reqRatio = reqSize.d_width / reqSize.d_height;
+    Sizef newSize(reqSize);
+
+    if (reqSize.d_width == 0)
+    {
+        // if require width is not set (unlimited auto width mode)
+        // set result width based on aspect ratio and require height
+        newSize.d_width  = reqSize.d_height * orgRatio;
+    }
+    else if (reqSize.d_height == 0 || orgRatio > reqRatio)
+    {
+        // if require height is not set (unlimited auto height mode)
+        // OR if we must reduce require height (we treat non-zero required height and width as maximum values)
+        // set result height based on aspect ratio and require width
+        newSize.d_height = reqSize.d_width  / orgRatio;
+    }
+    else /*if (orgRatio < reqRatio)*/
+    {
+        // otherwise / if we must reduce require width (we treat non-zero required height and width as maximum values)
+        // set result width based on aspect ratio and require height
+        newSize.d_width  = reqSize.d_height * orgRatio;
+    }
+
+    return newSize;
+}
+
+void RenderedTextImage::setSize(const Sizef& size, bool aspectLock)
+{
+    if (aspectLock)
+    {
+        d_size = getRespectRatioSize(size, d_image->getRenderedSize());
+    }
+    else
+    {
+        d_size = size;
+    }
+}
+
+//----------------------------------------------------------------------------//
 void RenderedTextImage::createRenderGeometry(std::vector<GeometryBuffer*>& out, const RenderedGlyph* begin,
     size_t count, glm::vec2& penPosition, const ColourRect* modColours, const Rectf* clipRect,
     float lineHeight, float justifySpaceSize, size_t canCombineFromIdx, const SelectionInfo* /*selection*/) const
@@ -86,7 +128,7 @@ void RenderedTextImage::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
     const Sizef imgSize(imgWidth, imgHeight * heightScale);
 
     ImageRenderSettings settings(Rectf(), clipRect, d_colours);
-    if (modColours)
+    if (d_useModColour && modColours)
         settings.d_multiplyColours *= *modColours;
 
     const RenderedGlyph* end = begin + count;

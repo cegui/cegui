@@ -177,7 +177,7 @@ void Thumb::onThumbTrackEnded(WindowEventArgs& e)
 /*************************************************************************
 	Handler for cursor movement events
 *************************************************************************/
-void Thumb::onCursorMove(CursorInputEventArgs& e)
+void Thumb::onCursorMove(CursorMoveEventArgs& e)
 {
 	// default processing
 	PushButton::onCursorMove(e);
@@ -192,16 +192,12 @@ void Thumb::onCursorMove(CursorInputEventArgs& e)
         const float vmin = d_vertMin;
         const float vmax = d_vertMax;
 
-        glm::vec2 delta = CoordConverter::screenToWindow(*this, e.position);
-
         // calculate amount of movement
-		delta -= d_dragPoint;
+		auto delta = e.d_localPos - d_dragPoint;
         delta.x /= parentSize.d_width;
         delta.y /= parentSize.d_height;
 
-		//
 		// Calculate new (pixel) position for thumb
-		//
 		UVector2 newPos(getPosition());
 
 		if (d_horzFree)
@@ -241,16 +237,16 @@ void Thumb::onCursorMove(CursorInputEventArgs& e)
 /*************************************************************************
     Handler for cursor press events
 *************************************************************************/
-void Thumb::onCursorPressHold(CursorInputEventArgs& e)
+void Thumb::onMouseButtonDown(MouseButtonEventArgs& e)
 {
 	// default processing
-    PushButton::onCursorPressHold(e);
+    PushButton::onMouseButtonDown(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.d_button == MouseButton::Left)
 	{
 		// initialise the dragging state
 		d_beingDragged = true;
-		d_dragPoint = CoordConverter::screenToWindow(*this, e.position);
+		d_dragPoint = e.d_localPos;
 
 		// trigger tracking started event
 		WindowEventArgs args(this);

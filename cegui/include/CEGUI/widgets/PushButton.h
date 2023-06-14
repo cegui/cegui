@@ -26,32 +26,19 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIPushButton_h_
-#define _CEGUIPushButton_h_
+#pragma once
+#include "ButtonBase.h"
 
-#include "./ButtonBase.h"
-
-#if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4251)
-#endif
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-/*!
-\brief
-    Base class to provide logic for push button type widgets.
-*/
+//! \brief Base class to provide logic for push button type widgets.
 class CEGUIEXPORT PushButton : public ButtonBase
 {
 public:
+
 	static const String EventNamespace;				//!< Namespace for global events
     static const String WidgetTypeName;             //!< Window factory name
 
-	/*************************************************************************
-		Event name constants
-	*************************************************************************/
 	// generated internally by Window
     /** Event fired when the button is clicked.
      * Handlers are passed a const WindowEventArgs reference with
@@ -59,45 +46,15 @@ public:
      */
 	static const String EventClicked;
 
-	/*************************************************************************
-		Construction and Destruction
-	*************************************************************************/
-	/*!
-	\brief
-		Constructor for base PushButton class
-	*/
-	PushButton(const String& type, const String& name);
-
-
-	/*!
-	\brief
-		Destructor for PushButton class
-	*/
-	virtual ~PushButton(void);
-
+    using ButtonBase::ButtonBase;
 
 protected:
-	/*************************************************************************
-		New Event Handlers
-	*************************************************************************/
-	/*!
-	\brief
-		handler invoked internally when the button is clicked.
-	*/
-	virtual void	onClicked(WindowEventArgs& e);
 
+    //! \brief Handler invoked internally when the button is clicked.
+	virtual void onClicked(WindowEventArgs& e);
 
-	/*************************************************************************
-		Overridden Event Handlers
-	*************************************************************************/
-    void onCursorActivate(CursorInputEventArgs& e) override;
-    void onSemanticInputEvent(SemanticEventArgs& e) override;
+    void onClick(MouseButtonEventArgs& e) override;
+    void onKeyDown(KeyEventArgs& e) override;
 };
 
-} // End of  CEGUI namespace section
-
-#if defined(_MSC_VER)
-#	pragma warning(pop)
-#endif
-
-#endif	// end of guard _CEGUIPushButton_h_
+}

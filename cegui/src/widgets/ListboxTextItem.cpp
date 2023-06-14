@@ -31,7 +31,6 @@
 #include "CEGUI/FontManager.h"
 #include "CEGUI/text/Font.h"
 #include "CEGUI/Window.h"
-#include "CEGUI/CoordConverter.h"
 #include "CEGUI/text/TextParser.h"
 
 namespace CEGUI
@@ -155,7 +154,13 @@ void ListboxTextItem::setCustomTextParser(CEGUI::TextParser* parser)
 //----------------------------------------------------------------------------//
 bool ListboxTextItem::handleFontRenderSizeChange(const Font* const font)
 {
-    return getFont() == font;
+    if (font == getFont())
+    {
+        d_renderedTextValid = false;
+        return true;
+    }
+
+    return false;
 }
 
 }

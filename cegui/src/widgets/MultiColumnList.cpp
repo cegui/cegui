@@ -1584,7 +1584,7 @@ bool MultiColumnList::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given window local pixel co-ordinate.
 *************************************************************************/
-ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
+ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& localPos) const
 {
     const ListHeader* header = getListHeader();
     const Rectf listArea(getListRenderArea());
@@ -1592,7 +1592,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
     float y = listArea.d_min.y - getVertScrollbar()->getScrollPosition();
     float x = listArea.d_min.x - getHorzScrollbar()->getScrollPosition();
     
-    if(y > pt.y)
+    if(y > localPos.y)
         return nullptr;
 
     for (unsigned int i = 0; i < getRowCount(); ++i)
@@ -1600,7 +1600,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
         y += getHighestRowItemHeight(i);
 
         // have we located the row?
-        if (pt.y < y)
+        if (localPos.y < y)
         {
             // scan across to find column that was clicked
             for (unsigned int j = 0; j < getColumnCount(); ++j)
@@ -1609,7 +1609,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
                 x += CoordConverter::asAbsolute(seg.getWidth(), header->getPixelSize().d_width);
 
                 // was this the column?
-                if (pt.x < x)
+                if (localPos.x < x)
                 {
                     // return contents of grid element that was clicked.
                     return d_grid[i][j];
@@ -1869,108 +1869,85 @@ void MultiColumnList::onListColumnSized(WindowEventArgs& e)
 	fireEvent(EventListColumnSized, e, EventNamespace);
 }
 
-
-/*************************************************************************
-	Handler called when a column is moved
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MultiColumnList::onListColumnMoved(WindowEventArgs& e)
 {
 	invalidate();
 	fireEvent(EventListColumnMoved, e, EventNamespace);
 }
 
-/*************************************************************************
-	Handler for when widget font is changed
-*************************************************************************/
+//----------------------------------------------------------------------------//
+bool MultiColumnList::handleFontRenderSizeChange(const Font& font)
+{
+    bool handled = false;
+
+    for (unsigned int i = 0; i < getRowCount(); ++i)
+        for (unsigned int j = 0; j < getColumnCount(); ++j)
+            if (auto item = d_grid[i][j])
+                handled |= item->handleFontRenderSizeChange(&font);
+
+    for (unsigned int col = 0; col < getColumnCount(); ++col)
+    {
+        if (getHeaderSegmentForColumn(col).getFont() == &font)
+        {
+            invalidate();
+            break;
+        }
+    }
+
+    // Always call just in case
+    handled |= Window::handleFontRenderSizeChange(font);
+
+    return handled;
+}
+
+//----------------------------------------------------------------------------//
 void MultiColumnList::onFontChanged(WindowEventArgs& e)
 {
     // Propagate to children
     // Set the font equal to that of our list
-    for (unsigned int col = 0; col < getColumnCount(); col++)
-    {
+    for (unsigned int col = 0; col < getColumnCount(); ++col)
         getHeaderSegmentForColumn(col).setFont(d_font);
-    }
 
     // Call base class handler
     Window::onFontChanged(e);
 }
 
-/*************************************************************************
-	Handler for when we are sized
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void MultiColumnList::onSized(ElementEventArgs& e)
 {
-	// base class handling
 	Window::onSized(e);
-
 	configureScrollbars();
-
 	++e.handled;
 }
 
-
-/*************************************************************************
-    Handler for when cursor is pressed
-*************************************************************************/
-void MultiColumnList::onCursorPressHold(CursorInputEventArgs& e)
+//----------------------------------------------------------------------------//
+void MultiColumnList::onMouseButtonDown(MouseButtonEventArgs& e)
 {
-    // base class processing
-    Window::onCursorPressHold(e);
+    Window::onMouseButtonDown(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.d_button == MouseButton::Left)
     {
-        const glm::vec2 local_point = CoordConverter::screenToWindow(*this, e.position);
-        handleSelection(local_point, false, false);
-
+        handleSelection(e.d_localPos, e.d_modifiers.hasCtrl(), e.d_modifiers.hasShift());
         ++e.handled;
     }
 }
 
-void MultiColumnList::onSemanticInputEvent(SemanticEventArgs& e)
+//----------------------------------------------------------------------------//
+void MultiColumnList::onScroll(ScrollEventArgs& e)
 {
-    bool cumulative = e.d_semanticValue == SemanticValue::SelectCumulative;
-    bool range = e.d_semanticValue == SemanticValue::SelectRange;
-
-    if (cumulative || range)
-    {
-        const glm::vec2 local_point = CoordConverter::screenToWindow(*this,
-            getGUIContext().getCursor().getPosition());
-        handleSelection(local_point, cumulative, range);
-
-        ++ e.handled;
-    }
-
-    Window::onSemanticInputEvent(e);
-}
-
-/*************************************************************************
-    Handler for scroll actions
-*************************************************************************/
-void MultiColumnList::onScroll(CursorInputEventArgs& e)
-{
-	// base class processing.
 	Window::onScroll(e);
 
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    Scrollbar* horzScrollbar = getHorzScrollbar();
-
-	if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
-	{
-		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.scroll);
-	}
-	else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
-	{
-		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
-	}
-
-	++e.handled;
+    if (Scrollbar::standardProcessing(getVertScrollbar(), getHorzScrollbar(), -e.d_delta, e.d_modifiers.hasAlt()))
+        ++e.handled;
 }
 
-void MultiColumnList::handleSelection(const glm::vec2& position, bool cumulative, bool range)
+//----------------------------------------------------------------------------//
+void MultiColumnList::handleSelection(const glm::vec2& localPos, bool cumulative, bool range)
 {
     bool modified = false;
 
-    ListboxItem* item = getItemAtPoint(position);
+    ListboxItem* item = getItemAtPoint(localPos);
 
     if (item)
     {

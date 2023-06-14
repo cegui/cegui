@@ -473,11 +473,11 @@ public:
 
     void setEnabled(bool enabled) override;
 
-    bool performCopy(Clipboard& clipboard) override;
-    bool performCut(Clipboard& clipboard) override;
-    bool performPaste(Clipboard& clipboard) override;
-    bool performUndo() override;
-    bool performRedo() override;
+    bool performCopy(Clipboard& clipboard) const;
+    bool performCut(Clipboard& clipboard);
+    bool performPaste(Clipboard& clipboard);
+    bool performUndo();
+    bool performRedo();
 
 protected:
 
@@ -496,7 +496,7 @@ protected:
         Code point index into the text that is rendered closest to screen
         position \a pt.
     */
-    size_t getTextIndexFromPosition(const glm::vec2& pt);
+    size_t getTextIndexFromPosition(const glm::vec2& localPos);
 
     virtual bool validateWindowRenderer(const WindowRenderer* renderer) const override;
     virtual bool handleFontRenderSizeChange(const Font& font) override;
@@ -605,20 +605,21 @@ protected:
     void setReadOnlyCursorImage(const Image* image) { d_readOnlyCursorImage = image; }
 
     // Overridden event handlers
-    void onCursorPressHold(CursorInputEventArgs& e) override;
-    void onCursorActivate(CursorInputEventArgs& e) override;
-    void onCursorMove(CursorInputEventArgs& e) override;
+    void onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void onMouseButtonUp(MouseButtonEventArgs& e) override;
+    void onDoubleClick(MouseButtonEventArgs& e) override;
+    void onTripleClick(MouseButtonEventArgs& e) override;
+    void onCursorMove(CursorMoveEventArgs& e) override;
+    void onKeyDown(KeyEventArgs& e) override;
+    void onKeyUp(KeyEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;
-    void onSelectWord(CursorInputEventArgs& e) override;
-    void onSelectAll(CursorInputEventArgs& e) override;
     void onSized(ElementEventArgs& e) override;
 
     void onFontChanged(WindowEventArgs& e) override;
     void onTextChanged(WindowEventArgs& e) override;
     void onCharacter(TextEventArgs& e) override;
-    void onSemanticInputEvent(SemanticEventArgs& e) override;
 
-    virtual bool processSemanticInputEvent(const SemanticEventArgs& e);
+    virtual void processKeyDownEvent(KeyEventArgs& e);
 
     RenderedText d_renderedText;
 
@@ -667,8 +668,6 @@ protected:
 
     //! specifies whether validator was created by us, or supplied by user.
     bool d_weOwnValidator = true;
-    //! Previous match state change response
-    bool d_previousValidityChangeResponse = true;
 
 private:
 

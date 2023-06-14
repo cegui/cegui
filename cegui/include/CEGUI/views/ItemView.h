@@ -258,7 +258,8 @@ public:
         if nothing was found at that position or if the position is outside
         the view's rendering area.
     */
-    virtual ModelIndex indexAt(const glm::vec2& position) = 0;
+    ModelIndex indexAt(const glm::vec2& position);
+    virtual ModelIndex indexAtLocal(const glm::vec2& localPos) = 0;
 
     /*!
     \brief
@@ -404,10 +405,10 @@ protected:
     virtual void onSortModeChanged(WindowEventArgs& args);
     virtual void onViewContentsChanged(WindowEventArgs& args);
 
-    void onScroll(CursorInputEventArgs& e) override;
-    void onCursorPressHold(CursorInputEventArgs& e) override;
-    void onCursorMove(CursorInputEventArgs& e) override;
-    void onSemanticInputEvent(SemanticEventArgs& e) override;
+    void onScroll(ScrollEventArgs& e) override;
+    void onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void onCursorMove(CursorMoveEventArgs& e) override;
+    void onKeyDown(KeyEventArgs& e) override;
 
     virtual void onSized(ElementEventArgs& e) override;
     virtual void onFontChanged(WindowEventArgs& e) override;
@@ -422,15 +423,13 @@ protected:
     void connectToModelEvents(ItemModel* d_itemModel);
     void disconnectModelEvents();
 
-    void handleOnScroll(Scrollbar* scrollbar, float scroll);
     int getSelectedIndexPosition(const ModelIndex& index) const;
-    virtual bool handleSelection(const glm::vec2& position, bool should_select,
+    virtual bool handleSelection(const glm::vec2& localPos, bool should_select,
         bool is_cumulative, bool is_range);
     virtual bool handleSelection(const ModelIndex& index, bool should_select,
         bool is_cumulative, bool is_range);
 
     virtual void resortView() = 0;
-    void handleSelectionNavigation(SemanticEventArgs& e);
 
     //! Returns the Rectf that contains the specified \a index.
     virtual Rectf getIndexRect(const ModelIndex& index) = 0;

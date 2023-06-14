@@ -104,7 +104,7 @@ public:
     \return
     true if event was handled.
     */
-    virtual bool injectKeyDown(const CEGUI::Key::Scan& ceguiKey) = 0;
+    virtual bool injectKeyDown(CEGUI::Key::Scan ceguiKey) = 0;
 
     /*!
     \brief
@@ -112,7 +112,7 @@ public:
     \return
     true if event was handled.
     */
-    virtual bool injectKeyUp(const CEGUI::Key::Scan& ceguiKey) = 0;
+    virtual bool injectKeyUp(CEGUI::Key::Scan ceguiKey) = 0;
 
     /*!
     \brief
@@ -128,7 +128,7 @@ public:
     \return
     true if event was handled.
     */
-    virtual bool injectMouseButtonDown(const CEGUI::MouseButton& ceguiMouseButton) = 0;
+    virtual bool injectMouseButtonDown(CEGUI::MouseButton ceguiMouseButton) = 0;
 
     /*!
     \brief
@@ -136,7 +136,7 @@ public:
     \return
     true if event was handled.
     */
-    virtual bool injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseButton) = 0;
+    virtual bool injectMouseButtonUp(CEGUI::MouseButton ceguiMouseButton) = 0;
 
     /*!
     \brief

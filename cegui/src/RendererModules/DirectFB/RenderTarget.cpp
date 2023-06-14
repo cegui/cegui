@@ -89,14 +89,4 @@ void DirectFBRenderTarget::deactivate()
 {
 }
 
-//----------------------------------------------------------------------------//
-void DirectFBRenderTarget::unprojectPoint(const GeometryBuffer& buff,
-    const glm::vec2& p_in, glm::vec2& p_out) const
-{
-    // TODO:
-    p_out = p_in;
-}
-
-//----------------------------------------------------------------------------//
-
 } // End of  CEGUI namespace section

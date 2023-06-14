@@ -122,10 +122,13 @@ const String Window::EventCursorLeavesArea("CursorLeavesArea");
 const String Window::EventCursorEntersSurface("CursorEntersSurface");
 const String Window::EventCursorLeavesSurface("CursorLeavesSurface");
 const String Window::EventCursorMove("CursorMove");
-const String Window::EventCursorPressHold("CursorPressHold");
-const String Window::EventSelectWord("SelectWord");
-const String Window::EventSelectAll("SelectAll");
-const String Window::EventCursorActivate("CursorActivate");
+const String Window::EventMouseButtonDown("MouseButtonDown");
+const String Window::EventMouseButtonUp("MouseButtonUp");
+const String Window::EventClick("Click");
+const String Window::EventDoubleClick("DoubleClick");
+const String Window::EventTripleClick("TripleClick");
+const String Window::EventKeyDown("KeyDown");
+const String Window::EventKeyUp("KeyUp");
 const String Window::EventCharacterKey("CharacterKey");
 const String Window::EventScroll("Scroll");
 const String Window::EventSemanticEvent("SemanticEvent");
@@ -566,7 +569,7 @@ Window* Window::getChildAtPosition(const glm::vec2& position) const
 Window* Window::getChildAtPosition(const glm::vec2& position,
                     bool (Window::*hittestfunc)(const glm::vec2&, bool) const,
                     bool allow_disabled,
-                    const Window* const exclude) const
+                    const Window* exclude) const
 {
     glm::vec2 p;
     if (d_surface && d_surface->isRenderingWindow())
@@ -972,7 +975,7 @@ bool Window::moveToFront()
     // notify relevant windows about the z-order change.
     onZChange_impl();
 
-    return !d_cursorPassThroughEnabled;
+    return true;
 }
 
 //----------------------------------------------------------------------------//
@@ -1336,12 +1339,16 @@ void Window::addChild_impl(Element* element)
 
     Element::addChild_impl(element);
 
+    // Register the new child for drawing
     addWindowToDrawList(*wnd);
-
     wnd->onZChange_impl();
 
     if (d_guiContext)
         wnd->attachToGUIContext(d_guiContext);
+    // TODO: improve this logic! If wnd size is relative and 'this' size is absolute, wnd
+    // will not be resized on attach to context otherwise, because 'this' size isn't changed.
+    else
+        wnd->notifyScreenAreaChanged();
 
     wnd->invalidate(true);
 }
@@ -1388,7 +1395,7 @@ void Window::onZChange_impl()
 const Image* Window::getEffectiveCursor() const
 {
     return d_cursor ? d_cursor :
-        d_guiContext ? d_guiContext->getCursor().getDefaultImage() :
+        d_guiContext ? d_guiContext->getDefaultCursorImage() :
         nullptr;
 }
 
@@ -1404,7 +1411,7 @@ void Window::setCursor(const Image* image)
     d_cursor = image;
 
     if (d_guiContext && d_guiContext->getWindowContainingCursor() == this)
-        d_guiContext->getCursor().setImage(image);
+        d_guiContext->setCursorImage(image);
 }
 
 //----------------------------------------------------------------------------//
@@ -1459,8 +1466,7 @@ void Window::notifyDragDropItemEnters(DragContainer* item)
     if (!item)
         return;
 
-    DragDropEventArgs args(this);
-    args.dragDropItem = item;
+    DragDropEventArgs args(this, item);
     onDragDropItemEnters(args);
 }
 
@@ -1470,8 +1476,7 @@ void Window::notifyDragDropItemLeaves(DragContainer* item)
     if (!item)
         return;
 
-    DragDropEventArgs args(this);
-    args.dragDropItem = item;
+    DragDropEventArgs args(this, item);
     onDragDropItemLeaves(args);
 }
 
@@ -1481,8 +1486,7 @@ bool Window::notifyDragDropItemDropped(DragContainer* item)
     if (!item)
         return false;
 
-    DragDropEventArgs args(this);
-    args.dragDropItem = item;
+    DragDropEventArgs args(this, item);
     onDragDropItemDropped(args);
 
     return args.handled;
@@ -2105,146 +2109,63 @@ void Window::onCursorLeaves(CursorInputEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onCursorMove(CursorInputEventArgs& e)
+void Window::onCursorMove(CursorMoveEventArgs& e)
 {
     fireEvent(EventCursorMove, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagatePointerInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onCursorMove(e);
-        return;
-    }
-
-    // by default we now mark cursor events as handled
-    if (!d_cursorPassThroughEnabled)
-        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
-void Window::onCursorPressHold(CursorInputEventArgs& e)
+void Window::onMouseButtonDown(MouseButtonEventArgs& e)
 {
-    fireEvent(EventCursorPressHold, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagatePointerInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onCursorPressHold(e);
-        return;
-    }
-
-    // by default we now mark cursor events as handled
-    if (!d_cursorPassThroughEnabled)
-        ++e.handled;
+    fireEvent(EventMouseButtonDown, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onCursorActivate(CursorInputEventArgs& e)
+void Window::onMouseButtonUp(MouseButtonEventArgs& e)
 {
-    fireEvent(EventCursorActivate, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagatePointerInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onCursorActivate(e);
-        //return;
-    }
-
-    // by default we now mark cursor events as handled
-    //if (!d_cursorPassThroughEnabled)
-    //    ++e.handled;
+    fireEvent(EventMouseButtonUp, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onSelectWord(CursorInputEventArgs& e)
+void Window::onClick(MouseButtonEventArgs& e)
 {
-    fireEvent(EventSelectWord, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagatePointerInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onSelectWord(e);
-        return;
-    }
-
-    // by default we now mark cursor events as handled
-    if (!d_cursorPassThroughEnabled)
-        ++e.handled;
+    fireEvent(EventClick, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onSelectAll(CursorInputEventArgs& e)
+void Window::onDoubleClick(MouseButtonEventArgs& e)
 {
-    fireEvent(EventSelectAll, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagatePointerInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onSelectAll(e);
-        return;
-    }
-
-    // by default we now mark cursor events as handled
-    if (!d_cursorPassThroughEnabled)
-        ++e.handled;
+    fireEvent(EventDoubleClick, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onScroll(CursorInputEventArgs& e)
+void Window::onTripleClick(MouseButtonEventArgs& e)
+{
+    fireEvent(EventTripleClick, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onScroll(ScrollEventArgs& e)
 {
     fireEvent(EventScroll, e, EventNamespace);
+}
 
-    // optionally propagate to parent
-    if (!e.handled && d_propagatePointerInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onScroll(e);
-        return;
-    }
+//----------------------------------------------------------------------------//
+void Window::onKeyDown(KeyEventArgs& e)
+{
+    fireEvent(EventKeyDown, e, EventNamespace);
+}
 
-    // by default we now mark cursor events as handled
-    if (!d_cursorPassThroughEnabled)
-        ++e.handled;
+//----------------------------------------------------------------------------//
+void Window::onKeyUp(KeyEventArgs& e)
+{
+    fireEvent(EventKeyUp, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 void Window::onCharacter(TextEventArgs& e)
 {
     fireEvent(EventCharacterKey, e, EventNamespace);
-
-    // As of 0.7.0 CEGUI::System no longer does input event propogation, so by
-    // default we now do that here. Generally speaking key handling widgets
-    // may need to override this behaviour to halt further propagation.
-    if (!e.handled && d_parent &&
-        this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onCharacter(e);
-    }
-}
-
-//----------------------------------------------------------------------------//
-void Window::onSemanticInputEvent(SemanticEventArgs& e)
-{
-    fireEvent(EventSemanticEvent, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onSemanticInputEvent(e);
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -2271,7 +2192,7 @@ void Window::onDragDropItemDropped(DragDropEventArgs& e)
     {
         Event* ev = getEventObject(EventDragDropItemDropped);
         if (!ev || !ev->getConnectionCount())
-            e.dragDropItem->cancelDragging();
+            e.d_dragDropItem->cancelDragging();
     }
 }
 

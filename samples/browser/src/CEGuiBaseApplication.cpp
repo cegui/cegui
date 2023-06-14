@@ -125,6 +125,7 @@ bool CEGuiBaseApplication::init(SampleBrowserBase* sampleApp,
 
     // create viewport-based CEGUI context for the main window
     d_context = &CEGUI::System::getSingleton().createGUIContext(d_renderer->getDefaultRenderTarget());
+    d_context->initDefaultInputSemantics();
 
     // initialise resource system
     initDataPathPrefix(dataPathPrefixOverride);

@@ -36,7 +36,8 @@ namespace CEGUI
 class CEGUIEXPORT InjectedInputReceiver
 {
 public:
-    virtual ~InjectedInputReceiver() {}
+
+    virtual ~InjectedInputReceiver() = default;
 
     /*!
     \brief
@@ -236,36 +237,6 @@ public:
         - false if nobody handled the event.
     */
     virtual bool injectMouseButtonTripleClick(const MouseButton button) = 0;
-
-    /*!
-    \brief
-        Tells the receiver to perform a clipboard copy operation.
-
-    \return
-        - true if the copy was successful
-        - false if the copy was denied
-    */
-    virtual bool injectCopyRequest() = 0;
-
-    /*!
-    \brief
-        Tells the system to perform a clipboard cut operation.
-
-    \return
-        - true if the cut was successful
-        - false if the cut was denied
-    */
-    virtual bool injectCutRequest() = 0;
-
-    /*!
-    \brief
-        Tells the system to perform a clipboard paste operation.
-
-    \return
-        - true if the paste was successful
-        - false if the paste was denied
-    */
-    virtual bool injectPasteRequest() = 0;
 };
 
 }

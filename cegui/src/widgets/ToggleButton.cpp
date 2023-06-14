@@ -75,48 +75,34 @@ void ToggleButton::onSelectStateChange(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ToggleButton::onCursorActivate(CursorInputEventArgs& e)
+void ToggleButton::onClick(MouseButtonEventArgs& e)
 {
-    if (e.source == CursorInputSource::Left && isPushed())
+    if (e.d_button == MouseButton::Left && isPushed())
     {
-        if (const Window* const sheet = getGUIContext().getRootWindow())
-        {
-            // was cursor released over this widget
-            // (use cursor position, as e.position is already unprojected)
-            if (this == sheet->getTargetChildAtPosition(
-                    getGUIContext().getCursor().getPosition()))
-            {
-                setSelected(getPostClickSelectState());
-            }
-        }
-
+        setSelected(getPostClickSelectState());
         ++e.handled;
     }
 
-    ButtonBase::onCursorActivate(e);
+    ButtonBase::onClick(e);
 }
 
 //----------------------------------------------------------------------------//
 bool ToggleButton::getPostClickSelectState() const
 {
-    return d_selected ^ true;
+    return !d_selected;
 }
 
 //----------------------------------------------------------------------------//
-void ToggleButton::onSemanticInputEvent(SemanticEventArgs& e)
+void ToggleButton::onKeyDown(KeyEventArgs& e)
 {
-    if (isDisabled())
-        return;
-
-    if (e.d_semanticValue == SemanticValue::Confirm)
+    if (!isDisabled() && d_guiContext->isInputSemantic(SemanticValue::Confirm, e))
     {
         setSelected(getPostClickSelectState());
-
         ++e.handled;
     }
-}
 
-//----------------------------------------------------------------------------//
+    ButtonBase::onKeyDown(e);
+}
 
 }
 

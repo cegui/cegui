@@ -60,7 +60,7 @@ bool TextSample::initialise(CEGUI::GUIContext* guiContext)
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    guiContext->getCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->setDefaultCursorImage("TaharezLook/MouseArrow");
 
     // load an image to use as a background
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )

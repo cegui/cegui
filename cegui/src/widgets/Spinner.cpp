@@ -81,8 +81,8 @@ void Spinner::initialiseComponents()
     decreaseButton->setCursorAutoRepeatEnabled(true);
 
     // perform event subscriptions.
-    increaseButton->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&Spinner::handleIncreaseButton, this));
-    decreaseButton->subscribeEvent(Window::EventCursorPressHold, Event::Subscriber(&Spinner::handleDecreaseButton, this));
+    increaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleIncreaseButton, this));
+    decreaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleDecreaseButton, this));
     editbox->subscribeEvent(Window::EventTextChanged, Event::Subscriber(&Spinner::handleEditTextChange, this));
 
     // final initialisation
@@ -300,34 +300,44 @@ void Spinner::onActivated(ActivationEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Spinner::onScroll(CursorInputEventArgs& e)
+void Spinner::onScroll(ScrollEventArgs& e)
 {
     Window::onScroll(e);
     value_type prevValue = d_currentValue;
-    setCurrentValue(d_currentValue + d_stepSize * e.scroll);
+    setCurrentValue(d_currentValue + d_stepSize * e.d_delta);
     if (prevValue != d_currentValue)
         ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
-void Spinner::onSemanticInputEvent(SemanticEventArgs& e)
+void Spinner::onKeyDown(KeyEventArgs& e)
 {
-    switch (e.d_semanticValue)
+    float multiplier = 1.f;
+    if (e.d_modifiers.hasCtrl())
+        multiplier *= 10.f;
+    if (e.d_modifiers.hasShift())
+        multiplier *= 100.f;
+    if (e.d_modifiers.hasAlt())
+        multiplier *= 0.1f;
+
+    const value_type step = static_cast<value_type>(d_stepSize * multiplier);
+
+    switch (e.d_key)
     {
-        case SemanticValue::GoUp:
-            setCurrentValue(d_currentValue + d_stepSize);
+        case Key::Scan::ArrowUp:
+            setCurrentValue(d_currentValue + step);
             getEditbox()->setCaretIndex(0);
             ++e.handled;
             return;
 
-        case SemanticValue::GoDown:
-            setCurrentValue(d_currentValue - d_stepSize);
+        case Key::Scan::ArrowDown:
+            setCurrentValue(d_currentValue - step);
             getEditbox()->setCaretIndex(0);
             ++e.handled;
             return;
     }
 
-    Window::onSemanticInputEvent(e);
+    Window::onKeyDown(e);
 }
 
 //----------------------------------------------------------------------------//
@@ -390,7 +400,7 @@ void Spinner::updateEditboxText()
 //----------------------------------------------------------------------------//
 bool Spinner::handleIncreaseButton(const EventArgs& e)
 {
-    if (static_cast<const CursorInputEventArgs&>(e).source == CursorInputSource::Left)
+    if (static_cast<const MouseButtonEventArgs&>(e).d_button == MouseButton::Left)
     {
         setCurrentValue(d_currentValue + d_stepSize);
         return true;
@@ -402,7 +412,7 @@ bool Spinner::handleIncreaseButton(const EventArgs& e)
 //----------------------------------------------------------------------------//
 bool Spinner::handleDecreaseButton(const EventArgs& e)
 {
-    if (static_cast<const CursorInputEventArgs&>(e).source == CursorInputSource::Left)
+    if (static_cast<const MouseButtonEventArgs&>(e).d_button == MouseButton::Left)
     {
         setCurrentValue(d_currentValue - d_stepSize);
         return true;

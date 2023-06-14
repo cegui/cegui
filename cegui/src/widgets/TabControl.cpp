@@ -310,7 +310,7 @@ void TabControl::addButtonForTabContent(Window* wnd)
         Event::Subscriber(&TabControl::handleTabButtonClicked, this));
     tb->subscribeEvent(TabButton::EventDragged,
         Event::Subscriber(&TabControl::handleDraggedPane, this));
-    tb->subscribeEvent(TabButton::EventScrolled,
+    tb->subscribeEvent(TabButton::EventScroll,
         Event::Subscriber(&TabControl::handleWheeledPane, this));
 }
 
@@ -747,21 +747,21 @@ bool TabControl::handleScrollPane(const EventArgs& e)
 
 bool TabControl::handleDraggedPane(const EventArgs& e)
 {
-    const CursorInputEventArgs& pe = static_cast<const CursorInputEventArgs&>(e);
+    const MouseButtonEventArgs& pe = static_cast<const MouseButtonEventArgs&>(e);
 
-    if (pe.source == CursorInputSource::Middle)
+    if (pe.d_button == MouseButton::Middle)
     {
         // This is the middle cursor source activate event, remember initial drag position
         Window *but_pane = getTabButtonPane();
-        d_btGrabPos = (pe.position.x -
+        d_btGrabPos = (pe.d_surfacePos.x -
             but_pane->getOuterRectClipper().d_min.x) -
             d_firstTabOffset;
     }
-    else if (pe.source == CursorInputSource::NotSpecified)
+    else if (pe.d_button == MouseButton::Invalid)
     {
         // Regular cursor move event
         Window *but_pane = getTabButtonPane();
-        float new_to = (pe.position.x -
+        float new_to = (pe.d_surfacePos.x -
             but_pane->getOuterRectClipper().d_min.x) -
             d_btGrabPos;
         if ((new_to < d_firstTabOffset - 0.9) ||
@@ -777,12 +777,12 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
 
 bool TabControl::handleWheeledPane(const EventArgs& e)
 {
-    const CursorInputEventArgs& me = static_cast<const CursorInputEventArgs&>(e);
+    const ScrollEventArgs& me = static_cast<const ScrollEventArgs&>(e);
 
     Window *but_pane = getTabButtonPane();
     float delta = but_pane->getOuterRectClipper().getWidth () / 20;
 
-    d_firstTabOffset += me.scroll * delta;
+    d_firstTabOffset += me.d_delta * delta;
     performChildLayout(false, false);
 
     return true;

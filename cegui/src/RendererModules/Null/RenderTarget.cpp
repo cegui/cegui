@@ -48,13 +48,6 @@ void NullRenderTarget::activate()
 }
 
 
-void NullRenderTarget::unprojectPoint(const GeometryBuffer&,
-                                         const glm::vec2& p_in, glm::vec2& p_out) const
-{
-	p_out = p_in;
-}
-
-
 bool NullRenderTarget::isImageryCache() const 
 {
 	return false;

@@ -1,7 +1,7 @@
 namespace CEGUI {
 /**
 @page input_tutorial 5 - The Beginners Guide to Injecting Inputs
-@author Paul D Turner
+@author Paul D Turner, Vladimir "Niello" Orlov
 @tableofcontents
 
 Having read the previous tutorials in this series, you now have your GUI
@@ -60,57 +60,9 @@ The other thing to notice is the boolean return value from the injection
 functions.  This is used to relay back to your application whether or not CEGUI
 actually consumed the input.  If this returns false, it means that CEGUI did
 nothing useful with the input, and that your application may like to perform
-some action based on it instead.  Generally for this to work as described, you
-should have a fullscreen DefaultWindow as your layout root with the
-CursorPassThroughEnabled property set to true.
+some action based on it instead.
 
-Finally, you must know that InjectedInputReceiver is implemented by InputAggregator.
-In the next section you can read about the new input events system.
-
-<br>
-@section input_tutorial_inputevents Input Events System
-Starting with version YYY of CEGUI, the input system has changed completely.
-While previously it worked with raw injected inputs in the GUIContext, now it
-uses the concept of <strong>input event</strong>. This is a generic term for
-an event which represents the end result of a (sequence) of input(s). For example,
-the mouse buttons pressed and released can represent an activation event, the
-combination of keys CTRL and V represent a paste event; and so on. With this
-new way of getting input we can easily implement support for new devices
-without having to emulate a keyboard/mouse. We can also implement GUI
-navigation - you can check the @ref gui_navigation_tutorial for details.
-
-The input events are a central part of the new input system. In the
-default implementation the InputAggregator takes in raw input and
-generates input events based on it. There are currently two
-default input events:
-- TextInputEvent - An event with a character payload.
-- SemanticInputEvent - An event with a semantic value and a payload. This event
-tries to cover some specific input events with a certain semantic.
-
-There are a bunch of values defined by default in the SemanticValue
-enumeration. You can create your own semantic values, and in order to
-prevent collisions with the default ones, there is a value called
-SemanticValue::SV_UserDefinedSemanticValue, which signals the minimum
-value of a user-defined semantic value. The payload of a semantic input event
-is a union which covers most of the usage cases: either a single or a double
-float, or in the case of a cursor (see below), the source of the cursor (left,
-right, middle). There is also no more knowledge of a mouse. Instead the generic
-term Cursor is used, because this can represent also a touch pointer.
-
-You can create a totally different InputAggregator or you can
-inherit the default behaviour while adding new semantics. Such example
-can be consulted in the Scrollable_Pane sample. One scenario where
-you would create a new InputAggregator is when you want to support additional
-semantics or add a new type of input device: touch, Kinect, gamepad, etc.
-For example, in the case of Kinect you could generate a TextEvent with the
-spoken words or create an on-screen keyboard (sample coming soon) which
-will generate TextEvents based on activation events.
-
-You can manually inject input events into the GUIContext or you can use
-the decorator-like pattern, by creating a new InputAggregator attached
-to the GUIContext. Then, you can inject the raw input like you did before
-in the InputAggregator, which in turn will generate and inject the input
-events into the GUIContext.
+CEGUI implements InjectedInputReceiver internally by the GUIContext.
 
 <br>
 @section input_tutorial_detail A little more detail: What each injector is used for
@@ -121,9 +73,9 @@ for, the data it expects, and what, in general, is done with the input.
 This is used to inject relative mouse movements.  The vales @c delta_x and
 @c delta_y specify the direction and number of screen pixels the mouse has moved
 on the x axis and y axis respectively.  This causes the mouse to move by the
-specified amount (the actual amount moved can be changed by setting a mouse
-scaling factor via the InjectedInputReceiver::setMouseMoveScaling function).
-If you use this, you generally do not need to use injectMousePosition.
+specified amount. Since Sep 2022 update, if you want to scale mouse movement amount,
+you should do it in the calling code. CEGUI no longer handles this.
+If you inject movement, you generally do not need to use injectMousePosition.
 
 @subsection input_tutorial_mousepos bool InjectedInputReceiver::injectMousePosition( float x_pos, float y_pos )
 This is used to inject the current absolute position of the mouse.  The values
@@ -131,7 +83,9 @@ This is used to inject the current absolute position of the mouse.  The values
 position of (0, 0) represents the top-left hand corner of the CEGUI display
 (so if you're in windowed mode, it's the corner of the window and not the corner
 of the entire screen).  The CEGUI mouse cursor will be set to the new position.
-If you use this, you generally do not need to use injectMouseMove.
+Actually this function calls injectMouseMove inside calculating movement
+amount as a difference between the current CEGUI cursor position and the new one.
+If you inject position, you generally do not need to use injectMouseMove.
 
 @subsection input_tutorial_mouseleaves bool InjectedInputReceiver::injectMouseLeaves( void )
 This function informs CEGUI that the mouse cursor has left the host window that
@@ -144,25 +98,48 @@ are generated for an OS window once the mouse has left it).
 This tells CEGUI that a mouse button has been pressed down.  The value @c button
 is one of the CEGUI::MouseButton enumerated values, which are as follows:
 @code
-enum MouseButton
+enum class MouseButton
 {
-    LeftButton,
-    RightButton,
-    MiddleButton,
-    X1Button,
-    X2Button,
-    MouseButtonCount,
-    NoButton
+    Left = 0,
+    Right,
+    Middle,
+    X1,
+    X2,
+    Count,
+    Invalid
 };
 @endcode
 
 If the values from your input library do not match these, you will have to
-perform a translation step.  Also note that the value NoButton is not 0.
+perform a translation step.  Also note that the value Invalid is not 0.
+
+When the mouse down event is injected, the Window under the cursor becomes active,
+and mouse click tracking is updated. If the window supports auto-repeating of the
+mouse down event (isCursorAutoRepeatEnabled()), repeated events will be generated
+for the target window until injectMouseButtonUp is called for this GUIContext.
+Only the last pressed button generates repeated down events.
+
+In the case event was not handled by the target Window, it can be propagated to
+the parent if isCursorInputPropagationEnabled() for the target window returns true
+and the current window is not modal. This works recursively until the event is
+handled or further propagation is forbidden or the root window is reached.
+
+Regardles of being handled, a mouse down event is considered consumed by CEGUI if
+it was sent to any non-input-transparent window (i.e. isCursorPassThroughEnabled()
+is false). This prevents mouse clicks leaking through GUI visuals into the external scene.
 
 @subsection input_tutorial_mbup bool InjectedInputReceiver::injectMouseButtonUp( MouseButton button )
 This tells CEGUI that a mouse button has been released.  As for the
 InjectedInputReceiver::injectMouseButtonDown function, the value @c button is
 one of the CEGUI::MouseButton enumerated values.
+
+Injecting this event stops generation of auto-repeated mouse down events.
+
+Before a mouse up event is sent to the window, click events may be generated by CEGUI.
+See @ref input_tutorial_clickgen for complete description.
+
+Child to parent propagation, cursor passthrough and event consuming work the same
+way as for mouse down events.
 
 @subsection input_tutorial_keydown bool InjectedInputReceiver::injectKeyDown( Key::Scan scan_code )
 This tells CEGUI that a key has been pressed.  The value @c scan_code is the scan
@@ -172,8 +149,8 @@ you are using Microsoft DirectInput, then our scan codes are the same ones
 output by that library, in other cases you may be required to perform some
 translation.  Note that for current releases, and depending upon your expected
 use, it may not be required to inject @e all key down/up strokes - the most
-common ones that you likely will need are for backspace, delete, enter, the
-shift keys and the arrow keys.
+common ones that you likely will need are for backspace, delete, enter, modifier
+keys (Alt, Shift, Ctrl/Cmd) and the arrow keys.
 
 At present no automatic key mapping and generation of character codes is
 performed, also there is no integrated key auto-repeat functionality - though
@@ -205,9 +182,12 @@ scope of this introductory tutorial).
 
 @subsection input_tutorial_mwheel bool InjectedInputReceiver::injectMouseWheelChange( float delta )
 This function is used to tell CEGUI about the use of the mouse wheel or scroll
-wheel (whatever you like to call it!).  Use positive values for forward movement
+wheel (whatever you like to call it).  Use positive values for forward movement
 (rolling the wheel away from the user), and negative values for backwards
-movement (rolling the wheel towards the user).
+movement (rolling the wheel towards the user). This event is a bit special
+because it is first sent to the window under the cursor, and if it and its
+parent do not handle the scroll, the event is sent to the window that has the
+input focus, i.e. to an active window.
 
 @subsection input_tutorial_click bool InjectedInputReceiver::injectMouseButtonClick( MouseButton button )
 This is an optional injection function that informs CEGUI that a mouse button
@@ -215,7 +195,7 @@ click has occurred; normally that is a down -> up sequence.  Calling this
 function is only necessary if the built-in automatic generation of click and
 multi-click events is unsuitable for your needs.  If you decide you need to use
 this function you will normally disable the automatic event generation first by
-way of the InputAggregator::setMouseClickEventGenerationEnabled function.  While it is
+way of the GUIContext::setMouseClickEventGeneration function.  While it is
 possible to call this injection function \e without disabling the auto generated
 events, it will affect the behaviour as to the way events are marked as
 'handled' and therefore the return code from this function.
@@ -226,7 +206,7 @@ double-click has occurred; normally that is a down -> up -> down sequence.
 Calling this function is only necessary if the built-in automatic generation of
 click and multi-click events is unsuitable for your needs.  If you decide you
 need to use this function you will normally disable the automatic event
-generation first by way of the InputAggregator::setMouseClickEventGenerationEnabled
+generation first by way of the GUIContext::setMouseClickEventGeneration
 function.  While it is possible to call this injection function \e without
 disabling the auto generated events, it will affect the behaviour as to the way
 events are marked as 'handled' and therefore the return code from this function.
@@ -237,38 +217,152 @@ triple-click has occurred; normally that is a down -> up -> down -> up -> down
 sequence.  Calling this function is only necessary if the built-in automatic
 generation of click and multi-click events is unsuitable for your needs.  If you
 decide you need to use this function you will normally disable the automatic
-event generation first by way of the
-InputAggregator::setMouseClickEventGenerationEnabled function.  While it is possible
-to call this injection function \e without disabling the auto generated events,
-it will affect the behaviour as to the way events are marked as 'handled' and
-therefore the return code from this function.
+event generation first by way of the GUIContext::setMouseClickEventGeneration
+function.  While it is possible to call this injection function \e without
+disabling the auto generated events, it will affect the behaviour as to the way
+events are marked as 'handled' and therefore the return code from this function.
 
 <br>
-@section input_tutorial_migration Migrating from raw injected input to input events
-The migration from the usage of GUIContext to inject input to the new input events
-is an easy one, especially if you want to use the default previous behaviour.
+@section input_tutorial_clickgen Click event generation
+CEGUI supports automatic generation of click events from mouse down and up events.
+There are some rules for such generation though. First, down and up must happen
+within the same window. Since there is a possibility of child to parent propagation,
+CEGUI remembers what hierarchy chain received the down event, from the most nested
+window (immediate cursor target) to the window that handled the down event, or to
+the root window. Second, both down and up must happen within the same window visually.
+This means that even with capturing the mouse cursor, there won't be a click generated
+if mouse up happened outside the window hit area.
 
-First thing to note is that the InjectedInputReceiver interface doesn't contain
-the injectTimePulse method anymore. Time pulses are now injected directly in the 
-GUIContext. GUIContext doesn't implement InjectedInputReceiver anymore. Instead,
-a new class called InputAggregator will do that job. Thus, all calls that previously
-injected input in GUIContext will now inject in an InputAggregator instance.
-For details on what the InputAggregator does please check above. To migrate
-you need to perform the following steps - code examples are taken from the samples
-(framework):
+Click generator tries to find the most nested window in the clicked hierarchy which
+satisfies these conditions. As soon as the window is found, a click event is sent to
+it, and its further propagation stops regardless of whether the click was handled.
+Mouse up propagation continues normally.
 
-- Create an InputAggregator instance, and pass a GUIContext to its constructor
-@code
-d_inputAggregator = new InputAggregator(&CEGUI::System::getSingletonPtr()->getDefaultGUIContext());
-@endcode
-- Convert code like:
-@code
-CEGUI::System::getSingletonPtr()->injectMousePosition(x, y);
-@endcode
-to:
-@code
-d_inputAggregator->injectMousePosition(x, y);
-@endcode
+@subsection input_tutorial_click_settings Click generation settings
+Use GUIContext::setMouseClickEventGeneration to set the click generation limit.
+Setting it to 0 prevents click auto-generations and you have to inject clicks
+manually. Setting it to 1 limits the system to generate single clicks only,
+and so forth. There is no artificial cap for this settings, but practically
+one rarely needs multi-clicks of the order higher than 3.
+
+GUIContext::setMouseButtonMultiClickTimeout and
+GUIContext::setMouseButtonMultiClickTolerance are used for multi-clicks
+generation. Default values provide the familiar experience, but you may
+cnage it to your liking. More on multi-click generation just below.
+
+@subsection input_tutorial_multiclick Multi-clicks
+CEGUI is capable of generating double and triple clicks, and windows provide
+virtual methods onDoubleClick and onTripleClick along with corresponding events.
+For multi-click to be generated, mouse down and up events must happen within
+the certain distance threshold and timeout. Once these locality conditions
+are violated, the click tracker is reset and generates a new single click.
+
+Window is not obliged to implement multi-click handlers. In this situation,
+a window is taken a chance to handle a multi-click as a single click. If
+this happens, a tracker is updated so that this click is counted as single.
+Among other, this behaviour allows a window to handle only single and double
+clicks and skip generation of triple clicks. A side effect of this behaviour
+is that for receiving triple clicks you either have to mark double clicks
+handled or skip handling single clicks.
+
+MouseButtonEventArgs::d_generatedClickEventOrder field does its best to
+tell the receiver the current order of the generated multi-click event.
+This enables handling 4-clicks and higher order clicks given the click
+generation order limit is high enough. But windows have no special
+callbacks for these multi-clicks. You need to use onClick.
+
+@subsection input_tutorial_multiclick Mouse button event order
+A order of mouse button events will be as follows:
+- onMouseButtonDown
+- onClick
+- onMouseButtonUp
+- onMouseButtonDown
+- onDoubleClick
+- onMouseButtonUp
+- onMouseButtonDown
+- onTripleClick
+- onMouseButtonUp
+and so on in a loop. Handling multi-click event as a single click
+resets the counter so that the next click will be treated as double.
+
+<br>
+@section input_tutorial_targets Input targets (receivers)
+Input events are intended to be processed by some Window and, under some
+circumstances, its parents.
+
+Keyboard events go to the window that has input focus. In CEGUI it is also
+called an "active window". An active window may have a distinctive look to
+indicate that keyboard input will go there. GUIContext::getInputTargetWindow()
+is responsible for determining this kind of target.
+
+Most of mouse events target the window under cursor, no matter if it is enabled
+or not. GUIContext::getCursorTargetWindow() is responsible for determining this
+kind of target. Invisible window can't be a mouse target.
+
+Wheel events are special in this. First, an attempt is made to handle the
+wheel event in the cursor target. And if it is not handled there, it is
+dispatched to the focused (active) window. This behaviour was inspired by
+how Qt handles mouse wheel messages.
+
+Window can <b>capture input</b>, in this case it and its children will intercept
+input messages from both mouse and keyboard. Mouse inputs are distributed
+to children if Window::distributesCapturedInputs() is true. Keyboard
+inputs are sent to the active window if it or its parent holds the capture.
+In other cases a capture window itself receives all input events.
+
+One window at a time in each context can be made <b>modal</b> by the call to
+GUIContext::setModalWindow(). Setting nullptr makes no window being modal
+in the given context. A modal window works much like a capturing window,
+restricting input handling to it and its children.
+NB: for cursor target, the modal window overrules the capturing window,
+but for keyboard input the opposite is true. This may be changed later.
+
+<br>
+@section input_tutorial_eventargs Event arguments
+KeyEventArgs are sent to keyboard down and up events and besides the key
+scan code they bear an information about modifier keys currently pressed.
+Modifier keys are Alt, Shift, Ctrl / Cmd. Others may be added in the future.
+
+TextEventArgs are sent to character input handlers, with UTF-32 character code.
+
+Mouse related events accept CursorInputEventArgs and its various subclasses.
+CursorInputEventArgs provides a cursor position in pixels in different
+coordinate systems:
+- screen (or GUI context rendering surface) coordinates
+- coordinates on the immediate rendering surface of the window
+- local coordinates relative to the window origin
+Besides this, pressed modifier keys and pressed mouse buttons are provided.
+
+CursorMoveEventArgs are extended with movement delta in pixels and is sent to
+mouse movement and dragging handlers.
+
+MouseButtonEventArgs are extended with the button that caused the event,
+and the order of an automatically generated click, if it was generated.
+These args are passed to down, up and click events.
+
+ScrollEventArgs are extended with the wheel scroll amount.
+
+<br>
+@section input_tutorial_semantic Semantics
+Semantics are input events or actions abstracted from exact keys / buttons and
+even from exact input device types. They are useful for defining consistent
+mapping for typical GUI application operations. For example, well known
+Cut, Copy, Paste, Undo or Redo actions can be represented as CEGUI semantics,
+removing the need to hardcode keys like Ctrl+C etc.
+
+CEGUI defines a wide set of predefined semantics in CEGUI::SemanticValue.
+Each value is a string, so your application can define additional semantics
+easily without altering CEGUI code. GUIContext::initDefaultInputSemantics()
+initializes a default mapping for predefined semantics. These rules must be
+enough for most of users, but you are not required to use them. You may
+override it partially or even define your own complete set of rules from
+scratch, again without altering the library code.
+
+Currently semantic rules are specific to input devices, with most useful ones
+being for keyboard. This means that your exotic input devices must be injected
+as keyboard or mouse input. This may be improved in the future based on user
+requests. E.g. we can relatively easily add semantic rules for raw text input,
+but this requires adding a support for raw text input first :)
 
 <br>
 @section input_tutorial_conclusion Conclusion

@@ -212,6 +212,9 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel)
 //----------------------------------------------------------------------------//
 void Font::setNativeResolution(const Sizef& size)
 {
+    if (d_nativeResolution == size)
+        return;
+
     d_nativeResolution = size;
 
     // re-calculate scaling factors & notify images as required
@@ -219,25 +222,26 @@ void Font::setNativeResolution(const Sizef& size)
 }
 
 //----------------------------------------------------------------------------//
-void Font::setAutoScaled(const AutoScaledMode auto_scaled)
+void Font::setAutoScaled(const AutoScaledMode autoScaled)
 {
-    if (auto_scaled == d_autoScaled)
+    if (d_autoScaled == autoScaled)
         return;
 
-    d_autoScaled = auto_scaled;
-    updateFont();
+    d_autoScaled = autoScaled;
 
-    FontEventArgs args(this);
-    onRenderSizeChanged(args);
+    // re-calculate scaling factors & notify images as required
+    notifyDisplaySizeChanged(System::getSingleton().getRenderer()->getDisplaySize());
 }
 
 //----------------------------------------------------------------------------//
 void Font::notifyDisplaySizeChanged(const Sizef& size)
 {
-    Image::computeScalingFactors(d_autoScaled, size, d_nativeResolution,
-        d_horzScaling, d_vertScaling);
+    const auto oldHorz = d_horzScaling;
+    const auto oldVert = d_vertScaling;
 
-    if (d_autoScaled != AutoScaledMode::Disabled)
+    Image::computeScalingFactors(d_autoScaled, size, d_nativeResolution, d_horzScaling, d_vertScaling);
+
+    if (oldHorz != d_horzScaling || oldVert != d_vertScaling)
     {
         updateFont();
 

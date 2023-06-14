@@ -148,7 +148,7 @@ public:
 
     void prepareForRender() override;
 
-    ModelIndex indexAt(const glm::vec2& position) override;
+    ModelIndex indexAtLocal(const glm::vec2& localPos) override;
 
     float getSubtreeExpanderMargin() const;
     //! Allows setting extra margin around the subtree expander component.
@@ -177,10 +177,10 @@ public:
     void toggleSubtree(TreeViewItemRenderingState& item);
 
 protected:
+    using ItemView::handleSelection;
+
     TreeViewWindowRenderer* getViewRenderer() override;
-    bool handleSelection(const glm::vec2& position, bool should_select,
-        bool is_cumulative, bool is_range) override;
-    bool handleSelection(const ModelIndex& index, bool should_select,
+    bool handleSelection(const glm::vec2& localPos, bool should_select,
         bool is_cumulative, bool is_range) override;
 
     bool onChildrenRemoved(const EventArgs& args) override;
@@ -210,7 +210,7 @@ private:
 
     void fillRenderingState(TreeViewItemRenderingState& state, const ModelIndex& index, float& rendered_max_width, float& rendered_total_height);
 
-    ModelIndex indexAtWithAction(const glm::vec2& position, TreeViewItemAction action);
+    ModelIndex indexAtWithAction(const glm::vec2& localPos, TreeViewItemAction action);
     ModelIndex indexAtRecursive(TreeViewItemRenderingState& item, float& cur_height,
         const glm::vec2& window_position, bool& handled, TreeViewItemAction action);
 

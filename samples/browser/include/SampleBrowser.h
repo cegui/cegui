@@ -50,7 +50,7 @@ This is
 class SampleBrowser : public SampleBrowserBase
 {
 public:
-    SampleBrowser();
+    SampleBrowser() = default;
     virtual ~SampleBrowser();
 
     typedef std::vector<SampleHandler*> SampleList;
@@ -72,11 +72,11 @@ public:
 
     SampleHandler* findSampleData(CEGUI::Window* sampleWindow);
 
-    bool injectKeyDown(const CEGUI::Key::Scan& ceguiKey) override;
-    bool injectKeyUp(const CEGUI::Key::Scan& ceguiKey) override;
+    bool injectKeyDown(CEGUI::Key::Scan ceguiKey) override;
+    bool injectKeyUp(CEGUI::Key::Scan ceguiKey) override;
     bool injectChar(int character) override;
-    bool injectMouseButtonDown(const CEGUI::MouseButton& ceguiMouseButton) override;
-    bool injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseButton) override;
+    bool injectMouseButtonDown(CEGUI::MouseButton ceguiMouseButton) override;
+    bool injectMouseButtonUp(CEGUI::MouseButton ceguiMouseButton) override;
     bool injectMouseWheelChange(float position) override;
     bool injectMousePosition(float x, float y) override;
 
@@ -102,25 +102,22 @@ protected:
 
     bool areWindowsIntersecting(CEGUI::Window* window1, CEGUI::Window* window2);
 
-    CEGUI::InputAggregator* getCurrentInputAggregator();
+    CEGUI::Window*          d_root = nullptr;
 
-    CEGUI::Window*          d_root;
-
-    CEGUI::PushButton*      d_sampleExitButton;
+    CEGUI::PushButton*      d_sampleExitButton = nullptr;
 
     SampleList              d_samples;
 
-    MetaDataWindowManager*  d_metaDataWinMgr;
-    SampleBrowserManager*   d_samplesWinMgr;
+    MetaDataWindowManager*  d_metaDataWinMgr = nullptr;
+    SampleBrowserManager*   d_samplesWinMgr = nullptr;
 
-    SampleHandler*          d_selectedSampleData;
+    SampleHandler*          d_selectedSampleData = nullptr;
 
-    CEGUI::ProgressBar*     d_loadingProgressBar;
-    CEGUI::Window*          d_loadingScreenText;
-    CEGUI::Window*          d_loadScreenChunkProgressText;
+    CEGUI::ProgressBar*     d_loadingProgressBar = nullptr;
+    CEGUI::Window*          d_loadingScreenText = nullptr;
+    CEGUI::Window*          d_loadScreenChunkProgressText = nullptr;
 
-    bool                    d_quittingSampleView;
-    CEGUI::InputAggregator* d_systemInputAggregator;
+    bool                    d_quittingSampleView = false;
 };
 
 #endif

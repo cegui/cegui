@@ -28,7 +28,6 @@
 ***************************************************************************/
 #include "CEGUI/views/ListView.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
-#include "CEGUI/CoordConverter.h"
 #include "CEGUI/widgets/Scrollbar.h"
 #include <algorithm> // sort
 
@@ -165,18 +164,16 @@ void ListView::prepareForRender()
 }
 
 //----------------------------------------------------------------------------//
-ModelIndex ListView::indexAt(const glm::vec2& position)
+ModelIndex ListView::indexAtLocal(const glm::vec2& localPos)
 {
-    if (d_itemModel == nullptr)
+    if (!d_itemModel)
         return ModelIndex();
 
     //TODO: add prepareForLayout() as a cheaper operation alternative?
     prepareForRender();
 
-    glm::vec2 window_position = CoordConverter::screenToWindow(*this, position);
     Rectf render_area(getViewRenderer()->getViewRenderArea());
-
-    if (!render_area.isPointInRectf(window_position))
+    if (!render_area.isPointInRectf(localPos))
         return ModelIndex();
 
     float cur_height = render_area.d_min.y - getVertScrollbar()->getScrollPosition();
@@ -187,11 +184,8 @@ ModelIndex ListView::indexAt(const glm::vec2& position)
         Sizef size = item->d_size;
         float next_height = cur_height + size.d_height;
 
-        if (window_position.y >= cur_height &&
-            window_position.y <= next_height)
-        {
+        if (localPos.y >= cur_height && localPos.y <= next_height)
             return item->d_index;
-        }
 
         cur_height = next_height;
     }

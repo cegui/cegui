@@ -98,21 +98,6 @@ int main(int argc, char* argv[])
 #endif // !defined __ANDROID__
 
 //----------------------------------------------------------------------------//
-SampleBrowser::SampleBrowser() :
-    d_root(nullptr),
-    d_sampleExitButton(nullptr),
-    d_metaDataWinMgr(nullptr),
-    d_samplesWinMgr(nullptr),
-    d_selectedSampleData(nullptr),
-    d_loadingProgressBar(nullptr),
-    d_loadingScreenText(nullptr),
-    d_loadScreenChunkProgressText(nullptr),
-    d_quittingSampleView(false),
-    d_systemInputAggregator(nullptr)
-{
-}
-
-//----------------------------------------------------------------------------//
 SampleBrowser::~SampleBrowser()
 {
     if (d_metaDataWinMgr)
@@ -127,10 +112,6 @@ bool SampleBrowser::initialise(const CEGUI::String& logFile,
     {
         initialiseLoadScreenLayout();
         loadSamples();
-
-        d_systemInputAggregator = new InputAggregator(d_baseApp->getMainWindowGUIContext());
-        d_systemInputAggregator->initialise();
-
         return true;
     }
     return false;
@@ -140,13 +121,6 @@ bool SampleBrowser::initialise(const CEGUI::String& logFile,
 void SampleBrowser::cleanup()
 {
     unloadSamples();
-
-    if (d_systemInputAggregator != nullptr)
-    {
-        delete d_systemInputAggregator;
-        d_systemInputAggregator = nullptr;
-    }
-
     SampleBrowserBase::cleanup();
 }
 
@@ -209,10 +183,13 @@ void SampleBrowser::unloadSamples()
 }
 
 //----------------------------------------------------------------------------//
-bool SampleBrowser::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
+bool SampleBrowser::injectKeyDown(CEGUI::Key::Scan ceguiKey)
 {
     if (Key::Scan::Esc != ceguiKey)
-        return getCurrentInputAggregator()->injectKeyDown(ceguiKey);
+    {
+        auto ctx = d_selectedSampleData ? d_selectedSampleData->getGuiContext() : d_baseApp->getMainWindowGUIContext();
+        return ctx && ctx->injectKeyDown(ceguiKey);
+    }
     else
     {
         if (d_selectedSampleData)
@@ -225,59 +202,45 @@ bool SampleBrowser::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
 }
 
 //----------------------------------------------------------------------------//
-bool SampleBrowser::injectKeyUp(const CEGUI::Key::Scan& ceguiKey)
+bool SampleBrowser::injectKeyUp(CEGUI::Key::Scan ceguiKey)
 {
-    if (getCurrentInputAggregator() == nullptr)
-        return false;
-
-    return getCurrentInputAggregator()->injectKeyUp(ceguiKey);
+    auto ctx = d_selectedSampleData ? d_selectedSampleData->getGuiContext() : d_baseApp->getMainWindowGUIContext();
+    return ctx && ctx->injectKeyUp(ceguiKey);
 }
 
 //----------------------------------------------------------------------------//
 bool SampleBrowser::injectChar(int character)
 {
-    if (getCurrentInputAggregator() == nullptr)
-        return false;
-
-    return getCurrentInputAggregator()->injectChar(character);
+    auto ctx = d_selectedSampleData ? d_selectedSampleData->getGuiContext() : d_baseApp->getMainWindowGUIContext();
+    return ctx && ctx->injectChar(character);
 }
 
 //----------------------------------------------------------------------------//
-bool SampleBrowser::injectMouseButtonDown(
-                                    const CEGUI::MouseButton& ceguiMouseButton)
+bool SampleBrowser::injectMouseButtonDown(CEGUI::MouseButton ceguiMouseButton)
 {
-    if (getCurrentInputAggregator() == nullptr)
-        return false;
-
-    return getCurrentInputAggregator()->injectMouseButtonDown(ceguiMouseButton);
+    auto ctx = d_selectedSampleData ? d_selectedSampleData->getGuiContext() : d_baseApp->getMainWindowGUIContext();
+    return ctx && ctx->injectMouseButtonDown(ceguiMouseButton);
 }
 
 //----------------------------------------------------------------------------//
-bool SampleBrowser::injectMouseButtonUp(
-                                    const CEGUI::MouseButton& ceguiMouseButton)
+bool SampleBrowser::injectMouseButtonUp(CEGUI::MouseButton ceguiMouseButton)
 {
-    if (getCurrentInputAggregator() == nullptr)
-        return false;
-
-    return getCurrentInputAggregator()->injectMouseButtonUp(ceguiMouseButton);
+    auto ctx = d_selectedSampleData ? d_selectedSampleData->getGuiContext() : d_baseApp->getMainWindowGUIContext();
+    return ctx && ctx->injectMouseButtonUp(ceguiMouseButton);
 }
 
 //----------------------------------------------------------------------------//
 bool SampleBrowser::injectMouseWheelChange(float position)
 {
-    if (getCurrentInputAggregator() == nullptr)
-        return false;
-
-    return getCurrentInputAggregator()->injectMouseWheelChange(position);
+    auto ctx = d_selectedSampleData ? d_selectedSampleData->getGuiContext() : d_baseApp->getMainWindowGUIContext();
+    return ctx && ctx->injectMouseWheelChange(position);
 }
 
 //----------------------------------------------------------------------------//
 bool SampleBrowser::injectMousePosition(float x, float y)
 {
-    if (getCurrentInputAggregator() == nullptr)
-        return false;
-
-    return getCurrentInputAggregator()->injectMousePosition(x, y);
+    auto ctx = d_selectedSampleData ? d_selectedSampleData->getGuiContext() : d_baseApp->getMainWindowGUIContext();
+    return ctx && ctx->injectMousePosition(x, y);
 }
 
 //----------------------------------------------------------------------------//
@@ -368,8 +331,8 @@ void SampleBrowser::handleStartDisplaySample(CEGUI::Window* sampleWindow)
     sampleContext->getRootWindow()->addChild(d_sampleExitButton);
 
     //! We manually set the cursor to where it was in the overview
-    sampleContext->getCursor().setPosition(
-        d_baseApp->getMainWindowGUIContext()->getCursor().getPosition());
+    sampleContext->setCursorPosition(
+        d_baseApp->getMainWindowGUIContext()->getCursorPosition());
 
     d_selectedSampleData = correspondingSampleData;
 
@@ -381,17 +344,11 @@ void SampleBrowser::stopDisplaySample()
 {
     GUIContext* sampleGUIContext = d_selectedSampleData->getGuiContext();
 
-    // Since we switch our contexts, the mouse release won't be injected if we
-    // don't do it manually
-    if (getCurrentInputAggregator() != nullptr)
-        getCurrentInputAggregator()->injectMouseButtonUp(MouseButton::Left);
-    sampleGUIContext->injectTimePulse(0.0f);
-
     sampleGUIContext->getRootWindow()->removeChild(d_sampleExitButton);
     d_selectedSampleData->setGUIContextRTT();
 
-    d_baseApp->getMainWindowGUIContext()->getCursor().
-        setPosition(sampleGUIContext->getCursor().getPosition());
+    d_baseApp->getMainWindowGUIContext()->
+        setCursorPosition(sampleGUIContext->getCursorPosition());
 
     d_selectedSampleData = nullptr;
     d_quittingSampleView = false;
@@ -540,7 +497,7 @@ void SampleBrowser::initialisationFinalisation()
     GUIContext* ctx = d_baseApp->getMainWindowGUIContext();
     if (!ctx) return;
 
-    ctx->getCursor().setDefaultImage("SampleBrowserSkin/MouseArrow");
+    ctx->setDefaultCursorImage(&ImageManager::getSingleton().get("SampleBrowserSkin/MouseArrow"));
     ctx->setRootWindow(d_root);
 
     const Sizef& targetSize = ctx->getSurfaceSize();
@@ -640,15 +597,6 @@ bool SampleBrowser::areWindowsIntersecting(CEGUI::Window* window1,
         && clipRect1.right() > clipRect2.left()
         && clipRect1.top() < clipRect2.bottom()
         && clipRect1.bottom() > clipRect2.top();
-}
-
-//----------------------------------------------------------------------------//
-CEGUI::InputAggregator* SampleBrowser::getCurrentInputAggregator()
-{
-    if (d_selectedSampleData != nullptr)
-        return d_selectedSampleData->getInputAggregator();
-
-    return d_systemInputAggregator;
 }
 
 //----------------------------------------------------------------------------//

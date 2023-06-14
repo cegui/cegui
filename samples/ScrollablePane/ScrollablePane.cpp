@@ -58,8 +58,6 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     d_usedFiles = String(__FILE__);
     d_guiContext = guiContext;
-    d_inputAggregator = new SampleInputAggregator(guiContext);
-    d_inputAggregator->initialise();
 
     // this sample will use WindowsLook
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
@@ -70,7 +68,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setDefaultFont(font);
 
     // set the cursor
-    guiContext->getCursor().setDefaultImage("WindowsLook/MouseArrow");
+    guiContext->setDefaultCursorImage("WindowsLook/MouseArrow");
 
     // set the default tooltip type
     guiContext->setDefaultTooltipType("WindowsLook/Tooltip");
@@ -100,8 +98,8 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     auto panelFixed = wm->createWindow("WindowsLook/Static");
     panelFixed->setArea(URect(UDim(0,0),bar_bottom,UDim(0.75f,-1),UDim(0.5f,-1)));
     panelFixed->setProperty("BackgroundColours", "tl:FFBFBFBF tr:FFBFBFBF bl:FFBFBFBF br:FFBFBFBF");
-    panelFixed->subscribeEvent(Window::EventSemanticEvent,
-        Event::Subscriber(&ScrollablePaneSample::semanticEventHandler, this));
+    panelFixed->subscribeEvent(Window::EventKeyDown,
+        Event::Subscriber(&ScrollablePaneSample::keyDownEventHandler, this));
     root->addChild(panelFixed);
 
     d_pane = static_cast<ScrollablePane*>(wm->createWindow("WindowsLook/ScrollablePane", "FixedSizeScrollablePane"));
@@ -133,8 +131,8 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     auto panelAuto = wm->createWindow("WindowsLook/Static");
     panelAuto->setArea(URect(UDim(0,0),UDim(0.5f,0),UDim(0.75f,-1),UDim(1,0)));
     panelAuto->setProperty("BackgroundColours", "tl:FFBFBFBF tr:FFBFBFBF bl:FFBFBFBF br:FFBFBFBF");
-    panelAuto->subscribeEvent(Window::EventSemanticEvent,
-        Event::Subscriber(&ScrollablePaneSample::semanticEventHandler, this));
+    panelAuto->subscribeEvent(Window::EventKeyDown,
+        Event::Subscriber(&ScrollablePaneSample::keyDownEventHandler, this));
     root->addChild(panelAuto);
 
     auto pane = static_cast<ScrollablePane*>(wm->createWindow("WindowsLook/ScrollablePane", "AutoSizeScrollablePane"));
@@ -191,8 +189,8 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     auto panelVertical = wm->createWindow("WindowsLook/Static");
     panelVertical->setArea(URect(UDim(0.75,0),bar_bottom,UDim(1,0),UDim(1,0)));
     panelVertical->setProperty("BackgroundColours", "tl:FFBFBFBF tr:FFBFBFBF bl:FFBFBFBF br:FFBFBFBF");
-    panelVertical->subscribeEvent(Window::EventSemanticEvent,
-        Event::Subscriber(&ScrollablePaneSample::semanticEventHandler, this));
+    panelVertical->subscribeEvent(Window::EventKeyDown,
+        Event::Subscriber(&ScrollablePaneSample::keyDownEventHandler, this));
     root->addChild(panelVertical);
 
     pane = static_cast<ScrollablePane*>(wm->createWindow("WindowsLook/ScrollablePane", "FixedWidthScrollablePane"));
@@ -283,7 +281,6 @@ void ScrollablePaneSample::createMenu(CEGUI::Window* bar)
 void ScrollablePaneSample::deinitialise()
 {
     // everything we did is cleaned up by CEGUI
-    delete d_inputAggregator;
 }
 
 //----------------------------------------------------------------------------//
@@ -316,10 +313,10 @@ bool ScrollablePaneSample::addNewChild(const CEGUI::EventArgs&)
 }
 
 //----------------------------------------------------------------------------//
-bool ScrollablePaneSample::semanticEventHandler(const CEGUI::EventArgs& e)
+bool ScrollablePaneSample::keyDownEventHandler(const CEGUI::EventArgs& e)
 {
-    const CEGUI::SemanticEventArgs& args = static_cast<const CEGUI::SemanticEventArgs&>(e);
-    if (args.d_semanticValue == CEGUI::SemanticValue::SpawnNewDialog)
+    const CEGUI::KeyEventArgs& args = static_cast<const CEGUI::KeyEventArgs&>(e);
+    if (args.d_key == CEGUI::Key::Scan::Space)
     {
         addNewChild(CEGUI::EventArgs());
         return true;

@@ -112,7 +112,7 @@ bool CustomShapesDrawingSample::initialise(CEGUI::GUIContext* guiContext)
     // CEGUI setup
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
     SchemeManager::getSingleton().createFromFile("Generic.scheme");
-    guiContext->getCursor().setDefaultImage("WindowsLook/MouseArrow");
+    guiContext->setDefaultCursorImage("WindowsLook/MouseArrow");
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // Create a Generic/image called 'Root' with a white image as Image property.

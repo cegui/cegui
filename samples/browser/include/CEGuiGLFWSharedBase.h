@@ -39,7 +39,6 @@
 #   error Unsupported "CEGUI_GLFW_VER".
 #endif
 #include "CEGuiBaseApplication.h"
-#include "CEGUI/Cursor.h"
 
 
 class CEGuiGLFWSharedBase : public CEGuiBaseApplication

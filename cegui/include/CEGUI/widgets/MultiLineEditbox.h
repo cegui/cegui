@@ -127,8 +127,8 @@ public:
 protected:
 
     void updateFormatting() override;
-    bool processSemanticInputEvent(const SemanticEventArgs& e) override;
-    void onScroll(CursorInputEventArgs& e) override;
+    void processKeyDownEvent(KeyEventArgs& e) override;
+    void onScroll(ScrollEventArgs& e) override;
     void onTextChanged(WindowEventArgs& e) override;
     void onCaretMoved(WindowEventArgs& e) override;
 

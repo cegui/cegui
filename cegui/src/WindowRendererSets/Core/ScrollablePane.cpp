@@ -29,9 +29,7 @@
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/widgets/Scrollbar.h"
-#include "CEGUI/CoordConverter.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
     const String FalagardScrollablePane::TypeName("Core/ScrollablePane");
@@ -48,28 +46,21 @@ namespace CEGUI
         ScrollablePane* w = static_cast<ScrollablePane*>(d_window);
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
-        const bool v_visible = w->getVerticalScrollbar()->isVisible();
-        const bool h_visible = w->getHorizontalScrollbar()->isVisible();
+        const bool v_visible = w->getVertScrollbar()->isVisible();
+        const bool h_visible = w->getHorzScrollbar()->isVisible();
 
         // if either of the scrollbars are visible, we might want to use another text rendering area
         if (v_visible || h_visible)
         {
             String area_name("ViewableArea");
-
             if (h_visible)
-            {
                 area_name += "H";
-            }
             if (v_visible)
-            {
                 area_name += "V";
-            }
             area_name += "Scroll";
 
             if (wlf.isNamedAreaPresent(area_name))
-            {
                 return wlf.getNamedArea(area_name).getArea().getPixelRect(*w);
-            }
         }
 
         // default to plain ViewableArea

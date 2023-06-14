@@ -229,8 +229,8 @@ public:
     bool    isBeingDragSized(void) const  {return d_dragSizing;}
 
 
-    const Image* getSizingCursorImage() const;
-    const Image* getMovingCursorImage() const;
+    const Image* getSizingCursorImage() const { return d_sizingCursor; }
+    const Image* getMovingCursorImage() const { return d_movingCursor; }
 
 
 	/*************************************************************************
@@ -293,9 +293,9 @@ public:
 	void setClickable(bool setting);
 
 
-    void setSizingCursorImage(const Image* image);
+    void setSizingCursorImage(const Image* image) { d_sizingCursor = image; }
     void setSizingCursorImage(const String& name);
-    void setMovingCursorImage(const Image* image);
+    void setMovingCursorImage(const Image* image) { d_movingCursor = image; }
     void setMovingCursorImage(const String& name);
 
 
@@ -322,36 +322,9 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Update state for drag sizing.
-
-    \param local_cursor
-        Cursor position as a pixel offset from the top-left corner of this window.
-
-	\return
-		Nothing.
-	*/
-    void    doDragSizing(const glm::vec2& local_cursor);
-
-
-	/*!
-	\brief
-		Update state for drag moving.
-
-    \param local_cursor
-        Cursor position as a pixel offset from the top-left corner of this window.
-
-	\return
-		Nothing.
-	*/
-    void    doDragMoving(const glm::vec2& local_cursor);
-
-
-	/*!
-	\brief
 		Initialise the required states to put the widget into drag-moving mode.
 	*/
 	void	initDragMoving(void);
-
 
 	/*!
 	\brief
@@ -359,13 +332,11 @@ protected:
 	*/
 	void	initSizingHoverState(void);
 
-
 	/*!
 	\brief
 		Initialise the required states when we are hovering over the main segment area.
 	*/
 	void	initSegmentHoverState(void);
-
 
 	/*!
 	\brief
@@ -457,12 +428,12 @@ protected:
 	/*************************************************************************
 		Overridden Event Handlers
 	*************************************************************************/
-    void onCursorMove(CursorInputEventArgs& e) override;
-    void onCursorPressHold(CursorInputEventArgs& e) override;
-    void onCursorActivate(CursorInputEventArgs& e) override;
+    void onCursorMove(CursorMoveEventArgs& e) override;
+    void onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void onMouseButtonUp(MouseButtonEventArgs& e) override;
+    void onDoubleClick(MouseButtonEventArgs& e) override;
     void onCursorLeaves(CursorInputEventArgs& e) override;
     void onCaptureLost(WindowEventArgs& e) override;
-    void onSemanticInputEvent(SemanticEventArgs& e) override;
 
 
 	/*************************************************************************

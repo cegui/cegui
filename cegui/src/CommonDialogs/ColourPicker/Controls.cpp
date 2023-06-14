@@ -35,12 +35,10 @@
 
 #include "CEGUI/System.h"
 #include "CEGUI/Renderer.h"
-#include "CEGUI/Cursor.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/BitmapImage.h"
-#include "CEGUI/CoordConverter.h"
 #include "CEGUI/Logger.h"
 
 #include "CEGUI/CommonDialogs/ColourPicker/ColourPicker.h"
@@ -596,11 +594,11 @@ void ColourPickerControls::initialiseComponents()
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImagePointerLeaves, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventCursorActivate,
+        Window::EventClick,
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImagePointerActivate, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventCursorPressHold,
+        Window::EventMouseButtonDown,
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImagePointerPressHold, this));
 
     getColourPickerStaticImage()->subscribeEvent(
@@ -1164,9 +1162,9 @@ bool ColourPickerControls::handleAlphaSliderValueChanged(const EventArgs& args)
 bool ColourPickerControls::handleColourPickerStaticImagePointerActivate(
     const EventArgs& args)
 {
-    const CursorInputEventArgs& cursor_args = static_cast<const CursorInputEventArgs&>(args);
+    const MouseButtonEventArgs& cursor_args = static_cast<const MouseButtonEventArgs&>(args);
 
-    if (cursor_args.source == CursorInputSource::Left)
+    if (cursor_args.d_button == MouseButton::Left)
         d_draggingColourPickerIndicator = false;
 
     return true;
@@ -1176,9 +1174,9 @@ bool ColourPickerControls::handleColourPickerStaticImagePointerActivate(
 bool ColourPickerControls::handleColourPickerStaticImagePointerPressHold(
     const EventArgs& args)
 {
-    const CursorInputEventArgs& cursor_args = static_cast<const CursorInputEventArgs&>(args);
+    const MouseButtonEventArgs& cursor_args = static_cast<const MouseButtonEventArgs&>(args);
 
-    if (cursor_args.source == CursorInputSource::Left)
+    if (cursor_args.d_button == MouseButton::Left)
     {
         d_draggingColourPickerIndicator = true;
 
@@ -1430,23 +1428,20 @@ void ColourPickerControls::refreshColourPickerIndicatorPosition()
 }
 
 //----------------------------------------------------------------------------//
-void ColourPickerControls::refreshColourPickerIndicatorPosition(
-    const CursorInputEventArgs& pointerEventArgs)
+void ColourPickerControls::refreshColourPickerIndicatorPosition(const CursorInputEventArgs& e)
 {
-    const glm::vec2 localPos = CoordConverter::screenToWindow(
-                  *pointerEventArgs.window, pointerEventArgs.position);
-    positionColourPickerIndicatorAbsolute(localPos.x, localPos.y);
+    positionColourPickerIndicatorAbsolute(e.d_localPos.x, e.d_localPos.y);
 
     if (d_sliderMode &
         (LAB_L | LAB_A | SliderMode::LAB_B))
     {
-        Lab_Colour col = getColourPickingPositionColourLAB(localPos.x, localPos.y);
+        Lab_Colour col = getColourPickingPositionColourLAB(e.d_localPos.x, e.d_localPos.y);
         setColours(col);
     }
     else if (d_sliderMode &
              (SliderMode::HSV_H | SliderMode::HSV_S | SliderMode::HSV_V))
     {
-        HSV_Colour col = getColourPickingPositionColourHSV(localPos.x, localPos.y);
+        HSV_Colour col = getColourPickingPositionColourHSV(e.d_localPos.x, e.d_localPos.y);
         setColours(col);
     }
 

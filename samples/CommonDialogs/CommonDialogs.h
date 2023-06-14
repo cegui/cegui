@@ -29,7 +29,6 @@ author:     Luca Ebach <lucaebach@gmail.com>
 #define _CommonDialogsSample_h_
 
 #include "Sample.h"
-#include "CEGUI/CEGUI.h"
 
 //----------------------------------------------------------------------------//
 class CommonDialogsSample : public Sample

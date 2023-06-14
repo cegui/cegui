@@ -28,26 +28,7 @@ author:     Luca Ebach <lucaebach@gmail.com>
 #ifndef _ScrollablePaneSample_h_
 #define _ScrollablePaneSample_h_
 
-#include "CEGUI/InputAggregator.h"
 #include "Sample.h"
-
-// Custom implementation of InputAggregator
-class SampleInputAggregator : public CEGUI::InputAggregator
-{
-public:
-    SampleInputAggregator(CEGUI::InputEventReceiver* input_receiver) :
-        CEGUI::InputAggregator(input_receiver)
-    {
-    }
-
-    void initialise(bool handle_on_keyup = true) override
-    {
-        CEGUI::InputAggregator::initialise(handle_on_keyup);
-
-        d_keyValuesMappings[static_cast<unsigned char>(CEGUI::Key::Scan::Space)] =
-            CEGUI::SemanticValue::SpawnNewDialog;
-    }
-};
 
 // ScrollablePane sample class
 class ScrollablePaneSample : public Sample
@@ -70,7 +51,7 @@ private:
 
     // new dialog menu item handler
     bool addNewChild(const CEGUI::EventArgs& e);
-    bool semanticEventHandler(const CEGUI::EventArgs& e);
+    bool keyDownEventHandler(const CEGUI::EventArgs& e);
 
     CEGUI::ScrollablePane* d_pane = nullptr;
 };

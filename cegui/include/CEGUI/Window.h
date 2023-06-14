@@ -402,37 +402,43 @@ public:
      */
     static const String EventCursorLeavesSurface;
     /** Event fired when the cursor moves within the area of the Window.
-     * Handlers are passed a const CursorInputEventArgs reference with all fields
-     * valid.
+     * Handlers are passed a const CursorInputEventArgs& with all fields valid.
      */
     static const String EventCursorMove;
     /** Event fired when there is a scroll event within the Window's area.
-     * Handlers are passed a const CursorInputEventArgs reference with all fields
-     * valid.
+     * Handlers are passed a const CursorInputEventArgs& with all fields valid.
      */
     static const String EventScroll;
     /** Event fired when a cursor is pressed and held down within the Window.
-     * Handlers are passed a const CursorInputEventArgs reference with all fields
-     * valid.
+     * Handlers are passed a const CursorInputEventArgs& with all fields valid.
      */
-    static const String EventCursorPressHold;
-    /** Event fired when the cursor is activated twice within the Window.
-     * Handlers are passed a const CursorInputEventArgs reference with all fields
-     * valid.
+    static const String EventMouseButtonDown;
+    /** Event fired when a cursor is released within the Window.
+     * Handlers are passed a const CursorInputEventArgs& with all fields valid.
      */
-    static const String EventSelectWord;
-    /** Event fired when the cursor is activated three times within the Window.
-     * Handlers are passed a const CursorInputEventArgs reference with all fields
-     * valid.
-     */
-    static const String EventSelectAll;
+    static const String EventMouseButtonUp;
     /** Event fired when the cursor is activated within the Window.
-     * Handlers are passed a const CursorInputEventArgs reference with all fields
-     * valid.
+     * Handlers are passed a const CursorInputEventArgs& with all fields valid.
      */
-    static const String EventCursorActivate;
+    static const String EventClick;
+    /** Event fired when the cursor is activated twice within the Window.
+     * Handlers are passed a const CursorInputEventArgs& with all fields valid.
+     */
+    static const String EventDoubleClick;
+    /** Event fired when the cursor is activated three times within the Window.
+     * Handlers are passed a const CursorInputEventArgs& with all fields valid.
+     */
+    static const String EventTripleClick;
+    /** Event fired when the Window receives a key down (pressed or auto-repeat) input event.
+     * Handlers are passed a const KeyEventArgs reference.
+     */
+    static const String EventKeyDown;
+    /** Event fired when the Window receives a key up input event.
+     * Handlers are passed a const KeyEventArgs reference.
+     */
+    static const String EventKeyUp;
     /** Event fired when the Window receives a character key input event.
-     * Handlers are passed a const CursorInputEventArgs reference.
+     * Handlers are passed a const TextEventArgs reference.
      */
     static const String EventCharacterKey;
     /** Event fired when the Window receives a semantic input event.
@@ -1635,8 +1641,7 @@ public:
           sibling Windows, and the process repeated for all ancestors.
 
     \return
-        true if there were changes in Z-order, false otherwise. Windows with
-        d_cursorPassThroughEnabled are intentionally ignored.
+        true if there were changes in Z-order, false otherwise.
     */
     bool moveToFront();
 
@@ -2143,60 +2148,6 @@ public:
         update.
     */
     virtual void update(float elapsed);
-
-    /*!
-    \brief
-        Asks the widget to perform a clipboard copy to the provided clipboard
-
-    \param clipboard
-        Target clipboard class
-
-    \return
-        true if the copy was successful and allowed, false otherwise
-    */
-    virtual bool performCopy(Clipboard& /*clipboard*/) { return false; }
-
-    /*!
-    \brief
-        Asks the widget to perform a clipboard cut to the provided clipboard
-
-    \param clipboard
-        Target clipboard class
-
-    \return
-        true if the cut was successful and allowed, false otherwise
-    */
-    virtual bool performCut(Clipboard& /*clipboard*/) { return false; }
-
-    /*!
-    \brief
-        Asks the widget to perform a clipboard paste from the provided clipboard
-
-    \param clipboard
-        Source clipboard class
-
-    \return
-        true if the paste was successful and allowed, false otherwise
-     */
-    virtual bool performPaste(Clipboard& /*clipboard*/) { return false; }
-
-    /*!
-    \brief
-        Asks the widget to perform a undo operation
-
-    \return
-        true if the undo was successful and allowed, false otherwise
-     */
-    virtual bool performUndo() { return false; }
-
-    /*!
-    \brief
-        Asks the widget to perform a redo operation
-
-    \return
-        true if the redo was successful and allowed, false otherwise
-     */
-    virtual bool performRedo() { return false; }
 
     /*!
     \brief
@@ -2968,7 +2919,7 @@ protected:
     \param e
         CursorInputEventArgs object.  All fields are valid.
     */
-    virtual void onCursorMove(CursorInputEventArgs& e);
+    virtual void onCursorMove(CursorMoveEventArgs& e);
 
     /*!
     \brief
@@ -2978,43 +2929,28 @@ protected:
     \param e
         CursorInputEventArgs object.  All fields are valid.
     */
-    virtual void onScroll(CursorInputEventArgs& e);
+    virtual void onScroll(ScrollEventArgs& e);
 
-    /*!
-    \brief
-        Handler called when a cursor is held pressed within this window's area.
+    //! \brief Handler called when a mouse button is pressed within this window's area.
+    virtual void onMouseButtonDown(MouseButtonEventArgs& e);
 
-    \param e
-        CursorInputEventArgs object.  All fields are valid.
-    */
-    virtual void onCursorPressHold(CursorInputEventArgs& e);
-    
-    /*!
-    \brief
-        Handler called when a cursor is activated twice within this window's area.
+    //! \brief Handler called when a mouse button is released within this window's area.
+    virtual void onMouseButtonUp(MouseButtonEventArgs& e);
 
-    \param e
-        CursorInputEventArgs object.  All fields are valid.
-    */
-    virtual void onSelectWord(CursorInputEventArgs& e);
+    //! \brief Handler called when a cursor is activated within this window's area.
+    virtual void onClick(MouseButtonEventArgs& e);
 
-    /*!
-    \brief
-        Handler called when a cursor is activated three times within this window's area.
+    //! \brief Handler called when a cursor is activated twice within this window's area.
+    virtual void onDoubleClick(MouseButtonEventArgs& e);
 
-    \param e
-        CursorInputEventArgs object.  All fields are valid.
-    */
-    virtual void onSelectAll(CursorInputEventArgs& e);
+    //! \brief Handler called when a cursor is activated three times within this window's area.
+    virtual void onTripleClick(MouseButtonEventArgs& e);
 
-    /*!
-    \brief
-        Handler called when a cursor is activated within this window's area.
+    //! \brief Handler called when a key is down or auto-repeated while this window has input focus.
+    virtual void onKeyDown(KeyEventArgs& e);
 
-    \param e
-        CursorInputEventArgs object.  All fields are valid.
-    */
-    virtual void onCursorActivate(CursorInputEventArgs& e);
+    //! \brief Handler called when a key is up while this window has input focus.
+    virtual void onKeyUp(KeyEventArgs& e);
 
     /*!
     \brief
@@ -3026,15 +2962,6 @@ protected:
         point (encoded as UTF-32) for the character inputted.
     */
     virtual void onCharacter(TextEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a semantic input event occurred
-
-    \param e
-        The semantic input event
-    */
-    virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
     /*!
     \brief
@@ -3262,11 +3189,11 @@ protected:
                                #endif
                                ,
                                bool allow_disabled = false,
-                               const Window* const exclude = nullptr) const;
+                               const Window* exclude = nullptr) const;
 
     bool isHitTargetWindow(const glm::vec2& position, bool allow_disabled) const
     {
-        return !isCursorPassThroughEnabled() && isHit(position, allow_disabled);
+        return !d_cursorPassThroughEnabled && isHit(position, allow_disabled);
     }
 
     /*************************************************************************

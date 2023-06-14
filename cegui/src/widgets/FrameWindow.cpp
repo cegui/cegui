@@ -29,7 +29,6 @@
 #include "CEGUI/widgets/FrameWindow.h"
 #include "CEGUI/widgets/Titlebar.h"
 #include "CEGUI/widgets/PushButton.h"
-#include "CEGUI/ImageManager.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/GUIContext.h"
 
@@ -37,58 +36,21 @@ namespace CEGUI
 {
 const String FrameWindow::EventNamespace("FrameWindow");
 const String FrameWindow::WidgetTypeName("CEGUI/FrameWindow");
-
-/*************************************************************************
-    Constants
-*************************************************************************/
-// additional event names for this window
-const String FrameWindow::EventRollupToggled( "RollupToggled" );
-const String FrameWindow::EventCloseClicked( "CloseClicked" );
+const String FrameWindow::EventRollupToggled("RollupToggled");
+const String FrameWindow::EventCloseClicked("CloseClicked");
 const String FrameWindow::EventDragSizingStarted("DragSizingStarted");
 const String FrameWindow::EventDragSizingEnded("DragSizingEnded");
-
-// other bits
-const float FrameWindow::DefaultSizingBorderSize    = 8.0f;
-
-/*************************************************************************
-    Child Widget name constants
-*************************************************************************/
 const String FrameWindow::TitlebarName( "__auto_titlebar__" );
 const String FrameWindow::CloseButtonName( "__auto_closebutton__" );
 
-
-/*************************************************************************
-    Constructor
-*************************************************************************/
-FrameWindow::FrameWindow(const String& type, const String& name) :
-    Window(type, name)
+//----------------------------------------------------------------------------//
+FrameWindow::FrameWindow(const String& type, const String& name)
+    : Window(type, name)
 {
-    d_frameEnabled        = true;
-    d_rollupEnabled        = true;
-    d_rolledup            = false;
-    d_sizingEnabled        = true;
-    d_beingSized        = false;
-    d_dragMovable        = true;
-
-    d_borderSize        = DefaultSizingBorderSize;
-
-    d_nsSizingCursor = d_ewSizingCursor = d_neswSizingCursor = d_nwseSizingCursor = nullptr;
-
     addFrameWindowProperties();
 }
 
-
-/*************************************************************************
-    Destructor
-*************************************************************************/
-FrameWindow::~FrameWindow(void)
-{
-}
-
-
-/*************************************************************************
-    Initialises the Window based object ready for use.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::initialiseComponents()
 {
     Titlebar* titlebar = getTitlebar();
@@ -107,183 +69,114 @@ void FrameWindow::initialiseComponents()
     closeButton->banPropertyFromXML("Disabled");
 
     // bind handler to close button 'Click' event
-    closeButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::FrameWindow::closeClickHandler, this));
+    closeButton->subscribeEvent(PushButton::EventClicked, [this]()
+    {
+        WindowEventArgs args(this);
+        onCloseClicked(args);
+        return true;
+    });
 
     Window::initialiseComponents();
 }
 
-
-/*************************************************************************
-    Return whether the title bar for this window is enabled.
-*************************************************************************/
-bool FrameWindow::isTitleBarEnabled(void) const
+//----------------------------------------------------------------------------//
+bool FrameWindow::isTitleBarEnabled() const
 {
     return !getTitlebar()->isDisabled();
 }
 
-
-/*************************************************************************
-    Return whether this close button for this window is enabled.
-*************************************************************************/
-bool FrameWindow::isCloseButtonEnabled(void) const
+//----------------------------------------------------------------------------//
+bool FrameWindow::isCloseButtonEnabled() const
 {
     return !getCloseButton()->isDisabled();
 }
 
-
-/*************************************************************************
-    Enables or disables sizing for this window.
-*************************************************************************/
-void FrameWindow::setSizingEnabled(bool setting)
-{
-    d_sizingEnabled = setting;
-}
-
-
-/*************************************************************************
-    Enables or disables the frame for this window.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::setFrameEnabled(bool setting)
 {
     d_frameEnabled = setting;
     invalidate();
 }
 
-
-/*************************************************************************
-    Enables or disables the title bar for the frame window.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::setTitleBarEnabled(bool setting)
 {
-    Window* titlebar = getTitlebar();
-    titlebar->setEnabled(setting);
-    titlebar->setVisible(setting);
+    if (auto titlebar = getTitlebar())
+    {
+        titlebar->setEnabled(setting);
+        titlebar->setVisible(setting);
+    }
 }
 
-
-/*************************************************************************
-    Enables or disables the close button for the frame window.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::setCloseButtonEnabled(bool setting)
 {
-    Window* closebtn = getCloseButton();
-    closebtn->setEnabled(setting);
-    closebtn->setVisible(setting);
+    if (auto closebtn = getCloseButton())
+    {
+        closebtn->setEnabled(setting);
+        closebtn->setVisible(setting);
+    }
 }
 
-
-/*************************************************************************
-    Enables or disables roll-up (shading) for this window.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::setRollupEnabled(bool setting)
 {
-    if ((setting == false) && isRolledup())
-    {
+    if (!setting && isRolledup())
         toggleRollup();
-    }
 
     d_rollupEnabled = setting;
 }
 
-
-/*************************************************************************
-    Toggles the state of the window between rolled-up (shaded) and normal
-    sizes.  This requires roll-up to be enabled.
-*************************************************************************/
-void FrameWindow::toggleRollup(void)
+//----------------------------------------------------------------------------//
+void FrameWindow::toggleRollup()
 {
     if (isRollupEnabled())
     {
-        d_rolledup ^= true;
+        d_rolledup = !d_rolledup;
 
-        // event notification.
         WindowEventArgs args(this);
         onRollupToggled(args);
     }
-
 }
 
+//----------------------------------------------------------------------------//
 void FrameWindow::setRolledup(bool val)
 {
     if(val != isRolledup())
-    {
         toggleRollup();
-    }
 }
 
-
-/*************************************************************************
-    check local pixel co-ordinate point 'pt' and return one of the
-    SizingLocation enumerated values depending where the point falls on
-    the sizing border.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const glm::vec2& pt) const
 {
     Rectf frame(getSizingRect());
 
-    // we can only size if the frame is enabled and sizing is on
-    if (isSizingEnabled() && isFrameEnabled())
-    {
-        // point must be inside the outer edge
-        if (frame.isPointInRectf(pt))
-        {
-            // adjust rect to get inner edge
-            frame.d_min.x += d_borderSize;
-            frame.d_min.y += d_borderSize;
-            frame.d_max.x -= d_borderSize;
-            frame.d_max.y -= d_borderSize;
+    // We can only size if the frame is enabled and sizing is on. Point must be inside the outer edge.
+    if (!isSizingEnabled() || !isFrameEnabled() || !frame.isPointInRectf(pt))
+        return SizingLocation::Invalid;
 
-            // detect which edges we are on
-            bool top = (pt.y < frame.d_min.y);
-            bool bottom = (pt.y >= frame.d_max.y);
-            bool left = (pt.x < frame.d_min.x);
-            bool right = (pt.x >= frame.d_max.x);
+    // adjust rect to get inner edge
+    frame.d_min.x += d_borderSize;
+    frame.d_min.y += d_borderSize;
+    frame.d_max.x -= d_borderSize;
+    frame.d_max.y -= d_borderSize;
 
-            // return appropriate 'SizingLocation' value
-            if (top && left)
-            {
-                return SizingLocation::TopLeft;
-            }
-            else if (top && right)
-            {
-                return SizingLocation::TopRight;
-            }
-            else if (bottom && left)
-            {
-                return SizingLocation::BottomLeft;
-            }
-            else if (bottom && right)
-            {
-                return SizingLocation::BottomRight;
-            }
-            else if (top)
-            {
-                return SizingLocation::Top;
-            }
-            else if (bottom)
-            {
-                return SizingLocation::Bottom;
-            }
-            else if (left)
-            {
-                return SizingLocation::Left;
-            }
-            else if (right)
-            {
-                return SizingLocation::Right;
-            }
-        }
-    }
+    const bool left = (pt.x < frame.d_min.x);
+    const bool right = (pt.x >= frame.d_max.x);
 
-    // default: Invalid.
+    if (pt.y < frame.d_min.y)
+        return left ? SizingLocation::TopLeft : right ? SizingLocation::TopRight : SizingLocation::Top;
+    if (pt.y >= frame.d_max.y)
+        return left ? SizingLocation::BottomLeft : right ? SizingLocation::BottomRight : SizingLocation::Bottom;
+    if (left)
+        return SizingLocation::Left;
+    if (right)
+        return SizingLocation::Right;
+
     return SizingLocation::Invalid;
 }
 
-
-/*************************************************************************
-    move the window's left edge by 'delta'.  The rest of the window
-    does not move, thus this changes the size of the Window.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::moveLeftEdge(float delta, URect& outArea)
 {
     float newWidth = d_pixelSize.d_width - delta;
@@ -322,10 +215,8 @@ void FrameWindow::moveLeftEdge(float delta, URect& outArea)
         outArea.d_min.d_x.d_offset += adjustment;
     }
 }
-/*************************************************************************
-    move the window's right edge by 'delta'.  The rest of the window
-    does not move, thus this changes the size of the Window.
-*************************************************************************/
+
+//----------------------------------------------------------------------------//
 void FrameWindow::moveRightEdge(float delta, URect& outArea)
 {
     float newWidth = d_pixelSize.d_width + delta;
@@ -367,10 +258,7 @@ void FrameWindow::moveRightEdge(float delta, URect& outArea)
     d_dragPoint.x += (newWidth - d_pixelSize.d_width);
 }
 
-/*************************************************************************
-    move the window's top edge by 'delta'.  The rest of the window
-    does not move, thus this changes the size of the Window.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::moveTopEdge(float delta, URect& outArea)
 {
     float newHeight = d_pixelSize.d_height - delta;
@@ -410,11 +298,7 @@ void FrameWindow::moveTopEdge(float delta, URect& outArea)
     }
 }
 
-
-/*************************************************************************
-    move the window's bottom edge by 'delta'.  The rest of the window
-    does not move, thus this changes the size of the Window.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::moveBottomEdge(float delta, URect& outArea)
 {
     float newHeight = d_pixelSize.d_height + delta;
@@ -456,58 +340,38 @@ void FrameWindow::moveBottomEdge(float delta, URect& outArea)
     d_dragPoint.y += (newHeight - d_pixelSize.d_height);
 }
 
-
-/*************************************************************************
-    Handler to map close button clicks to FrameWindow 'CloseCliked' events
-*************************************************************************/
-bool FrameWindow::closeClickHandler(const EventArgs&)
-{
-    WindowEventArgs args(this);
-    onCloseClicked(args);
-
-    return true;
-}
-
-
-/*************************************************************************
-    Set the appropriate cursor for the given window-relative pixel
-    point.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::setCursorForSizingLocation(SizingLocation location) const
 {
     switch(location)
     {
         case SizingLocation::Top:
         case SizingLocation::Bottom:
-            getGUIContext().getCursor().setImage(d_nsSizingCursor);
+            getGUIContext().setCursorImage(d_nsSizingCursor);
             break;
 
         case SizingLocation::Left:
         case SizingLocation::Right:
-            getGUIContext().getCursor().setImage(d_ewSizingCursor);
+            getGUIContext().setCursorImage(d_ewSizingCursor);
             break;
 
         case SizingLocation::TopLeft:
         case SizingLocation::BottomRight:
-            getGUIContext().getCursor().setImage(d_nwseSizingCursor);
+            getGUIContext().setCursorImage(d_nwseSizingCursor);
             break;
 
         case SizingLocation::TopRight:
         case SizingLocation::BottomLeft:
-            getGUIContext().getCursor().setImage(d_neswSizingCursor);
+            getGUIContext().setCursorImage(d_neswSizingCursor);
             break;
 
         default:
-            getGUIContext().getCursor().setImage(getEffectiveCursor());
+            getGUIContext().setCursorImage(getEffectiveCursor());
             break;
     }
 }
 
-
-/*************************************************************************
-    Event generated internally whenever the roll-up / shade state of the
-    window changes.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
     invalidate(!d_rolledup);
@@ -518,20 +382,14 @@ void FrameWindow::onRollupToggled(WindowEventArgs& e)
     fireEvent(EventRollupToggled, e, EventNamespace);
 }
 
-
-/*************************************************************************
-    Event generated internally whenever the close button is clicked.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::onCloseClicked(WindowEventArgs& e)
 {
     fireEvent(EventCloseClicked, e, EventNamespace);
 }
 
-
-/*************************************************************************
-    Handler for cursor move events
-*************************************************************************/
-void FrameWindow::onCursorMove(CursorInputEventArgs& e)
+//----------------------------------------------------------------------------//
+void FrameWindow::onCursorMove(CursorMoveEventArgs& e)
 {
     // default processing (this is now essential as it controls event firing).
     Window::onCursorMove(e);
@@ -544,8 +402,6 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
     if (isSizingEnabled())
     {
         SizingLocation dragEdge;
-        const glm::vec2 localCursorPos(CoordConverter::screenToWindow(*this, e.position));
-
         if (d_beingSized)
         {
             dragEdge = getSizingBorderAtPoint(d_dragPoint);
@@ -553,14 +409,14 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
             URect newArea(d_area);
 
             // size left or right edges
-            const float deltaX = localCursorPos.x - d_dragPoint.x;
+            const float deltaX = e.d_localPos.x - d_dragPoint.x;
             if (isLeftSizingLocation(dragEdge))
                 moveLeftEdge(deltaX, newArea);
             else if (isRightSizingLocation(dragEdge))
                 moveRightEdge(deltaX, newArea);
 
             // size top or bottom edges
-            const float deltaY = localCursorPos.y - d_dragPoint.y;
+            const float deltaY = e.d_localPos.y - d_dragPoint.y;
             if (isTopSizingLocation(dragEdge))
                 moveTopEdge(deltaY, newArea);
             else if (isBottomSizingLocation(dragEdge))
@@ -570,73 +426,53 @@ void FrameWindow::onCursorMove(CursorInputEventArgs& e)
         }
         else
         {
-            dragEdge = getSizingBorderAtPoint(localCursorPos);
+            dragEdge = getSizingBorderAtPoint(e.d_localPos);
         }
 
         // Update cursor every time because titlebar might reset it
         setCursorForSizingLocation(dragEdge);
     }
 
-    // mark event as handled
     ++e.handled;
 }
 
-
-/*************************************************************************
-    Handler for cursor press events
-*************************************************************************/
-void FrameWindow::onCursorPressHold(CursorInputEventArgs& e)
+//----------------------------------------------------------------------------//
+void FrameWindow::onMouseButtonDown(MouseButtonEventArgs& e)
 {
     // default processing (this is now essential as it controls event firing).
-    Window::onCursorPressHold(e);
+    Window::onMouseButtonDown(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.d_button == MouseButton::Left && isSizingEnabled() && getSizingBorderAtPoint(e.d_localPos) != SizingLocation::Invalid)
     {
-        if (isSizingEnabled())
+        // ensure all inputs come to us from now on
+        if (captureInput())
         {
-            // get position of cursor as co-ordinates local to this window.
-            const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.position));
+            // setup the 'dragging' state variables
+            d_beingSized = true;
+            d_dragPoint = e.d_localPos;
 
-            // if the cursor is on the sizing border
-            if (getSizingBorderAtPoint(localPos) != SizingLocation::Invalid)
-            {
-                // ensure all inputs come to us for now
-                if (captureInput())
-                {
-                    // setup the 'dragging' state variables
-                    d_beingSized = true;
-                    d_dragPoint = localPos;
+            // do drag-sizing started notification
+            WindowEventArgs args(this);
+            onDragSizingStarted(args);
 
-                    // do drag-sizing started notification
-                    WindowEventArgs args(this);
-                    onDragSizingStarted(args);
-
-                    ++e.handled;
-                }
-            }
+            ++e.handled;
         }
     }
 }
 
-
-/*************************************************************************
-    Handler for cursor activation events
-*************************************************************************/
-void FrameWindow::onCursorActivate(CursorInputEventArgs& e)
+//----------------------------------------------------------------------------//
+void FrameWindow::onMouseButtonUp(MouseButtonEventArgs& e)
 {
-    Window::onCursorActivate(e);
+    Window::onMouseButtonUp(e);
 
-    if (e.source == CursorInputSource::Left)
+    if (e.d_button == MouseButton::Left)
     {
         releaseInput();
         ++e.handled;
     }
 }
 
-
-/*************************************************************************
-    Handler for when cursor capture is lost
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::onCaptureLost(WindowEventArgs& e)
 {
     // default processing (this is now essential as it controls event firing).
@@ -652,10 +488,7 @@ void FrameWindow::onCaptureLost(WindowEventArgs& e)
     ++e.handled;
 }
 
-
-/*************************************************************************
-    Handler for when text changes
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::onTextChanged(WindowEventArgs& e)
 {
     Window::onTextChanged(e);
@@ -665,46 +498,62 @@ void FrameWindow::onTextChanged(WindowEventArgs& e)
     performChildLayout(false, false);
 }
 
-
-/*************************************************************************
-    Handler for when this Window is activated
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::onActivated(ActivationEventArgs& e)
 {
     Window::onActivated(e);
     getTitlebar()->invalidate();
 }
 
-
-/*************************************************************************
-    Handler for when this Window is deactivated
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::onDeactivated(ActivationEventArgs& e)
 {
     Window::onDeactivated(e);
     getTitlebar()->invalidate();
 }
 
-
-/*************************************************************************
-    Set whether this FrameWindow can be moved by dragging the title bar.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FrameWindow::setDragMovingEnabled(bool setting)
 {
     if (d_dragMovable != setting)
     {
         d_dragMovable = setting;
-
         getTitlebar()->setDraggingEnabled(setting);
     }
-
 }
 
+//----------------------------------------------------------------------------//
+bool FrameWindow::isHit(const glm::vec2& position, bool allow_disabled) const
+{
+    return !d_rolledup && Window::isHit(position, allow_disabled);
+}
 
-/*************************************************************************
-    Add properties for this class
-*************************************************************************/
-void FrameWindow::addFrameWindowProperties(void)
+//----------------------------------------------------------------------------//
+Titlebar* FrameWindow::getTitlebar() const
+{
+    return static_cast<Titlebar*>(getChild(TitlebarName));
+}
+
+//----------------------------------------------------------------------------//
+PushButton* FrameWindow::getCloseButton() const
+{
+    return static_cast<PushButton*>(getChild(CloseButtonName));
+}
+
+//----------------------------------------------------------------------------//
+void FrameWindow::onDragSizingStarted(WindowEventArgs& e)
+{
+    fireEvent(EventDragSizingStarted, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void FrameWindow::onDragSizingEnded(WindowEventArgs& e)
+{
+    fireEvent(EventDragSizingEnded, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void FrameWindow::addFrameWindowProperties()
 {
     const String& propertyOrigin = WidgetTypeName;
 
@@ -769,72 +618,4 @@ void FrameWindow::addFrameWindowProperties(void)
     );
 }
 
-/*************************************************************************
-    set the image used for the north-south sizing cursor.
-*************************************************************************/
-void FrameWindow::setNSSizingIndicatorImage(const String& name)
-{
-    d_nsSizingCursor = &ImageManager::getSingleton().get(name);
 }
-
-/*************************************************************************
-    set the image used for the east-west sizing cursor.
-*************************************************************************/
-void FrameWindow::setEWSizingIndicatorImage(const String& name)
-{
-    d_ewSizingCursor = &ImageManager::getSingleton().get(name);
-}
-
-/*************************************************************************
-    set the image used for the northwest-southeast sizing cursor.
-*************************************************************************/
-void FrameWindow::setNWSESizingIndicatorImage(const String& name)
-{
-    d_nwseSizingCursor = &ImageManager::getSingleton().get(name);
-}
-
-/*************************************************************************
-    set the image used for the northeast-southwest sizing cursor.
-*************************************************************************/
-void FrameWindow::setNESWSizingIndicatorImage(const String& name)
-{
-    d_neswSizingCursor = &ImageManager::getSingleton().get(name);
-}
-
-bool FrameWindow::isHit(const glm::vec2& position, const bool /*allow_disabled*/) const
-{
-    return Window::isHit(position) && !d_rolledup;
-}
-
-/*************************************************************************
-    Return a pointer to the Titlebar component widget for this FrameWindow.
-*************************************************************************/
-Titlebar* FrameWindow::getTitlebar() const
-{
-    return static_cast<Titlebar*>(getChild(TitlebarName));
-}
-
-/*************************************************************************
-    Return a pointer to the close button component widget for this
-    FrameWindow.
-*************************************************************************/
-PushButton* FrameWindow::getCloseButton() const
-{
-    return static_cast<PushButton*>(getChild(CloseButtonName));
-}
-
-//----------------------------------------------------------------------------//
-void FrameWindow::onDragSizingStarted(WindowEventArgs& e)
-{
-    fireEvent(EventDragSizingStarted, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-void FrameWindow::onDragSizingEnded(WindowEventArgs& e)
-{
-    fireEvent(EventDragSizingEnded, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section

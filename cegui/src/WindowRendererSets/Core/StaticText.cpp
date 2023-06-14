@@ -474,20 +474,8 @@ bool FalagardStaticText::onFontChanged(const EventArgs&)
 //----------------------------------------------------------------------------//
 bool FalagardStaticText::onScroll(const EventArgs& event)
 {
-    const CursorInputEventArgs& e = static_cast<const CursorInputEventArgs&>(event);
-
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    Scrollbar* horzScrollbar = getHorzScrollbar();
-
-    const bool vertScrollbarVisible = vertScrollbar->isEffectiveVisible();
-    const bool horzScrollbarVisible = horzScrollbar->isEffectiveVisible();
-
-    if (vertScrollbarVisible && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
-        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.scroll);
-    else if (horzScrollbarVisible && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
-        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
-
-    return vertScrollbarVisible || horzScrollbarVisible;
+    const ScrollEventArgs& e = static_cast<const ScrollEventArgs&>(event);
+    return Scrollbar::standardProcessing(getVertScrollbar(), getHorzScrollbar(), -e.d_delta, e.d_modifiers.hasAlt());
 }
 
 //----------------------------------------------------------------------------//

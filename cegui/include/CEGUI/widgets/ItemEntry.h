@@ -63,7 +63,7 @@ public:
         Size describing the size in pixel that this ItemEntry's content requires
         for non-clipped rendering
     */
-    virtual Sizef getItemPixelSize(void) const = 0;
+    virtual Sizef getItemPixelSize() const = 0;
 };
 
 /*!
@@ -99,26 +99,26 @@ public:
 		Size describing the size in pixel that this ItemEntry's content requires
 		for non-clipped rendering
 	*/
-	Sizef getItemPixelSize(void) const;
+	Sizef getItemPixelSize() const;
 
     /*!
     \brief
         Returns a pointer to the owner ItemListBase.
         0 if there is none.
     */
-    ItemListBase* getOwnerList(void) const  {return d_ownerList;}
+    ItemListBase* getOwnerList() const  {return d_ownerList;}
 
     /*!
     \brief
         Returns whether this item is selected or not.
     */
-    bool isSelected(void) const             {return d_selected;}
+    bool isSelected() const             {return d_selected;}
 
     /*!
     \brief
         Returns whether this item is selectable or not.
     */
-    bool isSelectable(void) const           {return d_selectable;}
+    bool isSelectable() const           {return d_selectable;}
 
     /*************************************************************************
 		Set methods
@@ -138,13 +138,13 @@ public:
     \brief
         Selects the item.
     */
-    void select(void)               {setSelected_impl(true, true);}
+    void select()               {setSelected_impl(true, true);}
 
     /*!
     \brief
         Deselects the item.
     */
-    void deselect(void)             {setSelected_impl(false, true);}
+    void deselect()             {setSelected_impl(false, true);}
 
     /*!
     \brief
@@ -177,25 +177,7 @@ public:
 	*/
 	ItemEntry(const String& type, const String& name);
 
-	/*!
-	\brief
-		Destructor for ItemEntry objects
-	*/
-	virtual ~ItemEntry(void) {}
-
 protected:
-    /*************************************************************************
-        Abstract Implementation Functions
-    *************************************************************************/
-    /*!
-    \brief
-        Return the "optimal" size for the item
-
-    \return
-        Size describing the size in pixel that this ItemEntry's content requires
-        for non-clipped rendering
-    */
-    //virtual Size getItemPixelSize_impl(void) const = 0;
 
 	/*************************************************************************
 		Implementation Functions
@@ -212,27 +194,27 @@ protected:
     */
     virtual void onSelectionChanged(WindowEventArgs& e);
 
-    void onSemanticInputEvent(SemanticEventArgs& e) override;
+    void onClick(MouseButtonEventArgs& e) override;
 
     /*************************************************************************
         Implementation Data
     *************************************************************************/
     
     //!< pointer to the owner ItemListBase. 0 if there is none.
-    ItemListBase* d_ownerList;
+    ItemListBase* d_ownerList = nullptr;
     
     //!< 'true' when the item is in the selected state, 'false' if not.
-    bool d_selected;
+    bool d_selected = false;
 
     //!< 'true' when the item is selectable.
-    bool d_selectable;
+    bool d_selectable = false;
     
     // make the ItemListBase a friend
     friend class ItemListBase;
 
 private:
     
-    void addItemEntryProperties(void);
+    void addItemEntryProperties();
 };
 
 } // End of  CEGUI namespace section

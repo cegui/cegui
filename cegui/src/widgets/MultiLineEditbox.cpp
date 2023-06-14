@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "CEGUI/widgets/MultiLineEditbox.h"
 #include "CEGUI/widgets/Scrollbar.h"
-#include "CEGUI/CoordConverter.h"
+#include "CEGUI/GUIContext.h"
 
 namespace CEGUI
 {
@@ -308,64 +308,42 @@ bool MultiLineEditbox::isWordWrapEnabled() const
 }
 
 //------------------------------------------------------------------------//
-bool MultiLineEditbox::processSemanticInputEvent(const SemanticEventArgs& e)
+void MultiLineEditbox::processKeyDownEvent(KeyEventArgs& e)
 {
-    switch (e.d_semanticValue)
+    if (d_guiContext->isInputSemantic(SemanticValue::Confirm, e))
+        insertString("\x0a");
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoUp, e))
+        handleLineUp(false);
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectUp, e))
+        handleLineUp(true);
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoDown, e))
+        handleLineDown(false);
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectDown, e))
+        handleLineDown(true);
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToPreviousPage, e))
+        handlePageUp(false);
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToPreviousPage, e))
+        handlePageUp(true);
+    else if (d_guiContext->isInputSemantic(SemanticValue::GoToNextPage, e))
+        handlePageDown(false);
+    else if (d_guiContext->isInputSemantic(SemanticValue::SelectToNextPage, e))
+        handlePageDown(true);
+    else
     {
-        case SemanticValue::Confirm:
-            insertString("\x0a");
-            return true;
-
-        case SemanticValue::GoUp:
-            handleLineUp(false);
-            return true;
-
-        case SemanticValue::SelectUp:
-            handleLineUp(true);
-            return true;
-
-        case SemanticValue::GoDown:
-            handleLineDown(false);
-            return true;
-
-        case SemanticValue::SelectDown:
-            handleLineDown(true);
-            return true;
-
-        case SemanticValue::GoToPreviousPage:
-            handlePageUp(false);
-            return true;
-
-        case SemanticValue::SelectToPreviousPage:
-            handlePageUp(true);
-            return true;
-
-        case SemanticValue::GoToNextPage:
-            handlePageDown(false);
-            return true;
-
-        case SemanticValue::SelectToNextPage:
-            handlePageDown(true);
-            return true;
+        EditboxBase::processKeyDownEvent(e);
+        return;
     }
 
-    return EditboxBase::processSemanticInputEvent(e);
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
-void MultiLineEditbox::onScroll(CursorInputEventArgs& e)
+void MultiLineEditbox::onScroll(ScrollEventArgs& e)
 {
     Window::onScroll(e);
 
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    Scrollbar* horzScrollbar = getHorzScrollbar();
-
-    if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
-        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.scroll);
-    else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
-        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
-
-    ++e.handled;
+    if (Scrollbar::standardProcessing(getVertScrollbar(), getHorzScrollbar(), -e.d_delta, e.d_modifiers.hasAlt()))
+        ++e.handled;
 }
 
 //------------------------------------------------------------------------//

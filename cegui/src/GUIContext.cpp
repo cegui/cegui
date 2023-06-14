@@ -25,30 +25,39 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/GUIContext.h"
-#include "CEGUI/System.h"
+#include "CEGUI/Renderer.h"
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/RenderingWindow.h"
+#include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/WindowManager.h"
+#include "CEGUI/ImageManager.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/WindowNavigator.h"
+#include "CEGUI/System.h"
 #include "CEGUI/GlobalEventSet.h"
+#include "CEGUI/CoordConverter.h"
+#include <algorithm>
 
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const String GUIContext::EventRootWindowChanged("RootWindowChanged");
-const String GUIContext::EventRenderTargetChanged("RenderTargetChanged");
+const String GUIContext::EventCursorImageChanged("CursorImageChanged");
+const String GUIContext::EventDefaultCursorImageChanged("DefaultCursorImageChanged");
 const String GUIContext::EventDefaultFontChanged("DefaultFontChanged");
 const String GUIContext::EventTooltipActive("TooltipActive");
 const String GUIContext::EventTooltipInactive("TooltipInactive");
 const String GUIContext::EventTooltipTransition("TooltipTransition");
+const URect GUIContext::NoCursorConstraint(cegui_reldim(0.f), cegui_reldim(0.f), cegui_reldim(1.f), cegui_reldim(1.f));
 
 //----------------------------------------------------------------------------//
 GUIContext::GUIContext(RenderTarget& target) :
     RenderingSurface(target),
-    d_cursor(*this),
     d_surfaceSize(target.getArea().getSize()),
+    d_cursorSize(0.f, 0.f),
+    d_cursorPosition(0.f, 0.f),
+    d_cursorConstraints(NoCursorConstraint),
     d_areaChangedEventConnection(
         target.subscribeEvent(
             RenderTarget::EventAreaChanged,
@@ -58,8 +67,6 @@ GUIContext::GUIContext(RenderTarget& target) :
             "Font/RenderSizeChanged",
             Event::Subscriber(&GUIContext::fontRenderSizeChangedHandler, this)))
 {
-    d_cursor.resetPositionToDefault();
-    initializeSemanticEventHandlers();
 }
 
 //----------------------------------------------------------------------------//
@@ -72,8 +79,8 @@ GUIContext::~GUIContext()
         if (WindowManager::getSingleton().isAlive(record.second))
             WindowManager::getSingleton().destroyWindow(record.second);
 
-    for (auto it = d_semanticEventHandlers.begin(); it != d_semanticEventHandlers.end(); ++it)
-        delete it->second;
+    for (auto currentBuffer : d_cursorGeometry)
+        System::getSingleton().getRenderer()->destroyGeometryBuffer(*currentBuffer);
 }
 
 //----------------------------------------------------------------------------//
@@ -210,7 +217,7 @@ bool GUIContext::captureInput(Window* window)
         d_captureWindow->onCaptureLost(args);
         args.handled = 0;
 
-        d_repeatPointerSource = CursorInputSource::NotSpecified;
+        d_autoRepeatMouseButton = MouseButton::Invalid;
         d_windowContainingCursorIsUpToDate = false;
     }
 
@@ -234,7 +241,7 @@ void GUIContext::releaseInputCapture(bool allowRestoreOld, Window* exactWindow)
     WindowEventArgs args(d_captureWindow);
     d_captureWindow->onCaptureLost(args);
 
-    d_repeatPointerSource = CursorInputSource::NotSpecified;
+    d_autoRepeatMouseButton = MouseButton::Invalid;
     d_windowContainingCursorIsUpToDate = false;
 
     if (allowRestoreOld && d_oldCaptureWindow && d_captureWindow->restoresOldCapture())
@@ -257,7 +264,7 @@ void GUIContext::releaseInputCapture(bool allowRestoreOld, Window* exactWindow)
 Window* GUIContext::getWindowContainingCursor()
 {
     if (!d_windowContainingCursorIsUpToDate)
-        updateWindowContainingCursor_impl(getTargetWindow(d_cursor.getPosition(), true));
+        updateWindowContainingCursorInternal(getCursorTargetWindow(d_cursorPosition, true));
 
     return d_windowContainingCursor;
 }
@@ -286,8 +293,42 @@ void GUIContext::drawContent(std::uint32_t drawModeMask)
 
     RenderingSurface::drawContent(drawModeMask);
 
-    if (drawModeMask & DrawModeFlagMouseCursor)
-        d_cursor.draw(DrawModeFlagMouseCursor);
+    if ((drawModeMask & DrawModeFlagMouseCursor) && d_cursorVisible && d_cursorImage)
+    {
+        // Update cursor geometry
+        if (d_cursorDirty)
+        {
+            d_cursorDirty = false;
+            for (auto currentBuffer : d_cursorGeometry)
+                System::getSingleton().getRenderer()->destroyGeometryBuffer(*currentBuffer);
+            d_cursorGeometry.clear();
+
+            const auto imgOffset = d_cursorImage->getRenderedOffset();
+            const auto imgSize = d_cursorImage->getRenderedSize();
+
+            const Sizef cursorSize(
+                (d_cursorSize.d_width > 0.0f) ? d_cursorSize.d_width : imgSize.d_width,
+                (d_cursorSize.d_height > 0.0f) ? d_cursorSize.d_height : imgSize.d_height);
+
+            const glm::vec2 cursorOffset(
+                cursorSize.d_width / imgSize.d_width * imgOffset.x - imgOffset.x,
+                cursorSize.d_height / imgSize.d_height * imgOffset.y - imgOffset.y);
+
+            ImageRenderSettings imgRenderSettings(Rectf(cursorOffset, cursorSize));
+            d_cursorImage->createRenderGeometry(d_cursorGeometry, imgRenderSettings);
+
+            const Rectf clippingArea(glm::vec2(0, 0), d_surfaceSize);
+            for (auto currentBuffer : d_cursorGeometry)
+            {
+                currentBuffer->setClippingRegion(clippingArea);
+                currentBuffer->setTranslation(glm::vec3(d_cursorPosition, 0));
+            }
+        }
+
+        System::getSingleton().getRenderer()->uploadBuffers(d_cursorGeometry);
+        for (auto currentBuffer : d_cursorGeometry)
+            currentBuffer->draw(drawModeMask);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -322,7 +363,7 @@ void GUIContext::drawWindowContentToTarget(std::uint32_t drawModeMask)
 bool GUIContext::areaChangedHandler(const EventArgs&)
 {
     d_surfaceSize = d_target->getArea().getSize();
-    d_cursor.notifyTargetSizeChanged(d_surfaceSize);
+    d_cursorDirty = true;
 
     if (d_rootWindow)
     {
@@ -388,7 +429,7 @@ void GUIContext::onWindowDetached(Window* window)
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::updateWindowContainingCursor_impl(Window* windowWithCursor)
+void GUIContext::updateWindowContainingCursorInternal(Window* windowWithCursor)
 {
     d_windowContainingCursorIsUpToDate = true;
 
@@ -419,24 +460,22 @@ void GUIContext::updateWindowContainingCursor_impl(Window* windowWithCursor)
     if (oldWindow)
     {
         // Inform the previous window that the cursor has left it
-        CursorInputEventArgs ciea(oldWindow);
-        ciea.position = oldWindow->getUnprojectedPosition(d_cursor.getPosition());
-        oldWindow->onCursorLeaves(ciea);
-        notifyCursorTransition(root, oldWindow, &Window::onCursorLeavesArea, ciea);
+        CursorInputEventArgs args(oldWindow, d_cursorPosition);
+        oldWindow->onCursorLeaves(args);
+        notifyCursorTransition(root, oldWindow, &Window::onCursorLeavesArea, args);
     }
 
     // Set the new cursor
-    d_cursor.setImage((windowWithCursor && windowWithCursor->getCursor()) ?
+    setCursorImage((windowWithCursor && windowWithCursor->getCursor()) ?
         windowWithCursor->getCursor() :
-        d_cursor.getDefaultImage());
+        d_defaultCursorImage);
 
     if (windowWithCursor)
     {
         // Inform window containing cursor that cursor has entered it
-        CursorInputEventArgs ciea(windowWithCursor);
-        ciea.position = windowWithCursor->getUnprojectedPosition(d_cursor.getPosition());
-        windowWithCursor->onCursorEnters(ciea);
-        notifyCursorTransition(root, windowWithCursor, &Window::onCursorEntersArea, ciea);
+        CursorInputEventArgs args(windowWithCursor, d_cursorPosition);
+        windowWithCursor->onCursorEnters(args);
+        notifyCursorTransition(root, windowWithCursor, &Window::onCursorEntersArea, args);
     }
 }
 
@@ -540,12 +579,6 @@ void GUIContext::showTooltip(bool force)
         positionTooltip();
     }));
 
-    d_tooltipEventConnections.push_back(d_cursor.subscribeEvent(
-        Cursor::EventImageChanged, [this](const EventArgs& args)
-    {
-        positionTooltip();
-    }));
-
     WindowEventArgs args(d_tooltipWindow);
     if (wasShown)
     {
@@ -600,11 +633,15 @@ void GUIContext::positionTooltip()
     if (!d_tooltipWindow)
         return;
 
-    glm::vec2 pos = d_cursor.getPosition();
-    if (auto cursorImage = d_cursor.getImage())
+    glm::vec2 pos = d_cursorPosition;
+    if (auto parent = d_tooltipWindow->getParent())
     {
-        pos.x += cursorImage->getRenderedSize().d_width;
-        pos.y += cursorImage->getRenderedSize().d_height;
+        pos -= parent->getUnclippedInnerRect().get().d_min;
+    }
+    if (d_cursorImage)
+    {
+        pos.x += d_cursorImage->getRenderedSize().d_width;
+        pos.y += d_cursorImage->getRenderedSize().d_height;
     }
 
     const Rectf tipRect(pos, d_tooltipWindow->getUnclippedOuterRect().get().getSize());
@@ -612,12 +649,12 @@ void GUIContext::positionTooltip()
     // if the tooltip would be off more at the right side of the screen,
     // reposition to the other side of the cursor.
     if (d_surfaceSize.d_width - tipRect.right() < tipRect.left() - tipRect.getWidth())
-        pos.x = d_cursor.getPosition().x - tipRect.getWidth() - 5;
+        pos.x = d_cursorPosition.x - tipRect.getWidth() - 5;
 
     // if the tooltip would be off more at the bottom side of the screen,
     // reposition to the other side of the cursor.
     if (d_surfaceSize.d_height - tipRect.bottom() < tipRect.top() - tipRect.getHeight())
-        pos.y = d_cursor.getPosition().y - tipRect.getHeight() - 5;
+        pos.y = d_cursorPosition.y - tipRect.getHeight() - 5;
 
     // prevent being cut off at edges
     pos.x = std::max(0.0f, std::min(pos.x, d_surfaceSize.d_width - tipRect.getWidth()));
@@ -680,7 +717,7 @@ void GUIContext::updateTooltipState(float timeElapsed)
 //----------------------------------------------------------------------------//
 void GUIContext::updateInputAutoRepeating(float timeElapsed)
 {
-    if (!d_captureWindow || d_repeatPointerSource == CursorInputSource::NotSpecified)
+    if (!d_captureWindow || d_autoRepeatMouseButton == MouseButton::Invalid)
         return;
 
     const float repeatRate = d_captureWindow->getAutoRepeatRate();
@@ -688,38 +725,38 @@ void GUIContext::updateInputAutoRepeating(float timeElapsed)
     // Stop auto-repeating if the window wants it no more
     if (!d_captureWindow->isCursorAutoRepeatEnabled() || repeatRate <= 0.f)
     {
-        releaseInputCapture(true);
+        releaseInputCapture();
         return;
     }
 
-    d_repeatElapsed += timeElapsed;
+    d_autoRepeatElapsed += timeElapsed;
 
-    if (!d_repeating)
+    if (!d_autoRepeating)
     {
-        if (d_repeatElapsed < d_captureWindow->getAutoRepeatDelay())
+        // Delay before the first repeated event
+        if (d_autoRepeatElapsed < d_captureWindow->getAutoRepeatDelay())
             return;
 
-        d_repeating = true;
-        d_repeatElapsed = repeatRate;
+        d_autoRepeating = true;
+        d_autoRepeatElapsed = repeatRate;
     }
-    else if (d_repeatElapsed < repeatRate)
+    else if (d_autoRepeatElapsed < repeatRate)
         return;
 
-    CursorInputEventArgs ciea(d_captureWindow);
-    ciea.position = d_captureWindow->getUnprojectedPosition(d_cursor.getPosition());
-    ciea.source = d_repeatPointerSource;
-
+    // Send events according to elapsed time
+    MouseButtonEventArgs args(d_captureWindow, d_cursorPosition, d_mouseButtons, d_modifierKeys, d_autoRepeatMouseButton);
+    args.d_generatedClickEventOrder = d_clickTracker.clickCount;
     do
     {
-        ciea.handled = 0;
-        d_captureWindow->onCursorPressHold(ciea);
-        d_repeatElapsed -= repeatRate;
+        args.handled = 0;
+        d_captureWindow->onMouseButtonDown(args);
+        d_autoRepeatElapsed -= repeatRate;
     }
-    while (d_repeatElapsed >= repeatRate);
+    while (d_autoRepeatElapsed >= repeatRate);
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIContext::getTargetWindow(const glm::vec2& pt, bool allow_disabled) const
+Window* GUIContext::getCursorTargetWindow(const glm::vec2& pt, bool allow_disabled) const
 {
     // If there is no GUI sheet visible, then there is nowhere to send input
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
@@ -751,7 +788,7 @@ Window* GUIContext::getTargetWindow(const glm::vec2& pt, bool allow_disabled) co
 Window* GUIContext::getInputTargetWindow() const
 {
     // if no active sheet, there is no target window.
-    if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
+    if (!d_rootWindow)
         return nullptr;
 
     if (d_captureWindow)
@@ -764,56 +801,9 @@ Window* GUIContext::getInputTargetWindow() const
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::injectInputEvent(const InputEvent& event)
-{
-    if (event.d_eventType == InputEventType::TextInputEventType)
-    {
-        if (Window* targetWindow = getInputTargetWindow())
-        {
-            TextEventArgs args(targetWindow);
-            args.d_character = static_cast<const TextInputEvent&>(event).d_character;
-            targetWindow->onCharacter(args);
-            return args.handled != 0;
-        }
-    }
-    else if (event.d_eventType == InputEventType::SemanticInputEventType)
-    {
-        auto& semantic_event = static_cast<const SemanticInputEvent&>(event);
-
-        // Dispatch to a handler if we have one
-        auto it = d_semanticEventHandlers.find(semantic_event.d_value);
-        if (it != d_semanticEventHandlers.end())
-            return (*(*it).second)(semantic_event);
-
-        // Send a raw event
-        if (Window* targetWindow = getInputTargetWindow())
-        {
-            SemanticEventArgs args(targetWindow);
-            args.d_payload = semantic_event.d_payload;
-            args.d_semanticValue = semantic_event.d_value;
-            targetWindow->onSemanticInputEvent(args);
-            if (args.handled)
-                return true;
-        }
-
-        // Try to process an event in a window navigator
-        if (d_windowNavigator)
-        {
-            // Activate a window. Treat as a handling action if there were changes in Z-order.
-            auto newWnd = d_windowNavigator->getWindow(d_activeWindow, semantic_event.d_value);
-            if (setActiveWindow(newWnd, d_moveToFrontOnActivateAllowed && newWnd && newWnd->isRiseOnCursorActivationEnabled()))
-                return true;
-        }
-    }
-
-    return false;
-}
-
-//----------------------------------------------------------------------------//
 bool GUIContext::injectTimePulse(float timeElapsed)
 {
-    // If no visible active sheet, input can't be handled
-    if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
+    if (!d_rootWindow)
         return false;
 
     // Ensure window containing cursor is now valid
@@ -828,38 +818,577 @@ bool GUIContext::injectTimePulse(float timeElapsed)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handleCopyRequest(const SemanticInputEvent&)
+bool GUIContext::injectMousePosition(float x, float y)
 {
-    Window* source = getInputTargetWindow();
-    return source ? source->performCopy(*System::getSingleton().getClipboard()) : false;
+    return injectMouseMove(x - d_cursorPosition.x, y - d_cursorPosition.y);
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handleCutRequest(const SemanticInputEvent&)
+bool GUIContext::injectMouseMove(float dx, float dy)
 {
-    Window* source = getInputTargetWindow();
-    return source ? source->performCut(*System::getSingleton().getClipboard()) : false;
+    // Move cursor to new position. Constraining is possible inside.
+    const auto oldPos = d_cursorPosition;
+    setCursorPosition(d_cursorPosition + glm::vec2(dx, dy));
+    const auto delta = d_cursorPosition - oldPos;
+
+    // No movement means no event
+    if (delta.x == 0.f && delta.y == 0.f)
+        return false;
+
+    // Delay tooltip appearance, follow the cursor if already shown
+    if (!d_tooltipWindow)
+        d_tooltipTimer = 0.f;
+    else if (d_tooltipFollowsCursor)
+        positionTooltip();
+
+    // Update window under cursor and use it as an event receiver
+    d_windowContainingCursorIsUpToDate = false;
+    auto window = getWindowContainingCursor();
+    while (window)
+    {
+        CursorMoveEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, delta);
+        window->onCursorMove(args);
+        if (args.handled)
+            return true;
+
+        if (window == d_modalWindow)
+            break;
+
+        window = window->getParent();
+    }
+
+    return false;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handlePasteRequest(const SemanticInputEvent&)
+bool GUIContext::injectMouseLeaves()
 {
-    Window* target = getInputTargetWindow();
-    return target ? target->performPaste(*System::getSingleton().getClipboard()) : false;
+    updateWindowContainingCursorInternal(nullptr);
+    return true;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handleUndoRequest(const SemanticInputEvent&)
+bool GUIContext::sendScrollEvent(float delta, Window* window)
 {
-    Window* target = getInputTargetWindow();
-    return target ? target->performUndo() : false;
+    while (window)
+    {
+        ScrollEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, delta);
+        window->onScroll(args);
+        if (args.handled)
+            return true;
+
+        if (window == d_modalWindow)
+            break;
+
+        window = window->getParent();
+    }
+
+    return false;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::handleRedoRequest(const SemanticInputEvent&)
+bool GUIContext::injectMouseWheelChange(float delta)
 {
-    Window* target = getInputTargetWindow();
-    return target ? target->performRedo() : false;
+    // Wheel events are sent to the widget under the mouse cursor, but if that
+    // widget does not handle the event they are sent to the focus widget
+    auto cursorTargetWnd = getCursorTargetWindow(d_cursorPosition, false);
+    if (sendScrollEvent(delta, cursorTargetWnd))
+        return true;
+
+    auto inputTargetWnd = getInputTargetWindow();
+    return (cursorTargetWnd != inputTargetWnd) && sendScrollEvent(delta, inputTargetWnd);
+}
+
+//----------------------------------------------------------------------------//
+// Check spatial and temporal locality of mouse button events. Used for click event generation.
+bool GUIContext::checkClickLocality() const
+{
+    // Single clicks are not cancelled by timeout and by offset for better UX
+    if (d_clickTracker.clickCount < 2)
+        return true;
+
+    if (std::abs(d_clickTracker.downPos.x - d_cursorPosition.x) > d_multiClickDistance ||
+        std::abs(d_clickTracker.downPos.y - d_cursorPosition.y) > d_multiClickDistance)
+    {
+        return false;
+    }
+
+    if (d_multiClickTimeout > 0.f)
+    {
+        const auto secElapsed = std::chrono::duration<float>(std::chrono::steady_clock::now() - d_clickTracker.downTime).count();
+        if (secElapsed > d_clickTracker.clickCount * d_multiClickTimeout)
+            return false;
+    }
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::resetClickTracker()
+{
+    d_clickTracker.firstWindow = nullptr;
+    d_clickTracker.lastWindow = nullptr;
+    d_clickTracker.button = MouseButton::Invalid;
+    d_clickTracker.clickCount = 0;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::injectMouseButtonDown(MouseButton button)
+{
+    d_mouseButtons += button;
+
+    if (d_tooltipWindow)
+        d_tooltipWindow->hide(true);
+
+    bool consumed = false;
+    auto window = getCursorTargetWindow(d_cursorPosition, false);
+    while (window)
+    {
+        if (!window->isCursorPassThroughEnabled())
+        {
+            // Track mouse activity for click event generation
+            if (d_clickLimit)
+            {
+                if (!consumed)
+                {
+                    // A click must be generated when mouse down and up events visually happen
+                    // within the same window. But these events are not necessarily handled by
+                    // the same window. One of our parents might have handled a down event, but
+                    // an up event is handled by ourselves. This can confuse the click generator.
+                    // To generate clicks as user expects, we must track a chain of windows
+                    // who received mouse down event, no matter if they handled it or not.
+                    auto clickWnd = d_clickTracker.firstWindow;
+                    while (clickWnd)
+                    {
+                        if (clickWnd == window)
+                        {
+                            d_clickTracker.firstWindow = window;
+                            break;
+                        }
+
+                        if (clickWnd == d_clickTracker.lastWindow)
+                            break;
+
+                        clickWnd = clickWnd->getParent();
+                    }
+
+                    // Do this before checkClickLocality() because it depends on the current click count
+                    ++d_clickTracker.clickCount;
+                    if (d_clickTracker.clickCount > d_clickLimit)
+                        d_clickTracker.clickCount = 1;
+
+                    // Detect breaking of the multi-click sequence
+                    if (d_clickTracker.button != button || d_clickTracker.firstWindow != window || !checkClickLocality())
+                    {
+                        d_clickTracker.firstWindow = window;
+                        d_clickTracker.button = button;
+                        d_clickTracker.clickCount = 1;
+                    }
+
+                    if (d_clickTracker.clickCount == 1)
+                    {
+                        d_clickTracker.downPos = d_cursorPosition;
+                        d_clickTracker.downTime = std::chrono::steady_clock::now();
+                    }
+                }
+
+                d_clickTracker.lastWindow = window;
+            }
+
+            MouseButtonEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, button);
+            args.d_generatedClickEventOrder = d_clickTracker.clickCount;
+
+            // Activate a window with left click. Treat input as handled if the window changed its Z-order in response.
+            if (button == MouseButton::Left)
+                if (setActiveWindow(window, d_moveToFrontOnActivateAllowed && window->isRiseOnCursorActivationEnabled()))
+                    ++args.handled;
+
+            window->onMouseButtonDown(args);
+
+            if (args.handled)
+            {
+                // Start mouse down event auto-repeating if needed
+                if (window->isCursorAutoRepeatEnabled())
+                {
+                    if (d_autoRepeatMouseButton == MouseButton::Invalid)
+                        captureInput(window);
+
+                    if (d_autoRepeatMouseButton != button && d_captureWindow == window)
+                    {
+                        d_autoRepeatMouseButton = button;
+                        d_autoRepeatElapsed = 0.f;
+                        d_autoRepeating = false;
+                    }
+                }
+
+                return true;
+            }
+
+            // Consume input within non-input-transparent CEGUI geometry even when the window doesn't handle the event
+            consumed = true;
+        }
+
+        if (window == d_modalWindow || !window->isCursorInputPropagationEnabled())
+            break;
+
+        window = window->getParent();
+    }
+
+    return consumed;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::injectMouseButtonUp(MouseButton button)
+{
+    d_mouseButtons -= button;
+
+    if (d_tooltipWindow)
+    {
+        d_tooltipWindow->show(true);
+        d_tooltipTimer = 0.f;
+    }
+
+    // Stop auto-repeating and release capture caused by it
+    if (d_autoRepeatMouseButton != MouseButton::Invalid)
+        releaseInputCapture();
+
+    bool consumed = false;
+    bool clickSent = false;
+    Window* windowUnderCursor = nullptr;
+    auto window = getCursorTargetWindow(d_cursorPosition, false);
+    while (window)
+    {
+        if (!window->isCursorPassThroughEnabled())
+        {
+            // Check most of click generation conditions once
+            if (!consumed)
+            {
+                if (!d_clickLimit || d_clickTracker.button != button || !checkClickLocality())
+                {
+                    resetClickTracker();
+                }
+                else
+                {
+                    
+                    windowUnderCursor = d_rootWindow->getTargetChildAtPosition(d_cursorPosition);
+                    if (!windowUnderCursor)
+                        resetClickTracker();
+                }
+            }
+
+            MouseButtonEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, button);
+
+            // Send click events
+            // NB: clicks are generated only for mouse up happening over the same window
+            if (d_clickTracker.clickCount &&
+                !clickSent &&
+                windowUnderCursor && windowUnderCursor->isInHierarchyOf(window) &&
+                window->isInChain(d_clickTracker.firstWindow, d_clickTracker.lastWindow))
+            {
+                clickSent = true;
+                args.d_generatedClickEventOrder = d_clickTracker.clickCount;
+
+                // First process multi-clicks that have dedicated event handlers
+                switch (d_clickTracker.clickCount)
+                {
+                    case 2: window->onDoubleClick(args); break;
+                    case 3: window->onTripleClick(args); break;
+                }
+
+                // Then process single clicks. Windows that do not handle multi-clicks are taken a chance to process them as single clicks too.
+                if (!args.handled)
+                {
+                    window->onClick(args);
+
+                    // If a multi-click was processed as single, reset tracker to generate subsequent multi-clicks accordingly
+                    if (d_clickTracker.clickCount > 1)
+                    {
+                        d_clickTracker.clickCount = 1;
+                        d_clickTracker.downTime = std::chrono::steady_clock::now() - std::chrono::duration_cast<std::chrono::seconds>(std::chrono::duration<float>(d_multiClickTimeout));
+                    }
+                }
+            }
+
+            // Finally send mouse up event. Handling click also means handling mouse up, so we pass the same args.
+            window->onMouseButtonUp(args);
+
+            if (args.handled)
+            {
+                // Reset clicks if mouse up event was handled by another window
+                if (!clickSent)
+                    resetClickTracker();
+
+                return true;
+            }
+
+            // Consume input within non-input-transparent CEGUI geometry even when the window doesn't handle the event
+            consumed = true;
+        }
+
+        if (window == d_modalWindow || !window->isCursorInputPropagationEnabled())
+            break;
+
+        window = window->getParent();
+    }
+
+    // Reset clicks if mouse up event was not handled
+    resetClickTracker();
+
+    return consumed;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::injectMouseButtonClick(MouseButton button)
+{
+    auto window = getCursorTargetWindow(d_cursorPosition, false);
+    while (window)
+    {
+        MouseButtonEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, button);
+        window->onClick(args);
+        if (args.handled)
+            return true;
+
+        if (window == d_modalWindow || !window->isCursorInputPropagationEnabled())
+            break;
+
+        window = window->getParent();
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::injectMouseButtonDoubleClick(MouseButton button)
+{
+    auto window = getCursorTargetWindow(d_cursorPosition, false);
+    while (window)
+    {
+        MouseButtonEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, button);
+        window->onDoubleClick(args);
+        if (args.handled)
+            return true;
+
+        if (window == d_modalWindow || !window->isCursorInputPropagationEnabled())
+            break;
+
+        window = window->getParent();
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::injectMouseButtonTripleClick(MouseButton button)
+{
+    auto window = getCursorTargetWindow(d_cursorPosition, false);
+    while (window)
+    {
+        MouseButtonEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, button);
+        window->onTripleClick(args);
+        if (args.handled)
+            return true;
+
+        if (window == d_modalWindow || !window->isCursorInputPropagationEnabled())
+            break;
+
+        window = window->getParent();
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::injectKeyDown(Key::Scan scanCode)
+{
+    d_modifierKeys += ModifierFromScanCode(scanCode);
+
+    auto window = getInputTargetWindow();
+    while (window)
+    {
+        KeyEventArgs args(window, scanCode, d_modifierKeys);
+        window->onKeyDown(args);
+        if (args.handled)
+            return true;
+
+        if (window == d_modalWindow)
+            break;
+
+        window = window->getParent();
+    }
+
+    // Try to process an event in a window navigator
+    if (d_windowNavigator)
+    {
+        // Activate a window. Treat input as handled if the window changed its Z-order in response.
+        auto newWnd = d_windowNavigator->getWindow(d_activeWindow, scanCode, true, d_modifierKeys);
+        if (setActiveWindow(newWnd, d_moveToFrontOnActivateAllowed && newWnd && newWnd->isRiseOnCursorActivationEnabled()))
+            return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::injectKeyUp(Key::Scan scanCode)
+{
+    d_modifierKeys -= ModifierFromScanCode(scanCode);
+
+    auto window = getInputTargetWindow();
+    while (window)
+    {
+        KeyEventArgs args(window, scanCode, d_modifierKeys);
+        window->onKeyUp(args);
+        if (args.handled)
+            return true;
+
+        if (window == d_modalWindow)
+            break;
+
+        window = window->getParent();
+    }
+
+    // Try to process an event in a window navigator
+    if (d_windowNavigator)
+    {
+        // Activate a window. Treat input as handled if the window changed its Z-order in response.
+        auto newWnd = d_windowNavigator->getWindow(d_activeWindow, scanCode, false, d_modifierKeys);
+        if (setActiveWindow(newWnd, d_moveToFrontOnActivateAllowed && newWnd && newWnd->isRiseOnCursorActivationEnabled()))
+            return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::injectChar(char32_t codePoint)
+{
+    auto window = getInputTargetWindow();
+    while (window)
+    {
+        TextEventArgs args(window, codePoint);
+        window->onCharacter(args);
+        if (args.handled)
+            return true;
+
+        if (window == d_modalWindow)
+            break;
+
+        window = window->getParent();
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::initDefaultInputSemantics()
+{
+    d_keySemantics.clear();
+    d_keySemantics.push_back({ SemanticValue::GoDown, Key::Scan::ArrowDown, ModifierKeyRule::None() });
+    d_keySemantics.push_back({ SemanticValue::GoUp, Key::Scan::ArrowUp, ModifierKeyRule::None() });
+    d_keySemantics.push_back({ SemanticValue::GoToPreviousCharacter, Key::Scan::ArrowLeft, ModifierKeyRule::None() });
+    d_keySemantics.push_back({ SemanticValue::GoToNextCharacter, Key::Scan::ArrowRight, ModifierKeyRule::None() });
+    d_keySemantics.push_back({ SemanticValue::NavigateToNext, Key::Scan::Tab, ModifierKeyRule::None() });
+    d_keySemantics.push_back({ SemanticValue::NavigateToPrevious, Key::Scan::Tab, ModifierKeyRule().ctrl() });
+    d_keySemantics.push_back({ SemanticValue::DeletePreviousCharacter, Key::Scan::Backspace, ModifierKeyRule::None() });
+    d_keySemantics.push_back({ SemanticValue::DeleteNextCharacter, Key::Scan::DeleteKey, ModifierKeyRule::None() });
+    d_keySemantics.push_back({ SemanticValue::Confirm, Key::Scan::NumpadEnter, ModifierKeyRule::None() });
+    d_keySemantics.push_back({ SemanticValue::Confirm, Key::Scan::Return, ModifierKeyRule::None() });
+    d_keySemantics.push_back({ SemanticValue::GoToEndOfLine, Key::Scan::End, ModifierKeyRule::None() });
+    d_keySemantics.push_back({ SemanticValue::GoToStartOfLine, Key::Scan::Home, ModifierKeyRule::None() });
+    d_keySemantics.push_back({ SemanticValue::GoToNextPage, Key::Scan::PageDown, ModifierKeyRule::None() });
+    d_keySemantics.push_back({ SemanticValue::GoToPreviousPage, Key::Scan::PageUp, ModifierKeyRule::None() });
+    d_keySemantics.push_back({ SemanticValue::GoToPreviousWord, Key::Scan::ArrowLeft, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::GoToNextWord, Key::Scan::ArrowRight, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::GoToEndOfDocument, Key::Scan::End, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::GoToStartOfDocument, Key::Scan::Home, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::SelectAll, Key::Scan::A, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::Undo, Key::Scan::Backspace, ModifierKeyRule::OnlyAlt() });
+    d_keySemantics.push_back({ SemanticValue::Undo, Key::Scan::Z, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::Redo, Key::Scan::Y, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::Copy, Key::Scan::C, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::Paste, Key::Scan::V, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::Cut, Key::Scan::X, ModifierKeyRule::OnlyCtrl() });
+    d_keySemantics.push_back({ SemanticValue::SelectPreviousCharacter, Key::Scan::ArrowLeft, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectNextCharacter, Key::Scan::ArrowRight, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectUp, Key::Scan::ArrowUp, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectDown, Key::Scan::ArrowDown, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectToEndOfLine, Key::Scan::End, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectToStartOfLine, Key::Scan::Home, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectToPreviousPage, Key::Scan::PageUp, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectToNextPage, Key::Scan::PageDown, ModifierKeyRule::OnlyShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectPreviousWord, Key::Scan::ArrowLeft, ModifierKeyRule::OnlyCtrlShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectNextWord, Key::Scan::ArrowRight, ModifierKeyRule::OnlyCtrlShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectToEndOfDocument, Key::Scan::End, ModifierKeyRule::OnlyCtrlShift() });
+    d_keySemantics.push_back({ SemanticValue::SelectToStartOfDocument, Key::Scan::Home, ModifierKeyRule::OnlyCtrlShift() });
+    std::sort(d_keySemantics.begin(), d_keySemantics.end());
+
+    d_mouseSemantics.clear();
+    d_mouseSemantics.push_back({ SemanticValue::SelectCumulative, MouseButton::Left, ModifierKeyRule::OnlyCtrl() });
+    d_mouseSemantics.push_back({ SemanticValue::SelectRange, MouseButton::Left, ModifierKeyRule::OnlyShift() });
+    d_mouseSemantics.push_back({ SemanticValue::SelectWord, MouseButton::Left, ModifierKeyRule::OnlyShift(), {}, 2 });
+    d_mouseSemantics.push_back({ SemanticValue::SelectAll, MouseButton::Left, ModifierKeyRule::OnlyShift(), {}, 3 });
+    std::sort(d_mouseSemantics.begin(), d_mouseSemantics.end());
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::registerInputSemantic(const String& value, Key::Scan scanCode, ModifierKeyRule modifiers)
+{
+    KeySemanticMapping rec{ value, scanCode, modifiers };
+    d_keySemantics.insert(std::upper_bound(d_keySemantics.begin(), d_keySemantics.end(), rec), std::move(rec));
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::registerInputSemantic(const String& value, MouseButton button, ModifierKeyRule modifiers, int clickOrder, MouseButtons buttons)
+{
+    MouseButtonSemanticMapping rec{ value, button, modifiers, buttons, clickOrder };
+    d_mouseSemantics.insert(std::upper_bound(d_mouseSemantics.begin(), d_mouseSemantics.end(), rec), std::move(rec));
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::unregisterInputSemantic(const String& value)
+{
+    auto keyPair = std::equal_range(d_keySemantics.begin(), d_keySemantics.end(), value, KeySemanticMappingComp{});
+    d_keySemantics.erase(keyPair.first, keyPair.second);
+    auto mousePair = std::equal_range(d_mouseSemantics.begin(), d_mouseSemantics.end(), value, MouseButtonSemanticMappingComp{});
+    d_mouseSemantics.erase(mousePair.first, mousePair.second);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::unregisterAllInputSemantics()
+{
+    d_keySemantics.clear();
+    d_mouseSemantics.clear();
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::isInputSemantic(const String& value, const KeyEventArgs& args) const
+{
+    auto pair = std::equal_range(d_keySemantics.cbegin(), d_keySemantics.cend(), value, KeySemanticMappingComp{});
+    for (auto it = pair.first; it != pair.second; ++it)
+    {
+        const auto& rule = *it;
+        if (rule.scanCode == args.d_key && rule.modifiers.match(args.d_modifiers))
+            return true;
+    }
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::isInputSemantic(const String& value, const MouseButtonEventArgs& args) const
+{
+    auto pair = std::equal_range(d_mouseSemantics.cbegin(), d_mouseSemantics.cend(), value, MouseButtonSemanticMappingComp{});
+    for (auto it = pair.first; it != pair.second; ++it)
+    {
+        const auto& rule = *it;
+        if (rule.button == args.d_button &&
+            rule.buttons == args.d_buttons &&
+            rule.clickOrder == args.d_generatedClickEventOrder &&
+            rule.modifiers.match(args.d_modifiers))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 //----------------------------------------------------------------------------//
@@ -877,9 +1406,75 @@ void GUIContext::setRenderTarget(RenderTarget& target)
 
     EventArgs area_args;
     areaChangedHandler(area_args);
+}
 
-    GUIContextRenderTargetEventArgs change_args(this, old_target);
-    fireEvent(EventRenderTargetChanged, change_args, EventNamespace);
+//----------------------------------------------------------------------------//
+void GUIContext::setCursorImage(const Image* image)
+{
+    if (image == d_cursorImage)
+        return;
+
+    d_cursorImage = image;
+    d_cursorDirty = true;
+
+    // Tooltip tries not to occlude the cursor
+    positionTooltip();
+
+    GUIContextEventArgs args(this);
+    fireEvent(EventCursorImageChanged, args, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setDefaultCursorImage(const Image* image)
+{
+    if (image == d_defaultCursorImage)
+        return;
+
+    // update the current image if it is the default image
+    if (d_cursorImage == d_defaultCursorImage)
+    {
+        auto window = getWindowContainingCursor();
+        if (!window || !window->getCursor())
+        {
+            setCursorImage(image);
+        }
+    }
+
+    d_defaultCursorImage = image;
+    d_cursorDirty = true;
+
+    GUIContextEventArgs args(this);
+    fireEvent(EventDefaultCursorImageChanged, args, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setDefaultCursorImage(const String& name)
+{
+    // TODO: remove this method to reduce dependencies, use ImageManager in the calling code!
+    setDefaultCursorImage(&ImageManager::getSingleton().get(name));
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setCursorSize(float w, float h)
+{
+    d_cursorSize.d_width = w;
+    d_cursorSize.d_height = h;
+    d_cursorDirty = true;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setCursorPosition(const glm::vec2& position)
+{
+    d_cursorPosition = CoordConverter::asAbsolute(d_cursorConstraints, d_surfaceSize).clampPointToRect(position);
+    for (auto currentBuffer : d_cursorGeometry)
+        currentBuffer->setTranslation(glm::vec3(d_cursorPosition, 0));
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setCursorConstraintArea(const URect& area)
+{
+    d_cursorConstraints = area;
+    d_cursorPosition = CoordConverter::asAbsolute(d_cursorConstraints, d_surfaceSize).clampPointToRect(d_cursorPosition);
 }
 
 //----------------------------------------------------------------------------//
@@ -899,7 +1494,7 @@ void GUIContext::setDefaultFont(Font* font)
     if (d_rootWindow)
         d_rootWindow->notifyDefaultFontChanged();
 
-    EventArgs args;
+    GUIContextEventArgs args(this);
     fireEvent(EventDefaultFontChanged, args, EventNamespace);
 }
 
@@ -913,190 +1508,6 @@ Font* GUIContext::getDefaultFont() const
     const auto& registeredFonts = FontManager::getSingleton().getRegisteredFonts();
     auto iter = registeredFonts.cbegin();
     return (iter != registeredFonts.end()) ? iter->second : nullptr;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::initializeSemanticEventHandlers()
-{
-    d_semanticEventHandlers.insert(
-        std::make_pair(SemanticValue::Undo,
-                       new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-                           &GUIContext::handleUndoRequest, this)));
-    d_semanticEventHandlers.insert(
-        std::make_pair(SemanticValue::Redo,
-                       new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-                           &GUIContext::handleRedoRequest, this)));
-
-    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::Cut,
-        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-            &GUIContext::handleCutRequest, this)));
-    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::Copy,
-        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-            &GUIContext::handleCopyRequest, this)));
-    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::Paste,
-        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-            &GUIContext::handlePasteRequest, this)));
-    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::VerticalScroll,
-        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-            &GUIContext::handleScrollEvent, this)));
-
-    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::CursorActivate,
-        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-            &GUIContext::handleCursorActivateEvent, this)));
-    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::CursorPressHold,
-        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-            &GUIContext::handleCursorPressHoldEvent, this)));
-    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::SelectWord,
-        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-            &GUIContext::handleSelectWord, this)));
-    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::SelectAll,
-        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-            &GUIContext::handleSelectAll, this)));
-    d_semanticEventHandlers.insert(std::make_pair(SemanticValue::CursorMove,
-        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
-            &GUIContext::handleCursorMoveEvent, this)));
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::handleCursorPressHoldEvent(const SemanticInputEvent& event)
-{
-    auto window = getTargetWindow(d_cursor.getPosition(), false);
-    if (!window)
-        return false;
-
-    if (d_tooltipWindow)
-        d_tooltipWindow->hide(true);
-
-    CursorInputEventArgs ciea(window);
-    ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
-    ciea.source = event.d_payload.source;
-
-    // Activate a window. Treat as a handling action if there were changes in Z-order.
-    if (ciea.source == CursorInputSource::Left)
-        if (setActiveWindow(window, d_moveToFrontOnActivateAllowed && window->isRiseOnCursorActivationEnabled()))
-            ++ciea.handled;
-
-    window->onCursorPressHold(ciea);
-
-    if (window->isCursorAutoRepeatEnabled())
-    {
-        if (d_repeatPointerSource == CursorInputSource::NotSpecified)
-            captureInput(window);
-
-        if (d_repeatPointerSource != ciea.source && d_captureWindow == window)
-        {
-            d_repeatPointerSource = ciea.source;
-            d_repeatElapsed = 0.f;
-            d_repeating = false;
-        }
-    }
-
-    return ciea.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::handleCursorActivateEvent(const SemanticInputEvent& event)
-{
-    auto window = getTargetWindow(d_cursor.getPosition(), false);
-    if (!window)
-        return false;
-
-    if (d_tooltipWindow)
-    {
-        d_tooltipWindow->show(true);
-        d_tooltipTimer = 0.f;
-    }
-
-    if (d_repeatPointerSource != CursorInputSource::NotSpecified)
-        releaseInputCapture(true, window);
-
-    CursorInputEventArgs ciea(window);
-    ciea.position = ciea.window->getUnprojectedPosition(d_cursor.getPosition());
-    ciea.source = event.d_payload.source;
-    window->onCursorActivate(ciea);
-    return ciea.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::handleSelectWord(const SemanticInputEvent& event)
-{
-    auto window = getTargetWindow(d_cursor.getPosition(), false);
-    if (!window)
-        return false;
-
-    CursorInputEventArgs ciea(window);
-    ciea.position = window->getUnprojectedPosition(d_cursor.getPosition());
-    ciea.source = event.d_payload.source;
-    window->onSelectWord(ciea);
-    return ciea.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::handleSelectAll(const SemanticInputEvent& event)
-{
-    auto window = getTargetWindow(d_cursor.getPosition(), false);
-    if (!window)
-        return false;
-
-    CursorInputEventArgs ciea(window);
-    ciea.position = window->getUnprojectedPosition(d_cursor.getPosition());
-    ciea.source = event.d_payload.source;
-    window->onSelectAll(ciea);
-    return ciea.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
-{
-    auto window = getTargetWindow(d_cursor.getPosition(), false);
-    if (!window)
-        return false;
-
-    CursorInputEventArgs ciea(window);
-    ciea.position = window->getUnprojectedPosition(d_cursor.getPosition());
-    ciea.scroll = event.d_payload.single;
-    window->onScroll(ciea);
-    return ciea.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::handleCursorMoveEvent(const SemanticInputEvent& event)
-{
-    const glm::vec2 newPos(event.d_payload.array[0], event.d_payload.array[1]);
-    const glm::vec2 moveDelta = newPos - d_cursor.getPosition();
-
-    // No movement means no event
-    if (moveDelta.x == 0 && moveDelta.y == 0)
-        return false;
-
-    // Move cursor to new position. Constraining is possible inside.
-    d_cursor.setPosition(newPos);
-
-    // Delay tooltip appearance
-    if (!d_tooltipWindow)
-        d_tooltipTimer = 0.f;
-    else if (d_tooltipFollowsCursor)
-        positionTooltip();
-
-    // Update window under cursor and use it as an event receiver
-    d_windowContainingCursorIsUpToDate = false;
-    auto window = getWindowContainingCursor();
-    if (!window)
-        return false;
-
-    CursorInputEventArgs ciea(window);
-    ciea.moveDelta = moveDelta;
-    ciea.state = d_cursorsState;
-    ciea.position = window->getUnprojectedPosition(d_cursor.getPosition());
-    window->onCursorMove(ciea);
-    return ciea.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::handleCursorLeave(const SemanticInputEvent&)
-{
-    updateWindowContainingCursor_impl(nullptr);
-    return true;
 }
 
 }

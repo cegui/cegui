@@ -26,12 +26,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIInputEvent_h_
-#define _CEGUIInputEvent_h_
+#pragma once
 
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/Sizef.h"
-#include "CEGUI/SemanticInputEvent.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -40,6 +38,65 @@
 
 namespace CEGUI
 {
+/*!
+\brief
+    Helper class for modern C++ enum flags.
+    Use needShift if your enum values are zero-based indices (0, 1, 2, 3, 4 ...).
+    Leave needShift disabled if your enum values are already single bit masks (0x0, 0x1, 0x2, 0x4, 0x8 ...).
+*/
+template<typename T, bool needShift = false, typename mask_t = std::underlying_type_t<T>, class = typename std::enable_if_t<std::is_enum_v<T>>>
+struct CEGUIEXPORT Flags
+{
+    static inline constexpr mask_t bit(T flag)
+    {
+        // TODO: C++17
+        if /*constexpr*/ (needShift)
+            return (1 << static_cast<mask_t>(flag));
+        else
+            return static_cast<mask_t>(flag);
+    }
+
+    constexpr Flags() = default;
+    constexpr Flags(T flag) : d_mask(bit(flag)) {}
+    constexpr Flags(mask_t mask) : d_mask(mask) {}
+    constexpr Flags(std::initializer_list<T> list)
+    {
+        d_mask = 0;
+        for (T flag : list)
+            d_mask |= bit(flag);
+    }
+
+    // TODO: C++17, and need to require all Args to be of type T!
+    //template<typename... Args>
+    //Flags(Args&&... args) : d_mask((args | ...)) {}
+
+    void reset() { d_mask = 0; }
+    mask_t getMask() const { return d_mask; }
+    bool has(T flag) const { return d_mask & bit(flag); }
+    bool hasAny(Flags mask) const { return d_mask & mask.d_mask; }
+    bool hasAll(Flags mask) const { return (d_mask & mask.d_mask) == mask.d_mask; }
+
+    operator bool() const { return d_mask != 0; }
+    operator mask_t() const { return d_mask; }
+
+    bool operator ==(Flags other) const { return d_mask == other.d_mask; }
+    bool operator !=(Flags other) const { return !(*this == other); }
+    bool operator &(T flag) const { return has(flag); }
+    Flags operator &(Flags other) const { return Flags(d_mask & other.d_mask); }
+    Flags operator |(T flag) const { return Flags(d_mask | bit(flag)); }
+    Flags operator |(Flags other) const { return Flags(d_mask | other.d_mask); }
+    Flags operator +(T flag) const { return Flags(d_mask | bit(flag)); }
+    Flags& operator +=(T flag) { d_mask |= bit(flag); return *this; }
+    Flags operator -(T flag) const { return Flags(d_mask & ~bit(flag)); }
+    Flags& operator -=(T flag) { d_mask &= ~bit(flag); return *this; }
+    Flags operator +(Flags other) const { return Flags(d_mask | other.d_mask); }
+    Flags& operator +=(Flags other) { d_mask |= other.d_mask; return *this; }
+    Flags operator -(Flags other) const { return Flags(d_mask & ~other.d_mask); }
+    Flags& operator -=(Flags other) { d_mask &= ~other.d_mask; return *this; }
+
+    mask_t d_mask = 0;
+};
+
 /*!
 \brief
 	struct to give scope to scan code enumeration.
@@ -205,7 +262,7 @@ struct CEGUIEXPORT Key
 enum class MouseButton : int
 {
     //! The left mouse button.
-    Left,
+    Left = 0,
     //! The right mouse button.
     Right,
     //! The middle mouse button.
@@ -219,6 +276,116 @@ enum class MouseButton : int
     //! Value set for no mouse button.  NB: This is not 0, do not assume!
     Invalid
 };
+using MouseButtons = Flags<MouseButton, true>;
+
+//! \brief Enumeration of keyboard modifier keys
+enum class ModifierKey : int
+{
+    None       = 0x00,
+    LeftShift  = 0x01,
+    LeftCtrl   = 0x02,
+    LeftAlt    = 0x04,
+    RightShift = 0x08,
+    RightCtrl  = 0x10,
+    RightAlt   = 0x20
+};
+
+//! \brief Helper class for holding and checking modifier key pressed state
+struct CEGUIEXPORT ModifierKeys : public Flags<ModifierKey>
+{
+    // TODO: C++17
+    //static inline constexpr ModifierKeys Shift{ModifierKey::LeftShift | ModifierKey::RightShift}; etc
+    // return hasAny(ModifierKeys::Shift);
+    static ModifierKeys Shift() { return { ModifierKey::LeftShift, ModifierKey::RightShift }; }
+    static ModifierKeys Ctrl() { return { ModifierKey::LeftCtrl, ModifierKey::RightCtrl }; }
+    static ModifierKeys Alt() { return { ModifierKey::LeftAlt, ModifierKey::RightAlt }; }
+
+    using Flags<ModifierKey>::Flags; // Inherit all constructors
+
+    bool hasShift() const { return hasAny(Shift()); }
+    bool hasCtrl() const { return hasAny(Ctrl()); }
+    bool hasAlt() const { return hasAny(Alt()); }
+};
+
+//! \brief A flexible rule that can be matched with ModifierKeys state to check for a certain combination
+class CEGUIEXPORT ModifierKeyRule
+{
+public:
+
+    static ModifierKeyRule None() { return ModifierKeyRule().noShift().noCtrl().noAlt(); }
+    static ModifierKeyRule OnlyShift() { return ModifierKeyRule().shift().noCtrl().noAlt(); }
+    static ModifierKeyRule OnlyCtrl() { return ModifierKeyRule().noShift().ctrl().noAlt(); }
+    static ModifierKeyRule OnlyAlt() { return ModifierKeyRule().noShift().noCtrl().alt(); }
+    static ModifierKeyRule OnlyCtrlShift() { return ModifierKeyRule().shift().ctrl().noAlt(); }
+
+    ModifierKeyRule& leftShift() { set(ModifierKey::LeftShift, false); return *this; }
+    ModifierKeyRule& rightShift() { set(ModifierKey::RightShift, false); return *this; }
+    ModifierKeyRule& shift() { set(ModifierKey::LeftShift, false); set(ModifierKey::RightShift, false); return *this; }
+    ModifierKeyRule& noLeftShift() { set(ModifierKey::LeftShift, true); return *this; }
+    ModifierKeyRule& noRightShift() { set(ModifierKey::RightShift, true); return *this; }
+    ModifierKeyRule& noShift() { set(ModifierKey::LeftShift, true); set(ModifierKey::RightShift, true); return *this; }
+
+    ModifierKeyRule& leftCtrl() { set(ModifierKey::LeftCtrl, false); return *this; }
+    ModifierKeyRule& rightCtrl() { set(ModifierKey::RightCtrl, false); return *this; }
+    ModifierKeyRule& ctrl() { set(ModifierKey::LeftCtrl, false); set(ModifierKey::RightCtrl, false); return *this; }
+    ModifierKeyRule& noLeftCtrl() { set(ModifierKey::LeftCtrl, true); return *this; }
+    ModifierKeyRule& noRightCtrl() { set(ModifierKey::RightCtrl, true); return *this; }
+    ModifierKeyRule& noCtrl() { set(ModifierKey::LeftCtrl, true); set(ModifierKey::RightCtrl, true); return *this; }
+
+    ModifierKeyRule& leftAlt() { set(ModifierKey::LeftAlt, false); return *this; }
+    ModifierKeyRule& rightAlt() { set(ModifierKey::RightAlt, false); return *this; }
+    ModifierKeyRule& alt() { set(ModifierKey::LeftAlt, false); set(ModifierKey::RightAlt, false); return *this; }
+    ModifierKeyRule& noLeftAlt() { set(ModifierKey::LeftAlt, true); return *this; }
+    ModifierKeyRule& noRightAlt() { set(ModifierKey::RightAlt, true); return *this; }
+    ModifierKeyRule& noAlt() { set(ModifierKey::LeftAlt, true); set(ModifierKey::RightAlt, true); return *this; }
+
+    bool match(ModifierKeys keys) const
+    {
+        // Set 1 to every bit where the rule was violated - xor to find differences and mask out insignificant ones
+        ModifierKeys violations((keys.getMask() ^ d_set.getMask()) & d_map.getMask());
+
+        // Handle the fact that 'key' rule without specifying left or right means 'any', not 'all' like 'noKey' does
+        if (violations)
+        {
+            if (d_set.hasAll(ModifierKeys::Shift()) && !violations.hasAll(ModifierKeys::Shift()))
+                violations -= ModifierKeys::Shift();
+            if (d_set.hasAll(ModifierKeys::Ctrl()) && !violations.hasAll(ModifierKeys::Ctrl()))
+                violations -= ModifierKeys::Ctrl();
+            if (d_set.hasAll(ModifierKeys::Alt()) && !violations.hasAll(ModifierKeys::Alt()))
+                violations -= ModifierKeys::Alt();
+        }
+
+        return !violations;
+    }
+
+protected:
+
+    void set(ModifierKey key, bool deny)
+    {
+        d_map += key;
+        if (deny)
+            d_set -= key;
+        else
+            d_set += key;
+    }
+
+    ModifierKeys d_map = 0; // ModifierKey bits that need to be checked
+    ModifierKeys d_set = 0; // Whether the corresponding key should be pressed or not
+};
+
+static inline ModifierKey ModifierFromScanCode(Key::Scan scanCode)
+{
+    switch (scanCode)
+    {
+        case Key::Scan::LeftShift: return ModifierKey::LeftShift;
+        case Key::Scan::RightShift: return ModifierKey::RightShift;
+        case Key::Scan::LeftAlt: return ModifierKey::LeftAlt;
+        case Key::Scan::RightAlt: return ModifierKey::RightAlt;
+        case Key::Scan::LeftControl: return ModifierKey::LeftCtrl;
+        case Key::Scan::RightControl: return ModifierKey::RightCtrl;
+        default: return ModifierKey::None;
+    }
+}
 
 /*!
 \brief
@@ -231,23 +398,6 @@ public:
 	WindowEventArgs(Window* wnd) : window(wnd) {}
 
 	Window*	window;		//!< pointer to a Window object of relevance to the event.
-};
-
-/*!
-\brief
-    Event arguments used by semantic input event handlers
-*/
-class CEGUIEXPORT SemanticEventArgs : public WindowEventArgs
-{
-public:
-    SemanticEventArgs(Window* wnd)
-        : WindowEventArgs(wnd)
-        , d_semanticValue(SemanticValue::NoValue)
-        , d_payload()
-    {}
-
-    SemanticValue d_semanticValue;  //!< The type of the semantic value
-    SemanticPayload d_payload;      //!< The payload of the event
 };
 
 /*!
@@ -267,39 +417,105 @@ public:
 
 /*!
 \brief
-    EventArgs based class that is used for objects passed to input event handlers
-    concerning cursor input.
+    Base class for objects passed to input event handlers concerning cursor input.
 */
 class CEGUIEXPORT CursorInputEventArgs : public WindowEventArgs
 {
 public:
-    CursorInputEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
 
-    //!< holds current cursor position.
-    glm::vec2 position;
-    //!< holds variation of cursor position from last cursor input
-    glm::vec2 moveDelta = glm::vec2(0.f, 0.f);
-    // one of the CursorInputSource enumerated values describing the source causing the event
-    CursorInputSource source = CursorInputSource::NotSpecified;
-    // holds the amount of the scroll
-    float scroll = 0.f;
+    CursorInputEventArgs(Window* wnd, const glm::vec2& globalPos, MouseButtons buttons = {}, ModifierKeys modifiers = {});
 
-    // current state (hold: true/false) of cursors sources. Addressable by members of \ref CursorInputSource
-    CursorsState state;
+    //! Current cursor position in screen coordinates
+    glm::vec2 d_globalPos;
+    //! Current cursor position in a rendering surface coordinates
+    glm::vec2 d_surfacePos;
+    //! Current cursor position in local coordinates of the window
+    glm::vec2 d_localPos;
+    //! State of mouse buttons at the moment of sending the event. See MouseButton.
+    MouseButtons d_buttons;
+    //! State of modifier keys at the moment of sending the event. See ModifierKey.
+    ModifierKeys d_modifiers;
+};
+
+/*!
+\brief
+    Cursor input event args used for cursor move events.
+*/
+class CEGUIEXPORT CursorMoveEventArgs : public CursorInputEventArgs
+{
+public:
+
+    CursorMoveEventArgs(const CursorInputEventArgs& e, const glm::vec2& moveDelta)
+        : CursorInputEventArgs(e), d_moveDelta(moveDelta)
+    {}
+
+    CursorMoveEventArgs(Window* wnd, const glm::vec2& globalPos, MouseButtons buttons, ModifierKeys modifiers, const glm::vec2& moveDelta)
+        : CursorInputEventArgs(wnd, globalPos, buttons, modifiers), d_moveDelta(moveDelta)
+    {}
+
+    //! Variation of cursor position from last cursor input
+    glm::vec2 d_moveDelta;
+};
+
+/*!
+\brief
+    Cursor input event args used for mouse button state change events.
+*/
+class CEGUIEXPORT MouseButtonEventArgs : public CursorInputEventArgs
+{
+public:
+
+    MouseButtonEventArgs(Window* wnd, const glm::vec2& globalPos, MouseButtons buttons, ModifierKeys modifiers, MouseButton button, int clickEventOrder = 0)
+        : CursorInputEventArgs(wnd, globalPos, buttons, modifiers), d_button(button), d_generatedClickEventOrder(clickEventOrder)
+    {}
+
+    //! Mouse button that triggered this event
+    MouseButton d_button = MouseButton::Invalid;
+    //! An order of click generated (typically 1 to 3, or 0 for no click event)
+    int d_generatedClickEventOrder = 0;
+};
+
+/*!
+\brief
+    Cursor input event args used for scroll events.
+*/
+class CEGUIEXPORT ScrollEventArgs : public CursorInputEventArgs
+{
+public:
+
+    ScrollEventArgs(Window* wnd, const glm::vec2& globalPos, MouseButtons buttons, ModifierKeys modifiers, float delta)
+        : CursorInputEventArgs(wnd, globalPos, buttons, modifiers), d_delta(delta)
+    {}
+
+    //! Amount of the scroll
+    float d_delta = 0.f;
+};
+
+/*!
+\brief
+    EventArgs based class used for certain drag/drop notifications
+*/
+class CEGUIEXPORT DragDropEventArgs : public WindowEventArgs
+{
+public:
+    DragDropEventArgs(Window* wnd, DragContainer* dragDropItem = nullptr) : WindowEventArgs(wnd), d_dragDropItem(dragDropItem) {}
+    DragContainer* d_dragDropItem = nullptr; //!< pointer to the DragContainer window being dragged / dropped.
 };
 
 /*!
 \brief
     EventArgs based class that is used for objects passed to input event handlers
-    concerning cursor events.
+    concerning text input.
 */
-class CEGUIEXPORT CursorEventArgs : public EventArgs
+class CEGUIEXPORT KeyEventArgs : public WindowEventArgs
 {
 public:
-    CursorEventArgs(Cursor* cursor) : d_cursor(cursor), d_image(nullptr) {}
+    KeyEventArgs(Window* wnd, Key::Scan key, ModifierKeys modifiers = {}) : WindowEventArgs(wnd), d_key(key), d_modifiers(modifiers) {}
 
-    Cursor* d_cursor;  //!< pointer to a Cursor object of relevance to the event.
-    const Image* d_image; //!< pointer to an Image object of relevance to the event.
+    //! CEGUI code of the key that triggered this event
+    Key::Scan d_key = Key::Scan::Unknown;
+    //! State of modifier keys at the moment of sending the event. See ModifierKey.
+    ModifierKeys d_modifiers;
 };
 
 /*!
@@ -310,7 +526,7 @@ public:
 class CEGUIEXPORT TextEventArgs : public WindowEventArgs
 {
 public:
-	TextEventArgs(Window* wnd) : WindowEventArgs(wnd), d_character(0) {}
+	TextEventArgs(Window* wnd, char32_t character = 0) : WindowEventArgs(wnd), d_character(character) {}
 
     //! char32_t codepoint representing the character of the text event.
 	char32_t d_character; 
@@ -331,26 +547,13 @@ public:
 
 /*!
 \brief
-	EventArgs based class used for certain drag/drop notifications
-*/
-class CEGUIEXPORT DragDropEventArgs : public WindowEventArgs
-{
-public:
-	DragDropEventArgs(Window* wnd) : WindowEventArgs(wnd), dragDropItem(nullptr) {}
-	DragContainer*	dragDropItem; //!< pointer to the DragContainer window being dragged / dropped.
-};
-
-/*!
-\brief
     EventArgs based class that is used for notifications regarding the main
     display.
 */
 class CEGUIEXPORT DisplayEventArgs : public EventArgs
 {
 public:
-    DisplayEventArgs(const Sizef& sz):
-        size(sz)
-    {}
+    DisplayEventArgs(const Sizef& sz): size(sz) {}
 
     //! current / new size of the display.
     Sizef size;
@@ -375,18 +578,99 @@ public:
 class CEGUIEXPORT FontEventArgs : public EventArgs
 {
 public:
-    FontEventArgs(Font* font) :
-       font(font)
-    {}
+    FontEventArgs(Font* font) : font(font) {}
 
     //! Pointer to the font object related to the event notification.
     Font* font;
 };
+
+struct CEGUIEXPORT KeySemanticMapping
+{
+    // TODO StringAtom!
+    String value;
+    Key::Scan scanCode = Key::Scan::Unknown;
+    ModifierKeyRule modifiers;
+
+    bool operator <(const KeySemanticMapping& other) const { return value < other.value; }
+};
+
+// TODO StringAtom!
+struct CEGUIEXPORT KeySemanticMappingComp
+{
+    bool operator() (const KeySemanticMapping& s, const String& value) const { return s.value < value; }
+    bool operator() (const String& value, const KeySemanticMapping& s) const { return value < s.value; }
+};
+
+struct CEGUIEXPORT MouseButtonSemanticMapping
+{
+    // TODO StringAtom!
+    String value;
+    MouseButton button = MouseButton::Invalid;
+    ModifierKeyRule modifiers;
+    MouseButtons buttons;
+    int clickOrder = 0;
+
+    bool operator <(const MouseButtonSemanticMapping& other) const { return value < other.value; }
+};
+
+// TODO StringAtom!
+struct CEGUIEXPORT MouseButtonSemanticMappingComp
+{
+    bool operator() (const MouseButtonSemanticMapping& s, const String& value) const { return s.value < value; }
+    bool operator() (const String& value, const MouseButtonSemanticMapping& s) const { return value < s.value; }
+};
+
+//! \brief Predefined semantics that can be associated with specific input operations.
+namespace SemanticValue
+{
+    // TODO StringAtom!
+    extern const String CEGUIEXPORT GoToPreviousCharacter;
+    extern const String CEGUIEXPORT GoToNextCharacter;
+    extern const String CEGUIEXPORT GoToPreviousWord;
+    extern const String CEGUIEXPORT GoToNextWord;
+    extern const String CEGUIEXPORT GoToStartOfLine;
+    extern const String CEGUIEXPORT GoToEndOfLine;
+    extern const String CEGUIEXPORT GoToStartOfDocument;
+    extern const String CEGUIEXPORT GoToEndOfDocument;
+    extern const String CEGUIEXPORT GoToNextPage;
+    extern const String CEGUIEXPORT GoToPreviousPage;
+    extern const String CEGUIEXPORT GoDown;
+    extern const String CEGUIEXPORT GoUp;
+
+    extern const String CEGUIEXPORT SelectRange;
+    extern const String CEGUIEXPORT SelectCumulative;
+    extern const String CEGUIEXPORT SelectWord;
+    extern const String CEGUIEXPORT SelectAll;
+    extern const String CEGUIEXPORT SelectPreviousCharacter;
+    extern const String CEGUIEXPORT SelectNextCharacter;
+    extern const String CEGUIEXPORT SelectPreviousWord;
+    extern const String CEGUIEXPORT SelectNextWord;
+    extern const String CEGUIEXPORT SelectToStartOfLine;
+    extern const String CEGUIEXPORT SelectToEndOfLine;
+    extern const String CEGUIEXPORT SelectToStartOfDocument;
+    extern const String CEGUIEXPORT SelectToEndOfDocument;
+    extern const String CEGUIEXPORT SelectToNextPage;
+    extern const String CEGUIEXPORT SelectToPreviousPage;
+    extern const String CEGUIEXPORT SelectNextPage;
+    extern const String CEGUIEXPORT SelectPreviousPage;
+    extern const String CEGUIEXPORT SelectUp;
+    extern const String CEGUIEXPORT SelectDown;
+
+    extern const String CEGUIEXPORT DeleteNextCharacter;
+    extern const String CEGUIEXPORT DeletePreviousCharacter;
+    extern const String CEGUIEXPORT Confirm;
+    extern const String CEGUIEXPORT Back;
+    extern const String CEGUIEXPORT Undo;
+    extern const String CEGUIEXPORT Redo;
+    extern const String CEGUIEXPORT Cut;
+    extern const String CEGUIEXPORT Copy;
+    extern const String CEGUIEXPORT Paste;
+    extern const String CEGUIEXPORT NavigateToNext;
+    extern const String CEGUIEXPORT NavigateToPrevious;
+}
 
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)
 #endif
-
-#endif	// end of guard _CEGUIInputEvent_h_

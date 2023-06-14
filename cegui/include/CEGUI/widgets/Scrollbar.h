@@ -126,6 +126,9 @@ public:
     //! Widget name for the decrease button component.
     static const String DecreaseButtonName;
 
+    //! Standard processing logic for up to two scrollbars (vert & horz) in one host window
+    static bool standardProcessing(Scrollbar* vert, Scrollbar* horz, float delta, bool horzOnly = false);
+
     /*!
     \brief
         Return the size of the document or data.
@@ -546,8 +549,8 @@ protected:
     virtual void onScrollConfigChanged(WindowEventArgs& e);
 
     // Overridden event handlers
-    void onCursorPressHold(CursorInputEventArgs& e) override;
-    void onScroll(CursorInputEventArgs& e) override;
+    void onMouseButtonDown(MouseButtonEventArgs& e) override;
+    void onScroll(ScrollEventArgs& e) override;
 
     // base class overrides
     void banPropertiesForAutoWindow() override;

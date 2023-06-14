@@ -51,8 +51,7 @@ public:
 
     virtual void deinitialise();
 
-    virtual CEGUI::GUIContext*  getGuiContext();
-    virtual CEGUI::InputAggregator* getInputAggregator();
+    virtual CEGUI::GUIContext* getGuiContext();
     virtual void handleNewWindowSize(int width, int height);
 
     void setTextureTargetImageArea(float width, float height);
@@ -77,26 +76,21 @@ public:
 
 protected:
     //! The Sample we are wrapping in this class
-    Sample*                 d_sample;
+    Sample*                 d_sample = nullptr;
     //! A string containing a list of files used for the sample
     CEGUI::String           d_usedFilesString;
     //! The root window of the sample
-    CEGUI::Window*          d_sampleWindow;
+    CEGUI::Window*          d_sampleWindow = nullptr;
     //! The GUIContext created to contain the sample root
-    CEGUI::GUIContext*      d_guiContext;
-    //! The input aggregator which is created for the GUIContext
-    CEGUI::InputAggregator* d_inputAggregator;
-    //! A bool determining if the input aggregator of this sample is the default one or a manually created one
-    bool                    d_nonDefaultInputAggregator;
+    CEGUI::GUIContext*      d_guiContext = nullptr;
     //! The texture target onto which the Sample will be rendered
-    CEGUI::TextureTarget*   d_textureTarget;
+    CEGUI::TextureTarget*   d_textureTarget = nullptr;
     //! The Bitmap image which is used to display the Sample as a rendered preview in connection with the texture target
-    CEGUI::BitmapImage*     d_textureTargetImage;
+    CEGUI::BitmapImage*     d_textureTargetImage = nullptr;
 
 private:
     void initialiseSamplePreviewRenderTarget(float width, float height);
     void initialiseSample();
-    void initialiseInputAggregator();
 };
 
 #endif
