@@ -409,6 +409,8 @@ void OgreTexture::blitFromMemory(const void* sourceData, const Rectf& area)
     dst.y = static_cast<Ogre::uint32>( area.top() );
     dst.width = width;
     dst.height = height;
+    dst.depth = 1u;
+    dst.numSlices = 1u;
     stagingTexture->upload( box, d_texture, 0, nullptr, &dst );
 
     // remove the staging texture and notify texture is prepared
