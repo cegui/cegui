@@ -45,7 +45,7 @@ namespace CEGUI
     Use needShift if your enum values are zero-based indices (0, 1, 2, 3, 4 ...).
     Leave needShift disabled if your enum values are already single bit masks (0x0, 0x1, 0x2, 0x4, 0x8 ...).
 */
-template<typename T, bool needShift = false, typename mask_t = std::underlying_type_t<T>, class = typename std::enable_if_t<std::is_enum_v<T>>>
+template<typename T, bool needShift = false, typename mask_t = std::underlying_type_t<T>, class = typename std::enable_if_t<std::is_enum<T>::value>>
 struct CEGUIEXPORT Flags
 {
     static inline constexpr mask_t bit(T flag)
