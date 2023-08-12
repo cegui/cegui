@@ -30,6 +30,7 @@
 
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/Sizef.h"
+#include <type_traits>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
