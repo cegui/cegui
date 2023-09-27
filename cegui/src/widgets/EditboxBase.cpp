@@ -168,7 +168,7 @@ void EditboxBase::setTextMaskingEnabled(bool setting)
 
     d_textMaskingEnabled = setting;
 
-    d_renderedTextDirty = false;
+    d_renderedTextDirty = true;
     invalidate();
 
     WindowEventArgs args(this);
