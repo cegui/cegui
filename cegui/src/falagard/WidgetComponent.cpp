@@ -30,6 +30,7 @@
 #include "CEGUI/Window.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/XMLSerializer.h"
+#include <algorithm>
 
 namespace CEGUI
 {
