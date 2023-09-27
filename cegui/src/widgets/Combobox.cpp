@@ -449,7 +449,10 @@ void Combobox::onDropListDisplayed(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Combobox::onDroplistRemoved(WindowEventArgs& e)
 {
-    getGUIContext().updateWindowContainingCursor();
+    GUIContext* pContext = getGUIContextPtr();
+    if (pContext)
+        pContext->updateWindowContainingCursor();
+
     getPushButton()->setPushedState(false);
 	fireEvent(EventDropListRemoved, e, EventNamespace);
 }
