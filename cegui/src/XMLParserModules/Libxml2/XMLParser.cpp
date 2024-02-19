@@ -109,7 +109,11 @@ void LibxmlParser::parseXML(XMLHandler& handler,
 
     if (!doc)
     {
+#if LIBXML_VERSION >= 21200
+        const xmlError* err = xmlGetLastError();
+#else
         xmlError* err = xmlGetLastError();
+#endif
 
         throw GenericException(
             String("xmlParseMemory failed in file: '") +
