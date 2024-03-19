@@ -675,7 +675,6 @@ void GUIContext::updateTooltipState(float timeElapsed)
     if (!needTooltip)
     {
         hideTooltip(true);
-        d_tooltipSource = nullptr;
         return;
     }
 
