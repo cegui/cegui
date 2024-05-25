@@ -40,8 +40,12 @@ class TextParser;
 class CEGUIEXPORT RenderedText final
 {
 public:
-
-    static constexpr size_t npos = std::numeric_limits<size_t>().max();
+    static constexpr size_t npos =
+    #ifndef SWIG
+    std::numeric_limits<size_t>().max();
+    #else
+    SIZE_MAX;
+    #endif
 
     RenderedText();
     RenderedText(const RenderedText& other) = delete;
