@@ -128,7 +128,6 @@ using namespace CEGUI;
 
 // some base classes (must be before derived classes)
 %include "CEGUI/Image.h"
-%include "CEGUI/InputEventReceiver.h"
 %include "CEGUI/Logger.h"
 %include "CEGUI/RenderingSurface.h"
 %include "CEGUI/ResourceEventSet.h"
@@ -181,17 +180,8 @@ using namespace CEGUI;
 %include "CEGUI/ImageCodec.h"
 %include "CEGUI/ImageManager.h"
 %include "CEGUI/InputEvent.h"
-%include "CEGUI/InputEvents.h"
-%feature("notabstract") CEGUI::InputAggregator;
-%include "CEGUI/InputAggregator.h"
-%extend CEGUI::InputAggregator {
-	void injectChar(int c) {
-		$self->injectChar(static_cast<char32_t>(c));
-	}
-}
 %include "CEGUI/KeyFrame.h"
 %include "CEGUI/LinkedEvent.h"
-%include "CEGUI/Cursor.h"
 %include "CEGUI/RegexMatcher.h"
 %include "CEGUI/RenderEffect.h"
 %include "CEGUI/RenderEffectManager.h"
@@ -203,8 +193,6 @@ using namespace CEGUI;
 %include "CEGUI/Scheme.h"
 %include "CEGUI/SchemeManager.h"
 %include "CEGUI/ScriptModule.h"
-%include "CEGUI/SemanticInputEvent.h"
-%include "CEGUI/SimpleTimer.h"
 %include "CEGUI/StringTranscoder.h"
 %include "CEGUI/System.h"
 %include "CEGUI/Texture.h"
