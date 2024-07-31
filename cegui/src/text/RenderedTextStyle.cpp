@@ -86,7 +86,8 @@ void RenderedTextStyle::createRenderGeometry(std::vector<GeometryBuffer*>& out, 
     // Render the outline
     if (d_outlineSize > 0.f)
     {
-        ImageRenderSettings outlineSettings(Rectf(), clipRect, d_outlineColours, 1.f, true);
+        const auto outlineColour = (modColours && d_useModColour) ? d_outlineColours * (*modColours) : d_outlineColours;
+        ImageRenderSettings outlineSettings(Rectf(), clipRect, outlineColour, 1.f, true);
 
         for (auto glyph = begin; glyph != end; ++glyph)
         {
