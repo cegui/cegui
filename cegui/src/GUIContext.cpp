@@ -847,7 +847,7 @@ bool GUIContext::injectMouseMove(float dx, float dy)
     {
         CursorMoveEventArgs args(window, d_cursorPosition, d_mouseButtons, d_modifierKeys, delta);
         window->onCursorMove(args);
-        if (args.handled)
+        if (args.handled && !window->isCursorInputPropagationEnabled())
             return true;
 
         if (window == d_modalWindow)
