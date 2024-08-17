@@ -426,6 +426,9 @@ void GUIContext::onWindowDetached(Window* window)
         d_oldCaptureWindow = nullptr;
 
     releaseInputCapture(true, window);
+
+    if(d_clickTracker.firstWindow == window || d_clickTracker.lastWindow == window)
+        resetClickTracker();
 }
 
 //----------------------------------------------------------------------------//
