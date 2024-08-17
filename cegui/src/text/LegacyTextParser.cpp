@@ -307,7 +307,7 @@ void LegacyTextParser::processControlString(const std::u32string& ctrlStr, std::
     }
 
     Logger::getSingleton().logEvent("LegacyTextParser::processControlString: unknown "
-        "control variable in string: '" + String(ctrlStr) + "'.  Ignoring!");
+        "control variable in string: '" + String(ctrlStr) + "'.  Ignoring!", LoggingLevel::Warning);
 }
 
 //----------------------------------------------------------------------------//
