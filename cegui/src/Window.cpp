@@ -818,7 +818,8 @@ bool Window::activate()
 void Window::deactivate()
 {
     if (isActive())
-        d_guiContext->setActiveWindow(getParent(), true);
+        if(!d_guiContext->setActiveWindow(getParent(), true))
+            d_guiContext->setActiveWindow(nullptr, false);
 }
 
 //----------------------------------------------------------------------------//
