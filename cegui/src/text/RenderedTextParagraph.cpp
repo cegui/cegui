@@ -484,7 +484,8 @@ void RenderedTextParagraph::updateLineHeights(const std::vector<RenderedTextElem
             {
                 // Count height of the current element
                 const auto elementIdx = d_glyphs[i].elementIndex;
-                const float height = elements[elementIdx]->getHeight();
+                const float height = elements[elementIdx]->getHeight() +
+                    elements[elementIdx]->getTopPadding() + elements[elementIdx]->getBottomPadding();
                 if (line.extents.d_height < height)
                     line.extents.d_height = height;
 
