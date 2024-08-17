@@ -51,7 +51,7 @@ namespace CEGUI
     - 'outline-size' value is a float.
     - 'image' value is a CEGUI image property value.
     - 'window' value is the name of a window.
-    - 'vert-alignment' value is either top, bottom, centre or stretch.
+    - 'vert-formatting' value is either TopAligned, BottomAligned, CentreAligned or Stretched.
     - 'padding' value is a CEGUI Rect property value.
     - 'top-padding' value is a float.
     - 'bottom-padding' value is a float.
