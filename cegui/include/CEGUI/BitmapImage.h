@@ -42,7 +42,7 @@ public:
                const AutoScaledMode autoscaled, const Sizef& native_res);
 
     void createRenderGeometry(std::vector<GeometryBuffer*>& out, const ImageRenderSettings& renderSettings, size_t canCombineFromIdx) const override;
-\
+
     //! \brief Sets the Texture object of this Image.
     void setTexture(Texture* texture) { d_texture = texture; }
     //! \brief Returns the pointer to the Texture object used by this image.
