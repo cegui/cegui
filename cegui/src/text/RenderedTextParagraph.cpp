@@ -547,13 +547,8 @@ void RenderedTextParagraph::accumulateExtents(Rectf& extents) const
     for (const auto& line : d_lines)
     {
         extents.d_max.y += line.extents.d_height;
-
-        const float left = line.horzOffset;
-        const float right = left + line.extents.d_width;
-        if (extents.d_min.x > left)
-            extents.d_min.x = left;
-        if (extents.d_max.x < right)
-            extents.d_max.x = right;
+        if(extents.d_max.x < line.extents.d_width)
+            extents.d_max.x = line.extents.d_width;
     }
 }
 
