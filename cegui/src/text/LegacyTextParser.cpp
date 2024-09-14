@@ -419,6 +419,7 @@ void LegacyTextParser::resetStyle(bool color, bool font, bool image, bool others
     if (color) {
         d_colours = Colour(0xFFFFFFFF);
         d_bgColours = Colour(0x00000000);
+        d_outlineColours = Colour();
         d_useModColour = true;
     }
     if (font) {
