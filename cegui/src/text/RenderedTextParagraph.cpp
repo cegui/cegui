@@ -113,7 +113,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
 
     // Advance the pen to the start of the next paragraph
     auto initialPenPos = penPosition;
-    penPosition.y += d_height;
+    penPosition.y += d_height + d_padding_y;
 
     // Determine the range of visible lines
     const auto lineCount = d_lines.size();
@@ -134,7 +134,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
                 break;
             }
 
-            penPos.y += line.extents.d_height;
+            penPos.y += line.extents.d_height + line.padding_y;
             if (penPos.y <= clipRect->top())
             {
                 lineStart = lineIdx + 1;
@@ -155,7 +155,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
     for (size_t lineIdx = lineStart; lineIdx < lineEnd; ++lineIdx)
     {
         const auto& line = d_lines[lineIdx];
-        const float lineBottom = penPos.y + line.extents.d_height;
+        const float lineBottom = penPos.y + line.extents.d_height + line.padding_y;
 
         penPos.x = initialPenPos.x + line.horzOffset;
 
@@ -193,7 +193,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
         for (size_t lineIdx = lineStart; lineIdx < lineEnd; ++lineIdx)
         {
             const auto& line = d_lines[lineIdx];
-            const float lineBottom = penPos.y + line.extents.d_height;
+            const float lineBottom = penPos.y + line.extents.d_height + line.padding_y;
 
             penPos.x = initialPenPos.x + line.horzOffset;
 
@@ -268,7 +268,7 @@ void RenderedTextParagraph::createRenderGeometry(std::vector<GeometryBuffer*>& o
                 clipRect, line.extents.d_height, line.justifySpaceSize, canCombineFromIdx, selection);
         }
 
-        penPos.y += line.extents.d_height;
+        penPos.y += line.extents.d_height + line.padding_y;
     }
 }
 
@@ -444,6 +444,8 @@ void RenderedTextParagraph::updateLineHeights(const std::vector<RenderedTextElem
     // TODO: get the whole style (not only font height) from the corresponding element of '\n'! There can be 
     //       a string like this: "\n\n[colour="..."][font="..."]\n\n", last two paragraphs must honor style changes!
 
+    d_padding_y = 0.f;
+
     if (d_lines.empty())
     {
         d_height = defaultFontHeight;
@@ -457,6 +459,7 @@ void RenderedTextParagraph::updateLineHeights(const std::vector<RenderedTextElem
         if (!line.heightDirty)
         {
             d_height += line.extents.d_height;
+            d_padding_y += line.padding_y;
             continue;
         }
 
@@ -468,8 +471,8 @@ void RenderedTextParagraph::updateLineHeights(const std::vector<RenderedTextElem
             if (line.glyphStartIdx)
             {
                 const auto fontSrc = elements[d_glyphs[line.glyphStartIdx - 1].elementIndex].get();
-                line.extents.d_height = fontSrc->getFont()->getFontHeight() +
-                    fontSrc->getTopPadding() + fontSrc->getBottomPadding();
+                line.extents.d_height = fontSrc->getFont()->getFontHeight();
+                line.padding_y = fontSrc->getTopPadding() + fontSrc->getBottomPadding();
             }
             else
             {
@@ -484,10 +487,12 @@ void RenderedTextParagraph::updateLineHeights(const std::vector<RenderedTextElem
             {
                 // Count height of the current element
                 const auto elementIdx = d_glyphs[i].elementIndex;
-                const float height = elements[elementIdx]->getHeight() +
-                    elements[elementIdx]->getTopPadding() + elements[elementIdx]->getBottomPadding();
+                const float height = elements[elementIdx]->getHeight();
                 if (line.extents.d_height < height)
+                {
                     line.extents.d_height = height;
+                    line.padding_y = elements[elementIdx]->getTopPadding() + elements[elementIdx]->getBottomPadding();
+                }
 
                 // Skip to the next element
                 do ++i; while (i < line.glyphEndIdx && d_glyphs[i].elementIndex == elementIdx);
@@ -495,6 +500,7 @@ void RenderedTextParagraph::updateLineHeights(const std::vector<RenderedTextElem
         }
 
         d_height += line.extents.d_height;
+        d_padding_y += line.padding_y;
     }
 }
 
@@ -546,7 +552,8 @@ void RenderedTextParagraph::accumulateExtents(Rectf& extents) const
 
     for (const auto& line : d_lines)
     {
-        extents.d_max.y += line.extents.d_height;
+        extents.d_max.y += line.extents.d_height + line.padding_y;
+
         if(extents.d_max.x < line.extents.d_width)
             extents.d_max.x = line.extents.d_width;
     }
@@ -941,7 +948,7 @@ float RenderedTextParagraph::getLineOffsetY(size_t lineIndex) const
         const auto& line = d_lines[i];
         if (line.heightDirty)
             break;
-        lineOffsetY += line.extents.d_height;
+        lineOffsetY += line.extents.d_height + line.padding_y;
     }
 
     return lineOffsetY;
@@ -952,7 +959,7 @@ float RenderedTextParagraph::getLineHeight(size_t lineIndex) const
 {
     if (d_linesDirty || d_lines.size() <= lineIndex || d_lines[lineIndex].heightDirty)
         return 0.f;
-    return d_lines[lineIndex].extents.d_height;
+    return d_lines[lineIndex].extents.d_height + d_lines[lineIndex].padding_y;
 }
 
 //----------------------------------------------------------------------------//
