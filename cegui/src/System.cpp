@@ -268,6 +268,10 @@ System::~System(void)
     // code should really be adjusted to not create windows during cleanup.
     WindowManager::getSingleton().lock();
     // destroy windows so it's safe to destroy factories
+    for(auto* i : d_guiContexts)
+    {
+       i->destroyTooltips();
+    }
     WindowManager::getSingleton().destroyAllWindows();
     WindowManager::getSingleton().cleanDeadPool();
 
