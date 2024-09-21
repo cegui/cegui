@@ -1602,14 +1602,15 @@ ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& localPos) const
         // have we located the row?
         if (localPos.y < y)
         {
+            float seg_x = 0.0f;
             // scan across to find column that was clicked
             for (unsigned int j = 0; j < getColumnCount(); ++j)
             {
                 const ListHeaderSegment& seg = header->getSegmentFromColumn(j);
-                x += CoordConverter::asAbsolute(seg.getWidth(), header->getPixelSize().d_width);
+                seg_x += CoordConverter::asAbsolute(seg.getWidth(), header->getPixelSize().d_width);
 
                 // was this the column?
-                if (localPos.x < x)
+                if (localPos.x < x + seg_x)
                 {
                     // return contents of grid element that was clicked.
                     return d_grid[i][j];
