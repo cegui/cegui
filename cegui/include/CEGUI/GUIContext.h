@@ -99,6 +99,8 @@ public:
     GUIContext(RenderTarget& target);
     virtual ~GUIContext() override;
 
+    void destroyTooltips();
+
     void draw(std::uint32_t drawMode = DrawModeMaskAll) override;
 
     void setRenderTarget(RenderTarget& target);

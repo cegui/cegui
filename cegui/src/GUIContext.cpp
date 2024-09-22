@@ -75,12 +75,19 @@ GUIContext::~GUIContext()
     if (d_rootWindow)
         d_rootWindow->attachToGUIContext(nullptr);
 
-    for (auto record : d_tooltips)
-        if (WindowManager::getSingleton().isAlive(record.second))
-            WindowManager::getSingleton().destroyWindow(record.second);
+    destroyTooltips();
 
     for (auto currentBuffer : d_cursorGeometry)
         System::getSingleton().getRenderer()->destroyGeometryBuffer(*currentBuffer);
+}
+
+void GUIContext::destroyTooltips()
+{
+    for(auto record : d_tooltips)
+        if(WindowManager::getSingleton().isAlive(record.second))
+            WindowManager::getSingleton().destroyWindow(record.second);
+
+    d_tooltips.clear();
 }
 
 //----------------------------------------------------------------------------//
