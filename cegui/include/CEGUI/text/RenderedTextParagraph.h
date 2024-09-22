@@ -103,6 +103,7 @@ public:
     //! Extends a rect with total extents of this paragraph
     void accumulateExtents(Rectf& extents) const;
     float getHeight() const { return d_height; }
+    float getLineHeight() const { return d_height + d_padding_y; }
 
     void onElementWidthChanged(size_t elementIndex, float diff);
     void onElementHeightChanged(size_t elementIndex, float diff);
@@ -168,6 +169,7 @@ protected:
         uint32_t glyphEndIdx = std::numeric_limits<uint32_t>().max();
         uint32_t glyphSkipStartIdx = std::numeric_limits<uint32_t>().max();
         Sizef    extents;
+        float    padding_y = 0.f;
         float    horzOffset = 0.f;
         float    justifySpaceSize = 0.f;
         uint16_t justifiableCount = 0;
@@ -183,6 +185,7 @@ protected:
     uint32_t d_sourceStartIndex = 0;  //!< Starting index of the paragraph in the logical text
     uint32_t d_sourceEndIndex = 0;  //!< Starting index of the paragraph in the logical text
     float d_height = 0.f;
+    float d_padding_y = 0.f;
 
     DefaultParagraphDirection d_bidiDir = DefaultParagraphDirection::Automatic;
     HorizontalTextFormatting d_horzFormatting = HorizontalTextFormatting::LeftAligned;
