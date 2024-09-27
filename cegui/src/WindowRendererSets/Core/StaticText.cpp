@@ -612,6 +612,7 @@ void FalagardStaticText::updateFormatting() const
     if (d_formatValid)
         return;
 
+    d_actualHorzFormatting = d_horzFormatting;
     d_actualVertFormatting = d_vertFormatting;
 
     TextParser* parser = nullptr;
@@ -631,11 +632,11 @@ void FalagardStaticText::updateFormatting() const
         const auto lineCount = getNumOfFormattedTextLines();
 
         if (d_window->isWidthAdjustedToContent() && lineCount == 1)
-        {
             d_actualHorzFormatting = HorizontalTextFormatting::CentreAligned;
-            d_renderedText.setHorizontalFormatting(d_actualHorzFormatting);
-            d_renderedText.updateFormatting(getTextRenderAreaWithoutUpdate().getWidth());
-        }
+
+        d_renderedText.setHorizontalFormatting(d_actualHorzFormatting);
+        d_renderedText.updateFormatting(getTextRenderAreaWithoutUpdate().getWidth());
+
 
         if (d_window->isHeightAdjustedToContent() && (d_numOfTextLinesToShow.isAuto() || d_numOfTextLinesToShow <= lineCount))
             d_actualVertFormatting = VerticalTextFormatting::CentreAligned;
