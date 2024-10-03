@@ -101,8 +101,8 @@ void Clipboard::getData(String& mimeType, const void*& buffer, size_t& size)
     // (if possible)
     if (d_nativeProvider)
     {
-        size_t retrievedSize;
-        void* retrievedBuffer;
+        size_t retrievedSize = 0;
+        void* retrievedBuffer = nullptr;
         
         d_nativeProvider->retrieveFromClipboard(d_mimeType, retrievedBuffer, retrievedSize);
         
