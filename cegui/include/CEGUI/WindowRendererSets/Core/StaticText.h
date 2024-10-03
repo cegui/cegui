@@ -575,7 +575,9 @@ private:
     Scrollbar* getVertScrollbarWithoutUpdate() const;
     Scrollbar* getHorzScrollbarWithoutUpdate() const;
     Rectf getTextRenderAreaWithoutUpdate() const;
+    Rectf getTextRenderAreaWithoutUpdate(bool withVertScrollbar, bool withHorzScrollbar) const;
     const ComponentArea& getTextComponentAreaWithoutUpdate() const;
+    const ComponentArea& getTextComponentAreaWithoutUpdate(bool withVertScrollbar, bool withHorzScrollbar) const;
     const Sizef& getTextExtentWithoutUpdate() const;
     void adjustSizeToContent_wordWrap_keepingAspectRatio(const Sizef& contentMaxSize,
         USize& size_func, float window_max_width, float epsilon);
