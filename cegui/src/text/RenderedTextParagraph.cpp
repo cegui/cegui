@@ -73,8 +73,8 @@ void RenderedTextParagraph::setupGlyphs(const std::u32string& text,
         }
         else
         {
-            glyph.isBreakable = isBreakable && (TextUtils::UTF32_WORDBREAK_CHARACTERS.find(codePoint) != std::u32string::npos);
-            breakNext = glyph.isBreakable || isBreakableWhitespace;
+            glyph.isBreakable = isBreakableWhitespace;
+            breakNext = (isBreakable && (TextUtils::UTF32_WORDBREAK_CHARACTERS.find(codePoint) != std::u32string::npos)) || isBreakableWhitespace;
         }
     }
 }
