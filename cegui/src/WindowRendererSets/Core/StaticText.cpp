@@ -399,10 +399,8 @@ void FalagardStaticText::configureScrollbars() const
 {
     Scrollbar* vertScrollbar = getVertScrollbarWithoutUpdate();
     Scrollbar* horzScrollbar = getHorzScrollbarWithoutUpdate();
-    vertScrollbar->hide();
-    horzScrollbar->hide();
 
-    Rectf renderArea(getTextRenderAreaWithoutUpdate());
+    Rectf renderArea(getTextRenderAreaWithoutUpdate(false, false));
     Sizef renderAreaSize(renderArea.getSize());
 
     d_renderedText.updateDynamicObjectExtents(d_window);
@@ -412,31 +410,33 @@ void FalagardStaticText::configureScrollbars() const
 
     bool showVert = d_enableVertScrollbar && (documentSize.d_height > renderAreaSize.d_height);
     bool showHorz = d_enableHorzScrollbar && (documentSize.d_width > renderAreaSize.d_width);
-    vertScrollbar->setVisible(showVert);
-    horzScrollbar->setVisible(showHorz);
 
-    Rectf updatedRenderArea = getTextRenderAreaWithoutUpdate();
-    if (renderArea != updatedRenderArea)
+    if (showVert || showHorz)
     {
-        renderArea = updatedRenderArea;
-        renderAreaSize = renderArea.getSize();
-        d_renderedText.updateFormatting(renderAreaSize.d_width);
-        documentSize = getTextExtentWithoutUpdate();
-
-        showVert = d_enableVertScrollbar && (documentSize.d_height > renderAreaSize.d_height);
-        showHorz = d_enableHorzScrollbar && (documentSize.d_width > renderAreaSize.d_width);
-        vertScrollbar->setVisible(showVert);
-        horzScrollbar->setVisible(showHorz);
-
-        updatedRenderArea = getTextRenderAreaWithoutUpdate();
+        Rectf updatedRenderArea = getTextRenderAreaWithoutUpdate(showVert, showHorz);
         if (renderArea != updatedRenderArea)
         {
             renderArea = updatedRenderArea;
             renderAreaSize = renderArea.getSize();
             d_renderedText.updateFormatting(renderAreaSize.d_width);
             documentSize = getTextExtentWithoutUpdate();
+
+            showVert = d_enableVertScrollbar && (documentSize.d_height > renderAreaSize.d_height);
+            showHorz = d_enableHorzScrollbar && (documentSize.d_width > renderAreaSize.d_width);
+
+            updatedRenderArea = getTextRenderAreaWithoutUpdate(showVert, showHorz);
+            if (renderArea != updatedRenderArea)
+            {
+                renderArea = updatedRenderArea;
+                renderAreaSize = renderArea.getSize();
+                d_renderedText.updateFormatting(renderAreaSize.d_width);
+                documentSize = getTextExtentWithoutUpdate();
+            }
         }
     }
+
+    vertScrollbar->setVisible(showVert);
+    horzScrollbar->setVisible(showHorz);
 
     d_window->performChildLayout(false, false);
 
@@ -677,26 +677,35 @@ Scrollbar* FalagardStaticText::getHorzScrollbarWithoutUpdate() const
 //----------------------------------------------------------------------------//
 Rectf FalagardStaticText::getTextRenderAreaWithoutUpdate() const
 {
-    return getTextComponentAreaWithoutUpdate().getPixelRect(*d_window);
+    return getTextRenderAreaWithoutUpdate(getVertScrollbarWithoutUpdate()->isVisible(), getHorzScrollbarWithoutUpdate()->isVisible());
+}
+
+//----------------------------------------------------------------------------//
+Rectf FalagardStaticText::getTextRenderAreaWithoutUpdate(bool withVertScrollbar, bool withHorzScrollbar) const
+{
+    return getTextComponentAreaWithoutUpdate(withVertScrollbar, withHorzScrollbar).getPixelRect(*d_window);
 }
 
 //----------------------------------------------------------------------------//
 const ComponentArea& FalagardStaticText::getTextComponentAreaWithoutUpdate() const
 {
-    const bool v_visible = getVertScrollbarWithoutUpdate()->isVisible();
-    const bool h_visible = getHorzScrollbarWithoutUpdate()->isVisible();
+    return getTextComponentAreaWithoutUpdate(getVertScrollbarWithoutUpdate()->isVisible(), getHorzScrollbarWithoutUpdate()->isVisible());
+}
 
+//----------------------------------------------------------------------------//
+const ComponentArea& FalagardStaticText::getTextComponentAreaWithoutUpdate(bool withVertScrollbar, bool withHorzScrollbar) const
+{
     // get WidgetLookFeel for the assigned look.
     const WidgetLookFeel& wlf = getLookNFeel();
 
     String area_name(d_frameEnabled ? "WithFrameTextRenderArea" : "NoFrameTextRenderArea");
 
     // if either of the scrollbars are visible, we might want to use a special rendering area
-    if (v_visible || h_visible)
+    if (withVertScrollbar || withHorzScrollbar)
     {
-        if (h_visible)
+        if (withHorzScrollbar)
             area_name += 'H';
-        if (v_visible)
+        if (withVertScrollbar)
             area_name += 'V';
         area_name += "Scroll";
     }
