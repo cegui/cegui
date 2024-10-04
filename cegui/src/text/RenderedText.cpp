@@ -396,7 +396,7 @@ void RenderedText::updateDynamicObjectExtents(const Window* hostWindow)
 bool RenderedText::updateFormatting(float areaWidth)
 {
     if (areaWidth < 0.f)
-        return false;
+        areaWidth = 0.f;
 
     const bool areaWidthChanged = (d_areaWidth != areaWidth);
     d_areaWidth = areaWidth;
