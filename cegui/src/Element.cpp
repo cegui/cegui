@@ -138,7 +138,8 @@ Element::Element():
 //----------------------------------------------------------------------------//
 void Element::setArea(const UVector2& pos, const USize& size, bool adjust_size_to_content)
 {
-    // TODO: early exit if equal? or return false from notifyScreenAreaChanged if unchanged?
+    if (pos == d_area.getPosition() && size == d_area.getSize())
+        return;
 
     d_area.setPositionAndSize(pos, size);
     notifyScreenAreaChanged(adjust_size_to_content);
