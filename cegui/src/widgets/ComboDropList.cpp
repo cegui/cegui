@@ -180,6 +180,9 @@ void ComboDropList::onClick(MouseButtonEventArgs& e)
 //----------------------------------------------------------------------------//
 void ComboDropList::onCaptureLost(WindowEventArgs& e)
 {
+    if (e.window->isDescendantOf(this))
+        return;
+    
     ListWidget::onCaptureLost(e);
 
 	d_armed = false;
